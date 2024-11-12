@@ -1,4 +1,4 @@
-# Dating App
+# Meme App
 
 A Solana-based dating app built with Next.js and Ant Design Mobile.
 
