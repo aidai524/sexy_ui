@@ -7,16 +7,11 @@ import styles from './connectButton.module.css'
 export default function ConnectButton() {
   const appKit = useAppKit()
   const [isConnecting, setIsConnecting] = useState(false)
-  const isConnected = Boolean(appKit.address)
 
   const handleConnect = async () => {
     try {
       setIsConnecting(true)
-      if (isConnected) {
-        await appKit.close()
-      } else {
-        await appKit.open()
-      }
+      await appKit.open()
     } catch (error) {
       console.error('Wallet connection error:', error)
     } finally {
@@ -24,15 +19,29 @@ export default function ConnectButton() {
     }
   }
 
+  const handleDisconnect = async () => {
+    try {
+      setIsConnecting(true)
+      await appKit.close()
+    } catch (error) {
+      console.error('Wallet disconnection error:', error)
+    } finally {
+      setIsConnecting(false)
+    }
+  }
+
+  // 使用 localStorage 来检查连接状态
+  const isConnected = typeof window !== 'undefined' && localStorage.getItem('walletconnect') !== null
+
   return (
     <Button
       className={styles.button}
       color='primary'
-      onClick={handleConnect}
+      onClick={isConnected ? handleDisconnect : handleConnect}
       size='small'
       loading={isConnecting}
     >
-      {isConnected ? `${appKit.address?.slice(0, 6)}...${appKit.address?.slice(-4)}` : '连接钱包'}
+      {isConnected ? '断开连接' : '连接钱包'}
     </Button>
   )
 } 

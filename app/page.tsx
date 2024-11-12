@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { Image as AntdImage, Toast } from 'antd-mobile'
+import { Toast } from 'antd-mobile'
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import styles from './pages/home/page.module.css'

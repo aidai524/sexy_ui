@@ -4,7 +4,6 @@ import { Avatar, Card } from 'antd-mobile'
 import Image from 'next/image'
 import styles from './profile.module.css'
 import ConnectButton from '../components/ConnectButton'
-import { useAppKit } from '@reown/appkit/react'
 
 // 模拟用户数据
 const userData = {
@@ -28,8 +27,8 @@ const userData = {
 }
 
 export default function Profile() {
-  const appKit = useAppKit()
-  const isConnected = Boolean(appKit.address)
+  // 使用 localStorage 来检查连接状态
+  const isConnected = typeof window !== 'undefined' && localStorage.getItem('walletconnect') !== null
 
   if (!isConnected) {
     return (
