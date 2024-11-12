@@ -40,3 +40,33 @@ a {
     color-scheme: dark;
   }
 }
+
+/* 在现有样式基础上添加/修改 */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden; /* 防止页面滚动 */
+}
+
+.app-container > :first-child {
+  flex: 1;
+  overflow: hidden;
+}
+
+.adm-tab-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px; /* 固定菜单高度 */
+  background: white;
+  border-top: solid 1px #eee;
+  z-index: 100; /* 确保菜单在最上层 */
+}
+
+@media (prefers-color-scheme: dark) {
+  .adm-tab-bar {
+    background: #1a1a1a;
+    border-top-color: #333;
+  }
+}
