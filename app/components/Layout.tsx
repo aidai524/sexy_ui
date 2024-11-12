@@ -4,58 +4,62 @@ import { TabBar } from 'antd-mobile'
 import { useRouter, usePathname } from 'next/navigation'
 import {
   AppOutline,
-  UserOutline,
-  AddCircleOutline,
-  UnorderedListOutline
+  ContentOutline,
+  AddSquareOutline,
+  MessageOutline,
+  UserOutline
 } from 'antd-mobile-icons'
 import ConnectButton from './ConnectButton'
 import styles from './layout.module.css'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Component({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
 
   const tabs = [
     {
       key: '/',
-      title: 'Home',
+      title: '首页',
       icon: <AppOutline />,
     },
     {
-      key: '/create',
-      title: 'Create',
-      icon: <AddCircleOutline />,
+      key: '/discover',
+      title: '发现',
+      icon: <ContentOutline />,
     },
     {
-      key: '/list',
-      title: 'List',
-      icon: <UnorderedListOutline />,
+      key: '/create',
+      title: '创建',
+      icon: <AddSquareOutline />,
+    },
+    {
+      key: '/message',
+      title: '消息',
+      icon: <MessageOutline />,
     },
     {
       key: '/profile',
-      title: 'Profile',
+      title: '我的',
       icon: <UserOutline />,
     },
   ]
 
   return (
-    <div className="app-container">
+    <div className="min-h-screen bg-black text-white">
       <div className={styles.walletButton}>
         <ConnectButton />
       </div>
-      {children}
-      <TabBar
-        activeKey={pathname}
-        onChange={value => router.push(value)}
-      >
+      <main className="pb-16">{children}</main>
+      <TabBar className={styles.tabBar} activeKey={pathname} onChange={key => router.push(key)}>
         {tabs.map(item => (
           <TabBar.Item
             key={item.key}
             icon={item.icon}
             title={item.title}
+            className={pathname === item.key ? styles.activeTab : ''}
           />
         ))}
       </TabBar>
     </div>
   )
-} 
+}

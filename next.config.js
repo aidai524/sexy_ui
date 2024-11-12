@@ -50,10 +50,18 @@ const nextConfig = {
     return config
   },
   
-  // 优化图片
+  // 图片配置
   images: {
+    domains: ['picsum.photos'], // 添加允许的图片域名
     minimumCacheTTL: 60,
     formats: ['image/webp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        pathname: '/**',
+      },
+    ],
   }
 }
 
