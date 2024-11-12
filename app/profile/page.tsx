@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
-import { List, Avatar, Card } from 'antd-mobile'
+import { Avatar, Card } from 'antd-mobile'
+import Image from 'next/image'
 import styles from './profile.module.css'
 import ConnectButton from '../components/ConnectButton'
 import { useAppKit } from '@reown/appkit/react'
@@ -59,11 +60,15 @@ export default function Profile() {
           {userData.likedItems.map(item => (
             <Card key={item.id} className={styles.card}>
               <div className={styles.cardContent}>
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
-                  className={styles.cardImage}
-                />
+                <div className={styles.imageWrapper}>
+                  <Image 
+                    src={item.image} 
+                    alt={item.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    className={styles.cardImage}
+                  />
+                </div>
                 <div className={styles.cardInfo}>
                   <h4>{item.title}</h4>
                   <p>{item.description}</p>

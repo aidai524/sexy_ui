@@ -1,7 +1,8 @@
 'use client'
 import React from 'react'
-import { Image, Toast } from 'antd-mobile'
+import { Image as AntdImage, Toast } from 'antd-mobile'
 import { useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
 import styles from './pages/home/page.module.css'
 
 // 预加载图片的函数
@@ -85,6 +86,7 @@ export default function Home() {
   }
 
   // 预加载下一批图片
+  const currentCard = cards[0]
   useEffect(() => {
     const preloadNextImages = async () => {
       if (cards.length > 1) {
@@ -101,7 +103,7 @@ export default function Home() {
     }
 
     preloadNextImages()
-  }, [cards[0]])
+  }, [currentCard, cards])
 
   if (cards.length === 0) {
     return (
@@ -129,7 +131,9 @@ export default function Home() {
       >
         <Image 
           src={cards[0].image} 
-          fit='cover' 
+          alt={cards[0].title}
+          fill
+          style={{ objectFit: 'cover' }}
           className={styles.cardImage} 
         />
         <div className={styles.cardContent}>
@@ -149,7 +153,9 @@ export default function Home() {
         >
           <Image 
             src={cards[1].image} 
-            fit='cover' 
+            alt={cards[1].title}
+            fill
+            style={{ objectFit: 'cover' }}
             className={styles.cardImage} 
           />
           <div className={styles.cardContent}>

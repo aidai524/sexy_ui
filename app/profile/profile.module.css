@@ -12,4 +12,14 @@
   font-size: 20px;
   color: var(--foreground);
   margin-bottom: 20px;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+}
+
+.cardImage {
+  border-radius: 8px;
 } 
