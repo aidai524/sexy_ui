@@ -1,0 +1,61 @@
+.main {
+    .panel {
+        background-color: #121719;
+        border-radius: 10px;
+        padding: 12px;
+    }
+    .marketCa {
+        margin: 20px 5px 5px;
+        font-size: 14px;
+        .marketCap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #6FFF00;
+        }
+
+        .ca {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            .caAddress {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .caTtitle {
+                    color: rgba(255, 255, 255, 0.6);
+                }
+                .address {
+                    color: #fff;
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+    .cationArea {
+        .tradeTabs {
+            padding: 20px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            .tab {
+                flex: 1;
+                background-color: rgba(95, 96, 106, 1);
+                color: #fff;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 38px;
+                border-radius: 8px;
+                &.active:first-child {
+                    background-color: rgba(109, 181, 0, 1);
+                }
+                &.active:last-child {
+                    background-color: rgba(255, 47, 116, 1);
+                }
+            }
+        }
+    }
+}

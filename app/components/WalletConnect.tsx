@@ -1,7 +1,8 @@
 'use client'
+
 import React from 'react'
-import { createAppKit } from '@reown/appkit/react'
-import { SolanaAdapter } from '@reown/appkit-adapter-solana/react'
+import { createAppKit, useAppKitProvider } from '@reown/appkit/react'
+import { SolanaAdapter, useAppKitConnection, } from '@reown/appkit-adapter-solana/react'
 import { solana, solanaTestnet, solanaDevnet } from '@reown/appkit/networks'
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 
@@ -19,17 +20,29 @@ const metadata = {
   icons: ['https://picsum.photos/200/200']
 }
 
-// 初始化 AppKit
-createAppKit({
-  adapters: [solanaWeb3JsAdapter],
-  networks: [solana, solanaTestnet, solanaDevnet],
-  metadata: metadata,
-  projectId,
-  features: {
-    analytics: true
-  }
-})
+if (typeof window !== 'undefined') {
+  // 初始化 AppKit
+  createAppKit({
+    adapters: [solanaWeb3JsAdapter],
+    networks: [solanaDevnet],
+    metadata: metadata,
+    projectId,
+    features: {
+      analytics: true
+    }
+  })
+}
+
+
+
+// console.log(modal, solanaWeb3JsAdapter)
 
 export default function WalletConnect({ children }: { children: React.ReactNode }) {
-  return <>{children}</>
+  // if (typeof window === 'undefined') {
+  //   return null
+  // }
+
+  return <>
+    {children}
+  </>
 } 

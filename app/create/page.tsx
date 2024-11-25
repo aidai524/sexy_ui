@@ -1,11 +1,6 @@
-'use client'
-import React from 'react'
+"use client"
+import CreateCom from '@/app/sections/create'
 
 export default function Create() {
-  return (
-    <div style={{ padding: '20px' }}>
-      <h1>Create Page</h1>
-      <p>Coming soon...</p>
-    </div>
-  )
-} 
+    return <CreateCom />
+}

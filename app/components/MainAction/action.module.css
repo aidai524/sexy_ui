@@ -1,0 +1,16 @@
+.mainAction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    .actionIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 100px;
+        padding: 5px;
+        height: 60px;
+        width: 99px;
+    }
+}

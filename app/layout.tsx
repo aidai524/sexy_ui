@@ -1,12 +1,9 @@
+'use client'
+
 import type { Metadata } from 'next'
 import './globals.css'
-import Layout from './components/Layout'
+import Layout from './components/layout/Layout'
 import WalletConnect from './components/WalletConnect'
-
-export const metadata: Metadata = {
-  title: 'Dating App',
-  description: 'A Solana-based dating app',
-}
 
 export default function RootLayout({
   children,

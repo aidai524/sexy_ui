@@ -1,6 +1,23 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0D1012;
+  --foreground: #fff;
+  --part-bg: rgba(255, 38, 129, 1);
+}
+
+:root body{
+  --adm-font-family: Unbounded, Arial, Helvetica, sans-serif;
+}
+
+div.adm-image-uploader{
+  --cell-size: 100px;
+
+}
+
+@font-face {
+  font-family: 'Unbounded';
+  src: url('/font/Unbounded-VariableFont_wght.ttf');
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,7 +36,6 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -69,4 +85,15 @@ a {
     background: #1a1a1a;
     border-top-color: #333;
   }
+}
+
+.adm-button.main-btn {
+  background: var(--part-bg);
+  border: none;
+  color: #fff;
+  width: 100%;
+  font-family: var(--adm-font-family);
+  border-radius: 100px;
+  height: 60px;
+  font-size: 16px;
 }

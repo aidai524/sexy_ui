@@ -1,0 +1,163 @@
+.thumbnail {
+    position: relative;
+    height: calc(100vh - 245px);
+    margin: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+    .imgList {
+        width: 100%;
+        height: 100%;
+        .tokenImg {
+            display: block;
+            width: 100%;
+            /* height: 100%; */
+            /* border-radius: 5px; */
+        }
+    }
+
+    .descContent {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 71.43%);
+    }
+
+    .likeNums {
+        /* position: absolute;
+        left: 12px;
+        top: 14px; */
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        .likeCustom {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0 10px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #fff;
+            .tips {
+                line-height: 9px;
+                word-break: break-all;
+                font-size: 10px;
+            }
+        }
+        .likes {
+            background-color: #FF3499;
+        }
+        .superLikes {
+            background: linear-gradient(90deg, #7834FF 0%, #FF2581 100%);
+
+        }
+
+
+    }
+
+    .teleGram {
+        position: absolute;
+        top: 14px;
+        right: 12px;
+    }
+
+    .tokenMsg {
+        /* position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 50%; */
+        background: linear-gradient(181.33deg, rgba(13, 16, 18, 0) 1.14%, #0D1012 98.87%);
+        padding: 0 25px 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        
+        .desc {
+            font-size: 16px;
+            font-weight: 300;
+            margin-top: 10px;
+            color: #979ABE;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .detailLink {
+            position: absolute;
+            right: 20px;
+            top: 40px;
+        }
+    }
+}
+
+.picProgress {
+    display: flex;
+    margin: 10px 10px;
+    height: 4px;
+    gap: 8px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    .progressItem {
+        flex: 1;
+        opacity: .5;
+        background-color: #fff;
+        border-radius: 100px;
+        &.active {
+            opacity: 1;
+            
+        }
+    }
+}
+
+.detailTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px 0;
+}
+
+.titles {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    .tokenImgBox {
+        border: 1px dashed #fff;
+        border-radius: 46px;
+    }
+    .tokenImg {
+        width: 46px;
+        height: 46px;
+        border-radius: 46px;
+        opacity: 0.3;
+    }
+    .tokenName {
+        font-size: 26px;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .tickerContent {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 5px;
+        .ticker {
+            color: #fff;
+            font-size: 14px;
+        }
+        .launchTag {
+            height: 20px;
+            background-color: rgba(80, 73, 100, 1);
+            padding: 0 10px;
+            border-radius: 1000px;
+            color: #fff;
+            font-size: 10px;
+            line-height: 20px;
+        }
+    }
+}

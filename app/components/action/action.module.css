@@ -1,0 +1,11 @@
+.action {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3vw;
+    
+}

@@ -1,0 +1,53 @@
+.main {
+    background-color: rgba(255, 38, 129, 1);
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    padding: 15px 20px 0;
+    justify-content: space-between;
+    align-items: center;
+
+    .launchPadTab {
+        display: flex;
+        gap: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        
+        .launchPadTabTitle {
+            position: relative;
+            padding-bottom: 10px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .launchPadTabTitleActive {
+            color: #fff;
+            text-shadow: 0px 0px 8px rgba(255, 255, 255, 1);
+        }
+        .launchPadTabTitleActive::after {
+            content: ' ';
+            display: block;
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 100px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 1);
+        }
+    }
+    
+
+    .icons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        .notice {
+            cursor: pointer;
+        }
+    }
+}
+

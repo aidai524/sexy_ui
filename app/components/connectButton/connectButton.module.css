@@ -1,0 +1,11 @@
+ .button {
+    background: #FFFFFF1F;
+    padding: 10px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 500;
+ }
+
+ .loginBtn {
+    width: 34px;
+ }
