@@ -6,12 +6,12 @@ import { SolanaAdapter, useAppKitConnection, } from '@reown/appkit-adapter-solan
 import { solana, solanaTestnet, solanaDevnet } from '@reown/appkit/networks'
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 
-// 设置 Solana 适配器
+
 const solanaWeb3JsAdapter = new SolanaAdapter({
   wallets: [new PhantomWalletAdapter(), new SolflareWalletAdapter()]
 })
 
-// 项目配置
+
 const projectId = process.env.NEXT_PUBLIC_REOWN_PROJECT_ID || 'YOUR_PROJECT_ID'
 const metadata = {
   name: 'Dating App',
@@ -21,7 +21,7 @@ const metadata = {
 }
 
 if (typeof window !== 'undefined') {
-  // 初始化 AppKit
+
   createAppKit({
     adapters: [solanaWeb3JsAdapter],
     networks: [solanaDevnet],
@@ -35,7 +35,7 @@ if (typeof window !== 'undefined') {
 
 
 
-// console.log(modal, solanaWeb3JsAdapter)
+
 
 export default function WalletConnect({ children }: { children: React.ReactNode }) {
   // if (typeof window === 'undefined') {

@@ -4,12 +4,11 @@ const nextConfig = {
   transpilePackages: ['antd-mobile'],
   output: 'standalone',
   
-  // 添加压缩配置
+
   compress: true,
-  
-  // 优化构建输出
+
   webpack: (config, { dev, isServer }) => {
-    // 生产环境才进行优化
+
     if (!dev && !isServer) {
       config.optimization = {
         ...config.optimization,
@@ -17,11 +16,11 @@ const nextConfig = {
         splitChunks: {
           chunks: 'all',
           minSize: 20000,
-          maxSize: 24000000, // 24MB 以下
+          maxSize: 24000000, 
           cacheGroups: {
             default: false,
             vendors: false,
-            // 主要依赖打包
+
             framework: {
               chunks: 'all',
               name: 'framework',
@@ -29,7 +28,7 @@ const nextConfig = {
               priority: 40,
               enforce: true,
             },
-            // antd 相关
+
             antd: {
               chunks: 'all',
               name: 'antd',
@@ -37,7 +36,7 @@ const nextConfig = {
               priority: 30,
               enforce: true,
             },
-            // 其他大型依赖
+
             lib: {
               test: /[\\/]node_modules[\\/]/,
               name: 'lib',
