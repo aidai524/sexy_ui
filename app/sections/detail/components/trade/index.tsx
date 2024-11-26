@@ -1,34 +1,78 @@
 import { useState } from 'react'
 import styles from './trande.module.css'
+import MainBtn from '@/app/components/mainBtn'
+import CA from '../ca'
 
 export default function Trade() {
     const [activeIndex, setActiveIndex] = useState(0)
 
     return <div className={ styles.main }>
-        <div className={ [styles.marketCa, styles.panel].join(' ' ) }>
-            <div className={ styles.marketCap }>
-                <div className={ styles.mcTitle }>Market cap:</div>
-                <div className={ styles.mcAmount }>5.78K</div>
-            </div>
-            <div className={ styles.ca }>
-                <div className={ styles.caAddress }>
-                    <div className={ styles.caTtitle }>CA:</div>
-                    <div className={ styles.address }>zdfsdfsdfsdf</div>
-                </div>
-
-                <div className={ styles.copy }>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="6" y="6" width="9" height="9" rx="2" stroke="#979ABE" stroke-width="2"/>
-                        <path d="M10 4V3C10 1.89543 9.10457 1 8 1H3C1.89543 1 1 1.89543 1 3V8C1 9.10457 1.89543 10 3 10H4" stroke="#979ABE" stroke-width="2"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
+        <CA />
 
         <div className={ [styles.cationArea, styles.panel].join(' ' ) }>
             <div className={ styles.tradeTabs }>
                 <div onClick={() => { setActiveIndex(0) }} className={ [styles.tab, activeIndex === 0 ? styles.active : null].join(' ') }>Buy</div>
                 <div onClick={() => { setActiveIndex(1) }} className={ [styles.tab, activeIndex === 1 ? styles.active : null].join(' ')  }>Sell</div>
+            </div>
+
+            <div className={ styles.inputArea }>
+                <div className={ styles.actionArea }>
+                    <div className={ styles.switchToken }>
+                        <span className={ styles.switchTitle }>switch to </span>
+                        <span className={ styles.switchTokenName }>VVA</span>
+                    </div>
+                    <div className={ styles.slippage }>Set max slippage</div>
+                </div>
+
+                <div className={ styles.inputArea }>
+                    <input className={ styles.input } />
+                    <div className={ styles.inputToken }>
+                        <div className={ styles.tokenName }>VVA</div>
+                        <div className={ styles.tokenImg }>
+                            <img className={ styles.tiImg } src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
+                        </div>
+                    </div>
+                </div>
+
+                <div className={ styles.tokenPercent }>
+                    <div className={ styles.percentTag }>Reset</div>
+                    <div className={ [styles.percentTag, styles.tagActive].join(' ') }>0.1SOL</div>
+                    <div className={ styles.percentTag }>0.5SOL</div>
+                    <div className={ styles.percentTag }>1SOL</div>
+                </div>
+            </div>
+
+            
+
+            <div style={{ marginTop: 30 }} className={ styles.receiveTokenAmount }>
+                <div className={ styles.receiveTitle }>You will buy in</div>
+                <div className={ styles.receiveAmount }>162,645,646.35 VVA</div>
+            </div>
+            <div style={{ marginTop: 18 }}>
+                <MainBtn>Place Trade</MainBtn>
+            </div>
+        </div>
+
+        <div className={ styles.distributionArea }>
+            <div className={ styles.distributionTitle }>Holder Distribution</div>
+            <div className={ styles.list }>
+                <div className={ styles.item }>
+                    <div className={ styles.itemContent }>
+                        <div style={{ width: 20 }}>1.</div>
+                        <div>Bro098detum</div>
+                    </div>
+                    
+                    <div className={ styles.itemPercent }>89.2%</div>
+                </div>
+
+                <div className={ styles.item }>
+                    <div className={ styles.itemContent }>
+                        <div style={{ width: 20 }}>2.</div>
+                        <div>Bro098detum</div>
+                    </div>
+                    
+                    <div className={ styles.itemPercent }>89.2%</div>
+                </div>
             </div>
         </div>
     </div>

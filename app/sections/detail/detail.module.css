@@ -64,4 +64,5 @@
   .main {
     background: linear-gradient(-200deg, rgba(255,38,129,1)  18%,  rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(255,38,129,1) 82%);
     padding-bottom: 50px;
+    min-height: 100vh;
   }

@@ -1,0 +1,12 @@
+.main {
+    .header {
+        display: flex;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        height: 60px;
+    }
+}

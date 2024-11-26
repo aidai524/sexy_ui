@@ -43,7 +43,7 @@ const tabs = [
     iconActive: <CustomIcon url="/img/tabs/tab2-active.svg" />,
   },
   {
-    key: '/message',
+    key: '/profile',
     icon: <CustomIcon url="/img/tabs/tab4.svg" />,
     iconActive: <CustomIcon url="/img/tabs/tab4-active.svg" />,
   },
@@ -57,7 +57,7 @@ export default function Component({ children }: { children: React.ReactNode }) {
 
   const showTabs = useMemo(() => {
     return tabs.find((tab) => {
-      return tab.key === pathname
+      return pathname.indexOf(tab.key) === 0 
     })
   }, [pathname])
 

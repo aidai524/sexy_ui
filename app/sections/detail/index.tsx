@@ -25,7 +25,7 @@ export default function Detail() {
     })
 
     const [showTabs, setShowTabs] = useState(true)
-    const [activeKey, setActiveKey] = useState('info')
+    const [activeKey, setActiveKey] = useState('Buy/Sell')
 
     return <div className={styles.main}>
         <AvatarBack />
@@ -39,7 +39,9 @@ export default function Detail() {
 
         
 
-        <Tab nodes={[{
+        <Tab activeNode={ activeKey } onTabChange={(nodeName) => {
+            setActiveKey(nodeName)
+        }} nodes={[{
             name: 'Info',
             content: <Info />
         }, {
