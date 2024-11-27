@@ -1,7 +1,7 @@
 import Back from '@/app/components/back'
 import styles from './follower.module.css'
 import Tab from '../components/tab'
-import FollowList from './component/followList'
+import FollowerList from './component/followerList'
 
 export default function Follower() {
     return <div className={ styles.main }>
@@ -13,11 +13,11 @@ export default function Follower() {
         <Tab nodes={[
             {
                 name: '12 Followers',
-                content: <FollowList />
+                content: <FollowerList />
             },
             {
                 name: '12 Following',
-                content: <FollowList />
+                content: <FollowerList />
             }
         ]}/>
     </div>

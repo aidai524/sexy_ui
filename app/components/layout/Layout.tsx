@@ -38,7 +38,7 @@ const tabs = [
     iconActive: <CustomIcon url="/img/tabs/tab3-active.svg" />,
   },
   {
-    key: '/discover',
+    key: '/mining',
     icon: <CustomIcon url="/img/tabs/tab2.svg" />,
     iconActive: <CustomIcon url="/img/tabs/tab2-active.svg" />,
   },

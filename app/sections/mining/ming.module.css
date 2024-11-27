@@ -1,0 +1,72 @@
+.main {
+    min-height: 100vh;
+    background: url(/img/mining/top-bg.png) left top no-repeat, url(/img/mining/bottom-bg.png) left 95% no-repeat;
+    background-size: 100% auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+    .multipleContent {
+        width: 110px;
+        height: 110px;
+        border: 3px solid var(--part-bg);
+        border-radius: 110px;
+        position: relative;
+        background-color: #000;
+        text-align: center;
+        color: var(--part-bg);
+        font-size: 26px;
+        font-weight: 700;
+        padding-top: 50px;
+        margin: 0 auto;
+        .multipleIcon {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -20px
+        }
+    }
+
+    .statistics {
+        display: flex;
+        flex-wrap: wrap;
+        .statisticsItem {
+            width: 50vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            .statisticsTitle {
+                color: rgba(255, 255, 255, .6);
+                font-size: 14px;
+            }
+
+            .value {
+                color: #fff;
+                font-size: 18px;
+                font-weight: 700;
+                margin-top: 10px;
+            }
+        }
+    }
+
+    .group {
+        margin: 30px 10px 0;
+        .groupTitle {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .groupContent {
+            color: rgba(146, 144, 177, 1);
+            font-size: 14px;
+            font-weight: 300;
+            margin-top: 10px;
+        }
+        .gitbook {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+
+}
