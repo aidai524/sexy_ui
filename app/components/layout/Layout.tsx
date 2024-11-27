@@ -50,13 +50,16 @@ const tabs = [
 ]
 
 export default function Component({ children }: { children: React.ReactNode }) {
-  const router = useRouter()
+  const router = useRouter() 
   const pathname = usePathname()
   const { address } = useAppKitAccount()
   const { walletProvider } = useAppKitProvider<Provider>('solana')
 
   const showTabs = useMemo(() => {
     return tabs.find((tab) => {
+      if (tab.key === '/') {
+        return pathname === tab.key
+      }
       return pathname.indexOf(tab.key) === 0 
     })
   }, [pathname])

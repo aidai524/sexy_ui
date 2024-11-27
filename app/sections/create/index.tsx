@@ -5,9 +5,11 @@ import CreateNode from './CreateNode'
 import PreviewNode from './PreviewNode'
 
 import { useState } from 'react'
+import type { Project } from '@/app/type'
 
 export default function Create() {
-    const [renderType, setRenderType] = useState(1)
+    const [renderType, setRenderType] = useState(0)
+    const [dataAdd, setDataAdd] = useState<Project>()
 
     return <div className={styles.main}>
         <div className={styles.title}>
@@ -18,7 +20,7 @@ export default function Create() {
                     <span>Edit</span>
                 </div>
 
-                <div className={ styles.line }></div>
+                <div className={styles.line}></div>
 
                 <div className={[styles.editStep, renderType === 1 ? styles.editActive : ''].join(' ')}>
                     <MiniCircle />
@@ -27,12 +29,14 @@ export default function Create() {
             </div>
         </div>
 
-        {
-            renderType === 0 ? <CreateNode /> : <PreviewNode />
-        }
-        
+        <CreateNode show={renderType === 0} onAddDataFill={(value: any) => {
+            setDataAdd(value)
+            setRenderType(1)
+        }} />
 
-        
+        <PreviewNode show={renderType === 1} data={dataAdd!} onAddDataCancel={() => {
+            setRenderType(0)
+        }} />
     </div>
 }
 

@@ -1,7 +1,8 @@
 import { Button } from "antd-mobile";
 
-export default function MainBtn({ children }: {
-    children: React.ReactNode
+export default function MainBtn({ children, onClick }: {
+    children: React.ReactNode;
+    onClick?: () => void;
 }) {
-    return <Button className="main-btn">{ children }</Button>
+    return <Button onClick={onClick} className="main-btn">{ children }</Button>
 }

@@ -7,12 +7,29 @@ import styles from './detail.module.css'
 import Action from '@/app/components/action'
 import { Button } from 'antd-mobile'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade'
+import InfoPart from './infoPart'
+import { useState } from 'react'
+import type { Project } from '@/app/type'
 
-export default function Info() {
+interface Props {
+    data: Project
+}
+
+export default function Info({
+    data
+}: Props) {
     const { buyToken, sellToken } = useTokenTrade({
         tokenName: 'Zero',
         tokenSymbol: 'ZERO'
     })
+
+    // const [infoData, setInfoData] = useState<Project>({
+    //     tokenName: '2332',
+    //     ticker: '43433',
+    //     about: 'hello aaa',
+    //     website: 'https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_backgrounds_and_borders/Using_multiple_backgrounds',
+    //     tokenImg: 'https://chinese.freecodecamp.org/news/content/images/size/w2000/2022/09/pawel-czerwinski-dYjFmiQb_aE-unsplash.jpeg',
+    // })
 
     return <div className={styles.main}>
 
@@ -25,67 +42,8 @@ export default function Info() {
         }}>Sell</Button> */}
       
         {/* <AvatarBack /> */}
-        <Thumbnail showDesc={false} />
-        <Sep />
-        <Panel>
-            <div className={styles.author}>
-                <div className={styles.authorTitle}>Created by:</div>
-                <div className={[styles.authorDesc, styles.authorDescEs].join(' ')}>G76VB875$%^</div>
-            </div>
-            <div className={styles.author}>
-                <div className={styles.authorTitle}>Create time:</div>
-                <div className={styles.authorDesc}>33 minutes ago</div>
-            </div>
-            <div className={styles.author}>
-                <div className={styles.authorGreenTitle}>Market cap:</div>
-                <div className={styles.authorGreenDesc}>G76VB875$%^</div>
-            </div>
-        </Panel>
-
-        <Sep />
-
-        <Panel>
-            <div className={styles.aboutUs}>
-                <div className={styles.aboutHeader}>About Us</div>
-                <div className={styles.abountDetail}>
-                    text description text description text description text description text description text description text description text
-                </div>
-                <div className={styles.abountDetail}>
-                    description text description text description text description text description text
-                </div>
-            </div>
-        </Panel>
-
-        <Sep />
-
-        <Panel>
-            <div className={styles.aboutUs}>
-                <div className={styles.aboutHeader}>Project white paper </div>
-                <div className={styles.linkDetail}>
-                    <a className={styles.link} target='_blank' href="#">https://guide.ref.finance/</a>
-                </div>
-            </div>
-        </Panel>
-
-        <Sep />
-
-        <Panel>
-            <div className={styles.aboutUs}>
-                <div className={styles.aboutHeader}>Community</div>
-                <div className={styles.communityIcons}>
-                    <a className={styles.link} target='_blank' href="#">
-                        <img src="/img/community/x.svg" />
-                    </a>
-                    <a className={styles.link} target='_blank' href="#">
-                        <img src="/img/community/telegram.svg" />
-                    </a>
-                    <a className={styles.link} target='_blank' href="#">
-                        <img src="/img/community/discard.svg" />
-                    </a>
-                </div>
-            </div>
-        </Panel>
-
+        
+        <InfoPart data={data} showThumbnailHead={false} />
         <Comment />
 
         <div className={styles.action}>

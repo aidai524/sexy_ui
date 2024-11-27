@@ -1,50 +1,42 @@
 import Link from 'next/link';
 import Tags from '../tags'
 import styles from './thumbnail.module.css'
+import type { Project } from '@/app/type';
 
 interface Props {
     showDesc: boolean;
     topDesc?: boolean;
+    showProgress?: boolean;
+    data: Project
 }
 
 export default function Thumbnail({
     showDesc = true,
-    topDesc = false
+    topDesc = false,
+    showProgress = true,
+    data
 }: Props) {
+    if (!data) {
+        return
+    }
+
     return <div>
         {
-            topDesc && <div className={styles.detailTitle}>
-                <Avatar />
-                <TopArrow />
-            </div>
+            topDesc && <AvatarBack data={data} />
         }
 
         <div className={styles.thumbnail}>
-            <div className={styles.picProgress}>
-                <div className={[styles.progressItem, styles.active].join(' ')}></div>
-                <div className={styles.progressItem}></div>
-                <div className={styles.progressItem}></div>
-            </div>
+            {
+                showProgress && <div className={styles.picProgress}>
+                    <div className={[styles.progressItem, styles.active].join(' ')}></div>
+                    <div className={styles.progressItem}></div>
+                    <div className={styles.progressItem}></div>
+                </div>
+            }
 
             <div className={styles.imgList}>
-                <img className={styles.tokenImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
+                <img className={styles.tokenImg} src={ data.tokenImg }/>
             </div>
-
-            {/* <div className={styles.likeNums}>
-                <div className={[styles.likes, styles.likeCustom].join(' ')}>
-                    <LikeIcon />
-                    <span>110</span>
-                </div>
-                <div className={[styles.superLikes, styles.likeCustom].join(' ')}>
-                    <SuperLikeIcon />
-                    <span className={styles.tips}>Smoky<br />HOT</span>
-                    <span>110</span>
-                </div>
-            </div> */}
-
-            {/* <div className={styles.teleGram}>
-                <TeleGram />
-            </div> */}
 
             {
                 showDesc && <div className={styles.descContent}>
@@ -60,7 +52,7 @@ export default function Thumbnail({
                         </div>
                     </div>
                     <div className={styles.tokenMsg}>
-                        <Avatar />
+                        <Avatar data={data}/>
 
                         <div className={styles.desc}>text description text description</div>
 
@@ -127,6 +119,8 @@ function Arrow() {
 
 }
 
+
+
 function TopArrow() {
     return <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g filter="url(#filter0_b_1_1274)">
@@ -145,24 +139,36 @@ function TopArrow() {
 
 }
 
-export function Avatar() {
+interface AvatarProps {
+    data: Project
+}
+
+export function Avatar({
+    data
+}: AvatarProps) {
+    if (!data) {
+        return
+    }
+    
     return <div className={styles.titles}>
         <div className={styles.tokenImgBox}>
             <img className={styles.tokenImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
         </div>
         <div>
-            <div className={styles.tokenName}>BBKIDS</div>
+            <div className={styles.tokenName}>{ data.tokenName }</div>
             <div className={styles.tickerContent}>
-                <div className={styles.ticker}>Ticker: AIW</div>
+                <div className={styles.ticker}>Ticker: { data.ticker }</div>
                 <div className={styles.launchTag}>Pre-Launch</div>
             </div>
         </div>
     </div>
 }
 
-export function AvatarBack() {
+export function AvatarBack({
+    data
+}: AvatarProps) {
     return <div className={styles.detailTitle}>
-        <Avatar />
+        <Avatar data={data}/>
         <TopArrow />
     </div>
 }

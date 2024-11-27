@@ -3,12 +3,20 @@ import styles from './home.module.css'
 import Thumbnail from '@/app/components/thumbnail'
 import Tags from '../../components/tags'
 import Action from '../../components/action'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { httpGet } from '@/app/utils'
 import { useAppKitAccount } from '@reown/appkit/react'
+import type { Project } from '@/app/type'
 
-export default function Home() {
+export default function Home() { 
 
+    const [infoData, setInfoData] = useState<Project>({
+        tokenName: '2332',
+        ticker: '43433',
+        about: 'hello aaa',
+        website: 'https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_backgrounds_and_borders/Using_multiple_backgrounds',
+        tokenImg: 'https://chinese.freecodecamp.org/news/content/images/size/w2000/2022/09/pawel-czerwinski-dYjFmiQb_aE-unsplash.jpeg',
+    })
 
     return <div className={styles.main}>
         <div className={styles.header}>
@@ -22,7 +30,7 @@ export default function Home() {
             </div>
 
             <div className={ styles.icons }>
-                <ConnectButton />
+                {/* <ConnectButton /> */}
     
                 <div className={ styles.notice }>
                     <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,8 +49,8 @@ export default function Home() {
         </div>
 
 
-        <Thumbnail showDesc={true} />
-        
+        <Thumbnail showDesc={true} data={infoData}/>
+
         <Action />
     </div>
 }
