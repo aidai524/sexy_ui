@@ -30,7 +30,7 @@ export default function Profile({
         if (showHot) {
             _tabs.splice(2, 0, {
                 name: 'Hot',
-                content: <div>Hot</div>
+                content: <Liked />
             })
         }
 

@@ -1,0 +1,1821 @@
+{
+  "version": "0.1.0",
+  "name": "meme_launchpad",
+  "instructions": [
+    {
+      "name": "initialize",
+      "docs": [
+        "initializing the whole protocol,"
+      ],
+      "accounts": [
+        {
+          "name": "ownerId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "wsolMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "buyToken",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "protocolSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proxySolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "wsolMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "solAmount",
+          "type": "u64"
+        },
+        {
+          "name": "maxPrice",
+          "type": "f64"
+        },
+        {
+          "name": "recommenderOp",
+          "type": {
+            "option": "publicKey"
+          }
+        },
+        {
+          "name": "proxyOp",
+          "type": {
+            "option": "publicKey"
+          }
+        }
+      ]
+    },
+    {
+      "name": "buyTokenWithFixedOutput",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "protocolSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proxySolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "wsolMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "outputAmount",
+          "type": "u64"
+        },
+        {
+          "name": "maxWsolAmount",
+          "type": "u64"
+        },
+        {
+          "name": "recommenderOp",
+          "type": {
+            "option": "publicKey"
+          }
+        },
+        {
+          "name": "proxyOp",
+          "type": {
+            "option": "publicKey"
+          }
+        }
+      ]
+    },
+    {
+      "name": "sellToken",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "protocolSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proxySolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "wsolMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "minWsolAmount",
+          "type": "u64"
+        },
+        {
+          "name": "recommenderOp",
+          "type": {
+            "option": "publicKey"
+          }
+        },
+        {
+          "name": "proxyOp",
+          "type": {
+            "option": "publicKey"
+          }
+        }
+      ]
+    },
+    {
+      "name": "sellTokenWithFixedOutput",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "protocolSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "proxySolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "wsolMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "outputAmount",
+          "type": "u64"
+        },
+        {
+          "name": "maxMemeAmount",
+          "type": "u64"
+        },
+        {
+          "name": "recommenderOp",
+          "type": {
+            "option": "publicKey"
+          }
+        },
+        {
+          "name": "proxyOp",
+          "type": {
+            "option": "publicKey"
+          }
+        }
+      ]
+    },
+    {
+      "name": "prepaid",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "wsolMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "protocolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "paidRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "createTokenAccount",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "createTokenParam",
+          "type": {
+            "defined": "CreateTokenParam"
+          }
+        }
+      ]
+    },
+    {
+      "name": "createTokenInfo",
+      "docs": [
+        "create new token and initialize the virtual bonding pool of token <> wsol."
+      ],
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "metadata",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "wsolMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "userWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "protocolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMetadataProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "createTokenParam",
+          "type": {
+            "defined": "CreateTokenParam"
+          }
+        }
+      ]
+    },
+    {
+      "name": "dexListing",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "protocolSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "amm",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammOpenOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammLpMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "wsolMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammCoinVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammPcVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTargetOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "createFeeDestination",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "market",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userTokenLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "sysvarRent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "nonce",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "setOwner",
+      "docs": [
+        "Initiazlize a swap pool",
+        "refer to: https://github.com/raydium-io/raydium-cpi-example/blob/anchor-0.30.1/amm-cpi/programs/amm-cpi/src/lib.rs"
+      ],
+      "accounts": [
+        {
+          "name": "newAccountId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "launchState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "setOperator",
+      "accounts": [
+        {
+          "name": "newAccountId",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "launchState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "setAmplifierAndInitialWsol",
+      "accounts": [
+        {
+          "name": "launchState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "factorA",
+          "type": "u8"
+        },
+        {
+          "name": "initialWsol",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "setBuySellFeeRate",
+      "accounts": [
+        {
+          "name": "launchState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "newBuyFeeRate",
+          "type": "u16"
+        },
+        {
+          "name": "newSellFeeRate",
+          "type": "u16"
+        },
+        {
+          "name": "newPrepaidFeeRate",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "setLaunchFee",
+      "accounts": [
+        {
+          "name": "launchState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "newCreateTokenFee",
+          "type": "u64"
+        },
+        {
+          "name": "newLaunchFee",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "setReferralFeeRate",
+      "accounts": [
+        {
+          "name": "launchState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "newReferralFeeRate",
+          "type": "u16"
+        },
+        {
+          "name": "newProxyFeeRate",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "withdrawProtocolFee",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "solMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "toUser",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "protocolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "accounts": [
+        {
+          "name": "launchState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pause",
+      "accounts": [
+        {
+          "name": "launchState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "shutdown",
+      "accounts": [
+        {
+          "name": "launchState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Launchpad",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "launchpadBump",
+            "docs": [
+              "used for generate seeds for signing on behalf the only Launchpad PDA account."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
+          },
+          {
+            "name": "ownerId",
+            "type": "publicKey"
+          },
+          {
+            "name": "operatorId",
+            "type": "publicKey"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": "LaunchStatus"
+            }
+          },
+          {
+            "name": "factorA",
+            "docs": [
+              "Amplifier factor, once only 1/factor_a of total token supply",
+              "distributed through virtual pool, the IDO phase ends,",
+              "Default value is 5."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "initialWsol",
+            "docs": [
+              "The initial value of token (i.e. the initial wsol amount in virtual pool).",
+              "Default value is 30_000_000_000."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "buyFeeRate",
+            "docs": [
+              "real_buy_fee_rate = buy_fee_rate / 10000"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "sellFeeRate",
+            "docs": [
+              "real_sell_fee_rate = sell_fee_rate / 10000"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "referFeeRate",
+            "docs": [
+              "real_refer_fee_rate = refer_fee_rate / 10000"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "proxyFeeRate",
+            "docs": [
+              "real_proxy_fee_rate = proxy_fee_rate / 10000"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "prepaidFeeRate",
+            "docs": [
+              "real_prepaid_fee_rate = prepaid_fee_rate / 10000"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "createTokenFee",
+            "docs": [
+              "fixed fee charged in wsol when create a new token."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "launchFee",
+            "docs": [
+              "fixed fee charged in wsol when listing to a dex."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "tokenCount",
+            "docs": [
+              "counter of tokens created in this protocol."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "accVolume",
+            "docs": [
+              "trading volume in wsol,"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "maxCreatorPrepaid",
+            "docs": [
+              "limit creator prepaid"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "maxUserPrepaid",
+            "docs": [
+              "limit user prepaid"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReferralRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PrePaidRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "paidAmount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Pool",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tokenName",
+            "type": "string"
+          },
+          {
+            "name": "tokenSymbol",
+            "type": "string"
+          },
+          {
+            "name": "poolBump",
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
+          },
+          {
+            "name": "tokenMintBump",
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": "PoolStatus"
+            }
+          },
+          {
+            "name": "amplifier",
+            "docs": [
+              "once only 1/amplifier of total token supply remains, the virtual pool will finalize."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "tokenDecimals",
+            "type": "u8"
+          },
+          {
+            "name": "tokenSupply",
+            "docs": [
+              "including decimal part"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "initialWsol",
+            "docs": [
+              "including 9-decimal part"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "virtualTokenAmount",
+            "docs": [
+              "virtual bonding curve (Once 80% token was sold, the curve ends):",
+              "reserve_in * reserve_out = K = (reserve_in + amount_in) * (reserve_out - amount_out)",
+              "=> amount_out = (reserve_out * amount_in) / (reserve_in + amount_in)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "virtualWsolAmount",
+            "type": "u64"
+          },
+          {
+            "name": "accProtocolFee",
+            "docs": [
+              "protocol fee has always been transfered to protocol token account,",
+              "here is only an accumulated counter"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "accReferralFee",
+            "docs": [
+              "referral fee  has always been transfered to referral token account,",
+              "here is only an accumulated counter"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "accProxyFee",
+            "docs": [
+              "proxy fee  has always been transfered to proxy token account,",
+              "here is only an accumulated counter"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "accVolume",
+            "docs": [
+              "wsol amount involved in buy and sell, including fees"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "tokenCreatorId",
+            "type": "publicKey"
+          },
+          {
+            "name": "tokenMetadataId",
+            "type": "publicKey"
+          },
+          {
+            "name": "tokenMintId",
+            "type": "publicKey"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "CreateTokenParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "docs": [
+              "member of token metadata"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "docs": [
+              "member of token metadata"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "docs": [
+              "member of token metadata"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "totalSupply",
+            "type": "u64"
+          },
+          {
+            "name": "decimals",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LaunchStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "NotInitial"
+          },
+          {
+            "name": "Running"
+          },
+          {
+            "name": "Paused"
+          },
+          {
+            "name": "Shutdown"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Running"
+          },
+          {
+            "name": "Paused"
+          },
+          {
+            "name": "Finalized"
+          },
+          {
+            "name": "Listed"
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "CreateEvent",
+      "fields": [
+        {
+          "name": "tokenName",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "tokenSymbol",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "tokenDecimals",
+          "type": "u8",
+          "index": false
+        },
+        {
+          "name": "tokenSupply",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "initialSol",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "amplifier",
+          "type": "u8",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "BuyEvent",
+      "fields": [
+        {
+          "name": "user",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "paidWsolAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "gotTokenAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "protocolFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "referralFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "proxyFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "tokenMint",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "referral",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "proxy",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "wsolReserve",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "tokenReserve",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "SellEvent",
+      "fields": [
+        {
+          "name": "user",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "gotWsolAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "paidTokenAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "protocolFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "referralFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "proxyFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "tokenMint",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "referral",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "proxy",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "wsolReserve",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "tokenReserve",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "ListEvent",
+      "fields": [
+        {
+          "name": "tokenName",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "tokenSymbol",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "initTokenAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "initWsolAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "lpAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "WithdrawEvent",
+      "fields": [
+        {
+          "name": "to",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "tokenMint",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "TransferEvent",
+      "fields": [
+        {
+          "name": "from",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "to",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "tokenId",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PrePaidEvent",
+      "fields": [
+        {
+          "name": "user",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "buyAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "feeAmount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidProgramId",
+      "msg": "InvalidProgramId"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidProgramStatus",
+      "msg": "InvalidProgramStatus"
+    },
+    {
+      "code": 6002,
+      "name": "UnexpectedAccount",
+      "msg": "UnexpectedAccount"
+    },
+    {
+      "code": 6003,
+      "name": "Initialized",
+      "msg": "Initialized"
+    },
+    {
+      "code": 6004,
+      "name": "NotAllowed",
+      "msg": "NotAllowed"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidToken",
+      "msg": "InvalidToken"
+    },
+    {
+      "code": 6006,
+      "name": "HadShutdown",
+      "msg": "HadShutdown"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidFeeRate",
+      "msg": "InvalidFeeRate"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidAmount",
+      "msg": "InvalidAmount"
+    },
+    {
+      "code": 6009,
+      "name": "PauseOrShutdown",
+      "msg": "PauseOrShutdown"
+    },
+    {
+      "code": 6010,
+      "name": "InvalidUser",
+      "msg": "InvalidUser"
+    },
+    {
+      "code": 6011,
+      "name": "InvalidName",
+      "msg": "InvalidName"
+    },
+    {
+      "code": 6012,
+      "name": "SlipageError",
+      "msg": "SlipageError"
+    },
+    {
+      "code": 6013,
+      "name": "NotEnoughTokenForSale",
+      "msg": "NotEnoughTokenForSale"
+    },
+    {
+      "code": 6014,
+      "name": "InactivePool",
+      "msg": "InactivePool"
+    },
+    {
+      "code": 6015,
+      "name": "ExceedLimit",
+      "msg": "ExceedLimit"
+    },
+    {
+      "code": 6016,
+      "name": "NumberCastError",
+      "msg": "Unable to cast number into BigInt"
+    }
+  ]
+}

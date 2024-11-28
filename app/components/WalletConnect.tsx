@@ -8,6 +8,7 @@ import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adap
 
 
 const solanaWeb3JsAdapter = new SolanaAdapter({
+  // @ts-ignore
   wallets: [new PhantomWalletAdapter(), new SolflareWalletAdapter()]
 })
 

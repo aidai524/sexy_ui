@@ -1,9 +1,10 @@
 .thumbnail {
     position: relative;
-    height: calc(100vh - 245px);
+    height: calc(100vh - 232px);
     margin: 10px;
     border-radius: 20px;
     overflow: hidden;
+    background-color: #000;
     .imgList {
         width: 100%;
         height: 100%;

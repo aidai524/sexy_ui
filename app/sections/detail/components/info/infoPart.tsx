@@ -43,10 +43,7 @@ export default function InfoPart({
             <div className={styles.aboutUs}>
                 <div className={styles.aboutHeader}>About Us</div>
                 <div className={styles.abountDetail}>
-                    text description text description text description text description text description text description text description text
-                </div>
-                <div className={styles.abountDetail}>
-                    description text description text description text description text description text
+                    { data.about }
                 </div>
             </div>
         </Panel>
@@ -55,9 +52,9 @@ export default function InfoPart({
 
         <Panel>
             <div className={styles.aboutUs}>
-                <div className={styles.aboutHeader}>Project white paper </div>
+                <div className={styles.aboutHeader}>Website</div>
                 <div className={styles.linkDetail}>
-                    <a className={styles.link} target='_blank' href="#">https://guide.ref.finance/</a>
+                    <a className={styles.link} target='_blank' href={data.website}>{ data.website }</a>
                 </div>
             </div>
         </Panel>

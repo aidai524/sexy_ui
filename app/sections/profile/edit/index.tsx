@@ -3,8 +3,11 @@ import styles from './edit.module.css'
 import Upload from '@/app/components/upload'
 import { useState } from 'react'
 import type { ImageUploadItem } from 'antd-mobile/es/components/image-uploader'
+import { useRouter } from 'next/navigation'
 
 export default function ProfileEdit() {
+    const router = useRouter()
+
     const [fileList, setFileList] = useState<ImageUploadItem[]>([
 
     ])
@@ -50,7 +53,9 @@ export default function ProfileEdit() {
         </div>
 
         <div className={ styles.actionBtns }>
-            <div className={ styles.cancel + ' ' + styles.btn }>Cancel</div>
+            <div onClick={() => {
+                router.back()
+            }} className={ styles.cancel + ' ' + styles.btn }>Cancel</div>
             <div className={ styles.save + ' ' + styles.btn }>Save</div>
         </div>
     </div>

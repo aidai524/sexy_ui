@@ -4,6 +4,8 @@ import styles from './create.module.css'
 import CreateNode from './CreateNode'
 import PreviewNode from './PreviewNode'
 
+import idl from './meme_launchpad.json'
+
 import { useState } from 'react'
 import type { Project } from '@/app/type'
 

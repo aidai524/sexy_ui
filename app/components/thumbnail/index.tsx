@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Tags from '../tags'
 import styles from './thumbnail.module.css'
 import type { Project } from '@/app/type';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     showDesc: boolean;
@@ -122,7 +123,11 @@ function Arrow() {
 
 
 function TopArrow() {
-    return <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    const router = useRouter()
+
+    return <div onClick={() => {
+        router.back()
+    }}><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g filter="url(#filter0_b_1_1274)">
             <circle cx="20" cy="20" r="20" fill="black" fill-opacity="0.4" />
         </g>
@@ -136,6 +141,7 @@ function TopArrow() {
             </filter>
         </defs>
     </svg>
+    </div>
 
 }
 
@@ -149,7 +155,7 @@ export function Avatar({
     if (!data) {
         return
     }
-    
+
     return <div className={styles.titles}>
         <div className={styles.tokenImgBox}>
             <img className={styles.tokenImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />

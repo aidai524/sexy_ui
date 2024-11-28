@@ -42,25 +42,18 @@ export default function ConnectButton() {
 
   if (account && account.address) {
     return <div onClick={handleDisconnect}>
-      <img src="/img/home/solana.png" className={ styles.loginBtn }/>
+      <img src="/img/home/solana.png" className={styles.loginBtn} />
     </div>
   }
 
   return (
     <div>
-      {/* <div onClick={async () => {
-        const encodedMessage = new TextEncoder().encode('Hello from AppKit')
-        const signMessage = await walletProvider!.signMessage(encodedMessage)
-        console.log('signMessage:', signMessage)
-
-
-      }}>2222</div> */}
-    <div
-      className={styles.button}
-      onClick={handleConnect}
-    >
-      Connect Wallet
-    </div>
+      <div
+        className={styles.button}
+        onClick={handleConnect}
+      >
+        Connect Wallet
+      </div>
     </div>
   )
 } 

@@ -15,7 +15,7 @@ export default function Home() {
         ticker: '43433',
         about: 'hello aaa',
         website: 'https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_backgrounds_and_borders/Using_multiple_backgrounds',
-        tokenImg: 'https://chinese.freecodecamp.org/news/content/images/size/w2000/2022/09/pawel-czerwinski-dYjFmiQb_aE-unsplash.jpeg',
+        tokenImg: 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect',
     })
 
     return <div className={styles.main}>

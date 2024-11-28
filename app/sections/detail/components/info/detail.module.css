@@ -61,6 +61,7 @@
         margin: 10px 0;
         /* text-decoration: underline;
         -webkit-text-fill-color: transparent; */
+        word-break: break-all;
         a.link {
             color: var(--part-bg);
             border-bottom: 1px solid  var(--part-bg);

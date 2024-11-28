@@ -3,7 +3,7 @@
     background: url(/img/mining/top-bg.png) left top no-repeat, url(/img/mining/bottom-bg.png) left 95% no-repeat;
     background-size: 100% auto;
     padding-top: 50px;
-    padding-bottom: 50px;
+    padding-bottom: 100px;
 
     .multipleContent {
         width: 110px;
