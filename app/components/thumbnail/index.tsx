@@ -3,6 +3,7 @@ import Tags from '../tags'
 import styles from './thumbnail.module.css'
 import type { Project } from '@/app/type';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface Props {
     showDesc: boolean;
@@ -17,6 +18,8 @@ export default function Thumbnail({
     showProgress = true,
     data
 }: Props) {
+    const [progressIndex, setProgressIndex] = useState(0)
+
     if (!data) {
         return
     }
@@ -29,9 +32,9 @@ export default function Thumbnail({
         <div className={styles.thumbnail}>
             {
                 showProgress && <div className={styles.picProgress}>
-                    <div className={[styles.progressItem, styles.active].join(' ')}></div>
-                    <div className={styles.progressItem}></div>
-                    <div className={styles.progressItem}></div>
+                    <div onClick={() => { setProgressIndex(0) }} className={[styles.progressItem, progressIndex === 0 ? styles.active : ''].join(' ')}></div>
+                    <div onClick={() => { setProgressIndex(1) }} className={[styles.progressItem, progressIndex === 1 ? styles.active : ''].join(' ')}></div>
+                    <div onClick={() => { setProgressIndex(2) }} className={[styles.progressItem, progressIndex === 2 ? styles.active : ''].join(' ')}></div>
                 </div>
             }
 
