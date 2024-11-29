@@ -2,6 +2,7 @@
 
 import styles from './action.module.css'
 import MainAction from '@/app/components/MainAction'
+import Boost from '@/app/components/boost'
 
 interface Props {
     style?: any;
@@ -20,8 +21,8 @@ export default function Action({
 }: Props) {
     return <div className={styles.action} style={style}>
         <div>
-            <CollectionIcon onClick={() => {
-                onLike && onLike()
+            <Boost onClick={() => {
+                onBoost && onBoost()
             }} />
         </div>
         <MainAction onLike={() => {

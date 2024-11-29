@@ -97,3 +97,16 @@ a {
   height: 60px;
   font-size: 16px;
 }
+
+
+.adm-modal .adm-center-popup-wrap  {
+  max-width: 96vw;
+  .adm-center-popup-body  {
+    background-color: #18131C;
+    border-radius: 20px;
+    padding: 0;
+    .adm-modal-content {
+      padding: 0;
+    }
+  }
+}
