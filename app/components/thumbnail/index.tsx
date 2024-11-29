@@ -88,23 +88,6 @@ function SuperLikeIcon() {
 
 }
 
-function TeleGram() {
-    return <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g filter="url(#filter0_b_60_3146)">
-            <circle cx="13" cy="13" r="13" fill="black" fill-opacity="0.4" />
-        </g>
-        <path d="M7.10814 18.0329C7.07896 18.0344 7.04972 18.0312 7.02162 18.0234C6.86498 18.0015 6.72331 17.9213 6.62665 17.7996C6.53 17.678 6.48598 17.5247 6.50393 17.3721C6.80115 14.6638 7.78909 12.6637 9.42868 11.4138C10.7109 10.4766 12.2634 9.95258 13.8681 9.9154L14.2323 9.89712V7.97083C14.2323 7.20776 14.9517 7.04052 15.3347 7.41224L19.8125 11.8322C19.9429 11.935 20.0475 12.0653 20.1185 12.213C20.1894 12.3608 20.2248 12.5223 20.2221 12.6853C20.2193 12.8483 20.1784 13.0086 20.1026 13.154C20.0267 13.2995 19.9177 13.4263 19.7839 13.5249L15.4212 17.8332C15.3289 17.9346 15.2066 18.0059 15.071 18.0375C14.9354 18.069 14.793 18.0592 14.6634 18.0094C14.5337 17.9595 14.423 17.8721 14.3464 17.7591C14.2698 17.646 14.2309 17.5128 14.2351 17.3775V15.3158H13.7844C12.1448 15.3158 9.16286 15.632 7.60001 17.7634C7.55205 17.8477 7.48111 17.9176 7.39497 17.9653C7.30882 18.0131 7.2108 18.0369 7.11162 18.0343L7.10814 18.0329Z" fill="white" />
-        <defs>
-            <filter id="filter0_b_60_3146" x="-10" y="-10" width="46" height="46" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
-                <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_60_3146" />
-                <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_60_3146" result="shape" />
-            </filter>
-        </defs>
-    </svg>
-}
-
 function Arrow() {
     return <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g filter="url(#filter0_b_60_3660)">

@@ -34,10 +34,10 @@
             align-items: center;
             gap: 10px;
             .avtar {
-                width: 10px;
-                height: 10px;
-                border-radius: 3px;
-                background-color: #fff;
+                width: 16px;
+                height: 16px;
+                border-radius: 16px;
+                background-color: #515B63;
             }
             .name {
                 color: rgba(169, 167, 208, 1);
@@ -54,5 +54,18 @@
     .relayText {
         color: #fff;
         margin-top: 5px;
+    }
+
+    .commentAction {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-top: 10px;
+        .zan {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            color: #FFFFFF99;
+        }
     }
 }

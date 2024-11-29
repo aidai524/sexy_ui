@@ -1,6 +1,18 @@
+import { useCallback } from 'react'
 import styles from './token.module.css'
+import { Modal } from 'antd-mobile'
+import BoostJust from '@/app/components/boost/boostJust'
 
 export default function Token() {
+    const showBoostJust = useCallback(() => {
+        const vipHandler = Modal.show({
+            content: <BoostJust onBoost={() => {
+                vipHandler.close() 
+            }} />,
+            closeOnMaskClick: true,
+          })
+    }, [])
+
     return <div className={styles.main}>
         <div className={styles.tokenMag}>
             <div className={styles.tokenImgContent}>
@@ -20,7 +32,9 @@ export default function Token() {
         </div>
 
         <div className={styles.actionContent}>
-            <div className={styles.actionItem}>
+            <div className={styles.actionItem} onClick={() => {
+                showBoostJust()
+            }}>
                 <div className={styles.actionIcon}>
                     <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="18" cy="18" r="18" fill="#00FFEE" />

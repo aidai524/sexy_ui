@@ -2,19 +2,27 @@ import { Modal } from "antd-mobile";
 
 import BoostInit from "./boostInit";
 import BoostVip from "./boostVip";
+import BoostJust from "./boostJust";
 import { useCallback } from "react";
 
 export default function Boost({ onClick }: { onClick: () => void; }) {
-
     const showVip = useCallback(() => {
         const vipHandler = Modal.show({
             content: <BoostVip onStartVip={() => {
                 vipHandler.close() 
-                
-
             }} onCanceVip={() => {
                 vipHandler.close()
+                showBoostJust()
             }}/>,
+            closeOnMaskClick: true,
+          })
+    }, [])
+
+    const showBoostJust = useCallback(() => {
+        const vipHandler = Modal.show({
+            content: <BoostJust onBoost={() => {
+                vipHandler.close() 
+            }} />,
             closeOnMaskClick: true,
           })
     }, [])
@@ -23,10 +31,10 @@ export default function Boost({ onClick }: { onClick: () => void; }) {
         const initHandler = Modal.show({
             content: <BoostInit onJoinVip={() => {
                 initHandler.close() 
-
                 showVip()
 
             }} onCanceVip={() => {
+                showBoostJust()
                 initHandler.close()
             }}/>,
             closeOnMaskClick: true,

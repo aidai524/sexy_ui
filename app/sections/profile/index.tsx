@@ -3,8 +3,10 @@ import Created from './components/created'
 import Held from './components/held'
 import Tab from './components/tab'
 import styles from './profile.module.css'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import Liked from './components/liked'
+import { Modal } from 'antd-mobile'
+import BoostVip from '@/app/components/boost/boostVip'
 
 interface Props {
     showHot?: boolean;
@@ -37,6 +39,18 @@ export default function Profile({
         return _tabs
     }, [showHot])
 
+
+    const showVip = useCallback(() => {
+        const vipHandler = Modal.show({
+            content: <BoostVip onStartVip={() => {
+                vipHandler.close() 
+            }} onCanceVip={() => {
+                vipHandler.close()
+            }}/>,
+            closeOnMaskClick: true,
+          })
+    }, [])
+
     return <div className={styles.main}>
         <div className={styles.avatarContent}>
             <div className={styles.avatar}>
@@ -52,11 +66,15 @@ export default function Profile({
         </div>
 
         <div className={styles.follwerActions}>
-            <div className={styles.follwerItem}>
+            <div className={styles.follwerItem} onClick={() => {
+                router.push('/profile/follower/1')
+            }}>
                 <span className={styles.follwerAmount}>12</span>
                 <span>Followers</span>
             </div>
-            <div className={styles.follwerItem}>
+            <div className={styles.follwerItem} onClick={() => {
+                router.push('/profile/follower/1')
+            }}>
                 <span className={styles.follwerAmount}>12</span>
                 <span>Following</span>
             </div>
@@ -93,7 +111,9 @@ export default function Profile({
                         <span><span className={styles.whiteName}>0</span> /2 </span>
                         <span>Smoky Hot</span>
                     </div>
-                    <div className={styles.getMore1}>Get more</div>
+                    <div onClick={() => {
+                        showVip()
+                    }} className={styles.getMore1}>Get more</div>
                 </div>
             </div>
             <div className={styles.part}>
@@ -108,7 +128,9 @@ export default function Profile({
                         <span><span className={styles.whiteName}>0</span> </span>
                         <span>Boost</span>
                     </div>
-                    <div className={styles.getMore2}>Get more</div>
+                    <div onClick={() => {
+                        showVip()
+                    }}  className={styles.getMore2}>Get more</div>
                 </div>
             </div>
         </div>
