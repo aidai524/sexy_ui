@@ -4,13 +4,13 @@ import styles from './create.module.css'
 import CreateNode from './CreateNode'
 import PreviewNode from './PreviewNode'
 
-import idl from './meme_launchpad.json'
+
 
 import { useState } from 'react'
 import type { Project } from '@/app/type'
 
 export default function Create() {
-    const [renderType, setRenderType] = useState(0)
+    const [renderType, setRenderType] = useState(1)
     const [dataAdd, setDataAdd] = useState<Project>()
 
     return <div className={styles.main}>

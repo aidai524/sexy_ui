@@ -70,6 +70,7 @@
                 border: none;
                 outline: none;
                 color: #fff;
+                font-size: 16px;
             }
 
             .inputToken {
@@ -112,6 +113,17 @@
                 }
             }
         }
+    }
+
+    .paid {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 300;
+        margin-top: 10px;
+        height: 27px;
     }
 
     .receiveTokenAmount {

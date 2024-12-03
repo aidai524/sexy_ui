@@ -1,0 +1,140 @@
+.panel {
+    background-color: #121719;
+    border-radius: 10px;
+    padding: 12px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.avatar {
+    padding: 0 20px;
+}
+
+
+.cationArea {
+    .tradeTabs {
+        padding: 20px 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .tab {
+            flex: 1;
+            background-color: rgba(95, 96, 106, 1);
+            color: #fff;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            border-radius: 8px;
+
+            &.active:first-child {
+                background-color: rgba(109, 181, 0, 1);
+            }
+
+            &.active:last-child {
+                background-color: rgba(255, 47, 116, 1);
+            }
+        }
+    }
+}
+
+.inputArea {
+    .actionArea {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 12px;
+        font-weight: 300;
+
+        .switchTokenName {
+            color: #fff;
+        }
+    }
+
+    .inputArea {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #fff;
+        gap: 10px;
+        height: 46px;
+        border: 1px solid rgba(146, 144, 177, 0.6);
+        border-radius: 8px;
+        padding: 0 10px;
+
+        .input {
+            flex: 1;
+            height: 46px;
+            background-color: inherit;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .inputToken {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 5px;
+            font-size: 16px;
+
+            .tokenImg {
+                width: 30px;
+                height: 30px;
+                border-radius: 30px;
+                overflow: hidden;
+
+                .tiImg {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    .tokenPercent {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+
+        .percentTag {
+            font-size: 12px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(146, 144, 177, 0.4);
+            border-radius: 30px;
+            padding: 5px 10px;
+
+            &.tagActive {
+                background-color: rgba(146, 144, 177, 0.4);
+                color: #fff;
+            }
+        }
+    }
+}
+
+.paid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 300;
+    margin-top: 10px;
+    height: 27px;
+}
+
+.receiveTokenAmount {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 300;
+}

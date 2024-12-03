@@ -18,15 +18,15 @@ const TabIcon = <svg width="8" height="10" viewBox="0 0 8 10" fill="none" xmlns=
 </svg>
 
 export default function Detail() {
-    const { buyToken, sellToken, createToken } = useTokenTrade({
-        tokenName: 'Six',
-        tokenSymbol: 'SIX'
-    })
+    // const { buyToken, sellToken, createToken } = useTokenTrade({
+    //     tokenName: 'HeHe',
+    //     tokenSymbol: 'HEHE'
+    // })
 
     const { call } = useVip()
 
     const [showTabs, setShowTabs] = useState(true)
-    const [activeKey, setActiveKey] = useState('Info')
+    const [activeKey, setActiveKey] = useState('Buy/Sell')
 
     const [infoData, setInfoData] = useState<Project>({
         tokenName: '2332',
@@ -58,7 +58,7 @@ export default function Detail() {
         }}>Buy</Button>
 
         <Button onClick={() => {
-            sellToken()
+            sellToken(34)
         }}>Sell</Button>
 
         <Button onClick={() => {

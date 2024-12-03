@@ -18,10 +18,10 @@ interface Props {
 export default function Info({
     data
 }: Props) {
-    const { buyToken, sellToken } = useTokenTrade({
-        tokenName: 'Zero',
-        tokenSymbol: 'ZERO'
-    })
+    // const { buyToken, sellToken } = useTokenTrade({
+    //     tokenName: 'Zero',
+    //     tokenSymbol: 'ZERO'
+    // })
 
     // const [infoData, setInfoData] = useState<Project>({
     //     tokenName: '2332',
@@ -42,7 +42,7 @@ export default function Info({
         }}>Sell</Button> */}
       
         {/* <AvatarBack /> */}
-        
+
         <InfoPart data={data} showThumbnailHead={false} />
         <Comment />
 

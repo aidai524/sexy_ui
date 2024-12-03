@@ -6,12 +6,13 @@ import {
     Transaction,
     SYSVAR_RENT_PUBKEY,
 } from '@solana/web3.js';
+import Big from 'big.js'
 import * as anchor from "@coral-xyz/anchor";
 // @ts-ignore
 import { u64 } from '@solana/buffer-layout-utils';
 import { struct, u8, u32, f64, ns64, u48, blob } from "@solana/buffer-layout";
 import { getOrCreateAssociatedTokenAccount, getAssociatedTokenAddressSync, getAccount, Account, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, TokenAccountNotFoundError, TokenInvalidAccountOwnerError, createSyncNativeInstruction } from '@solana/spl-token'
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Provider, SolanaAdapter, useAppKitConnection } from '@reown/appkit-adapter-solana/react'
 import { useAppKitAccount, useAppKitNetwork, useAppKitProvider } from '@reown/appkit/react'
 import idl from './meme_launchpad.json'
@@ -22,23 +23,50 @@ import bs58 from 'bs58';
 interface Props {
     tokenName: string;
     tokenSymbol: string;
+    loadData?: boolean;
 }
 
 export function useTokenTrade({
-    tokenName, tokenSymbol
+    tokenName, tokenSymbol, loadData = true
 }: Props) {
     const { connection } = useAppKitConnection()
     const { walletProvider } = useAppKitProvider<Provider>('solana')
+    const [rate, setRate] = useState<number>()
+    const [minPrice, setMinPrice] = useState(1)
+    const [maxPrice, setMaxPrice] = useState(1)
+    const [tokenBalance, setTokenBalance] = useState('0')
 
     const programId = useMemo(() => {
-        return new PublicKey("Cgrfh3YVBfPwJ8gzfM1yawJsqeYJJZCt6T46B29EaBe9")
+        return new PublicKey("BmEdwC1RFv2YF7Yo7y3H28MJvHXcNyMtxNBrDgkBRXgd")
     }, [])
 
     const wsol = useMemo(() => {
         return new PublicKey('So11111111111111111111111111111111111111112')
     }, [])
 
-    const _getOrCreateAssociatedTokenAccount = useCallback(async (mint: PublicKey, owner: PublicKey) => {
+    const state = useMemo(() => {
+        return PublicKey.findProgramAddressSync(
+            [Buffer.from("launchpad")],
+            programId
+        )
+    }, [programId])
+
+    const pool = useMemo(() => {
+        return PublicKey.findProgramAddressSync(
+            [Buffer.from("token_info"), state[0].toBuffer(), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
+            programId
+        );
+    }, [programId, state, tokenName, tokenSymbol])
+
+
+    const tokenInfo = useMemo(() => {
+        return PublicKey.findProgramAddressSync(
+            [Buffer.from("mint"), state[0].toBuffer(), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
+            programId
+        );
+    }, [programId, state, tokenName, tokenSymbol])
+
+    const _getOrCreateAssociatedTokenAccount = useCallback(async (mint: PublicKey, owner: PublicKey, isCreate: boolean = true) => {
         if (!connection) {
             return null
         }
@@ -55,28 +83,30 @@ export function useTokenTrade({
         try {
             account = await getAccount(connection, associatedToken, undefined, TOKEN_PROGRAM_ID);
         } catch (error: unknown) {
-            if (error instanceof TokenAccountNotFoundError || error instanceof TokenInvalidAccountOwnerError) {
-                try {
-                    const latestBlockhash = await connection?.getLatestBlockhash();
-                    const xtransaction = new Transaction({
-                        recentBlockhash: latestBlockhash!.blockhash,
-                        feePayer: walletProvider.publicKey!
-                    }).add(
-                        createAssociatedTokenAccountInstruction(
-                            walletProvider.publicKey!,
-                            associatedToken,
-                            owner,
-                            mint,
-                            TOKEN_PROGRAM_ID,
-                            ASSOCIATED_TOKEN_PROGRAM_ID,
-                        ),
-                    );
+            if (isCreate) {
+                if (error instanceof TokenAccountNotFoundError || error instanceof TokenInvalidAccountOwnerError) {
+                    try {
+                        const latestBlockhash = await connection?.getLatestBlockhash();
+                        const xtransaction = new Transaction({
+                            recentBlockhash: latestBlockhash!.blockhash,
+                            feePayer: walletProvider.publicKey!
+                        }).add(
+                            createAssociatedTokenAccountInstruction(
+                                walletProvider.publicKey!,
+                                associatedToken,
+                                owner,
+                                mint,
+                                TOKEN_PROGRAM_ID,
+                                ASSOCIATED_TOKEN_PROGRAM_ID,
+                            ),
+                        );
 
-                    await walletProvider.signAndSendTransaction(xtransaction)
+                        await walletProvider.signAndSendTransaction(xtransaction)
 
-                    account = await getAccount(connection, associatedToken, undefined, TOKEN_PROGRAM_ID);
-                } catch (e) {
-                    console.log(e)
+                        account = await getAccount(connection, associatedToken, undefined, TOKEN_PROGRAM_ID);
+                    } catch (e) {
+                        console.log(e)
+                    }
                 }
             }
         }
@@ -85,216 +115,9 @@ export function useTokenTrade({
 
     }, [connection, walletProvider])
 
-
-    const getCreateAccountKeys = useCallback(async (tokenName: string, tokenSymbol: string) => {
-        const state = PublicKey.findProgramAddressSync(
-            [Buffer.from("launchpad")],
-            programId
-        )
-
-        const pool = PublicKey.findProgramAddressSync(
-            [Buffer.from("token_info"), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
-            programId
-        );
-
-        const tokenInfo = PublicKey.findProgramAddressSync(
-            [Buffer.from("mint"), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
-            programId
-        );
-
-        return [
-            {
-                pubkey: state[0],
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: pool[0],
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: tokenInfo[0],
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: TOKEN_PROGRAM_ID,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: ASSOCIATED_TOKEN_PROGRAM_ID,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: walletProvider.publicKey!,
-                isSigner: true,
-                isWritable: true
-            },
-            {
-                pubkey: SystemProgram.programId,
-                isSigner: false,
-                isWritable: false
-            }
-        ]
-    }, [programId, wsol, walletProvider])
-
-    const getCreateInfoKeys = useCallback(async (tokenName: string, tokenSymbol: string) => {
-        const state = PublicKey.findProgramAddressSync(
-            [Buffer.from("launchpad")],
-            programId
-        )
-
-        const pool = PublicKey.findProgramAddressSync(
-            [Buffer.from("token_info"), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
-            programId
-        );
-
-        const tokenInfo = PublicKey.findProgramAddressSync(
-            [Buffer.from("mint"), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
-            programId
-        );
-
-        const metaDataAddress = await getMetaData(tokenInfo[0])
-
-        const protocolSolAccount = await _getOrCreateAssociatedTokenAccount(wsol, state[0])
-
-        if (!protocolSolAccount) {
-            return null
-        }
-
-        const userSolAccount = await _getOrCreateAssociatedTokenAccount(
-            wsol,
-            walletProvider.publicKey!,
-        );
-
-        if (!userSolAccount) {
-            return null
-        }
-
-        const poolSolAccount = await _getOrCreateAssociatedTokenAccount(
-            wsol,
-            pool[0]
-        );
-
-        if (!poolSolAccount) {
-            return null
-        }
-
-        const userTokenAccount = await _getOrCreateAssociatedTokenAccount(
-            tokenInfo[0],
-            walletProvider.publicKey!
-        );
-
-        if (!userTokenAccount) {
-            return null
-        }
-
-        const poolTokenAccount = await _getOrCreateAssociatedTokenAccount(
-            tokenInfo[0],
-            pool[0],
-        );
-
-        if (!poolTokenAccount) {
-            return null
-        }
-
-        return [
-            {
-                pubkey: state[0],
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: pool[0],
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: metaDataAddress[0],
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: wsol,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: userSolAccount.address,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: poolSolAccount.address,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: poolSolAccount.address,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: protocolSolAccount.address,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: tokenInfo[0],
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: poolTokenAccount.address,
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: TOKEN_PROGRAM_ID,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: ASSOCIATED_TOKEN_PROGRAM_ID,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: walletProvider.publicKey!,
-                isSigner: true,
-                isWritable: true
-            },
-            {
-                pubkey: SystemProgram.programId,
-                isSigner: false,
-                isWritable: false
-            },
-
-            {
-                pubkey: SYSVAR_RENT_PUBKEY,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"),
-                isSigner: false,
-                isWritable: false
-            },
-
-        ]
-    }, [programId, wsol, walletProvider])
-
     const getKeys = useCallback(async () => {
         console.log(tokenName, tokenSymbol)
 
-        const state = PublicKey.findProgramAddressSync(
-            [Buffer.from("launchpad")],
-            programId
-        )
-        
         const referral = new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm')
         const proxy = new PublicKey('8GBcwJAfUU9noxPNh5jnfwkKipK8XRHUPS5va9TAXr5f')
 
@@ -303,16 +126,6 @@ export function useTokenTrade({
         if (!protocolSolAccount) {
             return null
         }
-
-        const pool = PublicKey.findProgramAddressSync(
-            [Buffer.from("token_info"), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
-            programId
-        );
-
-        const tokenInfo = PublicKey.findProgramAddressSync(
-            [Buffer.from("mint"), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
-            programId
-        );
 
         const userSolAccount = await _getOrCreateAssociatedTokenAccount(
             wsol,
@@ -352,6 +165,8 @@ export function useTokenTrade({
             pool[0],
         );
 
+        console.log('poolTokenAccount:', poolTokenAccount)
+
         if (!poolTokenAccount) {
             return null
         }
@@ -368,199 +183,117 @@ export function useTokenTrade({
             return null
         }
 
-        return [
-            {
-                pubkey: state[0],
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: protocolSolAccount.address,
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: referralSolAccount.address,
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: proxySolAccount.address,
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: pool[0],
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: wsol,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: userSolAccount.address,
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: poolSolAccount.address,
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: tokenInfo[0],
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: userTokenAccount.address,
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: poolTokenAccount.address,
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: referralRecord[0],
-                isSigner: false,
-                isWritable: true
-            },
-            {
-                pubkey: TOKEN_PROGRAM_ID,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: ASSOCIATED_TOKEN_PROGRAM_ID,
-                isSigner: false,
-                isWritable: false
-            },
-            {
-                pubkey: walletProvider.publicKey!,
-                isSigner: true,
-                isWritable: true
-            },
-            {
-                pubkey: SystemProgram.programId,
-                isSigner: false,
-                isWritable: false
-            }
-        ]
+        return {
+            launchpad: state[0],
+            protocolSolAccount: protocolSolAccount.address,
+            referralSolAccount: referralSolAccount.address,
+            proxySolAccount: proxySolAccount.address,
+            pool: pool[0],
 
-    }, [programId, wsol, tokenName, tokenSymbol, walletProvider, connection])
+            wsolMint: wsol,
+            userWsolAccount: userSolAccount.address,
+            poolWsolAccount: poolSolAccount.address,
 
-    const buyToken = useCallback(async () => {
+            tokenMint: tokenInfo[0],
+            userTokenAccount: userTokenAccount.address,
+            poolTokenAccount: poolTokenAccount.address,
 
+            referralRecord: referralRecord[0],
+
+            tokenProgram: TOKEN_PROGRAM_ID,
+            associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+            user: walletProvider.publicKey!,
+            systemProgram: SystemProgram.programId,
+        }
+
+    }, [programId, wsol, state, pool, tokenInfo, tokenName, tokenSymbol, walletProvider, connection])
+
+    const getCreateKeys = useCallback((tokenName: string, tokenSymbol: string) => {
+
+
+        return {
+            launchpad: state[0],
+            pool: pool[0],
+            tokenInfo: tokenInfo[0]
+        }
+
+    }, [programId, state, pool, tokenInfo])
+
+    const buyToken = useCallback(async (amount: string | number) => {
 
         const latestBlockhash = await connection?.getLatestBlockhash();
 
-        // const transaction = new Transaction({
-        //     recentBlockhash: latestBlockhash!.blockhash,
-        //     feePayer: walletProvider.publicKey!
-        // });
-
-        
-        // let allocateStruct = {
-        //     layout: struct([u64("solAmount"), u64("maxPrice"), blob(32, 'recommenderOp'), blob(32, 'proxyOp')]),
-        // };
-
-        // console.log('allocateStruct.layout.span: ', allocateStruct.layout)
-
-        // let data = Buffer.alloc(allocateStruct.layout.span);
-
-
-        // let layoutFields = {
-        //     // instruction: 138,
-        //     solAmount: 60000,
-        //     maxPrice: 100000,
-        //     recommenderOp: new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
-        //     proxyOp: new PublicKey('8GBcwJAfUU9noxPNh5jnfwkKipK8XRHUPS5va9TAXr5f')
-        // };
-
-
-        // allocateStruct.layout.encode(layoutFields, data);
-
-        // const discriminator = Buffer.from([
-        //     138,
-        //     127,
-        //     14,
-        //     91,
-        //     38,
-        //     87,
-        //     115,
-        //     105
-        // ])
-
-        // const newData = Buffer.concat([discriminator, data])
-
         const keys = await getKeys()
 
-
         console.log('keys: ', keys)
-
-        // console.log('data: ', data, newData)
-        // return
 
         if (!keys) {
             return
         }
 
+        const instruction1 = SystemProgram.transfer({
+            fromPubkey: walletProvider.publicKey!,
+            toPubkey: keys.userWsolAccount,
+            lamports: Number(amount), // 以 lamports 为单位 (1 SOL = 1e9 lamports)
+        })
+        const instruction2 = createSyncNativeInstruction(keys.userWsolAccount, TOKEN_PROGRAM_ID)
+
         // await wrapToWSol(walletProvider, connection!, walletProvider.publicKey!, keys[6].pubkey, 200000000)
 
-        // transaction.add(
-        //     new TransactionInstruction({
-        //         keys,
-        //         programId,
-        //         data: newData,
-        //     })
-        // )
+        const transaction = new Transaction({
+            recentBlockhash: latestBlockhash!.blockhash,
+            feePayer: walletProvider.publicKey!
+        });
 
         const program = new Program<any>(idl, programId, walletProvider as any);
 
-        const tx:any = await program.methods.buyToken(
-            new anchor.BN(200000000), 
-            new anchor.BN(200000), 
-            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'), 
-            keys[3].pubkey
-        ).accounts({
-            launchpad: keys[0].pubkey,
-            protocolSolAccount: keys[1].pubkey,
-            referralSolAccount: keys[2].pubkey,
-            proxySolAccount: keys[3].pubkey,
-            pool: keys[4].pubkey,
-    
-            wsolMint: keys[5].pubkey,
-            userWsolAccount: keys[6].pubkey,
-            poolWsolAccount: keys[7].pubkey,
-    
-            tokenMint: keys[8].pubkey,
-            userTokenAccount: keys[9].pubkey,
-            poolTokenAccount: keys[10].pubkey,
-    
-            referralRecord: keys[11].pubkey,
-    
-            tokenProgram: keys[12].pubkey,
-            associatedTokenProgram: keys[13].pubkey,
-            user: keys[14].pubkey,
-            systemProgram: keys[15].pubkey,
-        }).transaction()
+        const buyInstruction = await program.methods.buyToken(
+            new anchor.BN(amount),
+            new anchor.BN(maxPrice),
+            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+            keys.proxySolAccount
+        ).accounts(keys).instruction()
+
+        transaction.add(instruction1).add(instruction2).add(buyInstruction)
+
+        // tx.recentBlockhash = latestBlockhash!.blockhash
+        // tx.feePayer = walletProvider.publicKey!
+
+        const v = await walletProvider.signAndSendTransaction(transaction)
+
+        console.log('v:', v)
+    }, [connection, walletProvider, programId, maxPrice])
+
+    const sellToken = useCallback(async (amount: number | string) => {
+        const latestBlockhash = await connection?.getLatestBlockhash();
+
+        const keys = await getKeys()
+        if (!keys) {
+            return
+        }
+
+        const program = new Program<any>(idl, programId, { connection: connection } as any);
+
+        const solAmount = new anchor.BN(minPrice)
+
+        const tx: any = await program.methods.sellToken(
+            new anchor.BN(amount),
+            solAmount,
+            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+            keys.proxySolAccount,
+        ).accounts(keys).transaction()
 
         console.log('tx:', tx)
         tx.recentBlockhash = latestBlockhash!.blockhash
         tx.feePayer = walletProvider.publicKey!
 
-        const v = await walletProvider.signAndSendTransaction(tx)
+        const hash = await walletProvider.signAndSendTransaction(tx)
 
-        console.log('v:', v)
-    }, [connection, walletProvider, programId])
+        return hash
 
+    }, [connection, walletProvider, programId, minPrice])
 
-    const sellToken = useCallback(async () => {
-
+    const createToken = useCallback(async ({ name, symbol, uri }: { name: string, symbol: string, uri: string }) => {
         const latestBlockhash = await connection?.getLatestBlockhash();
 
         const transaction = new Transaction({
@@ -568,212 +301,163 @@ export function useTokenTrade({
             feePayer: walletProvider.publicKey!
         });
 
+        const program = new Program<any>(idl, programId, walletProvider as any);
 
-        let allocateStruct = {
-            layout: struct([u64("solAmount"), u64("maxPrice"), blob(32, 'recommenderOp'), blob(32, 'proxyOp')]),
-        };
+        // const name = 'HeHe'
+        // const symbol = 'HEHE'
+        // const uri = 'https://www.npmjs.com/npm-avatar/eyJhbG'
 
-        console.log('allocateStruct.layout.span: ', allocateStruct.layout)
+        const keys = await getCreateKeys(name, symbol)
 
-        let data = Buffer.alloc(allocateStruct.layout.span);
+        const createAccountTransition: any = await program.methods.createTokenAccount({
+            name: name,
+            symbol: symbol,
+            uri: uri,
+            totalSupply: new anchor.BN(100000000),
+            decimals: new anchor.BN(2),
+        }).accounts({
+            launchpad: keys.launchpad,
+            pool: keys.pool,
+            tokenMint: keys.tokenInfo,
+
+            tokenProgram: TOKEN_PROGRAM_ID,
+            associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+            user: walletProvider.publicKey!,
+            systemProgram: anchor.web3.SystemProgram.programId,
+        }).transaction()
+
+        createAccountTransition.recentBlockhash = latestBlockhash!.blockhash
+        createAccountTransition.feePayer = walletProvider.publicKey!
+
+        const v2 = await walletProvider.signAndSendTransaction(createAccountTransition)
 
 
-        let layoutFields = {
-            // instruction: 138,
-            solAmount: 60000,
-            maxPrice: 100000,
-            recommenderOp: '5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm',
-            proxyOp: ''
-        };
+        const METADATA_SEED = "metadata";
+        const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
+        const [metadataAddress] = anchor.web3.PublicKey.findProgramAddressSync(
+            [
+                Buffer.from(METADATA_SEED),
+                TOKEN_METADATA_PROGRAM_ID.toBuffer(),
+                keys.tokenInfo.toBuffer(),
+            ],
+            TOKEN_METADATA_PROGRAM_ID
+        );
 
-        allocateStruct.layout.encode(layoutFields, data);
+        const userSolAccount = await _getOrCreateAssociatedTokenAccount(
+            wsol,
+            walletProvider.publicKey!,
+        );
 
-        const discriminator = Buffer.from([
-            109,
-            61,
-            40,
-            187,
-            230,
-            176,
-            135,
-            174
-        ])
-
-        const newData = Buffer.concat([discriminator, data])
-
-        console.log('data: ', data, newData)
-
-        const keys = await getKeys()
-        if (!keys) {
-            return
+        if (!userSolAccount) {
+            throw 'Create userSolAccount failed'
         }
 
-        transaction.add(
-            new TransactionInstruction({
-                keys,
-                programId,
-                data: newData,
+        const poolSolAccount = await _getOrCreateAssociatedTokenAccount(
+            wsol,
+            keys.pool
+        );
+
+        if (!poolSolAccount) {
+            throw 'Create poolSolAccount failed'
+        }
+
+        const poolTokenAccount = await _getOrCreateAssociatedTokenAccount(
+            keys.tokenInfo,
+            keys.pool
+        );
+
+        if (!poolTokenAccount) {
+            throw 'Create poolTokenAccount failed'
+        }
+
+        const protocolSolAccount = await _getOrCreateAssociatedTokenAccount(wsol, keys.launchpad)
+
+        if (!protocolSolAccount) {
+            throw 'Create protocolSolAccount failed'
+        }
+
+        const createInfoTransition = await program.methods.createTokenInfo({
+            name: name,
+            symbol: symbol,
+            uri: uri,
+            totalSupply: new anchor.BN(100000000000),
+            decimals: new anchor.BN(2),
+        }).accounts({
+            launchpad: keys.launchpad,
+            pool: keys.pool,
+
+            metadata: metadataAddress,
+            wsolMint: wsol,
+            userWsolAccount: userSolAccount!.address,
+            poolWsolAccount: poolSolAccount!.address,
+            protocolWsolAccount: protocolSolAccount!.address,
+            tokenMint: keys.tokenInfo,
+            poolTokenAccount: poolTokenAccount!.address,
+
+            tokenProgram: TOKEN_PROGRAM_ID,
+            associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+            user: walletProvider.publicKey!,
+            systemProgram: anchor.web3.SystemProgram.programId,
+            rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+            tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
+        }).instruction()
+
+        // createInfoTransition.recentBlockhash = latestBlockhash!.blockhash
+        // createInfoTransition.feePayer = walletProvider.publicKey!
+
+        const instruction1 = SystemProgram.transfer({
+            fromPubkey: walletProvider.publicKey!,
+            toPubkey: userSolAccount.address,
+            lamports: 20000000, // 以 lamports 为单位 (1 SOL = 1e9 lamports)
+        })
+        const instruction2 = createSyncNativeInstruction(userSolAccount.address, TOKEN_PROGRAM_ID)
+
+        transaction.add(instruction1).add(instruction2).add(createInfoTransition)
+
+        const v3 = await walletProvider.signAndSendTransaction(transaction)
+
+        return v3
+
+    }, [connection, walletProvider, programId, wsol])
+
+    useEffect(() => {
+        if (programId && pool && connection && tokenName && tokenSymbol && loadData) {
+            const program = new Program<any>(idl, programId, { connection: connection } as any);
+            _getRate(program, pool[0]).then(rate => {
+                console.log('rate:', rate.toString())
+                setRate(Number(rate.toString()))
             })
-        )
-
-        const v = await walletProvider.signAndSendTransaction(transaction)
-
-        console.log(v)
-
-    }, [connection, walletProvider, programId])
-
-    const createToken = useCallback(async () => {
-        const latestBlockhash = await connection?.getLatestBlockhash();
-
-        const transaction = new Transaction({
-            recentBlockhash: latestBlockhash!.blockhash,
-            feePayer: walletProvider.publicKey!
-        });
-
-        const createTokenAccountDiscriminator = Buffer.from([
-            147,
-            241,
-            123,
-            100,
-            244,
-            132,
-            174,
-            118
-        ])
-
-        const tokenName = 'Bew'
-        const tokenSymbol = 'BEW'
-
-        const schema = { struct: { name: 'string', symbol: 'string', 'uri': 'string', total_supply: 'u64', decimals: 'u8' } }
-
-        const value = {
-            name: tokenName,
-            symbol: tokenSymbol,
-            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy5OFEFG_fL5HaY7e4v623Lyrj4IH0bmR41g&s',
-            total_supply: 100000000,
-            decimals: 2
         }
+    }, [programId, pool, connection, tokenName, tokenSymbol, loadData])
 
-        const data = borsh.serialize(schema, value);
+    useEffect(() => {
+        if (programId && connection && tokenName && tokenSymbol && loadData) {
+            setTimeout(async () => {
+                const userTokenAccount = await _getOrCreateAssociatedTokenAccount(
+                    tokenInfo[0],
+                    walletProvider.publicKey!,
+                    false
+                );
 
-        const createTokenAccountData = Buffer.concat([createTokenAccountDiscriminator, data])
+                if (userTokenAccount) {
+                    const balance = new Big(Number(userTokenAccount.amount)).div(10 ** 2).toString()
+                    setTokenBalance(balance)
+                    return
+                }
 
-        console.log('data: ', data, createTokenAccountData)
-
-        const createAccountKeys = await getCreateAccountKeys(tokenName, tokenSymbol)
-        if (!createAccountKeys) {
-            return
+                setTokenBalance('0')
+            }, 10)
         }
-
-        console.log('keys:', createAccountKeys)
-
-        transaction.add(
-            new TransactionInstruction({
-                keys: createAccountKeys,
-                programId,
-                data: createTokenAccountData,
-            })
-        )
-
-        // console.log(transaction, hhh)
-
-        const v1 = await walletProvider.signAndSendTransaction(transaction)
-
-        console.log('v1:', v1)
-
-        const createTokenInfoDiscriminator = Buffer.from([
-            30,
-            167,
-            33,
-            61,
-            29,
-            95,
-            231,
-            152
-        ])
-
-        const createTokenInfoData = Buffer.concat([createTokenInfoDiscriminator, data])
-
-        const createInfoKeys = await getCreateInfoKeys(tokenName, tokenSymbol)
-
-        if (!createInfoKeys) {
-            return
-        }
-
-        // const program = new Program<any>(idl, walletProvider as any);
-
-        // console.log('program:', program)
-
-        // @ts-ignore
-        // const hhh = await program.methods.createTokenInfo(
-        //     {
-        //         name: tokenName,
-        //         symbol: tokenSymbol,
-        //         uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy5OFEFG_fL5HaY7e4v623Lyrj4IH0bmR41g&s',
-        //         totalSupply: new anchor.BN(100000000),
-        //         decimals: new anchor.BN(2),
-        //     }
-        // ).accounts({
-        //     launchpad: createInfoKeys[0].pubkey,
-        //     pool: createInfoKeys[1].pubkey,
-        //     metadata: createInfoKeys[2].pubkey,
-        //     wsolMint: createInfoKeys[3].pubkey,
-        //     userWsolAccount: createInfoKeys[4].pubkey,
-        //     poolWsolAccount: createInfoKeys[5].pubkey,
-        //     protocolWsolAccount: createInfoKeys[6].pubkey,
-        //     tokenMint: createInfoKeys[7].pubkey,
-        //     poolTokenAccount: createInfoKeys[8].pubkey,
-
-        //     tokenProgram: createInfoKeys[9].pubkey,
-        //     associatedTokenProgram: createInfoKeys[10].pubkey,
-        //     user: createInfoKeys[11].pubkey,
-        //     systemProgram: createInfoKeys[12].pubkey,
-        //     rent: createInfoKeys[13].pubkey,
-        //     tokenMetadataProgram: createInfoKeys[14].pubkey,
-        // }).transaction()
-
-        // hhh.feePayer = walletProvider.publicKey!
-        // hhh.recentBlockhash = latestBlockhash!.blockhash
-
-        // console.log('createInfoKeys:', createInfoKeys)
-
-        await wrapToWSol(walletProvider, connection!, walletProvider.publicKey!, createInfoKeys[4].pubkey, 20000000)
-
-        const latestBlockhash2 = await connection?.getLatestBlockhash();
-        const createTokenInfoTransaction = new Transaction({
-            recentBlockhash: latestBlockhash2!.blockhash,
-            feePayer: walletProvider.publicKey!
-        });
-
-        createTokenInfoTransaction
-            // .add(
-            //     new TransactionInstruction({
-            //         keys: createAccountKeys,
-            //         programId,
-            //         data: createTokenAccountData,
-            //     })
-            // )
-            .add(
-                new TransactionInstruction({
-                    keys: createInfoKeys,
-                    programId,
-                    data: createTokenInfoData,
-                })
-            )
-
-        console.log('createTokenInfoTransaction:', createTokenInfoTransaction)
-
-        const v2 = await walletProvider.signAndSendTransaction(createTokenInfoTransaction)
-
-        console.log('v2:', v2)
-
-
-    }, [connection, walletProvider, programId])
+    }, [programId, connection, tokenName, tokenSymbol, loadData])
 
     return {
+        rate,
+        minPrice,
+        maxPrice,
         buyToken,
         sellToken,
         createToken,
+        tokenBalance,
     }
 
 }
@@ -812,4 +496,16 @@ async function getMetaData(tokenMint: PublicKey) {
     )
 
     return metaData
+}
+
+async function _getRate(program: Program, pool: PublicKey) {
+    const poolData: any = await program.account.pool.fetch(pool)
+    // console.log('grid_state_before:', poolData, poolData!.virtualTokenAmount.toString(), poolData!.virtualWsolAmount.toString())
+
+    const poolToken = new Big(poolData!.virtualTokenAmount.toString()).div(10 ** 2)
+    const solToken = new Big(poolData!.virtualWsolAmount.toString()).div(10 ** 9)
+    const rate = poolToken.div(solToken).toString()
+
+    return rate
+
 }
