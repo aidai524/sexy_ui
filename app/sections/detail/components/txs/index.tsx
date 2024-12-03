@@ -1,14 +1,14 @@
 import CA from '../ca'
 import styles from './txs.module.css'
 
-const list = [1,2,3,4]
+const list = [1, 2, 3, 4]
 
 export default function Txs() {
     return <div className={styles.main}>
         <CA />
 
         <div className={styles.txContent}>
-            <div className={styles.txTtitles}>
+            {/* <div className={styles.txTtitles}>
                 <div style={{ flex: 2 }} className={styles.titleItem}>Account</div>
                 <div className={styles.titleItem}>Type</div>
                 <div className={styles.titleItem}>SOL</div>
@@ -42,7 +42,12 @@ export default function Txs() {
                     })
                 }
                 
-            </div>
+            </div> */}
+
+            <iframe style={{ height: 'calc(100vh - 210px)' }}  id="dexscreener-embed"
+                title="Dexscreener Trading Chart"
+                width="100%" height="800" frameBorder="none"
+                src="https://dexscreener.com/near/refv1-4276?embed=1&theme=dark&info=0&trades=1&chart=0"></iframe>
         </div>
     </div>
 }

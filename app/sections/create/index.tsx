@@ -10,7 +10,7 @@ import { useState } from 'react'
 import type { Project } from '@/app/type'
 
 export default function Create() {
-    const [renderType, setRenderType] = useState(1)
+    const [renderType, setRenderType] = useState(0)
     const [dataAdd, setDataAdd] = useState<Project>()
 
     return <div className={styles.main}>

@@ -26,7 +26,7 @@ export default function Detail() {
     const { call } = useVip()
 
     const [showTabs, setShowTabs] = useState(true)
-    const [activeKey, setActiveKey] = useState('Buy/Sell')
+    const [activeKey, setActiveKey] = useState('Info')
 
     const [infoData, setInfoData] = useState<Project>({
         tokenName: '2332',
