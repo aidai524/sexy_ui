@@ -14,15 +14,25 @@ import styles from './layout.module.css'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { bufferToBase64, getAuthorization, getAuthorizationByLocal, httpGet, initAuthorization } from '@/app/utils'
+import { useMessage } from '@/app/context/messageContext'
 
 
 
 function CustomIcon({
-  url
+  url,
+  showPlus = false,
 }: {
   url: string;
+  showPlus?: boolean;
 }) {
-  return <img className={styles.tabIcon} src={url} />
+  const { likeTrigger } = useMessage()
+
+  return <div className={ styles.tabIconWapper }>
+    <img className={styles.tabIcon} src={url} />
+    {
+      showPlus && <div className={ styles.showPlus + ' ' + (likeTrigger ? styles.ani : '' ) }>+1</div>
+    }
+  </div>
 }
 
 const tabs = [
@@ -39,7 +49,7 @@ const tabs = [
   },
   {
     key: '/mining',
-    icon: <CustomIcon url="/img/tabs/tab2.svg" />,
+    icon: <CustomIcon showPlus={true} url="/img/tabs/tab2.svg" />,
     iconActive: <CustomIcon url="/img/tabs/tab2-active.svg" />,
   },
   {

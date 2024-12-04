@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './action.module.css'
+import { useMessage } from '@/app/context/messageContext';
 
 interface Props {
     onLike: () => void;
@@ -19,9 +20,8 @@ export default function MainAction({
     onLike,
     onHate,
 }: Props) {
-    const [likeTicked, setLikeTicked] = useState(false)
-    const [likeAniTicked, setLikeAniTicked] = useState(false)
     const [hateTicked, setHateTicked] = useState(false)
+    const { likeTrigger, setLikeTrigger } = useMessage()
 
 
     return <div className={styles.mainAction}>
@@ -36,24 +36,22 @@ export default function MainAction({
         </div>
 
         <div onClick={() => {
-            if (likeAniTicked) {
+
+            if (likeTrigger) {
                 return
             }
-            setLikeTicked(true)
-            setLikeAniTicked(true)
+            setLikeTrigger(true)
             onLike()
-            setTimeout(() => {
-                setLikeTicked(false)
-            }, 1000)
+           
 
             setTimeout(() => {
-                setLikeAniTicked(false)
-            }, 2000)
-        }} className={[styles.actionIcon, likeTicked ? styles.tick : ''].join(' ')}>
+                setLikeTrigger(false)
+            }, 1600)
+        }} className={[styles.actionIcon, likeTrigger ? styles.tick : ''].join(' ')}>
             <Like />
             {
                 likeAnis.map((item, index) => {
-                    return <div style={{ animationDelay: `${index / 4}s`, animationName: likeAniTicked ? styles['float' + (index + 1)] : '' }} className={styles.bolloon}><img src={item} key={item} /></div>
+                    return <div style={{ animationDelay: `${index / 4}s`, animationName: likeTrigger ? styles['float' + (index + 1)] : '' }} className={styles.bolloon}><img src={item} key={item} /></div>
                 })
             }
         </div>

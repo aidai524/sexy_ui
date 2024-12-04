@@ -9,9 +9,11 @@
             position: absolute;
             left: 0;
             top: 0;
+            transition: all .3s;
             &.hate {
                 animation: rotateDownOut 1s forwards;
                 transform-origin: center top;
+                filter: grayscale(100%);
             }
             &.like {
                 transform-origin: center top;
