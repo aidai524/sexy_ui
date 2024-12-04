@@ -1,4 +1,6 @@
-const BASE_URL = 'http://103.140.239.8:8081/api/v1'
+const BASE_URL = 'https://api.dumpdump.fun/api/v1'
+
+const AUTH_KEY = 'sex-ui-auth'
 
 export function http(path: string, method: string, params?: any, header?: any) {
     let _path = path, postBody = {}
@@ -65,7 +67,7 @@ export async function getAuthorization() {
 }
 
 export function getAuthorizationByLocal() {
-    return window.localStorage.getItem('sex-ui')?.toString()
+    return window.localStorage.getItem(AUTH_KEY)?.toString()
 }
 
 
@@ -78,7 +80,7 @@ export async function initAuthorization(walletProvider: any, address: string) {
     // console.log('signMessage:', signMessage)
 
     const b64encoded = await bufferToBase64(signMessage)
-    // console.log(b64encoded)
+    console.log('b64encoded', b64encoded)
 
     const v = await httpGet('/account/token', {
         address,
@@ -86,7 +88,7 @@ export async function initAuthorization(walletProvider: any, address: string) {
         time: now
     })
 
-    window.localStorage.setItem('sex-ui', v.data)
+    window.localStorage.setItem(AUTH_KEY, v.data)
 
     authorization = v.data
 

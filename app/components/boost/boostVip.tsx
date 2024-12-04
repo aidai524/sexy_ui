@@ -1,5 +1,7 @@
+import { useVip } from '@/app/hooks/useVip';
 import styles from './boost.module.css'
 import BoostIcon from './boostIocn'
+import { fail, success } from '@/app/utils/toast';
 
 interface Props {
     onStartVip: () => void;
@@ -9,6 +11,8 @@ interface Props {
 export default function BoostVip({
     onStartVip, onCanceVip
 }: Props) {
+    const { call } = useVip()
+
     return <div className={styles.vipBox}>
         <div className={ styles.vipLogo }>
             <img src="/img/home/vipLogo.svg" />
@@ -37,8 +41,15 @@ export default function BoostVip({
             </div>
         </div>
 
-        <div onClick={() => {
-            onStartVip()
+        <div onClick={async () => {
+            try {
+                await call('vip')
+                success('Transition success')
+                onStartVip()
+            } catch(e) {
+                console.log(e)
+                fail('Transition fail')
+            }
         }} className={styles.sureBtn}>0.05 SOL / Month</div>
         <div onClick={() => {
             onCanceVip()

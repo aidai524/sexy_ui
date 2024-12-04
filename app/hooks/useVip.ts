@@ -18,13 +18,13 @@ export function useVip() {
     const { connection } = useAppKitConnection()
     const { walletProvider } = useAppKitProvider<Provider>('solana')
 
-    const programId = useMemo(() => {
-        return new PublicKey(
-            "CcNrTgHd3HE7hj9zrurd1RwBadUVhcThdcY3cJBzAqwY"
-        );
-    }, [])
+    // const programId = useMemo(() => {
+    //     return new PublicKey(
+    //         "CcNrTgHd3HE7hj9zrurd1RwBadUVhcThdcY3cJBzAqwY"
+    //     );
+    // }, [])
 
-    const call = useCallback(async (type: string) => {
+    const call = useCallback(async (type: 'super-like' | 'boost' | 'vip') => {
         let val = {}
         if (type === 'super-like') {
             val = {"type":"AddSuperLike"}
@@ -57,11 +57,11 @@ export function useVip() {
 
         transaction.add(transferSOLInstruction).add(memoInstruction)
 
-        const v = await walletProvider.signAndSendTransaction(transaction)
+        const hash = await walletProvider.signAndSendTransaction(transaction)
 
+        return hash
 
-
-    }, [connection, walletProvider, programId])
+    }, [connection, walletProvider])
   
     return {
         call,

@@ -4,10 +4,11 @@ import Thumbnail from '@/app/components/thumbnail'
 import Tags from '../../components/tags'
 import Action from '../../components/action'
 import { useEffect, useState } from 'react'
-import { httpGet } from '@/app/utils'
 import { useAppKitAccount } from '@reown/appkit/react'
 import type { Project } from '@/app/type'
 import { useRouter } from 'next/navigation'
+
+import { httpAuthGet, httpGet } from '@/app/utils'
 
 export default function Home() {
     const [infoData, setInfoData] = useState<Project>({
@@ -30,6 +31,14 @@ export default function Home() {
     const [launchIndex, setLaunchIndex] = useState(0)
     const [list, setList] = useState([1, 2, 3, 4])
     const [actionStyle, setActionStyle] = useState<any>('')
+
+    useEffect(() => {
+        setTimeout(() => {
+            httpAuthGet('/project').then(res => {
+                console.log('res:', res)
+            })
+        }, 2000)
+    }, [])
 
     return <div className={styles.main}>
         <div className={styles.header}>

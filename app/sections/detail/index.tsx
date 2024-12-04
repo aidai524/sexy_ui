@@ -18,11 +18,6 @@ const TabIcon = <svg width="8" height="10" viewBox="0 0 8 10" fill="none" xmlns=
 </svg>
 
 export default function Detail() {
-    // const { buyToken, sellToken, createToken } = useTokenTrade({
-    //     tokenName: 'HeHe',
-    //     tokenSymbol: 'HEHE'
-    // })
-
     const { call } = useVip()
 
     const [showTabs, setShowTabs] = useState(true)

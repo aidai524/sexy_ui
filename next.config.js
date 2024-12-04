@@ -48,10 +48,8 @@ const nextConfig = {
     }
     return config
   },
-  
-  // 图片配置
   images: {
-    domains: ['picsum.photos'], // 添加允许的图片域名
+    domains: ['picsum.photos'], 
     minimumCacheTTL: 60,
     formats: ['image/webp'],
     remotePatterns: [
