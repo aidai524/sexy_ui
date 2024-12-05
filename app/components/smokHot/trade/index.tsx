@@ -3,6 +3,7 @@ import styles from './trande.module.css'
 import MainBtn from '@/app/components/mainBtn'
 import { Avatar } from '../../thumbnail'
 import type { Project } from '@/app/type'
+import { useTokenTrade } from '@/app/hooks/useTokenTrade'
 
 export default function Trade() {
     const [infoData, setInfoData] = useState<Project>({
@@ -11,6 +12,11 @@ export default function Trade() {
         about: 'hello aaa',
         website: 'https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_backgrounds_and_borders/Using_multiple_backgrounds',
         tokenImg: 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect',
+    })
+
+    const { prePaid } = useTokenTrade({
+        tokenName: 'HeHe',
+        tokenSymbol: 'HEHE',
     })
     
     return <div className={ styles.main }>
@@ -50,7 +56,9 @@ export default function Trade() {
                 You can withdraw anytime before launching.</div>
             </div>
             <div style={{ marginTop: 18 }}>
-                <MainBtn style={{ backgroundColor: '#9514FF'  }}>Pre-Buy</MainBtn>
+                <MainBtn onClick={() => {
+                    prePaid(1)
+                }} style={{ backgroundColor: '#9514FF'  }}>Pre-Buy</MainBtn>
             </div>
         </div>
 

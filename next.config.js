@@ -6,6 +6,12 @@ const nextConfig = {
   
 
   compress: true,
+  rewrites: async () => [
+    {
+      source: '/api/v1/:path*',
+      destination: 'https://api.dumpdump.fun/api/v1/:path*'
+    },
+  ],
 
   webpack: (config, { dev, isServer }) => {
 

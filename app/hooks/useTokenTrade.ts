@@ -3,6 +3,7 @@ import {
     PublicKey,
     SystemProgram,
     TransactionInstruction,
+    TransactionSignature,
     Transaction,
     SYSVAR_RENT_PUBKEY,
 } from '@solana/web3.js';
@@ -19,6 +20,7 @@ import idl from './meme_launchpad.json'
 import { BN, Program } from '@coral-xyz/anchor';
 import * as borsh from 'borsh';
 import bs58 from 'bs58';
+import { sleep } from '../utils';
 
 interface Props {
     tokenName: string;
@@ -103,7 +105,16 @@ export function useTokenTrade({
 
                         await walletProvider.signAndSendTransaction(xtransaction)
 
-                        account = await getAccount(connection, associatedToken, undefined, TOKEN_PROGRAM_ID);
+                        while (true) {
+                            try {
+                                account = await getAccount(connection, associatedToken, undefined, TOKEN_PROGRAM_ID);
+                                await sleep(500)
+                                break
+                            } catch(e) {
+                                console.log('e:', e)
+                            }
+                        }
+                        
                     } catch (e) {
                         console.log(e)
                     }
@@ -331,6 +342,7 @@ export function useTokenTrade({
 
         const v2 = await walletProvider.signAndSendTransaction(createAccountTransition)
 
+        console.log('create account success', v2)
 
         const METADATA_SEED = "metadata";
         const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
@@ -420,6 +432,67 @@ export function useTokenTrade({
 
     }, [connection, walletProvider, programId, wsol])
 
+    const prePaid = useCallback(async (amount: number | string) => {
+        const latestBlockhash = await connection?.getLatestBlockhash();
+
+        const keys = await getKeys()
+        if (!keys) {
+            return
+        }
+
+        const [paidRecord] = PublicKey.findProgramAddressSync(
+            [Buffer.from("prepaid_record"), keys.pool.toBuffer(), walletProvider.publicKey!.toBuffer()],
+            programId
+        );
+
+        const program = new Program<any>(idl, programId, { connection: connection } as any);
+
+        const instruction = await program.methods.prepaidTokenWithdraw(
+            null,
+            null
+        ).accounts({
+            launchpad: keys.launchpad,
+            pool: keys.pool,
+            wsolMint: keys.wsolMint,
+            protocolSolAccount: keys.protocolSolAccount,
+            userWsolAccount: keys.userWsolAccount,
+            referralSolAccount: keys.userWsolAccount,
+            proxySolAccount: keys.userWsolAccount,
+            tokenMint: keys.tokenMint,
+            userTokenAccount: keys.userTokenAccount,
+            poolTokenAccount: keys.poolTokenAccount,
+            paidRecord: paidRecord,
+            referralRecord: keys.referralRecord,
+            tokenProgram: TOKEN_PROGRAM_ID,
+            associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+            user: walletProvider.publicKey!,
+            systemProgram: SystemProgram.programId,
+        }).instruction()
+
+        console.log(instruction)
+
+        const transaction = new Transaction({
+            recentBlockhash: latestBlockhash!.blockhash,
+            feePayer: walletProvider.publicKey!
+        });
+
+        const signatureBytes = Buffer.from('AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC53q9ze6BfYEveWkFJTyh15z4pck1X71XlLS3D9KUAh9ouuqlscnpI+e0e2fRMO+nf9IV7Erfm6oXpd+7phaUFAgAEC9nXv08R9nZApoLs0DF4oqikQ5AWR8dGbA/MOTbKG8DPfTdojiE3agquyxwkZp/+i1MVhOVVlnqLAnsgH9juJCLE61RSEMUcbvdQsUu4bgVsNIJVEZzxKyJWsatRKw4eq4qj3k70KJ/XNhhbS+G6Q0OizPvuRfQmD1UAKtW8uU7+EdITg4DX6MNKj/P3AN6ri3oSFKr7tf6jWS8jGFBDbZAIq4c4tcjHHVBHWLApXS6SlduwrSNAMLtEoNZEEAXhhgurGHDlZLYneDpwVORjETrzb/roN6rG6vtcl3GBPmRhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGm4hX/quBhPtof2NGGMA12sQ53BrrO1WYoPAAAAAAAQbd9uHXZaGT2cvhRs7reawctIXtX1s3kTqM9YV+/wCpjJclj04kifG7PRApFI4NgwtaE5na/xCEBI572Nvp+FmWUeeLK/S4D85jsjqF4vYAVVzPdBM4aISlIOj/f53BMAEHDAcCCAMEBQYJCgABBxhyg2IvwZlYbJABAAAAAAAAvQ9RZwAAAAA=', 'base64')
+
+        const serverTransaction = Transaction.from(signatureBytes)
+
+        console.log('serverTransaction:', serverTransaction)
+
+        // const transactionSignature = new TransactionSignature(signatureBytes);
+
+        transaction.add(serverTransaction).add(instruction)
+
+        // transaction.add(instruction).addSignature(new PublicKey('9Rny1dwV3TvSvx9sxif2pdZJgFFTThg1riPNzNMVGRsP'), signatureBytes)
+    
+        const hash = await walletProvider.signAndSendTransaction(transaction)
+
+        return hash   
+    }, [programId, walletProvider, connection, wsol])
+
     useEffect(() => {
         if (programId && pool && connection && tokenName && tokenSymbol && loadData) {
             const program = new Program<any>(idl, programId, { connection: connection } as any);
@@ -458,6 +531,7 @@ export function useTokenTrade({
         sellToken,
         createToken,
         tokenBalance,
+        prePaid
     }
 
 }

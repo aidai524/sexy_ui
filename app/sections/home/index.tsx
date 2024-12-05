@@ -1,43 +1,59 @@
 import ConnectButton from '@/app/components/connectButton/ConnectButton'
 import styles from './home.module.css'
 import Thumbnail from '@/app/components/thumbnail'
-import Tags from '../../components/tags'
 import Action from '../../components/action'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAppKitAccount } from '@reown/appkit/react'
 import type { Project } from '@/app/type'
 import { useRouter } from 'next/navigation'
 
-import { httpAuthGet, httpGet } from '@/app/utils'
+import { httpAuthGet, httpGet, httpAuthPost } from '@/app/utils'
+
+const defaulrImg = 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect'
 
 export default function Home() {
-    const [infoData, setInfoData] = useState<Project>({
-        tokenName: '2332',
-        ticker: '43433',
-        about: 'hello aaa',
-        website: 'https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_backgrounds_and_borders/Using_multiple_backgrounds',
-        tokenImg: 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect',
-    })
+    const [infoData, setInfoData] = useState<Project>()
 
-    const [infoData2, setInfoData2] = useState<Project>({
-        tokenName: '233112',
-        ticker: '434323',
-        about: 'hell22o aaa',
-        website: 'https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_backgrounds_and_borders/Using_multiple_backgrounds',
-        tokenImg: 'https://pump.mypinata.cloud/ipfs/QmS3C8tTmeUu3qnJW1vzDXaCqaZsxLAfsieDms7hfyVvjB?img-width=800&img-dpr=2&img-onerror=redirect',
-    })
+    const [infoData2, setInfoData2] = useState<Project>()
 
     const router = useRouter()
     const [launchIndex, setLaunchIndex] = useState(0)
-    const [list, setList] = useState([1, 2, 3, 4])
+
     const [actionStyle, setActionStyle] = useState<any>('')
+    const listRef  = useRef<Project[]>()
+
+    function getnext() {
+        if (listRef.current) {
+            listRef.current.shift()
+            renderTwoItems(listRef.current)
+        }
+        
+    }
+
+    function renderTwoItems(list: Project[]) {
+        if (!list) {
+            return
+        }
+
+        if (list.length > 0) {
+            const currentToken = list[0]
+            setInfoData2(mapDataToProject(currentToken))
+        }
+
+        if (list.length > 1) {
+            const currentToken = list[1]
+            setInfoData(mapDataToProject(currentToken))
+        }
+    }
 
     useEffect(() => {
-        setTimeout(() => {
-            httpAuthGet('/project').then(res => {
-                console.log('res:', res)
-            })
-        }, 2000)
+        httpAuthGet('/project/list?limit=50').then(res => {
+            console.log('res:', res)
+            if (res.code === 0 && res.data?.list) {
+                listRef.current = (res.data?.list)
+                renderTwoItems(res.data?.list)
+            }
+        })
     }, [])
 
     return <div className={styles.main}>
@@ -71,19 +87,56 @@ export default function Home() {
         </div>
 
         <div className={styles.thumbnailListBox}>
-            <div className={[styles.thumbnailBox].join(' ')}>
-                <Thumbnail showDesc={true} data={infoData} />
-            </div>
-            <div className={[styles.thumbnailBox, actionStyle].join(' ')}>
-                <Thumbnail showDesc={true} data={infoData2} />
-            </div>
+            {
+                infoData && <div className={[styles.thumbnailBox].join(' ')}>
+                    <Thumbnail showDesc={true} data={infoData} />
+                </div>
+            }
+
+            {
+                infoData2 && <div className={[styles.thumbnailBox, actionStyle].join(' ')}>
+                    <Thumbnail showDesc={true} data={infoData2} />
+                </div>
+            }
         </div>
 
-
-        <Action onLike={() => {
-            setActionStyle(styles.like)
-        }} onHate={() => {
-            setActionStyle(styles.hate)
-        }} onSuperLike={() => {}} onBoost={() => {}}/>
+        <Action
+            onLike={async () => {
+                setActionStyle(styles.like)
+                await httpAuthPost('/project/like?id=' + infoData2!.id, {})
+                getnext()
+                setTimeout(() => {
+                    setActionStyle(null)
+                }, 1000)
+            }} 
+            onHate={async () => {
+                setActionStyle(styles.hate)
+                await httpAuthPost('/project/un_like?id=' + infoData2!.id, {})
+                getnext()
+                setTimeout(() => {
+                    setActionStyle(null)
+                }, 1000)
+            }} 
+            onSuperLike={() => { }}
+            onBoost={() => { }} />
     </div>
+}
+
+function mapDataToProject(currentToken: any): Project {
+    return {
+        id: currentToken.id,
+        tokenName: currentToken.token_name,
+        ticker: currentToken.ticker,
+        about: currentToken.about_us,
+        website: currentToken.website,
+        tokenImg: currentToken.icon || defaulrImg,
+        isLike: currentToken.is_like,
+        isUnLike: currentToken.isUnLike,
+        isSuperLike: currentToken.isSuperLike,
+        like: currentToken.like,
+        unLike: currentToken.un_like,
+        superLike: currentToken.super_like,
+        time: currentToken.time,
+        account: currentToken.account,
+    }
 }

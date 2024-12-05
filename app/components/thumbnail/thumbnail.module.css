@@ -37,14 +37,19 @@
             align-items: center;
             gap: 5px;
             padding: 0 10px;
+            height: 26px;
             border-radius: 100px;
             font-size: 14px;
             font-weight: 400;
             color: #fff;
+            min-width: 60px;
             .tips {
                 line-height: 9px;
                 word-break: break-all;
                 font-size: 10px;
+            }
+            .likesNums {
+                margin-top: -4px;
             }
         }
         .likes {

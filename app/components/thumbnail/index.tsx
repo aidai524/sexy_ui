@@ -47,18 +47,18 @@ export default function Thumbnail({
                     <div className={styles.likeNums}>
                         <div className={[styles.likes, styles.likeCustom].join(' ')}>
                             <LikeIcon />
-                            <span>110</span>
+                            <span className={ styles.likesNums }>{ data.like }</span>
                         </div>
                         <div className={[styles.superLikes, styles.likeCustom].join(' ')}>
                             <SuperLikeIcon />
                             <span className={styles.tips}>Smoky<br />HOT</span>
-                            <span>110</span>
+                            <span className={ styles.likesNums }>{ data.superLike }</span>
                         </div>
                     </div>
                     <div className={styles.tokenMsg}>
-                        <Avatar data={data}/>
+                        <Avatar data={data} />
 
-                        <div className={styles.desc}>text description text description</div>
+                        <div className={styles.desc}>{ data.about }</div>
 
                         <div className={styles.detailLink}>
                             <Link href={"/detail/4"}>
@@ -66,7 +66,7 @@ export default function Thumbnail({
                             </Link>
                         </div>
                     </div>
-                    <Tags />
+                    <Tags data={data}/>
                 </div>
             }
 
@@ -135,6 +135,8 @@ interface AvatarProps {
     data: Project
 }
 
+const defaultImg = 'https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect'
+
 export function Avatar({
     data
 }: AvatarProps) {
@@ -142,9 +144,10 @@ export function Avatar({
         return
     }
 
+
     return <div className={styles.titles}>
         <div className={styles.tokenImgBox}>
-            <img className={styles.tokenImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
+            <img className={styles.tokenImg} src={data.tokenImg || defaultImg} />
         </div>
         <div>
             <div className={styles.tokenName}>{ data.tokenName }</div>

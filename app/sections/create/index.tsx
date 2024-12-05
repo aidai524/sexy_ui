@@ -31,14 +31,18 @@ export default function Create() {
             </div>
         </div>
 
-        <CreateNode show={renderType === 0} onAddDataFill={(value: any) => {
-            setDataAdd(value)
-            setRenderType(1)
-        }} />
+        {
+            renderType === 0 && <CreateNode show={true} onAddDataFill={(value: any) => {
+                setDataAdd(value)
+                setRenderType(1)
+            }} />
+        }
 
-        <PreviewNode show={renderType === 1} data={dataAdd!} onAddDataCancel={() => {
-            setRenderType(0)
-        }} />
+        {
+            renderType === 1 && <PreviewNode show={true} data={dataAdd!} onAddDataCancel={() => {
+                setRenderType(0)
+            }} />
+        }
     </div>
 }
 

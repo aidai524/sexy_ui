@@ -19,8 +19,10 @@ type Token = {
 
 interface Props {
     token: Token,
+    data: Project,
     show: boolean;
     onHide: () => void;
+    onCreateTokenSuccess: () => void;
 }
 
 const SOL: Token = {
@@ -34,8 +36,10 @@ const SOL_PERCENT_LIST = [0.00000001, 0.00000005]
 
 export default function Create({
     token,
+    data,
     show,
     onHide,
+    onCreateTokenSuccess
 }: Props) {
 
 
@@ -54,8 +58,8 @@ export default function Create({
 
     const [infoData, setInfoData] = useState<Project>({
         tokenName: tokenName,
-        ticker: '43433',
-        about: 'hello aaa',
+        ticker: data.ticker,
+        about: '',
         website: '',
         tokenImg: tokenUri,
     })
@@ -226,12 +230,13 @@ export default function Create({
 
                                 setIsLoading(true)
 
-                                await createToken({
-                                    name: tokenName,
-                                    symbol: tokenSymbol,
-                                    uri: tokenUri,
-                                })
+                                // await createToken({
+                                //     name: tokenName,
+                                //     symbol: tokenSymbol,
+                                //     uri: tokenUri,
+                                // })
                                 
+                                await onCreateTokenSuccess()
                                 setIsLoading(false)
                                 success('Transtion success')
                             } catch (e) {

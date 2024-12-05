@@ -1,8 +1,11 @@
+import { fail } from "./toast"
+
 const BASE_URL = 'https://api.dumpdump.fun/api/v1'
+// const BASE_URL = '/api/v1'
 
 const AUTH_KEY = 'sex-ui-auth'
 
-export function http(path: string, method: string, params?: any, header?: any) {
+export function http(path: string, method: string, params?: any, headers?: any) {
     let _path = path, postBody = {}
     if (method === 'GET' && params) {
         const _paramsString = Object.keys(params).map(key => {
@@ -19,7 +22,9 @@ export function http(path: string, method: string, params?: any, header?: any) {
         }
     }
 
-    let _header = header || {}
+    let _header = headers ? {
+        headers: headers
+    } : {}
 
     return fetch(`${BASE_URL}${_path}`, {
         method: method,
@@ -40,14 +45,32 @@ export async function httpAuthGet(path: string, params?: any) {
     return http(path, 'GET', params, header)
 }
 
+export async function httpAuthPost(path: string, params?: any) {
+    const authorization = await getAuthorization()
+    const header = {
+        authorization
+    }
+    const val = await http(path, 'POST', params, header)
+
+    if (val.code) {
+        if (val.code === 500) {
+           window.localStorage.removeItem(AUTH_KEY)
+           return await httpAuthPost(path, params)
+        } else if (val.code !== 0) {
+            fail(val.message)
+            return null
+        } else {
+            return val
+        }
+    }
+}
+
 export async function bufferToBase64(buffer: Uint8Array) {
-    // use a FileReader to generate a base64 data URI:
     const base64url: any = await new Promise(r => {
         const reader = new FileReader()
         reader.onload = () => r(reader.result)
         reader.readAsDataURL(new Blob([buffer]))
     });
-    // remove the `data:...;base64,` part from the start
     return base64url.slice(base64url.indexOf(',') + 1);
 }
 
@@ -88,7 +111,11 @@ export async function initAuthorization(walletProvider: any, address: string) {
         time: now
     })
 
-    window.localStorage.setItem(AUTH_KEY, v.data)
+    if (v.data) {
+        window.localStorage.setItem(AUTH_KEY, v.data)
+    } else {
+        return
+    }
 
     authorization = v.data
 
@@ -120,4 +147,10 @@ export function getFullNum(value: any) {
     } catch (e) { }
 
     return value;
+}
+
+export function sleep(time: number) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve, time);
+    });
 }

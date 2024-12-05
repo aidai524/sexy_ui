@@ -2,6 +2,7 @@
     display: flex;
     padding: 16px 20px;
     gap: 10px;
+    animation: scroll linear 4s alternate infinite;
     .tag {
         background-color: #FFFFFF1C;
         border-radius: 32px;
@@ -9,5 +10,30 @@
         font-size: 13px;
         font-weight: 300;
         color: #979ABE;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        .userName {
+            color: var(--part-bg);
+            margin-left: 10px;
+        }
+    }
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    10% {
+        transform: translateX(0);
+    }
+
+    90% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
     }
 }
