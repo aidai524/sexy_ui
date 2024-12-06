@@ -57,11 +57,11 @@ export default function PreviewNode({
                     x: data.twitter
                 }
 
-                const queryStr = Object.keys(query).map(key => `${key}=${query[key]}`).join('&')
+                const queryStr = Object.keys(query).map(key => `${key}=${encodeURIComponent(query[key])}`).join('&')
 
                 const val = await httpAuthPost(`/project?${queryStr}`, {})
 
-                const _data = {token_symbol: 'NAME', "about_us":"sd","discord":"http://localhost:3000/create","icon":"blob:http://localhost:3000/158258b6-21e6-42ec-b4b3-119ff2be3aa4","tg":"","ticker":"Me","token_name":"Name","video":"blob:http://localhost:3000/158258b6-21e6-42ec-b4b3-119ff2be3aa4","website":"http://localhost:3000/create","x":"http://localhost:3000/create"}
+                // const _data = {token_symbol: 'NAME', "about_us":"sd","discord":"http://localhost:3000/create","icon":"blob:http://localhost:3000/158258b6-21e6-42ec-b4b3-119ff2be3aa4","tg":"","ticker":"Me","token_name":"Name","video":"blob:http://localhost:3000/158258b6-21e6-42ec-b4b3-119ff2be3aa4","website":"http://localhost:3000/create","x":"http://localhost:3000/create"}
 
                 // const val = await httpAuthPost('/project', _data)
 

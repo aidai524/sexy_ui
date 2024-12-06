@@ -3,6 +3,7 @@ import Panel from '../../../../components/panel'
 
 import styles from './detail.module.css'
 import type { Project } from '@/app/type';
+import { formatAddress } from '@/app/utils';
 
 interface Props {
     showThumbnailHead: boolean;
@@ -25,15 +26,15 @@ export default function InfoPart({
         <Panel>
             <div className={styles.author}>
                 <div className={styles.authorTitle}>Created by:</div>
-                <div className={[styles.authorDesc, styles.authorDescEs].join(' ')}>G76VB875$%^</div>
+                <div className={[styles.authorDesc, styles.authorDescEs].join(' ')}>{ formatAddress(data.account!) }</div>
             </div>
             <div className={styles.author}>
                 <div className={styles.authorTitle}>Create time:</div>
-                <div className={styles.authorDesc}>33 minutes ago</div>
+                <div className={styles.authorDesc}>{ data.time }</div>
             </div>
             <div className={styles.author}>
                 <div className={styles.authorGreenTitle}>Market cap:</div>
-                <div className={styles.authorGreenDesc}>G76VB875$%^</div>
+                <div className={styles.authorGreenDesc}>-</div>
             </div>
         </Panel>
 
@@ -65,13 +66,13 @@ export default function InfoPart({
             <div className={styles.aboutUs}>
                 <div className={styles.aboutHeader}>Community</div>
                 <div className={styles.communityIcons}>
-                    <a className={styles.link} target='_blank' href="#">
+                    <a className={styles.link} target='_blank' href={ data.twitter }>
                         <img src="/img/community/x.svg" />
                     </a>
-                    <a className={styles.link} target='_blank' href="#">
+                    <a className={styles.link} target='_blank' href={ data.telegram }>
                         <img src="/img/community/telegram.svg" />
                     </a>
-                    <a className={styles.link} target='_blank' href="#">
+                    <a className={styles.link} target='_blank' href={ data.discord }>
                         <img src="/img/community/discard.svg" />
                     </a>
                 </div>

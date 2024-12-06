@@ -1,5 +1,5 @@
 import Thumbnail, { AvatarBack } from '@/app/components/thumbnail'
-import Comment from '@/app/components/comment'
+import CommentComp from '@/app/components/comment'
 import Panel from '../../../../components/panel'
 
 
@@ -8,8 +8,9 @@ import Action from '@/app/components/action'
 import { Button } from 'antd-mobile'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade'
 import InfoPart from './infoPart'
-import { useState } from 'react'
-import type { Project } from '@/app/type'
+import { useEffect, useState } from 'react'
+import type { Comment, Project } from '@/app/type'
+import { httpAuthPost, httpGet } from '@/app/utils'
 
 interface Props {
     data: Project
@@ -18,36 +19,22 @@ interface Props {
 export default function Info({
     data
 }: Props) {
-    // const { buyToken, sellToken } = useTokenTrade({
-    //     tokenName: 'Zero',
-    //     tokenSymbol: 'ZERO'
-    // })
-
-    // const [infoData, setInfoData] = useState<Project>({
-    //     tokenName: '2332',
-    //     ticker: '43433',
-    //     about: 'hello aaa',
-    //     website: 'https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_backgrounds_and_borders/Using_multiple_backgrounds',
-    //     tokenImg: 'https://chinese.freecodecamp.org/news/content/images/size/w2000/2022/09/pawel-czerwinski-dYjFmiQb_aE-unsplash.jpeg',
-    // })
-
     return <div className={styles.main}>
-
-        {/* <Button onClick={() => {
-            buyToken()
-        }}>Buy</Button>
-
-        <Button onClick={() => {
-            sellToken()
-        }}>Sell</Button> */}
-      
-        {/* <AvatarBack /> */}
-
         <InfoPart data={data} showThumbnailHead={false} />
-        <Comment />
+        <CommentComp id={data.id} />
 
         <div className={styles.action}>
-            <Action style={{ position: 'static' }}/>
+            <Action
+                style={{ position: 'static' }}
+                onLike={async () => {
+                    await httpAuthPost('/project/like?id=' + data!.id, {})
+
+                }}
+                onHate={async () => {
+                    await httpAuthPost('/project/un_like?id=' + data!.id, {})
+                }}
+                onSuperLike={() => { }}
+                onBoost={() => { }} />
         </div>
 
     </div>

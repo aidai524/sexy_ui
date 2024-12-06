@@ -25,6 +25,7 @@
 
 .comment {
     font-size: 14px;
+    margin-top: 10px;
     .replyer {
         display: flex;
         align-items: center;

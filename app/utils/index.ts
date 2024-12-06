@@ -1,3 +1,4 @@
+import type { Project } from "../type"
 import { fail } from "./toast"
 
 const BASE_URL = 'https://api.dumpdump.fun/api/v1'
@@ -24,7 +25,11 @@ export function http(path: string, method: string, params?: any, headers?: any) 
 
     let _header = headers ? {
         headers: headers
-    } : {}
+    } : {
+        headers: {
+            authorization: getAuthorizationByLocal()
+        }
+    }
 
     return fetch(`${BASE_URL}${_path}`, {
         method: method,
@@ -52,10 +57,12 @@ export async function httpAuthPost(path: string, params?: any) {
     }
     const val = await http(path, 'POST', params, header)
 
-    if (val.code) {
+    console.log('val1111', val)
+
+    if (typeof (val.code) !== 'undefined') {
         if (val.code === 500) {
-           window.localStorage.removeItem(AUTH_KEY)
-           return await httpAuthPost(path, params)
+            window.localStorage.removeItem(AUTH_KEY)
+            return await httpAuthPost(path, params)
         } else if (val.code !== 0) {
             fail(val.message)
             return null
@@ -153,4 +160,63 @@ export function sleep(time: number) {
     return new Promise(function (resolve) {
         setTimeout(resolve, time);
     });
+}
+
+export function mapDataToProject(currentToken: any): Project {
+    return {
+        id: currentToken.id,
+        tokenName: currentToken.token_name,
+        ticker: currentToken.ticker,
+        about: currentToken.about_us,
+        website: currentToken.website,
+        tokenImg: currentToken.icon || 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect',
+        isLike: currentToken.is_like,
+        isUnLike: currentToken.isUnLike,
+        isSuperLike: currentToken.isSuperLike,
+        like: currentToken.like,
+        unLike: currentToken.un_like,
+        superLike: currentToken.super_like,
+        time: currentToken.time,
+        account: currentToken.account,
+    }
+}
+
+const addressReg = /(\w{5}).+(\w{5})/
+export function formatAddress(address: string) {
+    if (!address) {
+        return ''
+    }
+
+    if (address.length > 12) {
+        return address.replace(addressReg, ($1, $2, $3) => {
+            return $2 + '....' + $3
+        })
+    }
+}
+
+export function formatDateTime(_datetime: any, formatStr: string = 'YYYY-MM-DD hh:mm:ss') {
+    if (!_datetime) return '';
+    const datetime = new Date(_datetime);
+    const values: any = {
+        'M+': datetime.getMonth() + 1,
+        'D+': datetime.getDate(),
+        'h+': datetime.getHours(),
+        'm+': datetime.getMinutes(),
+        's+': datetime.getSeconds(),
+        S: datetime.getMilliseconds()
+    };
+    let fmt = formatStr;
+    const reg = /(Y+)/;
+    if (reg.test(fmt)) {
+        const y = (reg.exec(fmt) as string[])[1];
+        fmt = fmt.replace(y, (datetime.getFullYear() + '').substring(4 - y.length));
+    }
+    for (const k in values) {
+        const regx = new RegExp('(' + k + ')');
+        if (regx.test(fmt)) {
+            const t = (regx.exec(fmt) as string[])[1];
+            fmt = fmt.replace(t, t.length === 1 ? values[k] : ('00' + values[k]).substring(('' + values[k]).length));
+        }
+    }
+    return fmt;
 }

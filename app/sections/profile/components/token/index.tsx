@@ -2,8 +2,13 @@ import { useCallback } from 'react'
 import styles from './token.module.css'
 import { Modal } from 'antd-mobile'
 import BoostJust from '@/app/components/boost/boostJust'
+import type { Project } from '@/app/type'
 
-export default function Token() {
+interface Props {
+    data: Project
+}
+
+export default function Token({ data } : Props) {
     const showBoostJust = useCallback(() => {
         const vipHandler = Modal.show({
             content: <BoostJust onBoost={() => {
@@ -16,18 +21,18 @@ export default function Token() {
     return <div className={styles.main}>
         <div className={styles.tokenMag}>
             <div className={styles.tokenImgContent}>
-                <img className={styles.tokenImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
+                <img className={styles.tokenImg} src={ data.tokenImg }/>
                 <LaunchTag type={1} />
             </div>
 
             <div className={styles.nameContent}>
-                <div className={styles.name}>GM bera frenz</div>
+                <div className={styles.name}>{ data.tokenName }</div>
                 <div className={styles.trikerContent}>
-                    <span>Ticker: GMBM</span>
+                    <span>Ticker: { data.ticker }</span>
                     <img className={styles.createrImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
                 </div>
-                <div className={styles.MarketCap}>Market cap: 4.25K</div>
-                <div className={styles.createTime}>18m ago</div>
+                <div className={styles.MarketCap}>Market cap: -</div>
+                <div className={styles.createTime}>{ data.time }</div>
             </div>
         </div>
 

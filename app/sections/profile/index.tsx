@@ -4,9 +4,10 @@ import Held from './components/held'
 import Tab from './components/tab'
 import styles from './profile.module.css'
 import { useCallback, useMemo } from 'react'
-import Liked from './components/liked'
+
 import { Modal } from 'antd-mobile'
 import BoostVip from '@/app/components/boost/boostVip'
+import { useAppKitAccount } from '@reown/appkit/react'
 
 interface Props {
     showHot?: boolean;
@@ -16,6 +17,7 @@ export default function Profile({
     showHot = true
 }: Props) {
     const router = useRouter()
+    const { address } = useAppKitAccount()
 
     const tabs = useMemo(() => {
         const _tabs = [{
@@ -23,21 +25,21 @@ export default function Profile({
             content: <Held />
         }, {
             name: 'Created',
-            content: <Created />
+            content: <Created address={address} type="created"/>
         }, {
             name: 'Liked',
-            content: <Liked />
+            content: <Created address={address}  type="liked"/>
         }]
 
         if (showHot) {
             _tabs.splice(2, 0, {
                 name: 'Hot',
-                content: <Liked />
+                content: <Created address={address}  type="hot"/>
             })
         }
 
         return _tabs
-    }, [showHot])
+    }, [showHot, address])
 
 
     const showVip = useCallback(() => {
@@ -67,13 +69,13 @@ export default function Profile({
 
         <div className={styles.follwerActions}>
             <div className={styles.follwerItem} onClick={() => {
-                router.push('/profile/follower/1')
+                router.push('/profile/follower/' + address)
             }}>
                 <span className={styles.follwerAmount}>12</span>
                 <span>Followers</span>
             </div>
             <div className={styles.follwerItem} onClick={() => {
-                router.push('/profile/follower/1')
+                router.push('/profile/follower/' + address)
             }}>
                 <span className={styles.follwerAmount}>12</span>
                 <span>Following</span>
@@ -85,7 +87,7 @@ export default function Profile({
         </div>
 
         <div className={styles.addressContent}>
-            <div className={styles.address}>rSopT53tQ8bWqKvDR3sVNMiUXT4sS9AqSkYchRkRcUQ</div>
+            <div className={styles.address}>{ address }</div>
             <div>
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7.5 1C7.5 0.723858 7.27614 0.5 7 0.5L2.5 0.500001C2.22386 0.5 2 0.723858 2 1C2 1.27614 2.22386 1.5 2.5 1.5L6.5 1.5L6.5 5.5C6.5 5.77614 6.72386 6 7 6C7.27614 6 7.5 5.77614 7.5 5.5L7.5 1ZM1.35355 7.35355L7.35355 1.35355L6.64645 0.646447L0.646447 6.64645L1.35355 7.35355Z" fill="#7E8A93" />

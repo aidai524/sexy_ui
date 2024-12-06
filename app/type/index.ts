@@ -19,3 +19,15 @@ export interface Project {
     account?: string;
 }
 
+export interface Comment {
+    address: string;
+    projectId: number;
+    text: string;
+    id: number;
+    isLike: boolean;
+    isUnlike: boolean;
+    like: number;
+    unLike: number;
+    time: number;
+}
+

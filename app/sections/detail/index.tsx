@@ -7,11 +7,13 @@ import Txs from './components/txs/index'
 import { AvatarBack } from '@/app/components/thumbnail'
 
 import styles from './detail.module.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Tab from '@/app/components/tab'
 import type { Project } from '@/app/type'
 import { useVip } from '@/app/hooks/useVip'
-import { Button } from 'antd-mobile'
+import { useRouter, useParams } from 'next/navigation'
+import { httpGet, mapDataToProject } from '@/app/utils'
+
 
 const TabIcon = <svg width="8" height="10" viewBox="0 0 8 10" fill="none" xmlns="http://www.w3.org/2000/svg">
     <ellipse cx="4" cy="5.17177" rx="4" ry="4.43019" fill="#FF2681" />
@@ -20,18 +22,29 @@ const TabIcon = <svg width="8" height="10" viewBox="0 0 8 10" fill="none" xmlns=
 export default function Detail() {
     const { call } = useVip()
 
+    const params = useParams()
+
+
     const [showTabs, setShowTabs] = useState(true)
     const [activeKey, setActiveKey] = useState('Info')
 
-    const [infoData, setInfoData] = useState<Project>({
-        tokenName: '2332',
-        ticker: '43433',
-        about: 'hello aaa',
-        website: 'https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_backgrounds_and_borders/Using_multiple_backgrounds',
-        tokenImg: 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect',
-    })
+    const [infoData, setInfoData] = useState<Project>()
 
-    
+    useEffect(() => {
+        if (params.id) {
+            httpGet('/project/', { id: params.id }).then(res => {
+                console.log(res)
+                if (res.code === 0 && res.data) {
+                    const infoData = mapDataToProject(res.data)
+                    setInfoData(infoData)
+                }
+            })
+        }
+    }, [params])
+
+    if (!infoData) {
+        return 
+    }
 
     return <div className={styles.main}>
         <AvatarBack data={infoData} />

@@ -7,7 +7,7 @@ import { useAppKitAccount } from '@reown/appkit/react'
 import type { Project } from '@/app/type'
 import { useRouter } from 'next/navigation'
 
-import { httpAuthGet, httpGet, httpAuthPost } from '@/app/utils'
+import { httpAuthGet, httpGet, httpAuthPost, mapDataToProject } from '@/app/utils'
 
 const defaulrImg = 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect'
 
@@ -122,21 +122,3 @@ export default function Home() {
     </div>
 }
 
-function mapDataToProject(currentToken: any): Project {
-    return {
-        id: currentToken.id,
-        tokenName: currentToken.token_name,
-        ticker: currentToken.ticker,
-        about: currentToken.about_us,
-        website: currentToken.website,
-        tokenImg: currentToken.icon || defaulrImg,
-        isLike: currentToken.is_like,
-        isUnLike: currentToken.isUnLike,
-        isSuperLike: currentToken.isSuperLike,
-        like: currentToken.like,
-        unLike: currentToken.un_like,
-        superLike: currentToken.super_like,
-        time: currentToken.time,
-        account: currentToken.account,
-    }
-}
