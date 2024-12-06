@@ -113,8 +113,6 @@ export default function CreateNode({
                     return
                 }
 
-                console.log(tokenImg)
-
                 onAddDataFill({
                     tokenName, 
                     ticker, 

@@ -146,7 +146,6 @@ export function Avatar({
         return
     }
 
-
     return <div className={styles.titles}>
         <div className={styles.tokenImgBox}>
             <img className={styles.tokenImg} src={data.tokenImg || defaultImg} />
