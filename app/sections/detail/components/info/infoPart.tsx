@@ -21,12 +21,12 @@ export default function InfoPart({
     }
 
     return <div>
-        <Thumbnail data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
+        <Thumbnail autoHeight={true} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
         <Sep />
         <Panel>
             <div className={styles.author}>
                 <div className={styles.authorTitle}>Created by:</div>
-                <div className={[styles.authorDesc, styles.authorDescEs].join(' ')}>{ formatAddress(data.account!) }</div>
+                <div className={[styles.authorDesc, styles.authorDescEs].join(' ')}>{ formatAddress(data.account) }</div>
             </div>
             <div className={styles.author}>
                 <div className={styles.authorTitle}>Create time:</div>

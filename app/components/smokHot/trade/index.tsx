@@ -17,11 +17,10 @@ export default function Trade({ token }: Props) {
     const [isLoading, setIsLoading] = useState(false)
 
     const [infoData, setInfoData] = useState<Project>({
-        tokenName: '2332',
-        ticker: '43433',
-        about: 'hello aaa',
-        website: 'https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_backgrounds_and_borders/Using_multiple_backgrounds',
-        tokenImg: 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect',
+        tokenName: token.tokenName,
+        ticker: token.ticker,
+        about: token.about,
+        tokenImg: token.tokenImg,
     })
 
     const { prePaid } = useTokenTrade({

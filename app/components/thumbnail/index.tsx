@@ -9,13 +9,15 @@ interface Props {
     showDesc: boolean;
     topDesc?: boolean;
     showProgress?: boolean;
-    data: Project
+    data: Project;
+    autoHeight?: boolean;
 }
 
 export default function Thumbnail({
     showDesc = true,
     topDesc = false,
     showProgress = true,
+    autoHeight = false,
     data
 }: Props) {
     const [progressIndex, setProgressIndex] = useState(0)
@@ -29,7 +31,7 @@ export default function Thumbnail({
             topDesc && <AvatarBack data={data} />
         }
 
-        <div className={styles.thumbnail}>
+        <div className={styles.thumbnail} style={{ height: autoHeight ? 'auto' : 'calc(100vh - 232px)' }}>
             {
                 showProgress && <div className={styles.picProgress}>
                     <div onClick={() => { setProgressIndex(0) }} className={[styles.progressItem, progressIndex === 0 ? styles.active : ''].join(' ')}></div>

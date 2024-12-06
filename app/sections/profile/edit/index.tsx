@@ -74,12 +74,12 @@ export default function ProfileEdit() {
             </div>
             <div className={styles.groupContent} style={{ paddingLeft: 15, paddingTop: 10, height: 174, overflow: 'hidden' }}>
                 <Upload fileList={banner} setFileList={setBanner} >
-                    <div className={ styles.bannerBgContent }>
+                    {/* <div className={ styles.bannerBgContent }>
                         <div className={ styles.bgImg }>
                             <img className={ styles.bgImgPreview } src={ userInfo?.banner } />
                         </div>
                         <div className={ styles.changeBtn }>Change</div>
-                    </div>
+                    </div> */}
                 </Upload>
             </div>
         </div>

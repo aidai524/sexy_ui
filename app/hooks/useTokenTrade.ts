@@ -311,7 +311,7 @@ export function useTokenTrade({
 
     }, [connection, walletProvider, programId, minPrice])
 
-    const createToken = useCallback(async ({ name, symbol, uri }: { name: string, symbol: string, uri: string }) => {
+    const createToken = useCallback(async ({ name, symbol, uri, amount }: { name: string, symbol: string, uri: string, amount?: string }) => {
         const latestBlockhash = await connection?.getLatestBlockhash();
 
         const transaction = new Transaction({
@@ -435,9 +435,14 @@ export function useTokenTrade({
         })
         const instruction2 = createSyncNativeInstruction(userSolAccount.address, TOKEN_PROGRAM_ID)
 
+        
         transaction.add(instruction1).add(instruction2).add(createInfoTransition)
 
         const v3 = await walletProvider.signAndSendTransaction(transaction)
+
+        if (amount) {
+            await prePaid(amount, tokenName, tokenSymbol)
+        }
 
         return v3
 

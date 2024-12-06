@@ -5,7 +5,7 @@ import Create from "./components/create";
 
 import type { Project } from "@/app/type";
 import { useState } from "react";
-import { httpAuthPost } from "@/app/utils";
+import { httpAuthPost, sleep } from "@/app/utils";
 interface Props {
     onAddDataCancel: () => void;
     show: boolean;
@@ -59,13 +59,21 @@ export default function PreviewNode({
 
                 const queryStr = Object.keys(query).map(key => `${key}=${encodeURIComponent(query[key])}`).join('&')
 
-                const val = await httpAuthPost(`/project?${queryStr}`, {})
-
+                let times = 0
+                while (true && times < 10) {
+                    const val = await httpAuthPost(`/project?${queryStr}`, {})
+                    if (val.code === 100000) {
+                        times++
+                        sleep(500)
+                    } else {
+                        break
+                    }
+                }
                 // const _data = {token_symbol: 'NAME', "about_us":"sd","discord":"http://localhost:3000/create","icon":"blob:http://localhost:3000/158258b6-21e6-42ec-b4b3-119ff2be3aa4","tg":"","ticker":"Me","token_name":"Name","video":"blob:http://localhost:3000/158258b6-21e6-42ec-b4b3-119ff2be3aa4","website":"http://localhost:3000/create","x":"http://localhost:3000/create"}
 
                 // const val = await httpAuthPost('/project', _data)
 
-                console.log(val)
+                // console.log(val)
             }}
         />
     </div>

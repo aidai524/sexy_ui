@@ -1,8 +1,8 @@
 import type { Project } from "../type"
 import { fail } from "./toast"
 
-const BASE_URL = 'https://api.dumpdump.fun/api/v1'
-// const BASE_URL = '/api/v1'
+// const BASE_URL = 'https://api.dumpdump.fun/api/v1'
+const BASE_URL = '/api/v1'
 
 const AUTH_KEY = 'sex-ui-auth'
 
@@ -62,8 +62,8 @@ export async function httpAuthPost(path: string, params?: any) {
             window.localStorage.removeItem(AUTH_KEY)
             return await httpAuthPost(path, params)
         } else if (val.code !== 0) {
-            fail(val.message)
-            return null
+            // fail(val.message)
+            return val
         } else {
             return val
         }

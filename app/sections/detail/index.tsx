@@ -32,7 +32,7 @@ export default function Detail() {
 
     useEffect(() => {
         if (params.id) {
-            httpGet('/project/', { id: params.id }).then(res => {
+            httpGet('/project', { id: params.id }).then(res => {
                 console.log(res)
                 if (res.code === 0 && res.data) {
                     const infoData = mapDataToProject(res.data)

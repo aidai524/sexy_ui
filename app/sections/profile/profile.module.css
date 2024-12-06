@@ -2,6 +2,7 @@
     min-height: 100vh;
     background: #000 url('/img/profile/bg.png') left top no-repeat;
     background-size: 100% auto;
+    /* background: #fff; */
     padding-bottom: 100px;
 
     .avatarContent {

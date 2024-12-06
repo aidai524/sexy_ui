@@ -64,8 +64,8 @@ export default function Create({
         tokenImg: tokenUri,
     })
 
-    const [tokenType, setTokenType] = useState<number>(0)
-    const [currentToken, setCurrentToken] = useState<Token>(desToken)
+    const [tokenType, setTokenType] = useState<number>(1)
+    const [currentToken, setCurrentToken] = useState<Token>(SOL)
     const [errorMsg, setErrorMsg] = useState('')
     const [isError, setIsError] = useState(false)
 
@@ -78,7 +78,6 @@ export default function Create({
 
     const [buyIn, setBuyIn] = useState('0')
     const [buyInSol, setBuyInSol] = useState('0')
-
 
     const { createToken } = useTokenTrade({
         tokenName,
@@ -164,7 +163,7 @@ export default function Create({
                     <div className={styles.actionArea}>
                         <div className={styles.slippage}>Pre-Buy (optional)</div>
 
-                        <div className={styles.switchToken} onClick={() => {
+                        {/* <div className={styles.switchToken} onClick={() => {
                             if (tokenType === 0) {
                                 setCurrentToken(SOL)
                                 setTokenType(1)
@@ -175,7 +174,7 @@ export default function Create({
                         }}>
                             <span className={styles.switchTitle}>switch to </span>
                             <span className={styles.switchTokenName}>{tokenType === 0 ? SOL.tokenName : tokenName}</span>
-                        </div>
+                        </div> */}
 
                     </div>
 
@@ -233,6 +232,7 @@ export default function Create({
                                     name: tokenName,
                                     symbol: tokenSymbol,
                                     uri: tokenUri,
+                                    amount: valInput ? new Big(valInput).mul(10 ** 9).toString() : ''
                                 })
                                 
                                 await onCreateTokenSuccess()

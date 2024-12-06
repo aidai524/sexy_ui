@@ -58,40 +58,53 @@ export default function Profile({
         })
     }, [])
 
-    return <div className={styles.main}>
-        <div className={styles.avatarContent}>
-            <div className={styles.avatar}>
-                <img className={styles.avatarImg} src={ userInfo?.icon } />
-                <div className={styles.pencil} onClick={() => {
-                    router.push('/profile/edit')
-                }}>
-                    <Pencil />
+    const backgroundImgStyle = userInfo?.banner ? {
+        backgroundImage: `linear-gradient(360deg, #0D1012 41.35%, rgba(0, 0, 0, 0) 100%)`,
+        backgroundSize: '100% auto'
+    } : {}
+
+    const backgroundImgStyle1 = userInfo?.banner ? {
+        backgroundImage: `url(${userInfo?.banner})`,
+        backgroundSize: '100% auto'
+    } : {}
+
+    return <div className={styles.main} >
+        <div style={backgroundImgStyle1}>
+            <div className={styles.avatarContent} style={backgroundImgStyle}>
+                <div className={styles.avatar}>
+                    <img className={styles.avatarImg} src={userInfo?.icon} />
+                    <div className={styles.pencil} onClick={() => {
+                        router.push('/profile/edit')
+                    }}>
+                        <Pencil />
+                    </div>
                 </div>
+
+                <div className={styles.useName}>{userInfo?.name}</div>
             </div>
-
-            <div className={styles.useName}>{ userInfo?.name }</div>
         </div>
-
         <div className={styles.follwerActions}>
             <div className={styles.follwerItem} onClick={() => {
                 router.push('/profile/follower/' + address)
             }}>
-                <span className={styles.follwerAmount}>{ userInfo?.followers }</span>
+                <span className={styles.follwerAmount}>{userInfo?.followers}</span>
                 <span>Followers</span>
             </div>
             <div className={styles.follwerItem} onClick={() => {
                 router.push('/profile/follower/' + address)
             }}>
-                <span className={styles.follwerAmount}>{ userInfo?.following }</span>
+                <span className={styles.follwerAmount}>{userInfo?.following}</span>
                 <span>Following</span>
             </div>
             <div className={styles.follwerItem}>
-                <span className={styles.follwerAmount}>{ userInfo?.likeNum }</span>
+                <span className={styles.follwerAmount}>{userInfo?.likeNum}</span>
                 <span>Likes</span>
             </div>
         </div>
 
-        <div className={styles.addressContent}>
+        <div className={styles.addressContent} onClick={() => {
+            window.open(`https://solscan.io/account/${address}?cluster=devnet`)
+        }}>
             <div className={styles.address}>{address}</div>
             <div>
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
