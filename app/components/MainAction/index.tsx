@@ -51,7 +51,7 @@ export default function MainAction({
             <Like />
             {
                 likeAnis.map((item, index) => {
-                    return <div style={{ animationDelay: `${index / 4}s`, animationName: likeTrigger ? styles['float' + (index + 1)] : '' }} className={styles.bolloon}><img src={item} key={item} /></div>
+                    return <div key={item} style={{ animationDelay: `${index / 4}s`, animationName: likeTrigger ? styles['float' + (index + 1)] : '' }} className={styles.bolloon}><img src={item} key={item} /></div>
                 })
             }
         </div>

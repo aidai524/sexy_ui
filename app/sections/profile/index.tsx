@@ -3,11 +3,15 @@ import Created from './components/created'
 import Held from './components/held'
 import Tab from './components/tab'
 import styles from './profile.module.css'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Modal } from 'antd-mobile'
 import BoostVip from '@/app/components/boost/boostVip'
 import { useAppKitAccount } from '@reown/appkit/react'
+import { httpAuthGet } from '@/app/utils'
+
+import type { UserInfo } from '@/app/type/index'
+import useUserInfo from './hooks/useUserInfo'
 
 interface Props {
     showHot?: boolean;
@@ -18,6 +22,7 @@ export default function Profile({
 }: Props) {
     const router = useRouter()
     const { address } = useAppKitAccount()
+    const { userInfo } = useUserInfo(address)
 
     const tabs = useMemo(() => {
         const _tabs = [{
@@ -25,16 +30,16 @@ export default function Profile({
             content: <Held />
         }, {
             name: 'Created',
-            content: <Created address={address} type="created"/>
+            content: <Created address={address} type="created" />
         }, {
             name: 'Liked',
-            content: <Created address={address}  type="liked"/>
+            content: <Created address={address} type="liked" />
         }]
 
         if (showHot) {
             _tabs.splice(2, 0, {
                 name: 'Hot',
-                content: <Created address={address}  type="hot"/>
+                content: <Created address={address} type="hot" />
             })
         }
 
@@ -45,18 +50,18 @@ export default function Profile({
     const showVip = useCallback(() => {
         const vipHandler = Modal.show({
             content: <BoostVip onStartVip={() => {
-                vipHandler.close() 
+                vipHandler.close()
             }} onCanceVip={() => {
                 vipHandler.close()
-            }}/>,
+            }} />,
             closeOnMaskClick: true,
-          })
+        })
     }, [])
 
     return <div className={styles.main}>
         <div className={styles.avatarContent}>
             <div className={styles.avatar}>
-                <img className={styles.avatarImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
+                <img className={styles.avatarImg} src={ userInfo?.icon } />
                 <div className={styles.pencil} onClick={() => {
                     router.push('/profile/edit')
                 }}>
@@ -64,30 +69,30 @@ export default function Profile({
                 </div>
             </div>
 
-            <div className={styles.useName}>Party Girl</div>
+            <div className={styles.useName}>{ userInfo?.name }</div>
         </div>
 
         <div className={styles.follwerActions}>
             <div className={styles.follwerItem} onClick={() => {
                 router.push('/profile/follower/' + address)
             }}>
-                <span className={styles.follwerAmount}>12</span>
+                <span className={styles.follwerAmount}>{ userInfo?.followers }</span>
                 <span>Followers</span>
             </div>
             <div className={styles.follwerItem} onClick={() => {
                 router.push('/profile/follower/' + address)
             }}>
-                <span className={styles.follwerAmount}>12</span>
+                <span className={styles.follwerAmount}>{ userInfo?.following }</span>
                 <span>Following</span>
             </div>
             <div className={styles.follwerItem}>
-                <span className={styles.follwerAmount}>12</span>
+                <span className={styles.follwerAmount}>{ userInfo?.likeNum }</span>
                 <span>Likes</span>
             </div>
         </div>
 
         <div className={styles.addressContent}>
-            <div className={styles.address}>{ address }</div>
+            <div className={styles.address}>{address}</div>
             <div>
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7.5 1C7.5 0.723858 7.27614 0.5 7 0.5L2.5 0.500001C2.22386 0.5 2 0.723858 2 1C2 1.27614 2.22386 1.5 2.5 1.5L6.5 1.5L6.5 5.5C6.5 5.77614 6.72386 6 7 6C7.27614 6 7.5 5.77614 7.5 5.5L7.5 1ZM1.35355 7.35355L7.35355 1.35355L6.64645 0.646447L0.646447 6.64645L1.35355 7.35355Z" fill="#7E8A93" />
@@ -132,7 +137,7 @@ export default function Profile({
                     </div>
                     <div onClick={() => {
                         showVip()
-                    }}  className={styles.getMore2}>Get more</div>
+                    }} className={styles.getMore2}>Get more</div>
                 </div>
             </div>
         </div>

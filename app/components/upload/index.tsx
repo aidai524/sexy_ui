@@ -1,6 +1,7 @@
 import { ImageUploader, ImageUploadItem } from 'antd-mobile'
 
 import styles from './upload.module.css'
+import { upload } from '@/app/utils';
 
 interface Props {
     fileList: ImageUploadItem[];
@@ -10,6 +11,15 @@ interface Props {
 }
 
 export async function mockUpload(file: File) {
+    console.log('file:', file)
+    const url = await upload(file.name, file)
+
+    if (url) {
+        return {
+            url,
+        }
+    }
+
     return {
         url: URL.createObjectURL(file),
     }

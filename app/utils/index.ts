@@ -57,12 +57,30 @@ export async function httpAuthPost(path: string, params?: any) {
     }
     const val = await http(path, 'POST', params, header)
 
-    console.log('val1111', val)
-
     if (typeof (val.code) !== 'undefined') {
         if (val.code === 500) {
             window.localStorage.removeItem(AUTH_KEY)
             return await httpAuthPost(path, params)
+        } else if (val.code !== 0) {
+            fail(val.message)
+            return null
+        } else {
+            return val
+        }
+    }
+}
+
+export async function httpAuthPut(path: string, params?: any) {
+    const authorization = await getAuthorization()
+    const header = {
+        authorization
+    }
+    const val = await http(path, 'PUT', params, header)
+
+    if (typeof (val.code) !== 'undefined') {
+        if (val.code === 500) {
+            window.localStorage.removeItem(AUTH_KEY)
+            return await httpAuthPut(path, params)
         } else if (val.code !== 0) {
             fail(val.message)
             return null
@@ -219,4 +237,37 @@ export function formatDateTime(_datetime: any, formatStr: string = 'YYYY-MM-DD h
         }
     }
     return fmt;
+}
+
+export async function upload(fileName: string, file: File) {
+    const newFileName = generateRandomString(10) + fileName
+    const val = await httpAuthPost(`/upload/data?dir=${encodeURIComponent('sexy/dev/')}&file_name=${newFileName}`)
+    if (val?.code === 0) {
+        const res = await fetch(val.data, {
+            method: 'PUT',
+            body: file,
+            headers: {
+              'Content-Type': file.type,
+            },
+          });
+
+          if (!res.ok) {
+            fail('Upload fail')
+            return null
+          }
+
+          return `https://deltabot-1.s3.us-east-1.amazonaws.com/sexy/dev/${newFileName}`
+    }
+
+    return null
+}
+
+function generateRandomString(length: number) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
+    }
+    return result;
 }

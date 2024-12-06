@@ -4,8 +4,10 @@ import styles from './action.module.css'
 import MainAction from '@/app/components/MainAction'
 import Boost from '@/app/components/boost'
 import SmokeBtn from '../smokHot';
+import type { Project } from '@/app/type';
 
 interface Props {
+    token: Project | undefined;
     style?: any;
     onLike?: () => void;
     onSuperLike?: () => void;
@@ -15,11 +17,16 @@ interface Props {
 
 export default function Action({
     style,
+    token,
     onLike,
     onSuperLike,
     onHate,
     onBoost,
 }: Props) {
+    if (!token) {
+        return null
+    }
+
     return <div className={styles.action} style={style}>
         <div>
             <Boost onClick={() => {
@@ -32,7 +39,7 @@ export default function Action({
             onHate && onHate()
         }} />
         <div>
-            <SmokeBtn onClick={() => {
+            <SmokeBtn token={token} onClick={() => {
                 onSuperLike && onSuperLike()
             }}/>
         </div>

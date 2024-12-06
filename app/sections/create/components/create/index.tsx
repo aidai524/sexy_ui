@@ -86,7 +86,6 @@ export default function Create({
         loadData: false
     })
 
-
     const debounceVal = useDebounce(valInput, { wait: 800 })
 
     useEffect(() => {
@@ -230,11 +229,11 @@ export default function Create({
 
                                 setIsLoading(true)
 
-                                // await createToken({
-                                //     name: tokenName,
-                                //     symbol: tokenSymbol,
-                                //     uri: tokenUri,
-                                // })
+                                await createToken({
+                                    name: tokenName,
+                                    symbol: tokenSymbol,
+                                    uri: tokenUri,
+                                })
                                 
                                 await onCreateTokenSuccess()
                                 setIsLoading(false)

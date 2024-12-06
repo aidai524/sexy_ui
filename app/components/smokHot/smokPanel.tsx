@@ -3,13 +3,15 @@ import { useState } from 'react'
 
 import styles from './smokeHot.module.css'
 import Trade from './trade';
+import type { Project } from '@/app/type';
 
 interface Props {
     show: boolean;
+    token: Project;
     onHide?: () => void;
 }
 
-export default function SmokPanel({ show, onHide }: Props) {
+export default function SmokPanel({ show, token, onHide }: Props) {
 
     return <div>
         <Popup
@@ -32,7 +34,7 @@ export default function SmokPanel({ show, onHide }: Props) {
                     <img className={ styles.smokeImg } src="/img/home/smokeHotLogo.svg" />
                 </div>
 
-                <Trade />
+                <Trade token={token}/>
             </div>
         </Popup>
     </div>

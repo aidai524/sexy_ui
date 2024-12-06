@@ -38,7 +38,7 @@ export default function ConnectButton() {
     await appKit.open()
   }
 
-  console.log('account:', account)
+  // console.log('account:', account)
 
   if (account && account.address) {
     return <div onClick={handleDisconnect}>

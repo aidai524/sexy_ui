@@ -25,6 +25,7 @@ export default function Info({
 
         <div className={styles.action}>
             <Action
+                token={data}
                 style={{ position: 'static' }}
                 onLike={async () => {
                     await httpAuthPost('/project/like?id=' + data!.id, {})

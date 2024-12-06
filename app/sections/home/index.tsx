@@ -27,13 +27,14 @@ export default function Home() {
             listRef.current.shift()
             renderTwoItems(listRef.current)
         }
-        
     }
 
     function renderTwoItems(list: Project[]) {
         if (!list) {
             return
         }
+
+        console.log('list:', list)
 
         if (list.length > 0) {
             const currentToken = list[0]
@@ -44,6 +45,8 @@ export default function Home() {
             const currentToken = list[1]
             setInfoData(mapDataToProject(currentToken))
         }
+
+        console.log(infoData, infoData2)
     }
 
     useEffect(() => {
@@ -51,10 +54,13 @@ export default function Home() {
             console.log('res:', res)
             if (res.code === 0 && res.data?.list) {
                 listRef.current = (res.data?.list)
+                console.log('res.data?.list:', res.data?.list)
                 renderTwoItems(res.data?.list)
             }
         })
     }, [])
+
+    console.log('infoData: ', infoData, infoData2)
 
     return <div className={styles.main}>
         <div className={styles.header}>
@@ -68,7 +74,7 @@ export default function Home() {
             </div>
 
             <div className={styles.icons}>
-                {/* <ConnectButton /> */}
+                <ConnectButton />
 
                 <div className={styles.notice}>
                     <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -101,21 +107,32 @@ export default function Home() {
         </div>
 
         <Action
+            token={infoData2}
             onLike={async () => {
                 setActionStyle(styles.like)
-                await httpAuthPost('/project/like?id=' + infoData2!.id, {})
-                getnext()
+                
                 setTimeout(() => {
                     setActionStyle(null)
+                    getnext()
                 }, 1000)
+                try {
+                    await httpAuthPost('/project/like?id=' + infoData2!.id, {})
+                } catch(e) {
+
+                }
+                
             }} 
             onHate={async () => {
                 setActionStyle(styles.hate)
-                await httpAuthPost('/project/un_like?id=' + infoData2!.id, {})
-                getnext()
                 setTimeout(() => {
                     setActionStyle(null)
+                    getnext()
                 }, 1000)
+                try { 
+                    await httpAuthPost('/project/un_like?id=' + infoData2!.id, {})
+                } catch {
+
+                }
             }} 
             onSuperLike={() => { }}
             onBoost={() => { }} />

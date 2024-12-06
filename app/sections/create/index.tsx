@@ -32,7 +32,7 @@ export default function Create() {
         </div>
 
         {
-            renderType === 0 && <CreateNode show={true} onAddDataFill={(value: any) => {
+             <CreateNode show={renderType === 0} onAddDataFill={(value: any) => {
                 setDataAdd(value)
                 setRenderType(1)
             }} />

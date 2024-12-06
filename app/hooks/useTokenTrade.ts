@@ -20,7 +20,7 @@ import idl from './meme_launchpad.json'
 import { BN, Program } from '@coral-xyz/anchor';
 import * as borsh from 'borsh';
 import bs58 from 'bs58';
-import { sleep } from '../utils';
+import { httpAuthPost, sleep } from '../utils';
 
 interface Props {
     tokenName: string;
@@ -54,6 +54,8 @@ export function useTokenTrade({
     }, [programId])
 
     const pool = useMemo(() => {
+        if (!tokenName || !tokenSymbol) return null
+
         return PublicKey.findProgramAddressSync(
             [Buffer.from("token_info"), state[0].toBuffer(), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
             programId
@@ -62,6 +64,8 @@ export function useTokenTrade({
 
 
     const tokenInfo = useMemo(() => {
+        if (!tokenName || !tokenSymbol) return null
+
         return PublicKey.findProgramAddressSync(
             [Buffer.from("mint"), state[0].toBuffer(), Buffer.from(tokenName), Buffer.from(tokenSymbol)],
             programId
@@ -128,6 +132,7 @@ export function useTokenTrade({
 
     const getKeys = useCallback(async () => {
         console.log(tokenName, tokenSymbol)
+        if (!tokenName || !tokenSymbol || !pool || !tokenInfo)  return null
 
         const referral = new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm')
         const proxy = new PublicKey('8GBcwJAfUU9noxPNh5jnfwkKipK8XRHUPS5va9TAXr5f')
@@ -220,7 +225,9 @@ export function useTokenTrade({
     }, [programId, wsol, state, pool, tokenInfo, tokenName, tokenSymbol, walletProvider, connection])
 
     const getCreateKeys = useCallback((tokenName: string, tokenSymbol: string) => {
-
+        if (!pool || !tokenInfo) {
+            return null
+        }
 
         return {
             launchpad: state[0],
@@ -319,6 +326,10 @@ export function useTokenTrade({
         // const uri = 'https://www.npmjs.com/npm-avatar/eyJhbG'
 
         const keys = await getCreateKeys(name, symbol)
+
+        if (!keys) {
+            throw 'Create keys error'
+        }
 
         const createAccountTransition: any = await program.methods.createTokenAccount({
             name: name,
@@ -420,7 +431,7 @@ export function useTokenTrade({
         const instruction1 = SystemProgram.transfer({
             fromPubkey: walletProvider.publicKey!,
             toPubkey: userSolAccount.address,
-            lamports: 20000000, // 以 lamports 为单位 (1 SOL = 1e9 lamports)
+            lamports: 20000000, 
         })
         const instruction2 = createSyncNativeInstruction(userSolAccount.address, TOKEN_PROGRAM_ID)
 
@@ -432,65 +443,93 @@ export function useTokenTrade({
 
     }, [connection, walletProvider, programId, wsol])
 
-    const prePaid = useCallback(async (amount: number | string) => {
-        const latestBlockhash = await connection?.getLatestBlockhash();
+    const prePaid = useCallback(async (amount: number | string, tokenName: string, tokenSymbol: string) => {
+        const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
 
-        const keys = await getKeys()
-        if (!keys) {
-            return
+        if (val.code !== 0) {
+            throw 'Fetch transaction error'
         }
 
-        const [paidRecord] = PublicKey.findProgramAddressSync(
-            [Buffer.from("prepaid_record"), keys.pool.toBuffer(), walletProvider.publicKey!.toBuffer()],
-            programId
+        const userSolAccount = await _getOrCreateAssociatedTokenAccount(
+            wsol,
+            walletProvider.publicKey!,
         );
 
-        const program = new Program<any>(idl, programId, { connection: connection } as any);
+        if (!userSolAccount) {
+            throw 'Create userSolAccount failed'
+        }
+      
+        const latestBlockhash = await connection?.getLatestBlockhash();
 
-        const instruction = await program.methods.prepaidTokenWithdraw(
-            null,
-            null
-        ).accounts({
-            launchpad: keys.launchpad,
-            pool: keys.pool,
-            wsolMint: keys.wsolMint,
-            protocolSolAccount: keys.protocolSolAccount,
-            userWsolAccount: keys.userWsolAccount,
-            referralSolAccount: keys.userWsolAccount,
-            proxySolAccount: keys.userWsolAccount,
-            tokenMint: keys.tokenMint,
-            userTokenAccount: keys.userTokenAccount,
-            poolTokenAccount: keys.poolTokenAccount,
-            paidRecord: paidRecord,
-            referralRecord: keys.referralRecord,
-            tokenProgram: TOKEN_PROGRAM_ID,
-            associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-            user: walletProvider.publicKey!,
-            systemProgram: SystemProgram.programId,
-        }).instruction()
+        // const keys = await getKeys()
+        // if (!keys) {
+        //     return
+        // }
 
-        console.log(instruction)
+        // const [paidRecord] = PublicKey.findProgramAddressSync(
+        //     [Buffer.from("prepaid_record"), keys.pool.toBuffer(), walletProvider.publicKey!.toBuffer()],
+        //     programId
+        // );
+
+        // const program = new Program<any>(idl, programId, { connection: connection } as any);
+
+        // const instruction = await program.methods.prepaidTokenWithdraw(
+        //     null,
+        //     null
+        // ).accounts({
+        //     launchpad: keys.launchpad,
+        //     pool: keys.pool,
+        //     wsolMint: keys.wsolMint,
+        //     protocolSolAccount: keys.protocolSolAccount,
+        //     userWsolAccount: keys.userWsolAccount,
+        //     referralSolAccount: keys.userWsolAccount,
+        //     proxySolAccount: keys.userWsolAccount,
+        //     tokenMint: keys.tokenMint,
+        //     userTokenAccount: keys.userTokenAccount,
+        //     poolTokenAccount: keys.poolTokenAccount,
+        //     paidRecord: paidRecord,
+        //     referralRecord: keys.referralRecord,
+        //     tokenProgram: TOKEN_PROGRAM_ID,
+        //     associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+        //     user: walletProvider.publicKey!,
+        //     systemProgram: SystemProgram.programId,
+        // }).instruction()
+
 
         const transaction = new Transaction({
             recentBlockhash: latestBlockhash!.blockhash,
             feePayer: walletProvider.publicKey!
         });
 
-        const signatureBytes = Buffer.from('AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC53q9ze6BfYEveWkFJTyh15z4pck1X71XlLS3D9KUAh9ouuqlscnpI+e0e2fRMO+nf9IV7Erfm6oXpd+7phaUFAgAEC9nXv08R9nZApoLs0DF4oqikQ5AWR8dGbA/MOTbKG8DPfTdojiE3agquyxwkZp/+i1MVhOVVlnqLAnsgH9juJCLE61RSEMUcbvdQsUu4bgVsNIJVEZzxKyJWsatRKw4eq4qj3k70KJ/XNhhbS+G6Q0OizPvuRfQmD1UAKtW8uU7+EdITg4DX6MNKj/P3AN6ri3oSFKr7tf6jWS8jGFBDbZAIq4c4tcjHHVBHWLApXS6SlduwrSNAMLtEoNZEEAXhhgurGHDlZLYneDpwVORjETrzb/roN6rG6vtcl3GBPmRhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGm4hX/quBhPtof2NGGMA12sQ53BrrO1WYoPAAAAAAAQbd9uHXZaGT2cvhRs7reawctIXtX1s3kTqM9YV+/wCpjJclj04kifG7PRApFI4NgwtaE5na/xCEBI572Nvp+FmWUeeLK/S4D85jsjqF4vYAVVzPdBM4aISlIOj/f53BMAEHDAcCCAMEBQYJCgABBxhyg2IvwZlYbJABAAAAAAAAvQ9RZwAAAAA=', 'base64')
+        const signatureBytes = Buffer.from(val.data, 'base64')
 
         const serverTransaction = Transaction.from(signatureBytes)
 
+        const instruction1 = SystemProgram.transfer({
+            fromPubkey: walletProvider.publicKey!,
+            toPubkey: userSolAccount?.address,
+            lamports: Number(amount), 
+        })
+        const instruction2 = createSyncNativeInstruction(userSolAccount?.address, TOKEN_PROGRAM_ID)
+
         console.log('serverTransaction:', serverTransaction)
 
-        // const transactionSignature = new TransactionSignature(signatureBytes);
+        const confirmationStrategy: any = {
+            skipPreflight: false,
+            preflightCommitment: 'processed',
+        };
 
-        transaction.add(serverTransaction).add(instruction)
+        transaction.add(instruction1).add(instruction2)
 
-        // transaction.add(instruction).addSignature(new PublicKey('9Rny1dwV3TvSvx9sxif2pdZJgFFTThg1riPNzNMVGRsP'), signatureBytes)
-    
-        const hash = await walletProvider.signAndSendTransaction(transaction)
+        const hash1 = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
 
-        return hash   
+        console.log(hash1)
+
+        const hash2 = await walletProvider.signAndSendTransaction(serverTransaction, confirmationStrategy)
+
+        console.log('hashL', hash2)
+
+        // return hash2   
     }, [programId, walletProvider, connection, wsol])
 
     useEffect(() => {
@@ -504,7 +543,7 @@ export function useTokenTrade({
     }, [programId, pool, connection, tokenName, tokenSymbol, loadData])
 
     useEffect(() => {
-        if (programId && connection && tokenName && tokenSymbol && loadData) {
+        if (programId && connection && tokenName && tokenSymbol && loadData && tokenInfo) {
             setTimeout(async () => {
                 const userTokenAccount = await _getOrCreateAssociatedTokenAccount(
                     tokenInfo[0],
@@ -521,6 +560,7 @@ export function useTokenTrade({
                 setTokenBalance('0')
             }, 10)
         }
+
     }, [programId, connection, tokenName, tokenSymbol, loadData])
 
     return {
@@ -546,12 +586,11 @@ async function wrapToWSol(provider: Provider, connection: Connection, user: Publ
         SystemProgram.transfer({
             fromPubkey: user,
             toPubkey: wsolAccount,
-            lamports: amount, // 以 lamports 为单位 (1 SOL = 1e9 lamports)
+            lamports: amount, 
         }),
         createSyncNativeInstruction(wsolAccount, TOKEN_PROGRAM_ID)
     );
 
-    // 发送交易
     const txid = await provider.signAndSendTransaction(transaction);
     console.log("wrapToWSol txId:" + txid)
 

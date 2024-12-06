@@ -1,8 +1,13 @@
 import { useState } from "react";
 import SmokPanel from "./smokPanel";
+import type { Project } from "@/app/type";
 
+interface Props {
+    token: Project;
+    onClick: () => void;
+}
 
-export default function SmokeBtn({ onClick }: { onClick: () => void; }) {
+export default function SmokeBtn({ onClick, token }: Props) {
     const [panelShow, setPanelShow] = useState(false)
 
     return <div onClick={() => {
@@ -20,7 +25,7 @@ export default function SmokeBtn({ onClick }: { onClick: () => void; }) {
             </defs>
         </svg>
 
-        <SmokPanel show={panelShow} onHide={() => {
+        <SmokPanel token={token} show={panelShow} onHide={() => {
             setPanelShow(false)
         }} />
     </div>

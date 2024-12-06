@@ -31,3 +31,19 @@ export interface Comment {
     time: number;
 }
 
+export interface UserInfo {
+    address: string;
+    name: string;
+    icon: string;
+    banner: string;
+    followers: number;
+    following: number;
+    likeNum: number;
+    boostNum: number;
+    usingBoostNum: number;
+    superLikeNum: number;
+    usingSuperLikeNum: number;
+    usingBuySuperLikeNum: number;
+    vipType: string;
+}
+
