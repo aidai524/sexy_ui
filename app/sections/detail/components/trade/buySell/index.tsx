@@ -229,6 +229,7 @@ export default function BuySell({
                                 setIsLoading(true)
                                 await sellToken(sellOut)
                             }
+                            setIsLoading(false)
                             success('Transtion success')
                         } catch (e) {
                             console.log(e)
