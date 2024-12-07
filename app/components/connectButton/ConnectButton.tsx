@@ -14,50 +14,55 @@ import {
   sendAndConfirmTransaction,
 } from '@solana/web3.js';
 import styles from './connectButton.module.css'
-import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 export default function ConnectButton() {
   // const appKit = useAppKit()
-  const { walletProvider } = useAppKitProvider<Provider>('solana')
-  const account = useAppKitAccount()
-  const { disconnect, } = useDisconnect()
-  const { connection } = useAppKitConnection()
-  const { connected } = useWallet()
+  // const { walletProvider } = useAppKitProvider<Provider>('solana')
+  // const account = useAppKitAccount()
+  // const { disconnect, } = useDisconnect()
+  // const { connection } = useAppKitConnection()
+  const { connected, publicKey, disconnect } = useWallet();
 
   // console.log('connection:', connection)
 
-  const handleConnect = async () => {
-    try {
-      // await appKit.open()
-    } catch (error) {
-      console.error('Wallet connection error:', error)
-    } finally {
-    }
-  }
-
-  const handleDisconnect = async () => {
-    // disconnect()
-    // await appKit.open()
-  }
+  // const handleConnect = async () => {
+  //   try {
+  //     // await appKit.open()
+  //   } catch (error) {
+  //     console.error('Wallet connection error:', error)
+  //   } finally {
+  //   }
+  // }
+  //
+  // const handleDisconnect = async () => {
+  //   // disconnect()
+  //   // await appKit.open()
+  // }
 
   // console.log('account:', account)
 
-  if (account && account.address) {
-    return <div onClick={handleDisconnect}>
-      <img src="/img/home/solana.png" className={styles.loginBtn} />
-    </div>
-  }
+  // if (account && account.address) {
+  //   return <div onClick={handleDisconnect}>
+  //     <img src="/img/home/solana.png" className={styles.loginBtn} />
+  //   </div>
+  // }
 
   return (
     <div>
       {
         connected ? (
-          <WalletDisconnectButton>
-            Disconnect
-          </WalletDisconnectButton>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {/*<div className="">
+              {publicKey?.toString?.()?.slice(0, 4) + '...' + publicKey?.toString?.()?.slice(39)}
+            </div>*/}
+            <div className={styles.button} onClick={disconnect}>
+              Disconnect
+            </div>
+          </div>
         ) : (
-          <WalletMultiButton>
+          <WalletMultiButton style={{ background: '#FFFFFF1F', borderRadius: 24 }}>
             Connect
           </WalletMultiButton>
         )

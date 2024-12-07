@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { createAppKit, useAppKitProvider, useWalletInfo } from '@reown/appkit/react'
 import { SolanaAdapter, useAppKitConnection } from '@reown/appkit-adapter-solana/react'
 import { solana, solanaTestnet, solanaDevnet } from '@reown/appkit/networks'
-import { PhantomWalletAdapter, SolflareWalletAdapter, UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets'
+import { PhantomWalletAdapter, SolflareWalletAdapter,  } from '@solana/wallet-adapter-wallets'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
@@ -44,11 +44,10 @@ import '@solana/wallet-adapter-react-ui/styles.css';
 // })
 
 export default function WalletConnect({ children }: { children: React.ReactNode }) {
-  const network = WalletAdapterNetwork.Devnet;
+  const network = WalletAdapterNetwork.Mainnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(
     () => [
-      new UnsafeBurnerWalletAdapter(),
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
     ],
