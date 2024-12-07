@@ -2,12 +2,11 @@
 
 import { TabBar } from 'antd-mobile'
 import { useRouter, usePathname } from 'next/navigation'
-import { Provider, SolanaAdapter, useAppKitConnection } from '@reown/appkit-adapter-solana/react'
 import styles from './layout.module.css'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { bufferToBase64, getAuthorization, getAuthorizationByLocal, getAuthorizationByLocalAndServer, httpGet, initAuthorization } from '@/app/utils'
 import { useMessage } from '@/app/context/messageContext'
+import { useAccount } from '@/app/hooks/useAccount';
 
 function CustomIcon({
   url,
@@ -53,8 +52,7 @@ const tabs = [
 export default function Component({ children }: { children: React.ReactNode }) {
   const router = useRouter() 
   const pathname = usePathname()
-  const { address } = useAppKitAccount()
-  const { walletProvider } = useAppKitProvider<Provider>('solana')
+  const { address, walletProvider } = useAccount();
 
   const showTabs = useMemo(() => {
     return tabs.find((tab) => {
