@@ -13,7 +13,7 @@ import {
 import styles from './layout.module.css'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
-import { bufferToBase64, getAuthorization, getAuthorizationByLocal, httpGet, initAuthorization } from '@/app/utils'
+import { bufferToBase64, getAuthorization, getAuthorizationByLocal, getAuthorizationByLocalAndServer, httpGet, initAuthorization } from '@/app/utils'
 import { useMessage } from '@/app/context/messageContext'
 
 function CustomIcon({
@@ -74,7 +74,7 @@ export default function Component({ children }: { children: React.ReactNode }) {
 
 
   const initToken = useCallback(async () => {
-    const auth = getAuthorizationByLocal()
+    const auth = await getAuthorizationByLocalAndServer()
     if (!auth) {
       initAuthorization(walletProvider, address as string)
     }

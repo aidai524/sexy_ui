@@ -136,12 +136,28 @@ export async function getAuthorization() {
         })
     }
 
+
     return authorization
 }
 
 export function getAuthorizationByLocal() {
-    return window.localStorage.getItem(AUTH_KEY)?.toString()
+    const auth = window.localStorage.getItem(AUTH_KEY)?.toString()
+    
+    return auth
 }
+
+export async function getAuthorizationByLocalAndServer() {
+    const auth = window.localStorage.getItem(AUTH_KEY)?.toString()
+    if (auth) {
+        const val = await httpGet('/project/list?limit=1')
+        if (val.code === -500) {
+            return null
+        }
+    }
+
+    return auth
+}
+
 
 
 export async function initAuthorization(walletProvider: any, address: string) {
