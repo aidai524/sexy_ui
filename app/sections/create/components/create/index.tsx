@@ -156,9 +156,6 @@ export default function Create({
             </div>
 
             <div className={[styles.cationArea, styles.panel].join(' ')}>
-
-
-
                 <div className={styles.inputArea}>
                     <div className={styles.actionArea}>
                         <div className={styles.slippage}>Pre-Buy (optional)</div>

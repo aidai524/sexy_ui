@@ -30,7 +30,7 @@ export default function Upload({
     setFileList,
     children,
 }: Props) {
-    return <ImageUploader value={fileList} onChange={setFileList} upload={mockUpload}>
+    return <ImageUploader maxCount={1} value={fileList} onChange={setFileList} upload={mockUpload}>
     {
         fileList.length === 0 ? (children ? children : <div
             className={styles.imgUpload}

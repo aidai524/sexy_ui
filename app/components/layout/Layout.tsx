@@ -3,13 +3,6 @@
 import { TabBar } from 'antd-mobile'
 import { useRouter, usePathname } from 'next/navigation'
 import { Provider, SolanaAdapter, useAppKitConnection } from '@reown/appkit-adapter-solana/react'
-import {
-  AppOutline,
-  ContentOutline,
-  AddSquareOutline,
-  MessageOutline,
-  UserOutline
-} from 'antd-mobile-icons'
 import styles from './layout.module.css'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'

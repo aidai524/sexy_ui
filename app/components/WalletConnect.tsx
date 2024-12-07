@@ -21,15 +21,20 @@ const metadata = {
   icons: ['https://picsum.photos/200/200']
 }
 
-createAppKit({
-  adapters: [solanaWeb3JsAdapter],
-  networks: [solanaDevnet],
-  metadata: metadata,
-  projectId,
-  features: {                   
-    analytics: true
-  }
-})
+try {
+  createAppKit({
+    adapters: [solanaWeb3JsAdapter],
+    networks: [solanaDevnet],
+    metadata: metadata,
+    projectId,
+    features: {                   
+      analytics: true
+    }
+  })
+} catch(e) {
+  console.log(e)
+}
+
 
 export default function WalletConnect({ children }: { children: React.ReactNode }) {
   // if (typeof window === 'undefined') {
