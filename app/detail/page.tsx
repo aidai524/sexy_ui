@@ -1,8 +1,13 @@
 "use client"
 
 import dynamic from 'next/dynamic'
-import DetailCom from '@/app/sections/detail'
+
+
+const HomeCom = dynamic(() => import('@/app/sections/detail'), {
+    ssr: false
+  })
+  
 
 export default function Detail() {
-    return <DetailCom />
+    return <HomeCom />
 }
