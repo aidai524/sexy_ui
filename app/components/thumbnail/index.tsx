@@ -66,7 +66,7 @@ export default function Thumbnail({
                         <div className={styles.desc}>{ data.about }</div>
 
                         <div className={styles.detailLink}>
-                            <Link href={"/detail/" + data.id}>
+                            <Link href={"/detail?id=" + data.id}>
                                 <Arrow />
                             </Link>
                         </div>

@@ -12,18 +12,19 @@ import { useEffect, useState } from 'react'
 import Tab from '@/app/components/tab'
 import type { Project } from '@/app/type'
 import { useVip } from '@/app/hooks/useVip'
-import { useRouter, useParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { httpGet, mapDataToProject } from '@/app/utils'
 
 
 export default function Detail() {
-    const params = useParams()
+    const params = useSearchParams()
     const [activeKey, setActiveKey] = useState('Info')
     const [infoData, setInfoData] = useState<Project>()
 
     useEffect(() => {
-        if (params.id) {
-            httpGet('/project', { id: params.id }).then(res => {
+        const id = params.get('id')
+        if (id) {
+            httpGet('/project', { id }).then(res => {
                 if (res.code === 0 && res.data) {
                     const infoData = mapDataToProject(res.data)
                     setInfoData(infoData)

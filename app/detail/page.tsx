@@ -1,12 +1,8 @@
 "use client"
 
 import dynamic from 'next/dynamic'
-
-// const DetailCom = dynamic(() => import('@/app/sections/detail'), {
-//     ssr: false
-//   })
+import DetailCom from '@/app/sections/detail'
 
 export default function Detail() {
-    return <>1</>
-    // return <DetailCom />
+    return <DetailCom />
 }

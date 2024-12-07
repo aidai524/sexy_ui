@@ -26,7 +26,7 @@ export default function Token({ data }: Props) {
     return <div className={styles.main}>
         <div className={styles.tokenMag}>
             <div className={styles.tokenImgContent} onClick={() => {
-                router.push('/detail/' + data.id)
+                router.push('/detail?id=' + data.id)
             }}>
                 <img className={styles.tokenImg} src={data.tokenImg} />
                 <LaunchTag type={1} />
