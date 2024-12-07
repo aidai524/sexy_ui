@@ -147,10 +147,11 @@
         color: #fff;
     }
 
-    .tickerContent {
+    .tickerContent1 {
         margin-top: 5px;
         align-items: center;
         gap: 10px;
+        flex-direction: row;
         display: flex;
         .ticker {
             color: #fff;

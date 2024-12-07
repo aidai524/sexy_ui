@@ -179,7 +179,10 @@ export default function Create({
                     </div>
 
                     <div className={styles.inputArea}>
-                        <input value={valInput} onChange={(e) => { setValInput(e.target.value) }} className={styles.input} />
+                        <input value={valInput} onChange={(e) => { 
+                            setValInput(e.target.value)
+                            setSolPercent(0)
+                        }} className={styles.input} />
                         <div className={styles.inputToken}>
                             <div className={styles.tokenName}>{currentToken.tokenName}</div>
                             <div className={styles.tokenImg}>
@@ -208,10 +211,10 @@ export default function Create({
                     </div> : null}
                 </div>
 
-                <div style={{ marginTop: 10 }} className={styles.receiveTokenAmount}>
+                {/* <div style={{ marginTop: 10 }} className={styles.receiveTokenAmount}>
                     <div className={styles.receiveTitle}>You will buy in</div>
                     <div className={styles.receiveAmount}>{buyIn} {tokenName}</div>
-                </div>
+                </div> */}
 
                 <div style={{ marginTop: 20 }} className={styles.receiveTokenAmount}>
                     <div className={styles.receiveTitle} style={{ textAlign: 'center' }}>Its optional but buying a small amount of coins helps protect your coin from snipers</div>
