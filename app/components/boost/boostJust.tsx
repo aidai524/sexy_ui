@@ -1,5 +1,9 @@
+import { useVip } from '@/app/hooks/useVip';
 import styles from './boost.module.css'
 import BoostIcon from './boostIocn'
+import { fail, success } from '@/app/utils/toast';
+import MainBtn from '../mainBtn';
+import { useState } from 'react';
 
 interface Props {
     onBoost: () => void;
@@ -8,6 +12,9 @@ interface Props {
 export default function BoostInit({
     onBoost
 }: Props) {
+    const [isLoading, setIsLoading] = useState(false)
+    const { call } = useVip()
+
     return <div className={styles.panel}>
         <div className={styles.boostInit}>
             <div className={styles.initTipContent}>
@@ -19,8 +26,18 @@ export default function BoostInit({
             </div>
         </div>
 
-        <div onClick={() => {
-            onBoost()
-        }} className={ styles.sureBtn }>Boost Now</div>
+        <MainBtn isLoading={isLoading} onClick={async () => {
+            try {
+                setIsLoading(true)
+                await call('boost')
+                success('Transition success')
+                setIsLoading(false)
+                onBoost()
+            } catch(e) {
+                console.log(e)
+                setIsLoading(false)
+                fail('Transition fail')
+            }
+        }} style={{ marginTop: 10 }} >Boost Now</MainBtn>
     </div> 
 }

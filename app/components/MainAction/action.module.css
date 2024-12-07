@@ -33,6 +33,8 @@
             left: 25%;
             bottom: 100%;
             opacity: 0;
+            pointer-events: none;
+
         }
     }
 }

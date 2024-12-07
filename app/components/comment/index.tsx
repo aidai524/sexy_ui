@@ -54,7 +54,7 @@ export default function CommentComp({
         }} className={styles.input} placeholder='Say something...' />
 
         {
-            commentList.length && <Panel>
+            commentList.length > 0 && <Panel>
                 {
                     commentList.map(item => {
                         return <div key={item.id} className={styles.comment}>

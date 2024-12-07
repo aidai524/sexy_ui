@@ -54,7 +54,7 @@ export default function CreateNode({
             </div>
             <div className={styles.groupContent + ' ' + styles.uploadContent} style={{ paddingLeft: 15, paddingTop: 10 }}>
                 <Upload fileList={tokenImg} setFileList={setTokenImg} />
-                <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
+                <div className={styles.uploadTip}>Support img/png/gif</div>
             </div>
             <div className={styles.tokenSymbol}>
                 <CheckBox checked={showTokenSymbol} onCheckChange={(isChecked) => { setShowTokenSymbol(isChecked) }} />

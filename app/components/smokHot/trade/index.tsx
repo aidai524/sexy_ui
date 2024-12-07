@@ -56,7 +56,10 @@ export default function Trade({ token }: Props) {
                 </div>
 
                 <div className={ styles.tokenPercent }>
-                    <div onClick={() => { setQuickIndex(0) }} className={ styles.percentTag }>Reset</div>
+                    <div onClick={() => {
+                        setQuickIndex(0) 
+                        setInputVal('')
+                    }} className={ styles.percentTag }>Reset</div>
                     <div onClick={() => { 
                         setQuickIndex(1)
                         setInputVal('0.00000001')
@@ -74,7 +77,7 @@ export default function Trade({ token }: Props) {
                 You can withdraw anytime before launching.</div>
             </div>
             <div style={{ marginTop: 18 }}>
-                <MainBtn isLoading={isLoading} onClick={async () => {
+                <MainBtn isDisabled={!inputVal} isLoading={isLoading} onClick={async () => {
                     try {
                         if (inputVal) {
                             setIsLoading(true)

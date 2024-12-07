@@ -57,6 +57,7 @@ export default function Thumbnail({
                             <span className={ styles.likesNums }>{ data.superLike }</span>
                         </div>
                     </div>
+                    
                     <div className={styles.tokenMsg}>
                         <Avatar data={data} />
 

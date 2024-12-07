@@ -148,10 +148,10 @@
     }
 
     .tickerContent {
-        display: flex;
+        margin-top: 5px;
         align-items: center;
         gap: 10px;
-        margin-top: 5px;
+        display: flex;
         .ticker {
             color: #fff;
             font-size: 14px;
