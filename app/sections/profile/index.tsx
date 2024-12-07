@@ -7,11 +7,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Modal } from 'antd-mobile'
 import BoostVip from '@/app/components/boost/boostVip'
-import { useAppKitAccount } from '@reown/appkit/react'
 import { httpAuthGet } from '@/app/utils'
 
 import type { UserInfo } from '@/app/type/index'
 import useUserInfo from './hooks/useUserInfo'
+import { useAccount } from '@/app/hooks/useAccount';
 
 interface Props {
     showHot?: boolean;
@@ -21,7 +21,7 @@ export default function Profile({
     showHot = true
 }: Props) {
     const router = useRouter()
-    const { address } = useAppKitAccount()
+    const { address } = useAccount()
     const { userInfo } = useUserInfo(address)
 
     const tabs = useMemo(() => {

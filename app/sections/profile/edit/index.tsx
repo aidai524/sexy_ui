@@ -6,8 +6,8 @@ import type { ImageUploadItem } from 'antd-mobile/es/components/image-uploader'
 import { useRouter } from 'next/navigation'
 
 import type { UserInfo } from '@/app/type/index'
-import { useAppKitAccount } from '@reown/appkit/react'
 import useUserInfo from '../hooks/useUserInfo'
+import { useAccount } from '@/app/hooks/useAccount';
 
 export default function ProfileEdit() {
     const router = useRouter()
@@ -16,7 +16,7 @@ export default function ProfileEdit() {
     const [avatar, setAvatar] = useState<ImageUploadItem[]>([])
     const [banner, setBanner] = useState<ImageUploadItem[]>([])
 
-    const { address } = useAppKitAccount()
+    const { address } = useAccount()
     const { userInfo, saveUserInfo } = useUserInfo(address)
 
     console.log('avatar:', avatar)

@@ -1,4 +1,3 @@
-import type { Connection } from '@reown/appkit-utils/solana';
 import {
     PublicKey,
     SystemProgram,
@@ -6,8 +5,8 @@ import {
     Transaction,
 } from '@solana/web3.js';
 import { useCallback, useMemo } from "react";
-import { Provider, SolanaAdapter, useAppKitConnection } from '@reown/appkit-adapter-solana/react'
-import { useAppKitAccount, useAppKitNetwork, useAppKitProvider } from '@reown/appkit/react'
+import { useAccount } from '@/app/hooks/useAccount';
+import { useConnection } from '@solana/wallet-adapter-react';
 
 interface Props {
     tokenName: string;
@@ -15,8 +14,8 @@ interface Props {
 }
 
 export function useVip() {
-    const { connection } = useAppKitConnection()
-    const { walletProvider } = useAppKitProvider<Provider>('solana')
+    const { connection } = useConnection()
+    const { walletProvider } = useAccount();
 
     // const programId = useMemo(() => {
     //     return new PublicKey(

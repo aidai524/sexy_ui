@@ -13,8 +13,6 @@
     "@ant-design/cssinjs": "^1.21.1",
     "@ant-design/nextjs-registry": "^1.0.1",
     "@coral-xyz/anchor": "0.29.0",
-    "@reown/appkit": "^1.5.3",
-    "@reown/appkit-adapter-solana": "^1.5.3",
     "@solana/buffer-layout": "^4.0.1",
     "@solana/buffer-layout-utils": "^0.2.0",
     "@solana/spl-token": "^0.4.9",

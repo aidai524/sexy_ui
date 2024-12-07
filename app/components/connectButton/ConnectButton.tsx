@@ -18,7 +18,7 @@ export default function ConnectButton() {
             </div>
           </div>
         ) : (
-          <WalletModalButton style={{ background: '#FFFFFF1F', borderRadius: 24 }}>
+          <WalletModalButton style={{ background: '#FFFFFF1F', borderRadius: 24, padding: '0 10px' }}>
             Connect
           </WalletModalButton>
         )

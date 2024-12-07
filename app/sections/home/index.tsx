@@ -3,7 +3,6 @@ import styles from './home.module.css'
 import Thumbnail from '@/app/components/thumbnail'
 import Action from '../../components/action'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useAppKitAccount } from '@reown/appkit/react'
 import type { Project } from '@/app/type'
 import { useRouter } from 'next/navigation'
 

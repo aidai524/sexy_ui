@@ -1,4 +1,3 @@
-import type { AnyTransaction, Connection } from '@reown/appkit-utils/solana';
 import {
     PublicKey,
     SystemProgram,
@@ -14,13 +13,13 @@ import { u64 } from '@solana/buffer-layout-utils';
 import { struct, u8, u32, f64, ns64, u48, blob } from "@solana/buffer-layout";
 import { getOrCreateAssociatedTokenAccount, getAssociatedTokenAddressSync, getAccount, Account, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, TokenAccountNotFoundError, TokenInvalidAccountOwnerError, createSyncNativeInstruction } from '@solana/spl-token'
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Provider, SolanaAdapter, useAppKitConnection } from '@reown/appkit-adapter-solana/react'
-import { useAppKitAccount, useAppKitNetwork, useAppKitProvider } from '@reown/appkit/react'
 import idl from './meme_launchpad.json'
 import { BN, Program } from '@coral-xyz/anchor';
 import * as borsh from 'borsh';
 import bs58 from 'bs58';
 import { httpAuthPost, sleep } from '../utils';
+import { useConnection } from '@solana/wallet-adapter-react';
+import { useAccount } from '@/app/hooks/useAccount';
 
 interface Props {
     tokenName: string;
@@ -31,8 +30,8 @@ interface Props {
 export function useTokenTrade({
     tokenName, tokenSymbol, loadData = true
 }: Props) {
-    const { connection } = useAppKitConnection()
-    const { walletProvider } = useAppKitProvider<Provider>('solana')
+    const { connection } = useConnection();
+    const { walletProvider } = useAccount();
     const [rate, setRate] = useState<number>()
     const [minPrice, setMinPrice] = useState(1)
     const [maxPrice, setMaxPrice] = useState(1)
@@ -581,7 +580,7 @@ export function useTokenTrade({
 
 }
 
-async function wrapToWSol(provider: Provider, connection: Connection, user: PublicKey, wsolAccount: PublicKey, amount: any) {
+async function wrapToWSol(provider: any, connection: any, user: PublicKey, wsolAccount: PublicKey, amount: any) {
     const latestBlockhash = await connection?.getLatestBlockhash();
 
     const transaction = new Transaction({
