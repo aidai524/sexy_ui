@@ -237,11 +237,11 @@ export default function Create({
                                 
                                 await onCreateTokenSuccess()
                                 setIsLoading(false)
-                                success('Transtion success')
+                                // success('Transtion success')
                             } catch (e) {
                                 console.log(e)
                                 setIsLoading(false)
-                                fail('Transtion fail')
+                                // fail('Transtion fail')
                             }
                         }}
                         style={{ background: 'rgba(255, 47, 116, 1)' }}>Create Coin</MainBtn>

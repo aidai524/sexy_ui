@@ -9,6 +9,7 @@ import { httpAuthPost, sleep } from "@/app/utils";
 import useUserInfo from "../profile/hooks/useUserInfo";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { fail, success } from "@/app/utils/toast";
+import { useRouter } from "next/navigation";
 interface Props {
     onAddDataCancel: () => void;
     show: boolean;
@@ -18,6 +19,7 @@ interface Props {
 export default function PreviewNode({
     onAddDataCancel, show, data
 }: Props) {
+    const router = useRouter()
     const [showCreate, setShowCreate] = useState(false)
     const [newData, setNewData] = useState(data)
 
@@ -78,20 +80,24 @@ export default function PreviewNode({
                 const queryStr = Object.keys(query).map(key => `${key}=${encodeURIComponent(query[key])}`).join('&')
 
                 let times = 0, val
-                while (true && times < 10) {
+                while (true && times < 50) {
                     val = await httpAuthPost(`/project?${queryStr}`, {})
                     if (val.code === 100000) {
                         times++
-                        sleep(500)
+                        await sleep(5000)
                     } else {
                         break
                     }
                 }
 
+                console.log('val:', val)
+
                 if (val.code === 0) {
                     success('Create token success')
+                    router.push('/profile')
                 } else {
                     fail('Create token fail')
+                    
                 }
             }}
         />

@@ -2,10 +2,11 @@
 
 import dynamic from 'next/dynamic'
 
-const DetailCom = dynamic(() => import('@/app/sections/detail'), {
-    ssr: false
-  })
+// const DetailCom = dynamic(() => import('@/app/sections/detail'), {
+//     ssr: false
+//   })
 
 export default function Detail() {
-    return <DetailCom />
+    return <>1</>
+    // return <DetailCom />
 }
