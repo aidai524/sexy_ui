@@ -1,8 +1,8 @@
 'use client'
 
 import React from 'react'
-import { createAppKit, useAppKitProvider } from '@reown/appkit/react'
-import { SolanaAdapter, useAppKitConnection, } from '@reown/appkit-adapter-solana/react'
+import { createAppKit, useAppKitProvider, useWalletInfo } from '@reown/appkit/react'
+import { SolanaAdapter, useAppKitConnection } from '@reown/appkit-adapter-solana/react'
 import { solana, solanaTestnet, solanaDevnet } from '@reown/appkit/networks'
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 
@@ -26,7 +26,7 @@ createAppKit({
   networks: [solanaDevnet],
   metadata: metadata,
   projectId,
-  features: {
+  features: {                   
     analytics: true
   }
 })
@@ -34,6 +34,14 @@ createAppKit({
 export default function WalletConnect({ children }: { children: React.ReactNode }) {
   // if (typeof window === 'undefined') {
   //   return null
+  // }
+
+  // const { connection } = useAppKitConnection()
+
+  // if (connection) {
+  //   // connection.onAccountChange(() => {
+
+  //   // })
   // }
 
   return <>

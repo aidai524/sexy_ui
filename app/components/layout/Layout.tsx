@@ -16,8 +16,6 @@ import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { bufferToBase64, getAuthorization, getAuthorizationByLocal, httpGet, initAuthorization } from '@/app/utils'
 import { useMessage } from '@/app/context/messageContext'
 
-
-
 function CustomIcon({
   url,
   showPlus = false,

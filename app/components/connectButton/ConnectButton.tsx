@@ -52,7 +52,7 @@ export default function ConnectButton() {
         className={styles.button}
         onClick={handleConnect}
       >
-        Connect Wallet
+        Connect
       </div>
     </div>
   )
