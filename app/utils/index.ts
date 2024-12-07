@@ -149,15 +149,15 @@ export async function getAuthorization() {
 export function getAuthorizationByLocal() {
     const auth = window.localStorage.getItem(AUTH_KEY)?.toString()
     
-    return auth
+    console.log('auth:', auth)
+
+    return auth 
 }
 
 export async function getAuthorizationByLocalAndServer() {
     const auth = window.localStorage.getItem(AUTH_KEY)?.toString()
     if (auth) {
-        console.log('auth', auth)
         const val = await httpGet('/project/list?limit=1')
-        console.log(val)
 
         if (val.code === -500) {
             return null
@@ -169,6 +169,9 @@ export async function getAuthorizationByLocalAndServer() {
 
 
 export async function initAuthorization() {
+    if (isInitingAuthorization) {
+        return
+    }
     // @ts-ignore
     const { walletProvider, sexAddress } = window
     if (!walletProvider || !sexAddress) {

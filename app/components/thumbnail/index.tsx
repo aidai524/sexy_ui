@@ -17,7 +17,7 @@ interface Props {
 export default function Thumbnail({
     showDesc = true,
     topDesc = false,
-    showProgress = true,
+    showProgress = false,
     autoHeight = false,
     showBackIcon = true,
     data
@@ -107,7 +107,6 @@ function Arrow() {
             </filter>
         </defs>
     </svg>
-
 }
 
 
