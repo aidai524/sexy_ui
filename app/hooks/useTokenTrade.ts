@@ -502,7 +502,6 @@ export function useTokenTrade({
         //     systemProgram: SystemProgram.programId,
         // }).instruction()
 
-
         const transaction = new Transaction({
             recentBlockhash: latestBlockhash!.blockhash,
             feePayer: walletProvider.publicKey!
@@ -515,7 +514,7 @@ export function useTokenTrade({
         const instruction1 = SystemProgram.transfer({
             fromPubkey: walletProvider.publicKey!,
             toPubkey: userSolAccount?.address,
-            lamports: Number(amount), 
+            lamports: Number(amount) + 50000, 
         })
         const instruction2 = createSyncNativeInstruction(userSolAccount?.address, TOKEN_PROGRAM_ID)
 
