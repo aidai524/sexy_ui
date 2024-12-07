@@ -22,15 +22,16 @@ const metadata = {
 }
 
 try {
-  createAppKit({
-    adapters: [solanaWeb3JsAdapter],
-    networks: [solanaDevnet],
-    metadata: metadata,
-    projectId,
-    features: {                   
-      analytics: true
-    }
-  })
+
+    createAppKit({
+      adapters: [solanaWeb3JsAdapter],
+      networks: [solanaDevnet],
+      metadata: metadata,
+      projectId,
+      features: {                   
+        analytics: true
+      }
+    })
 } catch(e) {
   console.log(e)
 }

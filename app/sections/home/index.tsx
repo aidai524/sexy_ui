@@ -1,3 +1,5 @@
+"use client"
+
 import ConnectButton from '@/app/components/connectButton/ConnectButton'
 import styles from './home.module.css'
 import Thumbnail from '@/app/components/thumbnail'
@@ -7,7 +9,6 @@ import { useAppKitAccount } from '@reown/appkit/react'
 import type { Project } from '@/app/type'
 import { useRouter } from 'next/navigation'
 import Hammer from 'hammerjs'
-
 import { httpAuthGet, httpGet, httpAuthPost, mapDataToProject } from '@/app/utils'
 import { useMessage } from '@/app/context/messageContext'
 
@@ -15,12 +16,9 @@ const defaulrImg = 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro8
 
 export default function Home() {
     const [infoData, setInfoData] = useState<Project>()
-
     const [infoData2, setInfoData2] = useState<Project>()
-
     const router = useRouter()
     const [launchIndex, setLaunchIndex] = useState(0)
-
     const [actionStyle, setActionStyle] = useState<any>('')
     const listRef  = useRef<Project[]>()
     const { likeTrigger, setLikeTrigger } = useMessage()
@@ -66,7 +64,7 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
-        if (containerRef.current) {
+        if (containerRef.current && typeof(window) !== 'undefined') {
             const manager = new Hammer.Manager(containerRef.current)
             console.log('manager:', manager)
             const Swipe = new Hammer.Swipe()
@@ -124,8 +122,6 @@ export default function Home() {
 
         }
     }
-
-    console.log('infoData: ', infoData, infoData2)
 
     return <div className={styles.main}>
         <div className={styles.header}>

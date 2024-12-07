@@ -449,6 +449,8 @@ export function useTokenTrade({
     }, [connection, walletProvider, programId, wsol])
 
     const prePaid = useCallback(async (amount: number | string, tokenName: string, tokenSymbol: string) => {
+        console.log(111)
+
         const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
 
         if (val.code !== 0) {

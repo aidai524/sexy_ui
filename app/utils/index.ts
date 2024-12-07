@@ -100,6 +100,7 @@ export async function httpAuthPut(path: string, params?: any) {
     const header = {
         authorization
     }
+
     const val = await http(path, 'PUT', params, header)
 
     if (typeof (val.code) !== 'undefined') {
@@ -149,7 +150,10 @@ export function getAuthorizationByLocal() {
 export async function getAuthorizationByLocalAndServer() {
     const auth = window.localStorage.getItem(AUTH_KEY)?.toString()
     if (auth) {
+        console.log('auth', auth)
         const val = await httpGet('/project/list?limit=1')
+        console.log(val)
+
         if (val.code === -500) {
             return null
         }
