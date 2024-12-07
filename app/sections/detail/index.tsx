@@ -33,7 +33,7 @@ export default function Detail() {
     }, [params])
 
     if (!infoData) {
-        return 
+        return <></>
     }
 
     return <div className={styles.main}>

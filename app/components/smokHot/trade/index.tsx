@@ -89,9 +89,9 @@ export default function Trade({ token, onSuccess }: Props) {
 
                             onSuccess && onSuccess()
                         }
-                    } catch(e) {
+                    } catch(e: any) {
                         console.log(e)
-                        // fail(e.message)
+                        fail(e.toString())
                         setIsLoading(false)
                     }
                 }} style={{ backgroundColor: '#9514FF'  }}>Pre-Buy</MainBtn>
