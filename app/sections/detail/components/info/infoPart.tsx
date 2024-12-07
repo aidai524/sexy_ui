@@ -3,7 +3,7 @@ import Panel from '../../../../components/panel'
 
 import styles from './detail.module.css'
 import type { Project } from '@/app/type';
-import { formatAddress } from '@/app/utils';
+import { formatAddress, timeAgo } from '@/app/utils';
 
 interface Props {
     showThumbnailHead: boolean;
@@ -30,7 +30,7 @@ export default function InfoPart({
             </div>
             <div className={styles.author}>
                 <div className={styles.authorTitle}>Create time:</div>
-                <div className={styles.authorDesc}>{ data.time }</div>
+                <div className={styles.authorDesc}>{ timeAgo(data.time) }</div>
             </div>
             <div className={styles.author}>
                 <div className={styles.authorGreenTitle}>Market cap:</div>

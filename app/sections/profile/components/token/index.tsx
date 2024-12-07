@@ -3,6 +3,7 @@ import styles from './token.module.css'
 import { Modal } from 'antd-mobile'
 import BoostJust from '@/app/components/boost/boostJust'
 import type { Project } from '@/app/type'
+import { timeAgo } from '@/app/utils'
 
 interface Props {
     data: Project
@@ -32,7 +33,7 @@ export default function Token({ data } : Props) {
                     <img className={styles.createrImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
                 </div>
                 <div className={styles.MarketCap}>Market cap: -</div>
-                <div className={styles.createTime}>{ data.time }</div>
+                <div className={styles.createTime}>{ timeAgo(data.time) }</div>
             </div>
         </div>
 

@@ -38,8 +38,20 @@ export function http(path: string, method: string, params?: any, headers?: any) 
     }).then(res => res.json())
 }
 
-export function httpGet(path: string, params?: any) {
-    return http(path, 'GET', params)
+export async function httpGet(path: string, params?: any) {
+    const val = await http(path, 'GET', params)
+
+    if (typeof (val.code) !== 'undefined') {
+        if (val.code === -500) {
+            window.localStorage.removeItem(AUTH_KEY)
+            return await httpGet(path, params)
+        } else if (val.code !== 0) {
+            // fail(val.message)
+            return val
+        } else {
+            return val
+        }
+    }
 }
 
 export async function httpAuthGet(path: string, params?: any) {
@@ -47,7 +59,20 @@ export async function httpAuthGet(path: string, params?: any) {
     const header = {
         authorization
     }
-    return http(path, 'GET', params, header)
+    const val = await http(path, 'GET', params, header)
+
+
+    if (typeof (val.code) !== 'undefined') {
+        if (val.code === -500) {
+            window.localStorage.removeItem(AUTH_KEY)
+            return await httpAuthGet(path, params)
+        } else if (val.code !== 0) {
+            // fail(val.message)
+            return val
+        } else {
+            return val
+        }
+    }
 }
 
 export async function httpAuthPost(path: string, params?: any) {
@@ -58,7 +83,7 @@ export async function httpAuthPost(path: string, params?: any) {
     const val = await http(path, 'POST', params, header)
 
     if (typeof (val.code) !== 'undefined') {
-        if (val.code === 500) {
+        if (val.code === -500) {
             window.localStorage.removeItem(AUTH_KEY)
             return await httpAuthPost(path, params)
         } else if (val.code !== 0) {
@@ -78,7 +103,7 @@ export async function httpAuthPut(path: string, params?: any) {
     const val = await http(path, 'PUT', params, header)
 
     if (typeof (val.code) !== 'undefined') {
-        if (val.code === 500) {
+        if (val.code === -500) {
             window.localStorage.removeItem(AUTH_KEY)
             return await httpAuthPut(path, params)
         } else if (val.code !== 0) {
