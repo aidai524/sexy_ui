@@ -74,7 +74,6 @@ export default function Thumbnail({
                     <Tags data={data}/>
                 </div>
             }
-
         </div>
     </div>
 }

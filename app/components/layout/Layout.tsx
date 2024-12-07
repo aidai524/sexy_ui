@@ -69,7 +69,8 @@ export default function Component({ children }: { children: React.ReactNode }) {
   const initToken = useCallback(async () => {
     const auth = await getAuthorizationByLocalAndServer()
     if (!auth) {
-      initAuthorization(walletProvider, address as string)
+      
+      initAuthorization()
     }
   }, [address])
 
@@ -77,6 +78,11 @@ export default function Component({ children }: { children: React.ReactNode }) {
     if (!address) {
       return
     }
+
+    // @ts-ignore
+    window.walletProvider = walletProvider
+    // @ts-ignore
+    window.sexAddress = address
 
     initToken()
   }, [address])

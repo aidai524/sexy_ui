@@ -1,3 +1,4 @@
+"use client"
 import { useTokenTrade } from '@/app/hooks/useTokenTrade'
 import Info from './components/info/detail'
 import Chart from './components/chart/index'
