@@ -14,19 +14,22 @@ import {
   sendAndConfirmTransaction,
 } from '@solana/web3.js';
 import styles from './connectButton.module.css'
+import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 export default function ConnectButton() {
-  const appKit = useAppKit()
+  // const appKit = useAppKit()
   const { walletProvider } = useAppKitProvider<Provider>('solana')
   const account = useAppKitAccount()
   const { disconnect, } = useDisconnect()
   const { connection } = useAppKitConnection()
+  const { connected } = useWallet()
 
   // console.log('connection:', connection)
 
   const handleConnect = async () => {
     try {
-      await appKit.open()
+      // await appKit.open()
     } catch (error) {
       console.error('Wallet connection error:', error)
     } finally {
@@ -35,7 +38,7 @@ export default function ConnectButton() {
 
   const handleDisconnect = async () => {
     // disconnect()
-    await appKit.open()
+    // await appKit.open()
   }
 
   // console.log('account:', account)
@@ -48,12 +51,17 @@ export default function ConnectButton() {
 
   return (
     <div>
-      <div
-        className={styles.button}
-        onClick={handleConnect}
-      >
-        Connect
-      </div>
+      {
+        connected ? (
+          <WalletDisconnectButton>
+            Disconnect
+          </WalletDisconnectButton>
+        ) : (
+          <WalletMultiButton>
+            Connect
+          </WalletMultiButton>
+        )
+      }
     </div>
   )
 } 
