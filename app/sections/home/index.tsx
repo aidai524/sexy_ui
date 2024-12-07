@@ -1,3 +1,5 @@
+"use client"
+
 import ConnectButton from '@/app/components/connectButton/ConnectButton'
 import styles from './home.module.css'
 import Thumbnail from '@/app/components/thumbnail'
@@ -5,21 +7,22 @@ import Action from '../../components/action'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Project } from '@/app/type'
 import { useRouter } from 'next/navigation'
-
+import Hammer from 'hammerjs'
 import { httpAuthGet, httpGet, httpAuthPost, mapDataToProject } from '@/app/utils'
+import { useMessage } from '@/app/context/messageContext'
 
 const defaulrImg = 'https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect'
 
 export default function Home() {
     const [infoData, setInfoData] = useState<Project>()
-
     const [infoData2, setInfoData2] = useState<Project>()
-
     const router = useRouter()
     const [launchIndex, setLaunchIndex] = useState(0)
-
     const [actionStyle, setActionStyle] = useState<any>('')
     const listRef  = useRef<Project[]>()
+    const { likeTrigger, setLikeTrigger } = useMessage()
+
+    const containerRef = useRef<any>()
 
     function getnext() {
         if (listRef.current) {
@@ -59,7 +62,65 @@ export default function Home() {
         })
     }, [])
 
-    console.log('infoData: ', infoData, infoData2)
+    useEffect(() => {
+        if (containerRef.current && typeof(window) !== 'undefined') {
+            const manager = new Hammer.Manager(containerRef.current)
+            console.log('manager:', manager)
+            const Swipe = new Hammer.Swipe()
+            manager.add(Swipe)
+
+            manager.on('swipe', function(e) {
+                const direction = e.offsetDirection
+                console.log('direction:', direction)
+                if (direction === 2 || direction === 16) {
+                    hate()
+                } else if (direction === 4 || direction === 8) {
+                    if (likeTrigger) {
+                        return
+                    }
+                    setLikeTrigger(true)
+                    like()
+                   
+        
+                    setTimeout(() => {
+                        setLikeTrigger(false)
+                    }, 1600)
+                }
+            })
+
+            return () => {
+                manager.off('swipe')
+            }
+        }
+    }, [])
+
+    async function like() {
+        setActionStyle(styles.like)
+                
+        setTimeout(() => {
+            setActionStyle(null)
+            getnext()
+        }, 1000)
+        try {
+            await httpAuthPost('/project/like?id=' + infoData2!.id, {})
+        } catch(e) {
+
+        }
+        
+    }
+
+    async function hate() {
+        setActionStyle(styles.hate)
+        setTimeout(() => {
+            setActionStyle(null)
+            getnext()
+        }, 1000)
+        try { 
+            await httpAuthPost('/project/un_like?id=' + infoData2!.id, {})
+        } catch {
+
+        }
+    }
 
     return <div className={styles.main}>
         <div className={styles.header}>
@@ -91,7 +152,7 @@ export default function Home() {
             </div>
         </div>
 
-        <div className={styles.thumbnailListBox}>
+        <div className={styles.thumbnailListBox} ref={containerRef}>
             {
                 infoData && <div className={[styles.thumbnailBox].join(' ')}>
                     <Thumbnail showDesc={true} data={infoData} />
@@ -108,30 +169,10 @@ export default function Home() {
         <Action
             token={infoData2}
             onLike={async () => {
-                setActionStyle(styles.like)
-                
-                setTimeout(() => {
-                    setActionStyle(null)
-                    getnext()
-                }, 1000)
-                try {
-                    await httpAuthPost('/project/like?id=' + infoData2!.id, {})
-                } catch(e) {
-
-                }
-                
+                like()
             }} 
             onHate={async () => {
-                setActionStyle(styles.hate)
-                setTimeout(() => {
-                    setActionStyle(null)
-                    getnext()
-                }, 1000)
-                try { 
-                    await httpAuthPost('/project/un_like?id=' + infoData2!.id, {})
-                } catch {
-
-                }
+                hate()
             }} 
             onSuperLike={() => { }}
             onBoost={() => { }} />

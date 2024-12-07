@@ -34,7 +34,9 @@ export default function SmokPanel({ show, token, onHide }: Props) {
                     <img className={ styles.smokeImg } src="/img/home/smokeHotLogo.svg" />
                 </div>
 
-                <Trade token={token}/>
+                <Trade token={token} onSuccess={() => {
+                    onHide && onHide()
+                }}/>
             </div>
         </Popup>
     </div>

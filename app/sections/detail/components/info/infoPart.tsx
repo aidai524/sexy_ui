@@ -8,12 +8,14 @@ import { formatAddress, timeAgo } from '@/app/utils';
 interface Props {
     showThumbnailHead: boolean;
     showThumbnailProgress?: boolean;
+    showBackIcon?: boolean;
     data: Project;
 }
 
 export default function InfoPart({
     showThumbnailHead = false,
     showThumbnailProgress = true,
+    showBackIcon = true,
     data
 }: Props) {
     if (!data) {
@@ -21,7 +23,7 @@ export default function InfoPart({
     }
 
     return <div>
-        <Thumbnail autoHeight={true} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
+        <Thumbnail autoHeight={true} showBackIcon={showBackIcon} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
         <Sep />
         <Panel>
             <div className={styles.author}>

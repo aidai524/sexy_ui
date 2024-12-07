@@ -129,7 +129,11 @@ export default function BuySell({
         <div className={[styles.cationArea, styles.panel].join(' ')}>
             <div className={styles.tradeTabs}>
                 <div onClick={() => { setActiveIndex(0) }} className={[styles.tab, activeIndex === 0 ? styles.active : null].join(' ')}>Buy</div>
-                <div onClick={() => { setActiveIndex(1) }} className={[styles.tab, activeIndex === 1 ? styles.active : null].join(' ')}>Sell</div>
+                <div onClick={() => { 
+                    setActiveIndex(1)
+                    setCurrentToken(desToken)
+                    setTokenType(0)
+                 }} className={[styles.tab, activeIndex === 1 ? styles.active : null].join(' ')}>Sell</div>
             </div>
 
             <div className={styles.inputArea}>

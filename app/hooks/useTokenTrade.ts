@@ -448,6 +448,8 @@ export function useTokenTrade({
     }, [connection, walletProvider, programId, wsol])
 
     const prePaid = useCallback(async (amount: number | string, tokenName: string, tokenSymbol: string) => {
+        console.log(111)
+
         const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
 
         if (val.code !== 0) {
@@ -499,7 +501,6 @@ export function useTokenTrade({
         //     systemProgram: SystemProgram.programId,
         // }).instruction()
 
-
         const transaction = new Transaction({
             recentBlockhash: latestBlockhash!.blockhash,
             feePayer: walletProvider.publicKey!
@@ -512,7 +513,7 @@ export function useTokenTrade({
         const instruction1 = SystemProgram.transfer({
             fromPubkey: walletProvider.publicKey!,
             toPubkey: userSolAccount?.address,
-            lamports: Number(amount), 
+            lamports: Number(amount) + 50000, 
         })
         const instruction2 = createSyncNativeInstruction(userSolAccount?.address, TOKEN_PROGRAM_ID)
 
@@ -531,7 +532,7 @@ export function useTokenTrade({
 
         const hash2 = await walletProvider.signAndSendTransaction(serverTransaction, confirmationStrategy)
 
-        console.log('hashL', hash2)
+        console.log('hash', hash2)
 
         // return hash2   
     }, [programId, walletProvider, connection, wsol])

@@ -3,17 +3,17 @@ import styles from './follower.module.css'
 import Tab from '../components/tab'
 import FollowerList from './component/followerList'
 import { useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { httpGet, httpAuthGet } from '@/app/utils'
 
 export default function Follower() {
-    const params = useParams()
+    const params = useSearchParams()
 
     useEffect(() => {
-        console.log('params:', params)
-        if (params.id) {
+        const id = params.get('id')
+        if (id) {
             httpAuthGet('/project/follower/list', {
-                address: params.id,
+                address: id,
                 limit: 9999,
             }).then(res => {
                 console.log(res)

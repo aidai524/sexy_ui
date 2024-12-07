@@ -9,9 +9,10 @@ import { fail, success } from '@/app/utils/toast'
 
 interface Props {
     token: Project;
+    onSuccess?: () => void;
 }
 
-export default function Trade({ token }: Props) {
+export default function Trade({ token, onSuccess }: Props) {
     const [inputVal, setInputVal] = useState('')
     const [quickIndex, setQuickIndex] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -85,10 +86,12 @@ export default function Trade({ token }: Props) {
                             await prePaid(inputNum, token.tokenName, token.tokenSymbol || token.tokenName.toUpperCase())
                             setIsLoading(false)
                             success('Smoke like success')
+
+                            onSuccess && onSuccess()
                         }
-                    } catch(e) {
+                    } catch(e: any) {
                         console.log(e)
-                        // fail(e.message)
+                        fail(e.toString())
                         setIsLoading(false)
                     }
                 }} style={{ backgroundColor: '#9514FF'  }}>Pre-Buy</MainBtn>

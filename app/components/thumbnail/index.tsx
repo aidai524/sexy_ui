@@ -11,13 +11,15 @@ interface Props {
     showProgress?: boolean;
     data: Project;
     autoHeight?: boolean;
+    showBackIcon?: boolean;
 }
 
 export default function Thumbnail({
     showDesc = true,
     topDesc = false,
-    showProgress = true,
+    showProgress = false,
     autoHeight = false,
+    showBackIcon = true,
     data
 }: Props) {
     const [progressIndex, setProgressIndex] = useState(0)
@@ -28,7 +30,7 @@ export default function Thumbnail({
 
     return <div>
         {
-            topDesc && <AvatarBack data={data} />
+            topDesc && <AvatarBack data={data} showBackIcon={showBackIcon}/>
         }
 
         <div className={styles.thumbnail} style={{ height: autoHeight ? 'auto' : 'calc(100vh - 232px)' }}>
@@ -57,14 +59,14 @@ export default function Thumbnail({
                             <span className={ styles.likesNums }>{ data.superLike }</span>
                         </div>
                     </div>
-                    
+
                     <div className={styles.tokenMsg}>
                         <Avatar data={data} />
 
                         <div className={styles.desc}>{ data.about }</div>
 
                         <div className={styles.detailLink}>
-                            <Link href={"/detail/" + data.id}>
+                            <Link href={"/detail?id=" + data.id}>
                                 <Arrow />
                             </Link>
                         </div>
@@ -72,7 +74,6 @@ export default function Thumbnail({
                     <Tags data={data}/>
                 </div>
             }
-
         </div>
     </div>
 }
@@ -106,7 +107,6 @@ function Arrow() {
             </filter>
         </defs>
     </svg>
-
 }
 
 
@@ -135,7 +135,8 @@ function TopArrow() {
 }
 
 interface AvatarProps {
-    data: Project
+    data: Project;
+    showBackIcon?: boolean;
 }
 
 const defaultImg = 'https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect'
@@ -153,7 +154,7 @@ export function Avatar({
         </div>
         <div>
             <div className={styles.tokenName}>{ data.tokenName }</div>
-            <div className={styles.tickerContent}>
+            <div className={styles.tickerContent1}>
                 <div className={styles.ticker}>Ticker: { data.ticker }</div>
                 <div className={styles.launchTag}>Pre-Launch</div>
             </div>
@@ -162,10 +163,13 @@ export function Avatar({
 }
 
 export function AvatarBack({
-    data
+    data,
+    showBackIcon = true
 }: AvatarProps) {
     return <div className={styles.detailTitle}>
         <Avatar data={data}/>
-        <TopArrow />
+        {
+            showBackIcon && <TopArrow />
+        }
     </div>
 }

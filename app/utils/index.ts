@@ -100,6 +100,7 @@ export async function httpAuthPut(path: string, params?: any) {
     const header = {
         authorization
     }
+
     const val = await http(path, 'PUT', params, header)
 
     if (typeof (val.code) !== 'undefined') {
@@ -130,10 +131,15 @@ const watingQuene: any[] = []
 
 export async function getAuthorization() {
     authorization = getAuthorizationByLocal()
-    if (isInitingAuthorization || !authorization) {
-        return new Promise((resolve, reject) => {
-            watingQuene.push(resolve)
-        })
+    if (!authorization) {
+        if (isInitingAuthorization) {
+            return new Promise((resolve, reject) => {
+                watingQuene.push(resolve)
+            })
+        } else {
+            initAuthorization()
+        }
+        
     }
 
 
@@ -143,13 +149,16 @@ export async function getAuthorization() {
 export function getAuthorizationByLocal() {
     const auth = window.localStorage.getItem(AUTH_KEY)?.toString()
     
-    return auth
+    console.log('auth:', auth)
+
+    return auth 
 }
 
 export async function getAuthorizationByLocalAndServer() {
     const auth = window.localStorage.getItem(AUTH_KEY)?.toString()
     if (auth) {
         const val = await httpGet('/project/list?limit=1')
+
         if (val.code === -500) {
             return null
         }
@@ -159,36 +168,50 @@ export async function getAuthorizationByLocalAndServer() {
 }
 
 
+export async function initAuthorization() {
+    if (isInitingAuthorization) {
+        return
+    }
+    // @ts-ignore
+    const { walletProvider, sexAddress } = window
+    if (!walletProvider || !sexAddress) {
+        return
+    }
 
-export async function initAuthorization(walletProvider: any, address: string) {
     isInitingAuthorization = true
     const now = Date.now()
     const text = `login sexy,time:${now}`
     const encodedMessage = new TextEncoder().encode(text)
-    const signMessage = await walletProvider!.signMessage(encodedMessage)
-    // console.log('signMessage:', signMessage)
-
-    const b64encoded = await bufferToBase64(signMessage)
-    console.log('b64encoded', b64encoded)
-
-    const v = await httpGet('/account/token', {
-        address,
-        signature: b64encoded,
-        time: now
-    })
-
-    if (v.data) {
-        window.localStorage.setItem(AUTH_KEY, v.data)
-    } else {
-        return
+    try {
+        const signMessage = await walletProvider!.signMessage(encodedMessage)
+        // console.log('signMessage:', signMessage)
+    
+        const b64encoded = await bufferToBase64(signMessage)
+        console.log('b64encoded', b64encoded)
+    
+        const v = await httpGet('/account/token', {
+            address: sexAddress,
+            signature: b64encoded,
+            time: now
+        })
+    
+        if (v.data) {
+            window.localStorage.setItem(AUTH_KEY, v.data)
+        } else {
+            return
+        }
+    
+        authorization = v.data
+    
+        while (watingQuene.length) {
+            const _reslove = watingQuene.shift()
+            _reslove(v.data)
+        }
+    } catch(e) {
+        watingQuene.length = 0
     }
-
-    authorization = v.data
-
-    while (watingQuene.length) {
-        const _reslove = watingQuene.shift()
-        _reslove(v.data)
-    }
+    
+    isInitingAuthorization = false
 }
 
 
