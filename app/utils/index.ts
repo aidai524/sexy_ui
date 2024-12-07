@@ -368,3 +368,50 @@ export function timeAgo(time?: number) {
     }
     return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
 }
+
+
+export function getDeviceType() {
+    if (typeof window === 'undefined') return { pc: true, ios: false, android: false, mobile: false };
+    const userAgent = navigator.userAgent || navigator.vendor;
+  
+    const isAndroid = /Android/i.test(userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+    const isMobile =
+      /Mobile|Tablet|iPad|iPhone|iPod|Android/i.test(userAgent) || window.innerWidth < 640;
+  
+    return {
+      pc: !isAndroid && !isIOS && !isMobile,
+      ios: isIOS,
+      android: isAndroid,
+      mobile: isMobile,
+    };
+  }
+  
+
+  export function formatSortAddress(address: string | undefined) {
+    if (!address) return '';
+  
+    const domainSuffixes = ['.near', '.testnet', '.betanet', '.mainnet'];
+    const maxLength = 12;
+  
+    const suffix = domainSuffixes.find((suffix) => address.endsWith(suffix));
+    const isLongAddress = address.length > maxLength;
+  
+    if (suffix) {
+      if (isLongAddress) {
+        const visiblePartLength = maxLength - suffix.length - 10;
+        if (visiblePartLength > 0) {
+          return `${address.slice(0, 6)}...${address.slice(
+            -4 - suffix.length,
+            -suffix.length,
+          )}${suffix}`;
+        } else {
+          return `${address.slice(0, 6)}...${address.slice(-4)}`;
+        }
+      } else {
+        return address;
+      }
+    } else {
+      return isLongAddress ? `${address.slice(0, 6)}...${address.slice(-4)}` : address;
+    }
+  }
