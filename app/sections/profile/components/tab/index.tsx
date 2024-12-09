@@ -1,59 +1,76 @@
-import { useEffect, useState } from 'react';
-import styles from './tab.module.css'
+import { useEffect, useState } from "react";
+import styles from "./tab.module.css";
 
 export type Node = {
-    name: string;
-    content: React.ReactNode
-}
+  name: string;
+  content: React.ReactNode;
+};
 
 interface Props {
-    nodes: Node[];
-    activeNode?: string;
-    onTabChange?: (nodeName: string) => void;
+  nodes: Node[];
+  tabContentStyle?: any;
+  activeNode?: string;
+  onTabChange?: (nodeName: string) => void;
 }
 
 export default function Tab({
-    nodes,
-    activeNode,
-    onTabChange,
+  nodes,
+  activeNode,
+  tabContentStyle,
+  onTabChange
 }: Props) {
-    const [tabIndex, setTabIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState(0);
 
-    useEffect(() => {
-        if (activeNode) {
-            let tabIndex = 0
-            nodes.some((node, index) => {
-                if (node.name === activeNode) {
-                    tabIndex = index
-                    return true
-                }
-            })
-
-            setTabIndex(tabIndex)
+  useEffect(() => {
+    if (activeNode) {
+      let tabIndex = 0;
+      nodes.some((node, index) => {
+        if (node.name === activeNode) {
+          tabIndex = index;
+          return true;
         }
-    }, [activeNode, onTabChange, nodes])
+      });
 
-    return <div className={styles.tabs}>
-        <div className={styles.tabHeaders}>
-            {
-                nodes.map((node, index) => {
-                    return <div key={index} onClick={() => {
-                        setTabIndex(index)
-                        onTabChange && onTabChange(node.name)
-                    }} className={(tabIndex === index ? [styles.tab, styles.active] : [styles.tab]).join(' ')}>{node.name}</div>
-                })
-            }
-        </div>
+      setTabIndex(tabIndex);
+    }
+  }, [activeNode, onTabChange, nodes]);
 
-        {
-            nodes.map((node, index) => {
-                if (tabIndex !== index) {
-                    return null
-                }
-                return <div key={index} className={styles.tabContent}>
-                    {node.content}
-                </div>
-            })
+  return (
+    <div className={styles.tabs}>
+      <div className={styles.tabHeaders}>
+        {nodes.map((node, index) => {
+          return (
+            <div
+              key={index}
+              onClick={() => {
+                setTabIndex(index);
+                onTabChange && onTabChange(node.name);
+              }}
+              className={(tabIndex === index
+                ? [styles.tab, styles.active]
+                : [styles.tab]
+              ).join(" ")}
+            >
+              {node.name}
+            </div>
+          );
+        })}
+      </div>
+
+      {nodes.map((node, index) => {
+        if (tabIndex !== index) {
+          return null;
         }
+        return (
+          <div
+            key={index}
+            className={styles.tabContent}
+            style={tabContentStyle}
+          >
+            {node.content}
+          </div>
+        );
+      })}
     </div>
+  );
 }

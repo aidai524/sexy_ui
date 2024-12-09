@@ -1,0 +1,15 @@
+.follwerActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  .follwerItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: rgba(255, 255, 255, 0.6);
+    .follwerAmount {
+      color: #fff;
+    }
+  }
+}
