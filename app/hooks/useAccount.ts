@@ -1,7 +1,7 @@
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 export function useAccount() {
-  const { connected, connecting, publicKey, signTransaction, sendTransaction } = useWallet();
+  const { connected, connecting, publicKey, signTransaction, sendTransaction, signMessage } = useWallet();
   const { connection } = useConnection();
 
   return {
@@ -23,6 +23,7 @@ export function useAccount() {
           signature: tx,
         });
       },
+      signMessage
     },
   };
 }
