@@ -1,21 +1,20 @@
 :root {
-  --background: #0D1012;
+  --background: #0d1012;
   --foreground: #fff;
   --part-bg: rgba(255, 38, 129, 1);
 }
 
-:root body{
+:root body {
   --adm-font-family: Unbounded, Arial, Helvetica, sans-serif;
 }
 
-div.adm-image-uploader{
+div.adm-image-uploader {
   --cell-size: 100px;
-
 }
 
 @font-face {
-  font-family: 'Unbounded';
-  src: url('/font/Unbounded-VariableFont_wght.ttf');
+  font-family: "Unbounded";
+  src: url("/font/Unbounded-VariableFont_wght.ttf");
   font-weight: 200 900;
   font-stretch: 75% 125%;
 }
@@ -57,12 +56,11 @@ a {
   }
 }
 
-
 .app-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .app-container > :first-child {
@@ -74,10 +72,10 @@ a {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 50px; 
+  height: 50px;
   background: white;
   border-top: solid 1px #eee;
-  z-index: 100; 
+  z-index: 100;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -98,11 +96,10 @@ a {
   font-size: 16px;
 }
 
-
-.adm-modal .adm-center-popup-wrap  {
+.adm-modal .adm-center-popup-wrap {
   max-width: 96vw;
-  .adm-center-popup-body  {
-    background-color: #18131C;
+  .adm-center-popup-body {
+    background-color: #18131c;
     border-radius: 20px;
     padding: 0;
     .adm-modal-content {
@@ -113,4 +110,25 @@ a {
 
 .adm-popup .adm-popup-body {
   background-color: #121719;
+}
+
+body::-webkit-scrollbar,
+div::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  /**/
+}
+body::-webkit-scrollbar-track,
+div::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+body::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+body::-webkit-scrollbar-thumb:hover,
+div::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }

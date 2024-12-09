@@ -1,0 +1,31 @@
+.hotBoost {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.part {
+  display: flex;
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  align-items: center;
+  padding: 12px 15px;
+  gap: 15px;
+  font-size: 12px;
+  .nameContent {
+    color: rgba(146, 144, 177, 1);
+    .names {
+      padding-bottom: 5px;
+      .whiteName {
+        color: #fff;
+      }
+    }
+    .getMore1 {
+      color: rgba(193, 70, 255, 1);
+    }
+    .getMore2 {
+      color: rgba(177, 255, 250, 1);
+    }
+  }
+}

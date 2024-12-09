@@ -1,20 +1,23 @@
-'use client'
+"use client";
 
-import type { Metadata } from 'next'
-import './globals.css'
-import Layout from './components/layout/Layout'
-import WalletConnect from './components/WalletConnect'
-import { MessageContextProvider } from './context/messageContext'
+import type { Metadata } from "next";
+import "./globals.css";
+import Layout from "./components/layout";
+import WalletConnect from "./components/WalletConnect";
+import { MessageContextProvider } from "./context/messageContext";
 
 export default function RootLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
       </head>
       <body>
         <MessageContextProvider>
@@ -24,5 +27,5 @@ export default function RootLayout({
         </MessageContextProvider>
       </body>
     </html>
-  )
+  );
 }
