@@ -191,8 +191,21 @@ export function useTokenTrade({
             programId
         )
 
+        let referralUser: any = PublicKey.default
+        try {
+            const accountInfo = await connection.getAccountInfo(referralRecord[0]);
+            if (accountInfo) {
+                const program = new Program<any>(idl, programId, { connection: connection } as any);
+                const referralAccount: any = await program.account.referralRecord.fetch(referralRecord[0]);
+                referralUser = referralAccount.user
+            }
+        } catch (e) {
+        }
+        
+        console.log('accountInfo:', referralUser)
+
         const referralFeeRateRecord = PublicKey.findProgramAddressSync(
-            [Buffer.from("referral_record"), state[0].toBuffer(), referralRecord[0].toBuffer()],
+            [Buffer.from("referral_fee_rate_record"), state[0].toBuffer(), referralUser.toBuffer()],
             programId
         )
 
@@ -248,7 +261,7 @@ export function useTokenTrade({
 
         const keys = await getKeys()
 
-        console.log('keys: ', keys)
+        // console.log('keys: ', keys)
 
         if (!keys) {
             return
@@ -299,12 +312,21 @@ export function useTokenTrade({
 
         const solAmount = new anchor.BN(minPrice)
 
+        console.log(new anchor.BN(amount),
+        solAmount,
+        new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+        keys.proxySolAccount)
+
         const tx: any = await program.methods.sellToken(
             new anchor.BN(amount),
             solAmount,
             new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
             keys.proxySolAccount,
         ).accounts(keys).transaction()
+
+        const referral = anchor.web3.Keypair.fromSecretKey(bs58.decode('5P9B9gSt6BQG7wQ2CTDcnFfbL1NUBhsRrQUTR6YB5WvfYEhpnCFm2dyFSXnzYb2WzbQL9t4cLEM7ZkWiBpaTqPfB'));
+
+        console.log("referral:" + referral.publicKey.toString())
 
         console.log('tx:', tx)
         tx.recentBlockhash = latestBlockhash!.blockhash

@@ -8,11 +8,10 @@ import { useAccount } from '@/app/hooks/useAccount';
 interface Props {
     onStartVip: () => void;
     onCanceVip: () => void;
-    address: string | undefined;
 }
 
 export default function BoostVip({
-    onStartVip, onCanceVip, address
+    onStartVip, onCanceVip
 }: Props) {
     const [isLoading, setIsLoading] = useState(false)
     const { call } = useVip()

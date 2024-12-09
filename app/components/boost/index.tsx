@@ -14,7 +14,7 @@ export default function Boost({ onClick }: { onClick: () => void; }) {
 
     const { address } = useAccount()
 
-    const VipModal = <BoostVip address={address} onStartVip={() => {
+    const VipModal = <BoostVip onStartVip={() => {
         
     }} onCanceVip={() => {
         setBoostShow(true)
