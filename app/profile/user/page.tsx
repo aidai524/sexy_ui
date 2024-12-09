@@ -3,5 +3,5 @@
 import ProfileCom from "@/app/sections/profile"
 
 export default function Prpfile() {
-    return <ProfileCom showHot={false} />
+    return <ProfileCom isOther={true}/>
 }

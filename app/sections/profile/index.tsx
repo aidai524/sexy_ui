@@ -1,4 +1,4 @@
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname, useParams, useSearchParams } from 'next/navigation'
 import Created from './components/created'
 import Held from './components/held'
 import Tab from './components/tab'
@@ -7,21 +7,36 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Modal } from 'antd-mobile'
 import BoostVip from '@/app/components/boost/boostVip'
-import { httpAuthGet } from '@/app/utils'
+import { httpAuthGet, httpAuthPost } from '@/app/utils'
 
 import type { UserInfo } from '@/app/type/index'
 import useUserInfo from './hooks/useUserInfo'
 import { useAccount } from '@/app/hooks/useAccount';
 
+import { success, fail } from '@/app/utils/toast'
+import useFollow from './hooks/useFollow'
+
 interface Props {
     showHot?: boolean;
+    isOther?: boolean;
 }
 
 export default function Profile({
-    showHot = true
+    showHot = true, isOther = false
 }: Props) {
     const router = useRouter()
-    const { address } = useAccount()
+    const params = useSearchParams()
+    const { address: userAddress } = useAccount()
+    const { follow } = useFollow()
+    
+    const address = useMemo(() => {
+        if (isOther && params) {
+            return params.get('account')?.toString()
+        }
+
+        return userAddress
+    }, [userAddress, params, isOther])
+
     const { userInfo } = useUserInfo(address)
 
     const tabs = useMemo(() => {
@@ -70,6 +85,32 @@ export default function Profile({
 
     return <div className={styles.main} >
         <div style={backgroundImgStyle1}>
+            {
+                isOther ? <div className={styles.isOther}>
+                    <div>
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g filter="url(#filter0_b_17_2972)">
+                                <circle cx="20" cy="20" r="20" fill="black" fill-opacity="0.4" />
+                            </g>
+                            <path d="M23.5 25.5L17.5 19L23.5 12.5" stroke="white" stroke-width="2" stroke-linecap="round" />
+                            <defs>
+                                <filter id="filter0_b_17_2972" x="-10" y="-10" width="60" height="60" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                    <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
+                                    <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_17_2972" />
+                                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_17_2972" result="shape" />
+                                </filter>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <div className={ styles.followerType }>
+                        <div className={ styles.isFollow } onClick={async () => {
+                           address && follow(address)
+                        }}>Follow</div>
+                    </div>
+                </div> : null
+            }
             <div className={styles.avatarContent} style={backgroundImgStyle}>
                 <div className={styles.avatar}>
                     <img className={styles.avatarImg} src={userInfo?.icon} />
@@ -85,13 +126,13 @@ export default function Profile({
         </div>
         <div className={styles.follwerActions}>
             <div className={styles.follwerItem} onClick={() => {
-                router.push('/profile/follower/' + address)
+                router.push('/profile/follower?account=' + address)
             }}>
                 <span className={styles.follwerAmount}>{userInfo?.followers}</span>
                 <span>Followers</span>
             </div>
             <div className={styles.follwerItem} onClick={() => {
-                router.push('/profile/follower/' + address)
+                router.push('/profile/follower?account=' + address)
             }}>
                 <span className={styles.follwerAmount}>{userInfo?.following}</span>
                 <span>Following</span>

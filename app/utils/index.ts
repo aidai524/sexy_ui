@@ -107,6 +107,33 @@ export async function httpAuthPost(path: string, params: any = {}, isRepeat: boo
     }
 }
 
+export async function httpAuthDelete(path: string, params: any = {}, isRepeat: boolean = true) {
+    const authorization = await getAuthorization()
+
+    console.log('authorization:', authorization)
+
+    const header = {
+        authorization
+    }
+    const val = await http(path, 'DELETE', params, header)
+
+    if (typeof (val.code) !== 'undefined') {
+        if (val.code === -500) {
+            window.localStorage.removeItem(AUTH_KEY)
+            if (isRepeat) {
+                return await httpAuthDelete(path, params, false)
+            }
+            
+            return val
+        } else if (val.code !== 0) {
+            // fail(val.message)
+            return val
+        } else {
+            return val
+        }
+    }
+}
+
 export async function httpAuthPut(path: string, params: any = {}, isRepeat: boolean = true) {
     const authorization = await getAuthorization()
     const header = {

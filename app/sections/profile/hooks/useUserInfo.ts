@@ -10,7 +10,6 @@ export default function useUserInfo(address: string | undefined) {
     useEffect(() => {
         if (address) {
             httpAuthGet('/account', { address: address }).then(res => {
-                console.log('res: ', res)
                 if (res.code === 0) {
                     setUserInfo({
                         name: res.data.name,

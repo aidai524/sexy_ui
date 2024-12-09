@@ -17,6 +17,8 @@ export interface Project {
     superLike?: number;
     time?: number;
     account?: string;
+    boostTime?: number;
+    address?: string;
 }
 
 export interface Comment {

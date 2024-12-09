@@ -29,7 +29,7 @@ export default function Action({
 
     return <div className={styles.action} style={style}>
         <div>
-            <Boost onClick={() => {
+            <Boost token={token} onClick={() => {
                 onBoost && onBoost()
             }} />
         </div>
