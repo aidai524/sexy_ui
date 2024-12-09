@@ -3,14 +3,16 @@ import styles from './boost.module.css'
 import BoostIcon from './boostIocn'
 import { fail, success } from '@/app/utils/toast';
 import { useState } from 'react';
+import { useAccount } from '@/app/hooks/useAccount';
 
 interface Props {
     onStartVip: () => void;
     onCanceVip: () => void;
+    address: string | undefined;
 }
 
 export default function BoostVip({
-    onStartVip, onCanceVip
+    onStartVip, onCanceVip, address
 }: Props) {
     const [isLoading, setIsLoading] = useState(false)
     const { call } = useVip()

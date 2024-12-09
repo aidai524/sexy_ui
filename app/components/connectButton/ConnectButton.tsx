@@ -14,7 +14,7 @@ export default function ConnectButton() {
         connected ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div className={styles.button} onClick={disconnect}>
-              Disconnect
+            Dis
             </div>
           </div>
         ) : (

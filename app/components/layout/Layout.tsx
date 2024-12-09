@@ -4,6 +4,7 @@ import { TabBar } from 'antd-mobile'
 import { useRouter, usePathname } from 'next/navigation'
 import styles from './layout.module.css'
 import { useCallback, useEffect, useMemo } from 'react'
+import { WalletModalButton, useWalletModal} from '@solana/wallet-adapter-react-ui'
 import { bufferToBase64, getAuthorization, getAuthorizationByLocal, getAuthorizationByLocalAndServer, httpGet, initAuthorization } from '@/app/utils'
 import { useMessage } from '@/app/context/messageContext'
 import { useAccount } from '@/app/hooks/useAccount';
@@ -16,6 +17,7 @@ function CustomIcon({
   showPlus?: boolean;
 }) {
   const { likeTrigger } = useMessage()
+
 
   return <div className={ styles.tabIconWapper }>
     <img className={styles.tabIcon} src={url} />
@@ -52,7 +54,8 @@ const tabs = [
 export default function Component({ children }: { children: React.ReactNode }) {
   const router = useRouter() 
   const pathname = usePathname()
-  const { address, walletProvider } = useAccount();
+  const { address, walletProvider, connect } = useAccount();
+  const { setVisible } = useWalletModal()
 
   const showTabs = useMemo(() => {
     return tabs.find((tab) => {
@@ -71,6 +74,14 @@ export default function Component({ children }: { children: React.ReactNode }) {
       initAuthorization()
     }
   }, [address])
+
+  useEffect(() => {
+    // @ts-ignore
+    window.connect = () => {
+      setVisible(true)
+    }
+
+  }, [setVisible])
 
   useEffect(() => {
     if (!address) {

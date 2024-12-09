@@ -38,13 +38,16 @@ export function http(path: string, method: string, params?: any, headers?: any) 
     }).then(res => res.json())
 }
 
-export async function httpGet(path: string, params?: any) {
+export async function httpGet(path: string, params: any = {}, isRepeat: boolean = true) {
     const val = await http(path, 'GET', params)
 
     if (typeof (val.code) !== 'undefined') {
         if (val.code === -500) {
             window.localStorage.removeItem(AUTH_KEY)
-            return await httpGet(path, params)
+            if (isRepeat) {
+                return await httpGet(path, params, false)
+            }
+            return val
         } else if (val.code !== 0) {
             // fail(val.message)
             return val
@@ -54,18 +57,20 @@ export async function httpGet(path: string, params?: any) {
     }
 }
 
-export async function httpAuthGet(path: string, params?: any) {
+export async function httpAuthGet(path: string, params: any = {}, isRepeat: boolean = true) {
     const authorization = await getAuthorization()
     const header = {
         authorization
     }
     const val = await http(path, 'GET', params, header)
 
-
     if (typeof (val.code) !== 'undefined') {
         if (val.code === -500) {
             window.localStorage.removeItem(AUTH_KEY)
-            return await httpAuthGet(path, params)
+            if (isRepeat) {
+                return await httpAuthGet(path, params, false)
+            }
+            return val
         } else if (val.code !== 0) {
             // fail(val.message)
             return val
@@ -75,8 +80,11 @@ export async function httpAuthGet(path: string, params?: any) {
     }
 }
 
-export async function httpAuthPost(path: string, params?: any) {
+export async function httpAuthPost(path: string, params: any = {}, isRepeat: boolean = true) {
     const authorization = await getAuthorization()
+
+    console.log('authorization:', authorization)
+
     const header = {
         authorization
     }
@@ -85,7 +93,11 @@ export async function httpAuthPost(path: string, params?: any) {
     if (typeof (val.code) !== 'undefined') {
         if (val.code === -500) {
             window.localStorage.removeItem(AUTH_KEY)
-            return await httpAuthPost(path, params)
+            if (isRepeat) {
+                return await httpAuthPost(path, params, false)
+            }
+            
+            return val
         } else if (val.code !== 0) {
             // fail(val.message)
             return val
@@ -95,7 +107,7 @@ export async function httpAuthPost(path: string, params?: any) {
     }
 }
 
-export async function httpAuthPut(path: string, params?: any) {
+export async function httpAuthPut(path: string, params: any = {}, isRepeat: boolean = true) {
     const authorization = await getAuthorization()
     const header = {
         authorization
@@ -106,7 +118,11 @@ export async function httpAuthPut(path: string, params?: any) {
     if (typeof (val.code) !== 'undefined') {
         if (val.code === -500) {
             window.localStorage.removeItem(AUTH_KEY)
-            return await httpAuthPut(path, params)
+            if (isRepeat) {
+                return await httpAuthPut(path, params)
+            }
+
+            return val
         } else if (val.code !== 0) {
             fail(val.message)
             return null
@@ -137,7 +153,7 @@ export async function getAuthorization() {
                 watingQuene.push(resolve)
             })
         } else {
-            initAuthorization()
+            await initAuthorization()
         }
         
     }
@@ -148,9 +164,6 @@ export async function getAuthorization() {
 
 export function getAuthorizationByLocal() {
     const auth = window.localStorage.getItem(AUTH_KEY)?.toString()
-    
-    console.log('auth:', auth)
-
     return auth 
 }
 
@@ -172,9 +185,14 @@ export async function initAuthorization() {
     if (isInitingAuthorization) {
         return
     }
+
     // @ts-ignore
-    const { walletProvider, sexAddress } = window
+    const { walletProvider, sexAddress, connect } = window
     if (!walletProvider || !sexAddress) {
+        console.log('connect', connect)
+
+        await connect()
+
         return
     }
 
