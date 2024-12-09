@@ -1,0 +1,13 @@
+.Container {
+  padding: 30px;
+}
+
+.Title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.Content {
+  padding-top: 20px;
+}

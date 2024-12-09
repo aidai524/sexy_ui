@@ -6,19 +6,27 @@ import FollowerActions from "@/app/sections/profile/components/follower-actions"
 import Address from "@/app/sections/profile/components/address";
 import HotBoost from "@/app/sections/profile/components/hot-boost";
 import Tabs from "@/app/sections/profile/components/tabs";
+import EditProfile from "./edit-profile";
 import { useAccount } from "@/app/hooks/useAccount";
 import useUserInfo from "@/app/sections/profile/hooks/useUserInfo";
+import { useState } from "react";
 
 export default function User() {
   const { address } = useAccount();
-  const { userInfo } = useUserInfo(address);
+  const { userInfo, onQueryInfo } = useUserInfo(address);
+  const [openEditModal, setOpenEditModal] = useState(false);
   return (
     <div className={styles.Container}>
       <Bg />
       <div className={styles.Content}>
         <div className={styles.Top}>
           <Title />
-          <AvaterName userInfo={userInfo} onEdit={() => {}} />
+          <AvaterName
+            userInfo={userInfo}
+            onEdit={() => {
+              setOpenEditModal(true);
+            }}
+          />
           <FollowerActions userInfo={userInfo} onItemClick={() => {}} />
           <Address address={address} />
           <HotBoost onMoreClick={() => {}} style={{ margin: "10px" }} />
@@ -34,6 +42,16 @@ export default function User() {
           }}
         />
       </div>
+      <EditProfile
+        open={openEditModal}
+        onClose={() => {
+          setOpenEditModal(false);
+        }}
+        onSuccess={() => {
+          onQueryInfo();
+          setOpenEditModal(false);
+        }}
+      />
     </div>
   );
 }
