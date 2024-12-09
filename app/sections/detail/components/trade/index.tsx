@@ -4,8 +4,8 @@ import CA from '../ca'
 import BuySell from './buySell'
 
 const token: any = {
-    tokenName: 'HeHe',
-    tokenSymbol: 'HEHE',
+    tokenName: 'MoMo',
+    tokenSymbol: 'MOMO',
     tokenUri: 'https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect',
     tokenDecimals: 2,
 }

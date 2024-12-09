@@ -1,8 +1,8 @@
 import type { Project } from "../type";
 import { fail } from "./toast";
 
-// const BASE_URL = 'https://api.dumpdump.fun/api/v1'
-const BASE_URL = "/api/v1";
+const BASE_URL = "https://api.dumpdump.fun/api/v1";
+// const BASE_URL = '/api/v1'
 
 const AUTH_KEY = "sex-ui-auth";
 
@@ -119,6 +119,37 @@ export async function httpAuthPost(
       window.localStorage.removeItem(AUTH_KEY);
       if (isRepeat) {
         return await httpAuthPost(path, params, false);
+      }
+
+      return val;
+    } else if (val.code !== 0) {
+      // fail(val.message)
+      return val;
+    } else {
+      return val;
+    }
+  }
+}
+
+export async function httpAuthDelete(
+  path: string,
+  params: any = {},
+  isRepeat: boolean = true
+) {
+  const authorization = await getAuthorization();
+
+  console.log("authorization:", authorization);
+
+  const header = {
+    authorization
+  };
+  const val = await http(path, "DELETE", params, header);
+
+  if (typeof val.code !== "undefined") {
+    if (val.code === -500) {
+      window.localStorage.removeItem(AUTH_KEY);
+      if (isRepeat) {
+        return await httpAuthDelete(path, params, false);
       }
 
       return val;

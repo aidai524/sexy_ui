@@ -19,7 +19,6 @@ export default function Created({ address, type }: Props) {
   const [list, setList] = useState<Project[]>([]);
 
   useEffect(() => {
-    console.log("address:", address);
     if (address) {
       httpGet(urls[type], { address, limit: 20 }).then((res) => {
         if (res.code === 0 && res.data?.list?.length > 0) {

@@ -1,25 +1,37 @@
+import type { UserInfo } from '@/app/type'
 import styles from './follow.module.css'
+import useFollow from '../../../hooks/useFollow';
 
-const list = [1,2,3,4]
+interface Props {
+    list: UserInfo[];
+    followerType: number;
+}
 
-export default function FollowerList() {
+export default function  FollowerList({
+    list,
+    followerType,
+}: Props) {
+    const { unFollow } = useFollow()
+
     return <div className={ styles.main }>
         {
             list.map(item => {
-                return <div className={ styles.follower } key={item}>
+                return <div className={ styles.follower } key={item.address}>
                     <div className={ styles.followerContent }>
-                        <img className={ styles.img } src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
+                        <img className={ styles.img } src={ item.icon } />
                         <div className={ styles.nameContent }>
-                            <div className={ styles.name }>HooA8n</div>
-                            <div className={ styles.followers }>45 followers</div>
+                            <div className={ styles.name }>{ item.name }</div>
+                            <div className={ styles.followers }>{ item.followers } followers</div>
                         </div>
                     </div>
 
                     <div className={ styles.followerAction }>
                         {
-                            item % 2 === 0 
+                            followerType === 1
                             ? <div className={ styles.followBtn + ' ' + styles.follow }>Follow</div> 
-                            : <div className={ styles.followBtn + ' ' + styles.following }>Following</div>
+                            : <div onClick={() => {
+                                unFollow(item.address)
+                            }} className={ styles.followBtn + ' ' + styles.following }>Following</div>
                         }
                         
                     </div>
