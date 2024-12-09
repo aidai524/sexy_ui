@@ -66,13 +66,11 @@ export default function PreviewNode({
                     about_us: data.about,
                     discord: data.discord,
                     icon: data.tokenImg,
-                    // icon: 'http://localhost:3000/create',
                     tg: '',
                     ticker: data.ticker,
                     token_name: data.tokenName,
                     token_symbol: data.tokenName.toUpperCase(),
                     video: data.tokenImg,
-                    // video: 'http://localhost:3000/create',
                     website: data.website,
                     x: data.twitter
                 }

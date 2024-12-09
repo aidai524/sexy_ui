@@ -15,6 +15,7 @@ import { useAccount } from '@/app/hooks/useAccount';
 
 import { success, fail } from '@/app/utils/toast'
 import useFollow from './hooks/useFollow'
+import Back from '@/app/components/back'
 
 interface Props {
     showHot?: boolean;
@@ -27,8 +28,11 @@ export default function Profile({
     const router = useRouter()
     const params = useSearchParams()
     const { address: userAddress } = useAccount()
-    const { follow } = useFollow()
-    
+    const { follow, unFollow } = useFollow()
+    const [isFollower, setIsFollower] = useState(false)
+    const [refreshNum, setRefreshNum] = useState(0)
+    const [vipShow, setVipShow] = useState(false)
+
     const address = useMemo(() => {
         if (isOther && params) {
             return params.get('account')?.toString()
@@ -38,6 +42,19 @@ export default function Profile({
     }, [userAddress, params, isOther])
 
     const { userInfo } = useUserInfo(address)
+
+    useEffect(() => {
+        if (address && isOther) {
+
+
+            httpAuthGet('/follower/account', { address: address }).then(res => {
+                console.log('res:', res)
+                if (res.code === 0) {
+                    setIsFollower(res.data.is_follower)
+                }
+            })
+        }
+    }, [address, isOther, refreshNum])
 
     const tabs = useMemo(() => {
         const _tabs = [{
@@ -62,16 +79,22 @@ export default function Profile({
     }, [showHot, address])
 
 
-    const showVip = useCallback(() => {
-        const vipHandler = Modal.show({
-            content: <BoostVip onStartVip={() => {
-                vipHandler.close()
-            }} onCanceVip={() => {
-                vipHandler.close()
-            }} />,
-            closeOnMaskClick: true,
-        })
-    }, [])
+    // const showVip = useCallback(() => {
+    //     const vipHandler = Modal.show({
+    //         content: <BoostVip onStartVip={() => {
+    //             vipHandler.close()
+    //         }} onCanceVip={() => {
+    //             vipHandler.close()
+    //         }} />,
+    //         closeOnMaskClick: true,
+    //     })
+    // }, [])
+
+    const VipModal = <BoostVip onStartVip={() => {
+
+    }} onCanceVip={() => {
+        setVipShow(false)
+    }} />
 
     const backgroundImgStyle = userInfo?.banner ? {
         backgroundImage: `linear-gradient(360deg, #0D1012 41.35%, rgba(0, 0, 0, 0) 100%)`,
@@ -88,26 +111,25 @@ export default function Profile({
             {
                 isOther ? <div className={styles.isOther}>
                     <div>
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g filter="url(#filter0_b_17_2972)">
-                                <circle cx="20" cy="20" r="20" fill="black" fill-opacity="0.4" />
-                            </g>
-                            <path d="M23.5 25.5L17.5 19L23.5 12.5" stroke="white" stroke-width="2" stroke-linecap="round" />
-                            <defs>
-                                <filter id="filter0_b_17_2972" x="-10" y="-10" width="60" height="60" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                    <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
-                                    <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_17_2972" />
-                                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_17_2972" result="shape" />
-                                </filter>
-                            </defs>
-                        </svg>
+                        <Back style={{ left: 0, top: 0 }} />
                     </div>
 
-                    <div className={ styles.followerType }>
-                        <div className={ styles.isFollow } onClick={async () => {
-                           address && follow(address)
-                        }}>Follow</div>
+                    <div className={styles.followerType}>
+                        {
+                            !isFollower ? <div className={styles.isFollow} onClick={async () => {
+                                if (!address) {
+                                    return
+                                }
+                                await follow(address)
+                                setRefreshNum(refreshNum + 1)
+                            }}>Follow</div> : <div onClick={async () => {
+                                if (!address) {
+                                    return
+                                }
+                                await unFollow(address)
+                                setRefreshNum(refreshNum + 1)
+                            }} className={styles.isFollow}>UnFollow</div>
+                        }
                     </div>
                 </div> : null
             }
@@ -154,49 +176,62 @@ export default function Profile({
             </div>
         </div>
 
-        <div className={styles.hotBoost}>
-            <div className={styles.part}>
-                <div>
-                    <svg width="25" height="30" viewBox="0 0 25 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.0117341 16.86C-0.13897 14.5993 1.13341 9.96684 5.48848 7.11148C5.76109 6.93274 6.11902 7.11298 6.1694 7.43504C6.42056 9.04044 6.9197 10.0828 7.79399 10.9437C7.91236 11.0603 8.08854 11.0938 8.24353 11.034C11.6839 9.70598 14.3634 7.03375 13.4136 0.519094C13.3612 0.159544 13.7224 -0.121444 14.041 0.0532762C17.9652 2.20542 24.8401 8.45132 24.735 16.86C24.735 26.4122 16.8685 29.6712 12.1486 29.6712C7.42871 29.6712 0.0117341 25.9627 0.0117341 16.86ZM5.18656 15.2327C4.6702 16.0105 4.39439 16.9268 4.39441 17.8644C4.3938 18.5457 4.53919 19.2189 4.82051 19.8376C5.10183 20.4563 5.51236 21.0056 6.02369 21.4475L11.1461 26.01C11.4309 26.2636 11.7953 26.4062 12.1742 26.4123C12.5531 26.4183 12.9218 26.2874 13.2142 26.0429L18.4734 21.6487C19.0575 21.2117 19.532 20.6414 19.8584 19.984C20.1848 19.3266 20.3539 18.6005 20.3521 17.8644C20.3522 16.9268 20.0763 16.0105 19.56 15.2327C19.0436 14.4549 18.3102 13.851 17.4535 13.4981C16.5968 13.1453 15.6557 13.0597 14.7508 13.2521C14.1515 13.3796 13.5862 13.6251 13.0854 13.9716C12.665 14.2624 12.0816 14.2624 11.6612 13.9716C11.1604 13.6251 10.595 13.3796 9.99579 13.2521C9.09081 13.0597 8.14979 13.1453 7.29308 13.4981C6.43637 13.851 5.70293 14.4549 5.18656 15.2327ZM10.1241 17.0346C10.3193 16.9321 10.53 17.1428 10.4276 17.338L9.90004 18.3432C9.86572 18.4086 9.86572 18.4867 9.90004 18.5521L10.4276 19.5572C10.53 19.7524 10.3193 19.9631 10.1241 19.8606L9.11897 19.3331C9.05357 19.2988 8.97548 19.2988 8.91008 19.3331L7.90496 19.8606C7.70971 19.9631 7.49903 19.7524 7.6015 19.5572L8.12901 18.5521C8.16333 18.4867 8.16333 18.4086 8.12901 18.3432L7.6015 17.338C7.49903 17.1428 7.70971 16.9321 7.90496 17.0346L8.91008 17.5621C8.97548 17.5964 9.05357 17.5964 9.11897 17.5621L10.1241 17.0346ZM17.3952 17.338C17.4977 17.1428 17.287 16.9321 17.0917 17.0346L16.0866 17.5621C16.0212 17.5964 15.9431 17.5964 15.8777 17.5621L14.8726 17.0346C14.6774 16.9321 14.4667 17.1428 14.5691 17.338L15.0967 18.3432C15.131 18.4086 15.131 18.4867 15.0967 18.5521L14.5691 19.5572C14.4667 19.7524 14.6774 19.9631 14.8726 19.8606L15.8777 19.3331C15.9431 19.2988 16.0212 19.2988 16.0866 19.3331L17.0917 19.8606C17.287 19.9631 17.4977 19.7524 17.3952 19.5572L16.8677 18.5521C16.8334 18.4867 16.8334 18.4086 16.8677 18.3432L17.3952 17.338Z" fill="url(#paint0_linear_89_8920)" />
-                        <defs>
-                            <linearGradient id="paint0_linear_89_8920" x1="12.3681" y1="0" x2="12.3681" y2="29.6712" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#D9ABFF" />
-                                <stop offset="1" stop-color="#B65AFF" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </div>
-                <div className={styles.nameContent}>
-                    <div className={styles.names}>
-                        <span><span className={styles.whiteName}>0</span> /2 </span>
-                        <span>Smoky Hot</span>
+        {
+            !isOther && <div className={styles.hotBoost}>
+                <div className={styles.part}>
+                    <div>
+                        <svg width="25" height="30" viewBox="0 0 25 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.0117341 16.86C-0.13897 14.5993 1.13341 9.96684 5.48848 7.11148C5.76109 6.93274 6.11902 7.11298 6.1694 7.43504C6.42056 9.04044 6.9197 10.0828 7.79399 10.9437C7.91236 11.0603 8.08854 11.0938 8.24353 11.034C11.6839 9.70598 14.3634 7.03375 13.4136 0.519094C13.3612 0.159544 13.7224 -0.121444 14.041 0.0532762C17.9652 2.20542 24.8401 8.45132 24.735 16.86C24.735 26.4122 16.8685 29.6712 12.1486 29.6712C7.42871 29.6712 0.0117341 25.9627 0.0117341 16.86ZM5.18656 15.2327C4.6702 16.0105 4.39439 16.9268 4.39441 17.8644C4.3938 18.5457 4.53919 19.2189 4.82051 19.8376C5.10183 20.4563 5.51236 21.0056 6.02369 21.4475L11.1461 26.01C11.4309 26.2636 11.7953 26.4062 12.1742 26.4123C12.5531 26.4183 12.9218 26.2874 13.2142 26.0429L18.4734 21.6487C19.0575 21.2117 19.532 20.6414 19.8584 19.984C20.1848 19.3266 20.3539 18.6005 20.3521 17.8644C20.3522 16.9268 20.0763 16.0105 19.56 15.2327C19.0436 14.4549 18.3102 13.851 17.4535 13.4981C16.5968 13.1453 15.6557 13.0597 14.7508 13.2521C14.1515 13.3796 13.5862 13.6251 13.0854 13.9716C12.665 14.2624 12.0816 14.2624 11.6612 13.9716C11.1604 13.6251 10.595 13.3796 9.99579 13.2521C9.09081 13.0597 8.14979 13.1453 7.29308 13.4981C6.43637 13.851 5.70293 14.4549 5.18656 15.2327ZM10.1241 17.0346C10.3193 16.9321 10.53 17.1428 10.4276 17.338L9.90004 18.3432C9.86572 18.4086 9.86572 18.4867 9.90004 18.5521L10.4276 19.5572C10.53 19.7524 10.3193 19.9631 10.1241 19.8606L9.11897 19.3331C9.05357 19.2988 8.97548 19.2988 8.91008 19.3331L7.90496 19.8606C7.70971 19.9631 7.49903 19.7524 7.6015 19.5572L8.12901 18.5521C8.16333 18.4867 8.16333 18.4086 8.12901 18.3432L7.6015 17.338C7.49903 17.1428 7.70971 16.9321 7.90496 17.0346L8.91008 17.5621C8.97548 17.5964 9.05357 17.5964 9.11897 17.5621L10.1241 17.0346ZM17.3952 17.338C17.4977 17.1428 17.287 16.9321 17.0917 17.0346L16.0866 17.5621C16.0212 17.5964 15.9431 17.5964 15.8777 17.5621L14.8726 17.0346C14.6774 16.9321 14.4667 17.1428 14.5691 17.338L15.0967 18.3432C15.131 18.4086 15.131 18.4867 15.0967 18.5521L14.5691 19.5572C14.4667 19.7524 14.6774 19.9631 14.8726 19.8606L15.8777 19.3331C15.9431 19.2988 16.0212 19.2988 16.0866 19.3331L17.0917 19.8606C17.287 19.9631 17.4977 19.7524 17.3952 19.5572L16.8677 18.5521C16.8334 18.4867 16.8334 18.4086 16.8677 18.3432L17.3952 17.338Z" fill="url(#paint0_linear_89_8920)" />
+                            <defs>
+                                <linearGradient id="paint0_linear_89_8920" x1="12.3681" y1="0" x2="12.3681" y2="29.6712" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#D9ABFF" />
+                                    <stop offset="1" stop-color="#B65AFF" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
                     </div>
-                    <div onClick={() => {
-                        showVip()
-                    }} className={styles.getMore1}>Get more</div>
+                    <div className={styles.nameContent}>
+                        <div className={styles.names}>
+                            <span><span className={styles.whiteName}>0</span> /2 </span>
+                            <span>Smoky Hot</span>
+                        </div>
+                        <div onClick={() => {
+                            setVipShow(true)
+                        }} className={styles.getMore1}>Get more</div>
+                    </div>
+                </div>
+                <div className={styles.part}>
+                    <div>
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="16" fill="#B1FFFA" />
+                            <path d="M17.5642 8.01658C18.0078 8.10057 18.2927 8.50051 18.1987 8.90846L17.0142 14.0998L20.5103 15.0346C20.6005 15.0585 20.6859 15.0967 20.7629 15.1476C20.8494 15.2033 20.9232 15.2753 20.9796 15.3592C21.036 15.4432 21.0739 15.5373 21.091 15.6358C21.1081 15.7343 21.1041 15.8351 21.079 15.932C21.054 16.029 21.0086 16.12 20.9455 16.1995L15.0376 23.6885C14.9415 23.8073 14.8125 23.898 14.6653 23.9501C14.5181 24.0023 14.3586 24.0138 14.2048 23.9834C13.7613 23.8984 13.4764 23.4995 13.5693 23.0915L14.7538 17.8992L11.2577 16.9644C11.1669 16.9404 11.0813 16.9014 11.0051 16.8514C10.9186 16.7957 10.8449 16.7237 10.7885 16.6398C10.732 16.5558 10.6941 16.4617 10.677 16.3632C10.6599 16.2647 10.664 16.1639 10.689 16.067C10.714 15.97 10.7595 15.879 10.8225 15.7995L16.7314 8.31154C16.8276 8.19267 16.9566 8.10201 17.1038 8.04987C17.251 7.99773 17.4105 7.9862 17.5642 8.01658Z" fill="black" />
+                        </svg>
+                    </div>
+                    <div className={styles.nameContent}>
+                        <div className={styles.names}>
+                            <span><span className={styles.whiteName}>0</span> </span>
+                            <span>Boost</span>
+                        </div>
+                        <div onClick={() => {
+                            setVipShow(true)
+                        }} className={styles.getMore2}>Get more</div>
+                    </div>
                 </div>
             </div>
-            <div className={styles.part}>
-                <div>
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="16" cy="16" r="16" fill="#B1FFFA" />
-                        <path d="M17.5642 8.01658C18.0078 8.10057 18.2927 8.50051 18.1987 8.90846L17.0142 14.0998L20.5103 15.0346C20.6005 15.0585 20.6859 15.0967 20.7629 15.1476C20.8494 15.2033 20.9232 15.2753 20.9796 15.3592C21.036 15.4432 21.0739 15.5373 21.091 15.6358C21.1081 15.7343 21.1041 15.8351 21.079 15.932C21.054 16.029 21.0086 16.12 20.9455 16.1995L15.0376 23.6885C14.9415 23.8073 14.8125 23.898 14.6653 23.9501C14.5181 24.0023 14.3586 24.0138 14.2048 23.9834C13.7613 23.8984 13.4764 23.4995 13.5693 23.0915L14.7538 17.8992L11.2577 16.9644C11.1669 16.9404 11.0813 16.9014 11.0051 16.8514C10.9186 16.7957 10.8449 16.7237 10.7885 16.6398C10.732 16.5558 10.6941 16.4617 10.677 16.3632C10.6599 16.2647 10.664 16.1639 10.689 16.067C10.714 15.97 10.7595 15.879 10.8225 15.7995L16.7314 8.31154C16.8276 8.19267 16.9566 8.10201 17.1038 8.04987C17.251 7.99773 17.4105 7.9862 17.5642 8.01658Z" fill="black" />
-                    </svg>
-                </div>
-                <div className={styles.nameContent}>
-                    <div className={styles.names}>
-                        <span><span className={styles.whiteName}>0</span> </span>
-                        <span>Boost</span>
-                    </div>
-                    <div onClick={() => {
-                        showVip()
-                    }} className={styles.getMore2}>Get more</div>
-                </div>
-            </div>
-        </div>
+        }
+
 
         <Tab nodes={tabs} />
+
+        <Modal
+            visible={vipShow}
+            content={VipModal}
+            closeOnAction
+            closeOnMaskClick
+            onClose={() => {
+                setVipShow(false)
+            }}
+        />
     </div>
 }
 

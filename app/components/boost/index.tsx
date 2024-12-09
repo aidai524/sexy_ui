@@ -65,14 +65,14 @@ export default function Boost({ onClick, token }: { onClick: () => void; token: 
     // }, [])
 
     return <div onClick={() => {
-        if (userInfo?.boostNum && userInfo?.boostNum > 0) {
-            boost()
-        } else {
-            setBoostVipShow(true)
-        }
+        // if (userInfo?.boostNum && userInfo?.boostNum > 0) {
+        //     boost()
+        // } else {
+        //     setBoostVipShow(true)
+        // }
 
         // boost()
-        // setBoostVipShow(true)
+        setBoostVipShow(true)
         // const initHandler = Modal.show({
         //     content: <BoostInit onJoinVip={() => {
         //         initHandler.close()

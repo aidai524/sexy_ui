@@ -1,10 +1,16 @@
 import { useRouter } from 'next/navigation'
 import styles from './back.module.css'
 
-export default function Back() {
+interface Props {
+    style?: any;
+}
+
+export default function Back({
+    style = {}
+}: Props) {
     const router = useRouter()
 
-    return <div className={ styles.main } onClick={() => {
+    return <div className={ styles.main } style={style} onClick={() => {
         router.back()
     }}>
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

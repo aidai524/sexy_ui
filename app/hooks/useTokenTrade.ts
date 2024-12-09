@@ -5,6 +5,8 @@ import {
     TransactionSignature,
     Transaction,
     SYSVAR_RENT_PUBKEY,
+    ComputeBudgetProgram,
+    // ComputeBudgetProgram,
 } from '@solana/web3.js';
 import Big from 'big.js'
 import * as anchor from "@coral-xyz/anchor";
@@ -466,22 +468,35 @@ export function useTokenTrade({
             lamports: 20000000, 
         })
         const instruction2 = createSyncNativeInstruction(userSolAccount.address, TOKEN_PROGRAM_ID)
-
         
-        transaction.add(instruction1).add(instruction2).add(createInfoTransition)
-
-        const v3 = await walletProvider.signAndSendTransaction(transaction)
+        transaction
+        .add(
+            ComputeBudgetProgram.setComputeUnitLimit({
+                units: 991600000,
+            })
+        )
+        .add(instruction1)
+        .add(instruction2)
+        .add(createInfoTransition)
 
         if (amount) {
-            await prePaid(amount, tokenName, tokenSymbol)
+            // const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
+            const prepaidTrans = await prePaid(amount, tokenName, tokenSymbol, true)
+
+            console.log('prepaidTrans:', prepaidTrans)
+
+            if (prepaidTrans) {
+                transaction.add(prepaidTrans)
+            }
         }
+
+        const v3 = await walletProvider.signAndSendTransaction(transaction)
 
         return v3
 
     }, [connection, walletProvider, programId, wsol])
 
-    const prePaid = useCallback(async (amount: number | string, tokenName: string, tokenSymbol: string) => {
-        console.log(111)
+    const prePaid = useCallback(async (amount: number | string, tokenName: string, tokenSymbol: string, justTransaction: boolean = false) => {
 
         const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
 
@@ -527,7 +542,8 @@ export function useTokenTrade({
         //     userTokenAccount: keys.userTokenAccount,
         //     poolTokenAccount: keys.poolTokenAccount,
         //     paidRecord: paidRecord,
-        //     referralRecord: keys.referralRecord,
+        //     referralRecord:
+        //  keys.referralRecord,
         //     tokenProgram: TOKEN_PROGRAM_ID,
         //     associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
         //     user: walletProvider.publicKey!,
@@ -550,21 +566,35 @@ export function useTokenTrade({
         })
         const instruction2 = createSyncNativeInstruction(userSolAccount?.address, TOKEN_PROGRAM_ID)
 
-        console.log('serverTransaction:', serverTransaction)
+
+        // serverTransaction.recentBlockhash = latestBlockhash!.blockhash
+
+        // console.log('serverTransaction:', serverTransaction, walletProvider, latestBlockhash)
 
         const confirmationStrategy: any = {
-            skipPreflight: false,
+            skipPreflight: true,
+            maxRetries: 10,
             preflightCommitment: 'processed',
         };
 
-        transaction.add(instruction1).add(instruction2)
+        transaction
+        .add(instruction1)
+        .add(instruction2)
+        // .add(serverTransaction)
+        // .add(
+        //     ComputeBudgetProgram.setComputeUnitLimit({
+        //         units: 1000000,
+        //     })
+        // )
+
+        if (justTransaction) {
+            return transaction
+        }
 
         const hash1 = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
-
         console.log(hash1)
 
         const hash2 = await walletProvider.signAndSendTransaction(serverTransaction, confirmationStrategy)
-
         console.log('hash', hash2)
 
         // return hash2   

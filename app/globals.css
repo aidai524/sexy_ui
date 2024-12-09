@@ -114,3 +114,20 @@ a {
 .adm-popup .adm-popup-body {
   background-color: #121719;
 }
+
+.adm-toast-mask div.adm-toast-main {
+  transform: translateY(-200%);
+  max-width: 90%;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 20px;
+}
+
+.adm-toast-mask .adm-toast-main-icon div.adm-toast-icon {
+  margin-bottom: 0;
+}

@@ -11,7 +11,7 @@ export default function  FollowerList({
     list,
     followerType,
 }: Props) {
-    const { unFollow } = useFollow()
+    const { unFollow, follow } = useFollow()
 
     return <div className={ styles.main }>
         {
@@ -28,12 +28,13 @@ export default function  FollowerList({
                     <div className={ styles.followerAction }>
                         {
                             followerType === 1
-                            ? <div className={ styles.followBtn + ' ' + styles.follow }>Follow</div> 
+                            ? <div onClick={() => {
+                                follow(item.address)
+                            }} className={ styles.followBtn + ' ' + styles.follow }>Follow</div> 
                             : <div onClick={() => {
                                 unFollow(item.address)
                             }} className={ styles.followBtn + ' ' + styles.following }>Following</div>
                         }
-                        
                     </div>
                 </div>
             })

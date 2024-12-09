@@ -15,6 +15,38 @@ export default function useFollow(account?: string) {
             }).then(res => {
                 console.log(res)
                 if (res.code === 0) {
+                    const followingList = res.data.list.map((item: any)=> {
+                        return {
+                            name: item.name,
+                            address: item.address,
+                            icon: item.icon,
+                            banner: item.banner,
+                            followers: item.followers,
+                            following: item.following,
+                            likeNum: item.like_num,
+                            boostNum: item.boost_num,
+                            usingBoostNum: item.using_boost_num,
+                            superLikeNum: item.super_like_num,
+                            usingSuperLikeNum: item.using_super_like_num,
+                            usingBuySuperLikeNum: item.using_buy_super_like_num,
+                            vipType: item.vip_type,
+                        }
+                    })
+
+                    setFollowingList(followingList)
+                }
+            })
+        }
+    }, [account, freshNum])
+
+    useEffect(() => {
+        if (account) {
+            httpAuthGet('/follower/account/list', {
+                address: account,
+                limit: 50,
+            }).then(res => {
+                console.log(res)
+                if (res.code === 0) {
                     const followerList = res.data.list.map((item: any)=> {
                         return {
                             name: item.name,
@@ -33,7 +65,7 @@ export default function useFollow(account?: string) {
                         }
                     })
 
-                    setFollowingList(followerList)
+                    setFollowerList(followerList)
                 }
             })
         }
