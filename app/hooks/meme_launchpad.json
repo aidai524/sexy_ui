@@ -249,6 +249,11 @@
           "isSigner": false
         },
         {
+          "name": "referralFeeRateRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
@@ -352,6 +357,11 @@
         },
         {
           "name": "referralRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralFeeRateRecord",
           "isMut": true,
           "isSigner": false
         },
@@ -463,6 +473,11 @@
           "isSigner": false
         },
         {
+          "name": "referralFeeRateRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
@@ -566,6 +581,11 @@
         },
         {
           "name": "referralRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralFeeRateRecord",
           "isMut": true,
           "isSigner": false
         },
@@ -809,6 +829,11 @@
         },
         {
           "name": "referralRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referralFeeRateRecord",
           "isMut": true,
           "isSigner": false
         },
@@ -1057,6 +1082,190 @@
         {
           "name": "nonce",
           "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "orcaListing",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "protocolSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "wsolMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "poolWsolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vaultSol",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vaultToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "positionMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "orcaProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "whirlpoolsConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenBadgeA",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenBadgeB",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "whirlpool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "feeTier",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "position",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "positionTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lowerTickArrayAddress",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "upperTickArrayAddress",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "memoProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "metadataUpdateAuth",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "token2022Program",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "sysvarRent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "orcaListParam",
+          "type": {
+            "defined": "OrcaListParam"
+          }
+        }
+      ]
+    },
+    {
+      "name": "setSpecialReferralFeeRate",
+      "accounts": [
+        {
+          "name": "launchpad",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "referralFeeRateRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "specialReferralFeeRate",
+          "type": "u16"
         }
       ]
     },
@@ -1540,6 +1749,18 @@
       }
     },
     {
+      "name": "FeeRateRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "rate",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
       "name": "PrePaidRecord",
       "type": {
         "kind": "struct",
@@ -1740,6 +1961,18 @@
       }
     },
     {
+      "name": "OrcaListParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tickSpace",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
       "name": "LaunchStatus",
       "type": {
         "kind": "enum",
@@ -1876,6 +2109,13 @@
           "name": "tokenReserve",
           "type": "u64",
           "index": false
+        },
+        {
+          "name": "status",
+          "type": {
+            "defined": "PoolStatus"
+          },
+          "index": false
         }
       ]
     },
@@ -1942,6 +2182,11 @@
     {
       "name": "ListEvent",
       "fields": [
+        {
+          "name": "dexType",
+          "type": "u8",
+          "index": false
+        },
         {
           "name": "tokenName",
           "type": "string",
@@ -2021,6 +2266,11 @@
           "name": "proxyFee",
           "type": "u64",
           "index": false
+        },
+        {
+          "name": "tokenMint",
+          "type": "publicKey",
+          "index": false
         }
       ]
     },
@@ -2086,6 +2336,11 @@
           "name": "feeAmount",
           "type": "u64",
           "index": false
+        },
+        {
+          "name": "tokenMint",
+          "type": "publicKey",
+          "index": false
         }
       ]
     },
@@ -2104,6 +2359,36 @@
         },
         {
           "name": "prepaidBoughtTokenAmount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "ReferralFeeEvent",
+      "fields": [
+        {
+          "name": "user",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "ProxyFeeEvent",
+      "fields": [
+        {
+          "name": "user",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
           "type": "u64",
           "index": false
         }
@@ -2208,6 +2493,11 @@
     },
     {
       "code": 6019,
+      "name": "InvalidOrcaParam",
+      "msg": "InvalidOrcaParam"
+    },
+    {
+      "code": 6020,
       "name": "NumberCastError",
       "msg": "Unable to cast number into BigInt"
     }

@@ -191,6 +191,11 @@ export function useTokenTrade({
             programId
         )
 
+        const referralFeeRateRecord = PublicKey.findProgramAddressSync(
+            [Buffer.from("referral_record"), state[0].toBuffer(), referralRecord[0].toBuffer()],
+            programId
+        )
+
         const referralSolAccount = await _getOrCreateAssociatedTokenAccount(wsol, referral)
         const proxySolAccount = await _getOrCreateAssociatedTokenAccount(wsol, proxy)
 
@@ -214,6 +219,7 @@ export function useTokenTrade({
             poolTokenAccount: poolTokenAccount.address,
 
             referralRecord: referralRecord[0],
+            referralFeeRateRecord: referralFeeRateRecord[0],
 
             tokenProgram: TOKEN_PROGRAM_ID,
             associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -251,7 +257,7 @@ export function useTokenTrade({
         const instruction1 = SystemProgram.transfer({
             fromPubkey: walletProvider.publicKey!,
             toPubkey: keys.userWsolAccount,
-            lamports: Number(amount), // 以 lamports 为单位 (1 SOL = 1e9 lamports)
+            lamports: Number(amount),
         })
         const instruction2 = createSyncNativeInstruction(keys.userWsolAccount, TOKEN_PROGRAM_ID)
 
