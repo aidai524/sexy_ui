@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import styles from './token.module.css'
 import { Modal } from 'antd-mobile'
 import BoostJust from '@/app/components/boost/boostJust'
@@ -12,16 +12,21 @@ interface Props {
 }
 
 export default function Token({ data }: Props) {
-    const showBoostJust = useCallback(() => {
-        const vipHandler = Modal.show({
-            content: <BoostJust onBoost={() => {
-                vipHandler.close()
-            }} />,
-            closeOnMaskClick: true,
-        })
-    }, [])
+    const [boostShow, setBoostShow] = useState(false)
+    // const showBoostJust = useCallback(() => {
+    //     const vipHandler = Modal.show({
+    //         content: <BoostJust onBoost={() => {
+    //             vipHandler.close()
+    //         }} />,
+    //         closeOnMaskClick: true,
+    //     })
+    // }, [])
 
     const router = useRouter()
+
+    const BoostModal = <BoostJust onBoost={() => {
+        setBoostShow(false)
+    }} />
 
     return <div className={styles.main}>
         <div className={styles.tokenMag}>
@@ -47,7 +52,7 @@ export default function Token({ data }: Props) {
 
         <div className={styles.actionContent}>
             <div className={styles.actionItem} onClick={() => {
-                showBoostJust()
+                setBoostShow(true)
             }}>
                 <div className={styles.actionIcon}>
                     {
@@ -81,6 +86,16 @@ export default function Token({ data }: Props) {
                 </div>
             </div>
         </div>
+
+        <Modal
+            visible={boostShow}
+            content={BoostModal}
+            closeOnMaskClick
+            closeOnAction
+            onClose={() => {
+                setBoostShow(false)
+            }}
+        />
     </div>
 }
 

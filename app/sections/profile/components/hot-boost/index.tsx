@@ -72,6 +72,8 @@ export default function HotBoost({ onMoreClick, style }: any) {
           </div>
         </div>
       </div>
+
+    
     </div>
   );
 }

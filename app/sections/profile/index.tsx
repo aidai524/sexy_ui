@@ -33,7 +33,6 @@ export default function Profile({
     const { follow, unFollow } = useFollow()
     const [isFollower, setIsFollower] = useState(false)
     const [refreshNum, setRefreshNum] = useState(0)
-    const [vipShow, setVipShow] = useState(false)
     const [showVip, setShowVip] = useState(false)
     const address = useMemo(() => {
         if (isOther && params) {
@@ -73,7 +72,7 @@ export default function Profile({
     const VipModal = <BoostVip onStartVip={() => {
 
     }} onCanceVip={() => {
-        setVipShow(false)
+        setShowVip(false)
     }} />
 
     const backgroundImgStyle = userInfo?.banner ? {
@@ -133,16 +132,16 @@ export default function Profile({
                 }}
             />
             <Address address={address} />
-            <HotBoost onMoreClick={showVip} style={{ margin: "20px 10px" }} />
+            <HotBoost onMoreClick={() => { setShowVip(true) }} style={{ margin: "20px 10px" }} />
             <Tabs address={address} showHot={showHot} />
 
             <Modal
-                visible={vipShow}
+                visible={showVip}
                 content={VipModal}
                 closeOnAction
                 closeOnMaskClick
                 onClose={() => {
-                    setVipShow(false)
+                    setShowVip(false)
                 }}
             />
     </div>

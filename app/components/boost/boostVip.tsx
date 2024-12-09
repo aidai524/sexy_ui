@@ -4,6 +4,7 @@ import BoostIcon from './boostIocn'
 import { fail, success } from '@/app/utils/toast';
 import { useState } from 'react';
 import { useAccount } from '@/app/hooks/useAccount';
+import MainBtn from '../mainBtn';
 
 interface Props {
     onStartVip: () => void;
@@ -44,7 +45,7 @@ export default function BoostVip({
             </div>
         </div>
 
-        <div onClick={async () => {
+        <MainBtn isLoading={isLoading} onClick={async () => {
             try {
                 setIsLoading(true)
                 await call('vip')
@@ -56,7 +57,7 @@ export default function BoostVip({
                 setIsLoading(false)
                 fail('Transition fail')
             }
-        }} className={styles.sureBtn}>0.05 SOL / Month</div>
+        }} style={{ marginTop: 20 }}>0.05 SOL / Month</MainBtn>
         <div onClick={() => {
             onCanceVip()
         }} className={styles.cancelBtn}>No, Thanks</div>
