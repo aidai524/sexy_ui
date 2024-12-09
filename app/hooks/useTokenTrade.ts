@@ -332,7 +332,12 @@ export function useTokenTrade({
         tx.recentBlockhash = latestBlockhash!.blockhash
         tx.feePayer = walletProvider.publicKey!
 
-        const hash = await walletProvider.signAndSendTransaction(tx)
+        const confirmationStrategy: any = {
+            skipPreflight: true,
+            preflightCommitment: 'processed',
+        };
+
+        const hash = await walletProvider.signAndSendTransaction(tx, confirmationStrategy)
 
         return hash
 

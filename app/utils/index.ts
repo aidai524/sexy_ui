@@ -1,8 +1,8 @@
 import type { Project } from "../type"
 import { fail } from "./toast"
 
-// const BASE_URL = 'https://api.dumpdump.fun/api/v1'
-const BASE_URL = '/api/v1'
+const BASE_URL = 'https://api.dumpdump.fun/api/v1'
+// const BASE_URL = '/api/v1'
 
 const AUTH_KEY = 'sex-ui-auth'
 

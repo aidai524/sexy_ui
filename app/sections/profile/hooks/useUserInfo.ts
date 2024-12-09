@@ -9,7 +9,7 @@ export default function useUserInfo(address: string | undefined) {
 
     useEffect(() => {
         if (address) {
-            httpAuthGet('/account').then(res => {
+            httpAuthGet('/account', { address: address }).then(res => {
                 console.log('res: ', res)
                 if (res.code === 0) {
                     setUserInfo({
@@ -42,7 +42,7 @@ export default function useUserInfo(address: string | undefined) {
 
         const queryStr = Object.keys(querys).map(key => `${key}=${encodeURIComponent(querys[key])}`).join('&')
 
-        const val = await httpAuthPut('/account?' + queryStr)
+        const val = await httpAuthPost('/account?' + queryStr)
         if (val.code === 0) {
             success('')
             return true
