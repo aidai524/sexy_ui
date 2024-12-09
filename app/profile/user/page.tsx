@@ -1,6 +1,11 @@
 "use client"
 
-import ProfileCom from "@/app/sections/profile"
+import dynamic from 'next/dynamic'
+
+const ProfileCom = dynamic(() => import('@/app/sections/profile'), {
+    ssr: false
+  })
+  
 
 export default function Prpfile() {
     return <ProfileCom isOther={true}/>

@@ -47,7 +47,7 @@ export function useVip() {
         const transferSOLInstruction = SystemProgram.transfer({
             fromPubkey: walletProvider.publicKey!,
             toPubkey: new PublicKey('EEzniCRUsjy9sqEqEi6jPEDF3kJehJxCxWrt2FuEQasH'),
-            lamports: 20000000,
+            lamports: 200000000,
         });
 
         const latestBlockhash = await connection?.getLatestBlockhash();
