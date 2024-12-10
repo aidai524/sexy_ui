@@ -21,9 +21,7 @@ export default function Boost({ onClick, token }: { onClick: () => void; token: 
     const [boostStatusShow, setBoostStatusShow] = useState(false)
 
     const { address } = useAccount()
-    const { userInfo } = useUserInfo(address)
-
-
+    const { userInfo, onQueryInfo } = useUserInfo(address)
 
     const VipModal = <BoostVip onStartVip={() => {
 
@@ -55,7 +53,7 @@ export default function Boost({ onClick, token }: { onClick: () => void; token: 
 
     const BoostStatusModal = <BoostStatus num={token.boostTime} onBoost={() => {
         setBoostShow(true)
-        setBoostTimeShow(false)
+        setBoostStatusShow(false)
     }} onCancel={() => {
         setBoostTimeShow(false)
     }} />
