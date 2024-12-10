@@ -90,6 +90,22 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
     this._publicKey = null;
 
     this._initializeUI();
+
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          this.checkConnected();
+        }
+      });
+    }
+  }
+
+  private isTelegram() {
+    if (typeof window === 'undefined') return false;
+    return !!(
+      window.Telegram?.WebApp?.initDataUnsafe ||
+      window.location.hash?.startsWith('#tgWebAppData')
+    );
   }
 
   private async _initializeUI() {
@@ -100,7 +116,7 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
           name: document.title,
         },
         actionsConfiguration: {
-          returnStrategy: 'tg://resolve',
+          returnStrategy: this.isTelegram() ? 'tg://resolve' : 'back',
           modals: 'all',
           tmaReturnUrl: 'back',
         },
@@ -169,14 +185,16 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
       const session = await this._universalUi?.openModal({
         namespaces: {
           solana: {
-            chains: [chain], // Solana mainnet
+            chains: [chain],
           },
         },
       });
       console.log('session :>> ', session);
       if (!session) throw new WalletConnectionError('Failed to connect to OKX wallet');
 
-      await this.checkConnected();
+      setTimeout(() => {
+        this.checkConnected();
+      }, 500);
     } catch (error: any) {
       console.error('error :>> ', error);
       this.emit('error', error);
@@ -188,7 +206,7 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
 
   async disconnect(): Promise<void> {
     if (this._universalUi) {
-      await this._universalUi.disconnect();
+      await this._universalUi.disconnect().catch(() => console.log('disconnect error'));
     }
     this._wallet = null;
     this._publicKey = null;
@@ -280,3 +298,4 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
     }
   }
 }
+

@@ -249,6 +249,8 @@
   height: 40px;
   border-radius: 8px;
   border: 1px solid #2c2d30;
+  max-width: 40px;
+  max-height: 40px;
 }
 
 .wallet-adapter-modal-list .wallet-adapter-button span {

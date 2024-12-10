@@ -9,7 +9,7 @@ import { Collapse } from './Collapse';
 import { WalletListItem } from './WalletListItem';
 import { WalletSVG } from './WalletSVG';
 import { useWalletModal } from './useWalletModal';
-import { getDeviceType } from '@/app/utils';
+import { getDeviceType, sleep } from '@/app/utils';
 
 export interface WalletModalProps {
   className?: string;
@@ -73,24 +73,17 @@ export const WalletModal: FC<WalletModalProps> = ({
   );
 
   const handleWalletClick = useCallback(
-    (event: MouseEvent, wallet: Adapter) => {
-      console.log('wallet', wallet);
-      if (wallet.readyState === WalletReadyState.NotDetected) {
-        if (getDeviceType().mobile && wallet.name === 'OKX Wallet') {
-          hideModal();
-          wallet.connect().then(() => {
-            select(wallet.name);
-          });
-        } else {
-          window.open(wallet.url, '_blank');
-        }
-        return;
-      } else if (wallet.name === 'WalletConnect') {
-        connect();
+   async (event: MouseEvent, wallet: Adapter) => {
+      if (getDeviceType().mobile || wallet.name === 'WalletConnect') {
+        hideModal();
+        select(wallet.name);
+        await sleep(500);
+        await wallet.connect();
+        handleClose(event);
+      } else {
+        select(wallet.name);
+        handleClose(event);
       }
-      select(wallet.name);
-      console.log('select', wallet.name);
-      handleClose(event);
     },
     [select, handleClose, hideModal],
   );
