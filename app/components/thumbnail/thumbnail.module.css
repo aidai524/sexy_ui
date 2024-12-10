@@ -16,6 +16,17 @@
         }
     }
 
+    .commentList {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        padding: 30px 10px;
+        backdrop-filter: blur(10px);
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
     .descContent {
         position: absolute;
         left: 0;
@@ -59,8 +70,6 @@
             background: linear-gradient(90deg, #7834FF 0%, #FF2581 100%);
 
         }
-
-
     }
 
     .teleGram {
@@ -97,6 +106,14 @@
             top: 40px;
         }
     }
+
+    
+}
+
+.avatarBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .picProgress {
@@ -107,6 +124,7 @@
     position: absolute;
     left: 0;
     right: 0;
+    z-index: 2;
     .progressItem {
         flex: 1;
         opacity: .5;
@@ -129,6 +147,7 @@
 .titles {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
     
     .tokenImgBox {

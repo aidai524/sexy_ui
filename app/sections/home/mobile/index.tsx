@@ -109,7 +109,7 @@ export default function Home() {
     }, 1000);
     try {
       await httpAuthPost("/project/like?id=" + infoData2!.id, {});
-    } catch (e) {}
+    } catch (e) { }
   }
 
   async function hate() {
@@ -120,7 +120,7 @@ export default function Home() {
     }, 1000);
     try {
       await httpAuthPost("/project/un_like?id=" + infoData2!.id, {});
-    } catch {}
+    } catch { }
   }
 
   return (
@@ -157,13 +157,13 @@ export default function Home() {
       <div className={styles.thumbnailListBox} ref={containerRef}>
         {infoData && (
           <div className={[styles.thumbnailBox].join(" ")}>
-            <Thumbnail showDesc={true} data={infoData} />
+            <Thumbnail showProgress={true} showDesc={true} data={infoData} />
           </div>
         )}
 
         {infoData2 && (
           <div className={[styles.thumbnailBox, actionStyle].join(" ")}>
-            <Thumbnail showDesc={true} data={infoData2} />
+            <Thumbnail showProgress={true} showDesc={true} data={infoData2} />
           </div>
         )}
       </div>
@@ -176,8 +176,8 @@ export default function Home() {
         onHate={async () => {
           hate();
         }}
-        onSuperLike={() => {}}
-        onBoost={() => {}}
+        onSuperLike={() => { }}
+        onBoost={() => { }}
       />
     </div>
   );
