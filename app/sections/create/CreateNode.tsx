@@ -8,6 +8,7 @@ import CheckBox from '@/app/components/checkBox'
 import { success, fail } from '@/app/utils/toast'
 
 import type { Project } from '@/app/type'
+import CreateSuccessModal from './components/createSuccessModal'
 interface Props {
     onAddDataFill: (value: Project) => void;
     show: boolean;
@@ -125,6 +126,8 @@ export default function CreateNode({
                 })
             }}>Preview</MainBtn>
         </div>
+
+        {/* <CreateSuccessModal show={true} onHide={() => {}}/> */}
     </div>
 }
 

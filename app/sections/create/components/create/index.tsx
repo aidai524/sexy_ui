@@ -9,6 +9,7 @@ import { fail, success } from '@/app/utils/toast';
 import { Popup } from 'antd-mobile'
 import { Avatar } from '@/app/components/thumbnail'
 import type { Project } from '@/app/type'
+import CreateSuccessModal from '../createSuccessModal'
 
 type Token = {
     tokenName: string;
@@ -72,12 +73,8 @@ export default function Create({
     const [isLoading, setIsLoading] = useState(false)
 
     const [solPercent, setSolPercent] = useState(0)
-    const [tokenPercent, setTokenPercent] = useState(1)
-
     const [valInput, setValInput] = useState('')
-
-    const [buyIn, setBuyIn] = useState('0')
-    const [buyInSol, setBuyInSol] = useState('0')
+    const [showSuccessModal, setShowSuccessModal] = useState(false)
 
     const { createToken } = useTokenTrade({
         tokenName,
@@ -221,6 +218,9 @@ export default function Create({
                         isLoading={isLoading}
                         isDisabled={isError}
                         onClick={async () => {
+                            
+                            
+
                             try {
                                 if (isLoading || isError) {
                                     return
@@ -236,6 +236,8 @@ export default function Create({
                                 })
                                 
                                 await onCreateTokenSuccess()
+                                onHide()
+                                setShowSuccessModal(false)
                                 setIsLoading(false)
                                 // success('Transtion success')
                             } catch (e) {
@@ -248,5 +250,9 @@ export default function Create({
                 </div>
             </div>
         </Popup>
+
+        <CreateSuccessModal show={showSuccessModal} onHide={() => {
+            setShowSuccessModal(false)
+        }}/>
     </div>
 }
