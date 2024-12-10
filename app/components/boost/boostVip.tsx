@@ -57,7 +57,7 @@ export default function BoostVip({
                 setIsLoading(false)
                 fail('Transition fail')
             }
-        }} style={{ marginTop: 20 }}>0.05 SOL / Month</MainBtn>
+        }} style={{ marginTop: 20 }}>0.02 SOL / Month</MainBtn>
         <div onClick={() => {
             onCanceVip()
         }} className={styles.cancelBtn}>No, Thanks</div>

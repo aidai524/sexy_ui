@@ -3,6 +3,8 @@ import { Modal } from "antd-mobile";
 import BoostInit from "./boostInit";
 import BoostVip from "./boostVip";
 import BoostJust from "./boostJust";
+import BoostTime from "./boostTime";
+import BoostStatus from "./boostStatus";
 import { useCallback, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useAccount } from "@/app/hooks/useAccount";
@@ -15,19 +17,13 @@ export default function Boost({ onClick, token }: { onClick: () => void; token: 
     const [vipShow, setVipShow] = useState(false)
     const [boostVipShow, setBoostVipShow] = useState(false)
     const [boostShow, setBoostShow] = useState(false)
+    const [boostTimeShow, setBoostTimeShow] = useState(false)
+    const [boostStatusShow, setBoostStatusShow] = useState(false)
 
     const { address } = useAccount()
     const { userInfo } = useUserInfo(address)
 
 
-    async function boost() {
-        const val = await httpAuthPost('/project/boost?id=' + token.id)
-        if (val.code === 0) {
-            success('Boost success')
-        } else {
-            fail('Boost fail')
-        }
-    }
 
     const VipModal = <BoostVip onStartVip={() => {
 
@@ -44,46 +40,43 @@ export default function Boost({ onClick, token }: { onClick: () => void; token: 
         setBoostVipShow(false)
     }} />
 
-    const BoostModal = <BoostJust onBoost={() => {
-        setBoostShow(false)
+    const BoostModal = <BoostJust token={token} usingBoostNum={userInfo?.usingBoostNum} boostNum={userInfo?.boostNum}
+        onBoost={() => {
+            setBoostShow(false)
+            setBoostStatusShow(true)
+        }} />
+
+    const BoostTimeModal = <BoostTime time={token.boostTime} onBoost={() => {
+        setBoostShow(true)
+        setBoostTimeShow(false)
+    }} onCancel={() => {
+        setBoostTimeShow(false)
     }} />
 
-    // const showVip = useCallback(() => {
-    //     const vipHandler = Modal.show({
-    //         content: BoostVipModal,
-    //         closeOnMaskClick: true,
-    //     })
-    // }, [address])
+    const BoostStatusModal = <BoostStatus num={token.boostTime} onBoost={() => {
+        setBoostShow(true)
+        setBoostTimeShow(false)
+    }} onCancel={() => {
+        setBoostTimeShow(false)
+    }} />
 
-    // const showBoostJust = useCallback(() => {
-    //     const vipHandler = Modal.show({
-    //         content: <BoostJust onBoost={() => {
-    //             vipHandler.close()
-    //         }} />,
-    //         closeOnMaskClick: true,
-    //     })
-    // }, [])
 
     return <div onClick={() => {
-        // if (userInfo?.boostNum && userInfo?.boostNum > 0) {
-        //     boost()
-        // } else {
-        //     setBoostVipShow(true)
-        // }
+        if (token.boostTime && token.boostTime > 0) {
+            setBoostTimeShow(true)
+            return
+        }
+
+        if (userInfo?.boostNum && userInfo?.boostNum > 0) {
+            setBoostShow(true)
+            // boost()
+        } else {
+            setBoostVipShow(true)
+        }
 
         // boost()
-        setBoostVipShow(true)
-        // const initHandler = Modal.show({
-        //     content: <BoostInit onJoinVip={() => {
-        //         initHandler.close()
-        //         showVip()
+        // setBoostVipShow(true)
 
-        //     }} onCanceVip={() => {
-        //         showBoostJust()
-        //         initHandler.close()
-        //     }} />,
-        //     closeOnMaskClick: true,
-        // })
         onClick()
     }}>
         {
@@ -124,6 +117,26 @@ export default function Boost({ onClick, token }: { onClick: () => void; token: 
             closeOnAction
             onClose={() => {
                 setBoostShow(false)
+            }}
+        />
+
+        <Modal
+            visible={boostTimeShow}
+            content={BoostTimeModal}
+            closeOnMaskClick
+            closeOnAction
+            onClose={() => {
+                setBoostTimeShow(false)
+            }}
+        />
+
+        <Modal
+            visible={boostStatusShow}
+            content={BoostStatusModal}
+            closeOnMaskClick
+            closeOnAction
+            onClose={() => {
+                setBoostStatusShow(false)
             }}
         />
     </div>

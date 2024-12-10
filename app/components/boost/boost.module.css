@@ -13,6 +13,10 @@
   color: #fff;
   padding: 20px;
 
+  &.boosting {
+    background: transparent;
+  }
+
   .initTipContent {
     display: flex;
     flex-direction: column;
@@ -31,6 +35,22 @@
       margin-top: 20px;
     }
   }
+}
+
+.mulBox {
+  width: 84px;
+  height: 84px;
+  border: 3px solid #b1fffa;
+  border-radius: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #b1fffa;
+  .mulNum {
+    font-size: 20px;
+  }
+  margin-bottom: 40px;
 }
 
 .vipBox {

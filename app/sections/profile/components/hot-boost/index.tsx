@@ -1,4 +1,10 @@
+import type { UserInfo } from "@/app/type";
 import styles from "./index.module.css";
+
+interface Props {
+  user: UserInfo
+}
+
 export default function HotBoost({ onMoreClick, style }: any) {
   return (
     <div className={styles.hotBoost} style={style}>
