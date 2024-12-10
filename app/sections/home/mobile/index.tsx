@@ -14,6 +14,7 @@ import {
   httpAuthPost,
   mapDataToProject
 } from "@/app/utils";
+import Tabs from "../tabs";
 import { useMessage } from "@/app/context/messageContext";
 
 const defaulrImg =
@@ -133,31 +134,7 @@ export default function Home() {
           <img src="/img/logo.svg" />
         </div>
 
-        <div className={styles.launchPadTab}>
-          <div
-            onClick={() => {
-              setLaunchIndex(0);
-            }}
-            className={[
-              styles.launchPadTabTitle,
-              launchIndex === 0 ? styles.launchPadTabTitleActive : ""
-            ].join(" ")}
-          >
-            Pre-Launch
-          </div>
-          <div
-            onClick={() => {
-              setLaunchIndex(1);
-            }}
-            className={[
-              styles.launchPadTabTitle,
-              launchIndex === 1 ? styles.launchPadTabTitleActive : ""
-            ].join(" ")}
-          >
-            Launching/ed
-          </div>
-        </div>
-
+        <Tabs launchIndex={launchIndex} setLaunchIndex={setLaunchIndex} />
         <div className={styles.icons}>
           <ConnectButton />
 
