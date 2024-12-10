@@ -8,6 +8,7 @@ import {
 import styles from "./item.module.css";
 
 export default function CommentItem({ item, onSuccess }: any) {
+  console.log("item", item);
   return (
     <div key={item.id} className={styles.comment}>
       <div className={styles.replyer}>

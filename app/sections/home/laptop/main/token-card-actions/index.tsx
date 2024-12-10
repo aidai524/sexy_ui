@@ -1,3 +1,4 @@
+import Comment from "@/app/components/comment";
 import styles from "./index.module.css";
 import { useState } from "react";
 
@@ -21,7 +22,20 @@ export default function TokenCardActions() {
           </button>
         ))}
       </div>
-      {currentTab !== "Img" && <div className={styles.Layer}></div>}
+      {currentTab !== "Img" && (
+        <div className={styles.Layer}>
+          {currentTab === "Discussion" && (
+            <Comment
+              id={14}
+              usePanel={false}
+              showEdit={false}
+              titleStyle={{
+                color: "#fff"
+              }}
+            />
+          )}
+        </div>
+      )}
     </>
   );
 }

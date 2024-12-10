@@ -10,12 +10,14 @@ interface Props {
   id: number | undefined;
   showEdit?: boolean;
   usePanel?: boolean;
+  titleStyle?: any;
 }
 
 export default function CommentComp({
   id,
   showEdit = true,
-  usePanel = true
+  usePanel = true,
+  titleStyle
 }: Props) {
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
@@ -52,7 +54,9 @@ export default function CommentComp({
 
   return (
     <div className={styles.main}>
-      <div className={styles.title}>discussion</div>
+      <div className={styles.title} style={titleStyle}>
+        Discussion
+      </div>
       {showEdit && (
         <input
           value={commentText}
