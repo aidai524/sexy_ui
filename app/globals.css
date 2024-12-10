@@ -149,7 +149,17 @@ div::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.3);
 }
 
+/* reset start */
 button {
   background: transparent;
   border: none;
 }
+input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+input::placeholder {
+  color: #7e8a93;
+}
+/* reset end */
