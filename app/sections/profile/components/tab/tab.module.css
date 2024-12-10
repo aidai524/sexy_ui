@@ -1,30 +1,31 @@
 .tabs {
-    .tabHeaders {
-        display: flex;
-        height: 66px;
-        font-size: 16px;
-        .tab {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.6);
-            position: relative;
-            &.active {
-                color: #fff;
-            }
-        }
-        .tab.active::after {
-            content: ' ';
-            display: block;
-            position: absolute;
-            width: 80%;
-            height: 4px;
-            background-color: #fff;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 1000px;
-            bottom: 20%;
-        }
+  .tabHeaders {
+    display: flex;
+    height: 66px;
+    font-size: 16px;
+    .tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.6);
+      position: relative;
+      cursor: pointer;
+      &.active {
+        color: #fff;
+      }
     }
+    .tab.active::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      width: 80%;
+      height: 4px;
+      background-color: #fff;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 1000px;
+      bottom: 20%;
+    }
+  }
 }

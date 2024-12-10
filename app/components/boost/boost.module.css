@@ -1,104 +1,107 @@
 .panel {
-    width: 90vw;
-    padding: 10px;
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    overflow: hidden;
+  width: 90vw;
+  max-width: 402px;
+  padding: 10px;
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .boostInit {
-    background: linear-gradient(360deg, #FF00D9 0%, #B1FFFA 100%);
-    border-radius: 20px;
-    color: #fff;
-    padding: 20px;
+  background: linear-gradient(360deg, #ff00d9 0%, #b1fffa 100%);
+  border-radius: 20px;
+  color: #fff;
+  padding: 20px;
 
-    &.boosting {
-        background: transparent;
+  &.boosting {
+    background: transparent;
+  }
+
+  .initTipContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .initTitle {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+    .initAmount {
+      font-size: 16px;
     }
 
-    .initTipContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .initTitle {
-            font-size: 20px;
-            margin-top: 10px;
-        }
-        .initAmount {
-            font-size: 16px;
-        }
-
-        .initTip {
-            font-size: 13px;
-            font-weight: 300;
-            margin-top: 20px;
-        }
+    .initTip {
+      font-size: 13px;
+      font-weight: 300;
+      margin-top: 20px;
     }
+  }
 }
 
 .mulBox {
-    width: 84px;
-    height: 84px;
-    border: 3px solid #B1FFFA;
-    border-radius: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #B1FFFA;
-    .mulNum {
-        font-size: 20px;
-    }
-    margin-bottom: 40px;
+  width: 84px;
+  height: 84px;
+  border: 3px solid #b1fffa;
+  border-radius: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #b1fffa;
+  .mulNum {
+    font-size: 20px;
+  }
+  margin-bottom: 40px;
 }
 
 .vipBox {
-    width: 90vw;
-    background: linear-gradient(180deg, #B68DFF 0%, #F6F2FF 100%);
-    border-radius: 20px;
-    padding: 15px 25px;
-    .right {
+  width: 90vw;
+  max-width: 402px;
+  background: linear-gradient(180deg, #b68dff 0%, #f6f2ff 100%);
+  border-radius: 20px;
+  padding: 15px 25px;
+  .right {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    .rightItem {
+      flex: 1;
+      .rightTitle {
+        color: #47198c;
+        font-size: 14px;
+        font-weight: 500;
         padding-top: 10px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        .rightItem {
-            flex: 1;
-            .rightTitle {
-                color: #47198C;
-                font-size: 14px;
-                font-weight: 500;
-                padding-top: 10px;
-            }
-            .rightValue {
-                padding-top: 10px;
-                font-size: 16px;
-                white-space: nowrap;
-            }
+      }
+      .rightValue {
+        padding-top: 10px;
+        font-size: 16px;
+        white-space: nowrap;
+      }
 
-            &.vipItem {
-                background-color: #FFFFFF5E;
-                border-radius: 12px;
-                padding-left: 10px;
-            }
-        }
+      &.vipItem {
+        background-color: #ffffff5e;
+        border-radius: 12px;
+        padding-left: 10px;
+      }
     }
+  }
 }
 
 .sureBtn {
-    color: #fff;
-    display: flex;
-    height: 60px;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--part-bg);
-    border-radius: 30px;
-    margin-top: 17px;
+  color: #fff;
+  display: flex;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--part-bg);
+  border-radius: 30px;
+  margin-top: 17px;
 }
 
 .cancelBtn {
-    color: #7E8A93;
-    font-size: 16px;
-    margin-top: 10px;
-    text-align: center;
+  color: #7e8a93;
+  font-size: 16px;
+  margin-top: 10px;
+  text-align: center;
+  cursor: pointer;
 }
