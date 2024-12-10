@@ -5,7 +5,20 @@ import type { Project } from "@/app/type";
 export default function useData() {
   const [infoData, setInfoData] = useState<Project>();
   const [infoData2, setInfoData2] = useState<Project>();
+  const [list, setList] = useState<Project[]>();
   const listRef = useRef<Project[]>();
+
+  const onQueryList = (isInit: boolean) => {
+    httpGet("/project/list?limit=50").then((res) => {
+      if (res.code !== 0 || !res.data?.list) return;
+      if (isInit) {
+        listRef.current = res.data?.list;
+        renderTwoItems(res.data?.list);
+      } else {
+        listRef.current = [...(listRef.current || []), ...res.data.list];
+      }
+    });
+  };
 
   const renderTwoItems = useCallback((list: Project[]) => {
     if (!list) {
@@ -21,12 +34,18 @@ export default function useData() {
       const currentToken = list[1];
       setInfoData(mapDataToProject(currentToken));
     }
+
+    setList(list.slice(0, 5));
   }, []);
 
   const getnext = () => {
-    if (listRef.current) {
+    if (!listRef.current) return;
+    if (listRef.current.length) {
       listRef.current.shift();
       renderTwoItems(listRef.current);
+    }
+    if (listRef.current.length < 10) {
+      onQueryList(false);
     }
   };
 
@@ -43,13 +62,8 @@ export default function useData() {
   };
 
   useEffect(() => {
-    httpGet("/project/list?limit=50").then((res) => {
-      if (res.code === 0 && res.data?.list) {
-        listRef.current = res.data?.list;
-        renderTwoItems(res.data?.list);
-      }
-    });
+    onQueryList(true);
   }, []);
 
-  return { infoData, infoData2, getnext, onLike, onHate };
+  return { infoData, infoData2, list, getnext, onLike, onHate };
 }
