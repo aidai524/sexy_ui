@@ -12,10 +12,10 @@ export default function ConnectButton({ userInfo }: any) {
     <div>
       {connected ? (
         <div className={styles.Button} onClick={disconnect}>
-          {userInfo.icon && (
+          {userInfo?.icon && (
             <img src={userInfo.icon} className={styles.Avatar} />
           )}
-          <div className={styles.Name}>{userInfo.name}</div>
+          <div className={styles.Name}>{userInfo?.name || "Dis"}</div>
         </div>
       ) : (
         <WalletModalButton
