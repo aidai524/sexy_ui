@@ -2,6 +2,7 @@ import type { Project } from "../type";
 import { fail } from "./toast";
 
 const BASE_URL = "https://api.dumpdump.fun/api/v1";
+const TOKEN_ERROR_CODE = -401
 // const BASE_URL = '/api/v1'
 
 const AUTH_KEY = "sex-ui-auth";
@@ -58,7 +59,7 @@ export async function httpGet(
   const val = await http(path, "GET", params);
 
   if (typeof val.code !== "undefined") {
-    if (val.code === -500) {
+    if (val.code === TOKEN_ERROR_CODE) {
       window.localStorage.removeItem(AUTH_KEY);
       if (isRepeat) {
         return await httpGet(path, params, false);
@@ -85,7 +86,7 @@ export async function httpAuthGet(
   const val = await http(path, "GET", params, header);
 
   if (typeof val.code !== "undefined") {
-    if (val.code === -500) {
+    if (val.code === TOKEN_ERROR_CODE) {
       window.localStorage.removeItem(AUTH_KEY);
       if (isRepeat) {
         return await httpAuthGet(path, params, false);
@@ -115,7 +116,7 @@ export async function httpAuthPost(
   const val = await http(path, "POST", params, header);
 
   if (typeof val.code !== "undefined") {
-    if (val.code === -500) {
+    if (val.code === TOKEN_ERROR_CODE) {
       window.localStorage.removeItem(AUTH_KEY);
       if (isRepeat) {
         return await httpAuthPost(path, params, false);
@@ -146,7 +147,7 @@ export async function httpAuthDelete(
   const val = await http(path, "DELETE", params, header);
 
   if (typeof val.code !== "undefined") {
-    if (val.code === -500) {
+    if (val.code === TOKEN_ERROR_CODE) {
       window.localStorage.removeItem(AUTH_KEY);
       if (isRepeat) {
         return await httpAuthDelete(path, params, false);
@@ -175,7 +176,7 @@ export async function httpAuthPut(
   const val = await http(path, "PUT", params, header);
 
   if (typeof val.code !== "undefined") {
-    if (val.code === -500) {
+    if (val.code === TOKEN_ERROR_CODE) {
       window.localStorage.removeItem(AUTH_KEY);
       if (isRepeat) {
         return await httpAuthPut(path, params);
@@ -229,7 +230,7 @@ export async function getAuthorizationByLocalAndServer() {
   if (auth) {
     const val = await httpGet("/project/list?limit=1");
 
-    if (val.code === -500) {
+    if (val.code === TOKEN_ERROR_CODE) {
       return null;
     }
   }
