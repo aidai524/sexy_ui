@@ -107,13 +107,13 @@ export default function Home() {
       <div className={styles.thumbnailListBox} ref={containerRef}>
         {infoData && (
           <div className={[styles.thumbnailBox].join(" ")}>
-            <Thumbnail showDesc={true} data={infoData} />
+            <Thumbnail showProgress={true} showDesc={true} data={infoData} />
           </div>
         )}
 
         {infoData2 && (
           <div className={[styles.thumbnailBox, actionStyle].join(" ")}>
-            <Thumbnail showDesc={true} data={infoData2} />
+            <Thumbnail showProgress={true} showDesc={true} data={infoData2} />
           </div>
         )}
       </div>
@@ -126,8 +126,8 @@ export default function Home() {
         onHate={async () => {
           hate();
         }}
-        onSuperLike={() => {}}
-        onBoost={() => {}}
+        onSuperLike={() => { }}
+        onBoost={() => { }}
       />
     </div>
   );

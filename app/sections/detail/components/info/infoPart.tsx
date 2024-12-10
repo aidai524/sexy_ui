@@ -14,7 +14,7 @@ interface Props {
 
 export default function InfoPart({
     showThumbnailHead = false,
-    showThumbnailProgress = true,
+    showThumbnailProgress = false,
     showBackIcon = true,
     data
 }: Props) {

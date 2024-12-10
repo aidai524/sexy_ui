@@ -566,7 +566,6 @@ export function useTokenTrade({
         })
         const instruction2 = createSyncNativeInstruction(userSolAccount?.address, TOKEN_PROGRAM_ID)
 
-
         // serverTransaction.recentBlockhash = latestBlockhash!.blockhash
 
         // console.log('serverTransaction:', serverTransaction, walletProvider, latestBlockhash)

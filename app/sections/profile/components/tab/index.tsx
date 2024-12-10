@@ -16,7 +16,7 @@ interface Props {
 export default function Tab({
   nodes,
   activeNode,
-  tabContentStyle,
+  tabContentStyle = {},
   onTabChange
 }: Props) {
   const [tabIndex, setTabIndex] = useState(0);
@@ -58,14 +58,17 @@ export default function Tab({
       </div>
 
       {nodes.map((node, index) => {
-        if (tabIndex !== index) {
-          return null;
-        }
+        // if (tabIndex !== index) {
+        //   return null;
+        // }
         return (
           <div
             key={index}
             className={styles.tabContent}
-            style={tabContentStyle}
+            style={{
+                ...tabContentStyle,
+                display: tabIndex !== index ? 'none' : 'block'
+            }}
           >
             {node.content}
           </div>
