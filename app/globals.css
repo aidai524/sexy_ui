@@ -163,3 +163,14 @@ input::placeholder {
   color: #7e8a93;
 }
 /* reset end */
+
+.button {
+  transition: 0.3s;
+  cursor: pointer;
+}
+.button:hover {
+  opacity: 0.8;
+}
+.button:active {
+  opacity: 0.6;
+}

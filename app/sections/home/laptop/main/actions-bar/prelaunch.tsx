@@ -3,20 +3,20 @@ import CreateButton from "./create-button";
 import Actions from "@/app/components/action";
 import styles from "./index.module.css";
 
-export default function PreLaunchBar({ infoData2 }: any) {
+export default function PreLaunchBar({ tokenInfo, onLike, onHate }: any) {
   return (
     <div className={styles.Prelaunch}>
       <MiningButton />
       <Actions
-        token={infoData2}
-        onLike={async () => {
-          // like();
-        }}
-        onHate={async () => {
-          // hate();
-        }}
+        token={tokenInfo}
+        onLike={onLike}
+        onHate={onHate}
         onSuperLike={() => {}}
         onBoost={() => {}}
+        style={{
+          position: "inherit",
+          gap: 14
+        }}
       />
       <CreateButton />
     </div>
