@@ -9,13 +9,10 @@ import Tabs from "@/app/sections/profile/components/tabs";
 import EditProfile from "./edit-profile";
 import FollowerModal from "./follower-modal";
 import VipModal from "@/app/sections/profile/components/vip-modal";
-import { useAccount } from "@/app/hooks/useAccount";
-import useUserInfo from "@/app/sections/profile/hooks/useUserInfo";
+
 import { useState } from "react";
 
-export default function User() {
-  const { address } = useAccount();
-  const { userInfo, onQueryInfo } = useUserInfo(address);
+export default function User({ address, userInfo, onQueryInfo }: any) {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [followModalType, setFollowModalType] = useState("");
   const [openVipModal, setOpenVipModal] = useState(false);

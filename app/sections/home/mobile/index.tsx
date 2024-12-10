@@ -1,6 +1,6 @@
 "use client";
 
-import ConnectButton from "@/app/components/connectButton/ConnectButton";
+import ConnectButton from "@/app/components/connectButton";
 import styles from "./home.module.css";
 import Thumbnail from "@/app/components/thumbnail";
 import Action from "../../../components/action";
