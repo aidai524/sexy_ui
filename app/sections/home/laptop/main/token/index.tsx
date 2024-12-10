@@ -4,7 +4,9 @@ import styles from "./index.module.css";
 export default function Token() {
   return (
     <>
-      <div className={styles.Container}></div>
+      <div className={styles.Container}>
+        <div className={styles.SexyFi} />
+      </div>
       <ActionsBar />
     </>
   );

@@ -4,16 +4,10 @@ import ConnectButton from "@/app/components/connectButton";
 import styles from "./home.module.css";
 import Thumbnail from "@/app/components/thumbnail";
 import Action from "../../../components/action";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { Project } from "@/app/type";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Hammer from "hammerjs";
-import {
-  httpAuthGet,
-  httpGet,
-  httpAuthPost,
-  mapDataToProject
-} from "@/app/utils";
+import useData from "../hooks/use-data";
 import Tabs from "../tabs";
 import { useMessage } from "@/app/context/messageContext";
 
@@ -21,53 +15,13 @@ const defaulrImg =
   "https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect";
 
 export default function Home() {
-  const [infoData, setInfoData] = useState<Project>();
-  const [infoData2, setInfoData2] = useState<Project>();
   const router = useRouter();
   const [launchIndex, setLaunchIndex] = useState(0);
   const [actionStyle, setActionStyle] = useState<any>("");
-  const listRef = useRef<Project[]>();
   const { likeTrigger, setLikeTrigger } = useMessage();
-
   const containerRef = useRef<any>();
 
-  function getnext() {
-    if (listRef.current) {
-      listRef.current.shift();
-      renderTwoItems(listRef.current);
-    }
-  }
-
-  function renderTwoItems(list: Project[]) {
-    if (!list) {
-      return;
-    }
-
-    console.log("list:", list);
-
-    if (list.length > 0) {
-      const currentToken = list[0];
-      setInfoData2(mapDataToProject(currentToken));
-    }
-
-    if (list.length > 1) {
-      const currentToken = list[1];
-      setInfoData(mapDataToProject(currentToken));
-    }
-
-    console.log(infoData, infoData2);
-  }
-
-  useEffect(() => {
-    httpGet("/project/list?limit=50").then((res) => {
-      console.log("res:", res);
-      if (res.code === 0 && res.data?.list) {
-        listRef.current = res.data?.list;
-        console.log("res.data?.list:", res.data?.list);
-        renderTwoItems(res.data?.list);
-      }
-    });
-  }, []);
+  const { infoData, infoData2, getnext, onLike, onHate } = useData();
 
   useEffect(() => {
     if (containerRef.current && typeof window !== "undefined") {
@@ -107,9 +61,7 @@ export default function Home() {
       setActionStyle(null);
       getnext();
     }, 1000);
-    try {
-      await httpAuthPost("/project/like?id=" + infoData2!.id, {});
-    } catch (e) { }
+    onLike();
   }
 
   async function hate() {
@@ -118,9 +70,7 @@ export default function Home() {
       setActionStyle(null);
       getnext();
     }, 1000);
-    try {
-      await httpAuthPost("/project/un_like?id=" + infoData2!.id, {});
-    } catch { }
+    onHate();
   }
 
   return (
