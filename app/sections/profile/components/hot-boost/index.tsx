@@ -2,10 +2,12 @@ import type { UserInfo } from "@/app/type";
 import styles from "./index.module.css";
 
 interface Props {
-  user: UserInfo
+  user?: UserInfo;
+  onMoreClick: any;
+  style: any
 }
 
-export default function HotBoost({ onMoreClick, style }: any) {
+export default function HotBoost({ onMoreClick, style, user }: Props) {
   return (
     <div className={styles.hotBoost} style={style}>
       <div className={styles.part}>
@@ -41,7 +43,7 @@ export default function HotBoost({ onMoreClick, style }: any) {
         <div className={styles.nameContent}>
           <div className={styles.names}>
             <span>
-              <span className={styles.whiteName}>0</span> /2{" "}
+              <span className={styles.whiteName}>{ user?.usingSuperLikeNum }</span> /{ user?.superLikeNum }{" "}
             </span>
             <span>Smoky Hot</span>
           </div>
@@ -69,7 +71,7 @@ export default function HotBoost({ onMoreClick, style }: any) {
         <div className={styles.nameContent}>
           <div className={styles.names}>
             <span>
-              <span className={styles.whiteName}>0</span>{" "}
+              <span className={styles.whiteName}>{ user?.usingBoostNum }</span> /{ user?.boostNum }{" "}
             </span>
             <span>Boost</span>
           </div>
