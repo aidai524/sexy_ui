@@ -1,0 +1,14 @@
+.Container {
+  border-radius: 20px;
+  border: 2px solid #9514ff;
+  background: rgba(0, 0, 0, 0.2);
+  position: relative;
+  padding: 0px 70px 70px;
+}
+
+.Img {
+  width: 286px;
+  position: absolute;
+  top: -100px;
+  left: -50px;
+}

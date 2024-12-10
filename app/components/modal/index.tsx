@@ -47,12 +47,10 @@ const Modal: React.FC<ModalProps> = ({
           onClick={handleBackdropClick}
         >
           <div className={styles.Main} style={mainStyle}>
-            {closeIcon || onClose ? (
-              <button onClick={onClose} className={styles.CloseButton}>
-                <CloseIcon />
-              </button>
-            ) : null}
             <motion.div
+              initial={{
+                y: 100
+              }}
               animate={{
                 y: [100, 0],
                 transition: {
@@ -60,12 +58,17 @@ const Modal: React.FC<ModalProps> = ({
                 }
               }}
               exit={{
-                y: [0, 100]
+                y: 100
               }}
               onClick={(e) => {
                 e.stopPropagation();
               }}
             >
+              {closeIcon || onClose ? (
+                <button onClick={onClose} className={styles.CloseButton}>
+                  <CloseIcon />
+                </button>
+              ) : null}
               {children}
             </motion.div>
           </div>

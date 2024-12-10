@@ -5,7 +5,7 @@ import useData from "../../../hooks/use-data";
 
 export default function Token() {
   const { infoData2, onLike, onHate, getnext } = useData();
-
+  console.log(infoData2);
   const like = () => {
     setTimeout(() => {
       getnext();
