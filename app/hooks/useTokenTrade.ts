@@ -481,13 +481,13 @@ export function useTokenTrade({
 
         if (amount) {
             // const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
-            const prepaidTrans = await prePaid(amount, tokenName, tokenSymbol, true)
+            const prepaidTrans = await prePaid(amount, tokenName, tokenSymbol, false)
 
-            console.log('prepaidTrans:', prepaidTrans)
+            // console.log('prepaidTrans:', prepaidTrans)
 
-            if (prepaidTrans) {
-                transaction.add(prepaidTrans)
-            }
+            // if (prepaidTrans) {
+            //     transaction.add(prepaidTrans)
+            // }
         }
 
         const v3 = await walletProvider.signAndSendTransaction(transaction)
