@@ -1,0 +1,33 @@
+.Prelaunch {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.MiningAndCreateButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 187px;
+  height: 60px;
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.4);
+  gap: 7px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: Unbounded;
+}
+
+.MiningIcon {
+  width: 31.965px;
+  height: 33.97px;
+  flex-shrink: 0;
+}
+
+.CreateIcon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}

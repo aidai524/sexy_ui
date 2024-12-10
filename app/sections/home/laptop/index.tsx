@@ -1,5 +1,5 @@
 import User from "./user";
-import Content from "./content";
+import Main from "./main";
 import { useAccount } from "@/app/hooks/useAccount";
 import useUserInfo from "@/app/sections/profile/hooks/useUserInfo";
 import styles from "./index.module.css";
@@ -9,7 +9,7 @@ export default function Laptop() {
   return (
     <div className={styles.Container}>
       <User address={address} userInfo={userInfo} onQueryInfo={onQueryInfo} />
-      <Content address={address} userInfo={userInfo} />
+      <Main address={address} userInfo={userInfo} />
     </div>
   );
 }
