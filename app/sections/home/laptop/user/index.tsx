@@ -7,6 +7,8 @@ import Address from "@/app/sections/profile/components/address";
 import HotBoost from "@/app/sections/profile/components/hot-boost";
 import Tabs from "@/app/sections/profile/components/tabs";
 import EditProfile from "./edit-profile";
+import FollowerModal from "./follower-modal";
+import VipModal from "@/app/sections/profile/components/vip-modal";
 import { useAccount } from "@/app/hooks/useAccount";
 import useUserInfo from "@/app/sections/profile/hooks/useUserInfo";
 import { useState } from "react";
@@ -15,6 +17,9 @@ export default function User() {
   const { address } = useAccount();
   const { userInfo, onQueryInfo } = useUserInfo(address);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [followModalType, setFollowModalType] = useState("");
+  const [openVipModal, setOpenVipModal] = useState(false);
+
   return (
     <div className={styles.Container}>
       <Bg />
@@ -27,9 +32,19 @@ export default function User() {
               setOpenEditModal(true);
             }}
           />
-          <FollowerActions userInfo={userInfo} onItemClick={() => {}} />
+          <FollowerActions
+            userInfo={userInfo}
+            onItemClick={(type: string) => {
+              setFollowModalType(type);
+            }}
+          />
           <Address address={address} />
-          <HotBoost onMoreClick={() => {}} style={{ margin: "10px" }} />
+          <HotBoost
+            onMoreClick={() => {
+              setOpenVipModal(true);
+            }}
+            style={{ margin: "10px" }}
+          />
         </div>
         <Tabs
           address={address}
@@ -50,6 +65,20 @@ export default function User() {
         onSuccess={() => {
           onQueryInfo();
           setOpenEditModal(false);
+        }}
+      />
+      <FollowerModal
+        address={address}
+        open={!!followModalType}
+        onClose={() => {
+          setFollowModalType("");
+        }}
+        type={followModalType}
+      />
+      <VipModal
+        show={openVipModal}
+        onClose={() => {
+          setOpenVipModal(false);
         }}
       />
     </div>

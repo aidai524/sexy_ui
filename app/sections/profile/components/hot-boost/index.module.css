@@ -23,9 +23,11 @@
     }
     .getMore1 {
       color: rgba(193, 70, 255, 1);
+      cursor: pointer;
     }
     .getMore2 {
       color: rgba(177, 255, 250, 1);
+      cursor: pointer;
     }
   }
 }
