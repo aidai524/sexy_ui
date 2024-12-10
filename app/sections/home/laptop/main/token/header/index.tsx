@@ -9,7 +9,7 @@ export default function Header({ tokenInfo }: any) {
   const [currentTab, setCurrentTab] = useState("info");
   return (
     <div className={styles.Container}>
-      <Avatar data={tokenInfo} />
+      {tokenInfo ? <Avatar data={tokenInfo} /> : <div />}
       <div className={styles.Actions}>
         <Tabs currentTab={currentTab} onChangeTab={setCurrentTab} />
         <div className={styles.Buttons}>
