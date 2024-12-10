@@ -14,7 +14,7 @@ interface Props {
     token: Project
 }
 
-export default function BoostInit({
+export default function BoostJust({
     onBoost, boostNum, usingBoostNum, token
 }: Props) {
     const [isLoading, setIsLoading] = useState(false)

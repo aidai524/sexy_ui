@@ -24,7 +24,7 @@ export default function Token({ data }: Props) {
 
     const router = useRouter()
 
-    const BoostModal = <BoostJust onBoost={() => {
+    const BoostModal = <BoostJust token={data} onBoost={() => {
         setBoostShow(false)
     }} />
 
