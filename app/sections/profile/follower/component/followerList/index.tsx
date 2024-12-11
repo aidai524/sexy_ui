@@ -5,17 +5,19 @@ import useFollow from '../../../hooks/useFollow';
 interface Props {
     list: UserInfo[];
     followerType: number;
+    onAction?: () => void;
 }
 
 export default function  FollowerList({
     list,
     followerType,
+    onAction,
 }: Props) {
     const { unFollow, follow } = useFollow()
 
     return <div className={ styles.main }>
         {
-            list.map(item => {
+            list.map((item: any) => {
                 return <div className={ styles.follower } key={item.address}>
                     <div className={ styles.followerContent }>
                         <img className={ styles.img } src={ item.icon } />
@@ -27,12 +29,14 @@ export default function  FollowerList({
 
                     <div className={ styles.followerAction }>
                         {
-                            followerType === 1
-                            ? <div onClick={() => {
-                                follow(item.address)
+                            item.is_follower
+                            ? <div onClick={async () => {
+                                await follow(item.address)
+                                onAction && onAction()
                             }} className={ styles.followBtn + ' ' + styles.follow }>Follow</div> 
-                            : <div onClick={() => {
-                                unFollow(item.address)
+                            : <div onClick={async () => {
+                                await unFollow(item.address)
+                                onAction && onAction()
                             }} className={ styles.followBtn + ' ' + styles.following }>Following</div>
                         }
                     </div>

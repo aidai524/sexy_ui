@@ -2,7 +2,7 @@ import Back from '@/app/components/back'
 import styles from './follower.module.css'
 import Tab from '../components/tab'
 import FollowerList from './component/followerList'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { httpGet, httpAuthGet, formatAddress } from '@/app/utils'
 import useUserInfo from '../hooks/useUserInfo'
@@ -12,6 +12,9 @@ export default function Follower() {
     const params = useSearchParams()
     const { userInfo } = useUserInfo(params.get('account')?.toString())
     const { followerList, followingList } = useFollow(params.get('account')?.toString())
+    const onActionCallback = useCallback(() => {
+
+    }, [])
 
     return <div className={ styles.main }>
         <div className={ styles.header }>
@@ -22,11 +25,15 @@ export default function Follower() {
         <Tab nodes={[
             {
                 name: followerList.length + ' Followers',
-                content: <FollowerList list={followerList} followerType={1}/>
+                content: <FollowerList list={followerList} followerType={1} onAction={() => {
+                    onActionCallback()
+                }}/>
             },
             {
                 name: followingList.length + ' Following',
-                content: <FollowerList list={followingList} followerType={2}/>
+                content: <FollowerList list={followingList} followerType={2} onAction={() => {
+                    onActionCallback()
+                }}/>
             }
         ]}/>
     </div>

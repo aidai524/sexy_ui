@@ -28,7 +28,6 @@ export default function Home() {
 
       manager.on("swipe", function (e) {
         const direction = e.offsetDirection;
-        console.log("direction:", direction);
         if (direction === 2 || direction === 16) {
           hate();
         } else if (direction === 4 || direction === 8) {

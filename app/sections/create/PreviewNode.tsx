@@ -6,10 +6,10 @@ import Create from "./components/create";
 import type { Project } from "@/app/type";
 import { useEffect, useState } from "react";
 import { httpAuthPost, sleep } from "@/app/utils";
-import useUserInfo from "../profile/hooks/useUserInfo";
 import { fail, success } from "@/app/utils/toast";
 import { useRouter } from "next/navigation";
 import { useAccount } from '@/app/hooks/useAccount';
+import { useUser } from "@/app/store/useUser";
 interface Props {
     onAddDataCancel: () => void;
     show: boolean;
@@ -24,7 +24,7 @@ export default function PreviewNode({
     const [newData, setNewData] = useState(data)
 
     const { address } = useAccount()
-    const { userInfo } = useUserInfo(address)
+    const { userInfo }: any = useUser()
 
     useEffect(() => {
         if (userInfo) {

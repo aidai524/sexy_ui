@@ -8,6 +8,7 @@ import React, {
     useState,
     useMemo,
 } from "react";
+import { UserInfo } from "../type";
 
 interface MessageContextValue {
     likeTrigger: boolean;
@@ -25,7 +26,7 @@ export const MessageContextProvider: React.FC<{
     const walletTypeContextValue = useMemo<MessageContextValue>(
         () => ({
             likeTrigger,
-            setLikeTrigger,
+            setLikeTrigger
         }),
         [likeTrigger, setLikeTrigger]
     );
