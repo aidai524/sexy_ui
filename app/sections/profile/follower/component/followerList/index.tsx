@@ -3,6 +3,7 @@ import styles from './follow.module.css'
 import useFollow from '../../../hooks/useFollow';
 import { formatAddress } from '@/app/utils';
 import { useRouter } from 'next/navigation';
+import FollowBtn from '../../../components/followBtn';
 
 interface Props {
     list: UserInfo[];
@@ -35,7 +36,8 @@ export default function  FollowerList({
                     </div>
 
                     <div className={ styles.followerAction }>
-                        {
+                        <FollowBtn address={ item.address } isFollower={!item.is_follower}  onSuccess={() => {}}/>
+                        {/* {
                             item.is_follower
                             ? <div onClick={async () => {
                                 await follow(item.address)
@@ -45,7 +47,7 @@ export default function  FollowerList({
                                 await unFollow(item.address)
                                 onAction && onAction()
                             }} className={ styles.followBtn + ' ' + styles.following }>Following</div>
-                        }
+                        } */}
                     </div>
                 </div>
             })

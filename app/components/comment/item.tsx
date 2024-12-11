@@ -50,6 +50,7 @@ export default function CommentItem({ item, onSuccess }: any) {
             if (val.code === 0) {
               onSuccess();
             }
+            item.isLike = !item.isLike
           }}
           className={styles.zan}
         >

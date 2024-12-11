@@ -20,4 +20,14 @@
   font-size: 18px;
   font-weight: 700;
   margin-top: 10px;
+  position: relative;
+  .vipImg {
+    position: absolute;
+    left: 120%;
+    top: 50%;
+    transform: translateY(-35%);
+    .img {
+      width: 52px;
+    }
+  }
 }

@@ -11,7 +11,7 @@ import FollowerActions from "./components/follower-actions";
 import Address from "./components/address";
 import HotBoost from "./components/hot-boost";
 import VipModal from "./components/vip-modal";
-import useFollow from "./hooks/useFollow";
+import FollowBtn from "./components/followBtn";
 
 interface Props {
     showHot?: boolean;
@@ -22,7 +22,6 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
     const router = useRouter();
     const params = useSearchParams();
     const { address: userAddress } = useAccount();
-    const { follow, unFollow } = useFollow();
     const [isFollower, setIsFollower] = useState(false);
     const [refreshNum, setRefreshNum] = useState(0);
     const [showVip, setShowVip] = useState(false);
@@ -44,6 +43,7 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
     }, [userAddress, params, isOther]);
 
     const { userInfo, onQueryInfo } = useUserInfo(address);
+
 
     useEffect(() => {
         if (address && isOther) {
@@ -83,7 +83,14 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                             <Back style={{ left: 0, top: 0 }} />
                         </div>
 
-                        <div className={styles.followerType}>
+                        {
+                            <FollowBtn address={ address } isFollower={isFollower} onSuccess={() => {
+                                onQueryInfo()
+                                setRefreshNum(refreshNum + 1)
+                            }}/>
+                        }
+
+                        {/* <div className={styles.followerType}>
                             {!isFollower ? (
                                 <div
                                     className={styles.isFollow}
@@ -108,12 +115,12 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                                         setRefreshNum(Date.now());
                                         onQueryInfo()
                                     }}
-                                    className={styles.isFollow}
+                                    className={styles.isFollowing}
                                 >
-                                    UnFollow
+                                    Following
                                 </div>
                             )}
-                        </div>
+                        </div> */}
                     </div>
                 ) : null}
                 <div className={styles.avatarContent} style={backgroundImgStyle}>
