@@ -1,6 +1,8 @@
 import type { UserInfo } from '@/app/type'
 import styles from './follow.module.css'
 import useFollow from '../../../hooks/useFollow';
+import { formatAddress } from '@/app/utils';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     list: UserInfo[];
@@ -16,15 +18,18 @@ export default function  FollowerList({
     onAction,
 }: Props) {
     const { unFollow, follow } = useFollow()
+    const router = useRouter()
 
     return <div className={ styles.main }>
         {
             list.map((item: any) => {
                 return <div className={ styles.follower } key={item.address}>
-                    <div className={ styles.followerContent }>
+                    <div className={ styles.followerContent } onClick={() => {
+                        router.push('/profile/user?account=' + item.address)
+                    }}>
                         <img className={ styles.img } src={ item.icon || defaultAvatar } />
                         <div className={ styles.nameContent }>
-                            <div className={ styles.name }>{ item.name }</div>
+                            <div className={ styles.name }>{ item.name || formatAddress(item.address) }</div>
                             <div className={ styles.followers }>{ item.followers } followers</div>
                         </div>
                     </div>

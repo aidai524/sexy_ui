@@ -7,24 +7,33 @@ import {
 
 import styles from "./item.module.css";
 import { useMemo } from "react";
+import { useRouter } from "next/navigation";
+
+const defaultAvatar = '/img/avatar.png'
 
 export default function CommentItem({ item, onSuccess }: any) {
+  const router = useRouter()
+
   const userName = useMemo(() => {
     if (item?.creater) {
-        return item.creater.name || formatAddress(item.creater.address)
+      return item.creater.name || formatAddress(item.creater.address)
     }
 
     if (item.address) {
-        return formatAddress(item.address)
+      return formatAddress(item.address)
     }
     return '-'
-}, [item])
+  }, [item])
 
   return (
     <div key={item.id} className={styles.comment}>
       <div className={styles.replyer}>
         <div className={styles.person}>
-          <div className={styles.avtar}></div>
+          <div className={styles.avtar} onClick={() => {
+            router.push('/profile/user?account=' + item.address)
+          }}>
+            <img className={styles.avatarImg} src={item.creater.icon || defaultAvatar} />
+          </div>
           <div className={styles.name}>{userName}</div>
           <div className={styles.time}>{formatDateTime(item.time, 'hh:mm:ss')}</div>
         </div>
