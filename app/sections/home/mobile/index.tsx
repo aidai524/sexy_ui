@@ -100,7 +100,6 @@ export default function Home() {
         </div>
       </div>
        
-
       <div className={styles.thumbnailListBox} ref={containerRef}>
         {infoData && (
           <div style={{ zIndex: 1 }} className={[styles.thumbnailBox].join(" ")}>

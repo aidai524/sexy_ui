@@ -46,7 +46,7 @@ export default function Boost({
         setBoostVipShow(false);
       }}
       onCanceVip={() => {
-        setBoostShow(true);
+        // setBoostShow(true);
         setBoostVipShow(false);
       }}
     />
@@ -92,7 +92,6 @@ export default function Boost({
 
   return (
     <div
-      className="button"
       onClick={() => {
         if (token.boostTime && token.boostTime > 0) {
           setBoostTimeShow(true);
