@@ -129,7 +129,7 @@ export default function CreateNode({
                     about,
                     tokenImg: tokenImg[0].url,
                     tokenSymbol: tokenName.toUpperCase(),
-                    tokenIcon: tokenIcon.length > 0 ? tokenIcon[0].url : tokenIcon[0].url,
+                    tokenIcon: tokenIcon.length > 0 ? tokenIcon[0].url : tokenImg[0].url,
                     website,
                     twitter,
                     telegram,

@@ -17,6 +17,7 @@
     color: rgba(146, 144, 177, 1);
     .names {
       padding-bottom: 5px;
+      white-space: nowrap;
       .whiteName {
         color: #fff;
       }

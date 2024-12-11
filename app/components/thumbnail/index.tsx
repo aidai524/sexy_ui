@@ -15,6 +15,7 @@ interface Props {
     data: Project;
     autoHeight?: boolean;
     showBackIcon?: boolean;
+    showLaunchType?: boolean;
 }
 
 export default function Thumbnail({
@@ -23,6 +24,7 @@ export default function Thumbnail({
     showProgress = false,
     autoHeight = false,
     showBackIcon = true,
+    showLaunchType = true,
     data
 }: Props) {
     const [progressIndex, setProgressIndex] = useState(0);
@@ -34,7 +36,7 @@ export default function Thumbnail({
 
     return (
         <div>
-            {topDesc && <AvatarBack data={data} showBackIcon={showBackIcon} />}
+            {topDesc && <AvatarBack data={data} showBackIcon={showBackIcon} showLaunchType={showLaunchType} />}
 
             <div
                 className={styles.thumbnail}
@@ -224,9 +226,10 @@ function TopArrow() {
 interface AvatarProps {
     data: Project;
     showBackIcon?: boolean;
+    showLaunchType?: boolean;
 }
 
-export function Avatar({ data, showBackIcon = false }: AvatarProps) {
+export function Avatar({ data, showBackIcon = false, showLaunchType=true }: AvatarProps) {
     const route = useRouter();
 
     if (!data) {
@@ -242,7 +245,9 @@ export function Avatar({ data, showBackIcon = false }: AvatarProps) {
                 <div className={styles.tokenName}>{data.tokenName}</div>
                 <div className={styles.tickerContent1}>
                     <div className={styles.ticker}>Ticker: {data.ticker}</div>
-                    <div className={styles.launchTag}>Pre-Launch</div>
+                    {
+                        showLaunchType && <div className={styles.launchTag}>Pre-Launch</div>
+                    }
                 </div>
             </div>
         </div>
@@ -302,10 +307,10 @@ export function Avatar({ data, showBackIcon = false }: AvatarProps) {
     </div>
 }
 
-export function AvatarBack({ data, showBackIcon = true }: AvatarProps) {
+export function AvatarBack({ data, showBackIcon = true, showLaunchType }: AvatarProps) {
     return (
         <div className={styles.detailTitle}>
-            <Avatar data={data} />
+            <Avatar data={data} showLaunchType={showLaunchType}/>
             {showBackIcon && <TopArrow />}
         </div>
     );

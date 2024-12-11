@@ -247,9 +247,7 @@ export async function initAuthorization() {
   const { walletProvider, sexAddress, connect } = window;
   if (!walletProvider || !sexAddress) {
     console.log("connect", connect);
-
     await connect();
-
     return;
   }
 
@@ -287,6 +285,14 @@ export async function initAuthorization() {
   }
 
   isInitingAuthorization = false;
+}
+
+export function logOut() {
+    // @ts-ignore
+    window.walletProvider = null
+    // @ts-ignore
+    window.sexAddress = null
+    window.localStorage.removeItem(AUTH_KEY);
 }
 
 export function getFullNum(value: any) {
@@ -352,6 +358,19 @@ export function formatAddress(address: string) {
     });
   }
 }
+
+const addressLastReg = /(\w{35}).+(\w{1})/;
+export function formatAddressLast(address: string) {
+    if (!address) {
+      return "";
+    }
+  
+    if (address.length > 12) {
+      return address.replace(addressLastReg, ($1, $2, $3) => {
+        return $2 + "...." + $3;
+      });
+    }
+  }
 
 export function formatDateTime(
   _datetime: any,

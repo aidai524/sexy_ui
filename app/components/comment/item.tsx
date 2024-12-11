@@ -26,7 +26,7 @@ export default function CommentItem({ item, onSuccess }: any) {
         <div className={styles.person}>
           <div className={styles.avtar}></div>
           <div className={styles.name}>{userName}</div>
-          <div className={styles.time}>{formatDateTime(item.time)}</div>
+          <div className={styles.time}>{formatDateTime(item.time, 'hh:mm:ss')}</div>
         </div>
 
         {/* <div className={styles.relayBtn}>Reply</div> */}

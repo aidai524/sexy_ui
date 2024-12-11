@@ -8,6 +8,8 @@ interface Props {
     onAction?: () => void;
 }
 
+const defaultAvatar = '/img/avatar.png'
+
 export default function  FollowerList({
     list,
     followerType,
@@ -20,7 +22,7 @@ export default function  FollowerList({
             list.map((item: any) => {
                 return <div className={ styles.follower } key={item.address}>
                     <div className={ styles.followerContent }>
-                        <img className={ styles.img } src={ item.icon } />
+                        <img className={ styles.img } src={ item.icon || defaultAvatar } />
                         <div className={ styles.nameContent }>
                             <div className={ styles.name }>{ item.name }</div>
                             <div className={ styles.followers }>{ item.followers } followers</div>

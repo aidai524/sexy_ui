@@ -39,7 +39,7 @@ export default function PreviewNode({
 
     return <div className={styles.mainContent} style={{ display: show ? 'block' : 'none' }}>
         <div className={styles.main}>
-            <InfoPart showBackIcon={false} showThumbnailHead={true} showThumbnailProgress={false} data={newData} />
+            <InfoPart specialTime={'just now'} showBackIcon={false} showThumbnailHead={true} showThumbnailProgress={false} data={newData} />
         </div>
 
         <div className={styles.actionBtns}>

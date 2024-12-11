@@ -32,10 +32,10 @@ export default function Token({ data }: Props) {
             <div className={styles.nameContent}>
                 <div className={styles.name}>{data.tokenName}</div>
                 <div className={styles.trikerContent}>
-                    <span>Ticker: {data.ticker}</span>
-                    <img onClick={() => {
+                    <div className={ styles.tickerName }>Ticker: {data.ticker}</div>
+                    {/* <img onClick={() => {
                         router.push('/profile/user?account=' + data.account)
-                    }} className={styles.createrImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
+                    }} className={styles.createrImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" /> */}
                 </div>
                 <div className={styles.MarketCap}>Market cap: -</div>
                 <div className={styles.createTime}>{timeAgo(data.time)}</div>
