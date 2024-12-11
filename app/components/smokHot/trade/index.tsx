@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function Trade({ token, panelStyle, onSuccess }: Props) {
-  const [inputVal, setInputVal] = useState("");
+  const [inputVal, setInputVal] = useState("0.05");
   const [quickIndex, setQuickIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -68,7 +68,7 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
             </div>
           </div>
 
-          <div className={styles.tokenPercent}>
+          {/* <div className={styles.tokenPercent}>
             <div
               onClick={() => {
                 setQuickIndex(0);
@@ -102,8 +102,7 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
             >
               0.0000005SOL
             </div>
-            {/* <div className={ [styles.percentTag, quickIndex === 3 ? styles.tagActive : ''].join(' ')}>1SOL</div> */}
-          </div>
+          </div> */}
         </div>
 
         <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>

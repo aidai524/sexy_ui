@@ -6,10 +6,10 @@ import Create from "./components/create";
 import type { Project } from "@/app/type";
 import { useEffect, useState } from "react";
 import { httpAuthPost, sleep } from "@/app/utils";
-import useUserInfo from "../profile/hooks/useUserInfo";
 import { fail, success } from "@/app/utils/toast";
 import { useRouter } from "next/navigation";
 import { useAccount } from '@/app/hooks/useAccount';
+import { useUser } from "@/app/store/useUser";
 interface Props {
     onAddDataCancel: () => void;
     show: boolean;
@@ -24,7 +24,7 @@ export default function PreviewNode({
     const [newData, setNewData] = useState(data)
 
     const { address } = useAccount()
-    const { userInfo } = useUserInfo(address)
+    const { userInfo }: any = useUser()
 
     useEffect(() => {
         if (userInfo) {
@@ -39,7 +39,7 @@ export default function PreviewNode({
 
     return <div className={styles.mainContent} style={{ display: show ? 'block' : 'none' }}>
         <div className={styles.main}>
-            <InfoPart showBackIcon={false} showThumbnailHead={true} showThumbnailProgress={false} data={newData} />
+            <InfoPart specialTime={'just now'} showBackIcon={false} showThumbnailHead={true} showThumbnailProgress={false} data={newData} />
         </div>
 
         <div className={styles.actionBtns}>
@@ -65,7 +65,7 @@ export default function PreviewNode({
                 const query: any  = {
                     about_us: data.about,
                     discord: data.discord,
-                    icon: data.tokenImg,
+                    icon: data.tokenIcon,
                     tg: '',
                     ticker: data.ticker,
                     token_name: data.tokenName,
@@ -87,8 +87,6 @@ export default function PreviewNode({
                         break
                     }
                 }
-
-                console.log('val:', val)
 
                 if (val.code === 0) {
                     success('Create token success')

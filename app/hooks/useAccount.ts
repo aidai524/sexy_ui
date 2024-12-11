@@ -5,13 +5,14 @@ import { SolanaSignAndSendTransaction, SolanaSignMessage, SolanaSignTransaction 
 
 
 export function useAccount() {
-  const { connected, connecting, publicKey, signTransaction, sendTransaction, signMessage, wallet, connect } = useWallet();
+  const { connected, connecting, disconnect, publicKey, signTransaction, sendTransaction, signMessage, wallet, connect } = useWallet();
   const { connection } = useConnection();
 
   return {
     connected,
     connecting,
     connect,
+    disconnect,
     address: publicKey?.toString(),
     publicKey,
     walletProvider: {

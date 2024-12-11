@@ -31,6 +31,12 @@
                 align-items: center;
                 gap: 5px;
                 margin-top: 5px;
+                .tickerName {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 160px;
+                }
                 .createrImg {
                     width: 16px;
                     height: 16px;

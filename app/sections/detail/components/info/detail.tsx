@@ -41,6 +41,3 @@ export default function Info({
     </div>
 }
 
-function Sep() {
-    return <div style={{ height: 10 }}></div>
-}

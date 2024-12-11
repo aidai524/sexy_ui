@@ -13,14 +13,6 @@ interface Props {
 
 export default function Token({ data }: Props) {
     const [boostShow, setBoostShow] = useState(false)
-    // const showBoostJust = useCallback(() => {
-    //     const vipHandler = Modal.show({
-    //         content: <BoostJust onBoost={() => {
-    //             vipHandler.close()
-    //         }} />,
-    //         closeOnMaskClick: true,
-    //     })
-    // }, [])
 
     const router = useRouter()
 
@@ -33,17 +25,17 @@ export default function Token({ data }: Props) {
             <div className={styles.tokenImgContent} onClick={() => {
                 router.push('/detail?id=' + data.id)
             }}>
-                <img className={styles.tokenImg} src={data.tokenImg} />
+                <img className={styles.tokenImg} src={data.tokenIcon || data.tokenImg} />
                 <LaunchTag type={1} />
             </div>
 
             <div className={styles.nameContent}>
                 <div className={styles.name}>{data.tokenName}</div>
                 <div className={styles.trikerContent}>
-                    <span>Ticker: {data.ticker}</span>
-                    <img onClick={() => {
+                    <div className={ styles.tickerName }>Ticker: {data.ticker}</div>
+                    {/* <img onClick={() => {
                         router.push('/profile/user?account=' + data.account)
-                    }} className={styles.createrImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
+                    }} className={styles.createrImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" /> */}
                 </div>
                 <div className={styles.MarketCap}>Market cap: -</div>
                 <div className={styles.createTime}>{timeAgo(data.time)}</div>

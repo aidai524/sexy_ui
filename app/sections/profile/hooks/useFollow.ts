@@ -96,5 +96,6 @@ export default function useFollow(account?: string) {
         followerList,
         follow,
         unFollow,
+        update: setFreshNum
     }
 }

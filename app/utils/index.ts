@@ -247,9 +247,7 @@ export async function initAuthorization() {
   const { walletProvider, sexAddress, connect } = window;
   if (!walletProvider || !sexAddress) {
     console.log("connect", connect);
-
     await connect();
-
     return;
   }
 
@@ -289,6 +287,14 @@ export async function initAuthorization() {
   isInitingAuthorization = false;
 }
 
+export function logOut() {
+    // @ts-ignore
+    window.walletProvider = null
+    // @ts-ignore
+    window.sexAddress = null
+    window.localStorage.removeItem(AUTH_KEY);
+}
+
 export function getFullNum(value: any) {
   try {
     let x = value;
@@ -325,8 +331,8 @@ export function mapDataToProject(currentToken: any): Project {
     ticker: currentToken.ticker,
     about: currentToken.about_us,
     website: currentToken.website,
-    tokenImg:
-      currentToken.icon ||
+    tokenIcon: currentToken.icon || currentToken.video,
+    tokenImg: currentToken.video || currentToken.icon ||
       "https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect",
     isLike: currentToken.is_like,
     isUnLike: currentToken.isUnLike,
@@ -335,7 +341,8 @@ export function mapDataToProject(currentToken: any): Project {
     unLike: currentToken.un_like,
     superLike: currentToken.super_like,
     time: currentToken.time,
-    account: currentToken.account
+    account: currentToken.account,
+    creater: currentToken.account_data,
   };
 }
 
@@ -351,6 +358,19 @@ export function formatAddress(address: string) {
     });
   }
 }
+
+const addressLastReg = /(\w{35}).+(\w{1})/;
+export function formatAddressLast(address: string) {
+    if (!address) {
+      return "";
+    }
+  
+    if (address.length > 12) {
+      return address.replace(addressLastReg, ($1, $2, $3) => {
+        return $2 + "...." + $3;
+      });
+    }
+  }
 
 export function formatDateTime(
   _datetime: any,

@@ -5,12 +5,14 @@
   .thumbnailListBox {
     position: relative;
     height: calc(100vh - 232px);
+    z-index: 1;
     .thumbnailBox {
       position: absolute;
       left: 0;
       right: 0;
       top: 0;
       transition: all 0.3s;
+     
       &.hate {
         animation: rotateDownOut 1s forwards;
         transform-origin: center top;

@@ -1,3 +1,11 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin-top: 10px;
+  gap: 10px;
+}
 .addressContent {
   display: flex;
   align-items: center;
@@ -5,9 +13,9 @@
   font-size: 10px;
   color: rgba(126, 138, 147, 1);
   font-weight: 300;
-  height: 30px;
+  height: 38px;
   background-color: rgba(255, 255, 255, 0.08);
-  margin: 0 10px;
   border-radius: 40px;
   padding: 0 10px;
+  flex: 1;
 }

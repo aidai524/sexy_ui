@@ -21,10 +21,10 @@ export default function FollowerActions({ userInfo, onItemClick }: any) {
         <span className={styles.follwerAmount}>{userInfo?.following}</span>
         <span>Following</span>
       </div>
-      <div className={styles.follwerItem}>
+      {/* <div className={styles.follwerItem}>
         <span className={styles.follwerAmount}>{userInfo?.likeNum}</span>
         <span>Likes</span>
-      </div>
+      </div> */}
     </div>
   );
 }

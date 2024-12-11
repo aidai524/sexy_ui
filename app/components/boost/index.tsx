@@ -10,8 +10,8 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useAccount } from "@/app/hooks/useAccount";
 import { httpAuthPost } from "@/app/utils";
 import type { Project } from "@/app/type";
-import useUserInfo from "@/app/sections/profile/hooks/useUserInfo";
 import { fail, success } from "@/app/utils/toast";
+import { useUser } from "@/app/store/useUser";
 
 export default function Boost({
   onClick,
@@ -27,11 +27,13 @@ export default function Boost({
   const [boostStatusShow, setBoostStatusShow] = useState(false);
 
   const { address } = useAccount();
-  const { userInfo, onQueryInfo } = useUserInfo(address);
+  const { userInfo }: any = useUser();
 
   const VipModal = (
     <BoostVip
-      onStartVip={() => {}}
+      onStartVip={() => {
+        setBoostShow(true)
+      }}
       onCanceVip={() => {
         setBoostShow(true);
         setVipShow(false);
@@ -46,7 +48,7 @@ export default function Boost({
         setBoostVipShow(false);
       }}
       onCanceVip={() => {
-        setBoostShow(true);
+        // setBoostShow(true);
         setBoostVipShow(false);
       }}
     />
@@ -92,7 +94,6 @@ export default function Boost({
 
   return (
     <div
-      className="button"
       onClick={() => {
         if (token.boostTime && token.boostTime > 0) {
           setBoostTimeShow(true);
@@ -105,6 +106,8 @@ export default function Boost({
         } else {
           setBoostVipShow(true);
         }
+
+        // setBoostVipShow(true);
 
         // boost()
         // setBoostVipShow(true)

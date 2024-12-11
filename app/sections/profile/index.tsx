@@ -26,6 +26,15 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
     const [isFollower, setIsFollower] = useState(false);
     const [refreshNum, setRefreshNum] = useState(0);
     const [showVip, setShowVip] = useState(false);
+
+    useEffect(() => {
+        if (userAddress && params) {
+            if (params.get("account")?.toString() === userAddress && isOther) {
+                router.replace('/profile')
+            } 
+        }
+    }, [userAddress, params, isOther]);
+
     const address = useMemo(() => {
         if (isOther && params) {
             return params.get("account")?.toString();
@@ -34,14 +43,18 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
         return userAddress;
     }, [userAddress, params, isOther]);
 
-    const { userInfo } = useUserInfo(address);
+    const { userInfo, onQueryInfo } = useUserInfo(address);
 
     useEffect(() => {
         if (address && isOther) {
             httpAuthGet("/follower/account", { address: address }).then((res) => {
                 console.log("res:", res);
-                if (res.code === 0) {
-                    setIsFollower(res.data.is_follower);
+                if (res.code === 0 ) {
+                    if (res.data) {
+                        setIsFollower(res.data.is_follower);
+                    } else {
+                        setIsFollower(false);
+                    }
                 }
             });
         }
@@ -79,7 +92,8 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                                             return;
                                         }
                                         await follow(address);
-                                        setRefreshNum(refreshNum + 1);
+                                        setRefreshNum(Date.now());
+                                        onQueryInfo()
                                     }}
                                 >
                                     Follow
@@ -91,7 +105,8 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                                             return;
                                         }
                                         await unFollow(address);
-                                        setRefreshNum(refreshNum + 1);
+                                        setRefreshNum(Date.now());
+                                        onQueryInfo()
                                     }}
                                     className={styles.isFollow}
                                 >

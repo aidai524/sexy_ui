@@ -1,9 +1,11 @@
 import Upload from "@/app/components/upload";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ImageUploadItem } from "antd-mobile/es/components/image-uploader";
 import useUserInfo from "../hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 import styles from "./edit.module.css";
+import { success, fail } from "@/app/utils/toast";
+import MainBtn from "@/app/components/mainBtn";
 
 export default function EditContent({
   inputStyle,
@@ -18,7 +20,12 @@ export default function EditContent({
   const { address } = useAccount();
   const { userInfo, saveUserInfo } = useUserInfo(address);
 
-  console.log("avatar:", avatar);
+  const iaInValid = useMemo(() => {
+    if (!name || avatar.length ===0 || banner.length === 0) {
+      return true
+    }
+    return false
+  }, [name, avatar, banner])
 
   useEffect(() => {
     if (userInfo?.icon) {
@@ -45,6 +52,7 @@ export default function EditContent({
       setName(userInfo?.name);
     }
   }, [userInfo]);
+  
   return (
     <>
       <div className={styles.group}>
@@ -109,7 +117,8 @@ export default function EditContent({
         >
           Cancel
         </div>
-        <div
+        <MainBtn
+          isDisabled={iaInValid}
           onClick={async () => {
             if (name) {
               let icon = "",
@@ -125,14 +134,19 @@ export default function EditContent({
               const isSuccess = await saveUserInfo(bannerImg, icon, name);
 
               if (isSuccess) {
+                success('Edit profile success')
                 onSuccess();
+              } else {
+                fail('Edit profile fail')
               }
             }
           }}
-          className={styles.save + " " + styles.btn}
+          
+          style={{ flex: 1 }}
+
         >
           Save
-        </div>
+        </MainBtn>
       </div>
     </>
   );
