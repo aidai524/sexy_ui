@@ -39,7 +39,7 @@ export default function InfoPart({
     }
 
     return <div>
-        <Thumbnail showLaunchType={false} autoHeight={true} showBackIcon={showBackIcon} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
+        <Thumbnail showLikes={true} showLaunchType={false} autoHeight={true} showBackIcon={showBackIcon} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
         <Sep />
         <Panel>
             <div className={styles.author}>

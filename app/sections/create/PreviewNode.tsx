@@ -88,8 +88,6 @@ export default function PreviewNode({
                     }
                 }
 
-                console.log('val:', val)
-
                 if (val.code === 0) {
                     success('Create token success')
                     router.push('/profile')

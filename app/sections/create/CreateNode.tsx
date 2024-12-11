@@ -101,7 +101,7 @@ export default function CreateNode({
                 Community
             </div>
             <div className={styles.groupContent}>
-                <Link value={twitter} onChange={(val) => { setTwitter(val) }} type='Twitter' img="/img/community/x.svg" />
+                <Link value={twitter} onChange={(val) => { setTwitter(val) }} type='X' img="/img/community/x.svg" />
             </div>
 
             <div className={styles.groupContent}>

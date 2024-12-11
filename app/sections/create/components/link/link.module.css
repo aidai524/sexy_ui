@@ -1,6 +1,7 @@
 .linkBox {
     background-color: rgba(18, 23, 25, 1);
-    padding: 0 20px;
+    /* background-color: #fff; */
+    padding: 0 20px 10px;
     .linkContent {
         display: flex;
         align-items: center;

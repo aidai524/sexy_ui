@@ -16,6 +16,7 @@ interface Props {
     autoHeight?: boolean;
     showBackIcon?: boolean;
     showLaunchType?: boolean;
+    showLikes?: boolean;
 }
 
 export default function Thumbnail({
@@ -25,6 +26,7 @@ export default function Thumbnail({
     autoHeight = false,
     showBackIcon = true,
     showLaunchType = true,
+    showLikes = false,
     data
 }: Props) {
     const [progressIndex, setProgressIndex] = useState(0);
@@ -113,6 +115,10 @@ export default function Thumbnail({
                         </div>
                         <Tags data={data} />
                     </div>
+                }
+
+                {
+                    showLikes && <div className={ styles.bottomLike }><Likes data={data} /> </div>
                 }
             </div>
 
