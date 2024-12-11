@@ -5,7 +5,7 @@ import type { Project } from '@/app/type';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import CommentComp from '../comment';
-import { token } from '@coral-xyz/anchor/dist/cjs/utils';
+import { videoReg } from '../upload';
 
 interface Props {
     showDesc: boolean;
@@ -46,17 +46,22 @@ export default function Thumbnail({
             }
 
             <div className={styles.imgList}>
-                <img className={styles.tokenImg} src={data.tokenImg} />
+                {
+                    videoReg.test(data.tokenImg) ? <video width="100%" className={styles.imgPreview} autoPlay={false}>
+                        <source src={data.tokenImg} type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video> : <img className={styles.tokenImg} src={data.tokenImg} />
+                }
             </div>
 
             {
                 progressIndex === 1 && <div className={styles.commentList}>
                     <Avatar data={data} showBackIcon={true} />
-                    <CommentComp id={data.id} showEdit={false} usePanel={false}/>
+                    <CommentComp id={data.id} showEdit={false} usePanel={false} />
                 </div>
             }
 
-{
+            {
                 progressIndex === 2 && <div className={styles.commentList}>
                     <Avatar data={data} showBackIcon={true} />
                 </div>
@@ -155,7 +160,7 @@ interface AvatarProps {
     showBackIcon?: boolean;
 }
 
-const defaultImg = 'https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect'
+// const defaultImg = 'https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect'
 
 export function Avatar({
     data,
@@ -170,7 +175,7 @@ export function Avatar({
     return <div className={styles.titles}>
         <div className={styles.avatarBox}>
             <div className={styles.tokenImgBox}>
-                <img className={styles.tokenImg} src={data.tokenImg || defaultImg} />
+                <img className={styles.tokenImg} src={data.tokenIcon} />
             </div>
             <div>
                 <div className={styles.tokenName}>{data.tokenName}</div>

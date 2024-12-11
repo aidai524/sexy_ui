@@ -65,7 +65,7 @@ export default function PreviewNode({
                 const query: any  = {
                     about_us: data.about,
                     discord: data.discord,
-                    icon: data.tokenImg,
+                    icon: data.tokenIcon,
                     tg: '',
                     ticker: data.ticker,
                     token_name: data.tokenName,

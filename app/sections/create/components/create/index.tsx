@@ -63,6 +63,7 @@ export default function Create({
         about: '',
         website: '',
         tokenImg: tokenUri,
+        tokenIcon: data.tokenIcon,
     })
 
     const [tokenType, setTokenType] = useState<number>(1)

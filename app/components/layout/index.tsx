@@ -4,6 +4,5 @@ import Laptop from "./laptop";
 
 export default function Layout(props: any) {
   const isMobile = useIsMobile();
-
   return isMobile ? <Mobile {...props} /> : <Laptop {...props} />;
 }

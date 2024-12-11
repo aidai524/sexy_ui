@@ -9,5 +9,6 @@ const HomeCom = dynamic(() => import("./sections/home"), {
 });
 
 export default function Home() {
+  // return <div></div>
   return <HomeCom />;
 }

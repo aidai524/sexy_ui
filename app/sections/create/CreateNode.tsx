@@ -1,7 +1,7 @@
 import type { ImageUploadItem } from 'antd-mobile'
 import styles from './create.module.css'
-import { useState } from 'react'
-import Upload from '@/app/components/upload'
+import { useEffect, useState } from 'react'
+import Upload, { videoReg } from '@/app/components/upload'
 import Link from './components/link'
 import MainBtn from '@/app/components/mainBtn'
 import CheckBox from '@/app/components/checkBox'
@@ -16,9 +16,9 @@ interface Props {
 
 export default function CreateNode({
     onAddDataFill, show
-} : Props) {
+}: Props) {
     const [tokenImg, setTokenImg] = useState<ImageUploadItem[]>([])
-    const [tokenSymbol, setTokenSymbol] = useState<ImageUploadItem[]>([])
+    const [tokenIcon, setTokenIcon] = useState<ImageUploadItem[]>([])
     const [showTokenSymbol, setShowTokenSymbol] = useState<boolean>(false)
 
     const [tokenName, setTokenName] = useState('')
@@ -28,6 +28,15 @@ export default function CreateNode({
     const [twitter, setTwitter] = useState('')
     const [telegram, setTelegram] = useState('')
     const [discord, setDiscord] = useState('')
+
+    useEffect(() => {
+        if (tokenImg && tokenImg.length > 0) {
+            const url = tokenImg[0].url
+            if (videoReg.test(url)) {
+                setShowTokenSymbol(true)
+            }
+        }
+    }, [tokenImg])
 
 
     return <div className={styles.create} style={{ display: show ? 'block' : 'none' }}>
@@ -45,7 +54,7 @@ export default function CreateNode({
                 <span className={styles.require}>*</span>Ticker
             </div>
             <div className={styles.groupContent}>
-                <input value={ticker} onChange={(e) => { setTicker(e.target.value) }}  className={styles.inputText} placeholder='say something' />
+                <input value={ticker} onChange={(e) => { setTicker(e.target.value) }} className={styles.inputText} placeholder='say something' />
             </div>
         </div>
 
@@ -54,8 +63,8 @@ export default function CreateNode({
                 <span className={styles.require}>*</span>Image or Video
             </div>
             <div className={styles.groupContent + ' ' + styles.uploadContent} style={{ paddingLeft: 15, paddingTop: 10 }}>
-                <Upload fileList={tokenImg} setFileList={setTokenImg} />
-                <div className={styles.uploadTip}>Support img/png/gif</div>
+                <Upload accept="image/*, video/mp4" fileList={tokenImg} setFileList={setTokenImg} />
+                <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
             </div>
             <div className={styles.tokenSymbol}>
                 <CheckBox checked={showTokenSymbol} onCheckChange={(isChecked) => { setShowTokenSymbol(isChecked) }} />
@@ -63,7 +72,7 @@ export default function CreateNode({
             </div>
             {
                 showTokenSymbol && <div className={styles.groupContent + ' ' + styles.uploadContent + ' ' + styles.avatar} style={{ paddingLeft: 15, paddingTop: 10 }}>
-                    <Upload fileList={tokenSymbol} setFileList={setTokenSymbol} />
+                    <Upload fileList={tokenIcon} setFileList={setTokenIcon} />
                     <div className={styles.uploadTip}>Support img/png/svg</div>
                 </div>
             }
@@ -107,7 +116,7 @@ export default function CreateNode({
         <div className={styles.btnWapper}>
             <MainBtn onClick={() => {
                 const isValid = validateVal({
-                    tokenName, ticker, about, tokenImg
+                    tokenName, ticker, about, tokenImg, tokenIcon
                 })
                 if (!isValid) {
                     fail('isValid params')
@@ -115,13 +124,15 @@ export default function CreateNode({
                 }
 
                 onAddDataFill({
-                    tokenName, 
-                    ticker, 
-                    about, 
+                    tokenName,
+                    ticker,
+                    about,
                     tokenImg: tokenImg[0].url,
-                    website, 
-                    twitter, 
-                    telegram, 
+                    tokenSymbol: tokenName.toUpperCase(),
+                    tokenIcon: tokenIcon.length > 0 ? tokenIcon[0].url : tokenIcon[0].url,
+                    website,
+                    twitter,
+                    telegram,
                     discord
                 })
             }}>Preview</MainBtn>
@@ -138,6 +149,13 @@ function validateVal(params: any) {
 
     if (params.tokenImg?.length === 0) {
         return false
+    }
+
+    const tokenImg = params.tokenImg[0]
+    if (videoReg.test(tokenImg.url)) {
+        if (params.tokenIcon.length === 0) {
+            return false
+        }
     }
 
     return isValid

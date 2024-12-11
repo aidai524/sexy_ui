@@ -153,6 +153,10 @@
     .tokenImgBox {
         border: 1px dashed #fff;
         border-radius: 46px;
+        display: flex;
+        width: 46px;
+        height: 46px;
+        align-items: center;
     }
     .tokenImg {
         width: 46px;

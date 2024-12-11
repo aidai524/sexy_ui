@@ -6,11 +6,14 @@ import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
 import { MessageContextProvider } from "./context/messageContext";
 
+
 export default function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+
+
   return (
     <html lang="en">
       <head>

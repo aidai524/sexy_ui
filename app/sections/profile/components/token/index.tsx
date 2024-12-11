@@ -13,14 +13,6 @@ interface Props {
 
 export default function Token({ data }: Props) {
     const [boostShow, setBoostShow] = useState(false)
-    // const showBoostJust = useCallback(() => {
-    //     const vipHandler = Modal.show({
-    //         content: <BoostJust onBoost={() => {
-    //             vipHandler.close()
-    //         }} />,
-    //         closeOnMaskClick: true,
-    //     })
-    // }, [])
 
     const router = useRouter()
 
@@ -33,7 +25,7 @@ export default function Token({ data }: Props) {
             <div className={styles.tokenImgContent} onClick={() => {
                 router.push('/detail?id=' + data.id)
             }}>
-                <img className={styles.tokenImg} src={data.tokenImg} />
+                <img className={styles.tokenImg} src={data.tokenIcon || data.tokenImg} />
                 <LaunchTag type={1} />
             </div>
 
