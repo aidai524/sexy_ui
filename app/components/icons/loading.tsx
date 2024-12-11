@@ -29,7 +29,7 @@ const CircleLoading = (props: Props) => {
       />
       <path
         d="M1 9C1 13.4183 4.58172 17 9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1"
-        stroke="currentColor"
+        stroke="#FF3499"
         strokeWidth="2"
         strokeLinecap="round"
       />
