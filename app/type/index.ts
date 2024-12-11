@@ -20,6 +20,7 @@ export interface Project {
     account?: string;
     boostTime?: number;
     address?: string;
+    creater?: any;
 }
 
 export interface Comment {
@@ -32,6 +33,7 @@ export interface Comment {
     like: number;
     unLike: number;
     time: number;
+    creater?: any,
 }
 
 export interface UserInfo {

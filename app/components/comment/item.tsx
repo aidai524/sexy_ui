@@ -6,15 +6,26 @@ import {
 } from "@/app/utils";
 
 import styles from "./item.module.css";
+import { useMemo } from "react";
 
 export default function CommentItem({ item, onSuccess }: any) {
-  console.log("item", item);
+  const userName = useMemo(() => {
+    if (item?.creater) {
+        return item.creater.name || formatAddress(item.creater.address)
+    }
+
+    if (item.address) {
+        return formatAddress(item.address)
+    }
+    return '-'
+}, [item])
+
   return (
     <div key={item.id} className={styles.comment}>
       <div className={styles.replyer}>
         <div className={styles.person}>
           <div className={styles.avtar}></div>
-          <div className={styles.name}>{formatAddress(item.address)}</div>
+          <div className={styles.name}>{userName}</div>
           <div className={styles.time}>{formatDateTime(item.time)}</div>
         </div>
 

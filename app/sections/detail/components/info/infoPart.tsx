@@ -4,6 +4,8 @@ import Panel from '../../../../components/panel'
 import styles from './detail.module.css'
 import type { Project } from '@/app/type';
 import { formatAddress, timeAgo } from '@/app/utils';
+import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 
 interface Props {
     showThumbnailHead: boolean;
@@ -18,9 +20,22 @@ export default function InfoPart({
     showBackIcon = true,
     data
 }: Props) {
+    const router = useRouter()
+
     if (!data) {
         return
     }
+
+    const userName = useMemo(() => {
+        if (data.creater) {
+            return data.creater.name || formatAddress(data.creater.address)
+        }
+
+        if (data.account) {
+            return formatAddress(data.account)
+        }
+        return '-'
+    }, [data])
 
     return <div>
         <Thumbnail autoHeight={true} showBackIcon={showBackIcon} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
@@ -28,7 +43,9 @@ export default function InfoPart({
         <Panel>
             <div className={styles.author}>
                 <div className={styles.authorTitle}>Created by:</div>
-                <div className={[styles.authorDesc, styles.authorDescEs].join(' ')}>{ data.account ? formatAddress(data.account) : '' }</div>
+                <div onClick={() => {
+                    router.push('/profile/user?account=' + data.account)
+                }} className={[styles.authorDesc, styles.authorDescEs].join(' ')}>{ userName }</div>
             </div>
             <div className={styles.author}>
                 <div className={styles.authorTitle}>Create time:</div>

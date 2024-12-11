@@ -335,7 +335,8 @@ export function mapDataToProject(currentToken: any): Project {
     unLike: currentToken.un_like,
     superLike: currentToken.super_like,
     time: currentToken.time,
-    account: currentToken.account
+    account: currentToken.account,
+    creater: currentToken.account_data,
   };
 }
 

@@ -106,6 +106,7 @@ function mapDataToComment(data: any): Comment {
     isUnlike: data.is_unlike,
     like: data.like,
     unLike: data.un_like,
-    time: data.time
+    time: data.time,
+    creater: data.account_data,
   };
 }
