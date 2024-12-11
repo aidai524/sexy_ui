@@ -48,7 +48,7 @@ export default function Thumbnail({
                             }}
                             className={[
                                 styles.progressItem,
-                                progressIndex === 0 ? styles.active : ""
+                                progressIndex === 0 ? styles.progressItemActive : ""
                             ].join(" ")}
                         ></div>
                         <div
@@ -57,7 +57,7 @@ export default function Thumbnail({
                             }}
                             className={[
                                 styles.progressItem,
-                                progressIndex === 1 ? styles.active : ""
+                                progressIndex === 1 ? styles.progressItemActive : ""
                             ].join(" ")}
                         ></div>
                         <div
@@ -66,7 +66,7 @@ export default function Thumbnail({
                             }}
                             className={[
                                 styles.progressItem,
-                                progressIndex === 2 ? styles.active : ""
+                                progressIndex === 2 ? styles.progressItemActive : ""
                             ].join(" ")}
                         ></div>
                     </div>
@@ -225,8 +225,6 @@ interface AvatarProps {
     data: Project;
     showBackIcon?: boolean;
 }
-
-// const defaultImg = 'https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect'
 
 export function Avatar({ data, showBackIcon = false }: AvatarProps) {
     const route = useRouter();

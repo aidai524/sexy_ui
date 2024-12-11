@@ -99,16 +99,17 @@ export default function Home() {
           </div>
         </div>
       </div>
+       
 
       <div className={styles.thumbnailListBox} ref={containerRef}>
         {infoData && (
-          <div className={[styles.thumbnailBox].join(" ")}>
+          <div style={{ zIndex: 1 }} className={[styles.thumbnailBox].join(" ")}>
             <Thumbnail showProgress={true} showDesc={true} data={infoData} />
           </div>
         )}
 
         {infoData2 && (
-          <div className={[styles.thumbnailBox, actionStyle].join(" ")}>
+          <div style={{ zIndex: 2 }} className={[styles.thumbnailBox, actionStyle].join(" ")}>
             <Thumbnail showProgress={true} showDesc={true} data={infoData2} />
           </div>
         )}
