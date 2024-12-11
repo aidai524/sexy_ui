@@ -1,10 +1,10 @@
 "use client";
 
-import type { Metadata } from "next";
 import "./globals.css";
 import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
 import { MessageContextProvider } from "./context/messageContext";
+import { UserAgentProvider } from "@/app/context/user-agent";
 
 
 export default function RootLayout({
@@ -25,7 +25,9 @@ export default function RootLayout({
       <body>
         <MessageContextProvider>
           <WalletConnect>
-            <Layout>{children}</Layout>
+            <UserAgentProvider>
+              <Layout>{children}</Layout>
+            </UserAgentProvider>
           </WalletConnect>
         </MessageContextProvider>
       </body>

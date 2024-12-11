@@ -1,72 +1,24 @@
 .main {
-    padding-top: 10px;
-    .title {
-        font-weight: 600;
-        font-size: 18px;
-        color: rgba(146, 144, 177, 1);
-        padding: 0 15px;
-    }
-    .input {
-        margin: 10px 15px;
-        height: 37px;
-        width: calc(100vw - 30px);
-        border: 1px solid rgba(146, 144, 177, 0.6);
-        border-radius: 8px;
-        background-color: #000;
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 16px;
-        padding: 0 10px;
-    }
-    .input:focus {
-        border: 1px solid rgba(146, 144, 177, 0.6);
-        outline: none;
-    }
-}
-
-.comment {
-    font-size: 14px;
-    margin-top: 10px;
-    .replyer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .person {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            .avtar {
-                width: 16px;
-                height: 16px;
-                border-radius: 16px;
-                background-color: #515B63;
-            }
-            .name {
-                color: rgba(169, 167, 208, 1);
-            }
-            .time {
-                color: rgba(255, 255, 255, 0.6);
-            }
-        }
-        .relayBtn {
-            text-decoration: underline;
-            color: rgba(255, 255, 255, 0.6);
-        }
-    }
-    .relayText {
-        color: #fff;
-        margin-top: 5px;
-    }
-
-    .commentAction {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-        margin-top: 10px;
-        .zan {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            color: #FFFFFF99;
-        }
-    }
+  padding-top: 10px;
+  .title {
+    font-weight: 600;
+    font-size: 18px;
+    color: rgba(146, 144, 177, 1);
+    padding: 0 15px;
+  }
+  .input {
+    margin: 10px 15px;
+    height: 37px;
+    width: calc(100vw - 30px);
+    border: 1px solid rgba(146, 144, 177, 0.6);
+    border-radius: 8px;
+    background-color: #000;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    padding: 0 10px;
+  }
+  .input:focus {
+    border: 1px solid rgba(146, 144, 177, 0.6);
+    outline: none;
+  }
 }

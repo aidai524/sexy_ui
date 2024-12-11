@@ -13,3 +13,10 @@
   background: url(/img/laptop/sexyfi-1.png) no-repeat;
   bottom: 0;
 }
+
+.Content {
+  display: flex;
+  gap: 16px;
+  padding-top: 16px;
+  padding-left: 24px;
+}

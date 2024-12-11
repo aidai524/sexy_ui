@@ -1,10 +1,11 @@
-import useIsMobile from "@/app/hooks/useIsMobile";
+"use client";
+
+import { memo } from "react";
 import Mobile from "./mobile";
 import Laptop from "./laptop";
+import { useUserAgent } from "@/app/context/user-agent";
 
-export default function Home(props: any) {
-
-  const isMobile = useIsMobile();
-
+export default memo(function Home(props: any) {
+  const { isMobile } = useUserAgent();
   return isMobile ? <Mobile {...props} /> : <Laptop {...props} />;
-}
+});
