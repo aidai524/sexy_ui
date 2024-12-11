@@ -23,11 +23,6 @@ export default function InfoPart({
     specialTime
 }: Props) {
     const router = useRouter()
-
-    if (!data) {
-        return
-    }
-
     const userName = useMemo(() => {
         if (data.creater) {
             return data.creater.name || formatAddress(data.creater.address)
@@ -38,6 +33,10 @@ export default function InfoPart({
         }
         return '-'
     }, [data])
+
+    if (!data) {
+        return
+    }
 
     return <div>
         <Thumbnail showLaunchType={false} autoHeight={true} showBackIcon={showBackIcon} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
