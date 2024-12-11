@@ -5,7 +5,7 @@ import styles from "./index.module.css";
 export default function TokenCard({ token }: any) {
   return token ? (
     <div className={styles.Container}>
-      <TokenCardActions />
+      <TokenCardActions token={token} />
       <img className={styles.Img} src={token.tokenImg} />
       <div className={styles.Like}>
         <Likes data={token} />

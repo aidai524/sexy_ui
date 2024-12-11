@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import { useState } from "react";
 
 const BUTTONS = ["Img", "Discussion", "Founders"];
-export default function TokenCardActions() {
+export default function TokenCardActions({ token }: any) {
   const [currentTab, setCurrentTab] = useState("Img");
   return (
     <>
@@ -26,7 +26,7 @@ export default function TokenCardActions() {
         <div className={styles.Layer}>
           {currentTab === "Discussion" && (
             <Comment
-              id={14}
+              id={token.id}
               usePanel={false}
               showEdit={false}
               titleStyle={{
