@@ -30,7 +30,8 @@ export default function CreateNode({
     const [telegram, setTelegram] = useState('')
     const [discord, setDiscord] = useState('')
 
-
+    const [canValid, setCanValid] = useState(false)
+    const [inValidVals, setInvaldVasl] = useState<any>({})
 
     useEffect(() => {
         if (tokenImg && tokenImg.length > 0) {
@@ -48,7 +49,7 @@ export default function CreateNode({
                 <span className={styles.require}>*</span>Name
             </div>
             <div className={styles.groupContent}>
-                <input value={tokenName} onChange={(e) => { setTokenName(e.target.value) }} className={styles.inputText} placeholder='Meme name' />
+                <input value={tokenName} onChange={(e) => { setTokenName(e.target.value) }} className={styles.inputText  + ' ' + (inValidVals['tokenName'] ? styles.inputError : '') } placeholder='Meme name' />
             </div>
         </div>
 
@@ -57,7 +58,7 @@ export default function CreateNode({
                 <span className={styles.require}>*</span>Ticker
             </div>
             <div className={styles.groupContent}>
-                <input value={ticker} onChange={(e) => { setTicker(e.target.value) }} className={styles.inputText} placeholder='say something' />
+                <input value={ticker} onChange={(e) => { setTicker(e.target.value) }} className={styles.inputText + ' ' + (inValidVals['ticker'] ? styles.inputError : '') } placeholder='say something' />
             </div>
         </div>
 
@@ -65,7 +66,7 @@ export default function CreateNode({
             <div className={styles.groupTitle}>
                 <span className={styles.require}>*</span>Image or Video
             </div>
-            <div className={styles.groupContent + ' ' + styles.uploadContent} style={{ paddingLeft: 15, paddingTop: 10 }}>
+            <div className={styles.groupContent + ' ' + styles.uploadContent + ' ' + (inValidVals['tokenImg'] ? styles.uploadError : '')} style={{ paddingLeft: 15, paddingTop: 10 }}>
                 <Upload accept="image/*, video/mp4" fileList={tokenImg} setFileList={setTokenImg} />
                 <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
             </div>
@@ -74,7 +75,7 @@ export default function CreateNode({
                 <div className={styles.tokenSymbolTitle}>Another image for token symbol</div>
             </div>
             {
-                showTokenSymbol && <div className={styles.groupContent + ' ' + styles.uploadContent + ' ' + styles.avatar} style={{ paddingLeft: 15, paddingTop: 10 }}>
+                showTokenSymbol && <div className={styles.groupContent + ' ' + styles.uploadContent + ' ' + styles.avatar + ' ' + (inValidVals['tokenIcon'] ? styles.uploadError : '')} style={{ paddingLeft: 15, paddingTop: 10 }}>
                     <Upload fileList={tokenIcon} setFileList={setTokenIcon} />
                     <div className={styles.uploadTip}>Support img/png/svg</div>
                 </div>
@@ -86,7 +87,7 @@ export default function CreateNode({
                 <span className={styles.require}>*</span>About us
             </div>
             <div className={styles.groupContent}>
-                <input value={about} onChange={(e) => { setAbout(e.target.value) }} className={styles.inputText} placeholder='say something' />
+                <input value={about} onChange={(e) => { setAbout(e.target.value) }} className={styles.inputText  + ' ' + (inValidVals['about'] ? styles.inputError : '')} placeholder='say something' />
             </div>
         </div>
 
@@ -118,11 +119,52 @@ export default function CreateNode({
 
         <div className={styles.btnWapper}>
             <MainBtn onClick={() => {
-                const isValid = validateVal({
-                    tokenName, ticker, about, tokenImg, tokenIcon
-                })
-                if (!isValid) {
-                    fail('isValid params')
+                // const isValid = validateVal({
+                //     tokenName, ticker, about, tokenImg, tokenIcon
+                // })
+                // if (!isValid) {
+                //     // fail('isValid params')
+                //     return
+                // }
+
+
+                let isValid = false
+                const inValidVals: any = {}
+
+                if (!tokenName) {
+                    inValidVals['tokenName'] = true
+                    isValid = true
+                }
+
+                if (!ticker) {
+                    inValidVals['ticker'] = true
+                    isValid = true
+                }
+
+                if (tokenImg.length ===0) {
+                    inValidVals['tokenImg'] = true
+                    isValid = true
+                } else {
+                    const tokenImgObj = tokenImg[0]
+                    if (videoReg.test(tokenImgObj.url)) {
+                        if (tokenIcon.length === 0) {
+                            inValidVals['tokenIcon'] = true
+                            isValid = true
+                        }
+                    }
+                }
+
+                if (!about) {
+                    inValidVals['about'] = true
+                    isValid = true
+                }
+
+                setInvaldVasl(inValidVals)
+
+                if (isValid) {
+                    window.scrollTo({
+                        top: 0
+                    })
                     return
                 }
 
