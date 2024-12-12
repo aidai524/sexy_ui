@@ -10,7 +10,7 @@
 
     .cationArea {
         .tradeTabs {
-            padding: 20px 15px;
+            padding: 20px 0;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -37,6 +37,18 @@
         }
     }
 
+    .tokenBalanceBox {
+        border: 1px solid rgba(146, 144, 177, 0.6);
+        border-radius: 8px;
+        margin-top: 10px;
+        .balance {
+            text-align: right;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            padding: 0 10px 10px;
+        }
+    }
+
     .inputArea {
         .actionArea {
             display: flex;
@@ -52,15 +64,12 @@
         }
 
         .inputArea {
-            margin-top: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             color: #fff;
             gap: 10px;
             height: 46px;
-            border: 1px solid rgba(146, 144, 177, 0.6);
-            border-radius: 8px;
             padding: 0 10px;
 
             .input {

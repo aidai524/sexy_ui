@@ -22,6 +22,7 @@ import bs58 from 'bs58';
 import { httpAuthPost, sleep } from '../utils';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useAccount } from '@/app/hooks/useAccount';
+import { useClickAway } from 'ahooks';
 
 interface Props {
     tokenName: string;
@@ -38,6 +39,8 @@ export function useTokenTrade({
     const [minPrice, setMinPrice] = useState(1)
     const [maxPrice, setMaxPrice] = useState(1)
     const [tokenBalance, setTokenBalance] = useState('0')
+    const [solBalance, setSolBalance] = useState('0')
+    const [reFreshBalnace, setReFreshBalnace] = useState(0)
 
     const programId = useMemo(() => {
         return new PublicKey("BmEdwC1RFv2YF7Yo7y3H28MJvHXcNyMtxNBrDgkBRXgd")
@@ -314,21 +317,12 @@ export function useTokenTrade({
 
         const solAmount = new anchor.BN(minPrice)
 
-        console.log(new anchor.BN(amount),
-        solAmount,
-        new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
-        keys.proxySolAccount)
-
         const tx: any = await program.methods.sellToken(
             new anchor.BN(amount),
             solAmount,
             new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
             keys.proxySolAccount,
         ).accounts(keys).transaction()
-
-        const referral = anchor.web3.Keypair.fromSecretKey(bs58.decode('5P9B9gSt6BQG7wQ2CTDcnFfbL1NUBhsRrQUTR6YB5WvfYEhpnCFm2dyFSXnzYb2WzbQL9t4cLEM7ZkWiBpaTqPfB'));
-
-        console.log("referral:" + referral.publicKey.toString())
 
         console.log('tx:', tx)
         tx.recentBlockhash = latestBlockhash!.blockhash
@@ -599,6 +593,22 @@ export function useTokenTrade({
         // return hash2   
     }, [programId, walletProvider, connection, wsol])
 
+    const checkPrePayed = useCallback(async () => {
+        if (!pool) {
+            return false
+        }
+
+        const prePaidRecord = PublicKey.findProgramAddressSync(
+            [Buffer.from("prepaid_record"), pool[0].toBuffer(), walletProvider.publicKey!.toBuffer()],
+            programId
+        );
+
+        const val = await connection.getAccountInfo(prePaidRecord[0])
+
+        return !!val
+
+    }, [walletProvider, connection, pool])
+
     useEffect(() => {
         if (programId && pool && connection && tokenName && tokenSymbol && loadData) {
             const program = new Program<any>(idl, programId, { connection: connection } as any);
@@ -607,7 +617,7 @@ export function useTokenTrade({
                 setRate(Number(rate.toString()))
             })
         }
-    }, [programId, pool, connection, tokenName, tokenSymbol, loadData])
+    }, [programId, pool, connection, tokenName, tokenSymbol, loadData, reFreshBalnace])
 
     useEffect(() => {
         if (programId && connection && tokenName && tokenSymbol && loadData && tokenInfo) {
@@ -628,7 +638,21 @@ export function useTokenTrade({
             }, 10)
         }
 
-    }, [programId, connection, tokenName, tokenSymbol, loadData])
+    }, [programId, walletProvider, connection, tokenName, tokenSymbol, loadData, reFreshBalnace])
+
+    useEffect(() => {
+        if (connection) {
+            connection.getBalance(walletProvider.publicKey!).then(res => {
+                if (res) {
+                    setSolBalance(new Big(res).div(10 ** 9).toString())
+                } else {
+                    setSolBalance('0')
+                }
+                
+            })
+        }
+        
+    }, [connection, walletProvider, reFreshBalnace])
 
     return {
         rate,
@@ -638,7 +662,10 @@ export function useTokenTrade({
         sellToken,
         createToken,
         tokenBalance,
-        prePaid
+        solBalance,
+        updateBalance: () => { setReFreshBalnace(reFreshBalnace + 1) },
+        prePaid,
+        checkPrePayed,
     }
 
 }

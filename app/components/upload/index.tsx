@@ -16,17 +16,29 @@ interface Props {
 export async function mockUpload(file: File): Promise<ImageUploadItem> {
   console.log("file:", file);
   const url = await upload(file.name, file);
+  // export async function mockUpload(file: File): Promise<ImageUploadItem> {
+  //     console.log('file:', file)
+  //     const url = await upload(file.name, file)
 
   if (url) {
     return {
       url
     };
   }
+  //     if (url) {
+  //         return {
+  //             url,
+  //         }
+  //     }
 
   return {
     url: ""
   };
 }
+//     return {
+//         url: '',
+//     }
+// }
 
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
 export const videoReg = /(.+\.(mp4))$/i;

@@ -27,18 +27,19 @@ export default function SmokeBtn({ onClick, token }: Props) {
     />
   );
 
-
   return (
     <div
       onClick={() => {
-        if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
-            setPanelShow(true);
-        } else {
-            setVipShow(true)
-        }
+        // if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
+        //     setPanelShow(true);
+        // } else {
+        //     setVipShow(true)
+        // }
+        setPanelShow(true);
         onClick();
       }}
     >
+        <div style={{ width: 48, height: 48, overflow: 'hidden' }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="48"
@@ -67,6 +68,7 @@ export default function SmokeBtn({ onClick, token }: Props) {
           </linearGradient>
         </defs>
       </svg>
+      </div>
 
       <Modal
         visible={vipShow}

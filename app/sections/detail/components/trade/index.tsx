@@ -11,6 +11,7 @@ const token: any = {
 }
 
 export default function Trade() {
+    
 
     return <div className={ styles.main }>
         <CA />
