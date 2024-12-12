@@ -1,5 +1,5 @@
 .main {
-
+    padding-bottom: 150px;
     
 }
 
@@ -79,5 +79,10 @@
 
 .action {
     margin: 50px auto 50px;
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    bottom: 50px;
 }
 
