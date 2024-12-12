@@ -3,7 +3,8 @@
 import ConnectButton from "@/app/components/connectButton";
 import styles from "./home.module.css";
 import Thumbnail from "@/app/components/thumbnail";
-import Action from "../../../components/action";
+import LaunchingAction from "@/app/components/action/launching";
+import LaunchedAction from "@/app/components/action/launched";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Hammer from "hammerjs";
@@ -20,7 +21,19 @@ export default function Home() {
   const { likeTrigger, setLikeTrigger } = useMessage();
   const containerRef = useRef<any>();
 
-  const { infoData, infoData2, getnext, onLike, onHate } = useData();
+  const {
+    infoData: infoDataLaunching,
+    infoData2: infoDataLaunching2,
+    getnext: getLaunchingNext,
+    onLike,
+    onHate
+  } = useData('preLaunch');
+
+  const {
+    infoData: infoDataLaunched,
+    infoData2: infoDataLaunched2,
+    getnext: getLaunchedNext,
+  } = useData('launching');
 
   useEffect(() => {
     if (containerRef.current && typeof window !== "undefined") {
@@ -56,7 +69,7 @@ export default function Home() {
 
     setTimeout(() => {
       setActionStyle(null);
-      getnext('preLaunch');
+      getLaunchingNext();
     }, 1000);
     onLike();
   }
@@ -65,7 +78,7 @@ export default function Home() {
     setActionStyle(styles.hate);
     setTimeout(() => {
       setActionStyle(null);
-      getnext('preLaunch');
+      getLaunchingNext();
     }, 1000);
     onHate();
   }
@@ -91,7 +104,7 @@ export default function Home() {
               <circle cx="17" cy="17" r="17" fill="black" fill-opacity="0.2" />
               <path fill-rule="evenodd" clip-rule="evenodd" d="M17.9722 6C14.0602 6 10.8889 9.17131 10.8889 13.0833V21.1111C10.8889 21.1111 10.8889 21.7014 10.4167 22.5278C10.0285 23.2071 9 23.9444 9 23.9444H26.9444C26.9444 23.9444 25.8777 23.2276 25.5278 22.5278C25.0556 21.5833 25.0556 21.1111 25.0556 21.1111V13.0833C25.0556 9.17131 21.8842 6 17.9722 6ZM17.9722 28.6667C19.7978 28.6667 21.2778 27.1867 21.2778 25.3611H14.6667C14.6667 27.1867 16.1466 28.6667 17.9722 28.6667Z" fill="url(#paint0_linear_17_841)" />
               {/* <circle cx="26.6667" cy="6.66667" r="4.66667" fill="#FF2BA0" stroke="white" stroke-width="2" /> */}
-              
+
               {
                 address ? <circle cx="26.6667" cy="6.66667" r="4.66667" fill="#FF2BA0" stroke="white" stroke-width="2" /> : null
               }
@@ -105,32 +118,55 @@ export default function Home() {
           </div>
         </div>
       </div>
-       
-      <div className={styles.thumbnailListBox} ref={containerRef}>
-        {infoData && (
-          <div style={{ zIndex: 1 }} className={[styles.thumbnailBox].join(" ")}>
-            <Thumbnail showProgress={true} showDesc={true} data={infoData} />
-          </div>
-        )}
 
-        {infoData2 && (
-          <div style={{ zIndex: 2 }} className={[styles.thumbnailBox, actionStyle].join(" ")}>
-            <Thumbnail showProgress={true} showDesc={true} data={infoData2} />
-          </div>
-        )}
-      </div>
+      {
+        launchIndex === 0 && <><div className={styles.thumbnailListBox} ref={containerRef}>
+          {infoDataLaunched && (
+            <div style={{ zIndex: 1 }} className={[styles.thumbnailBox].join(" ")}>
+              <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunched} />
+            </div>
+          )}
 
-      <Action
-        token={infoData2}
-        onLike={async () => {
-          like();
-        }}
-        onHate={async () => {
-          hate();
-        }}
-        onSuperLike={() => { }}
-        onBoost={() => { }}
-      />
+          {infoDataLaunching2 && (
+            <div style={{ zIndex: 2 }} className={[styles.thumbnailBox, actionStyle].join(" ")}>
+              <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunching2} />
+            </div>
+          )}
+        </div>
+
+          <LaunchingAction
+            token={infoDataLaunching2}
+            onLike={async () => {
+              like();
+            }}
+            onHate={async () => {
+              hate();
+            }}
+            onSuperLike={() => { }}
+            onBoost={() => { }}
+          /></>
+      }
+
+      {
+        launchIndex === 1 && <><div className={styles.thumbnailListBox} ref={containerRef}>
+          {infoDataLaunching && (
+            <div style={{ zIndex: 1 }} className={[styles.thumbnailBox].join(" ")}>
+              <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunching} />
+            </div>
+          )}
+
+          {infoDataLaunched2 && (
+            <div style={{ zIndex: 2 }} className={[styles.thumbnailBox, actionStyle].join(" ")}>
+              <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunched2} />
+            </div>
+          )}
+        </div>
+
+          <LaunchedAction
+        
+          /></>
+      }
+
     </div>
   );
 }

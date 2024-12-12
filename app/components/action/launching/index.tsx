@@ -1,9 +1,9 @@
 "use client";
 
-import styles from "./action.module.css";
+import styles from "../action.module.css";
 import MainAction from "@/app/components/MainAction";
 import Boost from "@/app/components/boost";
-import SmokeBtn from "../smokHot";
+import SmokeBtn from "../../smokHot";
 import type { Project } from "@/app/type";
 
 interface Props {

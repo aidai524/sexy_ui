@@ -53,6 +53,12 @@ export default function InfoPart({
                 }} className={[styles.authorDesc, styles.authorDescEs].join(' ')}>{userName}</div>
             </div>
             <div className={styles.author}>
+                <div className={styles.authorTitle}>Education:</div>
+                <div onClick={() => {
+                    router.push('/profile/user?account=' + data.account)
+                }} className={[styles.authorDesc, styles.authorDescEs].join(' ')}>{ data.creater.education }</div>
+            </div>
+            <div className={styles.author}>
                 <div className={styles.authorTitle}>Create time:</div>
                 <div className={styles.authorDesc}>{specialTime ? specialTime : timeAgo(data.time)}</div>
             </div>

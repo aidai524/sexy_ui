@@ -36,6 +36,10 @@
       color: #fff;
       font-size: 18px;
       padding: 0 15px;
+      
+    }
+    .inputText:disabled {
+        opacity: 0.3;
     }
 
     .inputText:focus {

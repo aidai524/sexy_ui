@@ -73,12 +73,12 @@ export default function Token({ data }: Props) {
 }
 
 function LaunchTag({ type }: { type: number }) {
-    if (type === 1) {
+    if (type === 0) {
         return <div className={styles.launchTag + ' ' + styles.launch1}>Pre-Launch</div>
     }
 
-    if (type === 2) {
-        return <div className={styles.launchTag + ' ' + styles.launch2}>Pre-Launch</div>
+    if (type === 1) {
+        return <div className={styles.launchTag + ' ' + styles.launch2}>Luanching</div>
     }
 
     if (type === 3) {

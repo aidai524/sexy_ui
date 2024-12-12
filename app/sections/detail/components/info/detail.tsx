@@ -4,7 +4,7 @@ import Panel from '../../../../components/panel'
 
 
 import styles from './detail.module.css'
-import Action from '@/app/components/action'
+import Action from '@/app/components/action/launching'
 import { Button } from 'antd-mobile'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade'
 import InfoPart from './infoPart'

@@ -2,7 +2,8 @@ import {
   formatAddress,
   formatDateTime,
   httpAuthPost,
-  httpAuthDelete
+  httpAuthDelete,
+  formatDateTimeAndAgo
 } from "@/app/utils";
 
 import styles from "./item.module.css";
@@ -35,10 +36,9 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
             <img className={styles.avatarImg} src={item.creater.icon || defaultAvatar} />
           </div>
           <div className={styles.name}>{userName}</div>
-          <div className={styles.time}>{formatDateTime(item.time, 'hh:mm:ss')}</div>
+          <div className={styles.time}>{formatDateTimeAndAgo(item.time)}</div>
         </div>
 
-        {/* <div className={styles.relayBtn}>Reply</div> */}
       </div>
       <div className={styles.relayText}>{item.text}</div>
 

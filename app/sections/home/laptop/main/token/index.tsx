@@ -5,18 +5,18 @@ import TokenCard from "../token-card";
 import useData from "../../../hooks/use-data";
 
 export default function Token() {
-  const { infoData2, onLike, onHate, getnext } = useData();
+  const { infoData2, onLike, onHate, getnext } = useData('preLaunch');
   console.log(infoData2);
   const like = () => {
     setTimeout(() => {
-      getnext('preLaunch');
+      getnext();
     }, 1000);
     onLike();
   };
 
   const hate = () => {
     setTimeout(() => {
-      getnext('preLaunch');
+      getnext();
     }, 1000);
     onHate();
   };

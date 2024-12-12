@@ -21,6 +21,7 @@ export interface Project {
     boostTime?: number;
     address?: string;
     creater?: any;
+    status?: number;
 }
 
 export interface Comment {

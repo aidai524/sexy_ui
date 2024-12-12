@@ -177,11 +177,17 @@
     .launchTag {
         display: inline-block;
         height: 20px;
-        background-color: rgba(80, 73, 100, 1);
+        
         padding: 0 10px;
         border-radius: 1000px;
         color: #fff;
         font-size: 10px;
         line-height: 20px;
+        &.launch1 {
+            background-color: rgba(80, 73, 100, 1);
+        }
+        &.launch2 {
+            background-color: rgba(100, 43, 255, 1);
+        }
     }
 }

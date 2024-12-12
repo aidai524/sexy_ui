@@ -235,6 +235,16 @@ interface AvatarProps {
     showLaunchType?: boolean;
 }
 
+function LaunchTag({ type }: { type: number }) {
+    if (type === 0) {
+        return <div className={styles.launchTag + ' ' + styles.launch1}>Pre-Launch</div>
+    }
+
+    if (type === 1) {
+        return <div className={styles.launchTag + ' ' + styles.launch2}>Luanched</div>
+    }
+}
+
 export function Avatar({ data, showBackIcon = false, showLaunchType=true }: AvatarProps) {
     const route = useRouter();
 
@@ -252,7 +262,7 @@ export function Avatar({ data, showBackIcon = false, showLaunchType=true }: Avat
                 <div className={styles.tickerContent1}>
                     <div className={styles.ticker}>Ticker: {data.ticker}</div>
                     {
-                        showLaunchType && <div className={styles.launchTag}>Pre-Launch</div>
+                        showLaunchType && <LaunchTag type={data.status as number}/>
                     }
                 </div>
             </div>

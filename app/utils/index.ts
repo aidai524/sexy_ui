@@ -344,7 +344,7 @@ export function mapDataToProject(currentToken: any): Project {
         account: currentToken.account,
         creater: currentToken.account_data,
         boostTime: currentToken.boost_time,
-
+        status: currentToken.status,
     };
 }
 
@@ -372,6 +372,19 @@ export function formatAddressLast(address: string) {
             return $2 + "...." + $3;
         });
     }
+}
+
+export function formatDateTimeAndAgo(time: number) {
+    if (!time) {
+        return ''
+    }
+
+    if (new Date(time).getDate() === (new Date()).getDate()) {
+        return formatDateTime(time, 'hh:mm:ss')
+    } else {
+        return timeAgo(time)
+    }
+
 }
 
 export function formatDateTime(

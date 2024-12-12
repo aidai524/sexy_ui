@@ -18,9 +18,9 @@ export function fail(msg: string) {
         content: <div style={{ color: '#FF2681' }}>{msg}</div>,
         position: 'top',
         icon: <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="14" cy="14" r="13" stroke="#FF2681" stroke-width="2" stroke-linecap="round"/>
-        <path d="M14 7.5V14.8667" stroke="#FF2681" stroke-width="3" stroke-linecap="round"/>
-        <path d="M14 19.2V20.0666" stroke="#FF2681" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="14" cy="14" r="13" stroke="#FF2681" stroke-width="2" stroke-linecap="round" />
+            <path d="M14 7.5V14.8667" stroke="#FF2681" stroke-width="3" stroke-linecap="round" />
+            <path d="M14 19.2V20.0666" stroke="#FF2681" stroke-width="3" stroke-linecap="round" />
         </svg>,
         duration: 2000
     })

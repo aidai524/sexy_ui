@@ -15,6 +15,7 @@ export default function EditContent({
   onClose
 }: any) {
   const [name, setName] = useState<string>("");
+  const [disableNameEdit, setDisableNameEdit] = useState(false)
   const [education, setEducation] = useState<string>("");
   const [avatar, setAvatar] = useState<ImageUploadItem[]>([]);
   const [banner, setBanner] = useState<ImageUploadItem[]>([]);
@@ -52,6 +53,7 @@ export default function EditContent({
 
     if (userInfo?.name) {
       setName(userInfo?.name);
+      setDisableNameEdit(true)
     }
 
     if (userInfo?.education) {
@@ -67,6 +69,7 @@ export default function EditContent({
         </div>
         <div className={styles.groupContent}>
           <input
+            disabled={disableNameEdit}
             value={name}
             onChange={(e) => {
               setName(e.target.value);
