@@ -10,6 +10,7 @@ import { Popup } from 'antd-mobile'
 import { Avatar } from '@/app/components/thumbnail'
 import type { Project } from '@/app/type'
 import CreateSuccessModal from '../createSuccessModal'
+import { useRouter } from 'next/navigation'
 
 type Token = {
     tokenName: string;
@@ -42,7 +43,7 @@ export default function Create({
     onHide,
     onCreateTokenSuccess
 }: Props) {
-
+    const router = useRouter()
 
     const {
         tokenName,
@@ -238,7 +239,7 @@ export default function Create({
                                 
                                 await onCreateTokenSuccess()
                                 onHide()
-                                setShowSuccessModal(false)
+                                setShowSuccessModal(true)
                                 setIsLoading(false)
                                 // success('Transtion success')
                             } catch (e) {
@@ -254,6 +255,7 @@ export default function Create({
 
         <CreateSuccessModal show={showSuccessModal} onHide={() => {
             setShowSuccessModal(false)
+            router.push('/profile')
         }}/>
     </div>
 }

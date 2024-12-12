@@ -20,7 +20,7 @@ export default function Info({
     data
 }: Props) {
     return <div className={styles.main}>
-        <InfoPart data={data} showThumbnailHead={false} />
+        <InfoPart showLikes={true} data={data} showThumbnailHead={false} />
         <CommentComp id={data.id} />
 
         <div className={styles.action}>

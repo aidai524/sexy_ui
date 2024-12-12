@@ -68,8 +68,6 @@ export default function Upload({
         }
     }, [fileList])
 
-    console.log('isUplaod:', isUplaod)
-
     return <div className={styles.main}>
         <div className={styles.uploadBox}>
             <ImageUploader ref={input} accept={accept} maxCount={1} value={fileList} onChange={setFileList} upload={uploadImg}>

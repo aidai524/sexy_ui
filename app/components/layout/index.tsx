@@ -15,7 +15,9 @@ export default function Layout(props: any) {
 
   useEffect(() => {
     if (address && userInfo) {
-      userStore.set(userInfo)
+      userStore.set({
+        userInfo: userInfo
+      })
     }
   }, [userInfo, address])
   

@@ -89,43 +89,14 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                                 setRefreshNum(refreshNum + 1)
                             }}/>
                         }
-
-                        {/* <div className={styles.followerType}>
-                            {!isFollower ? (
-                                <div
-                                    className={styles.isFollow}
-                                    onClick={async () => {
-                                        if (!address) {
-                                            return;
-                                        }
-                                        await follow(address);
-                                        setRefreshNum(Date.now());
-                                        onQueryInfo()
-                                    }}
-                                >
-                                    Follow
-                                </div>
-                            ) : (
-                                <div
-                                    onClick={async () => {
-                                        if (!address) {
-                                            return;
-                                        }
-                                        await unFollow(address);
-                                        setRefreshNum(Date.now());
-                                        onQueryInfo()
-                                    }}
-                                    className={styles.isFollowing}
-                                >
-                                    Following
-                                </div>
-                            )}
-                        </div> */}
                     </div>
                 ) : null}
                 <div className={styles.avatarContent} style={backgroundImgStyle}>
                     <Avatar
                         userInfo={userInfo}
+                        onVipShow={() => { 
+                            setShowVip(true);
+                         }}
                         onEdit={() => {
                             router.push("/profile/edit");
                         }}

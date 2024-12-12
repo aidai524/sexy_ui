@@ -17,7 +17,7 @@ import { httpGet, mapDataToProject } from "@/app/utils";
 
 export default function Detail() {
   const params = useSearchParams();
-  const [activeKey, setActiveKey] = useState("Chart");
+  const [activeKey, setActiveKey] = useState("Info");
   const [infoData, setInfoData] = useState<Project>();
 
   useEffect(() => {

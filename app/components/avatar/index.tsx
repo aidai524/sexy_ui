@@ -3,8 +3,8 @@ import Pencil from "../icons/pencil";
 
 const defaultAvatar = '/img/avatar.png'
 
-export default function Avatar({ userInfo, onEdit }: any) {
-          
+export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
+
   if (!userInfo) {
     return null;
   }
@@ -17,16 +17,18 @@ export default function Avatar({ userInfo, onEdit }: any) {
           <Pencil />
         </div>
       </div>
-        <div className={styles.userName}>
+      <div className={styles.userName}>
         <div>{userInfo?.name}</div>
-        <div className={ styles.vipImg }>
+        <div className={styles.vipImg}>
           {
-            userInfo?.vipType === 'vip' 
-            ? <img className={ styles.img } src="/img/profile/vip.png" /> 
-            : <img className={ styles.img } src="/img/profile/no-vip.png" />
+            userInfo?.vipType === 'vip'
+              ? <img className={styles.img} src="/img/profile/vip.png" />
+              : <img className={styles.img} onClick={() => { onVipShow && onVipShow() }} src="/img/profile/no-vip.png" />
           }
         </div>
       </div>
+
+
     </>
   );
 }

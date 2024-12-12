@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 
 const defaultAvatar = '/img/avatar.png'
 
-export default function CommentItem({ item, onSuccess }: any) {
+export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
   const router = useRouter()
 
   const userName = useMemo(() => {
@@ -46,11 +46,12 @@ export default function CommentItem({ item, onSuccess }: any) {
         <div
           onClick={async () => {
             const method = item.isLike ? httpAuthDelete : httpAuthPost;
+            item.isLike = !item.isLike
+            onSuccessNow && onSuccessNow(item)
             const val = await method("/project/comment/like?id=" + item.id);
             if (val.code === 0) {
               onSuccess();
             }
-            item.isLike = !item.isLike
           }}
           className={styles.zan}
         >
@@ -93,6 +94,8 @@ export default function CommentItem({ item, onSuccess }: any) {
         <div
           onClick={async () => {
             const method = item.isUnlike ? httpAuthDelete : httpAuthPost;
+            item.isUnlike = !item.isUnlike
+            onSuccessNow && onSuccessNow(item)
             const val = await method("/project/comment/un_like?id=" + item.id);
             if (val.code === 0) {
               onSuccess();

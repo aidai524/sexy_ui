@@ -1,5 +1,6 @@
 import type { UserInfo } from "@/app/type";
 import styles from "./index.module.css";
+import { useMemo } from "react";
 
 interface Props {
   user?: UserInfo;
@@ -8,6 +9,18 @@ interface Props {
 }
 
 export default function HotBoost({ onMoreClick, style, user }: Props) {
+
+  console.log('user:', user)
+
+  const boostNum = useMemo(() => {
+    if (user) {
+      const num = (user?.boostNum || 0) - (user?.usingBoostNum || 0)
+      return num < 0 ? 0 : num
+    }
+
+    return 0
+  }, [user])
+
   return (
     <div className={styles.hotBoost} style={style}>
       <div className={styles.part}>
@@ -43,13 +56,17 @@ export default function HotBoost({ onMoreClick, style, user }: Props) {
         <div className={styles.nameContent}>
           <div className={styles.names}>
             <span>
-              <span className={styles.whiteName}>{ user?.usingSuperLikeNum }</span> /{ user?.superLikeNum }{" "}
+              <span className={styles.whiteName}>{user?.usingSuperLikeNum}</span> /{user?.superLikeNum}{" "}
             </span>
             <span>Smoky Hot</span>
           </div>
-          <div onClick={onMoreClick} className={styles.getMore1}>
-            Get more
-          </div>
+          {
+            user?.usingSuperLikeNum === 0
+              ? <div onClick={onMoreClick} className={styles.getMore1}>
+                Get more
+              </div> : <div>By today</div>
+          }
+
         </div>
       </div>
       <div className={styles.part}>
@@ -71,17 +88,22 @@ export default function HotBoost({ onMoreClick, style, user }: Props) {
         <div className={styles.nameContent}>
           <div className={styles.names}>
             <span>
-              <span className={styles.whiteName}>{ user?.usingBoostNum }</span> /{ user?.boostNum }{" "}
+              <span className={styles.whiteName}>{boostNum}</span>{' '}
             </span>
             <span>Boost</span>
           </div>
-          <div onClick={onMoreClick} className={styles.getMore2}>
-            Get more
-          </div>
+          {
+            boostNum === 0
+              ? <div onClick={onMoreClick} className={styles.getMore2}>
+                Get more
+              </div>
+              : <div>By today</div>
+          }
+
         </div>
       </div>
 
-    
+
     </div>
   );
 }

@@ -28,7 +28,12 @@ export default function CommentComp({
       <CommentItem
         key={item.id}
         item={item}
-        onSuccess={() => {
+        onSuccessNow={(item: Comment) => {
+            setCommentList([
+                ...commentList,
+            ])
+        }}
+        onSuccess={(item: Comment) => {
           setReReashNum(reReashNum + 1);
         }}
       />

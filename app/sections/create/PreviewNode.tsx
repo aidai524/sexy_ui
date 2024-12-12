@@ -27,10 +27,11 @@ export default function PreviewNode({
     const { userInfo }: any = useUser()
 
     useEffect(() => {
-        if (userInfo) {
+        if (userInfo && data) {
             const newData = {
                 ...data,
                 account: userInfo.address,
+                creater: userInfo,
                 time: Date.now(),
             }
             setNewData(newData)
@@ -39,7 +40,7 @@ export default function PreviewNode({
 
     return <div className={styles.mainContent} style={{ display: show ? 'block' : 'none' }}>
         <div className={styles.main}>
-            <InfoPart specialTime={'just now'} showBackIcon={false} showThumbnailHead={true} showThumbnailProgress={false} data={newData} />
+            <InfoPart showLikes={false} specialTime={'just now'} showBackIcon={false} showThumbnailHead={true} showThumbnailProgress={false} data={newData} />
         </div>
 
         <div className={styles.actionBtns}>
@@ -62,7 +63,7 @@ export default function PreviewNode({
             data={data}
             onHide={() => { setShowCreate(false) }}
             onCreateTokenSuccess={async () => {
-                const query: any  = {
+                const query: any = {
                     about_us: data.about,
                     discord: data.discord,
                     icon: data.tokenIcon,
@@ -89,11 +90,11 @@ export default function PreviewNode({
                 }
 
                 if (val.code === 0) {
-                    success('Create token success')
-                    router.push('/profile')
+                    // success('Create token success')
+                    // router.push('/profile')
                 } else {
                     fail('Create token fail')
-                    
+
                 }
             }}
         />

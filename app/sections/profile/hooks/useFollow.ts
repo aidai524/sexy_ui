@@ -75,7 +75,7 @@ export default function useFollow(account?: string) {
         const val = await httpAuthPost('/account/follower?address=' + address)
         if (val.code === 0) {
             success('Follow success')
-            setFreshNum(freshNum + 1)
+            // setFreshNum(freshNum + 1)
         } else {
             fail('Follow fail')
         }
@@ -85,7 +85,7 @@ export default function useFollow(account?: string) {
         const val = await httpAuthDelete('/account/follower?address=' + address)
         if (val.code === 0) {
             success('UnFollow success')
-            setFreshNum(freshNum + 1)
+            // setFreshNum(freshNum + 1)
         } else {
             fail('UnFollow fail')
         }
@@ -96,6 +96,9 @@ export default function useFollow(account?: string) {
         followerList,
         follow,
         unFollow,
-        update: setFreshNum
+        update: () => {
+            console.log(1111)
+            setFreshNum(freshNum + 1)
+        }
     }
 }

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import SmokPanel from "./smoke-panel";
 import type { Project } from "@/app/type";
+import { Modal } from "antd-mobile";
+import BoostVip from "../boost/boostVip";
+import { useUser } from "@/app/store/useUser";
 
 interface Props {
   token: Project;
@@ -9,14 +12,32 @@ interface Props {
 
 export default function SmokeBtn({ onClick, token }: Props) {
   const [panelShow, setPanelShow] = useState(false);
+  const [vipShow, setVipShow] = useState(false);
+  const { userInfo }: any = useUser()
+
+
+  const VipModal = (
+    <BoostVip
+      onStartVip={() => {
+        setPanelShow(true)
+      }}
+      onCanceVip={() => {
+        setVipShow(false);
+      }}
+    />
+  );
+
 
   return (
     <div
       onClick={() => {
+        if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
+            setPanelShow(true);
+        } else {
+            setVipShow(true)
+        }
         onClick();
-        setPanelShow(true);
       }}
-      className="button"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -46,6 +67,16 @@ export default function SmokeBtn({ onClick, token }: Props) {
           </linearGradient>
         </defs>
       </svg>
+
+      <Modal
+        visible={vipShow}
+        content={VipModal}
+        closeOnAction
+        closeOnMaskClick
+        onClose={() => {
+          setVipShow(false);
+        }}
+      />
 
       <SmokPanel
         token={token}

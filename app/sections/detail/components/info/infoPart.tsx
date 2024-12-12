@@ -13,6 +13,7 @@ interface Props {
     showBackIcon?: boolean;
     data: Project;
     specialTime?: string;
+    showLikes?: boolean;
 }
 
 export default function InfoPart({
@@ -20,7 +21,8 @@ export default function InfoPart({
     showThumbnailProgress = false,
     showBackIcon = true,
     data,
-    specialTime
+    specialTime,
+    showLikes = true,
 }: Props) {
     const router = useRouter()
     const userName = useMemo(() => {
@@ -38,8 +40,10 @@ export default function InfoPart({
         return
     }
 
+    console.log('data:', data)
+
     return <div>
-        <Thumbnail showLikes={true} showLaunchType={false} autoHeight={true} showBackIcon={showBackIcon} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
+        <Thumbnail showLikes={showLikes} showLaunchType={false} autoHeight={true} showBackIcon={showBackIcon} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
         <Sep />
         <Panel>
             <div className={styles.author}>

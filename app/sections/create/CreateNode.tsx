@@ -9,6 +9,7 @@ import { success, fail } from '@/app/utils/toast'
 
 import type { Project } from '@/app/type'
 import CreateSuccessModal from './components/createSuccessModal'
+import { useUser } from '@/app/store/useUser'
 interface Props {
     onAddDataFill: (value: Project) => void;
     show: boolean;
@@ -28,6 +29,8 @@ export default function CreateNode({
     const [twitter, setTwitter] = useState('')
     const [telegram, setTelegram] = useState('')
     const [discord, setDiscord] = useState('')
+
+
 
     useEffect(() => {
         if (tokenImg && tokenImg.length > 0) {
@@ -91,7 +94,7 @@ export default function CreateNode({
             <div className={styles.groupTitle}>
                 Website
             </div>
-            <div className={styles.groupContent} style={{ paddingTop: 5 }}>
+            <div className={styles.groupContent} style={{ paddingTop: 10, background: 'rgba(18, 23, 25, 1)' }}>
                 <Link value={website} onChange={(val) => { setWebsite(val) }} />
             </div>
         </div>

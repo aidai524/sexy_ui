@@ -40,7 +40,7 @@ function SuccessModal({ onClose }: { onClose: () => void; }) {
             <div className={style.successNote}>Share and get rewards!</div>
 
             <div className={style.btnBox}>
-                <MainBtn style={{ background: 'linear-gradient(90deg, #FF2681 0%, #9514FF 100%)' }}>Go to Share</MainBtn>
+                <MainBtn onClick={onClose} style={{ background: 'linear-gradient(90deg, #FF2681 0%, #9514FF 100%)' }}>Go to Share</MainBtn>
             </div>
             <div className={style.heartWhite}>
                 <svg width="83" height="79" viewBox="0 0 83 79" fill="none" xmlns="http://www.w3.org/2000/svg">

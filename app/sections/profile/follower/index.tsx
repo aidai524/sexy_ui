@@ -11,10 +11,10 @@ import useFollow from '../hooks/useFollow'
 export default function Follower() {
     const params = useSearchParams()
     const { userInfo } = useUserInfo(params.get('account')?.toString())
-    const { followerList, followingList } = useFollow(params.get('account')?.toString())
+    const { followerList, followingList, update } = useFollow(params.get('account')?.toString())
     const onActionCallback = useCallback(() => {
-
-    }, [])
+        update()
+    }, [update])
 
     return <div className={ styles.main }>
         <div className={ styles.header }>

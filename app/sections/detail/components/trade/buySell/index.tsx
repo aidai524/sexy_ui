@@ -143,9 +143,11 @@ export default function BuySell({
                             if (tokenType === 0) {
                                 setCurrentToken(SOL)
                                 setTokenType(1)
+                                setValInput('')
                             } else {
                                 setCurrentToken(desToken)
                                 setTokenType(0)
+                                setValInput('')
                             }
                         }}>
                             <span className={styles.switchTitle}>switch to </span>
