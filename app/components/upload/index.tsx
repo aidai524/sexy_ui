@@ -13,20 +13,20 @@ interface Props {
 
 }
 
-export async function mockUpload(file: File): Promise<ImageUploadItem> {
-    console.log('file:', file)
-    const url = await upload(file.name, file)
+// export async function mockUpload(file: File): Promise<ImageUploadItem> {
+//     console.log('file:', file)
+//     const url = await upload(file.name, file)
 
-    if (url) {
-        return {
-            url,
-        }
-    }
+//     if (url) {
+//         return {
+//             url,
+//         }
+//     }
 
-    return {
-        url: '',
-    }
-}
+//     return {
+//         url: '',
+//     }
+// }
 
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i
 export const videoReg = /(.+\.(mp4))$/i
@@ -41,9 +41,9 @@ export default function Upload({
     const input = useRef<ImageUploaderRef>(null)
 
     const uploadImg = useCallback(async (file: File) => {
-        console.log('file:', file)
+
         setIsUpload(true)
-        const url = await upload(file.name, file)
+        const url = await upload(file.name, file, imgReg.test(file.name))
         setIsUpload(false)
 
         if (url) {
