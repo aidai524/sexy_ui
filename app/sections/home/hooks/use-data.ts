@@ -8,8 +8,8 @@ export default function useData() {
   const [list, setList] = useState<Project[]>();
   const listRef = useRef<Project[]>();
 
-  const onQueryList = (isInit: boolean) => {
-    httpGet("/project/list?limit=50").then((res) => {
+  const onQueryList = (isInit: boolean, launchType: string) => {
+    httpGet("/project/list?limit=50&launchType=" + launchType).then((res) => {
       if (res.code !== 0 || !res.data?.list) return;
       if (isInit) {
         listRef.current = res.data?.list;
@@ -38,14 +38,14 @@ export default function useData() {
     setList(list.slice(0, 5));
   }, []);
 
-  const getnext = () => {
+  const getnext = (launchType: string) => {
     if (!listRef.current) return;
     if (listRef.current.length) {
       listRef.current.shift();
       renderTwoItems(listRef.current);
     }
     if (listRef.current.length < 10) {
-      onQueryList(false);
+      onQueryList(false, launchType);
     }
   };
 
@@ -62,7 +62,8 @@ export default function useData() {
   };
 
   useEffect(() => {
-    onQueryList(true);
+    onQueryList(true, 'preLaunch');
+    onQueryList(true, 'launching');
   }, []);
 
   return { infoData, infoData2, list, getnext, onLike, onHate };

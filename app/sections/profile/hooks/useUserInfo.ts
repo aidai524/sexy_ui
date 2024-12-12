@@ -24,7 +24,8 @@ export default function useUserInfo(address: string | undefined) {
                 superLikeNum: res.data.super_like_num,
                 usingSuperLikeNum: res.data.using_super_like_num,
                 usingBuySuperLikeNum: res.data.using_buy_super_like_num,
-                vipType: res.data.vip_type
+                vipType: res.data.vip_type,
+                education: res.data.education,
               });
             }
           });
@@ -38,12 +39,13 @@ export default function useUserInfo(address: string | undefined) {
     }
   }, [address]);
 
-  async function saveUserInfo(banner: string, icon: string, name: string) {
+  async function saveUserInfo(banner: string, icon: string, name: string, education: string) {
     const querys: any = {
       address,
       banner,
       name,
-      icon
+      icon,
+      education,
     };
 
     const queryStr = Object.keys(querys)

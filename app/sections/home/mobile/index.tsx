@@ -56,7 +56,7 @@ export default function Home() {
 
     setTimeout(() => {
       setActionStyle(null);
-      getnext();
+      getnext('preLaunch');
     }, 1000);
     onLike();
   }
@@ -65,7 +65,7 @@ export default function Home() {
     setActionStyle(styles.hate);
     setTimeout(() => {
       setActionStyle(null);
-      getnext();
+      getnext('preLaunch');
     }, 1000);
     onHate();
   }

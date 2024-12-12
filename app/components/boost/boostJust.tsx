@@ -46,11 +46,12 @@ export default function BoostJust({
 
                 if (usingBoostNum && usingBoostNum > 0) {
                     await boost()
-                } else {
-                    await call('boost')
-                    await boost()
-                    success('Transition success')
-                }
+                } 
+                // else {
+                //     await call('boost')
+                //     await boost()
+                //     success('Transition success')
+                // }
                 onBoost()
                 setIsLoading(false)
                 

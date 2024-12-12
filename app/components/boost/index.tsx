@@ -35,7 +35,7 @@ export default function Boost({
         setBoostShow(true)
       }}
       onCanceVip={() => {
-        setBoostShow(true);
+        // setBoostShow(true);
         setVipShow(false);
       }}
     />

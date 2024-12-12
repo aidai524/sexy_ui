@@ -15,6 +15,7 @@ export default function EditContent({
   onClose
 }: any) {
   const [name, setName] = useState<string>("");
+  const [education, setEducation] = useState<string>("");
   const [avatar, setAvatar] = useState<ImageUploadItem[]>([]);
   const [banner, setBanner] = useState<ImageUploadItem[]>([]);
 
@@ -52,6 +53,10 @@ export default function EditContent({
     if (userInfo?.name) {
       setName(userInfo?.name);
     }
+
+    if (userInfo?.education) {
+      setEducation(userInfo?.education)
+    }
   }, [userInfo]);
 
   return (
@@ -81,13 +86,46 @@ export default function EditContent({
           <div
             onClick={async () => {
               const value = await Picker.prompt({
-                columns: [],
+                columns: [
+                  [
+                    { label: 'Kindergarten', value: 'Kindergarten' },
+                    { label: 'Elementary School', value: 'Elementary School' },
+                    { label: 'Junior High School', value: 'Junior High School' },
+                    { label: 'High School', value: 'High School' },
+                    { label: 'College Preparatory', value: 'College Preparatory' },
+                    { label: "Bachelor's Degree", value: "Bachelor's Degree" },
+                    { label: "Master's Degree", value: "Master's Degree" },
+                    { label: 'PhD', value: 'PhD' },
+                  ],
+                ],
+                cancelText: 'Cancel',
+                confirmText: 'Ok',
+                // @ts-ignore
+                value: [education]
               })
+
+              console.log('value:', value)
+              if (value && value.length > 0) {
+                setEducation(value[0] as string)
+              } else {
+                setEducation('')
+              }
+
             }}
-            className={styles.inputText}
+            className={styles.picker}
             style={inputStyle}
           >
-            <div>Select</div>
+            {
+              education 
+              ? <div className={ styles.pickerValue }>{ education }</div> 
+              : <div className={ styles.pickerTitle }>Select</div>
+            }
+            
+            <div>
+              <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.0711 1.07107L8 8.14214L0.928932 1.07107" stroke="white" stroke-width="2" />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -142,7 +180,7 @@ export default function EditContent({
                 bannerImg = banner[0].url;
               }
 
-              const isSuccess = await saveUserInfo(bannerImg, icon, name);
+              const isSuccess = await saveUserInfo(bannerImg, icon, name, education);
 
               if (isSuccess) {
                 success("Edit profile success");

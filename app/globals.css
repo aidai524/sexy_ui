@@ -174,3 +174,22 @@ input::placeholder {
 .button:active {
   opacity: 0.6;
 }
+
+
+a.adm-picker-header-button {
+  color: #fff;
+}
+
+.adm-picker .adm-picker-view.adm-picker-view {
+  background: rgba(18, 23, 25, 1);
+  color: #fff;
+}
+.adm-picker-view-column {
+  background: rgba(18, 23, 25, 1);
+}
+div.adm-picker-view-mask-top {
+  background: rgba(18, 23, 25, 1);
+}
+div.adm-picker-view-mask-bottom {
+  background: rgba(18, 23, 25, 1);
+}
