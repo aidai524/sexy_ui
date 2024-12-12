@@ -7,6 +7,7 @@ import MainBtn from '@/app/components/mainBtn'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade';
 import { getFullNum } from '@/app/utils';
 import { fail, success } from '@/app/utils/toast';
+import SlipPage from '../slippage/slippage';
 
 type Token = {
     tokenName: string;
@@ -36,6 +37,8 @@ export default function BuySell({
         tokenSymbol,
         tokenUri,
     } = token
+    const [showSlip, setShowSlip] = useState(false)
+    const [slip, setSlip] = useState(0.5)
 
     const desToken: Token = {
         tokenName,
@@ -61,9 +64,9 @@ export default function BuySell({
     const [buyInSol, setBuyInSol] = useState('0')
 
     const [sellOut, setSellOut] = useState('0')
-    // const [sellOutSol, setSellOutSol] = useState('0')
+    const [sellOutSol, setSellOutSol] = useState('0')
 
-    const { buyToken, sellToken, rate, minPrice, maxPrice, tokenBalance } = useTokenTrade({
+    const { buyToken, sellToken, rate, minPrice, maxPrice, tokenBalance, solBalance, updateBalance } = useTokenTrade({
         tokenName,
         tokenSymbol
     })
@@ -77,6 +80,7 @@ export default function BuySell({
     }, [rate])
 
     const debounceVal = useDebounce(valInput, { wait: 800 })
+
 
     useEffect(() => {
         if (debounceVal && rate) {
@@ -106,15 +110,24 @@ export default function BuySell({
                     sellOut = new Big(debounceVal).mul(rate).mul(10 ** token.tokenDecimals).toFixed(0)
                 } else if (tokenType === 0) {
                     sellOut = new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0)
-                }
+                    const sellSolOut = new Big(debounceVal).div(rate).mul(10 ** SOL.tokenDecimals).toFixed(0)
 
-                console.log('sellOut:', sellOut)
+                    console.log('sellSolOut:', sellSolOut)
 
-                setSellOut(sellOut)
-                if (sellOut) {
-                    setIsError(false)
-                    setErrorMsg('Enter a amount');
+                    if (Number(sellSolOut) === 0) {
+                        setIsError(true)
+                        setErrorMsg('Amount is too little');
+                        setSellOut('')
+                    } else {
+                        setSellOut(sellOut)
+                        setSellOutSol(getFullNum(new Big(sellSolOut).div(10 ** SOL.tokenDecimals).toString()))
+                        if (sellOut) {
+                            setIsError(false)
+                            setErrorMsg('Enter a amount');
+                        }
+                    }
                 }
+                
             }
         } else {
             setBuyIn('')
@@ -129,11 +142,11 @@ export default function BuySell({
         <div className={[styles.cationArea, styles.panel].join(' ')}>
             <div className={styles.tradeTabs}>
                 <div onClick={() => { setActiveIndex(0) }} className={[styles.tab, activeIndex === 0 ? styles.active : null].join(' ')}>Buy</div>
-                <div onClick={() => { 
+                <div onClick={() => {
                     setActiveIndex(1)
                     setCurrentToken(desToken)
                     setTokenType(0)
-                 }} className={[styles.tab, activeIndex === 1 ? styles.active : null].join(' ')}>Sell</div>
+                }} className={[styles.tab, activeIndex === 1 ? styles.active : null].join(' ')}>Sell</div>
             </div>
 
             <div className={styles.inputArea}>
@@ -155,17 +168,20 @@ export default function BuySell({
                         </div> : <div></div>
                     }
 
-                    <div className={styles.slippage}>Set max slippage</div>
+                    <div onClick={() => { setShowSlip(true) }} className={styles.slippage}>Set max slippage</div>
                 </div>
 
-                <div className={styles.inputArea}>
-                    <input value={valInput} onChange={(e) => { setValInput(e.target.value) }} className={styles.input} />
-                    <div className={styles.inputToken}>
-                        <div className={styles.tokenName}>{currentToken.tokenName}</div>
-                        <div className={styles.tokenImg}>
-                            <img className={styles.tiImg} src={currentToken.tokenUri} />
+                <div className={styles.tokenBalanceBox}>
+                    <div className={styles.inputArea}>
+                        <input value={valInput} onChange={(e) => { setValInput(e.target.value) }} className={styles.input} />
+                        <div className={styles.inputToken}>
+                            <div className={styles.tokenName}>{currentToken.tokenName}</div>
+                            <div className={styles.tokenImg}>
+                                <img className={styles.tiImg} src={currentToken.tokenUri} />
+                            </div>
                         </div>
                     </div>
+                    <div className={styles.balance}>Balance: {tokenType === 0 ? tokenBalance + currentToken.tokenName : solBalance + 'SOL'}</div>
                 </div>
 
                 {
@@ -194,8 +210,8 @@ export default function BuySell({
 
                 {
                     activeIndex === 1 && <div className={styles.tokenPercent}>
-                        <div onClick={() => { 
-                            setTokenPercent(0) 
+                        <div onClick={() => {
+                            setTokenPercent(0)
                             setValInput('')
                         }} className={styles.percentTag}>Reset</div>
                         {
@@ -214,10 +230,20 @@ export default function BuySell({
                 }
             </div>
 
-            <div style={{ marginTop: 30, visibility: activeIndex === 0 ? 'visible' : 'hidden' }} className={styles.receiveTokenAmount}>
-                <div className={styles.receiveTitle}>You will buy in</div>
-                <div className={styles.receiveAmount}>{buyIn} {tokenName}</div>
-            </div>
+            {
+                activeIndex === 0 && <div style={{ marginTop: 30, }} className={styles.receiveTokenAmount}>
+                    <div className={styles.receiveTitle}>You will buy in</div>
+                    <div className={styles.receiveAmount}>{buyIn} {tokenName}</div>
+                </div>
+            }
+
+            {
+                activeIndex === 1 && <div style={{ marginTop: 30, }} className={styles.receiveTokenAmount}>
+                    <div className={styles.receiveTitle}>You will pay</div>
+                    <div className={styles.receiveAmount}>{sellOutSol} SOL</div>
+                </div>
+            }
+
             <div style={{ marginTop: 18 }}>
                 <MainBtn
                     isLoading={isLoading}
@@ -246,5 +272,11 @@ export default function BuySell({
                     style={{ background: activeIndex === 0 ? 'rgba(109, 181, 0, 1)' : 'rgba(255, 47, 116, 1)' }}>Place Trade</MainBtn>
             </div>
         </div>
+
+        <SlipPage show={showSlip} slipData={slip} token={token} onSlipDataChange={(val: any) => {
+            setSlip(val)
+        }} onHide={() => {
+            setShowSlip(false)
+        }} />
     </div>
 }

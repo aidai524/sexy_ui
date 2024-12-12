@@ -38,6 +38,8 @@ export function useTokenTrade({
     const [minPrice, setMinPrice] = useState(1)
     const [maxPrice, setMaxPrice] = useState(1)
     const [tokenBalance, setTokenBalance] = useState('0')
+    const [solBalance, setSolBalance] = useState('0')
+    const [reFreshBalnace, setReFreshBalnace] = useState(0)
 
     const programId = useMemo(() => {
         return new PublicKey("BmEdwC1RFv2YF7Yo7y3H28MJvHXcNyMtxNBrDgkBRXgd")
@@ -314,21 +316,12 @@ export function useTokenTrade({
 
         const solAmount = new anchor.BN(minPrice)
 
-        console.log(new anchor.BN(amount),
-        solAmount,
-        new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
-        keys.proxySolAccount)
-
         const tx: any = await program.methods.sellToken(
             new anchor.BN(amount),
             solAmount,
             new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
             keys.proxySolAccount,
         ).accounts(keys).transaction()
-
-        const referral = anchor.web3.Keypair.fromSecretKey(bs58.decode('5P9B9gSt6BQG7wQ2CTDcnFfbL1NUBhsRrQUTR6YB5WvfYEhpnCFm2dyFSXnzYb2WzbQL9t4cLEM7ZkWiBpaTqPfB'));
-
-        console.log("referral:" + referral.publicKey.toString())
 
         console.log('tx:', tx)
         tx.recentBlockhash = latestBlockhash!.blockhash
@@ -628,7 +621,21 @@ export function useTokenTrade({
             }, 10)
         }
 
-    }, [programId, connection, tokenName, tokenSymbol, loadData])
+    }, [programId, walletProvider, connection, tokenName, tokenSymbol, loadData, reFreshBalnace])
+
+    useEffect(() => {
+        if (connection) {
+            connection.getBalance(walletProvider.publicKey!).then(res => {
+                if (res) {
+                    setSolBalance(new Big(res).div(10 ** 9).toString())
+                } else {
+                    setSolBalance('0')
+                }
+                
+            })
+        }
+        
+    }, [connection, walletProvider, reFreshBalnace])
 
     return {
         rate,
@@ -638,6 +645,8 @@ export function useTokenTrade({
         sellToken,
         createToken,
         tokenBalance,
+        solBalance,
+        updateBalance: () => { setReFreshBalnace(reFreshBalnace + 1) },
         prePaid
     }
 
