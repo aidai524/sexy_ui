@@ -11,14 +11,16 @@ export default function ProfileEdit() {
         <Back />
         <div className={styles.headerTitle}>Edit Profile</div>
       </div>
-      <EditContent
-        onSuccess={() => {
-          router.back();
-        }}
-        onClose={() => {
-          router.back();
-        }}
-      />
+      <div className={styles.EditContent}>
+        <EditContent
+          onSuccess={() => {
+            router.back();
+          }}
+          onClose={() => {
+            router.back();
+          }}
+        />
+      </div>
     </div>
   );
 }

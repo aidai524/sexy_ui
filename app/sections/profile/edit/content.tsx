@@ -6,6 +6,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import styles from "./edit.module.css";
 import { success, fail } from "@/app/utils/toast";
 import MainBtn from "@/app/components/mainBtn";
+import { Picker } from "antd-mobile";
 
 export default function EditContent({
   inputStyle,
@@ -21,11 +22,11 @@ export default function EditContent({
   const { userInfo, saveUserInfo } = useUserInfo(address);
 
   const iaInValid = useMemo(() => {
-    if (!name || avatar.length ===0 || banner.length === 0) {
-      return true
+    if (!name || avatar.length === 0 || banner.length === 0) {
+      return true;
     }
-    return false
-  }, [name, avatar, banner])
+    return false;
+  }, [name, avatar, banner]);
 
   useEffect(() => {
     if (userInfo?.icon) {
@@ -52,7 +53,7 @@ export default function EditContent({
       setName(userInfo?.name);
     }
   }, [userInfo]);
-  
+
   return (
     <>
       <div className={styles.group}>
@@ -74,13 +75,32 @@ export default function EditContent({
 
       <div className={styles.group}>
         <div className={styles.groupTitle}>
+          <span className={styles.require}>*</span>Highest education
+        </div>
+        <div className={styles.groupContent}>
+          <div
+            onClick={async () => {
+              const value = await Picker.prompt({
+                columns: [],
+              })
+            }}
+            className={styles.inputText}
+            style={inputStyle}
+          >
+            <div>Select</div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.group}>
+        <div className={styles.groupTitle}>
           <span className={styles.require}>*</span>Profile Photo
         </div>
         <div
           className={styles.groupContent}
           style={{ paddingLeft: 15, paddingTop: 10 }}
         >
-          <Upload fileList={avatar} setFileList={setAvatar} />
+          <Upload fileList={avatar} setFileList={setAvatar} type="avatar" />
         </div>
       </div>
 
@@ -92,19 +112,10 @@ export default function EditContent({
           className={styles.groupContent}
           style={{
             paddingLeft: 15,
-            paddingTop: 10,
-            height: 174,
             overflow: "hidden"
           }}
         >
-          <Upload fileList={banner} setFileList={setBanner}>
-            {/* <div className={ styles.bannerBgContent }>
-              <div className={ styles.bgImg }>
-                  <img className={ styles.bgImgPreview } src={ userInfo?.banner } />
-              </div>
-              <div className={ styles.changeBtn }>Change</div>
-          </div> */}
-          </Upload>
+          <Upload fileList={banner} setFileList={setBanner} type="banner" />
         </div>
       </div>
 
@@ -134,16 +145,14 @@ export default function EditContent({
               const isSuccess = await saveUserInfo(bannerImg, icon, name);
 
               if (isSuccess) {
-                success('Edit profile success')
+                success("Edit profile success");
                 onSuccess();
               } else {
-                fail('Edit profile fail')
+                fail("Edit profile fail");
               }
             }
           }}
-          
           style={{ flex: 1 }}
-
         >
           Save
         </MainBtn>

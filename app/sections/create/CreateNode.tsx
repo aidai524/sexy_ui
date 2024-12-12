@@ -67,7 +67,7 @@ export default function CreateNode({
                 <span className={styles.require}>*</span>Image or Video
             </div>
             <div className={styles.groupContent + ' ' + styles.uploadContent + ' ' + (inValidVals['tokenImg'] ? styles.uploadError : '')} style={{ paddingLeft: 15, paddingTop: 10 }}>
-                <Upload accept="image/*, video/mp4" fileList={tokenImg} setFileList={setTokenImg} />
+                <Upload type="token" accept="image/*, video/mp4" fileList={tokenImg} setFileList={setTokenImg} />
                 <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
             </div>
             <div className={styles.tokenSymbol}>
@@ -76,7 +76,7 @@ export default function CreateNode({
             </div>
             {
                 showTokenSymbol && <div className={styles.groupContent + ' ' + styles.uploadContent + ' ' + styles.avatar + ' ' + (inValidVals['tokenIcon'] ? styles.uploadError : '')} style={{ paddingLeft: 15, paddingTop: 10 }}>
-                    <Upload fileList={tokenIcon} setFileList={setTokenIcon} />
+                    <Upload type="token" fileList={tokenIcon} setFileList={setTokenIcon} />
                     <div className={styles.uploadTip}>Support img/png/svg</div>
                 </div>
             }
