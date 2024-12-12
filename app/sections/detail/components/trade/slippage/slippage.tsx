@@ -35,7 +35,7 @@ export default function SlipPage({ show, token, slipData, onSlipDataChange, onHi
         <div className={styles.list}>
           {
             list.map(item => {
-              return <div onClick={() => {
+              return <div key={item} onClick={() => {
                 onSlipDataChange && onSlipDataChange(item)
               }} className={styles.item + ' ' + (slipData === item ? styles.checked : '')}>
                 <div className={styles.amount}>{ item }%</div>
