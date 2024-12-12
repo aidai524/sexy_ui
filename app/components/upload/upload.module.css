@@ -24,7 +24,8 @@
 
 .preview {
     width: 120px;
-    min-height: 120px;
+    height: 120px;
+    overflow: hidden;
     position: relative;
     .imgPreview {
         width: 120px;

@@ -27,7 +27,6 @@ export default function SmokeBtn({ onClick, token }: Props) {
     />
   );
 
-
   return (
     <div
       onClick={() => {
@@ -39,6 +38,7 @@ export default function SmokeBtn({ onClick, token }: Props) {
         onClick();
       }}
     >
+        <div style={{ width: 48, height: 48, overflow: 'hidden' }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="48"
@@ -67,6 +67,7 @@ export default function SmokeBtn({ onClick, token }: Props) {
           </linearGradient>
         </defs>
       </svg>
+      </div>
 
       <Modal
         visible={vipShow}

@@ -1,5 +1,5 @@
 import { Modal } from "antd-mobile";
-
+import styles from './boost.module.css'
 import BoostInit from "./boostInit";
 import BoostVip from "./boostVip";
 import BoostJust from "./boostJust";
@@ -54,6 +54,7 @@ export default function Boost({
     />
   );
 
+
   const BoostModal = (
     <BoostJust
       token={token}
@@ -87,6 +88,7 @@ export default function Boost({
         setBoostStatusShow(false);
       }}
       onCancel={() => {
+        setBoostStatusShow(false);
         setBoostTimeShow(false);
       }}
     />
@@ -115,7 +117,8 @@ export default function Boost({
         onClick();
       }}
     >
-      {token.boostTime && Number(token.boostTime) > 0 ? (
+        <div className={ styles.btn }>
+        {token.boostTime && Number(token.boostTime - Date.now()) > 0 ? (
         <svg
           width="36"
           height="36"
@@ -150,6 +153,8 @@ export default function Boost({
           />
         </svg>
       )}
+        </div>
+      
 
       <Modal
         visible={vipShow}

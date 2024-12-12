@@ -343,6 +343,8 @@ export function mapDataToProject(currentToken: any): Project {
     time: currentToken.time,
     account: currentToken.account,
     creater: currentToken.account_data,
+    boostTime: currentToken.boost_time,
+    
   };
 }
 

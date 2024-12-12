@@ -84,3 +84,9 @@
         background-color: rgba(80, 73, 100, 1);
     }
 }
+
+.actionIcon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
