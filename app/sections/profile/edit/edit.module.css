@@ -19,6 +19,8 @@
     font-size: 18px;
     color: #fff;
     padding-left: 18px;
+    display: flex;
+    gap: 4px;
 
     .require {
       color: var(--part-bg);
@@ -26,7 +28,6 @@
   }
 
   .groupContent {
-    padding: 5px 0;
     .inputText {
       width: 100%;
       border: none;
@@ -104,6 +105,8 @@
   left: 0;
   right: 0;
   bottom: 80px;
+  z-index: 20;
+  background-color: #0d1012;
   .btn {
     flex: 1;
     height: 60px;
@@ -120,4 +123,9 @@
       border: 2px solid var(--part-bg);
     }
   }
+}
+
+.EditContent {
+  height: calc(100vh - 200px);
+  overflow-y: auto;
 }
