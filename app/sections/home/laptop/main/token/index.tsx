@@ -9,14 +9,14 @@ export default function Token() {
   console.log(infoData2);
   const like = () => {
     setTimeout(() => {
-      getnext();
+      getnext('preLaunch');
     }, 1000);
     onLike();
   };
 
   const hate = () => {
     setTimeout(() => {
-      getnext();
+      getnext('preLaunch');
     }, 1000);
     onHate();
   };
