@@ -22,6 +22,7 @@ import bs58 from 'bs58';
 import { httpAuthPost, sleep } from '../utils';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useAccount } from '@/app/hooks/useAccount';
+import { useClickAway } from 'ahooks';
 
 interface Props {
     tokenName: string;
@@ -592,6 +593,22 @@ export function useTokenTrade({
         // return hash2   
     }, [programId, walletProvider, connection, wsol])
 
+    const checkPrePayed = useCallback(async () => {
+        if (!pool) {
+            return false
+        }
+
+        const prePaidRecord = PublicKey.findProgramAddressSync(
+            [Buffer.from("prepaid_record"), pool[0].toBuffer(), walletProvider.publicKey!.toBuffer()],
+            programId
+        );
+
+        const val = await connection.getAccountInfo(prePaidRecord[0])
+
+        return !!val
+
+    }, [walletProvider, connection, pool])
+
     useEffect(() => {
         if (programId && pool && connection && tokenName && tokenSymbol && loadData) {
             const program = new Program<any>(idl, programId, { connection: connection } as any);
@@ -600,7 +617,7 @@ export function useTokenTrade({
                 setRate(Number(rate.toString()))
             })
         }
-    }, [programId, pool, connection, tokenName, tokenSymbol, loadData])
+    }, [programId, pool, connection, tokenName, tokenSymbol, loadData, reFreshBalnace])
 
     useEffect(() => {
         if (programId && connection && tokenName && tokenSymbol && loadData && tokenInfo) {
@@ -647,7 +664,8 @@ export function useTokenTrade({
         tokenBalance,
         solBalance,
         updateBalance: () => { setReFreshBalnace(reFreshBalnace + 1) },
-        prePaid
+        prePaid,
+        checkPrePayed,
     }
 
 }

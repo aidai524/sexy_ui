@@ -158,28 +158,30 @@
         color: #fff;
     }
 
-    .tickerContent1 {
-        margin-top: 5px;
-        align-items: center;
-        gap: 10px;
-        flex-direction: row;
-        display: flex;
+    
+}
 
-        .ticker {
-            color: #fff;
-            font-size: 14px;
-            display: inline-block;
-        }
+.tickerContent1 {
+    margin-top: 5px;
+    align-items: center;
+    gap: 10px;
+    flex-direction: row;
+    display: flex;
 
-        .launchTag {
-            display: inline-block;
-            height: 20px;
-            background-color: rgba(80, 73, 100, 1);
-            padding: 0 10px;
-            border-radius: 1000px;
-            color: #fff;
-            font-size: 10px;
-            line-height: 20px;
-        }
+    .ticker {
+        color: #fff;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+    .launchTag {
+        display: inline-block;
+        height: 20px;
+        background-color: rgba(80, 73, 100, 1);
+        padding: 0 10px;
+        border-radius: 1000px;
+        color: #fff;
+        font-size: 10px;
+        line-height: 20px;
     }
 }

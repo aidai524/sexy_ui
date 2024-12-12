@@ -11,7 +11,7 @@ const token: any = {
 }
 
 export default function Trade() {
-    const [showSlip, setShowSlip] = useState(false)
+    
 
     return <div className={ styles.main }>
         <CA />

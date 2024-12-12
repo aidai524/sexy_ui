@@ -30,11 +30,12 @@ export default function SmokeBtn({ onClick, token }: Props) {
   return (
     <div
       onClick={() => {
-        if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
-            setPanelShow(true);
-        } else {
-            setVipShow(true)
-        }
+        // if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
+        //     setPanelShow(true);
+        // } else {
+        //     setVipShow(true)
+        // }
+        setPanelShow(true);
         onClick();
       }}
     >
