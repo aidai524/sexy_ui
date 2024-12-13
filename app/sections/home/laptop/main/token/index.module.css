@@ -12,6 +12,7 @@
   height: 160px;
   background: url(/img/laptop/sexyfi-1.png) no-repeat;
   bottom: 0;
+  z-index: 1;
 }
 
 .Content {
@@ -19,4 +20,15 @@
   gap: 16px;
   padding-top: 16px;
   padding-left: 24px;
+  height: calc(100% - 98px);
+  position: relative;
+  z-index: 2;
+}
+
+.PanelWrapper {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: calc(100% - 381px);
+  --part-bg: #55fff4;
 }
