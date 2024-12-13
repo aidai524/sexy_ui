@@ -620,6 +620,8 @@ export function useTokenTrade({
     }, [programId, pool, connection, tokenName, tokenSymbol, loadData, reFreshBalnace])
 
     useEffect(() => {
+        console.log('reFreshBalnace:', reFreshBalnace)
+
         if (programId && connection && tokenName && tokenSymbol && loadData && tokenInfo) {
             setTimeout(async () => {
                 const userTokenAccount = await _getOrCreateAssociatedTokenAccount(
@@ -628,9 +630,14 @@ export function useTokenTrade({
                     false
                 );
 
+                let i = 0
                 if (userTokenAccount) {
-                    const balance = new Big(Number(userTokenAccount.amount)).div(10 ** 2).toString()
-                    setTokenBalance(balance)
+                    while (true) {
+                        const balance = new Big(Number(userTokenAccount.amount)).div(10 ** 2).toString()
+                        setTokenBalance(balance)
+                        i++
+                    }
+                    
                     return
                 }
 

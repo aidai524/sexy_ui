@@ -328,6 +328,7 @@ export function mapDataToProject(currentToken: any): Project {
     return {
         id: currentToken.id,
         tokenName: currentToken.token_name,
+        tokenSymbol: currentToken.token_symbol,
         ticker: currentToken.ticker,
         about: currentToken.about_us,
         website: currentToken.website,

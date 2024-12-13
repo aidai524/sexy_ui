@@ -253,7 +253,7 @@ export default function Create({
             </div>
         </Popup>
 
-        <CreateSuccessModal show={showSuccessModal} onHide={() => {
+        <CreateSuccessModal token={data} show={showSuccessModal} onHide={() => {
             setShowSuccessModal(false)
             router.push('/profile')
         }}/>

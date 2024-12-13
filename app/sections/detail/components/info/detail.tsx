@@ -4,7 +4,8 @@ import Panel from '../../../../components/panel'
 
 
 import styles from './detail.module.css'
-import Action from '@/app/components/action/launching'
+import LaunchingAction from '@/app/components/action/launching'
+import LaunchedAction from '@/app/components/action/launched'
 import { Button } from 'antd-mobile'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade'
 import InfoPart from './infoPart'
@@ -24,18 +25,23 @@ export default function Info({
         <CommentComp id={data.id} />
 
         <div className={styles.action}>
-            <Action
-                token={data}
-                style={{ position: 'static' }}
-                onLike={async () => {
-                    await httpAuthPost('/project/like?id=' + data!.id, {})
+            {
+                data.status === 0
+                    ? <LaunchingAction
+                        token={data}
+                        style={{ position: 'static' }}
+                        onLike={async () => {
+                            await httpAuthPost('/project/like?id=' + data!.id, {})
 
-                }}
-                onHate={async () => {
-                    await httpAuthPost('/project/un_like?id=' + data!.id, {})
-                }}
-                onSuperLike={() => { }}
-                onBoost={() => { }} />
+                        }}
+                        onHate={async () => {
+                            await httpAuthPost('/project/un_like?id=' + data!.id, {})
+                        }}
+                        onSuperLike={() => { }}
+                        onBoost={() => { }} />
+                    : <LaunchedAction data={data} />
+            }
+
         </div>
 
     </div>

@@ -1,20 +1,23 @@
 import { Modal } from "antd-mobile"
 import style from './index.module.css'
 import MainBtn from "@/app/components/mainBtn";
+import type { Project } from "@/app/type";
 
 interface Props {
     show: boolean;
     onHide: () => void;
+    token: Project;
 }
 
 export default function CreateSuccessModal({
     show,
     onHide,
+    token,
 }: Props) {
 
     return <Modal
         visible={show}
-        content={<SuccessModal onClose={() => { onHide() }}/>}
+        content={<SuccessModal token={token} onClose={() => { onHide() }}/>}
         closeOnAction
         closeOnMaskClick
         onClose={() => {
@@ -23,16 +26,16 @@ export default function CreateSuccessModal({
     />
 }
 
-function SuccessModal({ onClose }: { onClose: () => void; }) {
+function SuccessModal({ onClose, token }: { onClose: () => void; token: Project }) {
     return <div className={style.main}>
         <div className={style.content}>
             <div className={style.avatar}>
-                <img className={style.avatarImg} src="https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect" />
+                <img className={style.avatarImg} src={ token.tokenIcon || token.tokenImg } />
             </div>
 
             <div className={style.nameContent}>
-                <div className={style.name}>cat</div>
-                <div className={style.ticker}>/ Ticker: AIW</div>
+                <div className={style.name}>{ token.tokenName }</div>
+                <div className={style.ticker}>/ Ticker: { token.ticker }</div>
             </div>
 
             <div className={style.successText}>Created successfully!</div>

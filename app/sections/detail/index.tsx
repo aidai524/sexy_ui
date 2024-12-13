@@ -39,30 +39,36 @@ export default function Detail() {
     return (
         <div className={styles.main}>
             <AvatarBack data={infoData} />
-            <Tab
-                activeNode={activeKey}
-                onTabChange={(nodeName) => {
-                    setActiveKey(nodeName);
-                }}
-                nodes={[
-                    {
-                        name: "Info",
-                        content: <Info data={infoData} />
-                    },
-                    {
-                        name: "Chart",
-                        content: <Chart data={infoData} />
-                    },
-                    {
-                        name: "Buy/Sell",
-                        content: <Trade />
-                    },
-                    {
-                        name: "Txs",
-                        content: <Txs />
-                    }
-                ]}
-            />
+
+            {
+                infoData.status === 0
+                    ? <Info data={infoData} />
+                    : <Tab
+                        activeNode={activeKey}
+                        onTabChange={(nodeName) => {
+                            setActiveKey(nodeName);
+                        }}
+                        nodes={[
+                            {
+                                name: "Info",
+                                content: <Info data={infoData} />
+                            },
+                            {
+                                name: "Chart",
+                                content: <Chart data={infoData} />
+                            },
+                            {
+                                name: "Buy/Sell",
+                                content: <Trade data={infoData} />
+                            },
+                            {
+                                name: "Txs",
+                                content: <Txs />
+                            }
+                        ]}
+                    />
+            }
+
         </div>
     );
 }

@@ -17,7 +17,8 @@ type Token = {
 }
 
 interface Props {
-    token: Token
+    token: Token;
+    initType: string;
 }
 
 const SOL: Token = {
@@ -30,7 +31,7 @@ const SOL: Token = {
 const SOL_PERCENT_LIST = [0.00000001, 0.00000005]
 
 export default function BuySell({
-    token
+    token, initType
 }: Props) {
     const {
         tokenName,
@@ -47,7 +48,7 @@ export default function BuySell({
         tokenDecimals: 2,
     }
 
-    const [activeIndex, setActiveIndex] = useState(0)
+    const [activeIndex, setActiveIndex] = useState(initType === 'buy' ? 0 : 1)
     const [tokenType, setTokenType] = useState<number>(0)
     const [currentToken, setCurrentToken] = useState<Token>(desToken)
     const [errorMsg, setErrorMsg] = useState('')
@@ -80,7 +81,6 @@ export default function BuySell({
     }, [rate])
 
     const debounceVal = useDebounce(valInput, { wait: 800 })
-
 
     useEffect(() => {
         if (debounceVal && rate) {
@@ -263,6 +263,7 @@ export default function BuySell({
                             }
                             setIsLoading(false)
                             success('Transtion success')
+                            updateBalance()
                         } catch (e) {
                             console.log(e)
                             setIsLoading(false)

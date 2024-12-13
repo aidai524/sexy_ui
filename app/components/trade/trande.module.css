@@ -144,28 +144,5 @@
         font-weight: 300;
     }
 
-    .distributionArea {
-        margin-top: 30px;
-        .distributionTitle {
-            color: rgba(146, 144, 177, 1);
-            font-size: 14px;
-            font-weight: 600;
-            padding-left: 10px;
-        }
-        .list {
-            background-color: rgba(18, 23, 25, 1);
-            color: #fff;
-            .item {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 10px;
-                .itemContent {
-                    display: flex;
-                    align-items: center;
-                    
-                }
-            }
-        }
-    }
+    
 }

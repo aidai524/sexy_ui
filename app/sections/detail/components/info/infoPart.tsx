@@ -40,8 +40,6 @@ export default function InfoPart({
         return
     }
 
-    console.log('data:', data)
-
     return <div>
         <Thumbnail showLikes={showLikes} showLaunchType={false} autoHeight={true} showBackIcon={showBackIcon} data={data} showDesc={false} topDesc={showThumbnailHead} showProgress={showThumbnailProgress} />
         <Sep />
@@ -56,7 +54,7 @@ export default function InfoPart({
                 <div className={styles.authorTitle}>Education:</div>
                 <div onClick={() => {
                     router.push('/profile/user?account=' + data.account)
-                }} className={[styles.authorDesc, styles.authorDescEs].join(' ')}>{ data.creater.education }</div>
+                }} className={[styles.authorDesc, styles.authorDescEs].join(' ')}>{ data.creater && data.creater.education }</div>
             </div>
             <div className={styles.author}>
                 <div className={styles.authorTitle}>Create time:</div>

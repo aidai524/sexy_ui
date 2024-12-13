@@ -46,13 +46,14 @@ export default function Token({ data }: Props) {
                 <div className={styles.actionIcon}>
                     <Boost
                         token={data}
+                        isGrey={true}
                         onClick={() => {
                             // onBoost && onBoost();
                         }}
                     />
                 </div>
                 <div className={styles.actionTimes}>
-                    <span className={styles.whiteAmount}>{ timeFormat }</span>
+                    <span className={styles.whiteAmount}>{ timeFormat || '30 min' }</span>
                 </div>
             </div>
 

@@ -162,9 +162,12 @@ export default function Home() {
           )}
         </div>
 
-          <LaunchedAction
-        
-          /></>
+          {
+            infoDataLaunched2 && <LaunchedAction
+              data={infoDataLaunched2}
+            />
+          }
+        </>
       }
 
     </div>
