@@ -8,15 +8,14 @@ import SmokeBtn from '@/app/components/smokHot'
 import { useRouter } from 'next/navigation'
 import Boost from '@/app/components/boost'
 import useTimeLeft from '@/app/hooks/useTimeLeft'
+import LauncdedAction from '@/app/components/action/launched'
 
 interface Props {
     data: Project
 }
 
 export default function Token({ data }: Props) {
-
     const router = useRouter()
-
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
 
     return <div className={styles.main}>
@@ -41,35 +40,39 @@ export default function Token({ data }: Props) {
             </div>
         </div>
 
-        <div className={styles.actionContent}>
-            <div className={styles.actionItem}>
-                <div className={styles.actionIcon}>
-                    <Boost
-                        token={data}
-                        isGrey={true}
-                        onClick={() => {
-                            // onBoost && onBoost();
-                        }}
-                    />
-                </div>
-                <div className={styles.actionTimes}>
-                    <span className={styles.whiteAmount}>{ timeFormat || '30 min' }</span>
-                </div>
-            </div>
-
-            <div className={styles.actionItem}>
-                <div>
-                    <SmokeBtn token={data} onClick={() => {
-                        // onSuperLike && onSuperLike()
-                    }} />
-                    <div className={styles.actionTimes}>
-                        <span className={styles.whiteAmount}>{ data.superLike }</span>
+        {
+            data.status === 0
+                ? <div className={styles.actionContent}>
+                    <div className={styles.actionItem}>
+                        <div className={styles.actionIcon}>
+                            <Boost
+                                token={data}
+                                isGrey={true}
+                                onClick={() => {
+                                    // onBoost && onBoost();
+                                }}
+                            />
+                        </div>
+                        <div className={styles.actionTimes}>
+                            <span className={styles.whiteAmount}>{timeFormat || '30 min'}</span>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
 
-       
+                    <div className={styles.actionItem}>
+                        <div>
+                            <SmokeBtn token={data} onClick={() => {
+                                // onSuperLike && onSuperLike()
+                            }} />
+                            <div className={styles.actionTimes}>
+                                <span className={styles.whiteAmount}>{data.superLike}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div> : <div className={styles.actionContent}>
+                    <LauncdedAction data={data} justPlus={true}/>
+                </div>
+        }
+
     </div>
 }
 
