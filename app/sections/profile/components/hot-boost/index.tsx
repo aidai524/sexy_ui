@@ -9,9 +9,6 @@ interface Props {
 }
 
 export default function HotBoost({ onMoreClick, style, user }: Props) {
-
-  console.log('user:', user)
-
   const boostNum = useMemo(() => {
     if (user) {
       const num = (user?.boostNum || 0) - (user?.usingBoostNum || 0)

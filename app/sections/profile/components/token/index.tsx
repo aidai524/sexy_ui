@@ -81,8 +81,4 @@ function LaunchTag({ type }: { type: number }) {
     if (type === 1) {
         return <div className={styles.launchTag + ' ' + styles.launch2}>Luanching</div>
     }
-
-    if (type === 3) {
-        return <div className={styles.launchTag + ' ' + styles.launch3}>Pre-Launch</div>
-    }
 }

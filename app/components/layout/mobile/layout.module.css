@@ -33,7 +33,7 @@ div.tabBar {
 }
 
 .activeTab {
-  color: #A855F7 !important;
+  color: #fff !important;
 }
 
 .activeTab :global(.adm-tab-bar-item-icon) {
@@ -76,6 +76,20 @@ div.tabBar {
     }
   }
 }
+
+.createIcon {
+  width: 81px;
+  height: 81px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--part-bg);
+  border-radius: 81px;
+  margin-top: -55px;
+  border: 10px solid rgba(0, 0, 0, 1);
+}
+
+
 
 @keyframes float {
   0% {

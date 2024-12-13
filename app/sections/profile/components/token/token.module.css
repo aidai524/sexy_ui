@@ -80,6 +80,7 @@
     font-weight: 300;
     border-radius: 1000px;
     white-space: nowrap;
+    background-color: rgba(80, 73, 100, 1);
     &.launch1 {
         background-color: rgba(80, 73, 100, 1);
     }
