@@ -4,10 +4,14 @@ import Header from "./header";
 import TokenCard from "../token-card";
 import InfoPart from "@/app/sections/detail/components/info/infoPart";
 import CommentComp from "@/app/components/comment";
+import PanelWrapper from "./PanelWrapper";
+import Chart from "@/app/sections/detail/components/chart";
 import useData from "../../../hooks/use-data";
+import { useState } from "react";
 
 export default function Token() {
   const { infoData2, onLike, onHate, getnext } = useData("preLaunch");
+  const [currentTab, setCurrentTab] = useState("info");
 
   const like = () => {
     setTimeout(() => {
@@ -22,27 +26,40 @@ export default function Token() {
     }, 1000);
     onHate();
   };
+
+  console.log("currentTab", currentTab);
   return (
     <>
       <div className={styles.Container}>
         <div className={styles.SexyFi} />
-        <Header tokenInfo={infoData2} />
-        <div className={styles.Content}>
-          <TokenCard token={infoData2} />
-          {infoData2 && (
-            <div className={styles.PanelWrapper}>
-              <InfoPart
-                showLikes={false}
-                data={infoData2}
-                showThumbnailHead={false}
-                showTop={false}
-                theme="light"
-                sepSize={2}
-              />
-              <CommentComp id={infoData2.id} theme="light" />
-            </div>
-          )}
-        </div>
+        <Header
+          tokenInfo={infoData2}
+          currentTab={currentTab}
+          setCurrentTab={setCurrentTab}
+        />
+        {infoData2 && (
+          <div className={styles.Content}>
+            <TokenCard token={infoData2} />
+            {currentTab === "info" && (
+              <PanelWrapper>
+                <InfoPart
+                  showLikes={false}
+                  data={infoData2}
+                  showThumbnailHead={false}
+                  showTop={false}
+                  theme="light"
+                  sepSize={2}
+                />
+                <CommentComp id={infoData2.id} theme="light" />
+              </PanelWrapper>
+            )}
+            {currentTab === "chart" && (
+              <PanelWrapper>
+                <Chart data={infoData2} style={{ paddingTop: 0 }} />
+              </PanelWrapper>
+            )}
+          </div>
+        )}
       </div>
       <ActionsBar tokenInfo={infoData2} onLike={like} onHate={hate} />
     </>

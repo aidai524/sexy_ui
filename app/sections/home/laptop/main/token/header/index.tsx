@@ -3,10 +3,8 @@ import Tabs from "../tabs";
 import ShareIcon from "@/app/components/icons/share";
 import ZoomOutIcon from "@/app/components/icons/zoom-out";
 import styles from "./index.module.css";
-import { useState } from "react";
 
-export default function Header({ tokenInfo }: any) {
-  const [currentTab, setCurrentTab] = useState("info");
+export default function Header({ tokenInfo, currentTab, setCurrentTab }: any) {
   return (
     <div className={styles.Container}>
       {tokenInfo ? <Avatar data={tokenInfo} /> : <div />}
