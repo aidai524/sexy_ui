@@ -95,7 +95,7 @@ export default function CommentComp({
 
       {commentList.length > 0 &&
         (usePanel ? (
-          <Panel>{CommentList}</Panel>
+          <Panel theme={theme}>{CommentList}</Panel>
         ) : (
           <div style={{ padding: "0 10px" }}>{CommentList}</div>
         ))}
