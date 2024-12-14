@@ -11,13 +11,15 @@ interface Props {
   showEdit?: boolean;
   usePanel?: boolean;
   titleStyle?: any;
+  theme?: string;
 }
 
 export default function CommentComp({
   id,
   showEdit = true,
   usePanel = true,
-  titleStyle
+  titleStyle,
+  theme = "dark"
 }: Props) {
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
@@ -29,9 +31,7 @@ export default function CommentComp({
         key={item.id}
         item={item}
         onSuccessNow={(item: Comment) => {
-            setCommentList([
-                ...commentList,
-            ])
+          setCommentList([...commentList]);
         }}
         onSuccess={(item: Comment) => {
           setReReashNum(reReashNum + 1);
@@ -58,7 +58,7 @@ export default function CommentComp({
   }, [id, reReashNum]);
 
   return (
-    <div className={styles.main}>
+    <div className={`${styles.main} ${theme === "light" && styles.LightMain}`}>
       <div className={styles.title} style={titleStyle}>
         Discussion
       </div>
@@ -86,14 +86,16 @@ export default function CommentComp({
             // console.log(e)
             setCommentText(e.target.value);
           }}
-          className={styles.input}
+          className={`${styles.input} ${
+            theme === "light" ? styles.LightInput : styles.DarkInput
+          }`}
           placeholder="Say something..."
         />
       )}
 
       {commentList.length > 0 &&
         (usePanel ? (
-          <Panel>{CommentList}</Panel>
+          <Panel theme={theme}>{CommentList}</Panel>
         ) : (
           <div style={{ padding: "0 10px" }}>{CommentList}</div>
         ))}
@@ -112,6 +114,6 @@ function mapDataToComment(data: any): Comment {
     like: data.like,
     unLike: data.un_like,
     time: data.time,
-    creater: data.account_data,
+    creater: data.account_data
   };
 }

@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
 import { TradingViewChart } from "@/app/components/chart";
 
-export default function Chart({ data }: any) {
+export default function Chart({ data, style = {} }: any) {
   const tvRef = useRef<any>();
 
   if (!data) return <div />;
   return (
-    <div style={{ paddingTop: 10, height: "calc(100vh - 130px)" }}>
+    <div style={{ paddingTop: 10, height: "calc(100vh - 130px)", ...style }}>
       {data.lanched && (
         <iframe
           style={{ height: "100%" }}

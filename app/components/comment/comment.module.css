@@ -1,5 +1,6 @@
 .main {
   padding-top: 10px;
+
   .title {
     font-weight: 600;
     font-size: 18px;
@@ -9,10 +10,9 @@
   .input {
     margin: 10px 15px;
     height: 37px;
-    width: calc(100vw - 30px);
+    width: calc(100% - 30px);
     border: 1px solid rgba(146, 144, 177, 0.6);
     border-radius: 8px;
-    background-color: #000;
     color: rgba(255, 255, 255, 0.6);
     font-size: 16px;
     padding: 0 10px;
@@ -21,4 +21,18 @@
     border: 1px solid rgba(146, 144, 177, 0.6);
     outline: none;
   }
+}
+
+.LightMain {
+  background-color: #ab1f5c;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+.DarkInput {
+  background-color: #000;
+}
+
+.LightInput {
+  background-color: #0000001a;
 }

@@ -1,9 +1,19 @@
-import styles from './panel.module.css'
+import styles from "./panel.module.css";
 
-export default function Panel({ children }: {
-    children?: React.ReactNode
+export default function Panel({
+  children,
+  theme
+}: {
+  children?: React.ReactNode;
+  theme?: string;
 }) {
-    return <div className={ styles.panel }>
-        { children }
+  return (
+    <div
+      className={`${styles.panel} ${
+        theme === "dark" ? styles.Dark : styles.Light
+      }`}
+    >
+      {children}
     </div>
+  );
 }
