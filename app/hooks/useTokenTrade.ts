@@ -632,13 +632,10 @@ export function useTokenTrade({
 
                 let i = 0
                 if (userTokenAccount) {
-                    while (true) {
                         const balance = new Big(Number(userTokenAccount.amount)).div(10 ** 2).toString()
                         setTokenBalance(balance)
                         i++
-                    }
                     
-                    return
                 }
 
                 setTokenBalance('0')

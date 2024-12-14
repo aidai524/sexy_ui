@@ -2,11 +2,12 @@ import { Popup } from "antd-mobile";
 import styles from "./index.module.css";
 import type { Project } from "@/app/type";
 import MainBtn from "@/app/components/mainBtn";
+import { useState } from "react";
 
 interface Props {
   show: boolean;
   token: any;
-  slipData?: number;
+  slipData?: number | string;
   onSlipDataChange?: (val: any) => void;
   onHide?: () => void;
 }
@@ -14,6 +15,8 @@ interface Props {
 const list = [0.1, 0.5, 1]
 
 export default function SlipPage({ show, token, slipData, onSlipDataChange, onHide }: Props) {
+  const [inputData, setInputData] = useState(slipData)
+
   return (
     <Popup
       visible={show}
@@ -37,7 +40,7 @@ export default function SlipPage({ show, token, slipData, onSlipDataChange, onHi
             list.map(item => {
               return <div key={item} onClick={() => {
                 onSlipDataChange && onSlipDataChange(item)
-              }} className={styles.item + ' ' + (slipData === item ? styles.checked : '')}>
+              }} className={styles.item + ' ' + (inputData === item ? styles.checked : '')}>
                 <div className={styles.amount}>{ item }%</div>
                 <div className={styles.checkBox}></div>
               </div>
@@ -46,11 +49,13 @@ export default function SlipPage({ show, token, slipData, onSlipDataChange, onHi
         </div>
 
         <div className={ styles.inputBox }>
-          <input className={ styles.input } placeholder="Custom"/>
+          <input value={inputData} onChange={(e) => { setInputData(e.target.value as string) }} className={ styles.input } placeholder="Custom"/>
           <div className={ styles.percent }>%</div>
         </div>
 
-        <MainBtn>Okay</MainBtn>
+        <MainBtn onClick={() => {
+          onHide && onHide()
+        }}>Okay</MainBtn>
       </div>
     </Popup>
   );

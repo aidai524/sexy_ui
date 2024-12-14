@@ -96,9 +96,6 @@ export default function Boost({
         />
     );
 
-    console.log('isGrey:', isGrey)
-
-
     return (
         <div
             onClick={() => {

@@ -6,20 +6,23 @@ import Thumbnail from "@/app/components/thumbnail";
 import LaunchingAction from "@/app/components/action/launching";
 import LaunchedAction from "@/app/components/action/launched";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Hammer from "hammerjs";
 import useData from "../hooks/use-data";
 import Tabs from "../tabs";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
+import useSwip from "./hooks/useSwip";
 
 export default function Home() {
   const router = useRouter();
   const { address } = useAccount()
+  const params = useSearchParams()
   const [launchIndex, setLaunchIndex] = useState(0);
   const [actionStyle, setActionStyle] = useState<any>("");
   const { likeTrigger, setLikeTrigger } = useMessage();
-  const containerRef = useRef<any>();
+  const containerPreLaunchRef = useRef<any>();
+  const containerLaunchedRef = useRef<any>();
 
   const {
     infoData: infoDataLaunching,
@@ -35,34 +38,38 @@ export default function Home() {
     getnext: getLaunchedNext,
   } = useData('launching');
 
-  useEffect(() => {
-    if (containerRef.current && typeof window !== "undefined") {
-      const manager = new Hammer.Manager(containerRef.current);
-      const Swipe = new Hammer.Swipe();
-      manager.add(Swipe);
-
-      manager.on("swipe", function (e) {
-        const direction = e.offsetDirection;
-        if (direction === 2 || direction === 16) {
-          hate();
-        } else if (direction === 4 || direction === 8) {
-          if (likeTrigger) {
-            return;
-          }
-          setLikeTrigger(true);
-          like();
-
-          setTimeout(() => {
-            setLikeTrigger(false);
-          }, 1600);
-        }
-      });
-
-      return () => {
-        manager.off("swipe");
-      };
+  useSwip(containerPreLaunchRef, () => {
+    hate()
+  },  () => {
+    if (likeTrigger) {
+      return;
     }
-  }, []);
+    setLikeTrigger(true);
+    like();
+
+    setTimeout(() => {
+      setLikeTrigger(false);
+    }, 1600);
+  }, launchIndex === 0)
+
+  useSwip(containerLaunchedRef, () => {
+    justNext('hate')
+  },  () => {
+    justNext('like')
+  }, launchIndex === 1)
+
+  useEffect(() => {
+    if (params) {
+      const launchType = params.get('launchType')
+      if (launchType === '0') {
+        setLaunchIndex(0)
+      } else if (launchType === '1') {
+        setLaunchIndex(1)
+      }  
+    } else {
+      setLaunchIndex(0)
+    }
+  }, [params])
 
   async function like() {
     setActionStyle(styles.like);
@@ -83,6 +90,15 @@ export default function Home() {
     onHate();
   }
 
+  async function justNext(type: string) {
+    const style = type === 'like' ? styles.like : styles.hate
+    setActionStyle(style);
+    setTimeout(() => {
+      setActionStyle(null);
+      getLaunchedNext();
+    }, 1000);
+  }
+
   return (
     <div className={styles.main}>
       <div className={styles.header}>
@@ -94,11 +110,11 @@ export default function Home() {
           <img src="/img/logo.svg" />
         </div>
 
-        <Tabs launchIndex={launchIndex} setLaunchIndex={setLaunchIndex} />
+        <Tabs launchIndex={launchIndex} setLaunchIndex={(launchType: any) => {
+          router.push('/?launchType=' + launchType)
+        }} />
         <div className={styles.icons}>
           <ConnectButton />
-
-
           <div className={styles.notice}>
             <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="17" cy="17" r="17" fill="black" fill-opacity="0.2" />
@@ -120,7 +136,7 @@ export default function Home() {
       </div>
 
       {
-        launchIndex === 0 && <><div className={styles.thumbnailListBox} ref={containerRef}>
+        launchIndex === 0 && <><div className={styles.thumbnailListBox} ref={containerPreLaunchRef}>
           {infoDataLaunched && (
             <div style={{ zIndex: 1 }} className={[styles.thumbnailBox].join(" ")}>
               <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunched} />
@@ -148,7 +164,7 @@ export default function Home() {
       }
 
       {
-        launchIndex === 1 && <><div className={styles.thumbnailListBox} ref={containerRef}>
+        launchIndex === 1 && <><div className={styles.thumbnailListBox} ref={containerLaunchedRef}>
           {infoDataLaunching && (
             <div style={{ zIndex: 1 }} className={[styles.thumbnailBox].join(" ")}>
               <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunching} />

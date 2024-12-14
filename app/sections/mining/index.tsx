@@ -3,6 +3,7 @@ import styles from './ming.module.css'
 
 export default function Mining() {
     return <div className={styles.main}>
+        <div className={ styles.zBox }>
         <div className={styles.multipleContent}>
             <div className={styles.multipleIcon}>
                 <svg width="70" height="74" viewBox="0 0 70 74" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -62,6 +63,17 @@ export default function Mining() {
                     </svg>
                     <div>View on Gitbook</div>
                 </div>
+            </div>
+        </div>
+        </div>
+
+        <div className={ styles.bottomAni }>
+            <div className={ styles.boxAni } style={{ width: '300vw' }}>
+                {
+                    [1,2,3,4,5,6,7,8,9,10].map(item => {
+                        return <img key={item} className={ styles.boxImg } src="/img/mining/bottom-bg.png" />
+                    })
+                }
             </div>
         </div>
     </div>
