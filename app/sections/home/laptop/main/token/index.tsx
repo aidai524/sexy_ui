@@ -1,4 +1,4 @@
-import ActionsBar from "../actions-bar/prelaunch";
+import ActionsBar from "../actions-bar";
 import styles from "./index.module.css";
 import Header from "./header";
 import TokenCard from "../token-card";
@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function Token({ infoData2, onLike, onHate, getnext }: any) {
   const [currentTab, setCurrentTab] = useState("info");
-
+  console.log("info", infoData2);
   const like = () => {
     setTimeout(() => {
       getnext();
