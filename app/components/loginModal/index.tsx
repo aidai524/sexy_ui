@@ -10,7 +10,7 @@ interface Props {
     onHide?: () => void;
 }
 
-export default function loginModal({ modalShow, onHide }: Props) {
+export default function LoginModal({ modalShow, onHide }: Props) {
     const { address } = useAccount()
 
     useEffect(() => {
