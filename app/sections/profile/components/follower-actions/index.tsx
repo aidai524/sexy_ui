@@ -1,8 +1,8 @@
 import styles from "./index.module.css";
 
-export default function FollowerActions({ userInfo, onItemClick }: any) {
+export default function FollowerActions({ userInfo, style, onItemClick }: any) {
   return (
-    <div className={styles.follwerActions}>
+    <div className={styles.follwerActions} style={style}>
       <div
         className={styles.follwerItem}
         onClick={() => {
