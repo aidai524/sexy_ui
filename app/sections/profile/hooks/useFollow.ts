@@ -7,13 +7,14 @@ export default function useFollow(account?: string) {
     const [followingList, setFollowingList] = useState([])
     const [followerList, setFollowerList] = useState([])
 
+
     useEffect(() => {
+        console.log('freshNum:', account, freshNum)
         if (account) {
             httpAuthGet('/account/follower/list', {
                 address: account,
                 limit: 50,
             }).then(res => {
-                console.log(res)
                 if (res.code === 0) {
                     const followingList = res.data.list.map((item: any)=> {
                         return {
@@ -30,6 +31,7 @@ export default function useFollow(account?: string) {
                             usingSuperLikeNum: item.using_super_like_num,
                             usingBuySuperLikeNum: item.using_buy_super_like_num,
                             vipType: item.vip_type,
+                            isFoller: item.is_follower,
                         }
                     })
 
@@ -45,7 +47,6 @@ export default function useFollow(account?: string) {
                 address: account,
                 limit: 50,
             }).then(res => {
-                console.log(res)
                 if (res.code === 0) {
                     const followerList = res.data.list.map((item: any)=> {
                         return {
@@ -62,6 +63,7 @@ export default function useFollow(account?: string) {
                             usingSuperLikeNum: item.using_super_like_num,
                             usingBuySuperLikeNum: item.using_buy_super_like_num,
                             vipType: item.vip_type,
+                            isFoller: item.is_follower,
                         }
                     })
 
@@ -75,7 +77,7 @@ export default function useFollow(account?: string) {
         const val = await httpAuthPost('/account/follower?address=' + address)
         if (val.code === 0) {
             success('Follow success')
-            // setFreshNum(freshNum + 1)
+            setFreshNum(freshNum + 1)
         } else {
             fail('Follow fail')
         }
@@ -85,7 +87,7 @@ export default function useFollow(account?: string) {
         const val = await httpAuthDelete('/account/follower?address=' + address)
         if (val.code === 0) {
             success('UnFollow success')
-            // setFreshNum(freshNum + 1)
+            setFreshNum(freshNum + 1)
         } else {
             fail('UnFollow fail')
         }
@@ -97,7 +99,6 @@ export default function useFollow(account?: string) {
         follow,
         unFollow,
         update: () => {
-            console.log(1111)
             setFreshNum(freshNum + 1)
         }
     }

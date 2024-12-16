@@ -10,11 +10,9 @@ import useFollow from '../hooks/useFollow'
 
 export default function Follower() {
     const params = useSearchParams()
-    const { userInfo } = useUserInfo(params.get('account')?.toString())
-    const { followerList, followingList, update } = useFollow(params.get('account')?.toString())
-    const onActionCallback = useCallback(() => {
-        update()
-    }, [update])
+    const [account] = useState(params.get('account')?.toString())
+    const { userInfo } = useUserInfo(account)
+    const { followerList, followingList, update } = useFollow(account)
 
     return <div className={ styles.main }>
         <div className={ styles.header }>
@@ -26,13 +24,13 @@ export default function Follower() {
             {
                 name: followerList.length + ' Followers',
                 content: <FollowerList list={followerList} followerType={1} onAction={() => {
-                    onActionCallback()
+                    update()
                 }}/>
             },
             {
                 name: followingList.length + ' Following',
                 content: <FollowerList list={followingList} followerType={2} onAction={() => {
-                    onActionCallback()
+                    update()
                 }}/>
             }
         ]}/>

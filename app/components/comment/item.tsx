@@ -7,13 +7,14 @@ import {
 } from "@/app/utils";
 
 import styles from "./item.module.css";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const defaultAvatar = '/img/avatar.png'
 
 export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
   const router = useRouter()
+  const [isLoading, setisLoading] = useState(false)
 
   const userName = useMemo(() => {
     if (item?.creater) {
@@ -35,7 +36,9 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
           }}>
             <img className={styles.avatarImg} src={item.creater.icon || defaultAvatar} />
           </div>
-          <div className={styles.name}>{userName}</div>
+          <div onClick={() => {
+            router.push('/profile/user?account=' + item.address)
+          }} className={styles.name}>{userName}</div>
           <div className={styles.time}>{formatDateTimeAndAgo(item.time)}</div>
         </div>
 
@@ -45,13 +48,39 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
       <div className={styles.commentAction}>
         <div
           onClick={async () => {
+            if (isLoading) {
+              return
+            }
+            setisLoading(true)
+
             const method = item.isLike ? httpAuthDelete : httpAuthPost;
+            if (item.isUnlike && !item.isLike) {
+              item.isUnlike = false
+              if (item.unLike > 0) {
+                item.unLike -= 1
+              }
+            }
+
+            if (item.isLike) {
+              if (item.like > 0) {
+                item.like -= 1
+              }
+            } else {
+              item.like += 1
+            }
+
             item.isLike = !item.isLike
+
             onSuccessNow && onSuccessNow(item)
             const val = await method("/project/comment/like?id=" + item.id);
             if (val.code === 0) {
               onSuccess();
             }
+
+            setTimeout(() => {
+              setisLoading(false)
+            }, 1500)
+
           }}
           className={styles.zan}
         >
@@ -93,13 +122,37 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
 
         <div
           onClick={async () => {
+            if (isLoading) {
+              return
+            }
+            setisLoading(true)
+
             const method = item.isUnlike ? httpAuthDelete : httpAuthPost;
+            if (item.isLike && !item.isUnLike) {
+              item.isLike = false
+              if (item.like > 0) {
+                item.like -= 1
+              }
+            }
+
+            if (item.isUnlike) {
+              if (item.unLike > 0) {
+                item.unLike -= 1
+              }
+            } else {
+              item.unLike += 1
+            }
+
             item.isUnlike = !item.isUnlike
             onSuccessNow && onSuccessNow(item)
             const val = await method("/project/comment/un_like?id=" + item.id);
             if (val.code === 0) {
               onSuccess();
             }
+
+            setTimeout(() => {
+              setisLoading(false)
+            }, 1500)
           }}
           className={styles.zan}
         >

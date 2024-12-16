@@ -24,6 +24,7 @@ export default function CommentComp({
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
   const [reReashNum, setReReashNum] = useState(1);
+  const [isSubmiting, setIsSubmiting] = useState(false)
 
   const CommentList = commentList.map((item) => {
     return (
@@ -66,7 +67,12 @@ export default function CommentComp({
         <input
           value={commentText}
           onKeyUp={async (e) => {
-            if (e.code === "Enter") {
+            if (e.code === "Enter" && commentText) {
+              if (isSubmiting) {
+                return
+              }
+              setIsSubmiting(true)
+
               const query: any = {
                 project_id: id,
                 text: commentText
@@ -80,6 +86,8 @@ export default function CommentComp({
                 setReReashNum(reReashNum + 1);
                 setCommentText("");
               }
+
+              setIsSubmiting(false)
             }
           }}
           onChange={(e) => {

@@ -25,8 +25,10 @@ export default function FollowBtn({
                     }
                     setFollowLoading(true)
                     await follow(address);
-                    onSuccess && onSuccess()
-                    setFollowLoading(false)
+                    onSuccess && onSuccess() 
+                    setTimeout(() => {
+                        setFollowLoading(false)
+                    }, 1200)
                 }}
             >
                 Follow
@@ -40,7 +42,9 @@ export default function FollowBtn({
                     setFollowingLoading(true)
                     await unFollow(address);
                     onSuccess && onSuccess()
-                    setFollowingLoading(false)
+                    setTimeout(() => {
+                        setFollowingLoading(false)
+                    }, 1200)
                 }}
                 className={followingLoading ? styles.isFollowLoading : styles.isFollowing}
             >

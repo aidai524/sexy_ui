@@ -79,6 +79,7 @@ export default function EditContent({
             style={inputStyle}
           />
         </div>
+        <div className={ styles.tip }>*It can be modified only once</div>
       </div>
 
       <div className={styles.group}>

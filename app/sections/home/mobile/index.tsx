@@ -5,7 +5,7 @@ import styles from "./home.module.css";
 import Thumbnail from "@/app/components/thumbnail";
 import LaunchingAction from "@/app/components/action/launching";
 import LaunchedAction from "@/app/components/action/launched";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Hammer from "hammerjs";
 import useData from "../hooks/use-data";
@@ -28,6 +28,8 @@ export default function Home() {
     infoData: infoDataLaunching,
     infoData2: infoDataLaunching2,
     getnext: getLaunchingNext,
+    hasNext: hasLaunchingNext,
+    list: launchingList,
     onLike,
     onHate
   } = useData('preLaunch');
@@ -35,8 +37,11 @@ export default function Home() {
   const {
     infoData: infoDataLaunched,
     infoData2: infoDataLaunched2,
+    hasNext: hasLaunchedNext,
+    list: launchedList,
     getnext: getLaunchedNext,
   } = useData('launching');
+
 
   useSwip(containerPreLaunchRef, () => {
     if (hateTrigger) {
@@ -53,6 +58,7 @@ export default function Home() {
     if (likeTrigger) {
       return;
     }
+
     setLikeTrigger(true);
     like();
 
@@ -80,32 +86,41 @@ export default function Home() {
     }
   }, [params])
 
-  async function like() {
-    setActionStyle(styles.like);
 
-    setTimeout(() => {
-      setActionStyle(null);
-      getLaunchingNext();
-    }, 1000);
+  async function like() {
+    console.log('launchingList111:', launchingList)
+    if (launchingList && launchingList.current && launchingList.current.length > 1) {
+      setActionStyle(styles.like);
+      setTimeout(() => {
+        setActionStyle(null);
+        getLaunchingNext();
+      }, 1000);
+    }
+
     onLike();
   }
 
   async function hate() {
-    setActionStyle(styles.hate);
-    setTimeout(() => {
-      setActionStyle(null);
-      getLaunchingNext();
-    }, 1000);
+    if (launchingList && launchingList.current && launchingList.current.length > 1) {
+      setActionStyle(styles.hate);
+      setTimeout(() => {
+        setActionStyle(null);
+        getLaunchingNext();
+      }, 1000);
+    }
     onHate();
   }
 
   async function justNext(type: string) {
-    const style = type === 'like' ? styles.like : styles.hate
-    setActionStyle(style);
-    setTimeout(() => {
-      setActionStyle(null);
-      getLaunchedNext();
-    }, 1000);
+    if (launchedList && launchedList.current && launchedList.current.length > 1) {
+      const style = type === 'like' ? styles.like : styles.hate
+      setActionStyle(style);
+      setTimeout(() => {
+        setActionStyle(null);
+
+        getLaunchedNext();
+      }, 1000);
+    }
   }
 
   return (
@@ -145,9 +160,9 @@ export default function Home() {
 
       {
         launchIndex === 0 && <><div className={styles.thumbnailListBox} ref={containerPreLaunchRef}>
-          {infoDataLaunched && (
+          {infoDataLaunching && (
             <div style={{ zIndex: 1 }} className={[styles.thumbnailBox].join(" ")}>
-              <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunched} />
+              <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunching} />
             </div>
           )}
 
@@ -173,9 +188,9 @@ export default function Home() {
 
       {
         launchIndex === 1 && <><div className={styles.thumbnailListBox} ref={containerLaunchedRef}>
-          {infoDataLaunching && (
+          {infoDataLaunched && (
             <div style={{ zIndex: 1 }} className={[styles.thumbnailBox].join(" ")}>
-              <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunching} />
+              <Thumbnail showProgress={true} showDesc={true} data={infoDataLaunched} />
             </div>
           )}
 
