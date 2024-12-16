@@ -43,11 +43,10 @@ function CustomIcon({
   );
 }
 
-const CreateIcon = <div className={ styles.createIcon }>
+const CreateIcon = <div className={styles.createIcon}>
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 0L17.7813 10.2187L28 14L17.7813 17.7813L14 28L10.2187 17.7813L0 14L10.2187 10.2187L14 0Z" fill="white"/>
-</svg>
-
+    <path d="M14 0L17.7813 10.2187L28 14L17.7813 17.7813L14 28L10.2187 17.7813L0 14L10.2187 10.2187L14 0Z" fill="white" />
+  </svg>
 </div>
 
 const tabs = [
@@ -89,7 +88,6 @@ export default function Component({ children }: { children: React.ReactNode }) {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const { address, walletProvider, connect, disconnect } = useAccount();
 
-
   const showTabs = useMemo(() => {
     return tabs.find((tab) => {
       if (tab.key === "/") {
@@ -97,14 +95,14 @@ export default function Component({ children }: { children: React.ReactNode }) {
       }
       return pathname.indexOf(tab.key) === 0;
     });
-  }, [pathname]);
+  }, [pathname])
 
   const initToken = useCallback(async () => {
     const auth = await getAuthorizationByLocalAndServer();
     if (!auth) {
       initAuthorization();
     }
-  }, [address]);
+  }, [address])
 
   useEffect(() => {
     // @ts-ignore
@@ -146,7 +144,7 @@ export default function Component({ children }: { children: React.ReactNode }) {
                 window.connect()
                 return
               }
-            } 
+            }
             router.push(key)
           }}
         >

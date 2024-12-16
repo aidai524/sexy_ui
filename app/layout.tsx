@@ -5,8 +5,7 @@ import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
 import { MessageContextProvider } from "./context/messageContext";
 import { UserAgentProvider } from "@/app/context/user-agent";
-import { useUser } from "./store/useUser";
-import { useAccount } from "./hooks/useAccount";
+
 
 export default function RootLayout({
   children
