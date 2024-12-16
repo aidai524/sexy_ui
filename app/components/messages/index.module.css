@@ -1,0 +1,55 @@
+.Header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #efe3f1;
+  padding: 12px 20px;
+  background-color: #fff3f8;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.Item {
+  padding-right: 10px;
+  padding-left: 20px;
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ItemInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ItemAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+.ItemTitle {
+  color: #000;
+  font-family: Unbounded;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ItemDesc {
+  color: rgba(0, 0, 0, 0.6);
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  max-width: 240px;
+}
+
+.ItemTime {
+  color: #8d8bb8;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
