@@ -13,6 +13,10 @@
   .superLikes {
     background: linear-gradient(90deg, #7834ff 0%, #ff2581 100%);
   }
+  .holder {
+    background-color: rgba(201, 255, 93, 1);
+    color: #000;
+  }
 }
 
 .likeCustom {

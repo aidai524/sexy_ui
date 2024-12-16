@@ -52,5 +52,6 @@ export interface UserInfo {
     usingBuySuperLikeNum: number;
     vipType: string;
     education?: string;
+    vipExpirationTime?: number;
 }
 

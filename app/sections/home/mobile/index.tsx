@@ -109,7 +109,6 @@ export default function Home() {
         getLaunchingNext();
       }, 1000);
     }
-
     onLike();
   }
 

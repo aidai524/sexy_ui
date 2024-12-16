@@ -10,6 +10,7 @@ export default function useUserInfo(address: string | undefined) {
   const onQueryInfo = useCallback(async () => {
     if (address) {
         httpAuthGet("/account", { address: address }).then((res) => {
+          console.log('account res', res)
             if (res.code === 0) {
               setUserInfo({
                 name: res.data.name,
@@ -26,6 +27,7 @@ export default function useUserInfo(address: string | undefined) {
                 usingBuySuperLikeNum: res.data.using_buy_super_like_num,
                 vipType: res.data.vip_type,
                 education: res.data.education,
+                vipExpirationTime: res.data.vip_expiration_time,
               });
             }
           });
