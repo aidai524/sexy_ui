@@ -2,6 +2,8 @@ import { Modal } from "antd-mobile"
 import style from './index.module.css'
 import MainBtn from "@/app/components/mainBtn";
 import type { Project } from "@/app/type";
+import { httpGet } from "@/app/utils";
+import { useCallback } from "react";
 
 interface Props {
     show: boolean;
@@ -27,6 +29,17 @@ export default function CreateSuccessModal({
 }
 
 function SuccessModal({ onClose, token }: { onClose: () => void; token: Project }) {
+    const share = useCallback(async () => {
+        if (token) {
+            const v = await httpGet('/project?token_name=' + token.tokenName)
+            if (v.code === 0) {
+                onClose()
+                window.open(`https://twitter.com/intent/tweet?text=${token.tokenName}&url=${encodeURIComponent('https://sexyfi.dumpdump.fun//detail?id=' + v.data.id)}`)
+            }
+
+        }
+    }, [token])
+
     return <div className={style.main}>
         <div className={style.content}>
             <div className={style.avatar}>
@@ -43,7 +56,9 @@ function SuccessModal({ onClose, token }: { onClose: () => void; token: Project 
             <div className={style.successNote}>Share and get rewards!</div>
 
             <div className={style.btnBox}>
-                <MainBtn onClick={onClose} style={{ background: 'linear-gradient(90deg, #FF2681 0%, #9514FF 100%)' }}>Go to Share</MainBtn>
+                <MainBtn onClick={async () => {
+                    share()
+                }} style={{ background: 'linear-gradient(90deg, #FF2681 0%, #9514FF 100%)' }}>Go to Share</MainBtn>
             </div>
             <div className={style.heartWhite}>
                 <svg width="83" height="79" viewBox="0 0 83 79" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -86,8 +101,6 @@ function SuccessModal({ onClose, token }: { onClose: () => void; token: Project 
                     </defs>
                 </svg>
             </div>
-
-
         </div>
 
         <div className={style.close} onClick={onClose}>
