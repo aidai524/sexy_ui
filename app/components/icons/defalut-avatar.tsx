@@ -1,4 +1,4 @@
-export default function DefaultAvatar({ size }: any) {
+export default function DefaultAvatar({ size, style }: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,6 +6,7 @@ export default function DefaultAvatar({ size }: any) {
       height={size}
       viewBox="0 0 36 36"
       fill="none"
+      style={style}
     >
       <circle cx="18" cy="18" r="18" fill="#383838" />
       <path

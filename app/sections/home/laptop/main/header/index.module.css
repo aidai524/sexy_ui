@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 0px;
+  position: relative;
 }
 
 .Actions {
@@ -20,17 +21,6 @@
   font-size: 14px;
 }
 
-.AlarmContainer {
+.Alarm {
   position: relative;
-}
-
-.Badge {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border: 2px solid #fff;
-  background-color: #ff2ba0;
-  border-radius: 50%;
-  right: -4px;
-  top: 0px;
 }
