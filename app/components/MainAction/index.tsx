@@ -17,26 +17,27 @@ const likeAnis = [
 ];
 
 export default function MainAction({ onLike, onHate }: Props) {
-  const [hateTicked, setHateTicked] = useState(false);
-  const { likeTrigger, setLikeTrigger } = useMessage();
+  const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } = useMessage();
 
   return (
     <div className={styles.mainAction}>
       <div
         onClick={() => {
-          setHateTicked(true);
+          setHateTrigger(true);
           onHate();
           setTimeout(() => {
-            setHateTicked(false);
-          }, 1000);
+            setHateTrigger(false);
+          }, 1600);
         }}
         className={[
           styles.actionIcon,
-          hateTicked ? styles.hate : "",
+          hateTrigger ? styles.hate : "",
           "button"
         ].join(" ")}
       >
-        <DisLike fill={hateTicked ? "#000000" : "#C7DDEE"} />
+        <DisLike fill={hateTrigger ? "#000000" : "#C7DDEE"} />
+
+        {/* <DisLike fill="#000000" /> */}
       </div>
 
       <div

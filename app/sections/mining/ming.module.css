@@ -79,13 +79,14 @@
         z-index: 10;
         left: 0;
         right: 0;
-        bottom: 0;
-        height: 26vh;
+        bottom: 40px;
+        pointer-events: none;
+        /* height: 26vh; */
         .boxAni {
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: scroll 50s linear infinite;
+            animation: scroll 30s linear infinite;
             .boxImg {
                 width: 100vw;
             }
@@ -97,7 +98,10 @@
     0% {
         transform: translateX(0);
     }
+    50% {
+        transform: translateX(-50%);
+    }
     100% {
-        transform: translateX(-100%);
+        transform: translateX(0);
     }
 }

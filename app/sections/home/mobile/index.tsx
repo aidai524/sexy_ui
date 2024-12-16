@@ -20,7 +20,7 @@ export default function Home() {
   const params = useSearchParams()
   const [launchIndex, setLaunchIndex] = useState(0);
   const [actionStyle, setActionStyle] = useState<any>("");
-  const { likeTrigger, setLikeTrigger } = useMessage();
+  const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } = useMessage();
   const containerPreLaunchRef = useRef<any>();
   const containerLaunchedRef = useRef<any>();
 
@@ -39,8 +39,17 @@ export default function Home() {
   } = useData('launching');
 
   useSwip(containerPreLaunchRef, () => {
+    if (hateTrigger) {
+      return
+    }
+
+    setHateTrigger(true)
     hate()
-  },  () => {
+
+    setTimeout(() => {
+      setHateTrigger(false);
+    }, 1600);
+  }, () => {
     if (likeTrigger) {
       return;
     }
@@ -54,7 +63,7 @@ export default function Home() {
 
   useSwip(containerLaunchedRef, () => {
     justNext('hate')
-  },  () => {
+  }, () => {
     justNext('like')
   }, launchIndex === 1)
 
@@ -65,7 +74,7 @@ export default function Home() {
         setLaunchIndex(0)
       } else if (launchType === '1') {
         setLaunchIndex(1)
-      }  
+      }
     } else {
       setLaunchIndex(0)
     }
@@ -119,7 +128,6 @@ export default function Home() {
             <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="17" cy="17" r="17" fill="black" fill-opacity="0.2" />
               <path fill-rule="evenodd" clip-rule="evenodd" d="M17.9722 6C14.0602 6 10.8889 9.17131 10.8889 13.0833V21.1111C10.8889 21.1111 10.8889 21.7014 10.4167 22.5278C10.0285 23.2071 9 23.9444 9 23.9444H26.9444C26.9444 23.9444 25.8777 23.2276 25.5278 22.5278C25.0556 21.5833 25.0556 21.1111 25.0556 21.1111V13.0833C25.0556 9.17131 21.8842 6 17.9722 6ZM17.9722 28.6667C19.7978 28.6667 21.2778 27.1867 21.2778 25.3611H14.6667C14.6667 27.1867 16.1466 28.6667 17.9722 28.6667Z" fill="url(#paint0_linear_17_841)" />
-              {/* <circle cx="26.6667" cy="6.66667" r="4.66667" fill="#FF2BA0" stroke="white" stroke-width="2" /> */}
 
               {
                 address ? <circle cx="26.6667" cy="6.66667" r="4.66667" fill="#FF2BA0" stroke="white" stroke-width="2" /> : null

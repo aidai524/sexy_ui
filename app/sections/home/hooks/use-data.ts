@@ -63,7 +63,6 @@ export default function useData(launchType: string) {
 
   useEffect(() => {
     onQueryList(true);
-    onQueryList(true);
   }, []);
 
   return { infoData, infoData2, list, getnext, onLike, onHate };

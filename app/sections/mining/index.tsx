@@ -68,9 +68,9 @@ export default function Mining() {
         </div>
 
         <div className={ styles.bottomAni }>
-            <div className={ styles.boxAni } style={{ width: '300vw' }}>
+            <div className={ styles.boxAni } style={{ width: '200vw' }}>
                 {
-                    [1,2,3,4,5,6,7,8,9,10].map(item => {
+                    [1,2].map(item => {
                         return <img key={item} className={ styles.boxImg } src="/img/mining/bottom-bg.png" />
                     })
                 }
