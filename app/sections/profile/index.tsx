@@ -76,7 +76,7 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
 
     return (
         <div className={styles.main}>
-            <div style={backgroundImgStyle1}>
+            <div style={backgroundImgStyle1} className={ styles.avatarBox }>
                 {isOther ? (
                     <div className={styles.isOther}>
                         <div>
