@@ -34,8 +34,12 @@ export default function User({ address, userInfo, onQueryInfo }: any) {
             onItemClick={(type: string) => {
               setFollowModalType(type);
             }}
+            style={{
+              padding: "0px",
+              gap: "60px"
+            }}
           />
-          <Address address={address} />
+          {address && <Address address={address} />}
           <HotBoost
             onMoreClick={() => {
               setOpenVipModal(true);

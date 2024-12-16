@@ -6,11 +6,9 @@ import InfoPart from "@/app/sections/detail/components/info/infoPart";
 import CommentComp from "@/app/components/comment";
 import PanelWrapper from "./PanelWrapper";
 import Chart from "@/app/sections/detail/components/chart";
-import useData from "../../../hooks/use-data";
 import { useState } from "react";
 
-export default function Token() {
-  const { infoData2, onLike, onHate, getnext } = useData("preLaunch");
+export default function Token({ infoData2, onLike, onHate, getnext }: any) {
   const [currentTab, setCurrentTab] = useState("info");
 
   const like = () => {
@@ -27,7 +25,6 @@ export default function Token() {
     onHate();
   };
 
-  console.log("currentTab", currentTab);
   return (
     <>
       <div className={styles.Container}>
