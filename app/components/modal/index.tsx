@@ -49,16 +49,16 @@ const Modal: React.FC<ModalProps> = ({
           <div className={styles.Main} style={mainStyle}>
             <motion.div
               initial={{
-                y: 100
+                scale: 0.8
               }}
               animate={{
-                y: [100, 0],
+                scale: 1,
                 transition: {
                   duration: 0.3
                 }
               }}
               exit={{
-                y: 100
+                scale: 0.8
               }}
               onClick={(e) => {
                 e.stopPropagation();
