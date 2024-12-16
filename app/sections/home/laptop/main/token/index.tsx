@@ -4,13 +4,14 @@ import Header from "./header";
 import TokenCard from "../token-card";
 import InfoPart from "@/app/sections/detail/components/info/infoPart";
 import BuyAndSell from "@/app/sections/detail/components/trade";
+import Txs from "@/app/sections/detail/components/txs";
 import CommentComp from "@/app/components/comment";
 import PanelWrapper from "./panel-wrapper";
 import Chart from "@/app/sections/detail/components/chart";
 import { useState } from "react";
 
 export default function Token({ infoData2, onLike, onHate, getnext }: any) {
-  const [currentTab, setCurrentTab] = useState("buy/sell");
+  const [currentTab, setCurrentTab] = useState("txs");
   console.log("info", infoData2);
   const like = () => {
     setTimeout(() => {
@@ -53,12 +54,26 @@ export default function Token({ infoData2, onLike, onHate, getnext }: any) {
             )}
             {currentTab === "chart" && (
               <PanelWrapper>
-                <Chart data={infoData2} style={{ paddingTop: 0 }} />
+                <Chart
+                  data={infoData2}
+                  style={{
+                    padding: "10px",
+                    marginRight: "10px",
+                    borderRadius: "10px",
+                    backgroundColor: "#121719",
+                    height: "calc(100vh - 310px)"
+                  }}
+                />
               </PanelWrapper>
             )}
             {currentTab === "buy/sell" && (
               <PanelWrapper>
                 <BuyAndSell data={infoData2} from="laptop" />
+              </PanelWrapper>
+            )}
+            {currentTab === "txs" && (
+              <PanelWrapper>
+                <Txs from="laptop" />
               </PanelWrapper>
             )}
           </div>
