@@ -15,17 +15,15 @@ export default function Tabs({ showHot, address, tabContentStyle }: any) {
         content: <Created address={address} type="created" />
       },
       {
+        name: "Hot",
+        content: <Created address={address} type="hot" />
+      },
+      {
         name: "Liked",
         content: <Created address={address} type="liked" />
       }
     ];
 
-    if (showHot) {
-      _tabs.splice(2, 0, {
-        name: "Hot",
-        content: <Created address={address} type="hot" />
-      });
-    }
 
     return _tabs;
   }, [showHot, address]);
