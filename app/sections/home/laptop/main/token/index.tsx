@@ -3,13 +3,14 @@ import styles from "./index.module.css";
 import Header from "./header";
 import TokenCard from "../token-card";
 import InfoPart from "@/app/sections/detail/components/info/infoPart";
+import BuyAndSell from "@/app/sections/detail/components/trade";
 import CommentComp from "@/app/components/comment";
-import PanelWrapper from "./PanelWrapper";
+import PanelWrapper from "./panel-wrapper";
 import Chart from "@/app/sections/detail/components/chart";
 import { useState } from "react";
 
 export default function Token({ infoData2, onLike, onHate, getnext }: any) {
-  const [currentTab, setCurrentTab] = useState("info");
+  const [currentTab, setCurrentTab] = useState("buy/sell");
   console.log("info", infoData2);
   const like = () => {
     setTimeout(() => {
@@ -53,6 +54,11 @@ export default function Token({ infoData2, onLike, onHate, getnext }: any) {
             {currentTab === "chart" && (
               <PanelWrapper>
                 <Chart data={infoData2} style={{ paddingTop: 0 }} />
+              </PanelWrapper>
+            )}
+            {currentTab === "buy/sell" && (
+              <PanelWrapper>
+                <BuyAndSell data={infoData2} from="laptop" />
               </PanelWrapper>
             )}
           </div>

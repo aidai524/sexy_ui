@@ -9,7 +9,9 @@ export default function Header({ tokenInfo, currentTab, setCurrentTab }: any) {
     <div className={styles.Container}>
       {tokenInfo ? <Avatar data={tokenInfo} /> : <div />}
       <div className={styles.Actions}>
-        <Tabs currentTab={currentTab} onChangeTab={setCurrentTab} />
+        {tokenInfo?.status === 1 && (
+          <Tabs currentTab={currentTab} onChangeTab={setCurrentTab} />
+        )}
         <div className={styles.Buttons}>
           <button className="button">
             <ShareIcon />
