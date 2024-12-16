@@ -105,7 +105,7 @@ export default function Boost({
                     return
                 }
 
-                if (token.boostTime && token.boostTime > 0) {
+                if (token.boostTime && Number(token.boostTime) - Date.now() > 0) {
                     setBoostTimeShow(true);
                     return;
                 }
@@ -126,7 +126,7 @@ export default function Boost({
             }}
         >
             <div className={styles.btn}>
-                {token.boostTime && Number(token.boostTime - Date.now()) > 0 ? (
+                {token.boostTime && Number(token.boostTime) - Date.now() > 0 ? (
                     <svg
                         width="36"
                         height="36"

@@ -43,8 +43,7 @@ export default function BoostJust({
         <MainBtn isLoading={isLoading} onClick={async () => {
             try {
                 setIsLoading(true)
-
-                if (usingBoostNum && usingBoostNum > 0) {
+                if (typeof(usingBoostNum) !== 'undefined' && boostNum && boostNum - usingBoostNum > 0) {
                     await boost()
                 } 
                 // else {

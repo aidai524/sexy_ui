@@ -21,15 +21,15 @@ export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
       </div>
       <div className={styles.userName}>
         <div>{userInfo?.name}</div>
-        <div className={styles.vipImg}>
+        <div className={styles.vipImg} onClick={() => {
+          if (userInfo.address === address) {
+            onVipShow && onVipShow()
+          }
+        }}>
           {
             userInfo?.vipType === 'vip'
               ? <img className={styles.img} src="/img/profile/vip.png" />
-              : <img className={styles.img} onClick={() => { 
-                if (userInfo.address === address) {
-                  onVipShow && onVipShow()
-                }
-              }} src="/img/profile/no-vip.png" />
+              : <img className={styles.img} src="/img/profile/no-vip.png" />
           }
         </div>
       </div>

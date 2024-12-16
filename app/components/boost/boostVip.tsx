@@ -48,7 +48,7 @@ export default function BoostVip({
                 }
             }
 
-            const timeStr = formatDateTime(userInfo.vipExpirationTime)
+            const timeStr = formatDateTime(userInfo.vipExpirationTime, 'yyyy-MM-DD')
 
             // 3 day left
             if (userInfo.vipExpirationTime - now < threeDays) {
