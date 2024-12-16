@@ -3,6 +3,7 @@
 import { useState } from "react";
 import styles from "./action.module.css";
 import { useMessage } from "@/app/context/messageContext";
+import { useAccount } from "@/app/hooks/useAccount";
 
 interface Props {
   onLike: () => void;
@@ -18,11 +19,18 @@ const likeAnis = [
 
 export default function MainAction({ onLike, onHate }: Props) {
   const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } = useMessage();
+  const { address } = useAccount()
 
   return (
     <div className={styles.mainAction}>
       <div
         onClick={() => {
+          if (!address) {
+            //@ts-ignore
+              window.connect()
+              return
+          }
+
           setHateTrigger(true);
           onHate();
           setTimeout(() => {
@@ -42,6 +50,12 @@ export default function MainAction({ onLike, onHate }: Props) {
 
       <div
         onClick={() => {
+          if (!address) {
+            //@ts-ignore
+              window.connect()
+              return
+          }
+
           if (likeTrigger) {
             return;
           }

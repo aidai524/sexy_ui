@@ -3,6 +3,7 @@ import styles from '../action.module.css'
 import { Popup } from 'antd-mobile';
 import { useState } from 'react';
 import type { Project } from '@/app/type';
+import { useAccount } from '@/app/hooks/useAccount';
 
 interface Props {
     data: Project;
@@ -14,6 +15,7 @@ export default function Action({
 }: Props) {
     const [tradeShow, setTradeShow] = useState(false)
     const [initType, setInitType] = useState('buy')
+    const { address } = useAccount()
 
     const usedStyle = justPlus ? styles.justPlus : styles.action + ' ' + styles.launched
 
@@ -21,10 +23,15 @@ export default function Action({
         {
             justPlus
                 ? <>
-                    <div onClick={() => { 
+                    <div onClick={() => {
+                        if (!address) {
+                            //@ts-ignore
+                            window.connect()
+                            return
+                        }
                         setTradeShow(true)
                         setInitType('buy')
-                     }}>
+                    }}>
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle opacity="0.4" cx="18" cy="18" r="18" fill="black" />
                             <path d="M26.2844 24.9314C30.6051 20.6107 31.2419 14.2424 27.7068 10.7073L24.1508 7.15128L9.57113 23.8646L12.0603 26.3538C15.5954 29.8889 21.9638 29.2521 26.2844 24.9314Z" fill="#577123" />
@@ -38,6 +45,12 @@ export default function Action({
                 </>
                 : <>
                     <div className={styles.actionBtn} onClick={() => {
+                        if (!address) {
+                            //@ts-ignore
+                            window.connect()
+                            return
+                        }
+
                         setTradeShow(true)
                         setInitType('buy')
                     }}>
@@ -51,6 +64,12 @@ export default function Action({
                     </div>
 
                     <div className={styles.actionBtn} onClick={() => {
+                        if (!address) {
+                            //@ts-ignore
+                            window.connect()
+                            return
+                        }
+                        
                         setTradeShow(true)
                         setInitType('sell')
                     }}>

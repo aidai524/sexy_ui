@@ -4,6 +4,7 @@ import type { Project } from "@/app/type";
 import { Modal } from "antd-mobile";
 import BoostVip from "../boost/boostVip";
 import { useUser } from "@/app/store/useUser";
+import { useAccount } from "@/app/hooks/useAccount";
 
 interface Props {
   token: Project;
@@ -14,6 +15,7 @@ export default function SmokeBtn({ onClick, token }: Props) {
   const [panelShow, setPanelShow] = useState(false);
   const [vipShow, setVipShow] = useState(false);
   const { userInfo }: any = useUser()
+  const { address } = useAccount()
 
 
   const VipModal = (
@@ -30,12 +32,17 @@ export default function SmokeBtn({ onClick, token }: Props) {
   return (
     <div
       onClick={() => {
-        // if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
-        //     setPanelShow(true);
-        // } else {
-        //     setVipShow(true)
-        // }
-        setPanelShow(true);
+        if (!address) {
+          //@ts-ignore
+            window.connect()
+            return
+        }
+
+        if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
+            setPanelShow(true);
+        } else {
+            setVipShow(true)
+        }
         onClick();
       }}
     >
