@@ -3,6 +3,7 @@
 import { useState } from "react";
 import styles from "./action.module.css";
 import { useMessage } from "@/app/context/messageContext";
+import { useAccount } from "@/app/hooks/useAccount";
 
 interface Props {
   onLike: () => void;
@@ -17,30 +18,44 @@ const likeAnis = [
 ];
 
 export default function MainAction({ onLike, onHate }: Props) {
-  const [hateTicked, setHateTicked] = useState(false);
-  const { likeTrigger, setLikeTrigger } = useMessage();
+  const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } = useMessage();
+  const { address } = useAccount()
 
   return (
     <div className={styles.mainAction}>
       <div
         onClick={() => {
-          setHateTicked(true);
+          if (!address) {
+            //@ts-ignore
+              window.connect()
+              return
+          }
+
+          setHateTrigger(true);
           onHate();
           setTimeout(() => {
-            setHateTicked(false);
-          }, 1000);
+            setHateTrigger(false);
+          }, 1600);
         }}
         className={[
           styles.actionIcon,
-          hateTicked ? styles.hate : "",
+          hateTrigger ? styles.hate : "",
           "button"
         ].join(" ")}
       >
-        <DisLike fill={hateTicked ? "#000000" : "#C7DDEE"} />
+        <DisLike fill={hateTrigger ? "#000000" : "#C7DDEE"} />
+
+        {/* <DisLike fill="#000000" /> */}
       </div>
 
       <div
         onClick={() => {
+          if (!address) {
+            //@ts-ignore
+              window.connect()
+              return
+          }
+
           if (likeTrigger) {
             return;
           }

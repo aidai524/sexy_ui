@@ -38,6 +38,13 @@
         background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 71.43%);
     }
 
+    .bottomLike {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
     .teleGram {
         position: absolute;
         top: 14px;
@@ -177,12 +184,13 @@
     .launchTag {
         display: inline-block;
         height: 20px;
-        
         padding: 0 10px;
+        white-space: nowrap;
         border-radius: 1000px;
         color: #fff;
         font-size: 10px;
-        line-height: 20px;
+        display: flex;
+        align-items: center;
         &.launch1 {
             background-color: rgba(80, 73, 100, 1);
         }

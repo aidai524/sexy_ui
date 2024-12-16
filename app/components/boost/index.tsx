@@ -96,12 +96,15 @@ export default function Boost({
         />
     );
 
-    console.log('isGrey:', isGrey)
-
-
     return (
         <div
             onClick={() => {
+                if (!address) {
+                    //@ts-ignore
+                    window.connect()
+                    return
+                }
+
                 if (token.boostTime && token.boostTime > 0) {
                     setBoostTimeShow(true);
                     return;
@@ -168,7 +171,7 @@ export default function Boost({
 
 
             <Modal
-                visible={vipShow}
+                visible={boostVipShow}
                 content={BoostVipModal}
                 closeOnAction
                 closeOnMaskClick
@@ -178,7 +181,7 @@ export default function Boost({
             />
 
             <Modal
-                visible={boostVipShow}
+                visible={vipShow}
                 content={VipModal}
                 closeOnAction
                 closeOnMaskClick

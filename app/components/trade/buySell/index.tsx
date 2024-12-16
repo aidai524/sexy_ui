@@ -168,7 +168,9 @@ export default function BuySell({
                         </div> : <div></div>
                     }
 
-                    <div onClick={() => { setShowSlip(true) }} className={styles.slippage}>Set max slippage</div>
+                    <div onClick={() => { 
+                        setShowSlip(true) 
+                    }} className={styles.slippage}>Set max slippage</div>
                 </div>
 
                 <div className={styles.tokenBalanceBox}>

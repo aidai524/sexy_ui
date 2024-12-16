@@ -241,7 +241,7 @@ function LaunchTag({ type }: { type: number }) {
     }
 
     if (type === 1) {
-        return <div className={styles.launchTag + ' ' + styles.launch2}>Luanched</div>
+        return <div className={styles.launchTag + ' ' + styles.launch2}>Launched</div>
     }
 }
 

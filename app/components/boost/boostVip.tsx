@@ -59,6 +59,7 @@ export default function BoostVip({
             }
         }} style={{ marginTop: 20 }}>0.02 SOL / Month</MainBtn>
         <div onClick={() => {
+            console.log(111)
             onCanceVip()
         }} className={styles.cancelBtn}>No, Thanks</div>
     </div>

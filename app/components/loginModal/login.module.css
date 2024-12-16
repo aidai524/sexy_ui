@@ -1,0 +1,28 @@
+.main {
+    width: 90vw;
+    padding: 10px;
+    .tipBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: linear-gradient(0deg, #FF2681 0%, #BF9FFF 100%);
+        border-radius: 16px;
+        overflow: hidden;
+        padding: 40px 0;
+        .tipText {
+            margin-top: 30px;
+            padding: 0 13vw;
+            color: #fff;
+            text-align: center;
+            font-weight: 300;
+        }
+    }
+
+    .cancelBtn {
+        color: #7e8a93;
+        font-size: 16px;
+        margin-top: 10px;
+        text-align: center;
+        cursor: pointer;
+      }
+}

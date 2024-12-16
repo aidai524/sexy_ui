@@ -3,7 +3,7 @@
 import { TabBar } from "antd-mobile";
 import { useRouter, usePathname } from "next/navigation";
 import styles from "./layout.module.css";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   WalletModalButton,
   useWalletModal
@@ -16,6 +16,7 @@ import {
   httpGet,
   initAuthorization
 } from "@/app/utils";
+import LoginModal from '@/app/components/loginModal'
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 
@@ -85,8 +86,9 @@ const tabs = [
 export default function Component({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { address, walletProvider, connect } = useAccount();
-  const { setVisible } = useWalletModal();
+  const [showLoginModal, setShowLoginModal] = useState(false)
+  const { address, walletProvider, connect, disconnect } = useAccount();
+
 
   const showTabs = useMemo(() => {
     return tabs.find((tab) => {
@@ -107,7 +109,7 @@ export default function Component({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // @ts-ignore
     window.connect = () => {
-      setVisible(true);
+      setShowLoginModal(true)
     };
   }, []);
 
@@ -128,11 +130,25 @@ export default function Component({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-black text-white">
       <main className="pb-16">{children}</main>
 
+      <LoginModal modalShow={showLoginModal} onHide={() => {
+        setShowLoginModal(false)
+      }} />
+
       {showTabs && (
         <TabBar
           className={styles.tabBar}
           activeKey={pathname}
-          onChange={(key) => router.push(key)}
+          safeArea={true}
+          onChange={(key) => {
+            if (key !== '/') {
+              if (!address) {
+                // @ts-ignore
+                window.connect()
+                return
+              }
+            } 
+            router.push(key)
+          }}
         >
           {
             tabs.map((item) => {
