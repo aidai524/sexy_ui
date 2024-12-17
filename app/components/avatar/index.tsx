@@ -1,6 +1,7 @@
 import styles from "./index.module.css";
 import Pencil from "../icons/pencil";
 import { useAccount } from "@/app/hooks/useAccount";
+import { formatAddress } from "@/app/utils";
 
 const defaultAvatar = '/img/avatar.png'
 
@@ -20,7 +21,7 @@ export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
         </div>
       </div>
       <div className={styles.userName}>
-        <div>{userInfo?.name}</div>
+        <div>{userInfo?.name ? userInfo?.name : formatAddress(userInfo.address)}</div>
         <div className={styles.vipImg} onClick={() => {
           if (userInfo.address === address) {
             onVipShow && onVipShow()
