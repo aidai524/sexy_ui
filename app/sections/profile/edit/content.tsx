@@ -8,6 +8,9 @@ import { success, fail } from "@/app/utils/toast";
 import MainBtn from "@/app/components/mainBtn";
 import { Picker } from "antd-mobile";
 
+const defaultAvatar = '/img/avatar.png'
+const defaultBannerImg = '/img/upload-banner.png'
+
 export default function EditContent({
   inputStyle,
   actionButtonsStyle,
@@ -24,7 +27,7 @@ export default function EditContent({
   const { userInfo, saveUserInfo } = useUserInfo(address);
 
   const iaInValid = useMemo(() => {
-    if (!name || avatar.length === 0 || banner.length === 0) {
+    if (!name || avatar.length === 0) {
       return true;
     }
     return false;
@@ -84,7 +87,7 @@ export default function EditContent({
 
       <div className={styles.group}>
         <div className={styles.groupTitle}>
-          <span className={styles.require}>*</span>Highest education
+          Highest education
         </div>
         <div className={styles.groupContent}>
           <div
@@ -182,6 +185,8 @@ export default function EditContent({
 
               if (banner.length) {
                 bannerImg = banner[0].url;
+              } else {
+                bannerImg = defaultBannerImg
               }
 
               const isSuccess = await saveUserInfo(bannerImg, icon, name, education);

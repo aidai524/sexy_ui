@@ -54,8 +54,6 @@ export default function BoostVip({
             const startTime = formatDateTime(userInfo.vipStartTime, 'YYYY-MM-DD')
             const endTime = formatDateTime(userInfo.vipExpirationTime, 'YYYY-MM-DD')
 
-            console.log('timeStr:', endTime)
-
             // 3 day left
             if (userInfo.vipExpirationTime - now < threeDays) {
                 return {
@@ -90,7 +88,7 @@ export default function BoostVip({
                 <div className={styles.nameContent}>
                     <div className={styles.name}>{userInfo.name ? userInfo.name : formatAddress(userInfo.address)}</div>
                     {
-                        vipType === 1
+                        (vipType === 2 || vipType === 3)
                             ? <img className={styles.vipImg} src="/img/profile/vip.png" />
                             : <img className={styles.vipImg} src="/img/profile/no-vip.png" />
                     }
@@ -140,15 +138,15 @@ export default function BoostVip({
 
         {
             vipType === 2 && <div className={styles.timeType2 + ' ' + styles.timeType}>
-                *You have obtained one month VIP
-                Continue to purchase can increase the validity of 1 month
+                *Your VIP is about to expire
+                Pre-recharge can ensure the normal use of some functions
             </div>
         }
 
         {
             vipType === 3 && <div className={styles.timeType3 + ' ' + styles.timeType}>
-                *Your VIP is about to expire
-                Pre-recharge can ensure the normal use of some functions
+                *You have obtained one month VIP
+                Continue to purchase can increase the validity of 1 month
             </div>
         }
 

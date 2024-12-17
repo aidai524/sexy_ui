@@ -110,10 +110,10 @@
       color: rgba(71, 25, 140, 0.5);
     }
     &.timeType2 {
-      color: rgba(71, 25, 140, 0.5);
+      color: var(--part-bg);
     }
     &.timeType3 {
-      color: var(--part-bg);
+      color: rgba(71, 25, 140, 0.5);
     }
   }
 
