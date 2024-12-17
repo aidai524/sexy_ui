@@ -5,6 +5,7 @@ import BoostVip from "./boostVip";
 import BoostJust from "./boostJust";
 import BoostTime from "./boostTime";
 import BoostStatus from "./boostStatus";
+import BoostSuperNoTimes from "./boostSuperNoTimes";
 import { useCallback, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useAccount } from "@/app/hooks/useAccount";
@@ -27,6 +28,7 @@ export default function Boost({
     const [boostShow, setBoostShow] = useState(false);
     const [boostTimeShow, setBoostTimeShow] = useState(false);
     const [boostStatusShow, setBoostStatusShow] = useState(false);
+    const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
 
     const { address } = useAccount();
     const { userInfo }: any = useUser();
@@ -96,9 +98,20 @@ export default function Boost({
         />
     );
 
+    const BoostSuperNoTimesModal = <BoostSuperNoTimes
+        token={token}
+        usingNum={userInfo?.usingBoostNum}
+        num={userInfo?.boostNum}
+        onClose={() => {
+            setBoostSuperNoTimesShow(false)
+        }}
+        type={1}
+    />
+
     return (
         <div
             onClick={() => {
+                
                 if (!address) {
                     //@ts-ignore
                     window.connect()
@@ -110,17 +123,15 @@ export default function Boost({
                     return;
                 }
 
-                if (userInfo?.boostNum && userInfo?.boostNum > 0) {
+                if (userInfo?.boostNum && (userInfo?.boostNum - userInfo?.usingBoostNum)> 0) {
                     setBoostShow(true);
-                    // boost()
                 } else {
-                    setBoostVipShow(true);
+                    if (userInfo.vipType === 'vip') {
+                        setBoostSuperNoTimesShow(true)
+                    } else {
+                        setBoostVipShow(true);
+                    }
                 }
-
-                // setBoostVipShow(true);
-
-                // boost()
-                // setBoostVipShow(true)
 
                 onClick();
             }}
@@ -217,6 +228,16 @@ export default function Boost({
                 closeOnAction
                 onClose={() => {
                     setBoostStatusShow(false);
+                }}
+            />
+
+            <Modal
+                visible={boostSuperNoTimesShow}
+                content={BoostSuperNoTimesModal}
+                closeOnMaskClick
+                closeOnAction
+                onClose={() => {
+                    setBoostSuperNoTimesShow(false);
                 }}
             />
         </div>

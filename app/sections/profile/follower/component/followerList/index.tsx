@@ -4,6 +4,7 @@ import { formatAddress } from '@/app/utils';
 import { useRouter } from 'next/navigation';
 import FollowBtn from '../../../components/followBtn';
 import { Empty } from 'antd-mobile';
+import { useUser } from '@/app/store/useUser';
 
 interface Props {
     list: UserInfo[];
@@ -18,8 +19,10 @@ export default function  FollowerList({
     followerType,
     onAction,
 }: Props) {
-    
     const router = useRouter()
+    const { userInfo }: any = useUser()
+
+    console.log('userInfo:', userInfo)
 
     return <div className={ styles.main }>
         {
@@ -36,9 +39,12 @@ export default function  FollowerList({
                     </div>
 
                     <div className={ styles.followerAction }>
-                        <FollowBtn address={ item.address } isFollower={item.isFoller}  onSuccess={() => {
-                            onAction && onAction()
-                        }}/>
+                        {
+                            userInfo.address === item.address ? <div className={ styles.me }>It's me</div> : <FollowBtn address={ item.address } isFollower={item.isFoller}  onSuccess={() => {
+                                onAction && onAction()
+                            }}/>
+                        }
+                        
                     </div>
                 </div>
             })

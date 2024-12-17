@@ -1,6 +1,5 @@
 import { useVip } from '@/app/hooks/useVip';
 import styles from './boost.module.css'
-import BoostIcon from './boostIocn'
 import { fail, success } from '@/app/utils/toast';
 import { useMemo, useState } from 'react';
 import { useAccount } from '@/app/hooks/useAccount';

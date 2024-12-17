@@ -5,6 +5,7 @@ import { Modal } from "antd-mobile";
 import BoostVip from "../boost/boostVip";
 import { useUser } from "@/app/store/useUser";
 import { useAccount } from "@/app/hooks/useAccount";
+import BoostSuperNoTimes from "../boost/boostSuperNoTimes";
 
 interface Props {
   token: Project;
@@ -16,6 +17,7 @@ export default function SmokeBtn({ onClick, token }: Props) {
   const [vipShow, setVipShow] = useState(false);
   const { userInfo }: any = useUser()
   const { address } = useAccount()
+  const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
 
 
   const VipModal = (
@@ -29,6 +31,16 @@ export default function SmokeBtn({ onClick, token }: Props) {
     />
   );
 
+  const BoostSuperNoTimesModal = <BoostSuperNoTimes
+    token={token}
+    usingNum={userInfo?.usingBoostNum}
+    num={userInfo?.superLikeNum}
+    onClose={() => {
+      setBoostSuperNoTimesShow(false)
+    }}
+    type={2}
+  />
+
   return (
     <div
       onClick={() => {
@@ -41,13 +53,18 @@ export default function SmokeBtn({ onClick, token }: Props) {
         if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
           setPanelShow(true);
         } else {
-          setVipShow(true)
+          if (userInfo.vipType === 'vip') {
+            setBoostSuperNoTimesShow(true)
+          } else {
+            setVipShow(true)
+          }
+          
         }
         onClick();
       }}
     >
       <div style={{ width: 48, height: 48, overflow: 'hidden' }}>
-        <img style={{ width: 48 }} src="/img/profile/smoke-hot.png"/>
+        <img style={{ width: 48 }} src="/img/profile/smoke-hot.png" />
       </div>
 
       <Modal
@@ -65,6 +82,16 @@ export default function SmokeBtn({ onClick, token }: Props) {
         show={panelShow}
         onHide={() => {
           setPanelShow(false);
+        }}
+      />
+
+      <Modal
+        visible={boostSuperNoTimesShow}
+        content={BoostSuperNoTimesModal}
+        closeOnMaskClick
+        closeOnAction
+        onClose={() => {
+          setBoostSuperNoTimesShow(false);
         }}
       />
     </div>
