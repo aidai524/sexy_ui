@@ -28,6 +28,7 @@ export default function useUserInfo(address: string | undefined) {
                 vipType: res.data.vip_type,
                 education: res.data.education,
                 vipExpirationTime: res.data.vip_expiration_time,
+                vipStartTime: res.data.vip_start_time,
               });
             }
           });

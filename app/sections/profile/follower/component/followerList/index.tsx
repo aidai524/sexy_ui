@@ -3,6 +3,7 @@ import styles from './follow.module.css'
 import { formatAddress } from '@/app/utils';
 import { useRouter } from 'next/navigation';
 import FollowBtn from '../../../components/followBtn';
+import { Empty } from 'antd-mobile';
 
 interface Props {
     list: UserInfo[];
@@ -41,6 +42,10 @@ export default function  FollowerList({
                     </div>
                 </div>
             })
+        }
+
+        {
+            (!list || list.length === 0) && <Empty description="No Data"/>
         }
     </div>
 }

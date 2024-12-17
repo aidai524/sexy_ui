@@ -28,7 +28,7 @@ export default function Item({ rank }: any) {
         <div className={styles.ItemInfo}>
           <div className={styles.ItemTitle}>VVAIFU</div>
           <div className={styles.ItemTicker}>Ticker: VVA</div>
-          <div className={styles.ItemVolum}>$206.86K</div>
+          <div className={styles.ItemVolum}><span className={ styles.mc }>Market Cap:</span> $206.86K</div>
         </div>
       </div>
     </div>

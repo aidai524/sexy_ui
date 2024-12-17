@@ -43,7 +43,7 @@ export function useTokenTrade({
     const [reFreshBalnace, setReFreshBalnace] = useState(0)
 
     const programId = useMemo(() => {
-        return new PublicKey("BmEdwC1RFv2YF7Yo7y3H28MJvHXcNyMtxNBrDgkBRXgd")
+        return new PublicKey("AYdgC17ymp4CkbbZ7pED2oa5hdnsp4dZVKJtt9542kFh")
     }, [])
 
     const wsol = useMemo(() => {

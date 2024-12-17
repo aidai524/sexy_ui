@@ -220,9 +220,6 @@ export default function Create({
                         isLoading={isLoading}
                         isDisabled={isError}
                         onClick={async () => {
-                            
-                            
-
                             try {
                                 if (isLoading || isError) {
                                     return

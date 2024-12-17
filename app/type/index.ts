@@ -53,5 +53,6 @@ export interface UserInfo {
     vipType: string;
     education?: string;
     vipExpirationTime?: number;
+    vipStartTime?: number;
 }
 

@@ -23,8 +23,6 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
     const [isPrePayd, setIsPrePayd] = useState(false);
     const { address } = useAccount()
 
-    console.log('isPrePayd:', isPrePayd)
-
     const [infoData, setInfoData] = useState<Project>({
         tokenName: token.tokenName,
         ticker: token.ticker,

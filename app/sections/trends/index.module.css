@@ -117,8 +117,13 @@
 .ItemVolum {
   color: #af0;
   font-family: Unbounded;
-  font-size: 13px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  white-space: nowrap;
+  .mc {
+    font-size: 10px;
+    color: rgba(146, 144, 177, 1);
+  }
 }

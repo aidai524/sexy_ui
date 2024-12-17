@@ -24,10 +24,11 @@ export default function BoostVip({
     const { call } = useVip()
     const { userInfo }: any = useUser()
 
-    const { time, vipType } = useMemo(() => {
+    const { startTime, endTime, vipType } = useMemo(() => {
         if (!userInfo) {
             return {
-                time: -1,
+                startTime: -1,
+                endTime: -1,
                 vipType: -1,
             }
         }
@@ -35,7 +36,8 @@ export default function BoostVip({
         if (userInfo.vipExpirationTime === 0) {
             // never vip
             return {
-                time: -1,
+                startTime: -1,
+                endTime: -1,
                 vipType: -1
             }
         } else if (userInfo.vipExpirationTime > 0) {
@@ -43,34 +45,38 @@ export default function BoostVip({
             // out date
             if (now > userInfo.vipExpirationTime) {
                 return {
-                    time: 'Out of date',
+                    startTime: -1,
+                    endTime: 'Out of date',
                     vipType: 1
                 }
             }
 
-            const timeStr = formatDateTime(userInfo.vipExpirationTime, 'yyyy-MM-DD')
+            const startTime = formatDateTime(userInfo.vipStartTime, 'YYYY-MM-DD')
+            const endTime = formatDateTime(userInfo.vipExpirationTime, 'YYYY-MM-DD')
 
             // 3 day left
             if (userInfo.vipExpirationTime - now < threeDays) {
                 return {
-                    time: timeStr,
+                    startTime,
+                    endTime,
                     vipType: 2
                 }
             } else {
                 return {
-                    time: timeStr,
+                    startTime,
+                    endTime,
                     vipType: 3
                 }
             }
         }
 
         return {
-            time: -1,
+            startTime: -1,
+            endTime: -1,
             vipType: -1,
         }
     }, [userInfo])
 
-    console.log('time:', time)
 
 
     return <div className={styles.vipBox}>
@@ -82,19 +88,19 @@ export default function BoostVip({
                 <div className={styles.nameContent}>
                     <div className={styles.name}>{userInfo.name ? userInfo.name : formatAddress(userInfo.address)}</div>
                     {
-                        userInfo.vipType === 'vip'
+                        (vipType === 2 || vipType === 3)
                             ? <img className={styles.vipImg} src="/img/profile/vip.png" />
                             : <img className={styles.vipImg} src="/img/profile/no-vip.png" />
                     }
                 </div>
                 {
-                    vipType === 1 && <div className={styles.date + ' ' + styles.type1}>{time}</div>
+                    vipType === 1 && <div className={styles.date + ' ' + styles.type1}>{endTime}</div>
                 }
                 {
-                    vipType === 2 && <div className={styles.date + ' ' + styles.type2}>{time}</div>
+                    vipType === 2 && <div className={styles.date + ' ' + styles.type2}>{startTime}-{endTime}</div>
                 }
                 {
-                    vipType === 3 && <div className={styles.date + ' ' + styles.type3}>{time}</div>
+                    vipType === 3 && <div className={styles.date + ' ' + styles.type3}>{startTime}-{endTime}</div>
                 }
 
             </div>
@@ -132,15 +138,15 @@ export default function BoostVip({
 
         {
             vipType === 2 && <div className={styles.timeType2 + ' ' + styles.timeType}>
-                *You have obtained one month VIP
-                Continue to purchase can increase the validity of 1 month
+                *Your VIP is about to expire
+                Pre-recharge can ensure the normal use of some functions
             </div>
         }
 
         {
             vipType === 3 && <div className={styles.timeType3 + ' ' + styles.timeType}>
-                *Your VIP is about to expire
-                Pre-recharge can ensure the normal use of some functions
+                *You have obtained one month VIP
+                Continue to purchase can increase the validity of 1 month
             </div>
         }
 

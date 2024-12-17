@@ -41,6 +41,7 @@ export async function mockUpload(file: File): Promise<ImageUploadItem> {
 // }
 
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
+export const svgReg = /(.+\.(svg))$/i;
 export const videoReg = /(.+\.(mp4))$/i;
 const StyleMaps = {
   avatar: [styles.Avatar, styles.AvatarImg],
@@ -61,7 +62,7 @@ export default function Upload({
 
   const uploadImg = useCallback(async (file: File) => {
     setIsUpload(true);
-    const url = await upload(file.name, file, imgReg.test(file.name));
+    const url = await upload(file.name, file, (imgReg.test(file.name) && !svgReg.test(file.name)));
     setTimeout(() => {
       setIsUpload(false);
     }, 1000);
