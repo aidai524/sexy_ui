@@ -1,16 +1,18 @@
 import styles from "./index.module.css";
 
-export default function Badge({ children, number }: any) {
+export default function Badge({ children, number, isSimple = false }: any) {
   return (
     <div className={styles.Container}>
       {children}
-      <div
-        className={`${styles.Badge} ${
-          number ? styles.BadgeWithNumber : styles.BadgeWithEmpty
-        }`}
-      >
-        {number || ""}
-      </div>
+      {!!number && (
+        <div
+          className={`${styles.Badge} ${
+            !isSimple ? styles.BadgeWithNumber : styles.BadgeWithEmpty
+          }`}
+        >
+          {isSimple ? "" : number}
+        </div>
+      )}
     </div>
   );
 }

@@ -17,7 +17,7 @@ export default function Token({
   getnext,
   onOpenFull
 }: any) {
-  const [currentTab, setCurrentTab] = useState("txs");
+  const [currentTab, setCurrentTab] = useState("info");
 
   const like = () => {
     setTimeout(() => {
