@@ -2,10 +2,21 @@ import { motion } from "framer-motion";
 import Header from "./header";
 import Item from "./item";
 import styles from "./popover.module.css";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-export default function Messages({ style, onClose, onShowMore }: any) {
+export default function Messages({
+  style,
+  list,
+  feeds,
+  onClose,
+  onShowMore,
+  onRead
+}: any) {
   const [currentTab, setCurrentTab] = useState("inform");
+  const data = useMemo(
+    () => (currentTab === "inform" ? list : feeds),
+    [currentTab]
+  );
   return (
     <motion.div
       initial={{
@@ -23,14 +34,26 @@ export default function Messages({ style, onClose, onShowMore }: any) {
         onClose={onClose}
       />
       <div className={styles.Content}>
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        {/* <div className={styles.EmptyText}>No information</div> */}
+        {data.map((item: any) => (
+          <Item key={item.msg_id} item={item} />
+        ))}
+        {data.length === 0 && (
+          <div className={styles.EmptyText}>No information</div>
+        )}
       </div>
       <div className={styles.Bottom}>
-        <span className="button">All read</span>
+        <span
+          className="button"
+          onClick={() => {
+            onRead({
+              onSuccess() {
+                onClose();
+              }
+            });
+          }}
+        >
+          All read
+        </span>
         <div className={`${styles.ViewAll} button`} onClick={onShowMore}>
           <span>View all</span>
           <svg

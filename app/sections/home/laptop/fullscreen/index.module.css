@@ -1,0 +1,107 @@
+.Container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #1a1a1a;
+  z-index: 50;
+}
+
+.Layer {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: calc(100% - 448px);
+  height: 100%;
+  background: linear-gradient(
+    270deg,
+    rgba(255, 38, 129, 0.36) 0%,
+    rgba(255, 38, 129, 0) 100%
+  );
+  backdrop-filter: blur(12px);
+  z-index: 51;
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Title {
+  position: absolute;
+  left: 24px;
+  top: 10px;
+  z-index: 52;
+}
+
+.Actions {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: absolute;
+  right: 24px;
+  top: 26px;
+  z-index: 52;
+}
+
+.Buttons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: absolute;
+  right: 30px;
+  bottom: 40px;
+  z-index: 52;
+}
+
+.SexyFi {
+  position: absolute;
+  width: 738px;
+  height: 212px;
+  background: url(/img/laptop/full-sexfi.png) no-repeat;
+  bottom: 0;
+  right: 0;
+  z-index: 52;
+}
+
+.Content {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.NextButton {
+  position: absolute;
+  right: 0px;
+  top: calc(50% - 75px);
+  z-index: 52;
+}
+
+.Item {
+  width: 216px;
+  height: 319px;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+
+.CurrentItem {
+  width: 418px;
+  height: 690px;
+  position: relative;
+  margin-left: 30px;
+  z-index: 52;
+}
+
+.Content :global(.adm-swiper-slide) {
+  width: auto;
+}
+
+.Content :global(.adm-swiper-track-inner) {
+  align-items: center;
+  gap: 30px;
+}

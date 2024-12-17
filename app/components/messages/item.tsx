@@ -1,21 +1,20 @@
-import { Avatar } from "./avatar";
+import { Avatar, ReadAvatar } from "./avatar";
 import styles from "./index.module.css";
+import dayjs from "dayjs";
 
-export default function Item() {
+export default function Item({ item }: any) {
   return (
     <div className={styles.Item}>
       <div className={styles.ItemInfo}>
-        <Avatar style={{}} />
+        {item.read ? <ReadAvatar /> : <Avatar />}
         <div>
           <div className={styles.ItemTitle} style={{}}>
-            Sexy Fi
+            {item.type}
           </div>
-          <div className={styles.ItemDesc}>
-            Your VIP purchase is successful! Valid until December 30, 2024.
-          </div>
+          <div className={styles.ItemDesc}>{item.content1}</div>
         </div>
       </div>
-      <div className={styles.ItemTime}>33 mins ago</div>
+      <div className={styles.ItemTime}>{dayjs(item.time).fromNow()}</div>
     </div>
   );
 }

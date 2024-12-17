@@ -10,9 +10,15 @@ import PanelWrapper from "./panel-wrapper";
 import Chart from "@/app/sections/detail/components/chart";
 import { useState } from "react";
 
-export default function Token({ infoData2, onLike, onHate, getnext }: any) {
-  const [currentTab, setCurrentTab] = useState("txs");
-  console.log("info", infoData2);
+export default function Token({
+  infoData2,
+  onLike,
+  onHate,
+  getnext,
+  onOpenFull
+}: any) {
+  const [currentTab, setCurrentTab] = useState("info");
+
   const like = () => {
     setTimeout(() => {
       getnext();
@@ -35,6 +41,7 @@ export default function Token({ infoData2, onLike, onHate, getnext }: any) {
           tokenInfo={infoData2}
           currentTab={currentTab}
           setCurrentTab={setCurrentTab}
+          onOpenFull={onOpenFull}
         />
         {infoData2 && (
           <div className={styles.Content}>
