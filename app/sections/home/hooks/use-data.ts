@@ -6,25 +6,27 @@ export default function useData(launchType: string) {
   const [infoData, setInfoData] = useState<Project>();
   const [infoData2, setInfoData2] = useState<Project>();
   const [hasNext, setHasNext] = useState<boolean>(true);
-  const [list, setList] = useState<Project[]>();
+  const [fullList, setFullList] = useState<Project[]>();
   const listRef = useRef<Project[]>();
 
   const onQueryList = (isInit: boolean) => {
     httpGet("/project/list?limit=50&launchType=" + launchType).then((res) => {
       if (res.data?.has_next_page) {
-        setHasNext(true)
+        setHasNext(true);
       } else {
-        setHasNext(false)
+        setHasNext(false);
       }
 
       if (res.code !== 0 || !res.data?.list) return;
+      let _list: any = [];
       if (isInit) {
-        listRef.current = res.data?.list;
+        _list = res.data?.list;
         renderTwoItems(res.data?.list);
       } else {
-        listRef.current = [...(listRef.current || []), ...res.data.list];
+        _list = [...(listRef.current || []), ...res.data.list];
       }
-      setList(listRef.current)
+      listRef.current = _list;
+      setFullList(JSON.parse(JSON.stringify(_list)));
     });
   };
 
@@ -42,8 +44,6 @@ export default function useData(launchType: string) {
       const currentToken = list[1];
       setInfoData(mapDataToProject(currentToken));
     }
-
-    // setList(list.slice(0, 5));
   }, []);
 
   const getnext = () => {
@@ -57,8 +57,6 @@ export default function useData(launchType: string) {
         onQueryList(false);
       }
     }
-
-    setList(listRef.current)
   };
 
   const onLike = async () => {
@@ -77,5 +75,14 @@ export default function useData(launchType: string) {
     onQueryList(true);
   }, []);
 
-  return { infoData, infoData2, hasNext, list: listRef, getnext, onLike, onHate };
+  return {
+    infoData,
+    infoData2,
+    hasNext,
+    list: listRef,
+    fullList,
+    getnext,
+    onLike,
+    onHate
+  };
 }

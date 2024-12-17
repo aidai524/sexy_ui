@@ -1,7 +1,9 @@
 export default function LogoWithText({
-  type = "default"
+  type = "default",
+  className
 }: {
   type?: "primary" | "default";
+  className?: string;
 }) {
   const color = type === "default" ? "black" : "#FF3499";
   return (
@@ -11,6 +13,7 @@ export default function LogoWithText({
       height="40"
       viewBox="0 0 106 40"
       fill="none"
+      className={className}
     >
       <path
         fillRule="evenodd"
