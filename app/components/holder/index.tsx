@@ -1,6 +1,13 @@
+import { useEffect } from "react";
 import styles from "./index.module.css";
 
 export default function Holder({ from }: any) {
+  useEffect(() => {
+
+    
+
+  }, [])
+
   return (
     <div className={`${styles.distributionArea}`}>
       <div className={styles.distributionTitle}>Holder Distribution</div>
