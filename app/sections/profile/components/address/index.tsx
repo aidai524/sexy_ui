@@ -4,10 +4,10 @@ import { formatAddressLast, logOut } from "@/app/utils";
 import { useRouter } from "next/navigation";
 
 export default function Address({ address }: any) {
-  const { disconnect } = useAccount()
+  const { disconnect, address: loginAddress } = useAccount()
   const router = useRouter()
 
-  
+
   return (
     <div className={styles.main}>
       <div
@@ -22,18 +22,21 @@ export default function Address({ address }: any) {
         </svg>
       </div>
 
-      <div onClick={async () => {
-        await disconnect()
-        logOut()
-        router.push('/')
-      }}>
-        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M38 19C38 8.50659 29.4934 0 19 0C8.50659 0 0 8.50659 0 19C0 29.4934 8.50659 38 19 38C29.4934 38 38 29.4934 38 19Z" fill="white" fill-opacity="0.08" />
-          <path d="M22.8001 11.3999H12.6667V26.5999H22.8001" stroke="white" stroke-width="2" />
-          <path d="M19 19H25.3333" stroke="white" stroke-width="2" />
-          <path d="M29.1333 19L25.3333 23.3879L25.3333 14.6122L29.1333 19Z" fill="white" />
-        </svg>
-      </div>
+      {
+        loginAddress === address && <div onClick={async () => {
+          await disconnect()
+          logOut()
+          router.push('/')
+        }}>
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M38 19C38 8.50659 29.4934 0 19 0C8.50659 0 0 8.50659 0 19C0 29.4934 8.50659 38 19 38C29.4934 38 38 29.4934 38 19Z" fill="white" fill-opacity="0.08" />
+            <path d="M22.8001 11.3999H12.6667V26.5999H22.8001" stroke="white" stroke-width="2" />
+            <path d="M19 19H25.3333" stroke="white" stroke-width="2" />
+            <path d="M29.1333 19L25.3333 23.3879L25.3333 14.6122L29.1333 19Z" fill="white" />
+          </svg>
+        </div>
+      }
+
     </div>
   );
 }

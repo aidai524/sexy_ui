@@ -90,7 +90,7 @@ export default function BoostVip({
                 <div className={styles.nameContent}>
                     <div className={styles.name}>{userInfo.name ? userInfo.name : formatAddress(userInfo.address)}</div>
                     {
-                        userInfo.vipType === 'vip'
+                        vipType === 1
                             ? <img className={styles.vipImg} src="/img/profile/vip.png" />
                             : <img className={styles.vipImg} src="/img/profile/no-vip.png" />
                     }

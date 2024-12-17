@@ -28,7 +28,7 @@ export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
           }
         }}>
           {
-            userInfo?.vipType === 'vip'
+            Date.now() < userInfo.vipExpirationTime
               ? <img className={styles.img} src="/img/profile/vip.png" />
               : <img className={styles.img} src="/img/profile/no-vip.png" />
           }
