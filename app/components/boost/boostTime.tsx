@@ -1,7 +1,5 @@
 import { useEffect, useMemo } from 'react';
 import styles from './boost.module.css'
-import BoostIcon from './boostIocn'
-import { useCountDown } from 'ahooks';
 import useTimeLeft from '@/app/hooks/useTimeLeft';
 
 interface Props {

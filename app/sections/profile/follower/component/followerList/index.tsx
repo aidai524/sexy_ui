@@ -40,7 +40,7 @@ export default function  FollowerList({
 
                     <div className={ styles.followerAction }>
                         {
-                            userInfo.address === item.address ? <div className={ styles.me }>It's me</div> : <FollowBtn address={ item.address } isFollower={item.isFoller}  onSuccess={() => {
+                            userInfo.address === item.address ? <div className={ styles.me }>It{"'"}s me</div> : <FollowBtn address={ item.address } isFollower={item.isFoller}  onSuccess={() => {
                                 onAction && onAction()
                             }}/>
                         }

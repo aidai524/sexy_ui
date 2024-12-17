@@ -1,5 +1,5 @@
 import styles from './boost.module.css'
-import BoostIcon from './boostIocn'
+import { BoostIcon } from './boostIocn'
 
 interface Props {
     onJoinVip: () => void;
