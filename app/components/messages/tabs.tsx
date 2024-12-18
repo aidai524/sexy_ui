@@ -7,14 +7,14 @@ const TABS = [
   {
     label: "Inform",
     key: "inform"
-  },
-  {
-    label: "News Feed",
-    key: "news"
   }
+  // {
+  //   label: "News Feed",
+  //   key: "news"
+  // }
 ];
 
-export default function Tabs({ currentTab, onChangeTab }: any) {
+export default function Tabs({ currentTab, onChangeTab, num }: any) {
   const prevI = useRef<number[]>([0]);
   return (
     <div className={styles.Container}>
@@ -30,7 +30,7 @@ export default function Tabs({ currentTab, onChangeTab }: any) {
             if (prevI.current.length > 2) prevI.current.shift();
           }}
         >
-          <Badge number={1}>
+          <Badge number={num}>
             <span>{tab.label}</span>
           </Badge>
           {currentTab === tab.key && (
