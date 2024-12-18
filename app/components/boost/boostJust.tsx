@@ -23,6 +23,7 @@ export default function BoostJust({
         const val = await httpAuthPost('/project/boost?id=' + token.id)
         if (val.code === 0) {
             success('Boost success')
+            onBoost && onBoost()
         } else {
             fail('Boost fail')
         }

@@ -1,7 +1,7 @@
 import styles from "./profile.module.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { httpAuthGet, httpAuthPost } from "@/app/utils";
-import useUserInfo from "./hooks/useUserInfo";
+import useUserInfo from "../../hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 import Back from "@/app/components/back";
 import { useRouter, useSearchParams } from "next/navigation";

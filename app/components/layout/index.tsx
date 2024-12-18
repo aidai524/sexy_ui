@@ -2,7 +2,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 import Mobile from "./mobile/Layout";
 import Laptop from "./laptop";
 import { useUser } from "@/app/store/useUser";
-import useUserInfo from "@/app/sections/profile/hooks/useUserInfo";
+import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useEffect } from "react";
 

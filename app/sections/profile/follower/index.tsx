@@ -5,7 +5,7 @@ import FollowerList from './component/followerList'
 import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { httpGet, httpAuthGet, formatAddress } from '@/app/utils'
-import useUserInfo from '../hooks/useUserInfo'
+import useUserInfo from '../../../hooks/useUserInfo'
 import useFollow from '../hooks/useFollow'
 
 export default function Follower() {

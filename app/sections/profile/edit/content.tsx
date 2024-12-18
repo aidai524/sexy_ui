@@ -1,7 +1,7 @@
 import Upload from "@/app/components/upload";
 import { useEffect, useMemo, useState } from "react";
 import type { ImageUploadItem } from "antd-mobile/es/components/image-uploader";
-import useUserInfo from "../hooks/useUserInfo";
+import useUserInfo from "../../../hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 import styles from "./edit.module.css";
 import { success, fail } from "@/app/utils/toast";

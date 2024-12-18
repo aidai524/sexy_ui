@@ -4,7 +4,7 @@ import { httpGet, mapDataToProject } from "@/app/utils";
 import Empty from "../empty";
 import type { Project } from "@/app/type";
 import { useUser } from "@/app/store/useUser";
-import useUserInfo from "../../hooks/useUserInfo";
+import useUserInfo from "../../../../hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 
 interface Props {

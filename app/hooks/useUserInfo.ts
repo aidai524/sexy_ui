@@ -1,7 +1,6 @@
 import type { UserInfo } from "@/app/type";
 import { httpAuthGet, httpAuthPost, httpAuthPut } from "@/app/utils";
-import { success } from "@/app/utils/toast";
-import { fail } from "assert";
+import { fail, success } from "@/app/utils/toast";
 import { useCallback, useEffect, useState } from "react";
 
 export default function useUserInfo(address: string | undefined) {
