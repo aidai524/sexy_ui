@@ -30,9 +30,9 @@ const TYPES: Record<string, any> = {
     link: "/profile",
     desc: "Immediate renewal >>"
   },
-  add_boost: { link: "/detail", desc: "Check the token >>" },
-  add_super_like: { link: "/detail", desc: "Super like >>" },
-  add_launching: { link: "/detail", desc: "Check the token >>" }
+  add_boost: { link: "/profile", desc: "Go to Profile >>" },
+  add_super_like: { link: "/profile", desc: "Go to Profile >>" },
+  add_launching: { link: "/profile", desc: "Go to Profile >>" }
 };
 
 export default function MessagesModal({
