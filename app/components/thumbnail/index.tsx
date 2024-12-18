@@ -3,7 +3,7 @@ import Tags from "../tags";
 import styles from "./thumbnail.module.css";
 import type { Project } from "@/app/type";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommentComp from "../comment";
 import { videoReg } from "../upload";
 import Likes from "./likes";
@@ -32,11 +32,18 @@ export default function Thumbnail({
   style = {}
 }: Props) {
   const [progressIndex, setProgressIndex] = useState(0);
-  const route = useRouter();
+  const [height, setHeight] = useState("calc(100vh - 232px)")
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setHeight((window.innerHeight - 232) + 'px')
+        }
+    }, [])
 
   if (!data) {
     return;
   }
+
 
   return (
     <div>
@@ -51,7 +58,7 @@ export default function Thumbnail({
       <div
         className={styles.thumbnail}
         style={{
-          height: autoHeight ? "auto" : "calc(100vh - 232px)",
+          height: autoHeight ? "auto" : height,
           ...style
         }}
       >

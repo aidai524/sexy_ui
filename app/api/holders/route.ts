@@ -27,7 +27,7 @@ export async function GET(request: NextApiRequest, y: any, z: any) {
   })
 
 
-  console.log('v:', await v.text())
+  // console.log('v:', await v.text())
 
   return new Response(JSON.stringify(request), {
     status: 200,
