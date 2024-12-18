@@ -21,10 +21,15 @@ export default function Home() {
   const params = useSearchParams();
   const [launchIndex, setLaunchIndex] = useState(0);
   const [actionStyle, setActionStyle] = useState<any>("");
+  const [actionStyle2, setActionStyle2] = useState<any>("");
   const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } =
     useMessage();
   const containerPreLaunchRef = useRef<any>();
   const containerLaunchedRef = useRef<any>();
+  const likeTriggerRef = useRef(likeTrigger)
+  const hateTriggerRef = useRef(hateTrigger)
+
+ 
 
   const {
     infoData: infoDataLaunching,
@@ -32,6 +37,8 @@ export default function Home() {
     getnext: getLaunchingNext,
     hasNext: hasLaunchingNext,
     list: launchingList,
+    renderIndex: renderLaunchingIndex,
+    renderIndexRef: renderLaunchingIndexRef,
     onLike,
     onHate
   } = useData("preLaunch");
@@ -41,13 +48,17 @@ export default function Home() {
     infoData2: infoDataLaunched2,
     hasNext: hasLaunchedNext,
     list: launchedList,
-    getnext: getLaunchedNext
+    getnext: getLaunchedNext,
+    renderIndex: renderLaunchedIndex,
+    renderIndexRef: renderLaunchedIndexRef,
   } = useData("launching");
 
   useSwip(
     containerPreLaunchRef,
     () => {
-      if (hateTrigger) {
+      console.log('hateTriggerRef.current:', hateTriggerRef.current)
+
+      if (hateTriggerRef.current) {
         return;
       }
 
@@ -59,7 +70,9 @@ export default function Home() {
       }, 1600);
     },
     () => {
-      if (likeTrigger) {
+
+      console.log('likeTriggerRef.current:', likeTriggerRef.current)
+      if (likeTriggerRef.current) {
         return;
       }
 
@@ -85,6 +98,14 @@ export default function Home() {
   );
 
   useEffect(() => {
+    hateTriggerRef.current = hateTrigger
+  }, [hateTrigger])
+
+  useEffect(() => {
+    likeTriggerRef.current = likeTrigger
+  }, [likeTrigger])
+
+  useEffect(() => {
     if (params) {
       const launchType = params.get("launchType");
       if (launchType === "0") {
@@ -95,19 +116,29 @@ export default function Home() {
     } else {
       setLaunchIndex(0);
     }
+
+    setActionStyle2(null);
+    setActionStyle(null);
   }, [params]);
 
   async function like() {
-    console.log("launchingList111:", launchingList);
     if (
       launchingList &&
       launchingList.current &&
       launchingList.current.length > 1
     ) {
-      setActionStyle(styles.like);
+      if (renderLaunchingIndexRef.current === 0) { 
+        setActionStyle2(styles.like);
+      } else {
+        setActionStyle(styles.like);
+      }
+      
       setTimeout(() => {
-        setActionStyle(null);
         getLaunchingNext();
+        setTimeout(() => {
+          setActionStyle2(null);
+          setActionStyle(null);
+        }, 100)
       }, 1000);
     }
     onLike();
@@ -119,10 +150,18 @@ export default function Home() {
       launchingList.current &&
       launchingList.current.length > 1
     ) {
-      setActionStyle(styles.hate);
+      if (renderLaunchingIndexRef.current === 0) {
+        setActionStyle2(styles.hate);
+      } else {
+        setActionStyle(styles.hate);
+      }
+      
       setTimeout(() => {
-        setActionStyle(null);
         getLaunchingNext();
+        setTimeout(() => {
+          setActionStyle2(null);
+          setActionStyle(null);
+        }, 100)
       }, 1000);
     }
     onHate();
@@ -135,14 +174,22 @@ export default function Home() {
       launchedList.current.length > 1
     ) {
       const style = type === "like" ? styles.like : styles.hate;
+      if (renderLaunchedIndexRef.current === 0) {
+        setActionStyle2(styles.hate);
+      } else {
+        setActionStyle(styles.hate);
+      }
       setActionStyle(style);
       setTimeout(() => {
-        setActionStyle(null);
-
         getLaunchedNext();
+        setTimeout(() => {
+          setActionStyle2(null);
+          setActionStyle(null);
+        }, 100)
       }, 1000);
     }
   }
+
 
   return (
     <div className={styles.main}>
@@ -170,31 +217,35 @@ export default function Home() {
       {launchIndex === 0 && (
         <>
           <div className={styles.thumbnailListBox} ref={containerPreLaunchRef}>
-            {infoDataLaunching && (
-              <div
-                style={{ zIndex: 1 }}
-                className={[styles.thumbnailBox].join(" ")}
-              >
-                <Thumbnail
-                  showProgress={true}
-                  showDesc={true}
-                  data={infoDataLaunching}
-                />
-              </div>
-            )}
+            {
+              infoDataLaunching && (
+                <div
+                  style={{ zIndex: renderLaunchingIndex === 0 ? 1 : 2 }}
+                  className={[styles.thumbnailBox, actionStyle].join(" ")}
+                >
+                  <Thumbnail
+                    showProgress={true}
+                    showDesc={true}
+                    data={infoDataLaunching}
+                  />
+                </div>
+              )
+            }
 
-            {infoDataLaunching2 && (
-              <div
-                style={{ zIndex: 2 }}
-                className={[styles.thumbnailBox, actionStyle].join(" ")}
-              >
-                <Thumbnail
-                  showProgress={true}
-                  showDesc={true}
-                  data={infoDataLaunching2}
-                />
-              </div>
-            )}
+            {
+              infoDataLaunching2 && (
+                <div
+                  style={{ zIndex: renderLaunchingIndex === 0 ? 2 : 1 }}
+                  className={[styles.thumbnailBox, actionStyle2].join(" ")}
+                >
+                  <Thumbnail
+                    showProgress={true}
+                    showDesc={true}
+                    data={infoDataLaunching2}
+                  />
+                </div>
+              )
+            }
           </div>
 
           <LaunchingAction
@@ -205,8 +256,8 @@ export default function Home() {
             onHate={async () => {
               hate();
             }}
-            onSuperLike={() => {}}
-            onBoost={() => {}}
+            onSuperLike={() => { }}
+            onBoost={() => { }}
           />
         </>
       )}
@@ -216,8 +267,8 @@ export default function Home() {
           <div className={styles.thumbnailListBox} ref={containerLaunchedRef}>
             {infoDataLaunched && (
               <div
-                style={{ zIndex: 1 }}
-                className={[styles.thumbnailBox].join(" ")}
+                style={{ zIndex: renderLaunchedIndex === 0 ? 1 : 2 }}
+                className={[styles.thumbnailBox, actionStyle].join(" ")}
               >
                 <Thumbnail
                   showProgress={true}
@@ -229,8 +280,8 @@ export default function Home() {
 
             {infoDataLaunched2 && (
               <div
-                style={{ zIndex: 2 }}
-                className={[styles.thumbnailBox, actionStyle].join(" ")}
+                style={{ zIndex: renderLaunchedIndex === 0 ? 2 : 1 }}
+                className={[styles.thumbnailBox, actionStyle2].join(" ")}
               >
                 <Thumbnail
                   showProgress={true}

@@ -5,9 +5,11 @@ import type { Project } from "@/app/type";
 export default function useData(launchType: string) {
   const [infoData, setInfoData] = useState<Project>();
   const [infoData2, setInfoData2] = useState<Project>();
+  const [renderIndex, setRenderIndex] = useState(0)
   const [hasNext, setHasNext] = useState<boolean>(true);
   const [fullList, setFullList] = useState<Project[]>();
   const listRef = useRef<Project[]>();
+  const renderIndexRef = useRef<number>(0)
 
   const onQueryList = (isInit: boolean) => {
     httpGet("/project/list?limit=50&launchType=" + launchType).then((res) => {
@@ -21,7 +23,21 @@ export default function useData(launchType: string) {
       let _list: any = [];
       if (isInit) {
         _list = res.data?.list;
-        renderTwoItems(res.data?.list);
+        // _list = [
+        //   ...res.data?.list,
+        //   {
+        //     ...res.data?.list[0],
+        //     video: 'https://pica.zhimg.com/v2-07dec33f2fd0266933f90ffe0e85a510_720w.jpg?source=172ae18b',
+        //     icon: 'https://pica.zhimg.com/v2-07dec33f2fd0266933f90ffe0e85a510_720w.jpg?source=172ae18b',
+        //   },
+        //   {
+        //     ...res.data?.list[0],
+        //     video: 'https://picx.zhimg.com/v2-2212eea2ef769c7f6a8c53bf92734462_720w.jpg?source=172ae18b',
+        //     icon: 'https://picx.zhimg.com/v2-2212eea2ef769c7f6a8c53bf92734462_720w.jpg?source=172ae18b',
+        //   }
+        // ];
+       
+        renderTwoSimple(res.data?.list);
       } else {
         _list = [...(listRef.current || []), ...res.data.list];
       }
@@ -30,7 +46,7 @@ export default function useData(launchType: string) {
     });
   };
 
-  const renderTwoItems = useCallback((list: Project[]) => {
+  const renderTwoSimple = (list: Project[]) => {
     if (!list) {
       return;
     }
@@ -44,7 +60,30 @@ export default function useData(launchType: string) {
       const currentToken = list[1];
       setInfoData(mapDataToProject(currentToken));
     }
-  }, []);
+  }
+
+  const renderTwoItems = (list: Project[]) => {
+    if (!list) {
+      return;
+    }
+
+    renderIndexRef.current = renderIndexRef.current === 0 ? 1: 0
+    console.log('launchType: ', launchType, 'renderIndexRef.current', renderIndexRef.current)
+
+    setRenderIndex(renderIndexRef.current)
+    
+    setTimeout(() => {
+      if (list.length > 0) {
+        const currentToken = list[0];
+        if (renderIndexRef.current === 1) {
+          setInfoData2(mapDataToProject(currentToken));
+        } else {
+          setInfoData(mapDataToProject(currentToken));
+        }
+      }
+    }, 100)
+    
+  };
 
   const getnext = () => {
     if (!listRef.current) return;
@@ -57,7 +96,7 @@ export default function useData(launchType: string) {
         onQueryList(false);
       }
     }
-  };
+  }
 
   const onLike = async () => {
     try {
@@ -78,8 +117,10 @@ export default function useData(launchType: string) {
   return {
     infoData,
     infoData2,
+    renderIndex,
     hasNext,
     list: listRef,
+    renderIndexRef: renderIndexRef,
     fullList,
     getnext,
     onLike,
