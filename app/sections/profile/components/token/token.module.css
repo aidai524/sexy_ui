@@ -61,15 +61,15 @@
             margin-top: 5px;
             color: rgba(255, 255, 255, 0.6);
             text-align: center;
+            width: 48px;
+            position: relative;
             .whiteAmount {
                 color: #fff;
-                position: relative;
                 .timeFormat {
-                    /* position: absolute;
+                    position: absolute;
                     right: 0;
                     width: 60px;
                     white-space: nowrap;
-                    text-align: right; */
                 }
             }
         }

@@ -25,7 +25,7 @@ export default function Token({ data, update }: Props) {
                 router.push('/detail?id=' + data.id)
             }}>
                 <img className={styles.tokenImg} src={data.tokenIcon || data.tokenImg} />
-                <LaunchTag type={1} />
+                <LaunchTag type={data.status as number} />
             </div>
 
             <div className={styles.nameContent}>
@@ -55,11 +55,11 @@ export default function Token({ data, update }: Props) {
                             />
                         </div>
                         <div className={styles.actionTimes}>
-                            <span className={styles.whiteAmount}>
-                                {
-                                    timeFormat ? <div className={ styles.timeFormat }>{timeFormat}</div> : '30 min'
-                                }
-                            </span>
+                            {
+                                timeFormat ? <div className={styles.whiteAmount}>
+                                    <div className={styles.timeFormat}>{timeFormat}</div>
+                                </div> : '30 min'
+                            }
                         </div>
                     </div>
 
@@ -74,7 +74,7 @@ export default function Token({ data, update }: Props) {
                         </div>
                     </div>
                 </div> : <div className={styles.actionContent}>
-                    <LauncdedAction data={data} justPlus={true}/>
+                    <LauncdedAction data={data} justPlus={true} />
                 </div>
         }
 

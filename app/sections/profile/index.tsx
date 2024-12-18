@@ -43,9 +43,8 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
         return userAddress;
     }, [userAddress, params, isOther]);
 
-    const { onQueryInfo } = useUserInfo(address);
-
-    const { userInfo }: any = useUser()
+    const { onQueryInfo, userInfo } = useUserInfo(address);
+    const { userInfo: ownUserInfo, set }: any = useUser()
 
     useEffect(() => {
         if (address && isOther) {
@@ -86,9 +85,12 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                         </div>
 
                         {
-                            <FollowBtn address={ address } isFollower={isFollower} onSuccess={() => {
-                                onQueryInfo()
+                            <FollowBtn address={ address } isFollower={isFollower} onSuccess={async () => {
                                 setRefreshNum(refreshNum + 1)
+                                await onQueryInfo()
+                                set({
+                                    userInfo: userInfo
+                                })
                             }}/>
                         }
                     </div>
@@ -116,7 +118,7 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
             <Address address={address} />
             {
                 !isOther && <HotBoost
-                    user={userInfo}
+                    user={ownUserInfo}
                     onMoreClick={() => {
                         setShowVip(true);
                     }}

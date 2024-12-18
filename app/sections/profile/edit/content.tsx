@@ -145,7 +145,7 @@ export default function EditContent({
           className={styles.groupContent}
           style={{ paddingLeft: 15, paddingTop: 10 }}
         >
-          <Upload fileList={avatar} setFileList={setAvatar} type="avatar" />
+          <Upload percent={1} fileList={avatar} setFileList={setAvatar} type="avatar" />
         </div>
       </div>
 
@@ -160,7 +160,7 @@ export default function EditContent({
             overflow: "hidden"
           }}
         >
-          <Upload fileList={banner} setFileList={setBanner} type="banner" />
+          <Upload percent={0.5} fileList={banner} setFileList={setBanner} type="banner" />
         </div>
       </div>
 
