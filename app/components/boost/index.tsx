@@ -39,7 +39,6 @@ export default function Boost({
                 setBoostShow(true)
             }}
             onCanceVip={() => {
-                // setBoostShow(true);
                 setVipShow(false);
             }}
         />
@@ -52,7 +51,6 @@ export default function Boost({
                 setBoostVipShow(false);
             }}
             onCanceVip={() => {
-                // setBoostShow(true);
                 setBoostVipShow(false);
             }}
         />
@@ -75,7 +73,7 @@ export default function Boost({
         <BoostTime
             time={token.boostTime}
             onBoost={() => {
-                setBoostShow(true);
+                checkBoostVip()
                 setBoostTimeShow(false);
             }}
             onCancel={() => {
@@ -88,7 +86,7 @@ export default function Boost({
         <BoostStatus
             num={token.boostTime}
             onBoost={() => {
-                setBoostShow(true);
+                checkBoostVip()
                 setBoostStatusShow(false);
             }}
             onCancel={() => {
@@ -108,6 +106,18 @@ export default function Boost({
         type={1}
     />
 
+    const checkBoostVip = () => {
+        if (userInfo?.boostNum && (userInfo?.boostNum - userInfo?.usingBoostNum)> 0) {
+            setBoostShow(true);
+        } else {
+            if (userInfo.vipType === 'vip') {
+                setBoostSuperNoTimesShow(true)
+            } else {
+                setBoostVipShow(true);
+            }
+        }
+    }
+
     return (
         <div
             onClick={() => {
@@ -123,15 +133,7 @@ export default function Boost({
                     return;
                 }
 
-                if (userInfo?.boostNum && (userInfo?.boostNum - userInfo?.usingBoostNum)> 0) {
-                    setBoostShow(true);
-                } else {
-                    if (userInfo.vipType === 'vip') {
-                        setBoostSuperNoTimesShow(true)
-                    } else {
-                        setBoostVipShow(true);
-                    }
-                }
+                checkBoostVip()
 
                 onClick();
             }}

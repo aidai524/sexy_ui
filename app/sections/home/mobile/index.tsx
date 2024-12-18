@@ -56,8 +56,6 @@ export default function Home() {
   useSwip(
     containerPreLaunchRef,
     () => {
-      console.log('hateTriggerRef.current:', hateTriggerRef.current)
-
       if (hateTriggerRef.current) {
         return;
       }

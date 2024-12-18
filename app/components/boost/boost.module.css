@@ -24,6 +24,7 @@
     .initTitle {
       font-size: 20px;
       margin-top: 10px;
+      white-space: nowrap;
     }
     .initAmount {
       font-size: 16px;

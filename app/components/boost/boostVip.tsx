@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { useAccount } from '@/app/hooks/useAccount';
 import MainBtn from '../mainBtn';
 import { useUser } from '@/app/store/useUser';
-import { formatAddress, formatDateTime } from '@/app/utils';
+import { formatAddress, formatDateEn, formatDateTime } from '@/app/utils';
 import type { UserInfo } from '@/app/type';
 
 interface Props {
@@ -50,8 +50,8 @@ export default function BoostVip({
                 }
             }
 
-            const startTime = formatDateTime(userInfo.vipStartTime, 'YYYY-MM-DD')
-            const endTime = formatDateTime(userInfo.vipExpirationTime, 'YYYY-MM-DD')
+            const startTime = formatDateEn(userInfo.vipStartTime)
+            const endTime = formatDateEn(userInfo.vipExpirationTime)
 
             // 3 day left
             if (userInfo.vipExpirationTime - now < threeDays) {

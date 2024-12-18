@@ -100,13 +100,22 @@ export default function useData(launchType: string) {
 
   const onLike = async () => {
     try {
-      await httpAuthPost("/project/like?id=" + infoData2!.id, {});
-    } catch (e) {}
+      if (listRef.current) {
+        const infoData = listRef.current[0]
+        await httpAuthPost("/project/like?id=" + infoData!.id, {});
+      }
+    } catch (e) {
+      console.log(111222, e)
+    }
   };
 
   const onHate = async () => {
     try {
-      await httpAuthPost("/project/un_like?id=" + infoData2!.id, {});
+      if (listRef.current) {
+        const infoData = listRef.current[0]
+        await httpAuthPost("/project/un_like?id=" + infoData!.id, {});
+      }
+      
     } catch {}
   };
 

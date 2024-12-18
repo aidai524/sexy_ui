@@ -36,7 +36,7 @@ export default function BoostJust({
                 <div className={styles.initTitle}>Boost</div>
                 <div className={styles.initAmount}>{ usingBoostNum }/{ boostNum }</div>
                 <div className={styles.initTip}>Boost allows the MEME exposure up to 8.5x in SexyFi for 30 minutes.
-                    VIP users will have 2 chances per day to boost MEMEs.</div>
+                    VIP users will have 4 chances per day to boost MEMEs.</div>
             </div>
         </div>
 

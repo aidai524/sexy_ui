@@ -248,8 +248,8 @@ export default function BuySell({ token, initType, from }: Props) {
             <div className={styles.balance}>
               Balance:{" "}
               {tokenType === 0
-                ? tokenBalance + currentToken.tokenName
-                : solBalance + "SOL"}
+                ? tokenBalance
+                : solBalance}
             </div>
           </div>
 

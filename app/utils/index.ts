@@ -1,3 +1,4 @@
+import dayjs from "./dayjs";
 import type { Project } from "../type";
 import { fail } from "./toast";
 
@@ -456,7 +457,7 @@ export async function upload(fileName: string, file: File, isImage: boolean = tr
             img.onload = () => resolve([img.naturalWidth, img.naturalHeight]);
             img.src = url;
         });
-    
+
         const width = Math.min(naturalWidth, naturalHeight);
         const sx = (naturalWidth - width) / 2;
         const sy = (naturalHeight - width) / 2;
@@ -465,13 +466,13 @@ export async function upload(fileName: string, file: File, isImage: boolean = tr
         canvas.height = canvasWidth;
         ctx.drawImage(img, sx, sy, width, width, 0, 0, canvasWidth, canvasWidth);
         const base64Url = canvas.toDataURL('image/webp');
-    
+
         const bloBData = base64ToBlob(base64Url);
 
         _file = bloBData[0]
 
     }
-  
+
 
     const newFileName = generateRandomString(10) + fileName;
     const val = await httpAuthPost(
@@ -542,3 +543,15 @@ export function timeAgo(time?: number) {
     }
     return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
 }
+
+export function formatDateEn(time: number) {
+    const date = dayjs(time);
+
+    // console.log(date.format('MMMM D, YYYY'));  // Example: December 18, 2024
+    // console.log(date.format('dddd, MMMM D, YYYY'));  // Example: Wednesday, December 18, 2024
+    // console.log(date.format('MM/DD/YYYY'));  // Example: 12/18/2024
+    // console.log(date.format('YYYY-MM-DD'));  // Example: 2024-12-18
+    // console.log(date.format('hh:mm A'));  // Example: 04:30 PM
+    return date.format('MMM D, YYYY')
+}
+
