@@ -13,6 +13,7 @@
             border: 4px solid #fff;
             border-radius: 85px;
             margin: -40px auto 0;
+            overflow: hidden;
             .avatarImg {
                 width: 100%;
                 border-radius: 85px;

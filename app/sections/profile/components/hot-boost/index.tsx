@@ -18,6 +18,15 @@ export default function HotBoost({ onMoreClick, style, user }: Props) {
     return 0
   }, [user])
 
+  const superLikeNum = useMemo(() => {
+    if (user) {
+      const num = (user?.superLikeNum || 0) - (user?.usingSuperLikeNum || 0)
+      return num < 0 ? 0 : num
+    }
+
+    return 0
+  }, [user])
+
   return (
     <div className={styles.hotBoost} style={style}>
       <div className={styles.part}>
@@ -58,7 +67,7 @@ export default function HotBoost({ onMoreClick, style, user }: Props) {
             <span>Smoky Hot</span>
           </div>
           {
-            user?.superLikeNum === 0
+            superLikeNum === 0 && user?.vipType !== 'vip'
               ? <div onClick={onMoreClick} className={styles.getMore1}>
                 Get more
               </div> : <div>By today</div>
@@ -90,7 +99,7 @@ export default function HotBoost({ onMoreClick, style, user }: Props) {
             <span>Boost</span>
           </div>
           {
-            boostNum === 0
+            boostNum === 0 && user?.vipType !== 'vip'
               ? <div onClick={onMoreClick} className={styles.getMore2}>
                 Get more
               </div>

@@ -1,7 +1,7 @@
 import User from "./user";
 import Main from "./main";
 import { useAccount } from "@/app/hooks/useAccount";
-import useUserInfo from "@/app/sections/profile/hooks/useUserInfo";
+import useUserInfo from "@/app/hooks/useUserInfo";
 import styles from "./index.module.css";
 export default function Laptop() {
   const { address } = useAccount();

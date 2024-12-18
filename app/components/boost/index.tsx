@@ -13,6 +13,7 @@ import { httpAuthPost } from "@/app/utils";
 import type { Project } from "@/app/type";
 import { fail, success } from "@/app/utils/toast";
 import { useUser } from "@/app/store/useUser";
+import useUserInfo from "@/app/hooks/useUserInfo";
 
 export default function Boost({
     onClick,
@@ -31,7 +32,8 @@ export default function Boost({
     const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
 
     const { address } = useAccount();
-    const { userInfo }: any = useUser();
+    const { userInfo, set }: any = useUser();
+    const { fecthUserInfo } = useUserInfo(undefined)
 
     const VipModal = (
         <BoostVip
@@ -62,9 +64,14 @@ export default function Boost({
             token={token}
             usingBoostNum={userInfo?.usingBoostNum}
             boostNum={userInfo?.boostNum}
-            onBoost={() => {
+            onBoost={async () => {
                 setBoostShow(false);
                 setBoostStatusShow(true);
+                onClick && onClick()
+                const userInfo = await fecthUserInfo(address as string)
+                set({
+                    userInfo
+                })
             }}
         />
     );
@@ -107,6 +114,9 @@ export default function Boost({
     />
 
     const checkBoostVip = () => {
+        // setBoostShow(true);
+        // return
+
         if (userInfo?.boostNum && (userInfo?.boostNum - userInfo?.usingBoostNum)> 0) {
             setBoostShow(true);
         } else {

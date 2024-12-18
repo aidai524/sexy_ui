@@ -14,6 +14,7 @@ import Tabs from "../tabs";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import useSwip from "./hooks/useSwip";
+import { httpAuthGet, mapDataToProject } from "@/app/utils";
 
 export default function Home() {
   const router = useRouter();
@@ -40,7 +41,8 @@ export default function Home() {
     renderIndex: renderLaunchingIndex,
     renderIndexRef: renderLaunchingIndexRef,
     onLike,
-    onHate
+    onHate,
+    updateCurrentToken: updateLaunchingToken,
   } = useData("preLaunch");
 
   const {
@@ -51,6 +53,7 @@ export default function Home() {
     getnext: getLaunchedNext,
     renderIndex: renderLaunchedIndex,
     renderIndexRef: renderLaunchedIndexRef,
+    updateCurrentToken: updateLaunchedToken,
   } = useData("launching");
 
   useSwip(
@@ -247,7 +250,7 @@ export default function Home() {
           </div>
 
           <LaunchingAction
-            token={infoDataLaunching2}
+            token={renderLaunchingIndex === 0 ? infoDataLaunching2 : infoDataLaunching}
             onLike={async () => {
               like();
             }}
@@ -255,7 +258,14 @@ export default function Home() {
               hate();
             }}
             onSuperLike={() => { }}
-            onBoost={() => { }}
+            onBoost={async () => { 
+              const token = renderLaunchingIndex === 0 ? infoDataLaunching2 : infoDataLaunching
+              const val = await httpAuthGet('/project/?id=' + token?.id)
+              if (val.code === 0) {
+                const newTokenInfo = mapDataToProject(val.data)
+                updateLaunchingToken(newTokenInfo)
+              }
+            }}
           />
         </>
       )}
@@ -290,7 +300,7 @@ export default function Home() {
             )}
           </div>
 
-          {infoDataLaunched2 && <LaunchedAction data={infoDataLaunched2} />}
+          {(infoDataLaunched2 || infoDataLaunched) && <LaunchedAction data={renderLaunchingIndex === 0 ? infoDataLaunched2 : infoDataLaunched} />}
         </>
       )}
     </div>

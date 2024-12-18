@@ -11,34 +11,8 @@ interface Props {
   children?: React.ReactNode;
   accept?: string;
   type: "avatar" | "banner" | "others" | "token";
+  percent?: number;
 }
-
-export async function mockUpload(file: File): Promise<ImageUploadItem> {
-  console.log("file:", file);
-  const url = await upload(file.name, file);
-  // export async function mockUpload(file: File): Promise<ImageUploadItem> {
-  //     console.log('file:', file)
-  //     const url = await upload(file.name, file)
-
-  if (url) {
-    return {
-      url
-    };
-  }
-  //     if (url) {
-  //         return {
-  //             url,
-  //         }
-  //     }
-
-  return {
-    url: ""
-  };
-}
-//     return {
-//         url: '',
-//     }
-// }
 
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
 export const svgReg = /(.+\.(svg))$/i;
@@ -54,7 +28,8 @@ export default function Upload({
   fileList: defaultFileList,
   setFileList: setDefaultFileList,
   accept = "image/*",
-  type
+  type,
+  percent = 1.5,
 }: Props) {
   const [isUplaod, setIsUpload] = useState(false);
   const [fileList, setFileList] = useState<any>(defaultFileList || []);
@@ -62,7 +37,7 @@ export default function Upload({
 
   const uploadImg = useCallback(async (file: File) => {
     setIsUpload(true);
-    const url = await upload(file.name, file, (imgReg.test(file.name) && !svgReg.test(file.name)));
+    const url = await upload(file.name, file, (imgReg.test(file.name) && !svgReg.test(file.name)), percent);
     setTimeout(() => {
       setIsUpload(false);
     }, 1000);

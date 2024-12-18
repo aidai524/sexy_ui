@@ -76,7 +76,7 @@ export default function CreateNode({
             </div>
             {
                 showTokenSymbol && <div className={styles.groupContent + ' ' + styles.uploadContent + ' ' + styles.avatar + ' ' + (inValidVals['tokenIcon'] ? styles.uploadError : '')} style={{ paddingLeft: 15, paddingTop: 10 }}>
-                    <Upload type="token" fileList={tokenIcon} setFileList={setTokenIcon} />
+                    <Upload percent={1} type="token" fileList={tokenIcon} setFileList={setTokenIcon} />
                     <div className={styles.uploadTip}>Support img/png/svg</div>
                 </div>
             }

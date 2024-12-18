@@ -1,7 +1,7 @@
 import styles from "./profile.module.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { httpAuthGet, httpAuthPost } from "@/app/utils";
-import useUserInfo from "./hooks/useUserInfo";
+import useUserInfo from "../../hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 import Back from "@/app/components/back";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -12,6 +12,7 @@ import Address from "./components/address";
 import HotBoost from "./components/hot-boost";
 import VipModal from "./components/vip-modal";
 import FollowBtn from "./components/followBtn";
+import { useUser } from "@/app/store/useUser";
 
 interface Props {
     showHot?: boolean;
@@ -42,8 +43,8 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
         return userAddress;
     }, [userAddress, params, isOther]);
 
-    const { userInfo, onQueryInfo } = useUserInfo(address);
-
+    const { onQueryInfo, userInfo } = useUserInfo(address);
+    const { userInfo: ownUserInfo, set }: any = useUser()
 
     useEffect(() => {
         if (address && isOther) {
@@ -84,9 +85,12 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                         </div>
 
                         {
-                            <FollowBtn address={ address } isFollower={isFollower} onSuccess={() => {
-                                onQueryInfo()
+                            <FollowBtn address={ address } isFollower={isFollower} onSuccess={async () => {
                                 setRefreshNum(refreshNum + 1)
+                                await onQueryInfo()
+                                set({
+                                    userInfo: userInfo
+                                })
                             }}/>
                         }
                     </div>
@@ -110,10 +114,11 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                     router.push("/profile/follower?account=" + address);
                 }}
             />
+
             <Address address={address} />
             {
                 !isOther && <HotBoost
-                    user={userInfo}
+                    user={ownUserInfo}
                     onMoreClick={() => {
                         setShowVip(true);
                     }}

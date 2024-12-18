@@ -436,7 +436,7 @@ function base64ToBlob(base64Data: string) {
     return [new Blob([arrayBuffer], { type: imageType }), imageType.slice(6)];
 }
 
-export async function upload(fileName: string, file: File, isImage: boolean = true) {
+export async function upload(fileName: string, file: File, isImage: boolean = true, percent = 1.5) {
     let _file: any = file
     if (isImage) {
         const url = await new Promise<string | void>((resolve) => {
@@ -458,13 +458,25 @@ export async function upload(fileName: string, file: File, isImage: boolean = tr
             img.src = url;
         });
 
-        const width = Math.min(naturalWidth, naturalHeight);
-        const sx = (naturalWidth - width) / 2;
-        const sy = (naturalHeight - width) / 2;
-        const canvasWidth = 256;
+        const targetAspectRatio = 1 / percent;
+        let cropWidth, cropHeight;
+
+        if (naturalWidth / naturalHeight > targetAspectRatio) {
+            cropHeight = naturalHeight
+            cropWidth = cropHeight * targetAspectRatio
+        } else {
+            cropWidth = naturalWidth;
+            cropHeight = cropWidth / targetAspectRatio;
+        }
+
+        const cropX = (naturalWidth - cropWidth) / 2;
+        const cropY = (naturalHeight - cropHeight) / 2;
+
+        const canvasWidth = 256 * 2;
+        const canvasHeight = canvasWidth * percent;
         canvas.width = canvasWidth;
-        canvas.height = canvasWidth;
-        ctx.drawImage(img, sx, sy, width, width, 0, 0, canvasWidth, canvasWidth);
+        canvas.height = canvasHeight;
+        ctx.drawImage(img, cropX, cropY, cropWidth, cropHeight, 0, 0, canvasWidth, canvasHeight);
         const base64Url = canvas.toDataURL('image/webp');
 
         const bloBData = base64ToBlob(base64Url);
