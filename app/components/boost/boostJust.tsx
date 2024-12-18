@@ -18,7 +18,6 @@ export default function BoostJust({
     onBoost, boostNum, usingBoostNum, token
 }: Props) {
     const [isLoading, setIsLoading] = useState(false)
-    const { call } = useVip()
 
     async function boost() {
         const val = await httpAuthPost('/project/boost?id=' + token.id)
@@ -46,11 +45,6 @@ export default function BoostJust({
                 if (typeof(usingBoostNum) !== 'undefined' && boostNum && boostNum - usingBoostNum > 0) {
                     await boost()
                 } 
-                // else {
-                //     await call('boost')
-                //     await boost()
-                //     success('Transition success')
-                // }
                 onBoost()
                 setIsLoading(false)
                 

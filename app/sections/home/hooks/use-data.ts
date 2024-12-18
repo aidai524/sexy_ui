@@ -23,19 +23,6 @@ export default function useData(launchType: string) {
       let _list: any = [];
       if (isInit) {
         _list = res.data?.list;
-        // _list = [
-        //   ...res.data?.list,
-        //   {
-        //     ...res.data?.list[0],
-        //     video: 'https://pica.zhimg.com/v2-07dec33f2fd0266933f90ffe0e85a510_720w.jpg?source=172ae18b',
-        //     icon: 'https://pica.zhimg.com/v2-07dec33f2fd0266933f90ffe0e85a510_720w.jpg?source=172ae18b',
-        //   },
-        //   {
-        //     ...res.data?.list[0],
-        //     video: 'https://picx.zhimg.com/v2-2212eea2ef769c7f6a8c53bf92734462_720w.jpg?source=172ae18b',
-        //     icon: 'https://picx.zhimg.com/v2-2212eea2ef769c7f6a8c53bf92734462_720w.jpg?source=172ae18b',
-        //   }
-        // ];
        
         renderTwoSimple(res.data?.list);
       } else {
@@ -119,6 +106,14 @@ export default function useData(launchType: string) {
     } catch {}
   };
 
+  const updateCurrentToken = async (newTokenInfo: Project) => {
+    if (renderIndexRef.current === 0) {
+      setInfoData2(newTokenInfo)
+    } else {
+      setInfoData(newTokenInfo)
+    }
+  }
+
   useEffect(() => {
     onQueryList(true);
   }, []);
@@ -133,6 +128,7 @@ export default function useData(launchType: string) {
     fullList,
     getnext,
     onLike,
-    onHate
+    onHate,
+    updateCurrentToken
   };
 }

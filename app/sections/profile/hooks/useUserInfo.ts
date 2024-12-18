@@ -9,32 +9,42 @@ export default function useUserInfo(address: string | undefined) {
 
   const onQueryInfo = useCallback(async () => {
     if (address) {
-        httpAuthGet("/account", { address: address }).then((res) => {
-          console.log('account res', res)
-            if (res.code === 0) {
-              setUserInfo({
-                name: res.data.name,
-                address: res.data.address,
-                icon: res.data.icon,
-                banner: res.data.banner,
-                followers: res.data.followers,
-                following: res.data.following,
-                likeNum: res.data.like_num,
-                boostNum: res.data.boost_num,
-                usingBoostNum: res.data.using_boost_num,
-                superLikeNum: res.data.super_like_num,
-                usingSuperLikeNum: res.data.using_super_like_num,
-                usingBuySuperLikeNum: res.data.using_buy_super_like_num,
-                vipType: res.data.vip_type,
-                education: res.data.education,
-                vipExpirationTime: res.data.vip_expiration_time,
-                vipStartTime: res.data.vip_start_time,
-              });
-            }
-          });
+      const userInfo = await fecthUserInfo(address)
+      if (userInfo) {
+        setUserInfo(userInfo)
+      }
     }
-    
+
   }, [address]);
+
+  const fecthUserInfo = async (address: string) => {
+    return httpAuthGet("/account", { address: address }).then((res) => {
+      if (res.code === 0) {
+        const userInfo = {
+          name: res.data.name,
+          address: res.data.address,
+          icon: res.data.icon,
+          banner: res.data.banner,
+          followers: res.data.followers,
+          following: res.data.following,
+          likeNum: res.data.like_num,
+          boostNum: res.data.boost_num,
+          usingBoostNum: res.data.using_boost_num,
+          superLikeNum: res.data.super_like_num,
+          usingSuperLikeNum: res.data.using_super_like_num,
+          usingBuySuperLikeNum: res.data.using_buy_super_like_num,
+          vipType: res.data.vip_type,
+          education: res.data.education,
+          vipExpirationTime: res.data.vip_expiration_time,
+          vipStartTime: res.data.vip_start_time,
+        }
+
+        return userInfo
+      }
+
+      return null
+    });
+  }
 
   useEffect(() => {
     if (address) {
@@ -69,6 +79,7 @@ export default function useUserInfo(address: string | undefined) {
   return {
     userInfo,
     saveUserInfo,
+    fecthUserInfo,
     onQueryInfo
   };
 }

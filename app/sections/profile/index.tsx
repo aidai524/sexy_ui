@@ -12,6 +12,7 @@ import Address from "./components/address";
 import HotBoost from "./components/hot-boost";
 import VipModal from "./components/vip-modal";
 import FollowBtn from "./components/followBtn";
+import { useUser } from "@/app/store/useUser";
 
 interface Props {
     showHot?: boolean;
@@ -42,8 +43,9 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
         return userAddress;
     }, [userAddress, params, isOther]);
 
-    const { userInfo, onQueryInfo } = useUserInfo(address);
+    const { onQueryInfo } = useUserInfo(address);
 
+    const { userInfo }: any = useUser()
 
     useEffect(() => {
         if (address && isOther) {
@@ -110,6 +112,7 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                     router.push("/profile/follower?account=" + address);
                 }}
             />
+
             <Address address={address} />
             {
                 !isOther && <HotBoost

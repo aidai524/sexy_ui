@@ -7,7 +7,8 @@ export default function useTimeLeft({ time }: any) {
     })
 
     const timeFormat = useMemo(() => {
-        const timeList = [days, hours, minutes, seconds]
+        const _hours = days ? days * 24 + hours: hours
+        const timeList = [_hours, minutes, seconds]
         const timeStr = timeList.reduce((pre, next) => {
             if (!pre && Number(next) === 0) {
                 return ''

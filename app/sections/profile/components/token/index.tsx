@@ -11,10 +11,11 @@ import useTimeLeft from '@/app/hooks/useTimeLeft'
 import LauncdedAction from '@/app/components/action/launched'
 
 interface Props {
-    data: Project
+    data: Project;
+    update: () => void;
 }
 
-export default function Token({ data }: Props) {
+export default function Token({ data, update }: Props) {
     const router = useRouter()
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
 
@@ -49,12 +50,16 @@ export default function Token({ data }: Props) {
                                 token={data}
                                 isGrey={true}
                                 onClick={() => {
-                                    // onBoost && onBoost();
+                                    update && update()
                                 }}
                             />
                         </div>
                         <div className={styles.actionTimes}>
-                            <span className={styles.whiteAmount}>{timeFormat || '30 min'}</span>
+                            <span className={styles.whiteAmount}>
+                                {
+                                    timeFormat ? <div className={ styles.timeFormat }>{timeFormat}</div> : '30 min'
+                                }
+                            </span>
                         </div>
                     </div>
 

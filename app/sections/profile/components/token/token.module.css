@@ -63,6 +63,14 @@
             text-align: center;
             .whiteAmount {
                 color: #fff;
+                position: relative;
+                .timeFormat {
+                    /* position: absolute;
+                    right: 0;
+                    width: 60px;
+                    white-space: nowrap;
+                    text-align: right; */
+                }
             }
         }
     }
