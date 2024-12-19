@@ -343,7 +343,7 @@ export default function BuySell({ token, initType, from }: Props) {
 
         {activeIndex === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}>You will pay</div>
+            <div className={styles.receiveTitle}>You will get</div>
             <div className={styles.receiveAmount}>{sellOutSol} SOL</div>
           </div>
         )}

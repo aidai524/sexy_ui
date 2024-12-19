@@ -57,7 +57,7 @@ export default function Home() {
     renderIndex: renderLaunchedIndex,
     renderIndexRef: renderLaunchedIndexRef,
     updateCurrentToken: updateLaunchedToken,
-  } = useData("preLaunch");
+  } = useData("launching");
 
   useSwip(
     containerPreLaunchRef,
