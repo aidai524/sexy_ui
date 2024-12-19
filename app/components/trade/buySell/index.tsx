@@ -29,10 +29,10 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.00000001, 0.00000005];
+const SOL_PERCENT_LIST = [0.0001, 0.0005, 0.001];
 
 export default function BuySell({ token, initType, from }: Props) {
-  const { tokenName, tokenSymbol, tokenUri } = token;
+  const { tokenName, tokenSymbol, tokenUri, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
   const [slip, setSlip] = useState(0.5);
 
@@ -40,7 +40,7 @@ export default function BuySell({ token, initType, from }: Props) {
     tokenName,
     tokenSymbol,
     tokenUri,
-    tokenDecimals: 2
+    tokenDecimals
   };
 
   const [activeIndex, setActiveIndex] = useState(initType === "buy" ? 0 : 1);
@@ -64,7 +64,9 @@ export default function BuySell({ token, initType, from }: Props) {
 
   const {
     buyToken,
+    buyTokenWithFixedOutput,
     sellToken,
+    sellTokenWithFixedOutput,
     rate,
     minPrice,
     maxPrice,
@@ -73,7 +75,8 @@ export default function BuySell({ token, initType, from }: Props) {
     updateBalance
   } = useTokenTrade({
     tokenName,
-    tokenSymbol
+    tokenSymbol,
+    tokenDecimals
   });
 
   const TOKEN_PERCENT_LIST = useMemo(() => {
@@ -92,17 +95,19 @@ export default function BuySell({ token, initType, from }: Props) {
         let buyInSol = "";
         if (tokenType === 1) {
           buyInSol = new Big(debounceVal)
-            .mul(10 ** SOL.tokenDecimals)
+            .mul(10 ** (SOL.tokenDecimals))
             .toFixed(0);
-          const buyIn = new Big(debounceVal).mul(rate).toFixed(2);
+          const buyIn = new Big(debounceVal).mul(rate).mul(10 ** (token.tokenDecimals)).div(1 + slip / 100).toFixed(0);
           setBuyIn(buyIn);
+
         } else if (tokenType === 0) {
           buyInSol = new Big(debounceVal)
             .div(new Big(rate))
             .mul(10 ** SOL.tokenDecimals)
+            .mul(1 + slip / 100)
             .toFixed(0);
           if (Number(buyInSol) > 1) {
-            setBuyIn(debounceVal);
+            setBuyIn(new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0));
           } else {
             setBuyIn("");
             buyInSol = "";
@@ -124,9 +129,11 @@ export default function BuySell({ token, initType, from }: Props) {
           sellOut = new Big(debounceVal)
             .mul(10 ** token.tokenDecimals)
             .toFixed(0);
+
           const sellSolOut = new Big(debounceVal)
             .div(rate)
-            .mul(10 ** SOL.tokenDecimals)
+            .mul(1 - slip / 100)
+            .mul(10 ** (SOL.tokenDecimals))
             .toFixed(0);
 
           console.log("sellSolOut:", sellSolOut);
@@ -139,7 +146,7 @@ export default function BuySell({ token, initType, from }: Props) {
             setSellOut(sellOut);
             setSellOutSol(
               getFullNum(
-                new Big(sellSolOut).div(10 ** SOL.tokenDecimals).toString()
+                sellSolOut.toString()
               )
             );
             if (sellOut) {
@@ -156,7 +163,7 @@ export default function BuySell({ token, initType, from }: Props) {
       setIsError(true);
       setErrorMsg("Enter a amount");
     }
-  }, [debounceVal, rate, tokenType, currentToken]);
+  }, [debounceVal, rate, tokenType, slip, currentToken]);
 
   return (
     <div>
@@ -170,6 +177,7 @@ export default function BuySell({ token, initType, from }: Props) {
           <div
             onClick={() => {
               setActiveIndex(0);
+              setValInput("");
             }}
             className={[
               styles.tab,
@@ -183,6 +191,7 @@ export default function BuySell({ token, initType, from }: Props) {
               setActiveIndex(1);
               setCurrentToken(desToken);
               setTokenType(0);
+              setValInput("");
             }}
             className={[
               styles.tab,
@@ -202,12 +211,12 @@ export default function BuySell({ token, initType, from }: Props) {
                   if (tokenType === 0) {
                     setCurrentToken(SOL);
                     setTokenType(1);
-                    setValInput("");
                   } else {
                     setCurrentToken(desToken);
                     setTokenType(0);
-                    setValInput("");
+                    
                   }
+                  setValInput("");
                 }}
               >
                 <span className={styles.switchTitle}>switch to </span>
@@ -315,7 +324,6 @@ export default function BuySell({ token, initType, from }: Props) {
                       const tokenPercentVal = new Big(tokenBalance)
                         .mul(item / 100)
                         .toFixed(2);
-                      console.log("item:", item, tokenBalance, tokenPercentVal);
                       setValInput(tokenPercentVal);
                     }}
                     key={item}
@@ -336,7 +344,7 @@ export default function BuySell({ token, initType, from }: Props) {
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
             <div className={styles.receiveTitle}>You will buy in</div>
             <div className={styles.receiveAmount}>
-              {buyIn} {tokenName}
+              {buyIn ? new Big(buyIn).div(10 ** token.tokenDecimals).toFixed(token.tokenDecimals) : ''} {tokenName}
             </div>
           </div>
         )}
@@ -344,7 +352,7 @@ export default function BuySell({ token, initType, from }: Props) {
         {activeIndex === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
             <div className={styles.receiveTitle}>You will get</div>
-            <div className={styles.receiveAmount}>{sellOutSol} SOL</div>
+            <div className={styles.receiveAmount}>{sellOutSol ? new Big(sellOutSol).div(10 ** SOL.tokenDecimals).toFixed(SOL.tokenDecimals) : 0} SOL</div>
           </div>
         )}
 
@@ -359,11 +367,13 @@ export default function BuySell({ token, initType, from }: Props) {
                 }
 
                 if (activeIndex === 0) {
+                  console.log('buyInSol:', buyIn, buyInSol, new Big(Number(buyInSol) * (1 + slip / 100)).toFixed(0))
                   setIsLoading(true);
-                  await buyToken(buyInSol);
+                  await buyTokenWithFixedOutput(buyIn, buyInSol)
+                  // await buyToken(buyInSol);
                 } else if (activeIndex === 1) {
                   setIsLoading(true);
-                  await sellToken(sellOut);
+                  await sellToken(sellOut, sellOutSol);
                 }
                 setIsLoading(false);
                 success("Transtion success");
@@ -391,6 +401,7 @@ export default function BuySell({ token, initType, from }: Props) {
         slipData={slip}
         token={token}
         onSlipDataChange={(val: any) => {
+          console.log(val)
           setSlip(val);
         }}
         onHide={() => {

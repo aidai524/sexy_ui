@@ -326,6 +326,7 @@ export function sleep(time: number) {
 }
 
 export function mapDataToProject(currentToken: any): Project {
+
     return {
         id: currentToken.id,
         tokenName: currentToken.token_name,
@@ -336,6 +337,7 @@ export function mapDataToProject(currentToken: any): Project {
         tokenIcon: currentToken.icon || currentToken.video,
         tokenImg: currentToken.video || currentToken.icon ||
             "https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect",
+        tokenDecimals: currentToken.token_decimals,
         isLike: currentToken.is_like,
         isUnLike: currentToken.isUnLike,
         isSuperLike: currentToken.isSuperLike,

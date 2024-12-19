@@ -142,7 +142,7 @@ export default function Action({ data, justPlus = false, from }: Props) {
                             tokenName: data.tokenName,
                             tokenSymbol: data.tokenSymbol as string,
                             tokenUri: data.tokenIcon || data.tokenImg,
-                            tokenDecimals: 2
+                            tokenDecimals: data.tokenDecimals as number,
                         }}
                     />
                 </div>

@@ -10,6 +10,7 @@ export interface Project {
     discord?: string;
     tokenImg: string;
     tokenIcon?: string;
+    tokenDecimals?: number;
     isLike?: boolean;
     isUnLike?: boolean;
     isSuperLike?: boolean;

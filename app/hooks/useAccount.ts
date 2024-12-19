@@ -18,8 +18,6 @@ export function useAccount() {
     walletProvider: {
       publicKey,
       signAndSendTransaction: async (transaction: any, sendOptions: any = {}) => {
-        console.log('sendOptions:', sendOptions)
-
         // @ts-ignore
         if (wallet?.adapter && wallet.adapter.wallet) {
           // @ts-ignore

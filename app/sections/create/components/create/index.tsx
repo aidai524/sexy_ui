@@ -51,12 +51,6 @@ export default function Create({
         tokenUri,
     } = token
 
-    const desToken: Token = {
-        tokenName,
-        tokenSymbol,
-        tokenUri,
-        tokenDecimals: 2,
-    }
 
     const [infoData, setInfoData] = useState<Project>({
         tokenName: tokenName,
@@ -81,6 +75,7 @@ export default function Create({
     const { createToken } = useTokenTrade({
         tokenName,
         tokenSymbol,
+        tokenDecimals: 6,
         loadData: false
     })
 

@@ -15,7 +15,9 @@ interface Props {
 const list = [0.1, 0.5, 1]
 
 export default function SlipPage({ show, token, slipData, onSlipDataChange, onHide }: Props) {
-  const [inputData, setInputData] = useState(slipData)
+  // const [inputData, setInputData] = useState(slipData)
+
+
 
   return (
     <Popup
@@ -40,7 +42,8 @@ export default function SlipPage({ show, token, slipData, onSlipDataChange, onHi
             list.map(item => {
               return <div key={item} onClick={() => {
                 onSlipDataChange && onSlipDataChange(item)
-              }} className={styles.item + ' ' + (inputData === item ? styles.checked : '')}>
+                console.log(111, item)
+              }} className={styles.item + ' ' + (slipData === item ? styles.checked : '')}>
                 <div className={styles.amount}>{ item }%</div>
                 <div className={styles.checkBox}></div>
               </div>
@@ -49,7 +52,10 @@ export default function SlipPage({ show, token, slipData, onSlipDataChange, onHi
         </div>
 
         <div className={ styles.inputBox }>
-          <input value={inputData} onChange={(e) => { setInputData(e.target.value as string) }} className={ styles.input } placeholder="Custom"/>
+          <input value={slipData} onChange={(e) => { 
+            // setInputData(e.target.value as string) 
+            onSlipDataChange && onSlipDataChange(e.target.value)
+          }} className={ styles.input } placeholder="Custom"/>
           <div className={ styles.percent }>%</div>
         </div>
 

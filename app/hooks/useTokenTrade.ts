@@ -27,11 +27,12 @@ import { useClickAway } from 'ahooks';
 interface Props {
     tokenName: string;
     tokenSymbol: string;
+    tokenDecimals: number;
     loadData?: boolean;
 }
 
 export function useTokenTrade({
-    tokenName, tokenSymbol, loadData = true
+    tokenName, tokenSymbol, tokenDecimals, loadData = true
 }: Props) {
     const { connection } = useConnection();
     const { walletProvider } = useAccount();
@@ -279,8 +280,6 @@ export function useTokenTrade({
         })
         const instruction2 = createSyncNativeInstruction(keys.userWsolAccount, TOKEN_PROGRAM_ID)
 
-        // await wrapToWSol(walletProvider, connection!, walletProvider.publicKey!, keys[6].pubkey, 200000000)
-
         const transaction = new Transaction({
             recentBlockhash: latestBlockhash!.blockhash,
             feePayer: walletProvider.publicKey!
@@ -305,7 +304,83 @@ export function useTokenTrade({
         console.log('v:', v)
     }, [connection, walletProvider, programId, maxPrice])
 
-    const sellToken = useCallback(async (amount: number | string) => {
+    const buyTokenWithFixedOutput = useCallback(async (outputAmount: string | number, maxWsolAmount: string | number,) => {
+        const latestBlockhash = await connection?.getLatestBlockhash();
+
+        const keys = await getKeys()
+
+        // console.log('keys: ', keys)
+
+        if (!keys) {
+            return
+        }
+
+        const instruction1 = SystemProgram.transfer({
+            fromPubkey: walletProvider.publicKey!,
+            toPubkey: keys.userWsolAccount,
+            lamports: Number(maxWsolAmount),
+        })
+        const instruction2 = createSyncNativeInstruction(keys.userWsolAccount, TOKEN_PROGRAM_ID)
+
+        const transaction = new Transaction({
+            recentBlockhash: latestBlockhash!.blockhash,
+            feePayer: walletProvider.publicKey!
+        });
+
+        const program = new Program<any>(idl, programId, walletProvider as any);
+
+        const buyInstruction = await program.methods.buyTokenWithFixedOutput(
+            new anchor.BN(outputAmount),
+            new anchor.BN(maxWsolAmount),
+            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+            keys.proxySolAccount
+        ).accounts(keys).instruction()
+
+        transaction.add(instruction1).add(instruction2).add(buyInstruction)
+
+        // tx.recentBlockhash = latestBlockhash!.blockhash
+        // tx.feePayer = walletProvider.publicKey!
+
+        const v = await walletProvider.signAndSendTransaction(transaction)
+
+        console.log('v:', v)
+    }, [connection, walletProvider, programId])
+
+    const sellToken = useCallback(async (amount: number | string, minWsolAmount: number | string,) => {
+        const latestBlockhash = await connection?.getLatestBlockhash();
+
+        const keys = await getKeys()
+        if (!keys) {
+            return
+        }
+
+        // console.log('minWsolAmount:', minWsolAmount)
+
+        const program = new Program<any>(idl, programId, { connection: connection } as any);
+
+        const tx: any = await program.methods.sellToken(
+            new anchor.BN(amount),
+            new anchor.BN(minWsolAmount),
+            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+            keys.proxySolAccount,
+        ).accounts(keys).transaction()
+
+        console.log('tx:', tx)
+        tx.recentBlockhash = latestBlockhash!.blockhash
+        tx.feePayer = walletProvider.publicKey!
+
+        const confirmationStrategy: any = {
+            skipPreflight: true,
+            preflightCommitment: 'processed',
+        };
+
+        const hash = await walletProvider.signAndSendTransaction(tx, confirmationStrategy)
+
+        return hash
+
+    }, [connection, walletProvider, programId])
+
+    const sellTokenWithFixedOutput = useCallback(async (outputAmount: string | number, maxMemeAmount: string | number,) => {
         const latestBlockhash = await connection?.getLatestBlockhash();
 
         const keys = await getKeys()
@@ -315,11 +390,10 @@ export function useTokenTrade({
 
         const program = new Program<any>(idl, programId, { connection: connection } as any);
 
-        const solAmount = new anchor.BN(minPrice)
 
-        const tx: any = await program.methods.sellToken(
-            new anchor.BN(amount),
-            solAmount,
+        const tx: any = await program.methods.sellTokenWithFixedOutput(
+            new anchor.BN(outputAmount),
+            new anchor.BN(maxMemeAmount),
             new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
             keys.proxySolAccount,
         ).accounts(keys).transaction()
@@ -631,12 +705,12 @@ export function useTokenTrade({
     useEffect(() => {
         if (programId && pool && connection && tokenName && tokenSymbol && loadData) {
             const program = new Program<any>(idl, programId, { connection: connection } as any);
-            _getRate(program, pool[0]).then(rate => {
+            _getRate(program, pool[0], tokenDecimals).then(rate => {
                 console.log('rate:', rate.toString())
                 setRate(Number(rate.toString()))
             })
         }
-    }, [programId, pool, connection, tokenName, tokenSymbol, loadData, reFreshBalnace])
+    }, [programId, pool, connection, tokenName, tokenSymbol, tokenDecimals, loadData, reFreshBalnace])
 
     useEffect(() => {
         console.log('reFreshBalnace:', reFreshBalnace)
@@ -651,17 +725,18 @@ export function useTokenTrade({
 
                 let i = 0
                 if (userTokenAccount) {
-                        const balance = new Big(Number(userTokenAccount.amount)).div(10 ** 2).toString()
-                        setTokenBalance(balance)
-                        i++
-                    
+                    const balance = new Big(Number(userTokenAccount.amount)).div(10 ** tokenDecimals).toString()
+                    console.log('balance:', balance)
+
+                    setTokenBalance(balance)
+                    return
                 }
 
                 setTokenBalance('0')
             }, 10)
         }
 
-    }, [programId, walletProvider, connection, tokenName, tokenSymbol, loadData, reFreshBalnace])
+    }, [programId, walletProvider, connection, tokenName, tokenSymbol, tokenDecimals, loadData, reFreshBalnace])
 
     useEffect(() => {
         if (connection) {
@@ -682,7 +757,9 @@ export function useTokenTrade({
         minPrice,
         maxPrice,
         buyToken,
+        buyTokenWithFixedOutput,
         sellToken,
+        sellTokenWithFixedOutput,
         createToken,
         tokenBalance,
         solBalance,
@@ -728,11 +805,11 @@ async function getMetaData(tokenMint: PublicKey) {
     return metaData
 }
 
-async function _getRate(program: Program, pool: PublicKey) {
+async function _getRate(program: Program, pool: PublicKey, tokenDecimals: number) {
     const poolData: any = await program.account.pool.fetch(pool)
     // console.log('grid_state_before:', poolData, poolData!.virtualTokenAmount.toString(), poolData!.virtualWsolAmount.toString())
 
-    const poolToken = new Big(poolData!.virtualTokenAmount.toString()).div(10 ** 2)
+    const poolToken = new Big(poolData!.virtualTokenAmount.toString()).div(10 ** tokenDecimals)
     const solToken = new Big(poolData!.virtualWsolAmount.toString()).div(10 ** 9)
     const rate = poolToken.div(solToken).toString()
 

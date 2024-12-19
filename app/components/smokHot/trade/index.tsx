@@ -33,6 +33,7 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
     const { prePaid, checkPrePayed } = useTokenTrade({
         tokenName: token.tokenName,
         tokenSymbol: token.tokenSymbol || token.tokenName.toUpperCase(),
+        tokenDecimals: token.tokenDecimals as number,
         loadData: false
     });
 
