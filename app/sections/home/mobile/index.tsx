@@ -29,7 +29,10 @@ export default function Home() {
   const containerLaunchedRef = useRef<any>();
   const likeTriggerRef = useRef(likeTrigger)
   const hateTriggerRef = useRef(hateTrigger)
+  const scrollRef = useRef(false)
 
+  const [movingStyle, setMovingStyle] = useState({})
+  const [movingStyle2, setMovingStyle2] = useState({})
  
 
   const {
@@ -54,7 +57,7 @@ export default function Home() {
     renderIndex: renderLaunchedIndex,
     renderIndexRef: renderLaunchedIndexRef,
     updateCurrentToken: updateLaunchedToken,
-  } = useData("launching");
+  } = useData("preLaunch");
 
   useSwip(
     containerPreLaunchRef,
@@ -72,7 +75,6 @@ export default function Home() {
     },
     () => {
 
-      console.log('likeTriggerRef.current:', likeTriggerRef.current)
       if (likeTriggerRef.current) {
         return;
       }
@@ -84,6 +86,38 @@ export default function Home() {
         setLikeTrigger(false);
       }, 1600);
     },
+    (percent: number) => {
+      if (hateTriggerRef.current) {
+        return;
+      }
+
+      console.log('preing')
+      const style = {
+        // opacity: percent,
+        transform: `rotate(${40 * percent}deg) translate(0, ${100 * percent}vh)`
+      }
+      if (renderLaunchingIndexRef.current === 0) { 
+        setMovingStyle2(style);
+      } else {
+        setMovingStyle(style);
+      }
+    },
+    (percent: number) => {
+      if (likeTriggerRef.current) {
+        return;
+      }
+
+      console.log('nexting')
+      const style = {
+        // opacity: percent,
+        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent}vh)`
+      }
+      if (renderLaunchingIndexRef.current === 0) { 
+        setMovingStyle2(style);
+      } else {
+        setMovingStyle(style);
+      }
+    },
     launchIndex === 0
   );
 
@@ -94,6 +128,38 @@ export default function Home() {
     },
     () => {
       justNext("like");
+    },
+    (percent: number) => {
+      if (scrollRef.current) {
+        return;
+      }
+
+      console.log('preing')
+      const style = {
+        opacity: 1- percent,
+        transform: `rotate(${40 * percent}deg) translate(0, ${100 * percent}vh)`
+      }
+      if (renderLaunchedIndexRef.current === 0) { 
+        setMovingStyle2(style);
+      } else {
+        setMovingStyle(style);
+      }
+    },
+    (percent: number) => {
+      if (scrollRef.current) {
+        return;
+      }
+
+      console.log('nexting')
+      const style = {
+        opacity: 1 - percent,
+        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent}vh)`
+      }
+      if (renderLaunchedIndexRef.current === 0) { 
+        setMovingStyle2(style);
+      } else {
+        setMovingStyle(style);
+      }
     },
     launchIndex === 1
   );
@@ -139,6 +205,8 @@ export default function Home() {
         setTimeout(() => {
           setActionStyle2(null);
           setActionStyle(null);
+          setMovingStyle({})
+          setMovingStyle2({})
         }, 100)
       }, 1000);
     }
@@ -162,6 +230,8 @@ export default function Home() {
         setTimeout(() => {
           setActionStyle2(null);
           setActionStyle(null);
+          setMovingStyle({})
+          setMovingStyle2({})
         }, 100)
       }, 1000);
     }
@@ -174,18 +244,26 @@ export default function Home() {
       launchedList.current &&
       launchedList.current.length > 1
     ) {
+      if (scrollRef.current) {
+        return
+      }
+
+      scrollRef.current = true
       const style = type === "like" ? styles.like : styles.hate;
       if (renderLaunchedIndexRef.current === 0) {
-        setActionStyle2(styles.hate);
+        setActionStyle2(style);
       } else {
-        setActionStyle(styles.hate);
+        setActionStyle(style);
       }
-      setActionStyle(style);
+      // setActionStyle(style);
       setTimeout(() => {
         getLaunchedNext();
         setTimeout(() => {
           setActionStyle2(null);
           setActionStyle(null);
+          setMovingStyle({})
+          setMovingStyle2({})
+          scrollRef.current = false
         }, 100)
       }, 1000);
     }
@@ -221,7 +299,11 @@ export default function Home() {
             {
               infoDataLaunching && (
                 <div
-                  style={{ zIndex: renderLaunchingIndex === 0 ? 1 : 2 }}
+                  style={{ 
+                    zIndex: renderLaunchingIndex === 0 ? 1 : 2,
+                    ...movingStyle
+                  }}
+                  key={infoDataLaunching.id}
                   className={[styles.thumbnailBox, actionStyle].join(" ")}
                 >
                   <Thumbnail
@@ -236,7 +318,11 @@ export default function Home() {
             {
               infoDataLaunching2 && (
                 <div
-                  style={{ zIndex: renderLaunchingIndex === 0 ? 2 : 1 }}
+                  key={infoDataLaunching2.id}
+                  style={{ 
+                    zIndex: renderLaunchingIndex === 0 ? 2 : 1,
+                    ...movingStyle2
+                  }}
                   className={[styles.thumbnailBox, actionStyle2].join(" ")}
                 >
                   <Thumbnail
@@ -275,7 +361,11 @@ export default function Home() {
           <div className={styles.thumbnailListBox} ref={containerLaunchedRef}>
             {infoDataLaunched && (
               <div
-                style={{ zIndex: renderLaunchedIndex === 0 ? 1 : 2 }}
+                key={infoDataLaunched.id}
+                style={{ 
+                  zIndex: renderLaunchedIndex === 0 ? 1 : 2,
+                  ...movingStyle
+                }}
                 className={[styles.thumbnailBox, actionStyle].join(" ")}
               >
                 <Thumbnail
@@ -288,7 +378,11 @@ export default function Home() {
 
             {infoDataLaunched2 && (
               <div
-                style={{ zIndex: renderLaunchedIndex === 0 ? 2 : 1 }}
+                key={infoDataLaunched2.id}
+                style={{ 
+                  zIndex: renderLaunchedIndex === 0 ? 2 : 1,
+                  ...movingStyle2
+                }}
                 className={[styles.thumbnailBox, actionStyle2].join(" ")}
               >
                 <Thumbnail

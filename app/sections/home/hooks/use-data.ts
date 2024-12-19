@@ -60,15 +60,15 @@ export default function useData(launchType: string) {
     setRenderIndex(renderIndexRef.current)
     
     setTimeout(() => {
-      if (list.length > 0) {
-        const currentToken = list[0];
+      if (list.length > 1) {
+        const currentToken = list[1];
         if (renderIndexRef.current === 1) {
           setInfoData2(mapDataToProject(currentToken));
         } else {
           setInfoData(mapDataToProject(currentToken));
         }
       }
-    }, 100)
+    }, 0)
     
   };
 
