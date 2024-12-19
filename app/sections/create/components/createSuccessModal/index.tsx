@@ -17,7 +17,7 @@ export default function CreateSuccessModal({
     token,
 }: Props) {
 
-    return <Modal
+    return <div className={style.ModalMain}><Modal
         visible={show}
         content={<SuccessModal token={token} onClose={() => { onHide() }}/>}
         closeOnAction
@@ -26,6 +26,7 @@ export default function CreateSuccessModal({
             onHide()
         }}
     />
+    </div>
 }
 
 function SuccessModal({ onClose, token }: { onClose: () => void; token: Project }) {

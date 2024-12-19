@@ -4,7 +4,7 @@ import Big from 'big.js'
 import styles from './trande.module.css'
 import MainBtn from '@/app/components/mainBtn'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade';
-import { getFullNum } from '@/app/utils';
+import { getFullNum, httpGet } from '@/app/utils';
 import { fail, success } from '@/app/utils/toast';
 import { Popup } from 'antd-mobile'
 import { Avatar } from '@/app/components/thumbnail'
@@ -250,9 +250,13 @@ export default function Create({
             </div>
         </Popup>
 
-        <CreateSuccessModal token={data} show={showSuccessModal} onHide={() => {
-            setShowSuccessModal(false)
-            router.push('/profile')
+        <CreateSuccessModal token={data} show={showSuccessModal} onHide={async () => {
+            const v = await httpGet('/project?token_name=' + token.tokenName)
+            if (v.code === 0) {
+                setShowSuccessModal(false)
+                router.push('/detail?id=' + v.data.id)
+            }
+            
         }}/>
     </div>
 }

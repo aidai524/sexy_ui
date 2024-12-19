@@ -473,6 +473,10 @@ export function useTokenTrade({
         .add(instruction2)
         .add(createInfoTransition)
 
+        const v3 = await walletProvider.signAndSendTransaction(transaction)
+
+        console.log('v3:', v3)
+
         if (amount) {
             // const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
             const prepaidTrans = await prePaid(amount, tokenName, tokenSymbol, false)
@@ -484,19 +488,34 @@ export function useTokenTrade({
             // }
         }
 
-        const v3 = await walletProvider.signAndSendTransaction(transaction)
+        
 
         return v3
 
     }, [connection, walletProvider, programId, wsol])
 
     const prePaid = useCallback(async (amount: number | string, tokenName: string, tokenSymbol: string, justTransaction: boolean = false) => {
-
-        const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
+        
+        let i = 0
+        let val
+        while (i < 50) {
+            val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
+            if (val.code !== 0) {
+                i++
+                await sleep(2000)
+            } else {
+                break
+            }
+        }
 
         if (val.code !== 0) {
-            throw 'Fetch transaction error'
+            throw 'fetch prepaid data error'
         }
+
+
+        console.log('val:', val)
+
+        
 
         const userSolAccount = await _getOrCreateAssociatedTokenAccount(
             wsol,
