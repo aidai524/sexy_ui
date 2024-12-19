@@ -94,7 +94,7 @@ export default function HotBoost({ onMoreClick, style, user }: Props) {
         <div className={styles.nameContent}>
           <div className={styles.names}>
             <span>
-              <span className={styles.whiteName}>{boostNum}</span>{' '}
+              <span className={styles.whiteName}>{user?.usingBoostNum}/{user?.boostNum}</span>{' '}
             </span>
             <span>Boost</span>
           </div>

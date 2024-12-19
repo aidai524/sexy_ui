@@ -35,7 +35,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 71.43%);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 30.43%);
     }
 
     .bottomLike {
@@ -57,9 +57,9 @@
         right: 0;
         bottom: 0;
         top: 50%; */
-        background: linear-gradient(181.33deg,
+        /* background: linear-gradient(181.33deg,
                 rgba(13, 16, 18, 0) 1.14%,
-                #0d1012 98.87%);
+                #0d1012 98.87%); */
         padding: 0 25px 10px;
         display: flex;
         flex-direction: column;

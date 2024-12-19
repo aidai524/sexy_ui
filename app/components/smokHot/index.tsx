@@ -63,8 +63,8 @@ export default function SmokeBtn({ onClick, token }: Props) {
         onClick();
       }}
     >
-      <div style={{ width: 48, height: 48, overflow: 'hidden' }}>
-        <img style={{ width: 48 }} src="/img/profile/smoke-hot.png" />
+      <div style={{ width: 36, height: 36, overflow: 'hidden' }}>
+        <img style={{ width: 36 }} src="/img/profile/smoke-hot.png" />
       </div>
 
       <Modal

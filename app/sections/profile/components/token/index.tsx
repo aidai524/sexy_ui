@@ -58,7 +58,7 @@ export default function Token({ data, update }: Props) {
                             {
                                 timeFormat ? <div className={styles.whiteAmount}>
                                     <div className={styles.timeFormat}>{timeFormat}</div>
-                                </div> : '30 min'
+                                </div> : <div style={{ transform: 'translateX(-30%)' }}>30 min</div>
                             }
                         </div>
                     </div>
