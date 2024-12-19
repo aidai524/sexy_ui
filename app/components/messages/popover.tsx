@@ -10,7 +10,8 @@ export default function Messages({
   feeds,
   onClose,
   onShowMore,
-  onRead
+  onRead,
+  num
 }: any) {
   const [currentTab, setCurrentTab] = useState("inform");
   const data = useMemo(
@@ -32,6 +33,7 @@ export default function Messages({
         currentTab={currentTab}
         onChangeTab={setCurrentTab}
         onClose={onClose}
+        num={num}
       />
       <div className={styles.Content}>
         {data.map((item: any) => (
@@ -42,18 +44,7 @@ export default function Messages({
         )}
       </div>
       <div className={styles.Bottom}>
-        <span
-          className="button"
-          onClick={() => {
-            onRead({
-              onSuccess() {
-                onClose();
-              }
-            });
-          }}
-        >
-          All read
-        </span>
+        <div />
         <div className={`${styles.ViewAll} button`} onClick={onShowMore}>
           <span>View all</span>
           <svg

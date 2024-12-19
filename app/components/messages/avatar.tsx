@@ -6,7 +6,7 @@ export function Avatar({ style }: any) {
       height="38"
       viewBox="0 0 38 38"
       fill="none"
-      style={style}
+      style={{ flexShrink: 0, ...style }}
     >
       <circle cx="19" cy="19" r="19" fill="#FF2681" />
       <mask
@@ -52,6 +52,7 @@ export function ReadAvatar() {
       height="38"
       viewBox="0 0 38 38"
       fill="none"
+      style={{ flexShrink: 0 }}
     >
       <circle cx="19" cy="19" r="19" fill="#CFCFCF" />
       <mask
