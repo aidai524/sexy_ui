@@ -23,13 +23,6 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
     const [isPrePayd, setIsPrePayd] = useState(false);
     const { address } = useAccount()
 
-    const [infoData, setInfoData] = useState<Project>({
-        tokenName: token.tokenName,
-        ticker: token.ticker,
-        about: token.about,
-        tokenImg: token.tokenImg
-    });
-
     const { prePaid, checkPrePayed } = useTokenTrade({
         tokenName: token.tokenName,
         tokenSymbol: token.tokenSymbol || token.tokenName.toUpperCase(),
@@ -50,7 +43,7 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
     return (
         <div className={styles.main}>
             <div className={styles.avatar}>
-                <Avatar data={infoData} />
+                <Avatar data={token} showLaunchType={true}/>
             </div>
 
             <div
@@ -78,7 +71,7 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
                             <div className={styles.tokenImg}>
                                 <img
                                     className={styles.tiImg}
-                                    src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect"
+                                    src="/img/home/solana.png"
                                 />
                             </div>
                         </div>

@@ -19,6 +19,8 @@ export default function Token({ data, update }: Props) {
     const router = useRouter()
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
 
+    console.log('token data:', data)
+
     return <div className={styles.main}>
         <div className={styles.tokenMag}>
             <div className={styles.tokenImgContent} onClick={() => {

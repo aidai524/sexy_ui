@@ -58,7 +58,7 @@ export default function SmokeBtn({ onClick, token }: Props) {
           } else {
             setVipShow(true)
           }
-          
+
         }
         onClick();
       }}

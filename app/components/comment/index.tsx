@@ -58,12 +58,12 @@ export default function CommentComp({
     }
   }, [id, reReashNum]);
 
-  return (
-    <div className={`${styles.main} ${theme === "light" && styles.LightMain}`}>
-      <div className={styles.title} style={titleStyle}>
-        Discussion
-      </div>
-      {showEdit && (
+  const Content = <>
+    <div className={styles.title} style={titleStyle}>
+      Discussion
+    </div>
+    {showEdit && (
+      <div className={styles.inputWrapper}>
         <input
           value={commentText}
           onKeyUp={async (e) => {
@@ -91,22 +91,44 @@ export default function CommentComp({
             }
           }}
           onChange={(e) => {
-            // console.log(e)
             setCommentText(e.target.value);
           }}
-          className={`${styles.input} ${
-            theme === "light" ? styles.LightInput : styles.DarkInput
-          }`}
+          className={`${styles.input} ${theme === "light" ? styles.LightInput : styles.DarkInput
+            }`}
           placeholder="Say something..."
         />
-      )}
 
-      {commentList.length > 0 &&
-        (usePanel ? (
-          <Panel theme={theme}>{CommentList}</Panel>
-        ) : (
-          <div style={{ padding: "0 10px" }}>{CommentList}</div>
-        ))}
+        {
+          commentText && <div onClick={() => { setCommentText('') }} className={ styles.inputClear }>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g filter="url(#filter0_b_4178_1714)">
+              <circle cx="12" cy="12" r="12" fill="#888197" fill-opacity="0.22" />
+            </g>
+            <path d="M8 8L16 16" stroke="#888197" stroke-width="2" stroke-linecap="round" />
+            <path d="M16 8L8 16" stroke="#888197" stroke-width="2" stroke-linecap="round" />
+            <defs>
+              <filter id="filter0_b_4178_1714" x="-10" y="-10" width="44" height="44" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
+                <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_4178_1714" />
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_4178_1714" result="shape" />
+              </filter>
+            </defs>
+          </svg>
+        </div>
+        }
+        
+      </div>
+    )}
+
+    {commentList.length > 0 && <div>{CommentList}</div>}
+  </>
+
+  return (
+    <div className={`${styles.main} ${theme === "light" && styles.LightMain}`}>
+      {
+        usePanel ? <Panel theme={theme}>{Content}</Panel> : <>{Content}</>
+      }
     </div>
   );
 }

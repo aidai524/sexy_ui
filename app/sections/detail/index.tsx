@@ -37,8 +37,6 @@ export default function Detail() {
     return <></>;
   }
 
-  console.log('infoData:', infoData)
-
   return (
     <div className={styles.main}>
       <AvatarBack data={infoData} />
@@ -66,7 +64,7 @@ export default function Detail() {
             },
             {
               name: "Txs",
-              content: <Txs />
+              content: <Txs data={infoData} />
             }
           ]}
         />

@@ -20,8 +20,8 @@ export default function SmokPanel({ show, token, onHide }: Props) {
         onHide && onHide();
       }}
       bodyStyle={{
-        borderTopLeftRadius: "8px",
-        borderTopRightRadius: "8px",
+        borderTopLeftRadius: 18,
+        borderTopRightRadius: 18,
         paddingTop: 10,
         paddingBottom: 10
       }}

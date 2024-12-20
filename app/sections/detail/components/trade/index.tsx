@@ -12,7 +12,7 @@ interface Props {
 export default function TradeInfo({ data, from }: Props) {
   return (
     <div className={from === "laptop" ? styles.LaptopContainer : ""}>
-      <CA from={from} />
+      <CA from={from} data={data}/>
       <Trade
         token={{
           tokenName: data.tokenName,

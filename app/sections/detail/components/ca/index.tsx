@@ -1,6 +1,10 @@
+import type { Project } from "@/app/type";
 import styles from "./ca.module.css";
+import { formatAddress, formatAddressLast } from "@/app/utils";
 
-export default function CA({ from }: any) {
+export default function CA({ from, data }: {  from: string | undefined; data: Project}) {
+  console.log('data:', data)
+
   return (
     <div
       className={[
@@ -15,7 +19,7 @@ export default function CA({ from }: any) {
       <div className={styles.ca}>
         <div className={styles.caAddress}>
           <div className={styles.caTtitle}>CA:</div>
-          <div className={styles.address}>zdfsdfsdfsdf</div>
+          <div className={styles.address}>{ data.address ? formatAddress(data.address) : '' }</div>
         </div>
 
         <div className={styles.copy}>

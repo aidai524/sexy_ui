@@ -3,10 +3,10 @@ import styles from "./txs.module.css";
 
 const list = [1, 2, 3, 4];
 
-export default function Txs({ from }: any) {
+export default function Txs({ from, data }: any) {
   return (
     <div className={styles.main}>
-      <CA from={from} />
+      <CA from={from} data={data}/>
 
       <div
         className={`${styles.txContent} ${

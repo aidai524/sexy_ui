@@ -16,7 +16,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 1);
             position: relative;
             &.active {
                 color: var(--part-bg);

@@ -136,6 +136,17 @@ export default function Action({ data, justPlus = false, from }: Props) {
                 }}
             >
                 <div className={styles.main}>
+                    <div className={ styles.avatarBox }>
+                        <div className={styles.avatar}>
+                            <img className={styles.avatarImg} src={ data.tokenIcon || data.tokenImg } />
+                        </div>
+
+                        <div className={styles.nameContent}>
+                            <div className={styles.name}>{ data.tokenName }</div>
+                            <div className={styles.ticker}>/Ticker:{ data.ticker }</div>
+                        </div>
+                    </div>
+
                     <Trade
                         initType={initType}
                         token={{
