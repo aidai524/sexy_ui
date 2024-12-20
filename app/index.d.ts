@@ -5,4 +5,6 @@ interface Window {
       auth: any;
     };
   };
+  AddToHomeScreenInstance: any;
+  AddToHomeScreen: any;
 }
