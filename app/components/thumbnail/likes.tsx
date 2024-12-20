@@ -16,9 +16,12 @@ export default function Likes({ data }: any) {
         </span>
         <span className={styles.likesNums}>{data.superLike}</span>
       </div>
-      <div className={[styles.holder, styles.likeCustom].join(" ")}>
-        <span className={styles.likesNums}>Holders 0</span>
-      </div>
+
+      {
+        data.status !== 0 && <div className={[styles.holder, styles.likeCustom].join(" ")}>
+          <span className={styles.likesNums}>Holders 0</span>
+        </div>
+      }
     </div>
   );
 }
