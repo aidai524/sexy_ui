@@ -1,6 +1,4 @@
-import Header from "./header";
 import Content from "./content";
-import styles from "./index.module.css";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
@@ -17,10 +15,5 @@ export default function Main({ userInfo }: any) {
       return 0;
     }
   }, [params]);
-  return (
-    <div className={styles.Container}>
-      <Header userInfo={userInfo} tab={tab} />
-      <Content key={tab} tab={tab} />
-    </div>
-  );
+  return <Content key={tab} tab={tab} />;
 }

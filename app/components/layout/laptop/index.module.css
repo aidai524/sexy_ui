@@ -5,3 +5,8 @@
   display: flex;
   gap: 30px;
 }
+
+.Content {
+  padding: 0px 30px;
+  flex-grow: 1;
+}

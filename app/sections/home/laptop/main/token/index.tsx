@@ -15,7 +15,8 @@ export default function Token({
   onLike,
   onHate,
   getnext,
-  onOpenFull
+  onOpenFull,
+  type
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
 
@@ -42,6 +43,7 @@ export default function Token({
           currentTab={currentTab}
           setCurrentTab={setCurrentTab}
           onOpenFull={onOpenFull}
+          type={type}
         />
         {infoData2 && (
           <div className={styles.Content}>

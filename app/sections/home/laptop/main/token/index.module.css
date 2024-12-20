@@ -1,9 +1,9 @@
 .Container {
   height: calc(100vh - 187px);
   width: 100%;
+  position: relative;
   background-color: #d8226f;
   border-radius: 28px;
-  position: relative;
 }
 
 .SexyFi {

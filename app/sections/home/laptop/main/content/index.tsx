@@ -16,6 +16,7 @@ export default function Content({ tab }: any) {
           onLike,
           onHate,
           getnext,
+          type: tab,
           onOpenFull() {
             setFull(true);
           }

@@ -19,7 +19,9 @@ export default function RootLayout({
       appIconUrl: "/192x192.png",
       assetUrl: "/libs/add_to_homescreen/img/", // Link to directory of library image assets.
 
-      maxModalDisplayCount: -1, // If set, the modal will only show this many times.
+      maxModalDisplayCount: window.navigator.userAgent.includes("Mobile")
+        ? -1
+        : 1, // If set, the modal will only show this many times.
       // [Optional] Default: -1 (no limit).  (Debugging: Use this.clearModalDisplayCount() to reset the count)
       displayOptions: { showMobile: true, showDesktop: true }, // show on mobile/desktop [Optional] Default: show everywhere
       allowClose: true
