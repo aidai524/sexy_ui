@@ -541,14 +541,14 @@ function generateRandomString(length: number) {
   return result;
 }
 
-export function timeAgo(time?: number) {
+export function timeAgo(time?: number, currentTime?: number) {
   if (!time) {
     return;
   }
 
   const date = new Date(time);
 
-  const now = new Date();
+  const now = currentTime ? new Date(currentTime) : new Date();
   const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
   let interval = Math.floor(seconds / 31536000);
 

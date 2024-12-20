@@ -8,31 +8,47 @@ import Item from '@/app/sections/trends/item';
 import { useState } from 'react';
 import Trade from '@/app/components/trade';
 import { Popup } from 'antd-mobile';
-import { useTrends } from '@/app/sections/trends/hooks';
+import { Trend, useTrends } from '@/app/sections/trends/hooks';
 
 export default function Trends() {
   const [visible, setVisible] = useState(false);
+  const [tradeToken, setTradeToken] = useState<any>({});
 
-  const { list } = useTrends();
+  const { list, top1 } = useTrends();
 
-  const handleBuy = () => {
+  const handleBuy = (trend?: Trend) => {
+    if (!trend) return;
+    setTradeToken({
+      tokenName: trend.token_name,
+      tokenSymbol: trend.token_symbol,
+      tokenUri: trend.Icon,
+      ticker: trend.ticker,
+      tokenDecimals: 18,
+      tickerAvatar: '',
+    });
     setVisible(true);
   };
 
   const handleBuyClose = () => {
     setVisible(false);
+    setTradeToken({});
   };
 
   return (
     <div className={styles.Container}>
       <Header />
       <Carousel />
-      <Top onBuy={handleBuy} />
+      <Top onBuy={() => handleBuy(top1)} trend={top1} />
       <div className={styles.List}>
-        <Item onBuy={handleBuy} />
-        <Item onBuy={handleBuy} />
-        <Item onBuy={handleBuy} />
-        <Item onBuy={handleBuy} />
+        {
+          list.map((item) => (
+            <Item
+              key={item.id}
+              onBuy={() => handleBuy(item)}
+              trend={item}
+            />
+          ))
+        }
       </div>
       <Popup
         visible={visible}
@@ -45,30 +61,33 @@ export default function Trends() {
           paddingBottom: 10
         }}
       >
-        <div className={styles.BuyContent}>
-          <div
-            className={styles.BuyContentLogo}
-            style={{ backgroundImage: `url("/192x192.png")` }}
-          >
-            <div
-              className={styles.BuyContentTickerAvatar}
-              style={{ backgroundImage: `url("/192x192.png")` }}
-            />
-          </div>
-          <div className={styles.BuyContentInfo}>
-            VVAIFU / Ticker: VVA
-          </div>
-          <Trade
-            token={{
-              tokenName: 'tokenName',
-              tokenSymbol: 'TOKEN',
-              tokenUri: 'https://www.google.com',
-              tokenDecimals: 18,
-            }}
-            initType="buy"
-            from="mobile"
-          />
-        </div>
+        {
+          visible && (
+            <div className={styles.BuyContent}>
+              <div
+                className={styles.BuyContentLogo}
+                style={{ backgroundImage: `url("${tradeToken?.tokenUri}")` }}
+              >
+                {
+                  tradeToken?.tickerAvatar && (
+                    <div
+                      className={styles.BuyContentTickerAvatar}
+                      style={{ backgroundImage: `url("${tradeToken?.tickerAvatar}")` }}
+                    />
+                  )
+                }
+              </div>
+              <div className={styles.BuyContentInfo}>
+                {tradeToken?.tokenSymbol} / Ticker: {tradeToken?.ticker}
+              </div>
+              <Trade
+                token={tradeToken}
+                initType="buy"
+                from="mobile"
+              />
+            </div>
+          )
+        }
       </Popup>
     </div>
   );
