@@ -19,11 +19,6 @@
           "isSigner": false
         },
         {
-          "name": "wsolMint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
@@ -1104,32 +1099,32 @@
           "isSigner": false
         },
         {
-          "name": "wsolMint",
+          "name": "tokenAMint",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "tokenMint",
+          "name": "tokenBMint",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "poolTokenAccount",
+          "name": "poolAAccount",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "poolWsolAccount",
+          "name": "poolBAccount",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "vaultSol",
+          "name": "vaultA",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "vaultToken",
+          "name": "vaultB",
           "isMut": true,
           "isSigner": false
         },
@@ -1271,10 +1266,6 @@
     },
     {
       "name": "setOwner",
-      "docs": [
-        "Initiazlize a swap pool",
-        "refer to: https://github.com/raydium-io/raydium-cpi-example/blob/anchor-0.30.1/amm-cpi/programs/amm-cpi/src/lib.rs"
-      ],
       "accounts": [
         {
           "name": "newAccountId",
@@ -1326,7 +1317,7 @@
       "args": []
     },
     {
-      "name": "setAmplifierAndInitialWsol",
+      "name": "setListDexConfig",
       "accounts": [
         {
           "name": "launchState",
@@ -1346,11 +1337,19 @@
       ],
       "args": [
         {
-          "name": "factorA",
-          "type": "u8"
+          "name": "minReserve",
+          "type": "u64"
         },
         {
           "name": "initialWsol",
+          "type": "u64"
+        },
+        {
+          "name": "virtualTokenTotalSupply",
+          "type": "u64"
+        },
+        {
+          "name": "maxListIntoDexAmount",
           "type": "u64"
         }
       ]
@@ -1626,13 +1625,11 @@
             }
           },
           {
-            "name": "factorA",
+            "name": "minReserve",
             "docs": [
-              "Amplifier factor, once only 1/factor_a of total token supply",
-              "distributed through virtual pool, the IDO phase ends,",
-              "Default value is 5."
+              "min reserve on pool, this token will add into dex"
             ],
-            "type": "u8"
+            "type": "u64"
           },
           {
             "name": "initialWsol",
@@ -1640,6 +1637,14 @@
               "The initial value of token (i.e. the initial wsol amount in virtual pool).",
               "Default value is 30_000_000_000."
             ],
+            "type": "u64"
+          },
+          {
+            "name": "virtualTokenTotalSupply",
+            "type": "u64"
+          },
+          {
+            "name": "maxListIntoDexAmount",
             "type": "u64"
           },
           {
@@ -1810,13 +1815,6 @@
             }
           },
           {
-            "name": "amplifier",
-            "docs": [
-              "once only 1/amplifier of total token supply remains, the virtual pool will finalize."
-            ],
-            "type": "u8"
-          },
-          {
             "name": "tokenDecimals",
             "type": "u8"
           },
@@ -1825,6 +1823,10 @@
             "docs": [
               "including decimal part"
             ],
+            "type": "u64"
+          },
+          {
+            "name": "minReserve",
             "type": "u64"
           },
           {
@@ -1948,14 +1950,6 @@
               "member of token metadata"
             ],
             "type": "string"
-          },
-          {
-            "name": "totalSupply",
-            "type": "u64"
-          },
-          {
-            "name": "decimals",
-            "type": "u8"
           }
         ]
       }
@@ -2043,11 +2037,6 @@
         {
           "name": "initialSol",
           "type": "u64",
-          "index": false
-        },
-        {
-          "name": "amplifier",
-          "type": "u8",
           "index": false
         }
       ]
@@ -2279,6 +2268,11 @@
       "fields": [
         {
           "name": "user",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "tokenMint",
           "type": "publicKey",
           "index": false
         },

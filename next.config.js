@@ -50,6 +50,8 @@ const nextConfig = {
         }
       };
     }
+    //https://docs.reown.com/appkit/next/core/installation#extra-configuration
+    config.externals.push("pino-pretty", "lokijs", "encoding");
     return config;
   },
   images: {
