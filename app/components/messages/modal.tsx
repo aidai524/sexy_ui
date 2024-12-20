@@ -9,32 +9,6 @@ import { useState, useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import CircleLoading from "../icons/loading";
 
-const TYPES: Record<string, any> = {
-  follower: {
-    link: "/profile",
-    desc: "Check your followers >>"
-  },
-  token_create: {
-    link: "/create",
-    desc: "Create a token >>"
-  },
-  token_launching: {
-    link: "/detail",
-    desc: "Check the token >>"
-  },
-  token_list: {
-    link: "/detail",
-    desc: "Check the token >>"
-  },
-  add_vip: {
-    link: "/profile",
-    desc: "Immediate renewal >>"
-  },
-  add_boost: { link: "/profile", desc: "Go to Profile >>" },
-  add_super_like: { link: "/profile", desc: "Go to Profile >>" },
-  add_launching: { link: "/profile", desc: "Go to Profile >>" }
-};
-
 export default function MessagesModal({
   open,
   onClose,
@@ -73,7 +47,7 @@ export default function MessagesModal({
             }}
           >
             {data.map((item: any) => (
-              <Item key={item.msg_id} item={item} isMobile={isMobile} />
+              <Item key={item.id} item={item} isMobile={isMobile} />
             ))}
             <InfiniteScroll loadMore={onNextPage} hasMore={hasMore}>
               {hasMore && <CircleLoading size={20} />}
@@ -90,6 +64,51 @@ export default function MessagesModal({
 
 const Item = ({ item, isMobile }: any) => {
   const [expand, setExpand] = useState(false);
+  const [content, linkText, link] = useMemo(() => {
+    if (item.type === "follower") {
+      return [
+        "You have a new follower.",
+        "Click to view their profile",
+        `/profile?account=${item.msg_id}`
+      ];
+    }
+    if (item.type === "token_create") {
+      return [
+        `Congratulations, you have successfully created ${item.content_2} Token`,
+        "Click to view Token details.",
+        `/detail?id=${item.msg_id}`
+      ];
+    }
+    if (item.type === "token_launching") {
+      return [
+        `Congratulations, the ${item.content_2} Token you created has received a lot of user interest and has successfully entered the Launching stage.`,
+        "Click to view Token details.",
+        `/detail?id=${item.msg_id}`
+      ];
+    }
+    if (item.type === "token_list") {
+      return [
+        `Congratulations, the ${item.content_2} Token you created has completed the launch and has been listed on [Orca/Raydium] Dex.`,
+        "Click to view Token details.",
+        `/detail?id=${item.msg_id}`
+      ];
+    }
+    if (item.type === "add_vip") {
+      return [
+        "Congratulations, you have become a prestigious SexyFi VIP user.",
+        "Click to view your profile.",
+        "/profile"
+      ];
+    }
+    if (item.type === "add_boost") {
+      return [
+        "Congratulations, you have successfully purchased a Boost privilege.",
+        "Click to view your profile.",
+        "/profile"
+      ];
+    }
+    return ["", "", ""];
+  }, [item]);
   return (
     <motion.div
       initial={{
@@ -120,22 +139,15 @@ const Item = ({ item, isMobile }: any) => {
           </div>
           {expand ? (
             <>
-              <div className={styles.ItemDesc}>{item.content_1}</div>
-              {TYPES[item.type]?.link && (
-                <a
-                  className={styles.ItemLink}
-                  href={
-                    item.content_2?.id
-                      ? `${TYPES[item.type].link}?id=${item.content_2.id}`
-                      : TYPES[item.type].link
-                  }
-                >
-                  {TYPES[item.type]?.desc}
+              <div className={styles.ItemDesc}>{content}</div>
+              {linkText && link && (
+                <a className={styles.ItemLink} href={link}>
+                  {linkText}
                 </a>
               )}
             </>
           ) : (
-            <Ellipsis direction="end" rows={2} content={item.content_1} />
+            <Ellipsis direction="end" rows={2} content={item.content} />
           )}
         </div>
         {!expand && (
