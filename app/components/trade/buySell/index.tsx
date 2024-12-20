@@ -67,7 +67,7 @@ export default function BuySell({ token, initType, from }: Props) {
     buyTokenWithFixedOutput,
     sellToken,
     sellTokenWithFixedOutput,
-    rate,
+    getRate,
     minPrice,
     maxPrice,
     tokenBalance,
@@ -80,80 +80,83 @@ export default function BuySell({ token, initType, from }: Props) {
   });
 
   const TOKEN_PERCENT_LIST = useMemo(() => {
-    if (rate) {
-      return [25, 50, 75, 100];
-    }
-
-    return [];
-  }, [rate]);
+    return [25, 50, 75, 100];
+  }, []);
 
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
   useEffect(() => {
-    if (debounceVal && rate) {
+    const rate = 1
+
+
+    if (debounceVal) {
       if (activeIndex === 0) {
         let buyInSol = "";
         if (tokenType === 1) {
           buyInSol = new Big(debounceVal)
             .mul(10 ** (SOL.tokenDecimals))
             .toFixed(0);
-          const buyIn = new Big(debounceVal).mul(rate).mul(10 ** (token.tokenDecimals)).div(1 + slip / 100).toFixed(0);
-          setBuyIn(buyIn);
 
+            getRate({
+              solAmount: buyInSol
+            }).then((res: any) => { 
+              const buyIn = new Big(res).mul(1 - slip / 100).toFixed(token.tokenDecimals);
+              setBuyIn(buyIn);
+            })
+          
+            setBuyInSol(buyInSol);
         } else if (tokenType === 0) {
-          buyInSol = new Big(debounceVal)
-            .div(new Big(rate))
-            .mul(10 ** SOL.tokenDecimals)
-            .mul(1 + slip / 100)
-            .toFixed(0);
-          if (Number(buyInSol) > 1) {
-            setBuyIn(new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0));
-          } else {
-            setBuyIn("");
-            buyInSol = "";
-          }
+            getRate({
+              tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0)
+            }).then((res: any) => {
+              buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
+              if (Number(buyInSol) > 0.000000001) {
+                setBuyIn(new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0))
+                setBuyInSol(buyInSol)
+              } else {
+                setBuyInSol('')
+                setBuyIn('')
+              }
+
+              if (buyInSol) {
+                setIsError(false);
+                setErrorMsg("Enter a amount");
+              }
+            })
         }
-        if (buyInSol) {
-          setIsError(false);
-          setErrorMsg("Enter a amount");
-        }
-        setBuyInSol(buyInSol);
+        
+        
       } else if (activeIndex === 1) {
-        let sellOut = "";
+        let sellOut = ''
+        let sellSolOut = ''
         if (tokenType === 1) {
-          sellOut = new Big(debounceVal)
-            .mul(rate)
-            .mul(10 ** token.tokenDecimals)
-            .toFixed(0);
+          // sellOut = new Big(debounceVal)
+          //   .mul(rate)
+          //   .mul(10 ** token.tokenDecimals)
+          //   .toFixed(0);
         } else if (tokenType === 0) {
           sellOut = new Big(debounceVal)
             .mul(10 ** token.tokenDecimals)
             .toFixed(0);
 
-          const sellSolOut = new Big(debounceVal)
-            .div(rate)
-            .mul(1 - slip / 100)
-            .mul(10 ** (SOL.tokenDecimals))
-            .toFixed(0);
-
-          console.log("sellSolOut:", sellSolOut);
-
-          if (Number(sellSolOut) === 0) {
-            setIsError(true);
-            setErrorMsg("Amount is too little");
-            setSellOut("");
-          } else {
-            setSellOut(sellOut);
-            setSellOutSol(
-              getFullNum(
-                sellSolOut.toString()
-              )
-            );
-            if (sellOut) {
-              setIsError(false);
-              setErrorMsg("Enter a amount");
-            }
-          }
+            getRate({
+              tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0)
+            }).then((res: any) => {
+              sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
+              if (Number(sellSolOut) > 0.000000001) {
+                setSellOut(sellOut);
+                setSellOutSol(
+                  getFullNum(
+                    sellSolOut
+                  )
+                );
+                setIsError(false);
+              } else {
+                setIsError(true);
+                setErrorMsg("Amount is too little");
+                setSellOut("");
+              }
+            })
         }
       }
     } else {
@@ -163,7 +166,7 @@ export default function BuySell({ token, initType, from }: Props) {
       setIsError(true);
       setErrorMsg("Enter a amount");
     }
-  }, [debounceVal, rate, tokenType, slip, currentToken]);
+  }, [debounceVal, tokenType, slip, currentToken]);
 
   return (
     <div>
@@ -367,9 +370,8 @@ export default function BuySell({ token, initType, from }: Props) {
                 }
 
                 if (activeIndex === 0) {
-                  console.log('buyInSol:', buyIn, buyInSol, new Big(Number(buyInSol) * (1 + slip / 100)).toFixed(0))
                   setIsLoading(true);
-                  await buyTokenWithFixedOutput(buyIn, buyInSol)
+                  await buyTokenWithFixedOutput(new Big(buyIn).toFixed(0), buyInSol)
                   // await buyToken(buyInSol);
                 } else if (activeIndex === 1) {
                   setIsLoading(true);

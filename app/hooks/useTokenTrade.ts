@@ -702,13 +702,20 @@ export function useTokenTrade({
 
     }, [walletProvider, connection, pool])
 
+    const getRate = useCallback(async (amountParam: { solAmount?: string, tokenAmount?: string }) => {
+        if (pool) {
+            const program = new Program<any>(idl, programId, { connection: connection } as any);
+            return await _getRate(program, pool[0], amountParam)
+        }
+    }, [programId, pool, connection])
+
     useEffect(() => {
         if (programId && pool && connection && tokenName && tokenSymbol && loadData) {
-            const program = new Program<any>(idl, programId, { connection: connection } as any);
-            _getRate(program, pool[0], tokenDecimals).then(rate => {
-                console.log('rate:', rate.toString())
-                setRate(Number(rate.toString()))
-            })
+            // const program = new Program<any>(idl, programId, { connection: connection } as any);
+            // _getRate(program, pool[0], tokenDecimals).then(rate => {
+            //     console.log('rate:', rate.toString())
+            //     setRate(Number(rate.toString()))
+            // })
         }
     }, [programId, pool, connection, tokenName, tokenSymbol, tokenDecimals, loadData, reFreshBalnace])
 
@@ -753,7 +760,7 @@ export function useTokenTrade({
     }, [connection, walletProvider, reFreshBalnace])
 
     return {
-        rate,
+        getRate,
         minPrice,
         maxPrice,
         buyToken,
@@ -805,14 +812,30 @@ async function getMetaData(tokenMint: PublicKey) {
     return metaData
 }
 
-async function _getRate(program: Program, pool: PublicKey, tokenDecimals: number) {
+async function _getRate(program: Program, pool: PublicKey, { solAmount, tokenAmount }: { solAmount?: string, tokenAmount?: string }) {
     const poolData: any = await program.account.pool.fetch(pool)
-    // console.log('grid_state_before:', poolData, poolData!.virtualTokenAmount.toString(), poolData!.virtualWsolAmount.toString())
 
-    const poolToken = new Big(poolData!.virtualTokenAmount.toString()).div(10 ** tokenDecimals)
-    const solToken = new Big(poolData!.virtualWsolAmount.toString()).div(10 ** 9)
-    const rate = poolToken.div(solToken).toString()
+    console.log('poolData:', poolData)
 
-    return rate
+    const poolToken = new Big(poolData!.virtualTokenAmount.toNumber())
+    const solToken = new Big(poolData!.virtualWsolAmount.toNumber())
+
+    // buy
+    if (solAmount) {
+        const _solAmount = new Big(solAmount).mul(1 - 0.01)
+        const result = poolToken.mul(_solAmount).div(solToken.plus(_solAmount)).toString()
+        return result
+    }
+
+    // sell
+    if (tokenAmount) {
+        const _tokenAmount = new Big(tokenAmount).mul(1 - 0.015)
+        const result = solToken.mul(_tokenAmount).div(poolToken.plus(_tokenAmount)).toString()
+        return result
+    }
+
+    // buy 1% sell 1.5%
+
+    return 0
 
 }
