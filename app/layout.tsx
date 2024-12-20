@@ -35,7 +35,7 @@ export default function RootLayout({
         />
         <link rel="stylesheet" href="/libs/add_to_homescreen/index.css" />
         <link rel="manifest" href="/manifest.json" />
-        <script src="/libs/add_to_homescreen/index.js" />
+        <script async src="/libs/add_to_homescreen/index.js" />
       </head>
       <body>
         <MessageContextProvider>

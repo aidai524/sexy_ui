@@ -103,6 +103,7 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
   private isTelegram() {
     if (typeof window === 'undefined') return false;
     return !!(
+      // @ts-ignore
       window.Telegram?.WebApp?.initDataUnsafe ||
       window.location.hash?.startsWith('#tgWebAppData')
     );

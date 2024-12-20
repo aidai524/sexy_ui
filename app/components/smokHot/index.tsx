@@ -50,6 +50,10 @@ export default function SmokeBtn({ onClick, token }: Props) {
           return
         }
 
+        if (token.isSuperLike ) {
+          return
+        }
+
         if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
           setPanelShow(true);
         } else {
@@ -64,7 +68,12 @@ export default function SmokeBtn({ onClick, token }: Props) {
       }}
     >
       <div style={{ width: 36, height: 36, overflow: 'hidden' }}>
-        <img style={{ width: 36 }} src="/img/profile/smoke-hot.png" />
+        {
+          token.isSuperLike 
+          ? <img style={{ width: 36 }} src="/img/profile/smoke-hot-grey.png" />
+          : <img style={{ width: 36 }} src="/img/profile/smoke-hot.png" />
+        }
+        
       </div>
 
       <Modal

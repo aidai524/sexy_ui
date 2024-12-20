@@ -1,5 +1,5 @@
 .Container {
-  background-color: #000000;
+  background-color: #0D1012;
   padding-bottom: 80px;
 }
 
@@ -10,6 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 4px;
 }
 
 .HeaderTitle {
@@ -17,113 +18,421 @@
   height: 19.733333333333333vw;
 }
 
-.Content {
+.Badge {
+  height: 26px;
+  border-radius: 13px;
+  background: #C9FF5D;
+  padding: 0 8px;
+  white-space: nowrap;
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  gap: 4px;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
-.Item {
-  height: 174px;
-  border-radius: 10px;
-  position: relative;
+/*#region Carousel*/
+@keyframes slideToRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(25%);
+  }
 }
-
-.FirstItem {
-  width: 356px;
-  max-width: calc(100vw - 16px);
-}
-
-.OthersItem {
-  width: 174px;
-  max-width: calc(50vw - 12px);
-}
-
-.ItemImage {
+.CarouselContainer {
   width: 100%;
-  height: 100%;
+  height: 130px;
+  overflow: hidden;
   position: absolute;
-  left: 0;
-  top: 0;
   z-index: 1;
-  border-radius: 10px;
+  left: 0;
+  top: 20px;
 }
-
-.ItemContent {
+.Carousel {
+  font-size: 20px;
+  color: #6FFF00;
+  font-family: Unbounded;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
   width: 100%;
+  transform: rotate(-12deg);
+  transform-origin: right;
+}
+.CarouselInner {
+  width: 300%;
+  background: #FF2681;
+  height: 33px;
+  display: flex;
+  align-items: stretch;
+  animation: slideToRight linear 4s infinite;
+  margin-left: -100%;
+}
+.CarouselItem {
+  flex: 1;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+}
+/*#endregion*/
+
+/*#region Top first*/
+.Top {
+  margin-top: 10px;
+}
+.TopAvatar {
+  width: 210px;
+  height: 210px;
+  border-radius: 20px;
+  margin: 0 auto;
+  background: url("/512x512.png") no-repeat center / cover;
   position: relative;
+}
+.TopSummary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding-bottom: 8px;
+}
+.TopSummaryLike {
+  background: #FFF2F8 !important;
+  color: #FF3499 !important;
+}
+.TopCrown {
+  width: 60px;
+  flex-shrink: 0;
+  position: absolute;
   z-index: 2;
+  top: -30px;
+  right: -24px;
 }
-
-.FirstItemContent {
-  background: linear-gradient(270deg, #000 0%, rgba(0, 0, 0, 0) 87.56%);
-}
-
-.OthersItemContent {
-  background: linear-gradient(0deg, #000 6.22%, rgba(0, 0, 0, 0) 93.78%);
-}
-
-.FirstItemRank {
-  color: #fff;
+.TopInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 11px;
+  margin-top: 10px;
   font-family: Unbounded;
-  font-size: 100px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  position: absolute;
-  left: 16px;
-  top: -4px;
 }
-
-.OthersItemRank {
-  color: #fff;
-  font-family: Unbounded;
-  font-size: 60px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  position: absolute;
-  left: 8px;
-  top: 0px;
-}
-
-.ItemInfo {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
+.TopName {
+  color: #FFF;
   text-align: right;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
-
-.ItemTitle {
-  color: #fff;
+.TopTicker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.TopTickerLabel {
+  color: #9290B1;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.TopTickerAvatar {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  background-color: #383838;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 11px;
+}
+.TopTickerName {
+  margin-left: 2px;
+  color: #FFF;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.TopBadges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 0 10px;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.TopBadge {
+  height: 31px;
+  border-radius: 30px;
+  padding: 0 11px;
+  opacity: 0.4;
+  background: #3C3C3C;
+  backdrop-filter: blur(5px);
+  color: #D9D9D9;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.TopMarketCap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   font-family: Unbounded;
+  margin-top: 7px;
+}
+.TopMarketCapLabel {
+  color: #9290B1;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.TopMarketCapValue {
+  color: #FFF;
+  text-align: right;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
 }
+.TopBuy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+}
+.TopBuyBtn {
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: #C9FF5D;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 0 34px 0 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+}
+.TopBuyBtnIcon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+/*#endregion*/
 
-.ItemTicker {
-  color: #fff;
+/*#region Item*/
+.Item {
+  background: rgba(0, 0, 0, 0.50);
+  backdrop-filter: blur(2px);
+  width: 100%;
+  padding: 12px 10px 14px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 7px;
+}
+.ItemAvatar {
+  width: 86px;
+  height: 86px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.ItemContent {
+  flex: 1;
+  width: 0;
+}
+.ItemHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.ItemHeadInfo {
+  flex: 1;
+  width: 0;
+}
+.ItemHeadName {
+  width: 100%;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ItemHeadTicker {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+}
+.ItemHeadTickerName {
+  color: rgba(255, 255, 255, 0.60);
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  flex: 1;
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ItemHeadTickerAvatar {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.ItemHeadBuy {
+  flex-shrink: 0;
+}
+.ItemHeadBuyBtn {
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  padding: 0 16px 0 3px;
+}
+.ItemHeadBuyBtnIcon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+.ItemMarketCap {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ItemMarketCapLabel {
+  color: rgba(255, 255, 255, 0.60);
   font-family: Unbounded;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
-
-.ItemVolum {
-  color: #af0;
+.ItemMarketCapValue {
+  color: #6FFF00;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.ItemCreateTime {
+  color: rgba(255, 255, 255, 0.60);
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  white-space: nowrap;
-  .mc {
-    font-size: 10px;
-    color: rgba(146, 144, 177, 1);
-  }
+  margin-top: 5px;
 }
+/*#endregion*/
+
+/*#region List*/
+.List {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 30px 10px 60px;
+}
+/*#endregion*/
+
+/*#region BuyContent*/
+.BuyContent {
+  position: relative;
+  padding-top: 30px;
+}
+.BuyContentLogo {
+  width: 94px;
+  height: 94px;
+  border: 4px solid #FFF;
+  border-radius: 47px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -54px;
+}
+.BuyContentTickerAvatar {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border: 1px solid #52D395;
+  border-radius: 13px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  right: 4px;
+  bottom: -8px;
+}
+.BuyContentInfo {
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+  padding: 20px 10px 0;
+  overflow: hidden;
+}
+/*#endregion*/
