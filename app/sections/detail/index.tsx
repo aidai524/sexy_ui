@@ -27,6 +27,7 @@ export default function Detail() {
         if (res.code === 0 && res.data) {
           // console.log(res)
           const infoData = mapDataToProject(res.data[0]);
+          console.log('infoData:', infoData)
           setInfoData(infoData);
         }
       });
