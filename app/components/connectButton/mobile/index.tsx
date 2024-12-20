@@ -1,44 +1,37 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import styles from "./index.module.css";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { formatSortAddress } from "@/app/utils";
 
 export default function ConnectButton() {
-  const { connected, publicKey, disconnect, wallets } = useWallet();
-  const { setVisible } = useWalletModal();
-
-  const handleConnect = () => {
-    const walletsToCheck = [
-      // @ts-ignore
-      { name: 'Phantom', globalObject: window?.phantom }
-    ];
-    walletsToCheck.forEach(({ name }) => {
-      window?.localStorage?.removeItem?.('walletName');
-      const wallet = wallets.find((wallet) => wallet.adapter.name === name);
-      if (wallet) {
-        wallet.adapter.disconnect();
-      }
-    });
-    setVisible(true);
-  };
+  const { connected, publicKey, disconnect } = useWallet();
+  const accountId = useMemo(() => publicKey?.toBase58(), [publicKey]);
 
   return (
     <div>
-      {
-        connected ? (
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div className={styles.button} onClick={disconnect}>
-              Dis
-            </div>
+      {connected ? (
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ fontSize: 14, color: "#fff" }}>
+            {formatSortAddress(accountId)}
           </div>
-        ) : (
-          <div className={styles.button} onClick={handleConnect}>
-            Connect
+          <div className={styles.button} onClick={disconnect}>
+            Disconnect
           </div>
-        )
-      }
+        </div>
+      ) : (
+        <WalletModalButton
+          style={{
+            background: "#FFFFFF1F",
+            borderRadius: 24,
+            padding: "0 10px"
+          }}
+        >
+          Connect
+        </WalletModalButton>
+      )}
     </div>
   );
 }
