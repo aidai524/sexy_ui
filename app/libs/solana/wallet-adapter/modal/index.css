@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
 .wallet-adapter-button {
   background-color: rgba(255, 255, 255, 0.03);
@@ -7,7 +7,8 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "DM Sans", "Roboto", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
   font-size: 16px;
   font-weight: 600;
   line-height: 40px;
@@ -19,7 +20,13 @@
 }
 
 .wallet-adapter-button-trigger {
-  background-color: #512da8;
+  background-color: transparent;
+  border-radius: 30px;
+  border: 1px solid #fff;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .wallet-adapter-button:not([disabled]):focus-visible {
@@ -80,11 +87,9 @@
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
   opacity: 0;
   visibility: hidden;
-  transition:
-    opacity 200ms ease,
-    transform 200ms ease,
-    visibility 200ms;
-  font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  transition: opacity 200ms ease, transform 200ms ease, visibility 200ms;
+  font-family: "DM Sans", "Roboto", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
 }
 
 .wallet-adapter-dropdown-list-active {
@@ -121,7 +126,8 @@
   fill: #999;
 }
 
-.wallet-adapter-modal-collapse-button.wallet-adapter-modal-collapse-button-active svg {
+.wallet-adapter-modal-collapse-button.wallet-adapter-modal-collapse-button-active
+  svg {
   transform: rotate(180deg);
   transition: transform ease-in 150ms;
 }
@@ -206,7 +212,8 @@
   background: #131313;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
   border: 1px solid #2c2d30;
-  font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "DM Sans", "Roboto", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
   flex: 1;
 }
 

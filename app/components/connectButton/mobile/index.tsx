@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import styles from "./connectButton.module.css";
+import styles from "./index.module.css";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { formatSortAddress } from "@/app/utils";
