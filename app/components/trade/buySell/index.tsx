@@ -381,7 +381,6 @@ export default function BuySell({ token, initType, from }: Props) {
                 success("Transtion success");
                 updateBalance();
               } catch (e) {
-                console.log(e);
                 setIsLoading(false);
                 fail("Transtion fail");
               }
