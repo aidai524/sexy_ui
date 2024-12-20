@@ -6,7 +6,7 @@ const list = [1, 2, 3, 4];
 export default function Txs({ from, data }: any) {
   return (
     <div className={styles.main}>
-      <CA from={from} data={data}/>
+      <CA from={from} data={data} />
 
       <div
         className={`${styles.txContent} ${
@@ -38,9 +38,9 @@ export default function Txs({ from, data }: any) {
     
                         <div className={ styles.link } style={{ textAlign: 'right' }}>
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 1H2C1.44772 1 1 1.44772 1 2V12C1 12.5523 1.44772 13 2 13H7H12C12.5523 13 13 12.5523 13 12V8" stroke="#9290B1" stroke-width="1.2" />
-                                <path d="M9 1H13V5" stroke="#9290B1" stroke-width="1.2" />
-                                <path d="M12.9999 1L5.19995 8.8" stroke="#9290B1" stroke-width="1.2" />
+                                <path d="M6 1H2C1.44772 1 1 1.44772 1 2V12C1 12.5523 1.44772 13 2 13H7H12C12.5523 13 13 12.5523 13 12V8" stroke="#9290B1" strokeWidth="1.2" />
+                                <path d="M9 1H13V5" stroke="#9290B1" strokeWidth="1.2" />
+                                <path d="M12.9999 1L5.19995 8.8" stroke="#9290B1" strokeWidth="1.2" />
                             </svg>
                         </div>
                     </div>

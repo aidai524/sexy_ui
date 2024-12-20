@@ -2,8 +2,14 @@ import type { Project } from "@/app/type";
 import styles from "./ca.module.css";
 import { formatAddress, formatAddressLast } from "@/app/utils";
 
-export default function CA({ from, data }: {  from: string | undefined; data: Project}) {
-  console.log('data:', data)
+export default function CA({
+  from,
+  data
+}: {
+  from: string | undefined;
+  data: Project;
+}) {
+  console.log("data:", data);
 
   return (
     <div
@@ -19,7 +25,9 @@ export default function CA({ from, data }: {  from: string | undefined; data: Pr
       <div className={styles.ca}>
         <div className={styles.caAddress}>
           <div className={styles.caTtitle}>CA:</div>
-          <div className={styles.address}>{ data.address ? formatAddress(data.address) : '' }</div>
+          <div className={styles.address}>
+            {data.address ? formatAddress(data.address) : ""}
+          </div>
         </div>
 
         <div className={styles.copy}>
@@ -37,12 +45,12 @@ export default function CA({ from, data }: {  from: string | undefined; data: Pr
               height="9"
               rx="2"
               stroke="#979ABE"
-              stroke-width="2"
+              strokeWidth="2"
             />
             <path
               d="M10 4V3C10 1.89543 9.10457 1 8 1H3C1.89543 1 1 1.89543 1 3V8C1 9.10457 1.89543 10 3 10H4"
               stroke="#979ABE"
-              stroke-width="2"
+              strokeWidth="2"
             />
           </svg>
         </div>

@@ -18,8 +18,9 @@ const likeAnis = [
 ];
 
 export default function MainAction({ onLike, onHate }: Props) {
-  const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } = useMessage();
-  const { address } = useAccount()
+  const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } =
+    useMessage();
+  const { address } = useAccount();
 
   return (
     <div className={styles.mainAction}>
@@ -27,8 +28,8 @@ export default function MainAction({ onLike, onHate }: Props) {
         onClick={() => {
           if (!address) {
             //@ts-ignore
-              window.connect()
-              return
+            window.connect();
+            return;
           }
 
           setHateTrigger(true);
@@ -52,8 +53,8 @@ export default function MainAction({ onLike, onHate }: Props) {
         onClick={() => {
           if (!address) {
             //@ts-ignore
-              window.connect()
-              return
+            window.connect();
+            return;
           }
 
           if (likeTrigger) {
@@ -102,8 +103,8 @@ function DisLike({ fill = "#C7DDEE" }: { fill?: string }) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M14.9101 3.38013C13.409 1.3308 10.9849 0 8.25 0C3.69365 0 0 3.69368 0 8.25C0 14.6307 5.83218 20.5627 10.904 23.7305L17.0441 13.9931L11.1571 10.9349L14.9101 3.38013ZM13.1575 24.9833C13.8123 25.3002 14.4324 25.556 15 25.7446C20.25 24 30 16.5 30 8.25C30 3.69368 26.3063 0 21.75 0C20.8882 0 20.0573 0.132128 19.2765 0.37723L14.5876 9.81583L20.7147 12.9987L13.1575 24.9833Z"
         fill={fill}
       />
@@ -134,8 +135,8 @@ function Like() {
             y2="25.7446"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#FF8ABB" />
-            <stop offset="1" stop-color="#FF2681" />
+            <stop stopColor="#FF8ABB" />
+            <stop offset="1" stopColor="#FF2681" />
           </linearGradient>
         </defs>
       </svg>

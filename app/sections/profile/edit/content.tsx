@@ -8,8 +8,8 @@ import { success, fail } from "@/app/utils/toast";
 import MainBtn from "@/app/components/mainBtn";
 import { Picker } from "antd-mobile";
 
-const defaultAvatar = '/img/avatar.png'
-const defaultBannerImg = '/img/upload-banner.png'
+const defaultAvatar = "/img/avatar.png";
+const defaultBannerImg = "/img/upload-banner.png";
 
 export default function EditContent({
   inputStyle,
@@ -18,7 +18,7 @@ export default function EditContent({
   onClose
 }: any) {
   const [name, setName] = useState<string>("");
-  const [disableNameEdit, setDisableNameEdit] = useState(false)
+  const [disableNameEdit, setDisableNameEdit] = useState(false);
   const [education, setEducation] = useState<string>("");
   const [avatar, setAvatar] = useState<ImageUploadItem[]>([]);
   const [banner, setBanner] = useState<ImageUploadItem[]>([]);
@@ -56,11 +56,11 @@ export default function EditContent({
 
     if (userInfo?.name) {
       setName(userInfo?.name);
-      setDisableNameEdit(true)
+      setDisableNameEdit(true);
     }
 
     if (userInfo?.education) {
-      setEducation(userInfo?.education)
+      setEducation(userInfo?.education);
     }
   }, [userInfo]);
 
@@ -82,55 +82,68 @@ export default function EditContent({
             style={inputStyle}
           />
         </div>
-        <div className={ styles.tip }>*It can be modified only once</div>
+        <div className={styles.tip}>*It can be modified only once</div>
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>
-          Highest education
-        </div>
+        <div className={styles.groupTitle}>Highest education</div>
         <div className={styles.groupContent}>
           <div
             onClick={async () => {
               const value = await Picker.prompt({
                 columns: [
                   [
-                    { label: 'Kindergarten', value: 'Kindergarten' },
-                    { label: 'Elementary School', value: 'Elementary School' },
-                    { label: 'Junior High School', value: 'Junior High School' },
-                    { label: 'High School', value: 'High School' },
-                    { label: 'College Preparatory', value: 'College Preparatory' },
+                    { label: "Kindergarten", value: "Kindergarten" },
+                    { label: "Elementary School", value: "Elementary School" },
+                    {
+                      label: "Junior High School",
+                      value: "Junior High School"
+                    },
+                    { label: "High School", value: "High School" },
+                    {
+                      label: "College Preparatory",
+                      value: "College Preparatory"
+                    },
                     { label: "Bachelor's Degree", value: "Bachelor's Degree" },
                     { label: "Master's Degree", value: "Master's Degree" },
-                    { label: 'PhD', value: 'PhD' },
-                  ],
+                    { label: "PhD", value: "PhD" }
+                  ]
                 ],
-                cancelText: 'Cancel',
-                confirmText: 'Ok',
+                cancelText: "Cancel",
+                confirmText: "Ok",
                 // @ts-ignore
                 value: [education]
-              })
+              });
 
-              console.log('value:', value)
+              console.log("value:", value);
               if (value && value.length > 0) {
-                setEducation(value[0] as string)
+                setEducation(value[0] as string);
               } else {
-                setEducation('')
+                setEducation("");
               }
-
             }}
             className={styles.picker}
             style={inputStyle}
           >
-            {
-              education 
-              ? <div className={ styles.pickerValue }>{ education }</div> 
-              : <div className={ styles.pickerTitle }>Select</div>
-            }
-            
+            {education ? (
+              <div className={styles.pickerValue}>{education}</div>
+            ) : (
+              <div className={styles.pickerTitle}>Select</div>
+            )}
+
             <div>
-              <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15.0711 1.07107L8 8.14214L0.928932 1.07107" stroke="white" stroke-width="2" />
+              <svg
+                width="16"
+                height="10"
+                viewBox="0 0 16 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.0711 1.07107L8 8.14214L0.928932 1.07107"
+                  stroke="white"
+                  strokeWidth="2"
+                />
               </svg>
             </div>
           </div>
@@ -145,7 +158,12 @@ export default function EditContent({
           className={styles.groupContent}
           style={{ paddingLeft: 15, paddingTop: 10 }}
         >
-          <Upload percent={1} fileList={avatar} setFileList={setAvatar} type="avatar" />
+          <Upload
+            percent={1}
+            fileList={avatar}
+            setFileList={setAvatar}
+            type="avatar"
+          />
         </div>
       </div>
 
@@ -160,7 +178,12 @@ export default function EditContent({
             overflow: "hidden"
           }}
         >
-          <Upload percent={0.5} fileList={banner} setFileList={setBanner} type="banner" />
+          <Upload
+            percent={0.5}
+            fileList={banner}
+            setFileList={setBanner}
+            type="banner"
+          />
         </div>
       </div>
 
@@ -186,10 +209,15 @@ export default function EditContent({
               if (banner.length) {
                 bannerImg = banner[0].url;
               } else {
-                bannerImg = defaultBannerImg
+                bannerImg = defaultBannerImg;
               }
 
-              const isSuccess = await saveUserInfo(bannerImg, icon, name, education);
+              const isSuccess = await saveUserInfo(
+                bannerImg,
+                icon,
+                name,
+                education
+              );
 
               if (isSuccess) {
                 success("Edit profile success");
