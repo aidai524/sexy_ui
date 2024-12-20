@@ -340,8 +340,8 @@ export function mapDataToProject(currentToken: any): Project {
             "https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect",
         tokenDecimals: currentToken.token_decimals,
         isLike: currentToken.is_like,
-        isUnLike: currentToken.isUnLike,
-        isSuperLike: currentToken.isSuperLike,
+        isUnLike: currentToken.is_unLike,
+        isSuperLike: currentToken.is_super_like,
         like: currentToken.like,
         unLike: currentToken.un_like,
         superLike: currentToken.super_like,
@@ -350,6 +350,7 @@ export function mapDataToProject(currentToken: any): Project {
         creater: currentToken.account_data,
         boostTime: currentToken.boost_time,
         status: currentToken.status,
+
     };
 }
 
