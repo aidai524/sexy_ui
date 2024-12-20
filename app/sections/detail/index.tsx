@@ -25,7 +25,8 @@ export default function Detail() {
     if (id) {
       httpGet("/project", { id }).then((res) => {
         if (res.code === 0 && res.data) {
-          const infoData = mapDataToProject(res.data);
+          // console.log(res)
+          const infoData = mapDataToProject(res.data[0]);
           setInfoData(infoData);
         }
       });
@@ -35,6 +36,8 @@ export default function Detail() {
   if (!infoData) {
     return <></>;
   }
+
+  console.log('infoData:', infoData)
 
   return (
     <div className={styles.main}>

@@ -125,3 +125,5 @@ function mapDataToComment(data: any): Comment {
     creater: data.account_data
   };
 }
+
+
