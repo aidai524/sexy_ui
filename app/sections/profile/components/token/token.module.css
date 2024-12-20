@@ -31,6 +31,12 @@
                 align-items: center;
                 gap: 5px;
                 margin-top: 5px;
+                .tickerName {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 160px;
+                }
                 .createrImg {
                     width: 16px;
                     height: 16px;
@@ -55,8 +61,16 @@
             margin-top: 5px;
             color: rgba(255, 255, 255, 0.6);
             text-align: center;
+            width: 36px;
+            position: relative;
+            white-space: nowrap;
             .whiteAmount {
                 color: #fff;
+                .timeFormat {
+                    position: absolute;
+                    right: 0;
+                    width: 60px;
+                }
             }
         }
     }
@@ -74,7 +88,20 @@
     font-weight: 300;
     border-radius: 1000px;
     white-space: nowrap;
+    background-color: rgba(80, 73, 100, 1);
     &.launch1 {
         background-color: rgba(80, 73, 100, 1);
     }
+    &.launch2 {
+        background-color: var(--part-bg);
+    }
+    &.launch3 {
+        background-color: rgba(100, 43, 255, 1);
+    }
+}
+
+.actionIcon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }

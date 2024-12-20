@@ -1,0 +1,70 @@
+.main {
+    width: 80vw;
+    padding-top: 60px;
+    .content {
+        position: relative;
+        border-radius: 30px;
+        border: 1px solid;
+        border-image-source: linear-gradient(180deg, #FF008A 0%, #8D00FF 100%);
+        background: radial-gradient(74.23% 74.23% at 44.23% 8.36%, #FFCAE0 0%, #FFFEFE 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+        .avatar {
+            width: 85px;
+            height: 85px;
+            border: 4px solid #fff;
+            border-radius: 85px;
+            margin: -40px auto 0;
+            overflow: hidden;
+            .avatarImg {
+                width: 100%;
+                border-radius: 85px;
+            }
+        }
+        .nameContent {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 20px;
+            font-size: 12px;
+            .name {
+                font-weight: 700;
+            }
+        }
+        .successText {
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 15px;
+            line-height: 32px;
+        }
+
+        .successNote {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .btnBox {
+            margin: 30px auto;
+            width: 60%;
+        }
+        .heartWhite {
+            position: absolute;
+            left: 0px;
+            top: -10px;
+        }
+        .heartMore {
+            position: absolute;
+            top: -45px;
+            left: 30%;
+        }
+    }
+
+    .close {
+        margin: 30px auto;
+        width: 30px;
+    }
+}
+
+.ModalMain :global(.adm-modal .adm-center-popup-wrap div.adm-center-popup-body){
+    background-color: transparent;
+}

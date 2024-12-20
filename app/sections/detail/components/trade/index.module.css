@@ -1,0 +1,9 @@
+.LaptopContainer {
+  border-radius: 10px;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 23, 25, 0) 0.42%,
+    rgba(18, 23, 25, 0.6) 99.58%
+  );
+  margin-right: 10px;
+}

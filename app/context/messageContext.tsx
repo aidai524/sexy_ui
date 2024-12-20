@@ -2,16 +2,16 @@
 
 import type { ReactNode } from "react";
 import React, {
-    useCallback,
     useContext,
-    useEffect,
     useState,
     useMemo,
 } from "react";
 
 interface MessageContextValue {
     likeTrigger: boolean;
+    hateTrigger: boolean;
     setLikeTrigger: (val: boolean) => void;
+    setHateTrigger: (val: boolean) => void;
 }
 
 const MessageContext =
@@ -21,13 +21,16 @@ export const MessageContextProvider: React.FC<{
     children: ReactNode;
 }> = ({ children }) => {
     const [likeTrigger, setLikeTrigger] = useState(false)
+    const [hateTrigger, setHateTrigger] = useState(false)
 
     const walletTypeContextValue = useMemo<MessageContextValue>(
         () => ({
             likeTrigger,
+            hateTrigger,
             setLikeTrigger,
+            setHateTrigger
         }),
-        [likeTrigger, setLikeTrigger]
+        [likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger]
     );
 
     return (

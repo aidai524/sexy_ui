@@ -1,7 +1,15 @@
 .panel {
-    background-color: #121719;
-    border-radius: 10px;
-    padding: 15px 24px;
-    margin-left: 10px;
-    margin-right: 10px;
+  border-radius: 10px;
+  padding: 15px 24px;
+  margin-right: 10px;
+}
+
+.Light {
+  background-color: #ab1f5c;
+  margin-left: 0px;
+}
+
+.Dark {
+  background-color: #121719;
+  margin-left: 10px;
 }

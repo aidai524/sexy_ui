@@ -4,11 +4,13 @@ import Big from 'big.js'
 import styles from './trande.module.css'
 import MainBtn from '@/app/components/mainBtn'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade';
-import { getFullNum } from '@/app/utils';
+import { getFullNum, httpGet } from '@/app/utils';
 import { fail, success } from '@/app/utils/toast';
 import { Popup } from 'antd-mobile'
 import { Avatar } from '@/app/components/thumbnail'
 import type { Project } from '@/app/type'
+import CreateSuccessModal from '../createSuccessModal'
+import { useRouter } from 'next/navigation'
 
 type Token = {
     tokenName: string;
@@ -41,7 +43,7 @@ export default function Create({
     onHide,
     onCreateTokenSuccess
 }: Props) {
-
+    const router = useRouter()
 
     const {
         tokenName,
@@ -49,12 +51,6 @@ export default function Create({
         tokenUri,
     } = token
 
-    const desToken: Token = {
-        tokenName,
-        tokenSymbol,
-        tokenUri,
-        tokenDecimals: 2,
-    }
 
     const [infoData, setInfoData] = useState<Project>({
         tokenName: tokenName,
@@ -62,6 +58,7 @@ export default function Create({
         about: '',
         website: '',
         tokenImg: tokenUri,
+        tokenIcon: data.tokenIcon,
     })
 
     const [tokenType, setTokenType] = useState<number>(1)
@@ -72,16 +69,13 @@ export default function Create({
     const [isLoading, setIsLoading] = useState(false)
 
     const [solPercent, setSolPercent] = useState(0)
-    const [tokenPercent, setTokenPercent] = useState(1)
-
     const [valInput, setValInput] = useState('')
-
-    const [buyIn, setBuyIn] = useState('0')
-    const [buyInSol, setBuyInSol] = useState('0')
+    const [showSuccessModal, setShowSuccessModal] = useState(false)
 
     const { createToken } = useTokenTrade({
         tokenName,
         tokenSymbol,
+        tokenDecimals: 6,
         loadData: false
     })
 
@@ -236,6 +230,8 @@ export default function Create({
                                 })
                                 
                                 await onCreateTokenSuccess()
+                                onHide()
+                                setShowSuccessModal(true)
                                 setIsLoading(false)
                                 // success('Transtion success')
                             } catch (e) {
@@ -248,5 +244,14 @@ export default function Create({
                 </div>
             </div>
         </Popup>
+
+        <CreateSuccessModal token={data} show={showSuccessModal} onHide={async () => {
+            const v = await httpGet('/project?token_name=' + token.tokenName)
+            if (v.code === 0) {
+                setShowSuccessModal(false)
+                router.push('/detail?id=' + v.data.id)
+            }
+            
+        }}/>
     </div>
 }

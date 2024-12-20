@@ -6,7 +6,7 @@ import {
 } from '@solana/web3.js';
 import { useCallback, useMemo } from "react";
 import { useAccount } from '@/app/hooks/useAccount';
-import { useConnection } from '@solana/wallet-adapter-react';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 interface Props {
     tokenName: string;
@@ -15,13 +15,15 @@ interface Props {
 
 export function useVip() {
     const { connection } = useConnection()
-    const { walletProvider } = useAccount();
+    const { publicKey } = useWallet()
+    const { walletProvider, connected } = useAccount();
 
     // const programId = useMemo(() => {
     //     return new PublicKey(
     //         "CcNrTgHd3HE7hj9zrurd1RwBadUVhcThdcY3cJBzAqwY"
     //     );
     // }, [])
+
 
     const call = useCallback(async (type: 'super-like' | 'boost' | 'vip') => {
         let val = {}
@@ -32,6 +34,7 @@ export function useVip() {
         } else if (type === 'vip') {
             val = {"type":"AddVip"}
         }
+
 
         const memoProgramId = new PublicKey('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr');
 
@@ -44,7 +47,7 @@ export function useVip() {
         const transferSOLInstruction = SystemProgram.transfer({
             fromPubkey: walletProvider.publicKey!,
             toPubkey: new PublicKey('EEzniCRUsjy9sqEqEi6jPEDF3kJehJxCxWrt2FuEQasH'),
-            lamports: 20000000,
+            lamports: 200000000,
         });
 
         const latestBlockhash = await connection?.getLatestBlockhash();
@@ -60,7 +63,7 @@ export function useVip() {
 
         return hash
 
-    }, [connection, walletProvider])
+    }, [connection, walletProvider, publicKey])
   
     return {
         call,

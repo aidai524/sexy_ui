@@ -1,44 +1,136 @@
-import { ImageUploader, ImageUploadItem } from 'antd-mobile'
-
-import styles from './upload.module.css'
-import { upload } from '@/app/utils';
+import { ImageUploader, ImageUploadItem, ImageUploaderRef } from "antd-mobile";
+import styles from "./upload.module.css";
+import { upload } from "@/app/utils";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import CircleLoading from "../icons/loading";
+import UploadBox from "./upload-box";
 
 interface Props {
-    fileList: ImageUploadItem[];
-    setFileList: any;
-    children?: React.ReactNode;
-
+  fileList: ImageUploadItem[];
+  setFileList: any;
+  children?: React.ReactNode;
+  accept?: string;
+  type: "avatar" | "banner" | "others" | "token";
+  percent?: number;
 }
 
-export async function mockUpload(file: File) {
-    console.log('file:', file)
-    const url = await upload(file.name, file)
+export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
+export const svgReg = /(.+\.(svg))$/i;
+export const videoReg = /(.+\.(mp4))$/i;
+const StyleMaps = {
+  avatar: [styles.Avatar, styles.AvatarImg],
+  banner: [styles.Banner, styles.Banner],
+  token: [styles.Token, styles.Token],
+  others: [styles.Others, styles.OthersImg]
+};
+
+export default function Upload({
+  fileList: defaultFileList,
+  setFileList: setDefaultFileList,
+  accept = "image/*",
+  type,
+  percent = 1.5,
+}: Props) {
+  const [isUplaod, setIsUpload] = useState(false);
+  const [fileList, setFileList] = useState<any>(defaultFileList || []);
+  const input = useRef<ImageUploaderRef>(null);
+
+  const uploadImg = useCallback(async (file: File) => {
+    setIsUpload(true);
+    const url = await upload(file.name, file, (imgReg.test(file.name) && !svgReg.test(file.name)), percent);
+    setTimeout(() => {
+      setIsUpload(false);
+    }, 1000);
 
     if (url) {
-        return {
-            url,
-        }
+      return {
+        url
+      };
     }
 
     return {
-        url: URL.createObjectURL(file),
-    }
-}
+      url: ""
+    };
+  }, []);
 
-export default function Upload({
-    fileList,
-    setFileList,
-    children,
-}: Props) {
-    return <ImageUploader maxCount={1} value={fileList} onChange={setFileList} upload={mockUpload}>
-    {
-        fileList.length === 0 ? (children ? children : <div
-            className={styles.imgUpload}
-        >
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M25 3H3L3 22.6667L14.4258 13.1452C15.9152 11.904 18.0802 11.9096 19.5631 13.1584L25 17.7368V3ZM3 0C1.34315 0 0 1.34315 0 3V25C0 26.6569 1.34315 28 3 28H25C26.6569 28 28 26.6569 28 25V3C28 1.34315 26.6569 0 25 0H3ZM7.5 11C8.88071 11 10 9.88071 10 8.5C10 7.11929 8.88071 6 7.5 6C6.11929 6 5 7.11929 5 8.5C5 9.88071 6.11929 11 7.5 11Z" fill="#9290B1" fill-opacity="0.6" />
-            </svg>
-        </div>) : <div></div>
+  useEffect(() => {
+    if (fileList.length === 0 && defaultFileList.length > 0)
+      setFileList(defaultFileList);
+  }, [defaultFileList]);
+
+  const onUpload = () => {
+    const nativeInput = input.current?.nativeElement;
+    if (nativeInput) {
+      nativeInput.click();
+      setFileList([]);
     }
-</ImageUploader>
+  };
+
+  const mergedFiles = useMemo(
+    () => (fileList.length ? fileList : defaultFileList),
+    [defaultFileList, fileList]
+  );
+
+  const fileType = useMemo<"image" | "video" | undefined>(() => {
+    if (mergedFiles && mergedFiles.length) {
+      const url = mergedFiles[0].url;
+      if (imgReg.test(url)) {
+        return "image";
+      } else if (videoReg.test(url)) {
+        return "video";
+      }
+    }
+  }, [mergedFiles]);
+
+  return (
+    <div className={styles.Container}>
+      <div className={styles.uploadBox}>
+        <ImageUploader
+          ref={input}
+          accept={accept}
+          maxCount={1}
+          value={fileList}
+          onChange={(files) => {
+            setDefaultFileList(files);
+            setFileList(files);
+          }}
+          upload={uploadImg}
+        />
+      </div>
+
+      {mergedFiles.length === 0 ? (
+        <UploadBox type={type} onClick={onUpload} />
+      ) : (
+        <>
+          {fileType === "image" && (
+            <div
+              className={`${StyleMaps[type][0]} ${styles.Center}`}
+              onClick={() => {
+                onUpload();
+              }}
+            >
+              <img src={mergedFiles[0].url} className={StyleMaps[type][1]} />
+            </div>
+          )}
+          {fileType === "video" && (
+            <video className={styles.imgPreview} controls>
+              <source src={mergedFiles[0].url} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          )}
+        </>
+      )}
+
+      {isUplaod && (
+        <div
+          className={styles.LoadingBox}
+          style={{
+            borderRadius: type === "avatar" ? "50%" : "8px"
+          }}
+        >
+          <CircleLoading size={26} />
+        </div>
+      )}
+    </div>
+  );
 }

@@ -35,6 +35,7 @@ export default function Create() {
              <CreateNode show={renderType === 0} onAddDataFill={(value: any) => {
                 setDataAdd(value)
                 setRenderType(1)
+                window.scrollTo(0, 0)
             }} />
         }
 

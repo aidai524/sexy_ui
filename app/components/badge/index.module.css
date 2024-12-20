@@ -1,0 +1,30 @@
+.Container {
+  position: relative;
+}
+
+.Badge {
+  position: absolute;
+  background-color: #ff2ba0;
+}
+
+.BadgeWithEmpty {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  right: -4px;
+  top: 0px;
+}
+
+.BadgeWithNumber {
+  font-size: 10px;
+  height: 15px;
+  box-sizing: border-box;
+  padding: 1px 6px;
+  border-radius: 34px;
+  border: 1px solid #fff;
+  color: #fff;
+  line-height: 10px;
+  right: -14px;
+  top: 6px;
+}

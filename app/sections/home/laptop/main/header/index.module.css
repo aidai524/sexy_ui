@@ -1,0 +1,26 @@
+.Container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0px;
+  position: relative;
+}
+
+.Actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.ConnectButton {
+  width: 157px;
+  height: 36px;
+  border-radius: 48px;
+  border: 2px solid #af0;
+  color: #af0;
+  font-size: 14px;
+}
+
+.Alarm {
+  position: relative;
+}

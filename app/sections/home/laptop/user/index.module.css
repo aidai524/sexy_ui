@@ -1,0 +1,38 @@
+.Container {
+  width: 480px;
+  height: 100vh;
+  background: #0d1012;
+  position: relative;
+}
+
+.Top {
+  padding: 16px 24px 0px;
+}
+
+.Content {
+  position: relative;
+  z-index: 2;
+}
+
+.Bg {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 230px;
+  background: linear-gradient(to top, #0d1012 35.66%, #ff2f74 99.63%);
+}
+
+.SexyFi {
+  position: absolute;
+  width: 467px;
+  height: 191px;
+  background: url(/img/laptop/sexyfi.png) no-repeat;
+}
+
+.Avatar {
+  width: 100%;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

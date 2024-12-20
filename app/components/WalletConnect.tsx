@@ -31,7 +31,7 @@ const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig['options'] = {
 };
 
 export default function WalletConnect({ children }: { children: React.ReactNode }) {
-  const network = WalletAdapterNetwork.Mainnet;
+  const network = WalletAdapterNetwork.Devnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(
     () => {

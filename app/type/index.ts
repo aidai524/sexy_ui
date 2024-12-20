@@ -1,6 +1,7 @@
 export interface Project {
     id?: number;
     tokenName: string;
+    tokenSymbol?: string;
     ticker: string;
     about: string;
     website?: string;
@@ -8,7 +9,8 @@ export interface Project {
     telegram?: string;
     discord?: string;
     tokenImg: string;
-    tokenSymbol?: string;
+    tokenIcon?: string;
+    tokenDecimals?: number;
     isLike?: boolean;
     isUnLike?: boolean;
     isSuperLike?: boolean;
@@ -17,6 +19,10 @@ export interface Project {
     superLike?: number;
     time?: number;
     account?: string;
+    boostTime?: number;
+    address?: string;
+    creater?: any;
+    status?: number;
 }
 
 export interface Comment {
@@ -29,6 +35,7 @@ export interface Comment {
     like: number;
     unLike: number;
     time: number;
+    creater?: any,
 }
 
 export interface UserInfo {
@@ -45,5 +52,8 @@ export interface UserInfo {
     usingSuperLikeNum: number;
     usingBuySuperLikeNum: number;
     vipType: string;
+    education?: string;
+    vipExpirationTime?: number;
+    vipStartTime?: number;
 }
 

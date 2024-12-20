@@ -5,6 +5,8 @@ import {
     TransactionSignature,
     Transaction,
     SYSVAR_RENT_PUBKEY,
+    ComputeBudgetProgram,
+    // ComputeBudgetProgram,
 } from '@solana/web3.js';
 import Big from 'big.js'
 import * as anchor from "@coral-xyz/anchor";
@@ -20,15 +22,17 @@ import bs58 from 'bs58';
 import { httpAuthPost, sleep } from '../utils';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useAccount } from '@/app/hooks/useAccount';
+import { useClickAway } from 'ahooks';
 
 interface Props {
     tokenName: string;
     tokenSymbol: string;
+    tokenDecimals: number;
     loadData?: boolean;
 }
 
 export function useTokenTrade({
-    tokenName, tokenSymbol, loadData = true
+    tokenName, tokenSymbol, tokenDecimals, loadData = true
 }: Props) {
     const { connection } = useConnection();
     const { walletProvider } = useAccount();
@@ -36,9 +40,11 @@ export function useTokenTrade({
     const [minPrice, setMinPrice] = useState(1)
     const [maxPrice, setMaxPrice] = useState(1)
     const [tokenBalance, setTokenBalance] = useState('0')
+    const [solBalance, setSolBalance] = useState('0')
+    const [reFreshBalnace, setReFreshBalnace] = useState(0)
 
     const programId = useMemo(() => {
-        return new PublicKey("BmEdwC1RFv2YF7Yo7y3H28MJvHXcNyMtxNBrDgkBRXgd")
+        return new PublicKey("AYdgC17ymp4CkbbZ7pED2oa5hdnsp4dZVKJtt9542kFh")
     }, [])
 
     const wsol = useMemo(() => {
@@ -191,6 +197,24 @@ export function useTokenTrade({
             programId
         )
 
+        let referralUser: any = PublicKey.default
+        try {
+            const accountInfo = await connection.getAccountInfo(referralRecord[0]);
+            if (accountInfo) {
+                const program = new Program<any>(idl, programId, { connection: connection } as any);
+                const referralAccount: any = await program.account.referralRecord.fetch(referralRecord[0]);
+                referralUser = referralAccount.user
+            }
+        } catch (e) {
+        }
+        
+        console.log('accountInfo:', referralUser)
+
+        const referralFeeRateRecord = PublicKey.findProgramAddressSync(
+            [Buffer.from("referral_fee_rate_record"), state[0].toBuffer(), referralUser.toBuffer()],
+            programId
+        )
+
         const referralSolAccount = await _getOrCreateAssociatedTokenAccount(wsol, referral)
         const proxySolAccount = await _getOrCreateAssociatedTokenAccount(wsol, proxy)
 
@@ -214,6 +238,7 @@ export function useTokenTrade({
             poolTokenAccount: poolTokenAccount.address,
 
             referralRecord: referralRecord[0],
+            referralFeeRateRecord: referralFeeRateRecord[0],
 
             tokenProgram: TOKEN_PROGRAM_ID,
             associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -242,7 +267,7 @@ export function useTokenTrade({
 
         const keys = await getKeys()
 
-        console.log('keys: ', keys)
+        // console.log('keys: ', keys)
 
         if (!keys) {
             return
@@ -251,11 +276,9 @@ export function useTokenTrade({
         const instruction1 = SystemProgram.transfer({
             fromPubkey: walletProvider.publicKey!,
             toPubkey: keys.userWsolAccount,
-            lamports: Number(amount), // 以 lamports 为单位 (1 SOL = 1e9 lamports)
+            lamports: Number(amount),
         })
         const instruction2 = createSyncNativeInstruction(keys.userWsolAccount, TOKEN_PROGRAM_ID)
-
-        // await wrapToWSol(walletProvider, connection!, walletProvider.publicKey!, keys[6].pubkey, 200000000)
 
         const transaction = new Transaction({
             recentBlockhash: latestBlockhash!.blockhash,
@@ -281,7 +304,83 @@ export function useTokenTrade({
         console.log('v:', v)
     }, [connection, walletProvider, programId, maxPrice])
 
-    const sellToken = useCallback(async (amount: number | string) => {
+    const buyTokenWithFixedOutput = useCallback(async (outputAmount: string | number, maxWsolAmount: string | number,) => {
+        const latestBlockhash = await connection?.getLatestBlockhash();
+
+        const keys = await getKeys()
+
+        // console.log('keys: ', keys)
+
+        if (!keys) {
+            return
+        }
+
+        const instruction1 = SystemProgram.transfer({
+            fromPubkey: walletProvider.publicKey!,
+            toPubkey: keys.userWsolAccount,
+            lamports: Number(maxWsolAmount),
+        })
+        const instruction2 = createSyncNativeInstruction(keys.userWsolAccount, TOKEN_PROGRAM_ID)
+
+        const transaction = new Transaction({
+            recentBlockhash: latestBlockhash!.blockhash,
+            feePayer: walletProvider.publicKey!
+        });
+
+        const program = new Program<any>(idl, programId, walletProvider as any);
+
+        const buyInstruction = await program.methods.buyTokenWithFixedOutput(
+            new anchor.BN(outputAmount),
+            new anchor.BN(maxWsolAmount),
+            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+            keys.proxySolAccount
+        ).accounts(keys).instruction()
+
+        transaction.add(instruction1).add(instruction2).add(buyInstruction)
+
+        // tx.recentBlockhash = latestBlockhash!.blockhash
+        // tx.feePayer = walletProvider.publicKey!
+
+        const v = await walletProvider.signAndSendTransaction(transaction)
+
+        console.log('v:', v)
+    }, [connection, walletProvider, programId])
+
+    const sellToken = useCallback(async (amount: number | string, minWsolAmount: number | string,) => {
+        const latestBlockhash = await connection?.getLatestBlockhash();
+
+        const keys = await getKeys()
+        if (!keys) {
+            return
+        }
+
+        // console.log('minWsolAmount:', minWsolAmount)
+
+        const program = new Program<any>(idl, programId, { connection: connection } as any);
+
+        const tx: any = await program.methods.sellToken(
+            new anchor.BN(amount),
+            new anchor.BN(minWsolAmount),
+            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+            keys.proxySolAccount,
+        ).accounts(keys).transaction()
+
+        console.log('tx:', tx)
+        tx.recentBlockhash = latestBlockhash!.blockhash
+        tx.feePayer = walletProvider.publicKey!
+
+        const confirmationStrategy: any = {
+            skipPreflight: true,
+            preflightCommitment: 'processed',
+        };
+
+        const hash = await walletProvider.signAndSendTransaction(tx, confirmationStrategy)
+
+        return hash
+
+    }, [connection, walletProvider, programId])
+
+    const sellTokenWithFixedOutput = useCallback(async (outputAmount: string | number, maxMemeAmount: string | number,) => {
         const latestBlockhash = await connection?.getLatestBlockhash();
 
         const keys = await getKeys()
@@ -291,11 +390,10 @@ export function useTokenTrade({
 
         const program = new Program<any>(idl, programId, { connection: connection } as any);
 
-        const solAmount = new anchor.BN(minPrice)
 
-        const tx: any = await program.methods.sellToken(
-            new anchor.BN(amount),
-            solAmount,
+        const tx: any = await program.methods.sellTokenWithFixedOutput(
+            new anchor.BN(outputAmount),
+            new anchor.BN(maxMemeAmount),
             new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
             keys.proxySolAccount,
         ).accounts(keys).transaction()
@@ -304,7 +402,12 @@ export function useTokenTrade({
         tx.recentBlockhash = latestBlockhash!.blockhash
         tx.feePayer = walletProvider.publicKey!
 
-        const hash = await walletProvider.signAndSendTransaction(tx)
+        const confirmationStrategy: any = {
+            skipPreflight: true,
+            preflightCommitment: 'processed',
+        };
+
+        const hash = await walletProvider.signAndSendTransaction(tx, confirmationStrategy)
 
         return hash
 
@@ -433,28 +536,60 @@ export function useTokenTrade({
             lamports: 20000000, 
         })
         const instruction2 = createSyncNativeInstruction(userSolAccount.address, TOKEN_PROGRAM_ID)
-
         
-        transaction.add(instruction1).add(instruction2).add(createInfoTransition)
+        transaction
+        .add(
+            ComputeBudgetProgram.setComputeUnitLimit({
+                units: 991600000,
+            })
+        )
+        .add(instruction1)
+        .add(instruction2)
+        .add(createInfoTransition)
 
         const v3 = await walletProvider.signAndSendTransaction(transaction)
 
+        console.log('v3:', v3)
+
         if (amount) {
-            await prePaid(amount, tokenName, tokenSymbol)
+            // const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
+            const prepaidTrans = await prePaid(amount, tokenName, tokenSymbol, false)
+
+            // console.log('prepaidTrans:', prepaidTrans)
+
+            // if (prepaidTrans) {
+            //     transaction.add(prepaidTrans)
+            // }
         }
+
+        
 
         return v3
 
     }, [connection, walletProvider, programId, wsol])
 
-    const prePaid = useCallback(async (amount: number | string, tokenName: string, tokenSymbol: string) => {
-        console.log(111)
-
-        const val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
+    const prePaid = useCallback(async (amount: number | string, tokenName: string, tokenSymbol: string, justTransaction: boolean = false) => {
+        
+        let i = 0
+        let val
+        while (i < 50) {
+            val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
+            if (val.code !== 0) {
+                i++
+                await sleep(2000)
+            } else {
+                break
+            }
+        }
 
         if (val.code !== 0) {
-            throw 'Fetch transaction error'
+            throw 'fetch prepaid data error'
         }
+
+
+        console.log('val:', val)
+
+        
 
         const userSolAccount = await _getOrCreateAssociatedTokenAccount(
             wsol,
@@ -494,7 +629,8 @@ export function useTokenTrade({
         //     userTokenAccount: keys.userTokenAccount,
         //     poolTokenAccount: keys.poolTokenAccount,
         //     paidRecord: paidRecord,
-        //     referralRecord: keys.referralRecord,
+        //     referralRecord:
+        //  keys.referralRecord,
         //     tokenProgram: TOKEN_PROGRAM_ID,
         //     associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
         //     user: walletProvider.publicKey!,
@@ -517,37 +653,68 @@ export function useTokenTrade({
         })
         const instruction2 = createSyncNativeInstruction(userSolAccount?.address, TOKEN_PROGRAM_ID)
 
-        console.log('serverTransaction:', serverTransaction)
+        // serverTransaction.recentBlockhash = latestBlockhash!.blockhash
+
+        // console.log('serverTransaction:', serverTransaction, walletProvider, latestBlockhash)
 
         const confirmationStrategy: any = {
-            skipPreflight: false,
+            skipPreflight: true,
+            maxRetries: 10,
             preflightCommitment: 'processed',
         };
 
-        transaction.add(instruction1).add(instruction2)
+        transaction
+        .add(instruction1)
+        .add(instruction2)
+        // .add(serverTransaction)
+        // .add(
+        //     ComputeBudgetProgram.setComputeUnitLimit({
+        //         units: 1000000,
+        //     })
+        // )
+
+        if (justTransaction) {
+            return transaction
+        }
 
         const hash1 = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
-
         console.log(hash1)
 
         const hash2 = await walletProvider.signAndSendTransaction(serverTransaction, confirmationStrategy)
-
         console.log('hash', hash2)
 
         // return hash2   
     }, [programId, walletProvider, connection, wsol])
 
+    const checkPrePayed = useCallback(async () => {
+        if (!pool) {
+            return false
+        }
+
+        const prePaidRecord = PublicKey.findProgramAddressSync(
+            [Buffer.from("prepaid_record"), pool[0].toBuffer(), walletProvider.publicKey!.toBuffer()],
+            programId
+        );
+
+        const val = await connection.getAccountInfo(prePaidRecord[0])
+
+        return !!val
+
+    }, [walletProvider, connection, pool])
+
     useEffect(() => {
         if (programId && pool && connection && tokenName && tokenSymbol && loadData) {
             const program = new Program<any>(idl, programId, { connection: connection } as any);
-            _getRate(program, pool[0]).then(rate => {
+            _getRate(program, pool[0], tokenDecimals).then(rate => {
                 console.log('rate:', rate.toString())
                 setRate(Number(rate.toString()))
             })
         }
-    }, [programId, pool, connection, tokenName, tokenSymbol, loadData])
+    }, [programId, pool, connection, tokenName, tokenSymbol, tokenDecimals, loadData, reFreshBalnace])
 
     useEffect(() => {
+        console.log('reFreshBalnace:', reFreshBalnace)
+
         if (programId && connection && tokenName && tokenSymbol && loadData && tokenInfo) {
             setTimeout(async () => {
                 const userTokenAccount = await _getOrCreateAssociatedTokenAccount(
@@ -556,8 +723,11 @@ export function useTokenTrade({
                     false
                 );
 
+                let i = 0
                 if (userTokenAccount) {
-                    const balance = new Big(Number(userTokenAccount.amount)).div(10 ** 2).toString()
+                    const balance = new Big(Number(userTokenAccount.amount)).div(10 ** tokenDecimals).toString()
+                    console.log('balance:', balance)
+
                     setTokenBalance(balance)
                     return
                 }
@@ -566,17 +736,36 @@ export function useTokenTrade({
             }, 10)
         }
 
-    }, [programId, connection, tokenName, tokenSymbol, loadData])
+    }, [programId, walletProvider, connection, tokenName, tokenSymbol, tokenDecimals, loadData, reFreshBalnace])
+
+    useEffect(() => {
+        if (connection) {
+            connection.getBalance(walletProvider.publicKey!).then(res => {
+                if (res) {
+                    setSolBalance(new Big(res).div(10 ** 9).toString())
+                } else {
+                    setSolBalance('0')
+                }
+                
+            })
+        }
+        
+    }, [connection, walletProvider, reFreshBalnace])
 
     return {
         rate,
         minPrice,
         maxPrice,
         buyToken,
+        buyTokenWithFixedOutput,
         sellToken,
+        sellTokenWithFixedOutput,
         createToken,
         tokenBalance,
-        prePaid
+        solBalance,
+        updateBalance: () => { setReFreshBalnace(reFreshBalnace + 1) },
+        prePaid,
+        checkPrePayed,
     }
 
 }
@@ -616,11 +805,11 @@ async function getMetaData(tokenMint: PublicKey) {
     return metaData
 }
 
-async function _getRate(program: Program, pool: PublicKey) {
+async function _getRate(program: Program, pool: PublicKey, tokenDecimals: number) {
     const poolData: any = await program.account.pool.fetch(pool)
     // console.log('grid_state_before:', poolData, poolData!.virtualTokenAmount.toString(), poolData!.virtualWsolAmount.toString())
 
-    const poolToken = new Big(poolData!.virtualTokenAmount.toString()).div(10 ** 2)
+    const poolToken = new Big(poolData!.virtualTokenAmount.toString()).div(10 ** tokenDecimals)
     const solToken = new Big(poolData!.virtualWsolAmount.toString()).div(10 ** 9)
     const rate = poolToken.div(solToken).toString()
 

@@ -1,21 +1,30 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react";
+import { TradingViewChart } from "@/app/components/chart";
 
-export default function Chart() {
-    useEffect(() => {
+export default function Chart({ data, style = {} }: any) {
+  const tvRef = useRef<any>();
 
-    }, [])
-
-    return <div style={{ paddingTop: 10 }}>
-        {/* <iframe id="dexscreener-embed"
-            title="Dexscreener Trading Chart"
-            width="1200" height="800"
-            src="https://dexscreener.com/near/refv1-4276?embed=1&theme=dark&info=0&trades=1&chart=0"></iframe> */}
-
-        <iframe style={{ height: 'calc(100vh - 110px)' }} id="dextools-widget"
-            title="DEXTools Trading Chart"
-            width="100%" 
-            frameBorder="none"
-            src="https://dexscreener.com/near/refv1-4276?embed=1&theme=dark&info=0&trades=0"></iframe>
-
+  if (!data) return <div />;
+  return (
+    <div style={{ paddingTop: 10, height: "calc(100vh - 130px)", ...style }}>
+      {data.lanched && (
+        <iframe
+          style={{ height: "100%" }}
+          id="dextools-widget"
+          title="DEXTools Trading Chart"
+          width="100%"
+          frameBorder="none"
+          src="https://dexscreener.com/near/refv1-4276?embed=1&theme=dark&info=0&trades=0"
+        ></iframe>
+      )}
+      {!data.lanched && (
+        <TradingViewChart
+          style={{ height: "100%" }}
+          symbol={data.tokenName}
+          onLoaded={() => {}}
+          forwardedRef={tvRef}
+        />
+      )}
     </div>
+  );
 }

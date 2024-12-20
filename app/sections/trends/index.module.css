@@ -1,0 +1,129 @@
+.Container {
+  background-color: #000000;
+  padding-bottom: 80px;
+}
+
+.Header {
+  width: 100vw;
+  height: 80px;
+  background: linear-gradient(0deg, #0d1012 0%, #ff2f74 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.HeaderTitle {
+  width: 83.46666666666667vw;
+  height: 19.733333333333333vw;
+}
+
+.Content {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.Item {
+  height: 174px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.FirstItem {
+  width: 356px;
+  max-width: calc(100vw - 16px);
+}
+
+.OthersItem {
+  width: 174px;
+  max-width: calc(50vw - 12px);
+}
+
+.ItemImage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.ItemContent {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.FirstItemContent {
+  background: linear-gradient(270deg, #000 0%, rgba(0, 0, 0, 0) 87.56%);
+}
+
+.OthersItemContent {
+  background: linear-gradient(0deg, #000 6.22%, rgba(0, 0, 0, 0) 93.78%);
+}
+
+.FirstItemRank {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 100px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  position: absolute;
+  left: 16px;
+  top: -4px;
+}
+
+.OthersItemRank {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 60px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  position: absolute;
+  left: 8px;
+  top: 0px;
+}
+
+.ItemInfo {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  text-align: right;
+}
+
+.ItemTitle {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.ItemTicker {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.ItemVolum {
+  color: #af0;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+  .mc {
+    font-size: 10px;
+    color: rgba(146, 144, 177, 1);
+  }
+}

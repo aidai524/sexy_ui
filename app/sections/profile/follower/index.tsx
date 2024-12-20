@@ -2,39 +2,36 @@ import Back from '@/app/components/back'
 import styles from './follower.module.css'
 import Tab from '../components/tab'
 import FollowerList from './component/followerList'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { httpGet, httpAuthGet } from '@/app/utils'
+import { httpGet, httpAuthGet, formatAddress } from '@/app/utils'
+import useUserInfo from '../../../hooks/useUserInfo'
+import useFollow from '../hooks/useFollow'
 
 export default function Follower() {
     const params = useSearchParams()
-
-    useEffect(() => {
-        const id = params.get('id')
-        if (id) {
-            httpAuthGet('/project/follower/list', {
-                address: id,
-                limit: 9999,
-            }).then(res => {
-                console.log(res)
-            })
-        }
-    }, [params])
+    const [account] = useState(params.get('account')?.toString())
+    const { userInfo } = useUserInfo(account)
+    const { followerList, followingList, update } = useFollow(account)
 
     return <div className={ styles.main }>
         <div className={ styles.header }>
             <Back/>
-            <div>rSopT53</div>
+            <div>{ userInfo && (userInfo?.name || formatAddress(userInfo?.address as string)) }</div>
         </div>
 
         <Tab nodes={[
             {
-                name: '12 Followers',
-                content: <FollowerList />
+                name: followerList.length + ' Followers',
+                content: <FollowerList list={followerList} followerType={1} onAction={() => {
+                    update()
+                }}/>
             },
             {
-                name: '12 Following',
-                content: <FollowerList />
+                name: followingList.length + ' Following',
+                content: <FollowerList list={followingList} followerType={2} onAction={() => {
+                    update()
+                }}/>
             }
         ]}/>
     </div>

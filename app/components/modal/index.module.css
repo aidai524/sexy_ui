@@ -1,0 +1,28 @@
+.Container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+}
+
+.Main {
+  position: relative;
+  border-radius: 20px;
+  border: 2px solid #ff2681;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.CloseButton {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+  z-index: 101;
+}

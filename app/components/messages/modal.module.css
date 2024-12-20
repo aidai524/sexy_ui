@@ -1,0 +1,79 @@
+.Container {
+  width: 788px;
+  max-width: 90vw;
+  background-color: #fff3f8;
+  border-radius: 20px;
+  box-shadow: 0px 0px 12px 10px rgba(0, 0, 0, 0.09);
+}
+
+.Content {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.EmptyText {
+  color: rgba(199, 106, 145, 0.57);
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Item {
+  border-radius: 14px;
+  background: #fff;
+  font-family: Unbounded;
+}
+
+.ItemTop {
+  display: flex;
+  gap: 12px;
+}
+
+.ItemTitle {
+  color: #000;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ItemDesc {
+  color: #000;
+  font-weight: 300;
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+.ItemLink {
+  margin-top: 20px;
+  color: #ff008d;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.ItemBottom {
+  border-top: 1px solid #efe3f1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ItemTime {
+  color: #8d8bb8;
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.ItemLeft {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.ItemContent {
+  flex-grow: 1;
+}
