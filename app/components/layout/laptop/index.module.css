@@ -2,4 +2,6 @@
   background: #ff2681;
   height: 100vh;
   overflow: hidden;
+  display: flex;
+  gap: 30px;
 }

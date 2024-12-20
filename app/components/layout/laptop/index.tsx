@@ -1,5 +1,6 @@
 import styles from "./index.module.css";
 import LoginModal from "@/app/components/loginModal";
+import User from "./user";
 import { useState, useEffect } from "react";
 
 export default function Laptop({ children }: any) {
@@ -14,7 +15,10 @@ export default function Laptop({ children }: any) {
 
   return (
     <>
-      <div className={styles.Container}>{children}</div>
+      <div className={styles.Container}>
+        <User />
+        {children}
+      </div>
       <LoginModal
         modalShow={showLoginModal}
         onHide={() => {

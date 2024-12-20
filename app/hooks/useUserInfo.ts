@@ -8,17 +8,16 @@ export default function useUserInfo(address: string | undefined) {
 
   const onQueryInfo = useCallback(async () => {
     if (address) {
-      const userInfo = await fecthUserInfo(address)
+      const userInfo = await fecthUserInfo(address);
       if (userInfo) {
-        setUserInfo(userInfo)
+        setUserInfo(userInfo);
       }
     }
-
   }, [address]);
 
   const fecthUserInfo = async (address: string) => {
     return httpAuthGet("/account", { address: address }).then((res) => {
-      if (res.code === 0) {
+      if (res.code === 0 && res.data) {
         const userInfo = {
           name: res.data.name,
           address: res.data.address,
@@ -35,15 +34,15 @@ export default function useUserInfo(address: string | undefined) {
           vipType: res.data.vip_type,
           education: res.data.education,
           vipExpirationTime: res.data.vip_expiration_time,
-          vipStartTime: res.data.vip_start_time,
-        }
+          vipStartTime: res.data.vip_start_time
+        };
 
-        return userInfo
+        return userInfo;
       }
 
-      return null
+      return null;
     });
-  }
+  };
 
   useEffect(() => {
     if (address) {
@@ -51,13 +50,18 @@ export default function useUserInfo(address: string | undefined) {
     }
   }, [address]);
 
-  async function saveUserInfo(banner: string, icon: string, name: string, education: string) {
+  async function saveUserInfo(
+    banner: string,
+    icon: string,
+    name: string,
+    education: string
+  ) {
     const querys: any = {
       address,
       banner,
       name,
       icon,
-      education,
+      education
     };
 
     const queryStr = Object.keys(querys)
