@@ -1,0 +1,49 @@
+.AvatarWrapper {
+  position: relative;
+}
+
+.Avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 36px;
+}
+
+.Rank {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.RankIcon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
+
+.RankText {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  z-index: 2;
+}
+
+.RankIconSvg {
+  width: 19px;
+  height: 19px;
+}
+
+.RankIconNormal {
+  width: 17px;
+  height: 17px;
+  background: linear-gradient(180deg, #9290b1 0%, #3e3d4b 100%);
+  border: 1px solid #000;
+  border-radius: 20px;
+}

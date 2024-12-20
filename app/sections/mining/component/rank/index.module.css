@@ -1,0 +1,93 @@
+.Container {
+  padding: 20px 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.Title {
+  color: #fff;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.YourRank {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #fff;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.YourRankTag {
+  padding: 4px 5px;
+  border-radius: 11px;
+  border: 1px solid #000;
+  background: linear-gradient(180deg, #9290b1 0%, #3e3d4b 100%);
+}
+
+.List {
+  padding-top: 3px;
+}
+
+.Item {
+  height: 60px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(5px);
+  margin-top: 6px;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ItemLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ItemTitle {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.ItemDesc {
+  color: #9290b1;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  margin-top: 6px;
+}
+
+.ItemRight {
+  color: #fff;
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
