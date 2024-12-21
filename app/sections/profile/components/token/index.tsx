@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import Boost from '@/app/components/boost'
 import useTimeLeft from '@/app/hooks/useTimeLeft'
 import LauncdedAction from '@/app/components/action/launched'
+import { useTokenTrade } from '@/app/hooks/useTokenTrade'
 
 interface Props {
     data: Project;
@@ -18,6 +19,13 @@ interface Props {
 export default function Token({ data, update }: Props) {
     const router = useRouter()
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
+
+    const { prepaidSolWithdraw, prepaidTokenWithdraw } = useTokenTrade({
+        tokenName: data.tokenName, 
+        tokenSymbol: data.tokenSymbol as string, 
+        tokenDecimals: data.tokenDecimals as number, 
+        loadData: false
+    })
 
     return <div className={styles.main}>
         <div className={styles.tokenMag}>
@@ -73,7 +81,20 @@ export default function Token({ data, update }: Props) {
                             </div>
                         </div>
                     </div>
+
+                    <div className={styles.actionItem}>
+                        {/* <div className={ styles.withdraw } onClick={async () => {
+                            prepaidSolWithdraw()
+                        }}>
+                            withdraw
+                        </div> */}
+                    </div>
                 </div> : <div className={styles.actionContent}>
+                    {/* <div className={ styles.withdraw } onClick={async () => {
+                            prepaidTokenWithdraw()
+                        }}>
+                            cliam
+                        </div> */}
                     <LauncdedAction data={data} justPlus={true} />
                 </div>
         }

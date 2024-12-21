@@ -154,6 +154,7 @@ export default function Action({ data, justPlus = false, from }: Props) {
                     <Trade
                         initType={initType}
                         token={data}
+                        onClose={() => { setTradeShow(false); } }
                     />
                 </div>
             </Popup>

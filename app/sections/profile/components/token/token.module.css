@@ -57,6 +57,7 @@
     .actionContent {
         display: flex;
         gap: 5px;
+        align-items: center;
         .actionTimes {
             margin-top: 5px;
             color: rgba(255, 255, 255, 0.6);
@@ -72,6 +73,17 @@
                     width: 60px;
                 }
             }
+        }
+
+        .withdraw {
+            border: 1px solid rgba(201, 255, 93, 1);
+            color: rgba(201, 255, 93, 1);
+            padding: 0 10px;
+            border-radius: 22px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+
         }
     }
 }

@@ -19,7 +19,6 @@ export default function SmokeBtn({ onClick, token }: Props) {
   const { address } = useAccount()
   const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
 
-
   const VipModal = (
     <BoostVip
       onStartVip={() => {

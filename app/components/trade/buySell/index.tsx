@@ -24,6 +24,7 @@ interface Props {
   token: Project;
   initType: string;
   from?: string;
+  onClose: () => void;
 }
 
 const SOL: Token = {
@@ -35,7 +36,7 @@ const SOL: Token = {
 
 const SOL_PERCENT_LIST = [0.0001, 0.0005, 0.001];
 
-export default function BuySell({ token, initType, from }: Props) {
+export default function BuySell({ token, initType, from, onClose }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
   const [slip, setSlip] = useState(3);
@@ -438,7 +439,7 @@ export default function BuySell({ token, initType, from }: Props) {
                       type={activeIndex}
                       userInfo={userInfo}
                       token={token}
-                      amount={ new Big(activeIndex === 0 ? buyIn : sellOut).div(10 ** token.tokenDecimals!).toFixed() }
+                      amount={ new Big(activeIndex === 0 ? buyIn : sellOut).div(10 ** token.tokenDecimals!).toFixed(2) }
                       onClose={() => {
                         modalHandler.close()
                       }} />,
@@ -447,6 +448,8 @@ export default function BuySell({ token, initType, from }: Props) {
                   })
   
                   updateBalance();
+
+                  onClose()
                 }
                 
               } catch (e) {

@@ -23,6 +23,7 @@ import { httpAuthPost, sleep } from '../utils';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useAccount } from '@/app/hooks/useAccount';
 import { useClickAway } from 'ahooks';
+import { constants } from 'node:fs';
 
 interface Props {
     tokenName: string;
@@ -157,7 +158,7 @@ export function useTokenTrade({
             return null
         }
 
-        console.log('userSolAccount: ', userSolAccount, 1111222)
+        console.log('userSolAccount: ', userSolAccount)
 
         const poolSolAccount = await _getOrCreateAssociatedTokenAccount(
             wsol,
@@ -168,14 +169,14 @@ export function useTokenTrade({
             return null
         }
 
-        console.log('poolSolAccount:', pool, poolSolAccount, 1111222222)
+        console.log('poolSolAccount:', pool, poolSolAccount)
 
         const userTokenAccount = await _getOrCreateAssociatedTokenAccount(
             tokenInfo[0],
             walletProvider.publicKey!
         );
 
-        console.log('userTokenAccount:', tokenInfo, walletProvider, userTokenAccount, 111122222233333)
+        console.log('userTokenAccount:', userTokenAccount)
 
         if (!userTokenAccount) {
             return null
@@ -248,6 +249,48 @@ export function useTokenTrade({
 
     }, [programId, wsol, state, pool, tokenInfo, tokenName, tokenSymbol, walletProvider, connection])
 
+    const getWithdrawKeys = useCallback(async () => {
+        if (!tokenName || !tokenSymbol || !pool || !tokenInfo)  return null
+
+        const userSolAccount = await _getOrCreateAssociatedTokenAccount(
+            wsol,
+            walletProvider.publicKey!,
+        );
+
+        if (!userSolAccount) {
+            return null
+        }
+
+        const poolSolAccount = await _getOrCreateAssociatedTokenAccount(
+            wsol,
+            pool[0]
+        );
+
+        if (!poolSolAccount) {
+            return null
+        }
+
+        const prePaidRecord = PublicKey.findProgramAddressSync(
+            [Buffer.from("prepaid_record"), pool[0].toBuffer(), walletProvider.publicKey!.toBuffer()],
+            programId
+        );
+
+        return {
+            launchpad: state[0],
+            pool: pool[0],
+            wsolMint: wsol,
+            userWsolAccount: userSolAccount.address,
+            poolWsolAccount: poolSolAccount.address,
+
+            paidRecord: prePaidRecord[0],
+
+            tokenProgram: TOKEN_PROGRAM_ID,
+            associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+            user: walletProvider.publicKey!,
+            systemProgram: SystemProgram.programId,
+        }
+    }, [programId, wsol, state, pool, tokenInfo, tokenName, tokenSymbol, walletProvider, connection])
+
     const getCreateKeys = useCallback((tokenName: string, tokenSymbol: string) => {
         if (!pool || !tokenInfo) {
             return null
@@ -266,8 +309,6 @@ export function useTokenTrade({
         const latestBlockhash = await connection?.getLatestBlockhash();
 
         const keys = await getKeys()
-
-        // console.log('keys: ', keys)
 
         if (!keys) {
             return
@@ -298,6 +339,7 @@ export function useTokenTrade({
 
         // tx.recentBlockhash = latestBlockhash!.blockhash
         // tx.feePayer = walletProvider.publicKey!
+
 
         const v = await walletProvider.signAndSendTransaction(transaction)
 
@@ -610,41 +652,6 @@ export function useTokenTrade({
       
         const latestBlockhash = await connection?.getLatestBlockhash();
 
-        // const keys = await getKeys()
-        // if (!keys) {
-        //     return
-        // }
-
-        // const [paidRecord] = PublicKey.findProgramAddressSync(
-        //     [Buffer.from("prepaid_record"), keys.pool.toBuffer(), walletProvider.publicKey!.toBuffer()],
-        //     programId
-        // );
-
-        // const program = new Program<any>(idl, programId, { connection: connection } as any);
-
-        // const instruction = await program.methods.prepaidTokenWithdraw(
-        //     null,
-        //     null
-        // ).accounts({
-        //     launchpad: keys.launchpad,
-        //     pool: keys.pool,
-        //     wsolMint: keys.wsolMint,
-        //     protocolSolAccount: keys.protocolSolAccount,
-        //     userWsolAccount: keys.userWsolAccount,
-        //     referralSolAccount: keys.userWsolAccount,
-        //     proxySolAccount: keys.userWsolAccount,
-        //     tokenMint: keys.tokenMint,
-        //     userTokenAccount: keys.userTokenAccount,
-        //     poolTokenAccount: keys.poolTokenAccount,
-        //     paidRecord: paidRecord,
-        //     referralRecord:
-        //  keys.referralRecord,
-        //     tokenProgram: TOKEN_PROGRAM_ID,
-        //     associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-        //     user: walletProvider.publicKey!,
-        //     systemProgram: SystemProgram.programId,
-        // }).instruction()
-
         const transaction = new Transaction({
             recentBlockhash: latestBlockhash!.blockhash,
             feePayer: walletProvider.publicKey!
@@ -694,6 +701,93 @@ export function useTokenTrade({
         // return hash2   
     }, [programId, walletProvider, connection, wsol])
 
+    const prepaidSolWithdraw = useCallback(async () => {
+        const latestBlockhash = await connection?.getLatestBlockhash();
+
+        const program = new Program<any>(idl, programId, { connection: connection } as any);
+        const keys = await getWithdrawKeys()
+
+        if (!keys) {
+            return
+        }
+
+
+        console.log('keys:', keys)
+
+        const outputAmount = await checkPrePayed()
+
+        console.log('outputAmount:', outputAmount)
+
+        if (outputAmount > 0) {
+            const tx: any = await program.methods.prepaidSolWithdraw(
+                new anchor.BN(outputAmount),
+            ).accounts(keys).transaction()
+    
+            console.log('tx:', tx)
+            tx.recentBlockhash = latestBlockhash!.blockhash
+            tx.feePayer = walletProvider.publicKey!
+
+            const confirmationStrategy: any = {
+                skipPreflight: true,
+                // preflightCommitment: 'processed',
+            };
+
+            const hash = await walletProvider.signAndSendTransaction(tx, confirmationStrategy)
+
+            return hash
+        }
+
+        return null
+
+    }, [programId, walletProvider, connection, pool])
+
+    const prepaidTokenWithdraw = useCallback(async () => {
+        const latestBlockhash = await connection?.getLatestBlockhash();
+
+        const program = new Program<any>(idl, programId, { connection: connection } as any);
+        const keys = await getKeys()
+
+        if (!keys) {
+            return
+        }
+
+        const paidRecord = PublicKey.findProgramAddressSync(
+            [Buffer.from("prepaid_record"), keys.pool.toBuffer(), walletProvider.publicKey!.toBuffer()],
+            programId
+        );
+
+        console.log('keys:', keys)
+
+        const outputAmount = await checkPrePayed()
+
+        console.log('outputAmount:', outputAmount)
+
+        if (outputAmount > 0) {
+            const tx: any = await program.methods.prepaidTokenWithdraw(
+                new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+                keys.proxySolAccount
+            ).accounts({
+                ...keys,
+                paidRecord: paidRecord[0]
+            }).transaction()
+    
+            console.log('tx:', tx)
+            tx.recentBlockhash = latestBlockhash!.blockhash
+            tx.feePayer = walletProvider.publicKey!
+
+            const confirmationStrategy: any = {
+                skipPreflight: true,
+                // preflightCommitment: 'processed',
+            };
+
+            const hash = await walletProvider.signAndSendTransaction(tx, confirmationStrategy)
+
+            return hash
+        }
+
+        return null
+    }, [])
+
     const checkPrePayed = useCallback(async () => {
         if (!pool) {
             return false
@@ -704,11 +798,18 @@ export function useTokenTrade({
             programId
         );
 
-        const val = await connection.getAccountInfo(prePaidRecord[0])
+        const program = new Program<any>(idl, programId, { connection: connection } as any);
 
-        return !!val
+        try {
+            const prePaidRecordData: any = await program.account.prePaidRecord.fetch(prePaidRecord[0])
+            return prePaidRecordData.paidAmount.toNumber()
+        } catch(e) {
+            
+        }
 
-    }, [walletProvider, connection, pool])
+        return 0
+
+    }, [walletProvider, programId, connection, pool])
 
     const getRate = useCallback(async (amountParam: { solAmount?: string, tokenAmount?: string }) => {
         if (pool) {
@@ -717,19 +818,9 @@ export function useTokenTrade({
         }
     }, [programId, pool, connection])
 
-    useEffect(() => {
-        if (programId && pool && connection && tokenName && tokenSymbol && loadData) {
-            // const program = new Program<any>(idl, programId, { connection: connection } as any);
-            // _getRate(program, pool[0], tokenDecimals).then(rate => {
-            //     console.log('rate:', rate.toString())
-            //     setRate(Number(rate.toString()))
-            // })
-        }
-    }, [programId, pool, connection, tokenName, tokenSymbol, tokenDecimals, loadData, reFreshBalnace])
+   
 
     useEffect(() => {
-        console.log('reFreshBalnace:', reFreshBalnace)
-
         if (programId && connection && tokenName && tokenSymbol && loadData && tokenInfo) {
             setTimeout(async () => {
                 const userTokenAccount = await _getOrCreateAssociatedTokenAccount(
@@ -776,6 +867,8 @@ export function useTokenTrade({
         sellToken,
         sellTokenWithFixedOutput,
         createToken,
+        prepaidSolWithdraw,
+        prepaidTokenWithdraw,
         tokenBalance,
         solBalance,
         updateBalance: () => { setReFreshBalnace(reFreshBalnace + 1) },

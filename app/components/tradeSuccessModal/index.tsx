@@ -23,6 +23,8 @@ const typeText = {
   1: 'sold'
 } as any
 
+const defaultAvatar = '/img/avatar.png'
+
 export default function TradeSuccessModal({
   onClose,
   token,
@@ -53,12 +55,12 @@ export default function TradeSuccessModal({
         </div>
 
         <div className={ style.userIcon }>
-          <img className={ style.userImg } src={ userInfo.icon }/>
+          <img className={ style.userImg } src={ defaultAvatar }/>
         </div>
 
         <div className={ style.tips }>
           <span>You’ve got</span>
-          <span className={ style.sexFi }>1234 $SEXYFI </span>
+          <span className={ style.sexFi }> 10 points</span>
         </div>
         
       </div>

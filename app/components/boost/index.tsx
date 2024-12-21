@@ -121,11 +121,12 @@ export default function Boost({
     ) {
       setBoostShow(true);
     } else {
-      if (userInfo.vipType === "vip") {
-        setBoostSuperNoTimesShow(true);
-      } else {
-        setBoostVipShow(true);
-      }
+      fail('Boost time is over')
+      // if (userInfo.vipType === "vip") {
+      //   setBoostSuperNoTimesShow(true);
+      // } else {
+      //   setBoostVipShow(true);
+      // }
     }
   };
 
@@ -138,16 +139,17 @@ export default function Boost({
           return;
         }
 
+
+
         if (token.boostTime && Number(token.boostTime) - Date.now() > 0) {
           setBoostTimeShow(true);
           return;
         }
 
         
+        checkBoostVip();
 
-        // checkBoostVip();
-
-        onClick();
+        // onClick();
       }}
     >
       <div className={styles.btn}>
