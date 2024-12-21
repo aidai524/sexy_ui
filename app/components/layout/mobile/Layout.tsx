@@ -84,7 +84,7 @@ const tabs = [
     key: "/create",
     title: "CREATE",
     icon: CreateIcon,
-    iconActive: <CustomIcon url="/img/tabs/tab3-active.svg" />
+    iconActive: <CustomIcon url="/img/tabs/tab3-active.svg" link="/create"/>
   },
   {
     key: "/mining",
@@ -145,7 +145,6 @@ export default function Component({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-black text-white">
       <main className="pb-16">{children}</main>
-
       <LoginModal
         modalShow={showLoginModal}
         onHide={() => {
