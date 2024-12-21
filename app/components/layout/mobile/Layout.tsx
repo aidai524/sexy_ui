@@ -19,31 +19,36 @@ import {
 import LoginModal from "@/app/components/loginModal";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
+import Link from "next/link";
 
 function CustomIcon({
   url,
+  link,
   showPlus = false
 }: {
   url: string;
+  link: string;
   showPlus?: boolean;
 }) {
   const { likeTrigger } = useMessage();
 
   return (
     <div className={styles.tabIconWapper}>
-      <img className={styles.tabIcon} src={url} />
-      {showPlus && (
-        <div
-          className={styles.showPlus + " " + (likeTrigger ? styles.ani : "")}
-        >
-          +1
-        </div>
-      )}
+      <Link href={link}>
+        <img className={styles.tabIcon} src={url} />
+        {showPlus && (
+          <div
+            className={styles.showPlus + " " + (likeTrigger ? styles.ani : "")}
+          >
+            +1
+          </div>
+      )}</Link>
     </div>
   );
 }
 
 const CreateIcon = (
+  <Link href="/create">
   <div className={styles.createIcon}>
     <svg
       width="28"
@@ -58,20 +63,22 @@ const CreateIcon = (
       />
     </svg>
   </div>
+  </Link>
+  
 );
 
 const tabs = [
   {
     key: "/",
     title: "CLUB",
-    icon: <CustomIcon url="/img/tabs/tab1.svg" />,
-    iconActive: <CustomIcon url="/img/tabs/tab1-active.svg" />
+    icon: <CustomIcon url="/img/tabs/tab1.svg" link="/" />,
+    iconActive: <CustomIcon url="/img/tabs/tab1-active.svg" link="/" />
   },
   {
     key: "/trends",
     title: "TRENDS",
-    icon: <CustomIcon url="/img/tabs/tab5.svg" />,
-    iconActive: <CustomIcon url="/img/tabs/tab5-active.svg" />
+    icon: <CustomIcon url="/img/tabs/tab5.svg" link="/trends" />,
+    iconActive: <CustomIcon url="/img/tabs/tab5-active.svg" link="/trends" />
   },
   {
     key: "/create",
@@ -82,14 +89,14 @@ const tabs = [
   {
     key: "/mining",
     title: "MINING",
-    icon: <CustomIcon showPlus={true} url="/img/tabs/tab2.svg" />,
-    iconActive: <CustomIcon url="/img/tabs/tab2-active.svg" />
+    icon: <CustomIcon showPlus={true} url="/img/tabs/tab2.svg" link="/mining"/>,
+    iconActive: <CustomIcon url="/img/tabs/tab2-active.svg" link="/mining" />
   },
   {
     key: "/profile",
     title: "PROFILE",
-    icon: <CustomIcon url="/img/tabs/tab4.svg" />,
-    iconActive: <CustomIcon url="/img/tabs/tab4-active.svg" />
+    icon: <CustomIcon url="/img/tabs/tab4.svg" link="/profile"/>,
+    iconActive: <CustomIcon url="/img/tabs/tab4-active.svg" link="/profile"/>
   }
 ];
 
@@ -159,7 +166,7 @@ export default function Component({ children }: { children: React.ReactNode }) {
                 return;
               }
             }
-            router.push(key);
+            // router.push(key);
           }}
         >
           {tabs.map((item) => {
