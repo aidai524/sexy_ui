@@ -14,12 +14,7 @@ export default function TradeInfo({ data, from }: Props) {
     <div className={from === "laptop" ? styles.LaptopContainer : ""}>
       <CA from={from} data={data}/>
       <Trade
-        token={{
-          tokenName: data.tokenName,
-          tokenSymbol: data.tokenSymbol as string,
-          tokenUri: data.tokenIcon || data.tokenImg,
-          tokenDecimals: 2
-        }}
+        token={data}
         from={from}
       />
       <Holder from={from} />

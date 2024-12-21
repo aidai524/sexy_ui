@@ -1,44 +1,64 @@
+import { shareToX } from "@/app/utils/share";
 import styles from "./likes.module.css";
 
 export default function Likes({ data }: any) {
   return (
-    <div className={styles.likeNums}>
-      <div className={[styles.likes, styles.likeCustom].join(" ")}>
-        <LikeIcon />
-        <span className={styles.likesNums}>{data.like}</span>
-      </div>
-      <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
-        <SuperLikeIcon />
-        <span className={styles.tips}>
-          Smoky
-          <br />
-          HOT
-        </span>
-        <span className={styles.likesNums}>{data.superLike}</span>
+    <div className={styles.box}>
+      <div className={styles.likeNums}>
+        {
+          data.status === 0 ? <>
+            <div className={[styles.likes, styles.likeCustom].join(" ")}>
+              <LikeIcon />
+              <span className={styles.likesNums}>{data.like}</span>
+              /
+              <span className={styles.likesNums}>100</span>
+            </div>
+            <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
+              <SuperLikeIcon />
+              <span className={styles.tips}>
+                Smoky
+                <br />
+                HOT
+              </span>
+              <span className={styles.likesNums}>{data.superLike}</span>
+            </div>
+          </> : <div className={[styles.holder, styles.likeCustom].join(" ")}>
+            <span className={styles.likesNums}>Holders 0</span>
+          </div>
+        }
       </div>
 
-      {data.status !== 0 && (
-        <div className={[styles.holder, styles.likeCustom].join(" ")}>
-          <span className={styles.likesNums}>Holders 0</span>
-        </div>
-      )}
+      <div onClick={() => { 
+        shareToX(data.tokenName, "https://sexyfi.dumpdump.fun//detail?id=" + data.id)
+       }}>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g filter="url(#filter0_b_4443_336)">
+            <circle cx="20" cy="20" r="20" fill="black" fill-opacity="0.4" />
+          </g>
+          <circle cx="25.7727" cy="13.8636" r="2.86364" stroke="white" stroke-width="2" />
+          <circle cx="25.7727" cy="26.1366" r="2.86364" stroke="white" stroke-width="2" />
+          <circle cx="13.0908" cy="20.0001" r="4.09091" fill="white" />
+          <path d="M23.3181 15.0908L13.9091 19.9999L23.3181 24.909" stroke="white" stroke-width="2" />
+          <defs>
+            <filter id="filter0_b_4443_336" x="-10" y="-10" width="60" height="60" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
+              <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_4443_336" />
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_4443_336" result="shape" />
+            </filter>
+          </defs>
+        </svg>
+
+      </div>
     </div>
   );
 }
 
 function LikeIcon() {
   return (
-    <svg
-      width="12"
-      height="10"
-      viewBox="0 0 12 10"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M3.3 0C1.47746 0 0 1.43474 0 3.20455C0 6.4091 3.9 9.32233 6 10C8.1 9.32233 12 6.4091 12 3.20455C12 1.43474 10.5225 0 8.7 0C7.58391 0 6.59721 0.538044 6 1.36158C5.40279 0.538044 4.41609 0 3.3 0Z"
-        fill="white"
-      />
+    <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3.4122 0C1.5277 0 0 1.48403 0 3.31465C0 6.6293 4.0326 9.64262 6.20401 10.3436C8.37541 9.64262 12.408 6.6293 12.408 3.31465C12.408 1.48403 10.8803 0 8.99581 0C7.84177 0 6.82152 0.55653 6.20401 1.40837C5.58649 0.55653 4.56624 0 3.4122 0Z" fill="white" fill-opacity="0.5" />
+      <path d="M4.653 3.10349C4.653 3.10349 0 1.48458 0 3.31521C0 6.62986 4.0326 9.64317 6.20401 10.3441C8.37541 9.64317 12.408 6.62986 12.408 3.31521C9.30601 4.65489 6.72101 3.62067 4.653 3.10349Z" fill="white" />
     </svg>
   );
 }

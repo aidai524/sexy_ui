@@ -115,9 +115,6 @@ export default function Boost({
   );
 
   const checkBoostVip = () => {
-    // setBoostShow(true);
-    // return
-
     if (
       userInfo?.boostNum &&
       userInfo?.boostNum - userInfo?.usingBoostNum > 0
@@ -146,7 +143,9 @@ export default function Boost({
           return;
         }
 
-        checkBoostVip();
+        
+
+        // checkBoostVip();
 
         onClick();
       }}

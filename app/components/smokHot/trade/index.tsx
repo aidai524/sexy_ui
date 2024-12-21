@@ -18,14 +18,13 @@ const max = 0.05
 
 export default function Trade({ token, panelStyle, onSuccess }: Props) {
     const [inputVal, setInputVal] = useState(max.toString());
-    const [quickIndex, setQuickIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isPrePayd, setIsPrePayd] = useState(false);
     const { address } = useAccount()
 
     const { prePaid, checkPrePayed } = useTokenTrade({
         tokenName: token.tokenName,
-        tokenSymbol: token.tokenSymbol || token.tokenName.toUpperCase(),
+        tokenSymbol: token.tokenSymbol as string,
         tokenDecimals: token.tokenDecimals as number,
         loadData: false
     });

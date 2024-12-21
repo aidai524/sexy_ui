@@ -1,14 +1,10 @@
 import { useState } from "react";
 import styles from "./trande.module.css";
 import BuySell from "./buySell";
+import type { Project } from "@/app/type";
 
 interface Props {
-  token: {
-    tokenName: string;
-    tokenSymbol: string;
-    tokenUri: string;
-    tokenDecimals: number;
-  };
+  token: Project;
   initType?: string;
   from?: string;
 }

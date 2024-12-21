@@ -54,17 +54,19 @@ export default function SmokeBtn({ onClick, token }: Props) {
           return
         }
 
-        if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
-          setPanelShow(true);
-        } else {
-          if (userInfo.vipType === 'vip') {
-            setBoostSuperNoTimesShow(true)
-          } else {
-            setVipShow(true)
-          }
+        setPanelShow(true);
 
-        }
-        onClick();
+        // if (userInfo.superLikeNum - userInfo.usingSuperLikeNum > 0) {
+        //   setPanelShow(true);
+        // } else {
+        //   if (userInfo.vipType === 'vip') {
+        //     setBoostSuperNoTimesShow(true)
+        //   } else {
+        //     setVipShow(true)
+        //   }
+
+        // }
+        
       }}
     >
       <div style={{ width: 36, height: 36, overflow: 'hidden' }}>
@@ -73,7 +75,6 @@ export default function SmokeBtn({ onClick, token }: Props) {
           ? <img style={{ width: 36 }} src="/img/profile/smoke-hot-grey.png" />
           : <img style={{ width: 36 }} src="/img/profile/smoke-hot.png" />
         }
-        
       </div>
 
       <Modal
@@ -89,6 +90,10 @@ export default function SmokeBtn({ onClick, token }: Props) {
       <SmokPanel
         token={token}
         show={panelShow}
+        onSuccess={() => {
+          onClick && onClick()
+          setPanelShow(false);
+        }}
         onHide={() => {
           setPanelShow(false);
         }}

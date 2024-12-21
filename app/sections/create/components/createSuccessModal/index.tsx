@@ -4,6 +4,7 @@ import MainBtn from "@/app/components/mainBtn";
 import type { Project } from "@/app/type";
 import { httpGet } from "@/app/utils";
 import { useCallback } from "react";
+import { shareToX } from "@/app/utils/share";
 
 interface Props {
   show: boolean;
@@ -45,14 +46,10 @@ function SuccessModal({
     if (token) {
       const v = await httpGet("/project?token_name=" + token.tokenName);
       if (v.code === 0) {
+        const data = v.data[0]
         onClose();
-        window.open(
-          `https://twitter.com/intent/tweet?text=${
-            token.tokenName
-          }&url=${encodeURIComponent(
-            "https://sexyfi.dumpdump.fun//detail?id=" + v.data.id
-          )}`
-        );
+
+        shareToX(token.tokenName, "https://sexyfi.dumpdump.fun//detail?id=" + data.id)
       }
     }
   }, [token]);

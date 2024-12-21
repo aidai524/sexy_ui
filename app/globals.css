@@ -197,3 +197,12 @@ div.adm-picker-view-mask-bottom {
 div.adm-tab-bar-wrap {
   overflow: visible;
 }
+
+.buy-sell-modal.adm-modal .adm-center-popup-wrap div.adm-center-popup-body{
+  background-color: transparent;
+}
+
+
+.no-bg.adm-modal .adm-center-popup-wrap div.adm-center-popup-body{
+  background-color: transparent;
+}

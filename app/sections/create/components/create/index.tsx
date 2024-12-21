@@ -249,7 +249,7 @@ export default function Create({
             const v = await httpGet('/project?token_name=' + token.tokenName)
             if (v.code === 0) {
                 setShowSuccessModal(false)
-                router.push('/detail?id=' + v.data.id)
+                router.push('/detail?id=' + v.data[0].id)
             }
             
         }}/>

@@ -8,6 +8,10 @@ import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { getFullNum } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import SlipPage from "../slippage/slippage";
+import TradeSuccessModal from "@/app/components/tradeSuccessModal";
+import { Modal } from "antd-mobile";
+import type { Project } from "@/app/type";
+import { useUser } from "@/app/store/useUser";
 
 type Token = {
   tokenName: string;
@@ -17,7 +21,7 @@ type Token = {
 };
 
 interface Props {
-  token: Token;
+  token: Project;
   initType: string;
   from?: string;
 }
@@ -32,15 +36,17 @@ const SOL: Token = {
 const SOL_PERCENT_LIST = [0.0001, 0.0005, 0.001];
 
 export default function BuySell({ token, initType, from }: Props) {
-  const { tokenName, tokenSymbol, tokenUri, tokenDecimals } = token;
+  const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
-  const [slip, setSlip] = useState(0.5);
+  const [slip, setSlip] = useState(3);
+
+  const tokenUri = token.tokenIcon || token.tokenImg
 
   const desToken: Token = {
     tokenName,
-    tokenSymbol,
+    tokenSymbol: tokenSymbol as string,
     tokenUri,
-    tokenDecimals
+    tokenDecimals: tokenDecimals as number
   };
 
   const [activeIndex, setActiveIndex] = useState(initType === "buy" ? 0 : 1);
@@ -50,6 +56,7 @@ export default function BuySell({ token, initType, from }: Props) {
   const [isError, setIsError] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [successMoalShow, setSuccessMoalShow] = useState(true);
 
   const [solPercent, setSolPercent] = useState(0);
   const [tokenPercent, setTokenPercent] = useState(1);
@@ -61,6 +68,8 @@ export default function BuySell({ token, initType, from }: Props) {
 
   const [sellOut, setSellOut] = useState("0");
   const [sellOutSol, setSellOutSol] = useState("0");
+
+  const { userInfo }: any = useUser()
 
   const {
     buyToken,
@@ -75,8 +84,8 @@ export default function BuySell({ token, initType, from }: Props) {
     updateBalance
   } = useTokenTrade({
     tokenName,
-    tokenSymbol,
-    tokenDecimals
+    tokenSymbol: tokenSymbol as string,
+    tokenDecimals: tokenDecimals as number
   });
 
   const TOKEN_PERCENT_LIST = useMemo(() => {
@@ -86,46 +95,77 @@ export default function BuySell({ token, initType, from }: Props) {
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
   useEffect(() => {
-    const rate = 1
 
 
     if (debounceVal) {
+      setIsError(false);
       if (activeIndex === 0) {
         let buyInSol = "";
         if (tokenType === 1) {
+          if (Number(debounceVal) <= 0) {
+            setIsError(true);
+            setErrorMsg("Invalid value");
+            return
+          }
+
+          if (Number(debounceVal) > Number(solBalance)) {
+            setIsError(true);
+            setErrorMsg("Invalid balance");
+            return
+          }
+
           buyInSol = new Big(debounceVal)
             .mul(10 ** (SOL.tokenDecimals))
             .toFixed(0);
 
-            getRate({
-              solAmount: buyInSol
-            }).then((res: any) => { 
-              const buyIn = new Big(res).mul(1 - slip / 100).toFixed(token.tokenDecimals);
-              setBuyIn(buyIn);
-            })
-          
-            setBuyInSol(buyInSol);
-        } else if (tokenType === 0) {
-            getRate({
-              tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0)
-            }).then((res: any) => {
-              buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
-              if (Number(buyInSol) > 0.000000001) {
-                setBuyIn(new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0))
-                setBuyInSol(buyInSol)
-              } else {
-                setBuyInSol('')
-                setBuyIn('')
-              }
+          getRate({
+            solAmount: buyInSol
+          }).then((res: any) => {
+            const buyIn = new Big(res).mul(1 - slip / 100).toFixed(token.tokenDecimals);
+            setBuyIn(buyIn);
 
-              if (buyInSol) {
-                setIsError(false);
-                setErrorMsg("Enter a amount");
-              }
-            })
+            if (Number(buyIn) > new Big(1).div(10 ** token.tokenDecimals!).toNumber()) {
+              setIsError(false);
+              setErrorMsg("");
+            } else {
+              setIsError(true);
+              setErrorMsg("Enter a amount");
+            }
+          })
+
+          setBuyInSol(buyInSol);
+        } else if (tokenType === 0) {
+          if (Number(debounceVal) <= 0) {
+            setIsError(true);
+            setErrorMsg("Invalid value");
+            return
+          }
+
+
+          getRate({
+            tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
+          }).then((res: any) => {
+            buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
+            if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
+              setIsError(true);
+              setErrorMsg("Invalid balance");
+              return
+            }
+
+            if (Number(buyInSol) > 0.000000001) {
+              setBuyIn(new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0))
+              setBuyInSol(buyInSol)
+            } else {
+              setBuyInSol('')
+              setBuyIn('')
+            }
+
+            if (buyInSol) {
+              setIsError(false);
+              setErrorMsg("Enter a amount");
+            }
+          })
         }
-        
-        
       } else if (activeIndex === 1) {
         let sellOut = ''
         let sellSolOut = ''
@@ -134,29 +174,42 @@ export default function BuySell({ token, initType, from }: Props) {
           //   .mul(rate)
           //   .mul(10 ** token.tokenDecimals)
           //   .toFixed(0);
-        } else if (tokenType === 0) {
+        } 
+        else if (tokenType === 0) {
+          if (Number(debounceVal) <= 0) {
+            setIsError(true);
+            setErrorMsg("Invalid value");
+            return
+          }
+
+          if (Number(debounceVal) > Number(tokenBalance)) {
+            setIsError(true);
+            setErrorMsg("Invalid balance");
+            return
+          }
+
           sellOut = new Big(debounceVal)
-            .mul(10 ** token.tokenDecimals)
+            .mul(10 ** token.tokenDecimals!)
             .toFixed(0);
 
-            getRate({
-              tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0)
-            }).then((res: any) => {
-              sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
-              if (Number(sellSolOut) > 0.000000001) {
-                setSellOut(sellOut);
-                setSellOutSol(
-                  getFullNum(
-                    sellSolOut
-                  )
-                );
-                setIsError(false);
-              } else {
-                setIsError(true);
-                setErrorMsg("Amount is too little");
-                setSellOut("");
-              }
-            })
+          getRate({
+            tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
+          }).then((res: any) => {
+            sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
+            if (Number(sellSolOut) > 0.000000001) {
+              setSellOut(sellOut);
+              setSellOutSol(
+                getFullNum(
+                  sellSolOut
+                )
+              );
+              setIsError(false);
+            } else {
+              setIsError(true);
+              setErrorMsg("Amount is too little");
+              setSellOut("");
+            }
+          })
         }
       }
     } else {
@@ -217,7 +270,7 @@ export default function BuySell({ token, initType, from }: Props) {
                   } else {
                     setCurrentToken(desToken);
                     setTokenType(0);
-                    
+
                   }
                   setValInput("");
                 }}
@@ -347,7 +400,7 @@ export default function BuySell({ token, initType, from }: Props) {
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
             <div className={styles.receiveTitle}>You will buy in</div>
             <div className={styles.receiveAmount}>
-              {buyIn ? new Big(buyIn).div(10 ** token.tokenDecimals).toFixed(token.tokenDecimals) : ''} {tokenName}
+              {buyIn ? new Big(buyIn).div(10 ** token.tokenDecimals!).toFixed(token.tokenDecimals) : ''} {tokenName}
             </div>
           </div>
         )}
@@ -369,17 +422,33 @@ export default function BuySell({ token, initType, from }: Props) {
                   return;
                 }
 
+                let hash
                 if (activeIndex === 0) {
                   setIsLoading(true);
-                  await buyTokenWithFixedOutput(new Big(buyIn).toFixed(0), buyInSol)
-                  // await buyToken(buyInSol);
+                  hash = await buyTokenWithFixedOutput(new Big(buyIn).toFixed(0), buyInSol)
                 } else if (activeIndex === 1) {
                   setIsLoading(true);
-                  await sellToken(sellOut, sellOutSol);
+                  hash = await sellToken(sellOut, sellOutSol);
                 }
                 setIsLoading(false);
-                success("Transtion success");
-                updateBalance();
+
+                if (hash) {
+                  const modalHandler = Modal.show({
+                    content: <TradeSuccessModal
+                      type={activeIndex}
+                      userInfo={userInfo}
+                      token={token}
+                      amount={ new Big(activeIndex === 0 ? buyIn : sellOut).div(10 ** token.tokenDecimals!).toFixed() }
+                      onClose={() => {
+                        modalHandler.close()
+                      }} />,
+                    className: 'buy-sell-modal',
+                    closeOnMaskClick: true,
+                  })
+  
+                  updateBalance();
+                }
+                
               } catch (e) {
                 setIsLoading(false);
                 fail("Transtion fail");
@@ -409,6 +478,8 @@ export default function BuySell({ token, initType, from }: Props) {
           setShowSlip(false);
         }}
       />
+
+
     </div>
   );
 }

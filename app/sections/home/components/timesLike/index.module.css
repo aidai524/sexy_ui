@@ -1,0 +1,44 @@
+.main {
+    padding-top: 80px;
+    width: 80vw;
+    .content {
+        background-color: rgba(255, 243, 248, 1);
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .topImg {
+        margin-top: -50%; 
+    }
+
+    .learnTip {
+        text-align: center;
+        margin-top: 15px;
+        .learnLink {
+            color: rgba(32, 32, 32, 1);
+            text-decoration: underline;
+        }
+    }
+
+    .actionBox {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #fff;
+        font-size: 16px;
+        margin-top: 20px;
+        .cancel {
+            margin-left: 30px;
+        }
+        .shareBox {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            .share {
+                width: 50px;
+            }
+        }
+    }
+}

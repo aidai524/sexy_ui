@@ -14,9 +14,10 @@ import { httpAuthPost, httpGet } from "@/app/utils";
 
 interface Props {
   data: Project;
+  onUpdate: () => void;
 }
 
-export default function Info({ data }: Props) {
+export default function Info({ data, onUpdate }: Props) {
   return (
     <div className={styles.main}>
       <InfoPart showLikes={true} data={data} showThumbnailHead={false} />
@@ -29,12 +30,18 @@ export default function Info({ data }: Props) {
             style={{ position: "static" }}
             onLike={async () => {
               await httpAuthPost("/project/like?id=" + data!.id, {});
+              onUpdate()
             }}
             onHate={async () => {
               await httpAuthPost("/project/un_like?id=" + data!.id, {});
+              onUpdate()
             }}
-            onSuperLike={() => {}}
-            onBoost={() => {}}
+            onSuperLike={() => {
+              onUpdate()
+            }}
+            onBoost={() => {
+              onUpdate()
+            }}
           />
         ) : (
           <LaunchedAction data={data} />

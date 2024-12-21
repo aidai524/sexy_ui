@@ -8,13 +8,16 @@ import LaunchedAction from "@/app/components/action/launched";
 import Messages from "@/app/components/messages";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Hammer from "hammerjs";
-import useData from "../hooks/use-data";
+
+import useData, { FIRST_LIKE_TIMES, SECOND_LIKE_TIMES } from "../hooks/use-data";
 import Tabs from "../tabs";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import useSwip from "./hooks/useSwip";
 import { httpAuthGet, mapDataToProject } from "@/app/utils";
+import { Modal } from "antd-mobile";
+import FirstTimeLike from "../components/timesLike/firstTimeLike";
+import SecondTimeLike from "../components/timesLike/secondTimesLike";
 
 export default function Home() {
   const router = useRouter();
@@ -33,7 +36,7 @@ export default function Home() {
 
   const [movingStyle, setMovingStyle] = useState({})
   const [movingStyle2, setMovingStyle2] = useState({})
- 
+
 
   const {
     infoData: infoDataLaunching,
@@ -96,7 +99,7 @@ export default function Home() {
         // opacity: percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${100 * percent}vh)`
       }
-      if (renderLaunchingIndexRef.current === 0) { 
+      if (renderLaunchingIndexRef.current === 0) {
         setMovingStyle2(style);
       } else {
         setMovingStyle(style);
@@ -112,7 +115,7 @@ export default function Home() {
         // opacity: percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent}vh)`
       }
-      if (renderLaunchingIndexRef.current === 0) { 
+      if (renderLaunchingIndexRef.current === 0) {
         setMovingStyle2(style);
       } else {
         setMovingStyle(style);
@@ -136,10 +139,10 @@ export default function Home() {
 
       console.log('preing')
       const style = {
-        opacity: 1- percent,
+        opacity: 1 - percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${100 * percent}vh)`
       }
-      if (renderLaunchedIndexRef.current === 0) { 
+      if (renderLaunchedIndexRef.current === 0) {
         setMovingStyle2(style);
       } else {
         setMovingStyle(style);
@@ -155,7 +158,7 @@ export default function Home() {
         opacity: 1 - percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent}vh)`
       }
-      if (renderLaunchedIndexRef.current === 0) { 
+      if (renderLaunchedIndexRef.current === 0) {
         setMovingStyle2(style);
       } else {
         setMovingStyle(style);
@@ -194,13 +197,13 @@ export default function Home() {
       launchingList.current &&
       launchingList.current.length > 1
     ) {
-      if (renderLaunchingIndexRef.current === 0) { 
+      if (renderLaunchingIndexRef.current === 0) {
         setActionStyle2(styles.like);
       } else {
         setActionStyle(styles.like);
       }
-      
-      setTimeout(() => {
+
+      setTimeout(async () => {
         getLaunchingNext();
         setTimeout(() => {
           setActionStyle2(null);
@@ -208,9 +211,39 @@ export default function Home() {
           setMovingStyle({})
           setMovingStyle2({})
         }, 100)
+
+        const times = await onLike()
+        if (times === FIRST_LIKE_TIMES) {
+          if (launchingList.current) {
+            const timeLikeHandler = Modal.show({
+              content: <FirstTimeLike
+                data={launchingList.current[0]}
+                onClose={() => {
+                  timeLikeHandler.close()
+                }} />,
+              closeOnMaskClick: true,
+              className: 'no-bg'
+            })
+          }
+        }
+
+        if (times === SECOND_LIKE_TIMES) {
+          if (launchingList.current) {
+            const timeLikeHandler = Modal.show({
+              content: <SecondTimeLike
+                data={launchingList.current[0]}
+                onClose={() => {
+                  timeLikeHandler.close()
+                }} />,
+              closeOnMaskClick: true,
+              className: 'no-bg'
+            })
+          }
+        }
+
       }, 1000);
     }
-    onLike();
+
   }
 
   async function hate() {
@@ -224,7 +257,7 @@ export default function Home() {
       } else {
         setActionStyle(styles.hate);
       }
-      
+
       setTimeout(() => {
         getLaunchingNext();
         setTimeout(() => {
@@ -235,7 +268,7 @@ export default function Home() {
         }, 100)
       }, 1000);
     }
-    onHate();
+    onHate()
   }
 
   async function justNext(type: string) {
@@ -269,6 +302,8 @@ export default function Home() {
     }
   }
 
+  console.log('renderLaunchingIndex:')
+
 
   return (
     <div className={styles.main}>
@@ -299,7 +334,7 @@ export default function Home() {
             {
               infoDataLaunching && (
                 <div
-                  style={{ 
+                  style={{
                     zIndex: renderLaunchingIndex === 0 ? 1 : 2,
                     ...movingStyle
                   }}
@@ -319,7 +354,7 @@ export default function Home() {
               infoDataLaunching2 && (
                 <div
                   key={infoDataLaunching2.id}
-                  style={{ 
+                  style={{
                     zIndex: renderLaunchingIndex === 0 ? 2 : 1,
                     ...movingStyle2
                   }}
@@ -343,12 +378,19 @@ export default function Home() {
             onHate={async () => {
               hate();
             }}
-            onSuperLike={() => { }}
-            onBoost={async () => { 
+            onSuperLike={async () => {
               const token = renderLaunchingIndex === 0 ? infoDataLaunching2 : infoDataLaunching
               const val = await httpAuthGet('/project/?id=' + token?.id)
               if (val.code === 0) {
-                const newTokenInfo = mapDataToProject(val.data)
+                const newTokenInfo = mapDataToProject(val.data[0])
+                updateLaunchingToken(newTokenInfo)
+              }
+            }}
+            onBoost={async () => {
+              const token = renderLaunchingIndex === 0 ? infoDataLaunching2 : infoDataLaunching
+              const val = await httpAuthGet('/project/?id=' + token?.id)
+              if (val.code === 0) {
+                const newTokenInfo = mapDataToProject(val.data[0])
                 updateLaunchingToken(newTokenInfo)
               }
             }}
@@ -362,7 +404,7 @@ export default function Home() {
             {infoDataLaunched && (
               <div
                 key={infoDataLaunched.id}
-                style={{ 
+                style={{
                   zIndex: renderLaunchedIndex === 0 ? 1 : 2,
                   ...movingStyle
                 }}
@@ -379,7 +421,7 @@ export default function Home() {
             {infoDataLaunched2 && (
               <div
                 key={infoDataLaunched2.id}
-                style={{ 
+                style={{
                   zIndex: renderLaunchedIndex === 0 ? 2 : 1,
                   ...movingStyle2
                 }}
@@ -394,7 +436,7 @@ export default function Home() {
             )}
           </div>
 
-          {(infoDataLaunched2 || infoDataLaunched) && <LaunchedAction data={renderLaunchingIndex === 0 ? infoDataLaunched2 : infoDataLaunched} />}
+          {(infoDataLaunched2 || infoDataLaunched) && <LaunchedAction data={renderLaunchedIndex === 0 ? infoDataLaunched2 : infoDataLaunched} />}
         </>
       )}
     </div>

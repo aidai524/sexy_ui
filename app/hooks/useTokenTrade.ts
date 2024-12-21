@@ -309,7 +309,7 @@ export function useTokenTrade({
 
         const keys = await getKeys()
 
-        // console.log('keys: ', keys)
+        console.log('keys: ', keys)
 
         if (!keys) {
             return
@@ -338,12 +338,19 @@ export function useTokenTrade({
 
         transaction.add(instruction1).add(instruction2).add(buyInstruction)
 
-        // tx.recentBlockhash = latestBlockhash!.blockhash
-        // tx.feePayer = walletProvider.publicKey!
+        // buyInstruction.recentBlockhash = latestBlockhash!.blockhash
+        // buyInstruction.feePayer = walletProvider.publicKey!
 
-        const v = await walletProvider.signAndSendTransaction(transaction)
+        const confirmationStrategy: any = {
+            skipPreflight: true,
+            // preflightCommitment: 'processed',
+        };
 
-        console.log('v:', v)
+        const hash = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
+
+        console.log('hash:', hash)
+
+        return hash
     }, [connection, walletProvider, programId])
 
     const sellToken = useCallback(async (amount: number | string, minWsolAmount: number | string,) => {
@@ -375,7 +382,7 @@ export function useTokenTrade({
         };
 
         const hash = await walletProvider.signAndSendTransaction(tx, confirmationStrategy)
-
+        console.log('hash:', hash)
         return hash
 
     }, [connection, walletProvider, programId])
@@ -384,12 +391,13 @@ export function useTokenTrade({
         const latestBlockhash = await connection?.getLatestBlockhash();
 
         const keys = await getKeys()
+
+
         if (!keys) {
             return
         }
 
         const program = new Program<any>(idl, programId, { connection: connection } as any);
-
 
         const tx: any = await program.methods.sellTokenWithFixedOutput(
             new anchor.BN(outputAmount),
@@ -402,12 +410,12 @@ export function useTokenTrade({
         tx.recentBlockhash = latestBlockhash!.blockhash
         tx.feePayer = walletProvider.publicKey!
 
-        const confirmationStrategy: any = {
-            skipPreflight: true,
-            preflightCommitment: 'processed',
-        };
+        // const confirmationStrategy: any = {
+        //     // skipPreflight: true,
+        //     // preflightCommitment: 'processed',
+        // };
 
-        const hash = await walletProvider.signAndSendTransaction(tx, confirmationStrategy)
+        const hash = await walletProvider.signAndSendTransaction(tx)
 
         return hash
 

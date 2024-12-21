@@ -8,7 +8,7 @@ import Txs from "./components/txs/index";
 import { AvatarBack } from "@/app/components/thumbnail";
 
 import styles from "./detail.module.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Tab from "@/app/components/tab";
 import type { Project } from "@/app/type";
 import { useVip } from "@/app/hooks/useVip";
@@ -21,6 +21,10 @@ export default function Detail() {
   const [infoData, setInfoData] = useState<Project>();
 
   useEffect(() => {
+    getDetailInfo()
+  }, [params]);
+
+  const getDetailInfo = useCallback(() => {
     const id = params.get("id");
     if (id) {
       httpGet("/project", { id }).then((res) => {
@@ -32,7 +36,7 @@ export default function Detail() {
         }
       });
     }
-  }, [params]);
+  }, [params])
 
   if (!infoData) {
     return <></>;
@@ -43,7 +47,7 @@ export default function Detail() {
       <AvatarBack data={infoData} />
 
       {infoData.status === 0 ? (
-        <Info data={infoData} />
+        <Info data={infoData} onUpdate={() => {  getDetailInfo() }} />
       ) : (
         <Tab
           activeNode={activeKey}
@@ -53,7 +57,7 @@ export default function Detail() {
           nodes={[
             {
               name: "Info",
-              content: <Info data={infoData} />
+              content: <Info data={infoData} onUpdate={() => { getDetailInfo() }} />
             },
             {
               name: "Chart",

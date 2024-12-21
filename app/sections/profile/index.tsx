@@ -35,6 +35,14 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
         }
     }, [userAddress, params, isOther]);
 
+    const defaultIndex = useMemo(() => {
+        const tabIndex = params.get("tabIndex")?.toString()
+        if (tabIndex) {
+            return Number(tabIndex)
+        }
+        return 0
+    }, [params])
+
     const address = useMemo(() => {
         if (isOther && params) {
             return params.get("account")?.toString();
@@ -116,7 +124,7 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
             />
 
             <Address address={address} />
-            {
+            {/* {
                 !isOther && <HotBoost
                     user={ownUserInfo}
                     onMoreClick={() => {
@@ -124,9 +132,9 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                     }}
                     style={{ margin: "20px 10px" }}
                 />
-            }
+            } */}
 
-            <Tabs address={address} showHot={showHot} />
+            <Tabs address={address} defaultIndex={defaultIndex}  showHot={showHot} />
             <VipModal
                 show={showVip}
                 onClose={() => {

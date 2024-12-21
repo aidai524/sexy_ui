@@ -6,10 +6,13 @@ import type { Project } from "@/app/type";
 interface Props {
   show: boolean;
   token: Project;
+  onSuccess: () => void;
   onHide?: () => void;
 }
 
-export default function SmokPanel({ show, token, onHide }: Props) {
+export default function SmokPanel({ show, token, onSuccess, onHide }: Props) {
+
+
   return (
     <Popup
       visible={show}
@@ -34,7 +37,7 @@ export default function SmokPanel({ show, token, onHide }: Props) {
         <Trade
           token={token}
           onSuccess={() => {
-            onHide && onHide();
+            onSuccess && onSuccess()
           }}
         />
       </div>

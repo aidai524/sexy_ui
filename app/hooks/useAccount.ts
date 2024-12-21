@@ -18,23 +18,36 @@ export function useAccount() {
     walletProvider: {
       publicKey,
       signAndSendTransaction: async (transaction: any, sendOptions: any = {}) => {
+
+        // const signTransition = await signTransaction?.(transaction);
+
+        // console.log('signTransition:', transaction.serialize({ verifySignatures: true }))
+
+        // return
+
         // @ts-ignore
         if (wallet?.adapter && wallet.adapter.wallet) {
-          // @ts-ignore
-          const walletProvider = wallet.adapter.wallet
-          const feature = walletProvider.features[SolanaSignAndSendTransaction];
-          const account = walletProvider.accounts[0];
-          const [result] = await feature.signAndSendTransaction({
-            account,
-            transaction: transaction.serialize({ verifySignatures: false }),
-            options: {
-              ...sendOptions,
-              // preflightCommitment: getCommitment(sendOptions?.preflightCommitment)
-            },
-            chain: 'solana:devnet'
-          });
+          try {
+            // @ts-ignore
+            const walletProvider = wallet.adapter.wallet
+            const feature = walletProvider.features[SolanaSignAndSendTransaction];
+            const account = walletProvider.accounts[0];
 
-          return bs58.encode(result.signature)
+
+            const [result] = await feature.signAndSendTransaction({
+              account,
+              transaction: transaction.serialize({ verifySignatures: false }),
+              options: {
+                ...sendOptions,
+                // preflightCommitment: getCommitment(sendOptions?.preflightCommitment)
+              },
+              chain: 'solana:devnet'
+            });
+            return bs58.encode(result.signature)
+          } catch(e) {
+            console.log(e)
+          }
+          
         }
 
 

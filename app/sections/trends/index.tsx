@@ -64,7 +64,7 @@ export default function Trends() {
               tokenSymbol: 'TOKEN',
               tokenUri: 'https://www.google.com',
               tokenDecimals: 18,
-            }}
+            } as any}
             initType="buy"
             from="mobile"
           />
