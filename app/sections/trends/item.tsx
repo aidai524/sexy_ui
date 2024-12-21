@@ -1,17 +1,21 @@
 import styles from "./index.module.css";
-import { formatLongText } from '@/app/utils/common';
+import { formatLongText, numberFormatter } from '@/app/utils/common';
+import { Trend } from '@/app/sections/trends/hooks';
 
 export default function Item(props: Props) {
-  const { onBuy } = props;
+  const { onBuy, trend } = props;
 
-  const name = 'GOTH WOMANGOTH WOMANGOTH WOMANGOTH WOMANGOTH WOMAN';
-  const ticker = 'GTWMGTWMGTWMGTWMGTWMGTWM';
+  const name = trend?.token_symbol;
+  const ticker = trend?.ticker;
+  const icon = trend?.Icon;
+  const tickerAvatar = '';
+  const marketVal = trend?.market_value;
 
   return (
     <div className={styles.Item}>
       <div
         className={styles.ItemAvatar}
-        style={{ backgroundImage: `url("/512x512.png")` }}
+        style={{ backgroundImage: `url("${icon}")` }}
       />
       <div className={styles.ItemContent}>
         <div className={styles.ItemHead}>
@@ -21,11 +25,11 @@ export default function Item(props: Props) {
             </div>
             <div className={styles.ItemHeadTicker}>
               <div className={styles.ItemHeadTickerName} title={ticker}>
-                Ticker: {formatLongText(ticker, 5, 3)}
+                Ticker: {formatLongText(ticker, 10, 6)}
               </div>
               <div
                 className={styles.ItemHeadTickerAvatar}
-                style={{ backgroundImage: `url("/512x512.png")` }}
+                style={{ backgroundImage: `url("${tickerAvatar}")` }}
               />
             </div>
           </div>
@@ -45,11 +49,11 @@ export default function Item(props: Props) {
             Market cap:
           </div>
           <div className={styles.ItemMarketCapValue}>
-            4.25K
+            {numberFormatter(marketVal, 2, true, { prefix: '$', isShort: true, isShortUppercase: true })}
           </div>
         </div>
         <div className={styles.ItemCreateTime}>
-          18m ago
+          {trend?.created2Now}
         </div>
       </div>
     </div>
@@ -57,5 +61,6 @@ export default function Item(props: Props) {
 }
 
 interface Props {
+  trend?: Trend;
   onBuy?(): void;
 }

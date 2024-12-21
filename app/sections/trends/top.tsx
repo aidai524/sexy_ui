@@ -1,16 +1,18 @@
 import styles from "./index.module.css";
-import { formatLongText } from '@/app/utils/common';
+import { formatLongText, numberFormatter } from '@/app/utils/common';
 import { useEffect, useMemo, useRef } from 'react';
+import { Trend } from '@/app/sections/trends/hooks';
+import Big from 'big.js';
 
 export default function Top(props: Props) {
-  const { onBuy } = props;
+  const { onBuy, trend } = props;
 
-  const [top1Name, top1Ticker, top1TickerAvatar] = useMemo(() => {
-    const _top1Name = 'VVAU';
-    const _top1Ticker = 'VVAVVAVVAVVAVVAVVAVVAVVAVVAVVA';
-    const _top1TickerAvatar = '/192x192.png';
-    return [_top1Name, _top1Ticker, _top1TickerAvatar];
-  }, []);
+  const [top1Name, top1Ticker, top1Icon, top1TickerAvatar] = useMemo(() => {
+    const _top1Name = trend?.token_symbol;
+    const _top1Ticker = trend?.ticker;
+    const _top1Icon = trend?.Icon;
+    return [_top1Name, _top1Ticker, _top1Icon, ''];
+  }, [trend]);
 
   const topBadgesRef = useRef<any>();
 
@@ -35,11 +37,11 @@ export default function Top(props: Props) {
       clearInterval(timer1);
       clearInterval(timer2);
     };
-  }, [topBadgesRef]);
+  }, [topBadgesRef, trend]);
 
   return (
     <div className={styles.Top}>
-      <div className={styles.TopAvatar}>
+      <div className={styles.TopAvatar} style={{ backgroundImage: `url("${top1Icon}")` }}>
         <div className={styles.TopSummary}>
           <div className={[styles.Badge, styles.TopSummaryLike].join(' ')}>
             <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,25 +60,29 @@ export default function Top(props: Props) {
       </div>
       <div className={styles.TopInfo}>
         <div className={styles.TopName} title={top1Name}>
-          {formatLongText(top1Name)}
+          {formatLongText(top1Name, 8, 4)}
         </div>
         <div className={styles.TopTicker}>
           <div className={styles.TopTickerLabel}>
             Ticker:
           </div>
-          <div className={styles.TopTickerAvatar} style={{ backgroundImage: `url("${top1TickerAvatar}")` }} />
+          {
+            top1TickerAvatar && (
+              <div className={styles.TopTickerAvatar} style={{ backgroundImage: `url("${top1TickerAvatar}")` }} />
+            )
+          }
           <div className={styles.TopTickerName} title={top1Ticker}>
-            {formatLongText(top1Ticker, 2, 1)}
+          {formatLongText(top1Ticker, 8, 2)}
           </div>
         </div>
       </div>
       <div className={styles.TopBadges} ref={topBadgesRef}>
         <div className={[styles.Badge, styles.TopBadge].join(' ')}>
-          Created in 33 mins
+          Created in {trend?.created2Now?.replace?.(/ago$/, '')}
         </div>
         <div className={[styles.Badge, styles.TopBadge].join(' ')}>
           <div>Created by</div>
-          <div style={{ color: '#FF37A3' }}>satoshldog</div>
+          <div style={{ color: '#FF37A3' }}>{top1Ticker}</div>
         </div>
       </div>
       <div className={styles.TopMarketCap}>
@@ -84,7 +90,7 @@ export default function Top(props: Props) {
           Market Cap:
         </div>
         <div className={styles.TopMarketCapValue}>
-          $2,450,230.45
+          {numberFormatter(trend?.market_value, 2, true, { prefix: '$', isShort: Big(trend?.market_value || 0).gt(1e10) })}
         </div>
       </div>
       <div className={styles.TopBuy}>
@@ -102,5 +108,6 @@ export default function Top(props: Props) {
 }
 
 interface Props {
+  trend?: Trend;
   onBuy?(): void;
 }
