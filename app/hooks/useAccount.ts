@@ -2,8 +2,6 @@ import bs58 from 'bs58';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { SolanaSignAndSendTransaction, SolanaSignMessage, SolanaSignTransaction } from '@solana/wallet-standard-features';
 
-
-
 export function useAccount() {
   const { connected, connecting, disconnect, publicKey, signTransaction, sendTransaction, signMessage, wallet, connect } = useWallet();
   const { connection } = useConnection();

@@ -37,6 +37,8 @@ export default function WalletConnect({ children }: { children: React.ReactNode 
     () => {
       if(typeof window === 'undefined') return [];
       return getDeviceType().mobile ? [
+        new PhantomWalletAdapter(),
+        new SolflareWalletAdapter(),
         new OkxWalletUIAdapter(),
         new WalletConnectWalletAdapter({
           network,
