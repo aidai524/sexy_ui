@@ -7,13 +7,15 @@ interface Props {
   token: Project;
   initType?: string;
   from?: string;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export default function Trade({ token, initType = "buy", from, onClose }: Props) {
   return (
     <div className={styles.main}>
-      <BuySell token={token} initType={initType} from={from} onClose={onClose}/>
+      <BuySell token={token} initType={initType} from={from} onClose={() => {
+        onClose && onClose()
+      }}/>
     </div>
   );
 }

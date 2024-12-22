@@ -15,9 +15,10 @@ interface Props {
     data: Project;
     update: () => void;
     prepaidWithdrawDelayTime: number;
+    hideHot?: boolean;
 }
 
-export default function Token({ data, update, prepaidWithdrawDelayTime }: Props) {
+export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot }: Props) {
     const router = useRouter()
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
 
@@ -87,18 +88,18 @@ export default function Token({ data, update, prepaidWithdrawDelayTime }: Props)
                             </div>
                         </div>
 
-                        <div className={styles.actionItem}>
-                            <div>
-                                <SmokeBtn token={data} onClick={() => {
-                                    update && update()
-                                }} />
-                                <div className={styles.actionTimes}>
-                                    <span className={styles.whiteAmount}>{data.superLike}</span>
+                        {
+                            !hideHot && <div className={styles.actionItem}>
+                                <div>
+                                    <SmokeBtn token={data} onClick={() => {
+                                        update && update()
+                                    }} />
+                                    <div className={styles.actionTimes}>
+                                        <span className={styles.whiteAmount}>{data.superLike}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-
+                        }
                     </div>
                 ) : <div className={styles.actionContent}>
                     {

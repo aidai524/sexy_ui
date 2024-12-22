@@ -11,6 +11,7 @@ interface Props {
   address: string | undefined;
   type: string;
   prepaidWithdrawDelayTime: number;
+  hideHot?: boolean;
 }
 
 const urls: any = {
@@ -19,7 +20,7 @@ const urls: any = {
   liked: "/project/like/list"
 };
 
-export default function Created({ address, type, prepaidWithdrawDelayTime }: Props) {
+export default function Created({ address, type, prepaidWithdrawDelayTime, hideHot = false }: Props) {
   const [list, setList] = useState<Project[]>([]);
   const [refresh, setRefresh] = useState<number>(1);
   const userStore: any = useUser()
@@ -45,6 +46,7 @@ export default function Created({ address, type, prepaidWithdrawDelayTime }: Pro
         return <Token
           data={item}
           key={item.id}
+          hideHot={hideHot}
           prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
           update={async () => {
             setRefresh(refresh + 1)

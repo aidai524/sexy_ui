@@ -31,7 +31,7 @@ export default function Tabs({ showHot, address, defaultIndex, tabContentStyle, 
       },
       {
         name: "Created",
-        content: <Created address={address} type="created" prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}/>
+        content: <Created hideHot={true} address={address} type="created" prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}/>
       },
       {
         name: "Hot",

@@ -16,6 +16,7 @@ export default function TradeInfo({ data, from }: Props) {
       <Trade
         token={data}
         from={from}
+        onClose={() => {}}
       />
       <Holder from={from} />
     </div>
