@@ -18,10 +18,12 @@ import useUserInfo from "@/app/hooks/useUserInfo";
 export default function Boost({
   onClick,
   token,
+  isBigIcon = false,
   isGrey = false
 }: {
   onClick: () => void;
   token: Project;
+  isBigIcon?: boolean;
   isGrey?: boolean;
 }) {
   const [vipShow, setVipShow] = useState(false);
@@ -130,6 +132,11 @@ export default function Boost({
     }
   };
 
+  const iconStyle = isBigIcon ? {
+    width: 48,
+    height: 48
+  } : {}
+
   return (
     <div
       onClick={() => {
@@ -152,7 +159,7 @@ export default function Boost({
         // onClick();
       }}
     >
-      <div className={styles.btn}>
+      <div className={styles.btn} style={iconStyle}>
         {token.boostTime && Number(token.boostTime) - Date.now() > 0 ? (
           <svg
             width="36"

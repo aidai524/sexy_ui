@@ -30,10 +30,10 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
     });
 
     useEffect(() => {
-        // if (address === token.account) {
-        //     setIsPrePayd(true)
-        //     return
-        // }
+        if (address === token.account) {
+            setIsPrePayd(true)
+            return
+        }
         checkPrePayed().then(prdPaydval => {
             setIsPrePayd(prdPaydval > 0)
         })

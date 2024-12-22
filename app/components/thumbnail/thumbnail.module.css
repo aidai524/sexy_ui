@@ -195,7 +195,7 @@
             background-color: rgba(80, 73, 100, 1);
         }
         &.launch2 {
-            background-color: var(--part-bg);
+            background-color: rgba(215, 48, 129, 1);
         }
         &.launch3 {
             background-color: rgba(100, 43, 255, 1);

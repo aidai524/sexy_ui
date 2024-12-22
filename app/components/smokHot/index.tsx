@@ -9,10 +9,11 @@ import BoostSuperNoTimes from "../boost/boostSuperNoTimes";
 
 interface Props {
   token: Project;
+  isBigIcon?: boolean;
   onClick: () => void;
 }
 
-export default function SmokeBtn({ onClick, token }: Props) {
+export default function SmokeBtn({ onClick, token, isBigIcon = false }: Props) {
   const [panelShow, setPanelShow] = useState(false);
   const [vipShow, setVipShow] = useState(false);
   const { userInfo }: any = useUser()
@@ -40,6 +41,8 @@ export default function SmokeBtn({ onClick, token }: Props) {
     type={2}
   />
 
+  const size = isBigIcon ? 48 : 36
+
   return (
     <div
       onClick={() => {
@@ -49,7 +52,7 @@ export default function SmokeBtn({ onClick, token }: Props) {
           return
         }
 
-        if (token.isSuperLike ) {
+        if (token.isSuperLike) {
           return
         }
 
@@ -68,11 +71,11 @@ export default function SmokeBtn({ onClick, token }: Props) {
         
       }}
     >
-      <div style={{ width: 36, height: 36, overflow: 'hidden' }}>
+      <div style={{ width: size, height: size, overflow: 'hidden' }}>
         {
-          token.isSuperLike 
-          ? <img style={{ width: 36 }} src="/img/profile/smoke-hot-grey.png" />
-          : <img style={{ width: 36 }} src="/img/profile/smoke-hot.png" />
+          token.isSuperLike || token.account === address
+          ? <img style={{ width: size }} src="/img/profile/smoke-hot-grey.png" />
+          : <img style={{ width: size }} src="/img/profile/smoke-hot.png" />
         }
       </div>
 

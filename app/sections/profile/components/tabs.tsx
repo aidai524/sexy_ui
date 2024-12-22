@@ -1,13 +1,27 @@
 import Tab from "./tab";
 import Created from "./created";
 import Held from "./held";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 
 export default function Tabs({ showHot, address, defaultIndex, tabContentStyle, onTabChange }: any) {
   const router = useRouter();
   const params = useSearchParams();
+  const [prepaidWithdrawDelayTime, setPrepaidWithdrawDelayTime] = useState(0)
+
+  const { getConfig } = useTokenTrade({
+    tokenName: '',
+    tokenSymbol: '',
+    tokenDecimals: 2
+  })
+
+  useEffect(() => {
+    getConfig().then((stateData) => {
+      setPrepaidWithdrawDelayTime(stateData.prepaidWithdrawDelayTime.toNumber())
+    })
+  }, [])
 
   const tabs = useMemo(() => {
     const _tabs = [
@@ -17,22 +31,22 @@ export default function Tabs({ showHot, address, defaultIndex, tabContentStyle, 
       },
       {
         name: "Created",
-        content: <Created address={address} type="created" />
+        content: <Created address={address} type="created" prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}/>
       },
       {
         name: "Hot",
-        content: <Created address={address} type="hot" />
+        content: <Created address={address} type="hot" prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}/>
       },
       {
         name: "Liked",
-        content: <Created address={address} type="liked" />
+        content: <Created address={address} type="liked" prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}/>
       }
     ];
     return _tabs;
-  }, [showHot, address]);
+  }, [showHot, address, prepaidWithdrawDelayTime]);
 
   const activeNode = useMemo(() => {
-    return tabs[defaultIndex].name
+    return tabs[defaultIndex || 0].name
   }, [defaultIndex, tabs])
 
   return <Tab nodes={tabs} onTabChange={(nodeName: string) => {

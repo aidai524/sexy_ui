@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import styles from './token.module.css'
 import { Modal } from 'antd-mobile'
 import BoostJust from '@/app/components/boost/boostJust'
@@ -14,18 +14,27 @@ import { useTokenTrade } from '@/app/hooks/useTokenTrade'
 interface Props {
     data: Project;
     update: () => void;
+    prepaidWithdrawDelayTime: number;
 }
 
-export default function Token({ data, update }: Props) {
+export default function Token({ data, update, prepaidWithdrawDelayTime }: Props) {
     const router = useRouter()
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
 
     const { prepaidSolWithdraw, prepaidTokenWithdraw } = useTokenTrade({
-        tokenName: data.tokenName, 
-        tokenSymbol: data.tokenSymbol as string, 
-        tokenDecimals: data.tokenDecimals as number, 
+        tokenName: data.tokenName,
+        tokenSymbol: data.tokenSymbol as string,
+        tokenDecimals: data.tokenDecimals as number,
         loadData: false
     })
+
+    const isDelay = useMemo(() => {
+        if (prepaidWithdrawDelayTime && data.createdAt && Date.now() - data.createdAt > prepaidWithdrawDelayTime) {
+            return true
+        }
+        return false
+    }, [prepaidWithdrawDelayTime, data])
+
 
     return <div className={styles.main}>
         <div className={styles.tokenMag}>
@@ -51,51 +60,52 @@ export default function Token({ data, update }: Props) {
 
         {
             data.status === 0
-                ? <div className={styles.actionContent}>
-                    <div className={styles.actionItem}>
-                        <div className={styles.actionIcon}>
-                            <Boost
-                                token={data}
-                                isGrey={true}
-                                onClick={() => {
-                                    update && update()
-                                }}
-                            />
+                ? (
+                    isDelay ? <div className={styles.actionContent}>
+                        <div className={styles.actionItem}>
+                            <div className={styles.withdraw} onClick={async () => {
+                                prepaidSolWithdraw()
+                            }}>withdraw</div>
                         </div>
-                        <div className={styles.actionTimes}>
-                            {
-                                timeFormat ? <div className={styles.whiteAmount}>
-                                    <div className={styles.timeFormat}>{timeFormat}</div>
-                                </div> : <div style={{ transform: 'translateX(-30%)' }}>30 min</div>
-                            }
-                        </div>
-                    </div>
-
-                    <div className={styles.actionItem}>
-                        <div>
-                            <SmokeBtn token={data} onClick={() => {
-                                // onSuperLike && onSuperLike()
-                            }} />
+                    </div> : <div className={styles.actionContent}>
+                        <div className={styles.actionItem}>
+                            <div className={styles.actionIcon}>
+                                <Boost
+                                    token={data}
+                                    isGrey={true}
+                                    onClick={() => {
+                                        update && update()
+                                    }}
+                                />
+                            </div>
                             <div className={styles.actionTimes}>
-                                <span className={styles.whiteAmount}>{data.superLike}</span>
+                                {
+                                    timeFormat ? <div className={styles.whiteAmount}>
+                                        <div className={styles.timeFormat}>{timeFormat}</div>
+                                    </div> : <div style={{ transform: 'translateX(-30%)' }}>30 min</div>
+                                }
                             </div>
                         </div>
-                    </div>
 
-                    <div className={styles.actionItem}>
-                        {/* <div className={ styles.withdraw } onClick={async () => {
-                            prepaidSolWithdraw()
-                        }}>
-                            withdraw
-                        </div> */}
+                        <div className={styles.actionItem}>
+                            <div>
+                                <SmokeBtn token={data} onClick={() => {
+                                    update && update()
+                                }} />
+                                <div className={styles.actionTimes}>
+                                    <span className={styles.whiteAmount}>{data.superLike}</span>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
-                </div> : <div className={styles.actionContent}>
-                    {/* <div className={ styles.withdraw } onClick={async () => {
+                ) : <div className={styles.actionContent}>
+                    {
+                        isDelay ? <div className={styles.withdraw} onClick={async () => {
                             prepaidTokenWithdraw()
-                        }}>
-                            cliam
-                        </div> */}
-                    <LauncdedAction data={data} justPlus={true} />
+                        }}> cliam</div> : <LauncdedAction data={data} justPlus={true} />
+                    }
                 </div>
         }
 

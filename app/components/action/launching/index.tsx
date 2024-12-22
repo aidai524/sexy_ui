@@ -31,6 +31,7 @@ export default function Action({
     <div className={styles.action} style={style}>
       <div>
         <Boost
+          isBigIcon={true}
           token={token}
           onClick={() => {
             onBoost && onBoost();
@@ -47,6 +48,7 @@ export default function Action({
       />
       <div>
         <SmokeBtn
+          isBigIcon={true}
           token={token}
           onClick={() => {
             onSuperLike && onSuperLike();

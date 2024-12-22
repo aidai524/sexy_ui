@@ -23,6 +23,8 @@ export interface Project {
     address?: string;
     creater?: any;
     status?: number;
+    createdAt?: number;
+
 }
 
 export interface Comment {

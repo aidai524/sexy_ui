@@ -37,7 +37,7 @@ export function useTokenTrade({
 }: Props) {
     const { connection } = useConnection();
     const { walletProvider } = useAccount();
-    const [rate, setRate] = useState<number>()
+
     const [minPrice, setMinPrice] = useState(1)
     const [maxPrice, setMaxPrice] = useState(1)
     const [tokenBalance, setTokenBalance] = useState('0')
@@ -818,7 +818,12 @@ export function useTokenTrade({
         }
     }, [programId, pool, connection])
 
-   
+    const getConfig = useCallback(async () => {
+        const program = new Program<any>(idl, programId, { connection: connection } as any);
+        const stateData: any = await program.account.launchpad.fetch(state[0])
+        const prepaidWithdrawDelayTime = stateData.prepaidWithdrawDelayTime.toNumber()
+        return stateData
+    }, [programId, state, connection])
 
     useEffect(() => {
         if (programId && connection && tokenName && tokenSymbol && loadData && tokenInfo) {
@@ -829,11 +834,8 @@ export function useTokenTrade({
                     false
                 );
 
-                let i = 0
                 if (userTokenAccount) {
                     const balance = new Big(Number(userTokenAccount.amount)).div(10 ** tokenDecimals).toString()
-                    console.log('balance:', balance)
-
                     setTokenBalance(balance)
                     return
                 }
@@ -845,7 +847,7 @@ export function useTokenTrade({
     }, [programId, walletProvider, connection, tokenName, tokenSymbol, tokenDecimals, loadData, reFreshBalnace])
 
     useEffect(() => {
-        if (connection) {
+        if (connection && loadData) {
             connection.getBalance(walletProvider.publicKey!).then(res => {
                 if (res) {
                     setSolBalance(new Big(res).div(10 ** 9).toString())
@@ -855,8 +857,7 @@ export function useTokenTrade({
                 
             })
         }
-        
-    }, [connection, walletProvider, reFreshBalnace])
+    }, [connection, walletProvider, reFreshBalnace, loadData])
 
     return {
         getRate,
@@ -874,6 +875,7 @@ export function useTokenTrade({
         updateBalance: () => { setReFreshBalnace(reFreshBalnace + 1) },
         prePaid,
         checkPrePayed,
+        getConfig,
     }
 
 }
@@ -901,22 +903,8 @@ async function wrapToWSol(provider: any, connection: any, user: PublicKey, wsolA
 }
 
 
-async function getMetaData(tokenMint: PublicKey) {
-    const METADATA_SEED = "metadata";
-    const TOKEN_METADATA_PROGRAM_ID = new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
-
-    const metaData = PublicKey.findProgramAddressSync(
-        [Buffer.from(METADATA_SEED), TOKEN_METADATA_PROGRAM_ID.toBuffer(), tokenMint.toBuffer()],
-        TOKEN_METADATA_PROGRAM_ID
-    )
-
-    return metaData
-}
-
 async function _getRate(program: Program, pool: PublicKey, { solAmount, tokenAmount }: { solAmount?: string, tokenAmount?: string }) {
     const poolData: any = await program.account.pool.fetch(pool)
-
-    console.log('poolData:', poolData)
 
     const poolToken = new Big(poolData!.virtualTokenAmount.toNumber())
     const solToken = new Big(poolData!.virtualWsolAmount.toNumber())

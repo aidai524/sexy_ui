@@ -10,6 +10,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 interface Props {
   address: string | undefined;
   type: string;
+  prepaidWithdrawDelayTime: number;
 }
 
 const urls: any = {
@@ -18,7 +19,7 @@ const urls: any = {
   liked: "/project/like/list"
 };
 
-export default function Created({ address, type }: Props) {
+export default function Created({ address, type, prepaidWithdrawDelayTime }: Props) {
   const [list, setList] = useState<Project[]>([]);
   const [refresh, setRefresh] = useState<number>(1);
   const userStore: any = useUser()
@@ -44,6 +45,7 @@ export default function Created({ address, type }: Props) {
         return <Token
           data={item}
           key={item.id}
+          prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
           update={async () => {
             setRefresh(refresh + 1)
             const userInfo = await fecthUserInfo(address as string)
