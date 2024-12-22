@@ -92,10 +92,10 @@ export default function useData(launchType: string) {
     try {
       if (listRef.current) {
         const infoData = listRef.current[0]
-        // const v = await httpAuthPost("/project/like?id=" + infoData!.id, {});
-        // if (v.code === 0) {
-        //   return v.data
-        // }
+        const v = await httpAuthPost("/project/like?id=" + infoData!.id, {});
+        if (v.code === 0) {
+          return v.data
+        }
       }
     } catch (e) {
     }
@@ -107,7 +107,7 @@ export default function useData(launchType: string) {
     try {
       if (listRef.current) {
         const infoData = listRef.current[0]
-        // await httpAuthPost("/project/un_like?id=" + infoData!.id, {});
+        await httpAuthPost("/project/un_like?id=" + infoData!.id, {});
       }
       
     } catch {}
