@@ -15,13 +15,13 @@
       /* transition: all 0.3s; */
 
       &.hate {
-        animation: rotateDownOut 0.8s forwards;
+        animation: rotateDownOut .8s 1 forwards;
         transform-origin: center top;
         filter: grayscale(100%);
       }
       &.like {
         transform-origin: center top;
-        animation: rotateUpOut 0.8s forwards;
+        animation: rotateUpOut .8s 1 forwards;
       }
     }
   }

@@ -58,7 +58,6 @@ export default function useData(launchType: string) {
     }
 
     renderIndexRef.current = renderIndexRef.current === 0 ? 1: 0
-    console.log('launchType: ', launchType, 'renderIndexRef.current', renderIndexRef.current)
 
     setRenderIndex(renderIndexRef.current)
     

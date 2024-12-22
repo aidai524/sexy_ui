@@ -335,10 +335,7 @@ export function mapDataToProject(currentToken: any): Project {
     about: currentToken.about_us,
     website: currentToken.website,
     tokenIcon: currentToken.icon || currentToken.video,
-    tokenImg:
-      currentToken.video ||
-      currentToken.icon ||
-      "https://pump.mypinata.cloud/ipfs/QmYy8GNmqXVDFsSLjPipD5WGro81SmXpmG7ZCMZNHf6dnp?img-width=800&img-dpr=2&img-onerror=redirect",
+    tokenImg: currentToken.video || currentToken.icon,
     tokenDecimals: currentToken.token_decimals,
     isLike: currentToken.is_like,
     isUnLike: currentToken.isUnLike,

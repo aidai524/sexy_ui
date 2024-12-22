@@ -21,7 +21,7 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
 
             const Pan = new Hammer.Pan({
                 direction: Hammer.DIRECTION_ALL, 
-                threshold: 10 
+                threshold: 0 
             });
             manager.add(Pan);
 
@@ -40,13 +40,11 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
             let direction = 0 // 0 right 1 left
 
             manager.on('panstart', (e) => {
-                console.log('拖动开始', e);
                 direction = 0
                 maxDistance = 0
             });
 
             manager.on('panmove', (e) => {
-                // console.log('拖动进行中', e)
                 if (e.deltaX < 0 && e.deltaY > 0) {
                     direction = 1
                 } else if (e.deltaX > 0 && e.deltaY < 0)  {
@@ -89,7 +87,6 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
 
         
                 
-                console.log('拖动结束', e);
             });
             
 

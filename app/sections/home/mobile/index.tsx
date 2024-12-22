@@ -288,30 +288,26 @@ export default function Home() {
       } else {
         setActionStyle(style);
       }
-      // setActionStyle(style);
       setTimeout(() => {
         getLaunchedNext();
-        setTimeout(() => {
           setActionStyle2(null);
           setActionStyle(null);
           setMovingStyle({})
           setMovingStyle2({})
           scrollRef.current = false
-        }, 100)
-      }, 1000);
+      }, 800);
     }
   }
-
-  console.log('renderLaunchingIndex:')
-
 
   return (
     <div className={styles.main}>
       <div className={styles.header}>
         <div
+          key="1"
           onClick={() => {
             router.push("/");
           }}
+          style={{ width: 27 }}
         >
           <img src="/img/logo.svg" />
         </div>
