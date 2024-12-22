@@ -84,9 +84,6 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
                 } else {
                     runNexting(0)
                 }
-
-        
-                
             });
             
 
