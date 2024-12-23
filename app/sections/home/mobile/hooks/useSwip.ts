@@ -21,7 +21,9 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
 
             const Pan = new Hammer.Pan({
                 direction: Hammer.DIRECTION_ALL, 
-                threshold: 0 
+                threshold: 0,
+                velocity: 0.3,
+                pointers: 1,
             });
             manager.add(Pan);
 
@@ -69,7 +71,9 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
             manager.on('panend', (e) => {
                 console.log('direction: ', direction, 'e.distance:', e.distance , 'maxDistance:', maxDistance)
 
+
                 if (direction === 0) {
+                    console.log('e.distance > maxDistance:', e.distance > maxDistance)
                     if (e.distance > maxDistance - 20) {
                         onNext && onNext()
                     } else {
@@ -84,6 +88,8 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
                 } else {
                     runNexting(0)
                 }
+
+
             });
             
 

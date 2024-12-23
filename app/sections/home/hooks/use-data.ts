@@ -16,8 +16,8 @@ export default function useData(launchType: string) {
   const listRef = useRef<Project[]>();
   const renderIndexRef = useRef<number>(0)
 
-  const onQueryList = (isInit: boolean) => {
-    httpGet(`/project/list?limit=${limit}&launchType=${launchType}`).then((res) => {
+  const onQueryList = async (isInit: boolean) => {
+    await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`).then((res) => {
       if (res.data?.has_next_page) {
         setHasNext(true);
       } else {
@@ -88,7 +88,7 @@ export default function useData(launchType: string) {
       renderTwoItems(listRef.current);
       setAll(listRef.current, launchType)
     }
-    if (listRef.current.length < left_num) {
+    if (listRef.current.length <= left_num) {
       if (hasNext) {
         onQueryList(false)
       }
@@ -105,9 +105,22 @@ export default function useData(launchType: string) {
 
   useEffect(() => {
     const list = getAll(launchType)
-    if (list && list.length > left_num) {
-      listRef.current = list;
-      renderTwoSimple(list);
+    if (list && list.length > 0) {
+      if (list.length === 1) {
+        onQueryList(false).then(() => {
+          listRef.current = list
+          if (listRef.current) {
+            renderTwoSimple(listRef.current)
+          }
+        })
+      } else if (list.length <= left_num) {
+        listRef.current = list;
+        renderTwoSimple(list);
+        onQueryList(false);
+      } else {
+        renderTwoSimple(list);
+        listRef.current = list
+      }
       setisLoading(false)
     } else {
       onQueryList(true);

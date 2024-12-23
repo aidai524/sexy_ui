@@ -642,8 +642,6 @@ export function useTokenTrade({
 
         console.log('val:', val)
 
-        
-
         const userSolAccount = await _getOrCreateAssociatedTokenAccount(
             wsol,
             walletProvider.publicKey!,
@@ -684,7 +682,7 @@ export function useTokenTrade({
         transaction
         .add(instruction1)
         .add(instruction2)
-        // .add(serverTransaction)
+        .add(serverTransaction)
         // .add(
         //     ComputeBudgetProgram.setComputeUnitLimit({
         //         units: 1000000,

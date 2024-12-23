@@ -230,11 +230,13 @@ export default function Home() {
   }
 
   async function justNext(type: string) {
+
     if (
       launchedList &&
       launchedList.current &&
       launchedList.current.length > 1
     ) {
+
       if (scrollRef.current) {
         return
       }
@@ -246,18 +248,22 @@ export default function Home() {
       } else {
         setActionStyle(style);
       }
+
       setTimeout(() => {
         getLaunchedNext();
         setActionStyle2(null);
         setActionStyle(null);
         setMovingStyle({})
         setMovingStyle2({})
-        scrollRef.current = false
+        setTimeout(() => {
+          scrollRef.current = false
+        }, 100)
+        
       }, 800);
     }
   }
 
-  // console.log('!isLaunchingLoading && homeTabIndex === 0 && !infoDataLaunching && !infoDataLaunching2:', !isLaunchingLoading && homeTabIndex === 0 && !infoDataLaunching && !infoDataLaunching2 )
+  console.log('actionStyle:', actionStyle, 'actionStyle2:', actionStyle2)
 
   return (
     <div className={styles.main}>

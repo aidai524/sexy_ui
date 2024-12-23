@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Tabs from "./components/tabs";
 import Avatar from "@/app/components/avatar";
 import FollowerActions from "./components/follower-actions";
+import { useHomeTab } from "@/app/store/useHomeTab";
 import Address from "./components/address";
 import HotBoost from "./components/hot-boost";
 import VipModal from "./components/vip-modal";
@@ -26,6 +27,7 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
     const [isFollower, setIsFollower] = useState(false);
     const [refreshNum, setRefreshNum] = useState(0);
     const [showVip, setShowVip] = useState(false);
+    const { profileTabIndex, set: setProfileTabIndex }: any = useHomeTab()
 
     useEffect(() => {
         if (userAddress && params) {
@@ -35,13 +37,13 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
         }
     }, [userAddress, params, isOther]);
 
-    const defaultIndex = useMemo(() => {
-        const tabIndex = params.get("tabIndex")?.toString()
-        if (tabIndex) {
-            return Number(tabIndex)
-        }
-        return 0
-    }, [params])
+    // const defaultIndex = useMemo(() => {
+    //     const tabIndex = params.get("tabIndex")?.toString()
+    //     if (tabIndex) {
+    //         return Number(tabIndex)
+    //     }
+    //     return 0
+    // }, [params])
 
     const address = useMemo(() => {
         if (isOther && params) {
@@ -134,7 +136,7 @@ export default function Profile({ showHot = true, isOther = false }: Props) {
                 />
             } */}
 
-            <Tabs address={address} defaultIndex={defaultIndex}  showHot={showHot} />
+            <Tabs address={address} defaultIndex={profileTabIndex}  showHot={showHot} />
             <VipModal
                 show={showVip}
                 onClose={() => {
