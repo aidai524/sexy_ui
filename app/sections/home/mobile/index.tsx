@@ -16,12 +16,15 @@ import { useAccount } from "@/app/hooks/useAccount";
 import useSwip from "./hooks/useSwip";
 import { httpAuthGet, mapDataToProject } from "@/app/utils";
 import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
+import { useHomeTab } from "@/app/store/useHomeTab";
 
 export default function Home() {
   const router = useRouter();
   const { address } = useAccount();
   const params = useSearchParams();
-  const [launchIndex, setLaunchIndex] = useState(0);
+
+  const { homeTabIndex, set: setHomeTabIndex }: any = useHomeTab()
+
   const [actionStyle, setActionStyle] = useState<any>("");
   const [actionStyle2, setActionStyle2] = useState<any>("");
   const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } =
@@ -44,8 +47,6 @@ export default function Home() {
     list: launchingList,
     renderIndex: renderLaunchingIndex,
     renderIndexRef: renderLaunchingIndexRef,
-    onLike,
-    onHate,
     updateCurrentToken: updateLaunchingToken,
   } = useData("preLaunch");
 
@@ -119,7 +120,7 @@ export default function Home() {
         setMovingStyle(style);
       }
     },
-    launchIndex === 0
+    homeTabIndex === 0
   );
 
   useSwip(
@@ -162,7 +163,7 @@ export default function Home() {
         setMovingStyle(style);
       }
     },
-    launchIndex === 1
+    homeTabIndex === 1
   );
 
   useEffect(() => {
@@ -172,22 +173,6 @@ export default function Home() {
   useEffect(() => {
     likeTriggerRef.current = likeTrigger
   }, [likeTrigger])
-
-  useEffect(() => {
-    if (params) {
-      const launchType = params.get("launchType");
-      if (launchType === "0") {
-        setLaunchIndex(0);
-      } else if (launchType === "1") {
-        setLaunchIndex(1);
-      }
-    } else {
-      setLaunchIndex(0);
-    }
-
-    setActionStyle2(null);
-    setActionStyle(null);
-  }, [params]);
 
   async function like() {
     if (
@@ -210,38 +195,6 @@ export default function Home() {
           setMovingStyle({})
           setMovingStyle2({})
         }, 100)
-
-        
-
-        // const times = await onLike()
-        // if (times === FIRST_LIKE_TIMES) {
-        //   if (launchingList.current) {
-        //     const timeLikeHandler = Modal.show({
-        //       content: <FirstTimeLike
-        //         data={launchingList.current[0]}
-        //         onClose={() => {
-        //           timeLikeHandler.close()
-        //         }} />,
-        //       closeOnMaskClick: true,
-        //       className: 'no-bg'
-        //     })
-        //   }
-        // }
-
-        // if (times === SECOND_LIKE_TIMES) {
-        //   if (launchingList.current) {
-        //     const timeLikeHandler = Modal.show({
-        //       content: <SecondTimeLike
-        //         data={launchingList.current[0]}
-        //         onClose={() => {
-        //           timeLikeHandler.close()
-        //         }} />,
-        //       closeOnMaskClick: true,
-        //       className: 'no-bg'
-        //     })
-        //   }
-        // }
-
       }, 1000);
 
       actionLikeTrigger(data)
@@ -305,6 +258,8 @@ export default function Home() {
     }
   }
 
+  console.log('homeTabIndex:', homeTabIndex)
+
   return (
     <div className={styles.main}>
       <div className={styles.header}>
@@ -319,9 +274,11 @@ export default function Home() {
         </div>
 
         <Tabs
-          launchIndex={launchIndex}
+          launchIndex={homeTabIndex}
           setLaunchIndex={(launchType: any) => {
-            router.push("/?launchType=" + launchType);
+            setHomeTabIndex({
+              homeTabIndex: launchType
+            })
           }}
         />
         <div className={styles.icons}>
@@ -330,7 +287,7 @@ export default function Home() {
         </div>
       </div>
 
-      {launchIndex === 0 && (
+      {homeTabIndex === 0 && (
         <>
           <div className={styles.thumbnailListBox} ref={containerPreLaunchRef}>
             {
@@ -400,7 +357,7 @@ export default function Home() {
         </>
       )}
 
-      {launchIndex === 1 && (
+      {homeTabIndex === 1 && (
         <>
           <div className={styles.thumbnailListBox} ref={containerLaunchedRef}>
             {infoDataLaunched && (

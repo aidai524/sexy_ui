@@ -8,7 +8,7 @@ export const useUser = create(
       set: (params: any) => set(() => ({ ...params })),
     }),
     {
-      name: '_fee_rate',
+      name: '_user',
       version: 0.1,
       storage: createJSONStorage(() => localStorage)
     }
