@@ -17,11 +17,7 @@ export function useAccount() {
       publicKey,
       signAndSendTransaction: async (transaction: any, sendOptions: any = {}) => {
 
-        // const signTransition = await signTransaction?.(transaction);
-
-        // console.log('signTransition:', transaction.serialize({ verifySignatures: true }))
-
-        // return
+        console.log('sendOptions:', sendOptions)
 
         // @ts-ignore
         if (wallet?.adapter && wallet.adapter.wallet) {
@@ -31,6 +27,8 @@ export function useAccount() {
             const feature = walletProvider.features[SolanaSignAndSendTransaction];
             const account = walletProvider.accounts[0];
 
+
+            console.log(sendOptions)
 
             const [result] = await feature.signAndSendTransaction({
               account,

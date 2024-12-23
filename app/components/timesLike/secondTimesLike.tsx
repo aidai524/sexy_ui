@@ -8,6 +8,8 @@ interface Props {
     onClose: () => void;
 }
 
+export const SECOND_LIKE_TIMES = 30
+
 export default function SecondTimeLike({
     data, onClose
 }: Props) {

@@ -9,15 +9,13 @@ import Messages from "@/app/components/messages";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import useData, { FIRST_LIKE_TIMES, SECOND_LIKE_TIMES } from "../hooks/use-data";
+import useData from "../hooks/use-data";
 import Tabs from "../tabs";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import useSwip from "./hooks/useSwip";
 import { httpAuthGet, mapDataToProject } from "@/app/utils";
-import { Modal } from "antd-mobile";
-import FirstTimeLike from "../components/timesLike/firstTimeLike";
-import SecondTimeLike from "../components/timesLike/secondTimesLike";
+import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 
 export default function Home() {
   const router = useRouter();
@@ -197,6 +195,7 @@ export default function Home() {
       launchingList.current &&
       launchingList.current.length > 1
     ) {
+      const data = launchingList.current[0]
       if (renderLaunchingIndexRef.current === 0) {
         setActionStyle2(styles.like);
       } else {
@@ -212,36 +211,40 @@ export default function Home() {
           setMovingStyle2({})
         }, 100)
 
-        const times = await onLike()
-        if (times === FIRST_LIKE_TIMES) {
-          if (launchingList.current) {
-            const timeLikeHandler = Modal.show({
-              content: <FirstTimeLike
-                data={launchingList.current[0]}
-                onClose={() => {
-                  timeLikeHandler.close()
-                }} />,
-              closeOnMaskClick: true,
-              className: 'no-bg'
-            })
-          }
-        }
+        
 
-        if (times === SECOND_LIKE_TIMES) {
-          if (launchingList.current) {
-            const timeLikeHandler = Modal.show({
-              content: <SecondTimeLike
-                data={launchingList.current[0]}
-                onClose={() => {
-                  timeLikeHandler.close()
-                }} />,
-              closeOnMaskClick: true,
-              className: 'no-bg'
-            })
-          }
-        }
+        // const times = await onLike()
+        // if (times === FIRST_LIKE_TIMES) {
+        //   if (launchingList.current) {
+        //     const timeLikeHandler = Modal.show({
+        //       content: <FirstTimeLike
+        //         data={launchingList.current[0]}
+        //         onClose={() => {
+        //           timeLikeHandler.close()
+        //         }} />,
+        //       closeOnMaskClick: true,
+        //       className: 'no-bg'
+        //     })
+        //   }
+        // }
+
+        // if (times === SECOND_LIKE_TIMES) {
+        //   if (launchingList.current) {
+        //     const timeLikeHandler = Modal.show({
+        //       content: <SecondTimeLike
+        //         data={launchingList.current[0]}
+        //         onClose={() => {
+        //           timeLikeHandler.close()
+        //         }} />,
+        //       closeOnMaskClick: true,
+        //       className: 'no-bg'
+        //     })
+        //   }
+        // }
 
       }, 1000);
+
+      actionLikeTrigger(data)
     }
 
   }
@@ -252,6 +255,8 @@ export default function Home() {
       launchingList.current &&
       launchingList.current.length > 1
     ) {
+      const data = launchingList.current[0]
+
       if (renderLaunchingIndexRef.current === 0) {
         setActionStyle2(styles.hate);
       } else {
@@ -267,8 +272,9 @@ export default function Home() {
           setMovingStyle2({})
         }, 100)
       }, 1000);
+
+      actionHateTrigger(data)
     }
-    onHate()
   }
 
   async function justNext(type: string) {
@@ -290,11 +296,11 @@ export default function Home() {
       }
       setTimeout(() => {
         getLaunchedNext();
-          setActionStyle2(null);
-          setActionStyle(null);
-          setMovingStyle({})
-          setMovingStyle2({})
-          scrollRef.current = false
+        setActionStyle2(null);
+        setActionStyle(null);
+        setMovingStyle({})
+        setMovingStyle2({})
+        scrollRef.current = false
       }, 800);
     }
   }

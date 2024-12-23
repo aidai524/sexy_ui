@@ -11,6 +11,7 @@ import InfoPart from "./infoPart";
 import { useEffect, useState } from "react";
 import type { Comment, Project } from "@/app/type";
 import { httpAuthPost, httpGet } from "@/app/utils";
+import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 
 interface Props {
   data: Project;
@@ -29,11 +30,12 @@ export default function Info({ data, onUpdate }: Props) {
             token={data}
             style={{ position: "static" }}
             onLike={async () => {
-              await httpAuthPost("/project/like?id=" + data!.id, {});
+              await actionLikeTrigger(data)
+              // await httpAuthPost("/project/like?id=" + data!.id, {});
               onUpdate()
             }}
             onHate={async () => {
-              await httpAuthPost("/project/un_like?id=" + data!.id, {});
+              await actionHateTrigger(data)
               onUpdate()
             }}
             onSuperLike={() => {

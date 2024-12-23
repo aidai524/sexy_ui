@@ -6,6 +6,8 @@ interface Props {
     onClose: () => void;
 }
 
+export const FIRST_LIKE_TIMES = 10
+
 export default function FirstTimeLike({
     data, onClose
 }: Props) {

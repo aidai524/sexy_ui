@@ -10,6 +10,7 @@ import Boost from '@/app/components/boost'
 import useTimeLeft from '@/app/hooks/useTimeLeft'
 import LauncdedAction from '@/app/components/action/launched'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade'
+import { fail, success } from '@/app/utils/toast'
 
 interface Props {
     data: Project;
@@ -65,7 +66,12 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot 
                     isDelay ? <div className={styles.actionContent}>
                         <div className={styles.actionItem}>
                             <div className={styles.withdraw} onClick={async () => {
-                                prepaidSolWithdraw()
+                                const res = await prepaidSolWithdraw()
+                                if (!res) {
+                                    fail('Withdraw fail')
+                                } else {
+                                    success('Withdraw success')
+                                }
                             }}>withdraw</div>
                         </div>
                     </div> : <div className={styles.actionContent}>
@@ -103,10 +109,16 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot 
                     </div>
                 ) : <div className={styles.actionContent}>
                     {
-                        isDelay ? <div className={styles.withdraw} onClick={async () => {
-                            prepaidTokenWithdraw()
-                        }}> cliam</div> : <LauncdedAction data={data} justPlus={true} />
+                        isDelay && <div className={styles.withdraw} onClick={async () => {
+                            const res = await prepaidTokenWithdraw()
+                            if (!res) {
+                                fail('Cliam fail')
+                            } else {
+                                success('Cliam success')
+                            }
+                        }}> cliam</div>
                     }
+                    <LauncdedAction data={data} justPlus={true} />
                 </div>
         }
 

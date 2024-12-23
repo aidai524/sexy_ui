@@ -2,9 +2,6 @@ import { httpGet, httpAuthPost, mapDataToProject } from "@/app/utils";
 import { useEffect, useState, useRef, useCallback } from "react";
 import type { Project } from "@/app/type";
 
-export const FIRST_LIKE_TIMES = 10
-export const SECOND_LIKE_TIMES = 30
-
 export default function useData(launchType: string) {
   const [infoData, setInfoData] = useState<Project>();
   const [infoData2, setInfoData2] = useState<Project>();
@@ -91,10 +88,11 @@ export default function useData(launchType: string) {
     try {
       if (listRef.current) {
         const infoData = listRef.current[0]
-        const v = await httpAuthPost("/project/like?id=" + infoData!.id, {});
-        if (v.code === 0) {
-          return v.data
-        }
+        console.log(111)
+        // const v = await httpAuthPost("/project/like?id=" + infoData!.id, {});
+        // if (v.code === 0) {
+        //   return v.data
+        // }
       }
     } catch (e) {
     }
@@ -106,7 +104,7 @@ export default function useData(launchType: string) {
     try {
       if (listRef.current) {
         const infoData = listRef.current[0]
-        await httpAuthPost("/project/un_like?id=" + infoData!.id, {});
+        // await httpAuthPost("/project/un_like?id=" + infoData!.id, {});
       }
       
     } catch {}
