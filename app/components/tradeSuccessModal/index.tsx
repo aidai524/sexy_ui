@@ -10,6 +10,7 @@ interface Props {
   token: Project;
   userInfo: UserInfo;
   type: number;
+  solAmount: string;
   amount: string;
 }
 
@@ -30,6 +31,7 @@ export default function TradeSuccessModal({
   token,
   userInfo,
   type,
+  solAmount,
   amount
 }: Props) {
   
@@ -59,8 +61,8 @@ export default function TradeSuccessModal({
         </div>
 
         <div className={ style.tips }>
-          <span>You’ve got</span>
-          <span className={ style.sexFi }> 10 points</span>
+          <span>You are expected to receive</span>
+          <span className={ style.sexFi }> { Number(solAmount) / 1 } points</span>
         </div>
         
       </div>

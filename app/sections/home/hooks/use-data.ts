@@ -6,6 +6,7 @@ export default function useData(launchType: string) {
   const [infoData, setInfoData] = useState<Project>();
   const [infoData2, setInfoData2] = useState<Project>();
   const [renderIndex, setRenderIndex] = useState(0)
+  const [isLoading, setisLoading] = useState(true)
   const [hasNext, setHasNext] = useState<boolean>(true);
   const [fullList, setFullList] = useState<Project[]>();
   const listRef = useRef<Project[]>();
@@ -17,6 +18,10 @@ export default function useData(launchType: string) {
         setHasNext(true);
       } else {
         setHasNext(false);
+      }
+
+      if (isInit) {
+        setisLoading(false)
       }
 
       if (res.code !== 0 || !res.data?.list) return;
@@ -84,32 +89,6 @@ export default function useData(launchType: string) {
     }
   }
 
-  const onLike = async () => {
-    try {
-      if (listRef.current) {
-        const infoData = listRef.current[0]
-        console.log(111)
-        // const v = await httpAuthPost("/project/like?id=" + infoData!.id, {});
-        // if (v.code === 0) {
-        //   return v.data
-        // }
-      }
-    } catch (e) {
-    }
-
-    return 0
-  };
-
-  const onHate = async () => {
-    try {
-      if (listRef.current) {
-        const infoData = listRef.current[0]
-        // await httpAuthPost("/project/un_like?id=" + infoData!.id, {});
-      }
-      
-    } catch {}
-  };
-
   const updateCurrentToken = async (newTokenInfo: Project) => {
     if (renderIndexRef.current === 0) {
       setInfoData2(newTokenInfo)
@@ -127,12 +106,11 @@ export default function useData(launchType: string) {
     infoData2,
     renderIndex,
     hasNext,
+    isLoading,
     list: listRef,
     renderIndexRef: renderIndexRef,
     fullList,
     getnext,
-    onLike,
-    onHate,
     updateCurrentToken
   };
 }

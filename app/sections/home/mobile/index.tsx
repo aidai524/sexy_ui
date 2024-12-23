@@ -17,6 +17,8 @@ import useSwip from "./hooks/useSwip";
 import { httpAuthGet, mapDataToProject } from "@/app/utils";
 import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { Modal } from "antd-mobile";
+import SeenAll from "@/app/components/timesLike/seenAll";
 
 export default function Home() {
   const router = useRouter();
@@ -48,6 +50,7 @@ export default function Home() {
     renderIndex: renderLaunchingIndex,
     renderIndexRef: renderLaunchingIndexRef,
     updateCurrentToken: updateLaunchingToken,
+    isLoading: isLaunchingLoading,
   } = useData("preLaunch");
 
   const {
@@ -189,13 +192,11 @@ export default function Home() {
 
       setTimeout(async () => {
         getLaunchingNext();
-        setTimeout(() => {
-          setActionStyle2(null);
-          setActionStyle(null);
-          setMovingStyle({})
-          setMovingStyle2({})
-        }, 100)
-      }, 1000);
+        setActionStyle2(null);
+        setActionStyle(null);
+        setMovingStyle({})
+        setMovingStyle2({})
+      }, 800);
 
       await actionLikeTrigger(data)
     }
@@ -256,7 +257,7 @@ export default function Home() {
     }
   }
 
-  console.log('homeTabIndex:', homeTabIndex)
+  // console.log('!isLaunchingLoading && homeTabIndex === 0 && !infoDataLaunching && !infoDataLaunching2:', !isLaunchingLoading && homeTabIndex === 0 && !infoDataLaunching && !infoDataLaunching2 )
 
   return (
     <div className={styles.main}>
@@ -360,6 +361,14 @@ export default function Home() {
           />
         </>
       )}
+
+      {/* {
+        !isLaunchingLoading && homeTabIndex === 0 && !infoDataLaunching && !infoDataLaunching2 && ()
+      } */}
+
+      <SeenAll show={!isLaunchingLoading && homeTabIndex === 0 && !infoDataLaunching && !infoDataLaunching2 } onClose={() => {
+
+      }}/>
 
       {homeTabIndex === 1 && (
         <>
