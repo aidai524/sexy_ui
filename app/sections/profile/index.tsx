@@ -1,148 +1,89 @@
-import styles from "./profile.module.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { httpAuthGet, httpAuthPost } from "@/app/utils";
+"use client";
+
+import { memo } from "react";
+import Mobile from "./mobile";
+import Laptop from "./laptop";
+import VipModal from "./components/vip-modal";
+import { useUserAgent } from "@/app/context/user-agent";
 import useUserInfo from "../../hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
-import Back from "@/app/components/back";
 import { useRouter, useSearchParams } from "next/navigation";
-import Tabs from "./components/tabs";
-import Avatar from "@/app/components/avatar";
-import FollowerActions from "./components/follower-actions";
+import { useState, useEffect, useMemo } from "react";
 import { useHomeTab } from "@/app/store/useHomeTab";
-import Address from "./components/address";
-import HotBoost from "./components/hot-boost";
-import VipModal from "./components/vip-modal";
-import FollowBtn from "./components/followBtn";
 import { useUser } from "@/app/store/useUser";
+import { httpAuthGet } from "@/app/utils";
 
-interface Props {
-    showHot?: boolean;
-    isOther?: boolean;
-}
+export default memo(function Home(props: any) {
+  const { showHot = true, isOther = false } = props;
+  const { isMobile } = useUserAgent();
+  const router = useRouter();
+  const params = useSearchParams();
+  const { address: userAddress } = useAccount();
+  const [isFollower, setIsFollower] = useState(false);
+  const [refreshNum, setRefreshNum] = useState(0);
+  const [showVip, setShowVip] = useState(false);
+  const { profileTabIndex, set: setProfileTabIndex }: any = useHomeTab();
 
-export default function Profile({ showHot = true, isOther = false }: Props) {
-    const router = useRouter();
-    const params = useSearchParams();
-    const { address: userAddress } = useAccount();
-    const [isFollower, setIsFollower] = useState(false);
-    const [refreshNum, setRefreshNum] = useState(0);
-    const [showVip, setShowVip] = useState(false);
-    const { profileTabIndex, set: setProfileTabIndex }: any = useHomeTab()
+  useEffect(() => {
+    if (userAddress && params) {
+      if (params.get("account")?.toString() === userAddress && isOther) {
+        router.replace("/profile");
+      }
+    }
+  }, [userAddress, params, isOther]);
 
-    useEffect(() => {
-        if (userAddress && params) {
-            if (params.get("account")?.toString() === userAddress && isOther) {
-                router.replace('/profile')
-            } 
+  const address = useMemo(() => {
+    if (isOther && params) {
+      return params.get("account")?.toString();
+    }
+
+    return userAddress;
+  }, [userAddress, params, isOther]);
+
+  const { onQueryInfo, userInfo } = useUserInfo(address);
+  const { userInfo: ownUserInfo, set: setUserInfo }: any = useUser();
+
+  const comProps = {
+    userInfo,
+    address,
+    isFollower,
+    refreshNum,
+    setRefreshNum,
+    onQueryInfo,
+    setUserInfo,
+    setShowVip,
+    router,
+    profileTabIndex
+  };
+
+  useEffect(() => {
+    if (address && isOther) {
+      httpAuthGet("/follower/account", { address: address }).then((res) => {
+        console.log("res:", res);
+        if (res.code === 0) {
+          if (res.data) {
+            setIsFollower(res.data.is_follower);
+          } else {
+            setIsFollower(false);
+          }
         }
-    }, [userAddress, params, isOther]);
+      });
+    }
+  }, [address, isOther, refreshNum]);
 
-    // const defaultIndex = useMemo(() => {
-    //     const tabIndex = params.get("tabIndex")?.toString()
-    //     if (tabIndex) {
-    //         return Number(tabIndex)
-    //     }
-    //     return 0
-    // }, [params])
-
-    const address = useMemo(() => {
-        if (isOther && params) {
-            return params.get("account")?.toString();
-        }
-
-        return userAddress;
-    }, [userAddress, params, isOther]);
-
-    const { onQueryInfo, userInfo } = useUserInfo(address);
-    const { userInfo: ownUserInfo, set }: any = useUser()
-
-    useEffect(() => {
-        if (address && isOther) {
-            httpAuthGet("/follower/account", { address: address }).then((res) => {
-                console.log("res:", res);
-                if (res.code === 0 ) {
-                    if (res.data) {
-                        setIsFollower(res.data.is_follower);
-                    } else {
-                        setIsFollower(false);
-                    }
-                }
-            });
-        }
-    }, [address, isOther, refreshNum]);
-
-    const backgroundImgStyle = userInfo?.banner
-        ? {
-            backgroundImage: `linear-gradient(360deg, #0D1012 41.35%, rgba(0, 0, 0, 0) 100%)`,
-            backgroundSize: "100% auto"
-        }
-        : {};
-
-    const backgroundImgStyle1 = userInfo?.banner
-        ? {
-            backgroundImage: `url(${userInfo?.banner})`,
-            backgroundSize: "100% auto"
-        }
-        : {};
-
-    return (
-        <div className={styles.main}>
-            <div style={backgroundImgStyle1} className={ styles.avatarBox }>
-                {isOther ? (
-                    <div className={styles.isOther}>
-                        <div>
-                            <Back style={{ left: 0, top: 0 }} />
-                        </div>
-
-                        {
-                            <FollowBtn address={ address } isFollower={isFollower} onSuccess={async () => {
-                                setRefreshNum(refreshNum + 1)
-                                await onQueryInfo()
-                                set({
-                                    userInfo: userInfo
-                                })
-                            }}/>
-                        }
-                    </div>
-                ) : null}
-                <div className={styles.avatarContent} style={backgroundImgStyle}>
-                    <Avatar
-                        userInfo={userInfo}
-                        onVipShow={() => { 
-                            setShowVip(true);
-                         }}
-                        onEdit={() => {
-                            router.push("/profile/edit");
-                        }}
-                    />
-                </div>
-            </div>
-
-            <FollowerActions
-                userInfo={userInfo}
-                onItemClick={() => {
-                    router.push("/profile/follower?account=" + address);
-                }}
-            />
-
-            <Address address={address} />
-            {/* {
-                !isOther && <HotBoost
-                    user={ownUserInfo}
-                    onMoreClick={() => {
-                        setShowVip(true);
-                    }}
-                    style={{ margin: "20px 10px" }}
-                />
-            } */}
-
-            <Tabs address={address} defaultIndex={profileTabIndex}  showHot={showHot} />
-            <VipModal
-                show={showVip}
-                onClose={() => {
-                    setShowVip(false);
-                }}
-            />
-        </div>
-    );
-}
+  return (
+    <>
+      {isMobile ? (
+        <Mobile {...props} {...comProps} />
+      ) : (
+        <Laptop {...props} {...comProps} />
+      )}
+      <VipModal
+        show={showVip}
+        onClose={() => {
+          setShowVip(false);
+        }}
+      />
+    </>
+  );
+});

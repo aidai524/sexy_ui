@@ -8,7 +8,7 @@ export default function Laptop() {
       <div className={styles.BackWrapper}>
         <Back />
       </div>
-      <Content styles={styles} />
+      <Content styles={styles} isMobile={false} />
     </div>
   );
 }

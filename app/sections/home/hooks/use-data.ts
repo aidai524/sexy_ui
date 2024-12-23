@@ -3,44 +3,47 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import type { Project } from "@/app/type";
 import { getAll, setAll } from "@/app/utils/listStore";
 
-const limit = 10
-const left_num = 3
+const limit = 10;
+const left_num = 3;
 
 export default function useData(launchType: string) {
   const [infoData, setInfoData] = useState<Project>();
   const [infoData2, setInfoData2] = useState<Project>();
-  const [renderIndex, setRenderIndex] = useState(0)
-  const [isLoading, setisLoading] = useState(true)
+  const [renderIndex, setRenderIndex] = useState(0);
+  const [isLoading, setisLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
   const [fullList, setFullList] = useState<Project[]>();
   const listRef = useRef<Project[]>();
-  const renderIndexRef = useRef<number>(0)
+  const renderIndexRef = useRef<number>(0);
 
   const onQueryList = async (isInit: boolean) => {
-    await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`).then((res) => {
-      if (res.data?.has_next_page) {
-        setHasNext(true);
-      } else {
-        setHasNext(false);
-      }
+    await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`).then(
+      (res) => {
+        if (res.data?.has_next_page) {
+          setHasNext(true);
+        } else {
+          setHasNext(false);
+        }
 
-      if (isInit) {
-        setisLoading(false)
-      }
+        if (isInit) {
+          setisLoading(false);
+        }
+        console.log("res", res);
+        if (res.code !== 0 || !res.data?.list) return;
+        let _list: any = [];
+        if (isInit) {
+          _list = res.data?.list;
 
-      if (res.code !== 0 || !res.data?.list) return;
-      let _list: any = [];
-      if (isInit) {
-        _list = res.data?.list;
-       
-        renderTwoSimple(res.data?.list);
-      } else {
-        _list = [...(listRef.current || []), ...res.data.list];
+          renderTwoSimple(res.data?.list);
+        } else {
+          _list = [...(listRef.current || []), ...res.data.list];
+        }
+        listRef.current = _list;
+        setAll(listRef.current, launchType);
+        console.log("_list", _list);
+        setFullList(JSON.parse(JSON.stringify(_list)));
       }
-      listRef.current = _list;
-      setAll(listRef.current, launchType)
-      setFullList(JSON.parse(JSON.stringify(_list)));
-    });
+    );
   };
 
   const renderTwoSimple = (list: Project[]) => {
@@ -57,17 +60,17 @@ export default function useData(launchType: string) {
       const currentToken = list[1];
       setInfoData(mapDataToProject(currentToken));
     }
-  }
+  };
 
   const renderTwoItems = (list: Project[]) => {
     if (!list) {
       return;
     }
 
-    renderIndexRef.current = renderIndexRef.current === 0 ? 1: 0
+    renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
 
-    setRenderIndex(renderIndexRef.current)
-    
+    setRenderIndex(renderIndexRef.current);
+
     setTimeout(() => {
       if (list.length > 1) {
         const currentToken = list[1];
@@ -77,8 +80,7 @@ export default function useData(launchType: string) {
           setInfoData(mapDataToProject(currentToken));
         }
       }
-    }, 0)
-    
+    }, 0);
   };
 
   const getnext = () => {
@@ -86,42 +88,44 @@ export default function useData(launchType: string) {
     if (listRef.current.length) {
       listRef.current.shift();
       renderTwoItems(listRef.current);
-      setAll(listRef.current, launchType)
+      setAll(listRef.current, launchType);
     }
     if (listRef.current.length <= left_num) {
       if (hasNext) {
-        onQueryList(false)
+        onQueryList(false);
       }
     }
-  }
+  };
 
   const updateCurrentToken = async (newTokenInfo: Project) => {
     if (renderIndexRef.current === 0) {
-      setInfoData2(newTokenInfo)
+      setInfoData2(newTokenInfo);
     } else {
-      setInfoData(newTokenInfo)
+      setInfoData(newTokenInfo);
     }
-  }
+  };
 
   useEffect(() => {
-    const list = getAll(launchType)
+    const list = getAll(launchType);
+
     if (list && list.length > 0) {
       if (list.length === 1) {
         onQueryList(false).then(() => {
-          listRef.current = list
+          listRef.current = list;
           if (listRef.current) {
-            renderTwoSimple(listRef.current)
+            renderTwoSimple(listRef.current);
           }
-        })
+        });
       } else if (list.length <= left_num) {
         listRef.current = list;
         renderTwoSimple(list);
         onQueryList(false);
       } else {
         renderTwoSimple(list);
-        listRef.current = list
+        listRef.current = list;
+        setFullList(JSON.parse(JSON.stringify(list)));
       }
-      setisLoading(false)
+      setisLoading(false);
     } else {
       onQueryList(true);
     }
@@ -140,4 +144,3 @@ export default function useData(launchType: string) {
     updateCurrentToken
   };
 }
-

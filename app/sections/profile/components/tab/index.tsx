@@ -66,8 +66,8 @@ export default function Tab({
             key={index}
             className={styles.tabContent}
             style={{
-                ...tabContentStyle,
-                display: tabIndex !== index ? 'none' : 'block'
+              ...tabContentStyle,
+              display: tabIndex !== index ? "none" : "block"
             }}
           >
             {node.content}

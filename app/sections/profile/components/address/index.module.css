@@ -5,17 +5,17 @@
   padding: 0 10px;
   margin-top: 10px;
   gap: 10px;
+  font-size: 10px;
 }
 .addressContent {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 10px;
-  color: rgba(126, 138, 147, 1);
   font-weight: 300;
   height: 38px;
   background-color: rgba(255, 255, 255, 0.08);
   border-radius: 40px;
   padding: 0 10px;
   flex: 1;
+  cursor: pointer;
 }
