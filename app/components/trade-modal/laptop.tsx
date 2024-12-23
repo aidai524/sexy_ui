@@ -1,7 +1,7 @@
 import Content from "./content";
 import Modal from "../modal";
 
-export default function Mobile({ show, onClose, data, initType }: any) {
+export default function Laptop({ show, onClose, data, initType }: any) {
   return (
     <Modal
       open={show}
