@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import CommentComp from "../comment";
 import { videoReg } from "../upload";
 import Likes from "./likes";
+import Holder from "../holder";
 
 interface Props {
   showDesc: boolean;
@@ -111,7 +112,6 @@ export default function Thumbnail({
         {progressIndex === 1 && (
           <div className={styles.commentList}>
             <Avatar data={data} showBackIcon={true} />
-            <div style={{ height: 10 }}></div>
             <CommentComp
               titleStyle={{ color: "#fff" }}
               id={data.id}
@@ -124,6 +124,8 @@ export default function Thumbnail({
         {progressIndex === 2 && (
           <div className={styles.commentList}>
             <Avatar data={data} showBackIcon={true} />
+            <div style={{ height: 10 }}></div>
+            <Holder/>
           </div>
         )}
 

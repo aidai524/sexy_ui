@@ -31,6 +31,11 @@ export function setAll(list: any, type: string) {
     return true
 }
 
+export function clearAll(type: string) {
+    window.localStorage.removeItem(SEX_FI_LAUNCHED_LIST_KEY + '_' + type)
+    window.localStorage.removeItem(SEX_FI_LAUNCHED_LIST_TIME + '_' + type)
+}
+
 function setTime(type: string) {
     window.localStorage.setItem(SEX_FI_LAUNCHED_LIST_TIME + '_' + type, Date.now().toString())
 }

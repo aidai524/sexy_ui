@@ -11,10 +11,10 @@ export const SECOND_LIKE_TIMES = 30
 const onLike = async (data: Project) => {
   try {
     if (data) {
-      const v = await httpAuthPost("/project/like?id=" + data!.id, {});
-      if (v.code === 0) {
-        return v.data
-      }
+      // const v = await httpAuthPost("/project/like?id=" + data!.id, {});
+      // if (v.code === 0) {
+      //   return v.data
+      // }
     }
   } catch (e) {
   }

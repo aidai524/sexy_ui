@@ -4,12 +4,14 @@ import Held from "./held";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import { useHomeTab } from "@/app/store/useHomeTab";
 
 
 export default function Tabs({ showHot, address, defaultIndex, tabContentStyle, onTabChange }: any) {
   const router = useRouter();
   const params = useSearchParams();
   const [prepaidWithdrawDelayTime, setPrepaidWithdrawDelayTime] = useState(0)
+  const { set: setProfileTabIndex }: any = useHomeTab()
 
   const { getConfig } = useTokenTrade({
     tokenName: '',
@@ -55,12 +57,16 @@ export default function Tabs({ showHot, address, defaultIndex, tabContentStyle, 
       defaultIndex = index
       return tab.name === nodeName
     })
-    const account = params.get("account")?.toString()
-    let url = '/profile?tabIndex=' + defaultIndex
-    if (account) {
-      url += ('&account=' + account)
-    }
+    setProfileTabIndex({
+      profileTabIndex: defaultIndex
+    })
+    
+    // const account = params.get("account")?.toString()
+    // let url = '/profile?tabIndex=' + defaultIndex
+    // if (account) {
+    //   url += ('&account=' + account)
+    // }
 
-    router.push(url)
+    // router.push(url)
   }} activeNode={activeNode} tabContentStyle={tabContentStyle} />;
 }

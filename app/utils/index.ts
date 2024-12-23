@@ -1,6 +1,7 @@
 import dayjs from "./dayjs";
 import type { Project } from "../type";
 import { fail } from "./toast";
+import { clearAll } from "./listStore";
 
 const BASE_URL = "https://api.dumpdump.fun/api/v1";
 const TOKEN_ERROR_CODE = -401;
@@ -294,6 +295,9 @@ export function logOut() {
   // @ts-ignore
   window.sexAddress = null;
   window.localStorage.removeItem(AUTH_KEY);
+
+  clearAll('launching')
+  clearAll('preLaunch')
 }
 
 export function getFullNum(value: any) {
