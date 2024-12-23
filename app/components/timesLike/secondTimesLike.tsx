@@ -15,12 +15,11 @@ export default function SecondTimeLike({
     data, onClose
 }: Props) {
     const router = useRouter()
-    const { homeTabIndex, set: setHomeTabIndex }: any = useHomeTab()
+    const { set: setHomeTabIndex }: any = useHomeTab()
 
     return <div className={styles.main}>
         <div className={styles.content}>
             <img src="/img/home/times30.svg" className={ styles.topImg } />
-            <div className={styles.text}>Share your favorite token on X and get up to 100% Like Boost.</div>
             <div className={styles.text}>
                 Buy or sell Sexy or Pump platform tokens on Sexy and earn up to 
                 <br/>

@@ -6,7 +6,7 @@ import { httpAuthPost } from "@/app/utils"
 import { fail } from "assert"
 
 export const FIRST_LIKE_TIMES = 10
-export const SECOND_LIKE_TIMES = 30
+export const SECOND_LIKE_TIMES = 15
 
 
 const onLike = async (data: Project) => {

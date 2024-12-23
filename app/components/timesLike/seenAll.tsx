@@ -22,7 +22,7 @@ export default function SeenAll({
         content={<div className={styles.main}>
             <div className={styles.content}>
                 <img src="/img/home/times30.svg" className={styles.topImg} />
-                <div className={styles.text}>You have seen all the Pre-Launch tokens..</div>
+                <div className={styles.text}>You have seen all the Pre-Launch tokens.</div>
                 <div className={styles.text}>
                     Buy or sell Sexy or Pump platform tokens on Sexy and earn up to
                     <br />
