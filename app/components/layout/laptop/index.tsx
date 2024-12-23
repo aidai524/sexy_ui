@@ -4,7 +4,12 @@ import User from "./user";
 import Header from "./header";
 import { useState, useEffect } from "react";
 
-export default function Laptop({ children }: any) {
+export default function Laptop({
+  userInfo,
+  address,
+  onQueryInfo,
+  children
+}: any) {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
@@ -17,7 +22,7 @@ export default function Laptop({ children }: any) {
   return (
     <>
       <div className={styles.Container}>
-        <User />
+        <User userInfo={userInfo} address={address} onQueryInfo={onQueryInfo} />
         <div className={styles.Content}>
           <Header />
           {children}
