@@ -1,52 +1,53 @@
 .linkBox {
-    background-color: rgba(18, 23, 25, 1);
-    /* background-color: #fff; */
-    padding: 0 20px 10px;
-    .linkContent {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 42px;
-        .linkTitle {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 16px;
-            .linkImg {
-                width: 15px;
-            }
-        }
-        .linkAction {
-            font-size: 16px;
-            background: linear-gradient(90deg, #FF2BAE 0.01%, #AA2BFF 54.08%);
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            border-bottom: 1px solid #FF2BAE;
-        }
-        
-    }
+  /* background-color: #fff; */
+  padding: 0 20px 10px;
 
-    .linkEdit {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 47px;
-        border: 1px solid rgba(146, 144, 177, 0.6);
-        border-radius: 8px;
-        padding: 0 5px;
-        .linkInput {
-            height: 100%;
-            background-color: inherit;
-            border: none;
-            flex: 1;
-            outline: none;
-            color: #fff;
-            font-size: 14px;
-        }
-        .linkPaste {
-            color: var(--part-bg);
-            font-size: 12px;
-        }
+  .linkContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 42px;
+    .linkTitle {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 16px;
+      .linkImg {
+        width: 15px;
+      }
     }
+    .linkAction {
+      font-size: 16px;
+      background: linear-gradient(90deg, #ff2bae 0.01%, #aa2bff 54.08%);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      border-bottom: 1px solid #ff2bae;
+    }
+  }
+
+  .linkEdit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 47px;
+    border: 1px solid rgba(146, 144, 177, 0.6);
+    border-radius: 8px;
+    padding: 0 5px;
+    .linkInput {
+      height: 100%;
+      border: none;
+      flex: 1;
+      outline: none;
+      color: #fff;
+      font-size: 14px;
+    }
+  }
+
+  .laptopInputText {
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.16);
+    height: 50px;
+  }
 }

@@ -1,32 +1,42 @@
 .main {
-    background: linear-gradient(-200deg, rgba(255,38,129,1)  18%,  rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(255,38,129,1) 82%);
-    padding: 10px 0;
+  background: linear-gradient(
+    -200deg,
+    rgba(255, 38, 129, 1) 18%,
+    rgba(0, 0, 0, 1) 18%,
+    rgba(0, 0, 0, 1) 82%,
+    rgba(255, 38, 129, 1) 82%
+  );
+  padding: 10px 0;
+}
+
+.laptopMain {
+  background: transparent;
 }
 
 .mainContent {
-    padding-top: 5px;
-    padding-bottom: 80px;
-    min-height: 100vh;
-    .actionBtns {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px;
-        .btn {
-            flex: 1;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 30px;
-            color: #fff;
-            font-size: 16px;
-            &.create {
-                background-color: var(--part-bg);
-            }
-            &.edit {
-                border: 2px solid var(--part-bg);
-            }
-        }
+  padding-top: 5px;
+  padding-bottom: 80px;
+  min-height: 100vh;
+  .actionBtns {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    .btn {
+      flex: 1;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 30px;
+      color: #fff;
+      font-size: 16px;
+      &.create {
+        background-color: var(--part-bg);
+      }
+      &.edit {
+        border: 2px solid var(--part-bg);
+      }
     }
+  }
 }
