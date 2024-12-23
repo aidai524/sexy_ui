@@ -6,15 +6,15 @@ import { useMemo, useState } from "react";
 export default function Content({ tab }: any) {
   const [full, setFull] = useState(false);
   const type = useMemo(() => (tab ? "launching" : "preLaunch"), [tab]);
-  const { infoData2, fullList, onLike, onHate, getnext } = useData(type);
+  const { infoData2, fullList, getnext } = useData(type);
 
   return (
     <>
       <Token
         {...{
           infoData2,
-          onLike,
-          onHate,
+          onLike: () => {},
+          onHate: () => {},
           getnext,
           type: tab,
           onOpenFull() {
@@ -26,8 +26,8 @@ export default function Content({ tab }: any) {
         <Fullscreen
           {...{
             list: fullList,
-            onLike,
-            onHate,
+            onLike: () => {},
+            onHate: () => {},
             getnext,
             onExit() {
               setFull(false);
