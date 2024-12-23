@@ -54,7 +54,10 @@ export default forwardRef(function PreviewNode(
   return (
     <div
       className={styles.mainContent}
-      style={{ display: show ? "block" : "none" }}
+      style={{
+        display: show ? "block" : "none",
+        paddingBottom: isMobile ? 80 : 20
+      }}
     >
       <div className={isMobile ? styles.main : styles.laptopMain}>
         <InfoPart
