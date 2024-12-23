@@ -1,0 +1,133 @@
+/*#region Item*/
+.Item {
+  background: rgba(0, 0, 0, 0.50);
+  backdrop-filter: blur(2px);
+  width: 100%;
+  padding: 12px 10px 14px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 7px;
+}
+.ItemAvatar {
+  width: 86px;
+  height: 86px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.ItemContent {
+  flex: 1;
+  width: 0;
+}
+.ItemHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.ItemHeadInfo {
+  flex: 1;
+  width: 0;
+}
+.ItemHeadName {
+  width: 100%;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ItemHeadTicker {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+}
+.ItemHeadTickerName {
+  color: rgba(255, 255, 255, 0.60);
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  flex: 1;
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ItemHeadTickerAvatar {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.ItemHeadBuy {
+  flex-shrink: 0;
+}
+.ItemHeadBuyBtn {
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  padding: 0 16px 0 3px;
+}
+.ItemHeadBuyBtnIcon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+.ItemMarketCap {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ItemMarketCapLabel {
+  color: rgba(255, 255, 255, 0.60);
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.ItemMarketCapValue {
+  color: #6FFF00;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.ItemCreateTime {
+  color: rgba(255, 255, 255, 0.60);
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 5px;
+}
+/*#endregion*/
