@@ -1,128 +1,138 @@
 .main {
-    /* padding-bottom: 100px; */
-    .title {
-        position: relative;
-        padding: 10px 0;
-        background-color: var(--part-bg);
+  /* padding-bottom: 100px; */
+  .title {
+    position: relative;
+    padding: 10px 0;
+    background-color: var(--part-bg);
 
-        .titleText {
-            color: #fff;
-            font-size: 24px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-       .editProgress {
-            display: flex; 
-            align-items: center;
-            justify-content: center;
-            margin-top: 30px;
-            font-size: 16px;
-            font-weight: 500;
-            gap: 5px;
-            .editStep {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #fff;
-                opacity: 0.5;
-                gap: 5px;
-            }
-            .editStep.editActive {
-                opacity: 1;
-            }
-            .line {
-                width: 35vw;
-                border-top: 1px dashed #fff;
-            }
-       }
+    .titleText {
+      color: #fff;
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
     }
+
+    .editProgress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 30px;
+      font-size: 16px;
+      font-weight: 500;
+      gap: 5px;
+      .editStep {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        opacity: 0.5;
+        gap: 5px;
+      }
+      .editStep.editActive {
+        opacity: 1;
+      }
+      .line {
+        width: 35vw;
+        border-top: 1px dashed #fff;
+      }
+    }
+  }
 }
 
 .create {
-    padding-bottom: 100px;
-    .group {
-        padding: 15px 0;
+  .group {
+    padding: 15px 0;
 
-        .groupTitle {
-            font-size: 18px;
-            color: #fff;
-            padding-left: 18px;
+    .groupTitle {
+      font-size: 18px;
+      color: #fff;
+      padding-left: 18px;
 
-            .require {
-                color: var(--part-bg);
-            }
-        }
-
-        .groupContent {
-            padding: 5px 0;
-            .inputText {
-                width: 100%;
-                border: none;
-                background: rgba(18, 23, 25, 1);
-                height: 42px;
-                color: #fff;
-                font-size: 18px;
-                padding: 0 15px;
-                &.inputError {
-                    border: 1px solid var(--part-bg);
-                }
-            }
-
-            .inputText:focus {
-                outline: none;
-            }
-
-            .imgUpload {
-                width: 100px;
-                height: 100px;
-                border-radius: 8px;
-                border: 1px dashed rgba(146, 144, 177, 1);
-                background-color: rgba(33, 37, 46, 1);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                position: relative;
-                .plus {
-                    position: absolute;
-                    right: -15px;
-                    bottom: -15px;
-                }
-            }
-
-            &.uploadContent {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-top: 10px;
-                
-            }
-            
-            .uploadTip {
-                color: rgba(255, 255, 255, 0.6);
-            }
-        }
-
-        .tokenSymbol {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
-            .tokenSymbolTitle {
-                color: rgba(255, 255, 255, 0.6);
-            }
-        }
-
-        .uploadError {
-            border: 1px solid var(--part-bg);
-        }
+      .require {
+        color: var(--part-bg);
+      }
     }
 
-    .btnWapper {
-        margin: 0 20px;
+    .groupContent {
+      padding: 5px 0;
+      .inputText {
+        width: 100%;
+        border: none;
+        background: rgba(18, 23, 25, 1);
+        height: 42px;
+        color: #fff;
+        font-size: 18px;
+        padding: 0 15px;
+        &.inputError {
+          border: 1px solid var(--part-bg);
+        }
+      }
+
+      .laptopInputText {
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        background: rgba(0, 0, 0, 0.16);
+        height: 50px;
+      }
+
+      .inputText:focus {
+        outline: none;
+      }
+
+      .imgUpload {
+        width: 100px;
+        height: 100px;
+        border-radius: 8px;
+        border: 1px dashed rgba(146, 144, 177, 1);
+        background-color: rgba(33, 37, 46, 1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        .plus {
+          position: absolute;
+          right: -15px;
+          bottom: -15px;
+        }
+      }
+
+      &.uploadContent {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .uploadTip {
+        color: rgba(255, 255, 255, 0.6);
+      }
     }
 
-    .avatar :global(.adm-image-img) {
-        border-radius: 10000px;
+    .tokenSymbol {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      .tokenSymbolTitle {
+        color: rgba(255, 255, 255, 0.6);
+      }
     }
+
+    .uploadError {
+      border: 1px solid var(--part-bg);
+    }
+  }
+
+  .btnWapper {
+    margin: 0 20px;
+  }
+
+  .avatar :global(.adm-image-img) {
+    border-radius: 10000px;
+  }
+}
+
+.Flex {
+  display: flex;
+  flex-wrap: wrap;
 }

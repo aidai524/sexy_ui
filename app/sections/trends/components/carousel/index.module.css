@@ -1,0 +1,47 @@
+/*#region Carousel*/
+@keyframes slideToRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(25%);
+  }
+}
+.CarouselContainer {
+  width: 100%;
+  height: 130px;
+  overflow: hidden;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 20px;
+}
+.Carousel {
+  font-size: 20px;
+  color: #6FFF00;
+  font-family: Unbounded;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  width: 100%;
+  transform: rotate(-12deg);
+  transform-origin: right;
+}
+.CarouselInner {
+  width: 300%;
+  background: #FF2681;
+  height: 33px;
+  display: flex;
+  align-items: stretch;
+  animation: slideToRight linear 4s infinite;
+  margin-left: -100%;
+}
+.CarouselItem {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+}
+/*#endregion*/

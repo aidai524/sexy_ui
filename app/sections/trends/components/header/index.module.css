@@ -1,0 +1,14 @@
+.Header {
+  width: 100vw;
+  height: 80px;
+  background: linear-gradient(0deg, #0d1012 0%, #ff2f74 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.HeaderTitle {
+  width: 83.46666666666667vw;
+  height: 19.733333333333333vw;
+}

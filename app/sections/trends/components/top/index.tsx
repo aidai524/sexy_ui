@@ -72,7 +72,7 @@ export default function Top(props: Props) {
             )
           }
           <div className={styles.TopTickerName} title={top1Ticker}>
-          {formatLongText(top1Ticker, 8, 2)}
+            {formatLongText(top1Ticker, 8, 2)}
           </div>
         </div>
       </div>

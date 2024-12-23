@@ -4,6 +4,7 @@ import MainBtn from "@/app/components/mainBtn";
 import type { Project } from "@/app/type";
 import { httpGet } from "@/app/utils";
 import { useCallback } from "react";
+import { useUserAgent } from "@/app/context/user-agent";
 import { shareToX } from "@/app/utils/share";
 
 interface Props {
@@ -42,20 +43,24 @@ function SuccessModal({
   onClose: () => void;
   token: Project;
 }) {
+  const { isMobile } = useUserAgent();
   const share = useCallback(async () => {
     if (token) {
       const v = await httpGet("/project?token_name=" + token.tokenName);
       if (v.code === 0) {
-        const data = v.data[0]
+        const data = v.data[0];
         onClose();
 
-        shareToX(token.tokenName, "https://sexyfi.dumpdump.fun//detail?id=" + data.id)
+        shareToX(
+          token.tokenName,
+          "https://sexyfi.dumpdump.fun//detail?id=" + data.id
+        );
       }
     }
   }, [token]);
 
   return (
-    <div className={style.main}>
+    <div className={style.main} style={{ width: isMobile ? "80vw" : 432 }}>
       <div className={style.content}>
         <div className={style.avatar}>
           <img

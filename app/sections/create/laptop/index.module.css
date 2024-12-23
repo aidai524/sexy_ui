@@ -1,0 +1,68 @@
+.Container {
+  border-radius: 20px;
+  background-color: #d8226f;
+}
+
+.Header {
+  height: 82px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #ffffff33;
+}
+
+.BackWrapper {
+  position: absolute;
+  left: 24px;
+  top: 33px;
+}
+
+.Button {
+  padding: 0px 35px;
+  height: 46px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: capitalize;
+}
+
+.Title {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-align: center;
+}
+
+.Create {
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.Content {
+  padding: 0px 24px 10px;
+  height: calc(100vh - 180px);
+  overflow-y: auto;
+}
+
+.Buttons {
+  display: flex;
+  gap: 10px;
+  position: absolute;
+  top: 22px;
+  right: 24px;
+}

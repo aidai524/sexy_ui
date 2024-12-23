@@ -8,5 +8,6 @@
 
 .Content {
   padding: 0px 30px;
-  flex-grow: 1;
+  flex: 1;
+  width: 0;
 }
