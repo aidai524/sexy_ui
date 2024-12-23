@@ -1,6 +1,10 @@
 import { httpGet, httpAuthPost, mapDataToProject } from "@/app/utils";
 import { useEffect, useState, useRef, useCallback } from "react";
 import type { Project } from "@/app/type";
+import { getAll, setAll } from "@/app/utils/listStore";
+
+const limit = 10
+const left_num = 3
 
 export default function useData(launchType: string) {
   const [infoData, setInfoData] = useState<Project>();
@@ -13,7 +17,7 @@ export default function useData(launchType: string) {
   const renderIndexRef = useRef<number>(0)
 
   const onQueryList = (isInit: boolean) => {
-    httpGet("/project/list?limit=50&launchType=" + launchType).then((res) => {
+    httpGet(`/project/list?limit=${limit}&launchType=${launchType}`).then((res) => {
       if (res.data?.has_next_page) {
         setHasNext(true);
       } else {
@@ -34,6 +38,7 @@ export default function useData(launchType: string) {
         _list = [...(listRef.current || []), ...res.data.list];
       }
       listRef.current = _list;
+      setAll(listRef.current, launchType)
       setFullList(JSON.parse(JSON.stringify(_list)));
     });
   };
@@ -81,10 +86,11 @@ export default function useData(launchType: string) {
     if (listRef.current.length) {
       listRef.current.shift();
       renderTwoItems(listRef.current);
+      setAll(listRef.current, launchType)
     }
-    if (listRef.current.length < 10) {
+    if (listRef.current.length < left_num) {
       if (hasNext) {
-        onQueryList(false);
+        onQueryList(false)
       }
     }
   }
@@ -98,7 +104,14 @@ export default function useData(launchType: string) {
   }
 
   useEffect(() => {
-    onQueryList(true);
+    const list = getAll(launchType)
+    if (list && list.length > left_num) {
+      listRef.current = list;
+      renderTwoSimple(list);
+      setisLoading(false)
+    } else {
+      onQueryList(true);
+    }
   }, []);
 
   return {
@@ -114,3 +127,4 @@ export default function useData(launchType: string) {
     updateCurrentToken
   };
 }
+

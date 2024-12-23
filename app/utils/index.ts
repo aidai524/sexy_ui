@@ -229,7 +229,7 @@ export function getAuthorizationByLocal() {
 export async function getAuthorizationByLocalAndServer() {
   const auth = window.localStorage.getItem(AUTH_KEY)?.toString();
   if (auth) {
-    const val = await httpGet("/project/list?limit=1");
+    const val = await httpGet("/project/list?limit=1&launchType=preLaunch");
 
     if (val.code === TOKEN_ERROR_CODE) {
       return null;
@@ -574,12 +574,6 @@ export function timeAgo(time?: number, currentTime?: number) {
 
 export function formatDateEn(time: number) {
   const date = dayjs(time);
-
-  // console.log(date.format('MMMM D, YYYY'));  // Example: December 18, 2024
-  // console.log(date.format('dddd, MMMM D, YYYY'));  // Example: Wednesday, December 18, 2024
-  // console.log(date.format('MM/DD/YYYY'));  // Example: 12/18/2024
-  // console.log(date.format('YYYY-MM-DD'));  // Example: 2024-12-18
-  // console.log(date.format('hh:mm A'));  // Example: 04:30 PM
   return date.format("MMM D, YYYY");
 }
 

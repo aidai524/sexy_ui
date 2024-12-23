@@ -362,13 +362,7 @@ export default function Home() {
         </>
       )}
 
-      {/* {
-        !isLaunchingLoading && homeTabIndex === 0 && !infoDataLaunching && !infoDataLaunching2 && ()
-      } */}
-
-      <SeenAll show={!isLaunchingLoading && homeTabIndex === 0 && !infoDataLaunching && !infoDataLaunching2 } onClose={() => {
-
-      }}/>
+      <SeenAll show={!isLaunchingLoading && homeTabIndex === 0 && !infoDataLaunching && !infoDataLaunching2 } onClose={() => {}}/>
 
       {homeTabIndex === 1 && (
         <>
