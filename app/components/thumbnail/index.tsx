@@ -17,6 +17,7 @@ interface Props {
   showBackIcon?: boolean;
   showLaunchType?: boolean;
   showLikes?: boolean;
+  showTags?: boolean;
   style?: any;
 }
 
@@ -28,6 +29,7 @@ export default function Thumbnail({
   showBackIcon = true,
   showLaunchType = true,
   showLikes = false,
+  showTags = true,
   data,
   style = {}
 }: Props) {
@@ -140,7 +142,7 @@ export default function Thumbnail({
                 </Link>
               </div>
             </div>
-            <Tags data={data} />
+            {showTags && <Tags data={data} />}
           </div>
         )}
 

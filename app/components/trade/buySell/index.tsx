@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDebounce } from "ahooks";
-import { BN } from "@coral-xyz/anchor";
 import Big from "big.js";
 import styles from "../trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
@@ -41,7 +40,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
   const [showSlip, setShowSlip] = useState(false);
   const [slip, setSlip] = useState(3);
 
-  const tokenUri = token.tokenIcon || token.tokenImg
+  const tokenUri = token.tokenIcon || token.tokenImg;
 
   const desToken: Token = {
     tokenName,
@@ -70,7 +69,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
   const [sellOut, setSellOut] = useState("0");
   const [sellOutSol, setSellOutSol] = useState("0");
 
-  const { userInfo }: any = useUser()
+  const { userInfo }: any = useUser();
 
   const {
     buyToken,
@@ -96,8 +95,6 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
   useEffect(() => {
-
-
     if (debounceVal) {
       setIsError(false);
       if (activeIndex === 0) {
@@ -106,87 +103,94 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
             setErrorMsg("Invalid value");
-            return
+            return;
           }
 
           if (Number(debounceVal) > Number(solBalance)) {
             setIsError(true);
             setErrorMsg("Invalid balance");
-            return
+            return;
           }
 
           buyInSol = new Big(debounceVal)
-            .mul(10 ** (SOL.tokenDecimals))
+            .mul(10 ** SOL.tokenDecimals)
             .toFixed(0);
 
           getRate({
             solAmount: buyInSol
           }).then((res: any) => {
-            const buyIn = new Big(res).mul(1 - slip / 100).toFixed(token.tokenDecimals);
+            const buyIn = new Big(res)
+              .mul(1 - slip / 100)
+              .toFixed(token.tokenDecimals);
             setBuyIn(buyIn);
 
-            if (Number(buyIn) > new Big(1).div(10 ** token.tokenDecimals!).toNumber()) {
+            if (
+              Number(buyIn) >
+              new Big(1).div(10 ** token.tokenDecimals!).toNumber()
+            ) {
               setIsError(false);
               setErrorMsg("");
             } else {
               setIsError(true);
               setErrorMsg("Enter a amount");
             }
-          })
+          });
 
           setBuyInSol(buyInSol);
         } else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
             setErrorMsg("Invalid value");
-            return
+            return;
           }
 
-
           getRate({
-            tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
+            tokenAmount: new Big(debounceVal)
+              .mul(10 ** token.tokenDecimals!)
+              .toFixed(0)
           }).then((res: any) => {
             buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
             if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
               setIsError(true);
               setErrorMsg("Invalid balance");
-              return
+              return;
             }
 
             if (Number(buyInSol) > 0.000000001) {
-              setBuyIn(new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0))
-              setBuyInSol(buyInSol)
+              setBuyIn(
+                new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
+              );
+              setBuyInSol(buyInSol);
             } else {
-              setBuyInSol('')
-              setBuyIn('')
+              setBuyInSol("");
+              setBuyIn("");
             }
 
             if (buyInSol) {
               setIsError(false);
               setErrorMsg("Enter a amount");
             }
-          })
+          });
         }
       } else if (activeIndex === 1) {
-        let sellOut = ''
-        let sellSolOut = ''
+        let sellOut = "";
+        let sellSolOut = "";
         if (tokenType === 1) {
           // sellOut = new Big(debounceVal)
           //   .mul(rate)
           //   .mul(10 ** token.tokenDecimals)
           //   .toFixed(0);
-        } 
-        else if (tokenType === 0) {
+        } else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
             setErrorMsg("Invalid value");
-            return
+            return;
           }
 
           if (Number(debounceVal) > Number(tokenBalance)) {
             setIsError(true);
             setErrorMsg("Invalid balance");
-            return
+            return;
           }
 
           sellOut = new Big(debounceVal)
@@ -194,23 +198,21 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
             .toFixed(0);
 
           getRate({
-            tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
+            tokenAmount: new Big(debounceVal)
+              .mul(10 ** token.tokenDecimals!)
+              .toFixed(0)
           }).then((res: any) => {
             sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
             if (Number(sellSolOut) > 0.000000001) {
               setSellOut(sellOut);
-              setSellOutSol(
-                getFullNum(
-                  sellSolOut
-                )
-              );
+              setSellOutSol(getFullNum(sellSolOut));
               setIsError(false);
             } else {
               setIsError(true);
               setErrorMsg("Amount is too little");
               setSellOut("");
             }
-          })
+          });
         }
       }
     } else {
@@ -271,7 +273,6 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                   } else {
                     setCurrentToken(desToken);
                     setTokenType(0);
-
                   }
                   setValInput("");
                 }}
@@ -312,10 +313,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
               </div>
             </div>
             <div className={styles.balance}>
-              Balance:{" "}
-              {tokenType === 0
-                ? tokenBalance
-                : solBalance}
+              Balance: {tokenType === 0 ? tokenBalance : solBalance}
             </div>
           </div>
 
@@ -401,7 +399,12 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
             <div className={styles.receiveTitle}>You will buy in</div>
             <div className={styles.receiveAmount}>
-              {buyIn ? new Big(buyIn).div(10 ** token.tokenDecimals!).toFixed(token.tokenDecimals) : ''} {tokenName}
+              {buyIn
+                ? new Big(buyIn)
+                    .div(10 ** token.tokenDecimals!)
+                    .toFixed(token.tokenDecimals)
+                : ""}{" "}
+              {tokenName}
             </div>
           </div>
         )}
@@ -409,7 +412,14 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
         {activeIndex === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
             <div className={styles.receiveTitle}>You will get</div>
-            <div className={styles.receiveAmount}>{(sellOutSol && Number(sellOutSol) > 0) ? new Big(sellOutSol).div(10 ** SOL.tokenDecimals).toFixed(SOL.tokenDecimals) : 0} SOL</div>
+            <div className={styles.receiveAmount}>
+              {sellOutSol && Number(sellOutSol) > 0
+                ? new Big(sellOutSol)
+                    .div(10 ** SOL.tokenDecimals)
+                    .toFixed(SOL.tokenDecimals)
+                : 0}{" "}
+              SOL
+            </div>
           </div>
         )}
 
@@ -423,10 +433,13 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                   return;
                 }
 
-                let hash
+                let hash;
                 if (activeIndex === 0) {
                   setIsLoading(true);
-                  hash = await buyTokenWithFixedOutput(new Big(buyIn).toFixed(0), buyInSol)
+                  hash = await buyTokenWithFixedOutput(
+                    new Big(buyIn).toFixed(0),
+                    buyInSol
+                  );
                 } else if (activeIndex === 1) {
                   setIsLoading(true);
                   hash = await sellToken(sellOut, sellOutSol);
@@ -435,23 +448,27 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
 
                 if (hash) {
                   const modalHandler = Modal.show({
-                    content: <TradeSuccessModal
-                      type={activeIndex}
-                      userInfo={userInfo}
-                      token={token}
-                      amount={ new Big(activeIndex === 0 ? buyIn : sellOut).div(10 ** token.tokenDecimals!).toFixed(2) }
-                      onClose={() => {
-                        modalHandler.close()
-                      }} />,
-                    className: 'buy-sell-modal',
-                    closeOnMaskClick: true,
-                  })
-  
+                    content: (
+                      <TradeSuccessModal
+                        type={activeIndex}
+                        userInfo={userInfo}
+                        token={token}
+                        amount={new Big(activeIndex === 0 ? buyIn : sellOut)
+                          .div(10 ** token.tokenDecimals!)
+                          .toFixed(2)}
+                        onClose={() => {
+                          modalHandler.close();
+                        }}
+                      />
+                    ),
+                    className: "buy-sell-modal",
+                    closeOnMaskClick: true
+                  });
+
                   updateBalance();
 
-                  onClose()
+                  onClose();
                 }
-                
               } catch (e) {
                 setIsLoading(false);
                 fail("Transtion fail");
@@ -474,15 +491,13 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
         slipData={slip}
         token={token}
         onSlipDataChange={(val: any) => {
-          console.log(val)
+          console.log(val);
           setSlip(val);
         }}
         onHide={() => {
           setShowSlip(false);
         }}
       />
-
-
     </div>
   );
 }
