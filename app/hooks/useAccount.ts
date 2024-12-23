@@ -44,7 +44,6 @@ export function useAccount() {
             const feature = walletProvider.features[SolanaSignAndSendTransaction];
             const account = walletProvider.accounts[0];
 
-
             console.log(sendOptions, account)
 
             const [result] = await feature.signAndSendTransaction({

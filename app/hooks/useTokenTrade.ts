@@ -683,11 +683,11 @@ export function useTokenTrade({
         .add(instruction1)
         .add(instruction2)
         .add(serverTransaction)
-        // .add(
-        //     ComputeBudgetProgram.setComputeUnitLimit({
-        //         units: 1000000,
-        //     })
-        // )
+        .add(
+            ComputeBudgetProgram.setComputeUnitLimit({
+                units: 1000000,
+            })
+        )
 
         if (justTransaction) {
             return transaction

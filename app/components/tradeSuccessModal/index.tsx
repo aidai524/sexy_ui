@@ -62,7 +62,7 @@ export default function TradeSuccessModal({
 
         <div className={ style.tips }>
           <span>You are expected to receive</span>
-          <span className={ style.sexFi }> { Number(solAmount) / 1 } points</span>
+          <span className={ style.sexFi }> { Number(solAmount) / 10000 } points</span>
         </div>
         
       </div>
