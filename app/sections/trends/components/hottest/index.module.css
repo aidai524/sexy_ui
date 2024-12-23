@@ -1,0 +1,18 @@
+.Container {
+  font-family: Unbounded;
+  margin-top: 60px;
+}
+.Title {
+  color: rgba(255, 255, 255, 0.60);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.List {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 15px;
+  column-gap: 20px;
+}

@@ -6,6 +6,7 @@ export function useTrends() {
   const [allList, setAllList] = useState<Trend[]>([]);
   const [top1, setTop1] = useState<Trend | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [currentFilter, setCurrentFilter] = useState<number>(1);
 
   const getList = async () => {
     setLoading(true);
@@ -31,6 +32,12 @@ export function useTrends() {
     }
   };
 
+  const handleCurrentFilter = (_currentFilter: number) => {
+    if (_currentFilter === currentFilter || loading) return;
+    setCurrentFilter(_currentFilter);
+    getList();
+  };
+
   useEffect(() => {
     const timer = setInterval(() => {
       getList();
@@ -47,6 +54,8 @@ export function useTrends() {
     allList,
     loading,
     top1,
+    currentFilter,
+    handleCurrentFilter,
   };
 }
 
