@@ -10,9 +10,7 @@ export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
   const { address } = useAccount();
   const userStore: any = useUser();
-  const { userInfo, onQueryInfo } = useUserInfo(
-    "FfNH9c8ebwPZjdt1JHtAcr3yVUJLo7XpC5sXt89FpWQE"
-  );
+  const { userInfo, onQueryInfo } = useUserInfo(address);
 
   useEffect(() => {
     if (address && userInfo) {
@@ -29,7 +27,7 @@ export default function Layout(props: any) {
       {...props}
       {...{
         userInfo,
-        address: "FfNH9c8ebwPZjdt1JHtAcr3yVUJLo7XpC5sXt89FpWQE",
+        address,
         onQueryInfo
       }}
     />
