@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styles from './token.module.css'
 import { Modal } from 'antd-mobile'
 import BoostJust from '@/app/components/boost/boostJust'
@@ -22,8 +22,9 @@ interface Props {
 export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot }: Props) {
     const router = useRouter()
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
+    const [isPrepaid, setIsPrepaid] = useState(false)
 
-    const { prepaidSolWithdraw, prepaidTokenWithdraw } = useTokenTrade({
+    const { prepaidSolWithdraw, prepaidTokenWithdraw, checkPrePayed } = useTokenTrade({
         tokenName: data.tokenName,
         tokenSymbol: data.tokenSymbol as string,
         tokenDecimals: data.tokenDecimals as number,
@@ -36,6 +37,14 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot 
         }
         return false
     }, [prepaidWithdrawDelayTime, data])
+
+    useEffect(() => {
+        checkPrePayed().then(res => {
+            if (Number(res) > 0) {
+                setIsPrepaid(true)
+            }
+        })
+    }, [])
 
 
     return <div className={styles.main}>
@@ -65,14 +74,16 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot 
                 ? (
                     isDelay ? <div className={styles.actionContent}>
                         <div className={styles.actionItem}>
-                            <div className={styles.withdraw} onClick={async () => {
-                                const res = await prepaidSolWithdraw()
-                                if (!res) {
-                                    fail('Withdraw fail')
-                                } else {
-                                    success('Withdraw success')
-                                }
-                            }}>withdraw</div>
+                            {
+                                isPrepaid && <div className={styles.withdraw} onClick={async () => {
+                                    const res = await prepaidSolWithdraw()
+                                    if (!res) {
+                                        fail('Withdraw fail')
+                                    } else {
+                                        success('Withdraw success')
+                                    }
+                                }}>withdraw</div>
+                            }
                         </div>
                     </div> : <div className={styles.actionContent}>
                         <div className={styles.actionItem}>
@@ -109,7 +120,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot 
                     </div>
                 ) : <div className={styles.actionContent}>
                     {
-                        isDelay && <div className={styles.withdraw} onClick={async () => {
+                        isPrepaid && <div className={styles.withdraw} onClick={async () => {
                             const res = await prepaidTokenWithdraw()
                             if (!res) {
                                 fail('Cliam fail')

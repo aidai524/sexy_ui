@@ -7,6 +7,7 @@ import {
 import { useCallback, useMemo } from "react";
 import { useAccount } from '@/app/hooks/useAccount';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { useConfig } from '../store/useConfig';
 
 interface Props {
     tokenName: string;
@@ -17,6 +18,7 @@ export function useVip() {
     const { connection } = useConnection()
     const { publicKey } = useWallet()
     const { walletProvider, connected } = useAccount();
+    const { config }: any = useConfig()
 
     // const programId = useMemo(() => {
     //     return new PublicKey(
