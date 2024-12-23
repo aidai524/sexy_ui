@@ -7,7 +7,7 @@ import BuyModal from '@/app/sections/trends/components/buy';
 import { useTrade } from '@/app/sections/trends/hooks/trade';
 
 const TrendBanner = () => {
-  const { top1 } = useTrends();
+  const { top1 } = useTrends({ isPolling: true });
   const { tradeToken, onTrade, setTradeToken } = useTrade();
 
   const [currentBg, setCurrentBg] = useState(BG_LIST[1]);

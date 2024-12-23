@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { httpAuthGet, timeAgo } from '@/app/utils';
+import { useTrendsStore } from '@/app/store/useTrends';
 
-export function useTrends() {
+export function useTrends(props: any) {
+  const { isPolling } = props;
+
+  const store = useTrendsStore();
+
   const [list, setList] = useState<Trend[]>([]);
   const [allList, setAllList] = useState<Trend[]>([]);
   const [top1, setTop1] = useState<Trend | undefined>();
@@ -23,9 +28,13 @@ export function useTrends() {
         }
         it.created2Now = timeAgo(new Date(it.created_at).getTime(), it.time);
       });
+      const lastList = _list.filter((_, idx) => idx !== _top1Idx);
       setAllList(_list);
-      setList(_list.filter((_, idx) => idx !== _top1Idx));
+      setList(lastList);
       setTop1(_top1);
+      store.setList(lastList);
+      store.setAllList(_list);
+      store.setTop1(_top1);
       setLoading(false);
     } catch (err) {
       console.log('get trends list err: %o', err);
@@ -56,6 +65,7 @@ export function useTrends() {
   };
 
   useEffect(() => {
+    if (!isPolling) return;
     const timer = setInterval(() => {
       getList();
     }, 60000);
@@ -64,7 +74,7 @@ export function useTrends() {
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  }, [isPolling]);
 
   return {
     list,

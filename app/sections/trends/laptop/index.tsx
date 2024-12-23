@@ -4,19 +4,19 @@ import { useTrends } from '@/app/sections/trends/hooks';
 import GoBack from '@/app/components/back/laptop';
 import Hottest from '@/app/sections/trends/components/hottest';
 import List from '@/app/sections/trends/components/list';
+import { useTrendsStore } from '@/app/store/useTrends';
 
 const Laptop = (props: any) => {
   const { handleBuy } = props;
 
+  const { list, allList, top1 } = useTrendsStore();
+
   const {
-    list,
-    allList,
-    top1,
     handleCurrentFilter,
     currentFilter,
     handleOrderBy,
     orderBy,
-  } = useTrends();
+  } = useTrends({ isPolling: false });
 
   return (
     <div className={styles.Container}>
