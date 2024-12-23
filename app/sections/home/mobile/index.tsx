@@ -218,13 +218,11 @@ export default function Home() {
 
       setTimeout(() => {
         getLaunchingNext();
-        setTimeout(() => {
-          setActionStyle2(null);
-          setActionStyle(null);
-          setMovingStyle({})
-          setMovingStyle2({})
-        }, 100)
-      }, 1000);
+        setActionStyle2(null);
+        setActionStyle(null);
+        setMovingStyle({})
+        setMovingStyle2({})
+      }, 800);
 
       await actionHateTrigger(data)
     }
