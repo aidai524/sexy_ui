@@ -1,0 +1,83 @@
+.Container {
+  font-family: Unbounded;
+  height: 56px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.80);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 7px 47px 7px 7px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 31px;
+}
+.Avatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  position: relative;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 21px;
+}
+.Crown {
+  width: 60px;
+  height: 38px;
+  position: absolute;
+  left: -26px;
+  top: -20px;
+}
+.Content {}
+.Title {
+  color: #FFF;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.Name {}
+.Rank {
+  color: #AF0;
+}
+.Summaries {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.Summary {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.SummaryLabel {
+  color: rgba(255, 255, 255, 0.60);
+}
+.SummaryValue {}
+.Trade {
+  height: 20px;
+  flex-shrink: 0;
+  background: #AF0;
+  color: #230;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  border-radius: 10px;
+  padding: 0 5px;
+}
+.TradeIcon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
