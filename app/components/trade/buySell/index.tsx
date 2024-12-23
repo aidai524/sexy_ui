@@ -96,8 +96,6 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
   useEffect(() => {
-
-
     if (debounceVal) {
       setIsError(false);
       if (activeIndex === 0) {
@@ -109,11 +107,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
             return
           }
 
-          if (Number(debounceVal) > Number(solBalance)) {
-            setIsError(true);
-            setErrorMsg("Invalid balance");
-            return
-          }
+         
 
           buyInSol = new Big(debounceVal)
             .mul(10 ** (SOL.tokenDecimals))
@@ -132,6 +126,12 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
               setIsError(true);
               setErrorMsg("Enter a amount");
             }
+
+            if (Number(debounceVal) > Number(solBalance)) {
+              setIsError(true);
+              setErrorMsg("Invalid balance");
+              return
+            }
           })
 
           setBuyInSol(buyInSol);
@@ -148,6 +148,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
           }).then((res: any) => {
             buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
             if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
+              setBuyInSol(buyInSol)
               setIsError(true);
               setErrorMsg("Invalid balance");
               return
@@ -183,12 +184,6 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
             return
           }
 
-          if (Number(debounceVal) > Number(tokenBalance)) {
-            setIsError(true);
-            setErrorMsg("Invalid balance");
-            return
-          }
-
           sellOut = new Big(debounceVal)
             .mul(10 ** token.tokenDecimals!)
             .toFixed(0);
@@ -197,6 +192,18 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
             tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
           }).then((res: any) => {
             sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
+
+            if (Number(debounceVal) > Number(tokenBalance)) {
+              setIsError(true);
+              setErrorMsg("Invalid balance");
+              setSellOutSol(
+                getFullNum(
+                  sellSolOut
+                )
+              );
+              return
+            }
+
             if (Number(sellSolOut) > 0.000000001) {
               setSellOut(sellOut);
               setSellOutSol(

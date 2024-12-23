@@ -197,7 +197,7 @@ export default function Home() {
         }, 100)
       }, 1000);
 
-      actionLikeTrigger(data)
+      await actionLikeTrigger(data)
     }
 
   }
@@ -226,7 +226,7 @@ export default function Home() {
         }, 100)
       }, 1000);
 
-      actionHateTrigger(data)
+      await actionHateTrigger(data)
     }
   }
 
@@ -332,10 +332,16 @@ export default function Home() {
           <LaunchingAction
             token={renderLaunchingIndex === 0 ? infoDataLaunching2 : infoDataLaunching}
             onLike={async () => {
-              like();
+              await like();
+              const token = renderLaunchingIndex === 0 ? infoDataLaunching2 : infoDataLaunching
+              const val = await httpAuthGet('/project/?id=' + token?.id)
+              if (val.code === 0) {
+                const newTokenInfo = mapDataToProject(val.data[0])
+                updateLaunchingToken(newTokenInfo)
+              }
             }}
             onHate={async () => {
-              hate();
+              await hate();
             }}
             onSuperLike={async () => {
               const token = renderLaunchingIndex === 0 ? infoDataLaunching2 : infoDataLaunching
