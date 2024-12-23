@@ -30,4 +30,5 @@
 .ListContainer {
   margin-top: 8px;
   height: calc(80vh - 134px);
+  overflow-y: auto;
 }

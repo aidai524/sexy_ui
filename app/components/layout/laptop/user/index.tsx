@@ -36,7 +36,9 @@ export default function User({ address, userInfo, onQueryInfo }: any) {
             }}
             style={{
               padding: "0px",
-              gap: "60px"
+              gap: "60px",
+              justifyContent: "center",
+              marginTop: "20px"
             }}
           />
           {address && <Address address={address} />}

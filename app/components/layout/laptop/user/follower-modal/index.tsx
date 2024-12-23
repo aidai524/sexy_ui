@@ -17,7 +17,15 @@ export default function FollowerModal({ address, type, open, onClose }: any) {
     return list.filter((item: any) => item.name.includes(searchVal));
   }, [list, type]);
   return (
-    <Modal open={open} onClose={onClose} mainStyle={{ width: 498 }}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      mainStyle={{
+        width: 498,
+        borderColor: "#FFFFFF33",
+        backgroundColor: "#18131C"
+      }}
+    >
       <div className={styles.Container}>
         <div className={styles.Title}>
           {list?.length || 0} {type === "following" ? `Following` : `Followers`}
