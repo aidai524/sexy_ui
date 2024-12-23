@@ -2,6 +2,7 @@ import Token from "../token";
 import Fullscreen from "../../fullscreen";
 import useData from "../../../hooks/use-data";
 import { useMemo, useState } from "react";
+import styles from './index.module.css';
 
 export default function Content({ tab }: any) {
   const [full, setFull] = useState(false);
@@ -9,7 +10,7 @@ export default function Content({ tab }: any) {
   const { infoData2, fullList, getnext } = useData(type);
 
   return (
-    <>
+    <div className={styles.Container}>
       <Token
         {...{
           infoData2,
@@ -35,6 +36,6 @@ export default function Content({ tab }: any) {
           }}
         />
       )}
-    </>
+    </div>
   );
 }

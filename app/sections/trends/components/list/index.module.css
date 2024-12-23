@@ -54,6 +54,9 @@
   gap: 8px;
   white-space: nowrap;
 }
+.TableColPointer {
+  cursor: pointer;
+}
 .TableRowBody {
   transition: all 0.3s linear;
   border-radius: 8px;
@@ -63,4 +66,40 @@
 }
 .TableBody {
   width: 100%;
+}
+.TokenImg {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+.Dropdown {
+  border-radius: 12px;
+  background: #FFF3F8;
+  width: 150px;
+  font-family: Unbounded;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 10px 12px;
+}
+.DropdownItem {
+  width: 100%;
+  border-radius: 10px;
+  color: #374C5B;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding: 10px 20px;
+  transition: all 0.3s linear;
+  cursor: pointer;
+}
+.DropdownItemActive {
+  composes: DropdownItem;
+  background: #F4EAF4;
+  cursor: default;
+}
+.DropdownItem:hover {
+  background: #F4EAF4;
 }

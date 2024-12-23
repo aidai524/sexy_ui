@@ -8,17 +8,29 @@ import List from '@/app/sections/trends/components/list';
 const Laptop = (props: any) => {
   const { handleBuy } = props;
 
-  const { list, allList, top1, handleCurrentFilter, currentFilter } = useTrends();
+  const {
+    list,
+    allList,
+    top1,
+    handleCurrentFilter,
+    currentFilter,
+    handleOrderBy,
+    orderBy,
+  } = useTrends();
 
   return (
     <div className={styles.Container}>
-      <GoBack />
+      <div className={styles.Back}>
+        <GoBack />
+      </div>
       <Top onBuy={() => handleBuy(top1)} trend={top1} />
       <Hottest />
       <List
         currentFilter={currentFilter}
         onCurrentFilter={handleCurrentFilter}
         data={allList}
+        orderBy={orderBy}
+        onOrderBy={handleOrderBy}
       />
     </div>
   );

@@ -185,6 +185,7 @@
   justify-content: flex-start;
   align-items: flex-end;
   gap: 31px;
+  margin-top: 40px;
 }
 .LaptopTopAvatarContainer {
   flex-shrink: 0;
@@ -208,8 +209,8 @@
 }
 .LaptopTopAvatarCrown {
   position: absolute;
-  right: 20px;
-  bottom: 16px;
+  right: 0;
+  bottom: -10px;
   width: 88px;
   height: 65px;
   flex-shrink: 0;

@@ -17,7 +17,9 @@ export default function Laptop({
         <User userInfo={userInfo} address={address} onQueryInfo={onQueryInfo} />
         <div className={styles.Content}>
           <Header />
-          {children}
+          <div className={styles.ContentInner}>
+            {children}
+          </div>
         </div>
       </div>
       <LoginModal

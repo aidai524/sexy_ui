@@ -7,6 +7,7 @@ export function useTrends() {
   const [top1, setTop1] = useState<Trend | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const [currentFilter, setCurrentFilter] = useState<number>(1);
+  const [orderBy, setOrderBy] = useState<Record<string, 'asc' | 'desc' | '' | undefined>>({});
 
   const getList = async () => {
     setLoading(true);
@@ -38,6 +39,22 @@ export function useTrends() {
     getList();
   };
 
+  const handleOrderBy = (key: string) => {
+    if (loading) return;
+    if (orderBy[key] === 'asc') {
+      setOrderBy({ [key]: 'desc' });
+      getList();
+      return;
+    }
+    if (orderBy[key] === 'desc') {
+      setOrderBy({ [key]: '' });
+      getList();
+      return;
+    }
+    setOrderBy({ [key]: 'asc' });
+    getList();
+  };
+
   useEffect(() => {
     const timer = setInterval(() => {
       getList();
@@ -56,6 +73,8 @@ export function useTrends() {
     top1,
     currentFilter,
     handleCurrentFilter,
+    orderBy,
+    handleOrderBy,
   };
 }
 

@@ -1,5 +1,10 @@
 .Container {
   position: relative;
   background: linear-gradient(180deg, #FF2681 0%, #0D1012 100%);
-  padding-bottom: 100px;
+  padding: 0 30px 100px;
+  width: max-content;
+}
+
+.Back {
+  margin-top: 20px;
 }

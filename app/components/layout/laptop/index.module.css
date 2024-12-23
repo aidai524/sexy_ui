@@ -3,11 +3,16 @@
   height: 100vh;
   overflow: hidden;
   display: flex;
-  gap: 30px;
 }
 
 .Content {
-  padding: 0px 30px;
+  height: 100%;
+  padding: 0;
   flex: 1;
   width: 0;
+}
+
+.ContentInner {
+  height: calc(100% - 76px);
+  overflow-y: auto;
 }
