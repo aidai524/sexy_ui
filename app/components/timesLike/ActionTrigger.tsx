@@ -3,6 +3,7 @@ import FirstTimeLike from "./firstTimeLike"
 import SecondTimeLike from "./secondTimesLike"
 import type { Project } from "@/app/type"
 import { httpAuthPost } from "@/app/utils"
+import { fail } from "assert"
 
 export const FIRST_LIKE_TIMES = 10
 export const SECOND_LIKE_TIMES = 30
@@ -11,10 +12,12 @@ export const SECOND_LIKE_TIMES = 30
 const onLike = async (data: Project) => {
   try {
     if (data) {
-      // const v = await httpAuthPost("/project/like?id=" + data!.id, {});
-      // if (v.code === 0) {
-      //   return v.data
-      // }
+      const v = await httpAuthPost("/project/like?id=" + data!.id, {});
+      if (v.code === 0) {
+        return v.data
+      } else if (v.code === 100002) {
+        fail("You've run out of like times. You can come back tomorrow")
+      }
     }
   } catch (e) {
   }
@@ -25,7 +28,7 @@ const onLike = async (data: Project) => {
 const onHate = async (data: Project) => {
   try {
     if (data) {
-      // await httpAuthPost("/project/un_like?id=" + data!.id, {});
+      await httpAuthPost("/project/un_like?id=" + data!.id, {});
     }
     
   } catch {}
