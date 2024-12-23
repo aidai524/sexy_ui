@@ -255,15 +255,10 @@ export default function Home() {
         setActionStyle(null);
         setMovingStyle({})
         setMovingStyle2({})
-        setTimeout(() => {
-          scrollRef.current = false
-        }, 100)
-        
+        scrollRef.current = false
       }, 800);
     }
   }
-
-  console.log('actionStyle:', actionStyle, 'actionStyle2:', actionStyle2)
 
   return (
     <div className={styles.main}>

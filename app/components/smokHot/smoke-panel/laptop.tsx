@@ -22,6 +22,7 @@ export default function SmokPanel({ show, token, onHide }: Props) {
         <img className={styles.Img} src="/img/home/smokeHotLogo.svg" />
 
         <Trade
+          modalShow={show}
           token={token}
           panelStyle={{
             backgroundColor: "transparent"

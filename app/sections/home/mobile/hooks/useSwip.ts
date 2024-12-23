@@ -40,13 +40,25 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
             const winWidth = window.innerWidth
             let maxDistance = 0
             let direction = 0 // 0 right 1 left
+            let moveTime = 0
+            let isStart = false;
 
             manager.on('panstart', (e) => {
+                if (Date.now() - moveTime < 800) {
+                    isStart = false
+                    return
+                }
                 direction = 0
                 maxDistance = 0
+                moveTime = Date.now()
+                isStart = true
             });
 
             manager.on('panmove', (e) => {
+                if (!isStart) {
+                    return
+                }
+
                 if (e.deltaX < 0 && e.deltaY > 0) {
                     direction = 1
                 } else if (e.deltaX > 0 && e.deltaY < 0)  {
@@ -70,10 +82,10 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
 
             manager.on('panend', (e) => {
                 console.log('direction: ', direction, 'e.distance:', e.distance , 'maxDistance:', maxDistance)
-
-
+                if (!isStart) {
+                    return
+                }
                 if (direction === 0) {
-                    console.log('e.distance > maxDistance:', e.distance > maxDistance)
                     if (e.distance > maxDistance - 20) {
                         onNext && onNext()
                     } else {
@@ -89,7 +101,7 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
                     runNexting(0)
                 }
 
-
+                moveTime = Date.now()
             });
             
 
