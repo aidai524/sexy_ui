@@ -72,6 +72,14 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
 
   const { userInfo }: any = useUser()
 
+  useEffect(() => {
+    if (initType === 'buy') {
+      setActiveIndex(0)
+    } else {
+      setActiveIndex(1)
+    }
+  }, [initType])
+
   const {
     buyToken,
     buyTokenWithFixedOutput,
@@ -98,16 +106,17 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
   useEffect(() => {
     if (debounceVal) {
       setIsError(false);
+      setIsLoading(true)
       if (activeIndex === 0) {
         let buyInSol = "";
         if (tokenType === 1) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
             setErrorMsg("Invalid value");
+            setIsLoading(false)
             return
           }
 
-         
 
           buyInSol = new Big(debounceVal)
             .mul(10 ** (SOL.tokenDecimals))
@@ -118,6 +127,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
           }).then((res: any) => {
             const buyIn = new Big(res).mul(1 - slip / 100).toFixed(token.tokenDecimals);
             setBuyIn(buyIn);
+            setIsLoading(false)
 
             if (Number(buyIn) > new Big(1).div(10 ** token.tokenDecimals!).toNumber()) {
               setIsError(false);
@@ -138,6 +148,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
         } else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
+            
             setErrorMsg("Invalid value");
             return
           }
@@ -146,6 +157,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
           getRate({
             tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
           }).then((res: any) => {
+            setIsLoading(false)
             buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
             if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
               setBuyInSol(buyInSol)
@@ -180,6 +192,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
         else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
+            setIsLoading(false)
             setErrorMsg("Invalid value");
             return
           }
@@ -191,6 +204,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
           getRate({
             tokenAmount: new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
           }).then((res: any) => {
+            setIsLoading(false)
             sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
 
             if (Number(debounceVal) > Number(tokenBalance)) {
@@ -440,6 +454,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                 }
                 setIsLoading(false);
 
+
                 if (hash) {
                   const modalHandler = Modal.show({
                     content: <TradeSuccessModal
@@ -456,7 +471,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                   })
   
                   updateBalance();
-
+                  setValInput('')
                   onClose()
                 }
                 

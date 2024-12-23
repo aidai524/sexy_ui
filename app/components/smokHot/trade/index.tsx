@@ -12,11 +12,12 @@ interface Props {
     token: Project;
     onSuccess?: () => void;
     panelStyle?: any;
+    modalShow: boolean;
 }
 
 const max = 0.05
 
-export default function Trade({ token, panelStyle, onSuccess }: Props) {
+export default function Trade({ token, panelStyle, modalShow, onSuccess }: Props) {
     const [inputVal, setInputVal] = useState(max.toString());
     const [isLoading, setIsLoading] = useState(false);
     const [isPrePayd, setIsPrePayd] = useState(false);
@@ -39,10 +40,17 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
         })
     }, [checkPrePayed, address, token])
 
+    useEffect(() => {
+        if (!modalShow) {
+            setInputVal(max.toString())
+            setIsLoading(false)
+        }
+    }, [modalShow])
+
     return (
         <div className={styles.main}>
             <div className={styles.avatar}>
-                <Avatar data={token} showLaunchType={true}/>
+                <Avatar data={token} showLaunchType={true} />
             </div>
 
             <div
@@ -75,42 +83,6 @@ export default function Trade({ token, panelStyle, onSuccess }: Props) {
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className={styles.tokenPercent}>
-            <div
-              onClick={() => {
-                setQuickIndex(0);
-                setInputVal("");
-              }}
-              className={styles.percentTag}
-            >
-              Reset
-            </div>
-            <div
-              onClick={() => {
-                setQuickIndex(1);
-                setInputVal("0.00000001");
-              }}
-              className={[
-                styles.percentTag,
-                quickIndex === 1 ? styles.tagActive : ""
-              ].join(" ")}
-            >
-              0.0000001SOL
-            </div>
-            <div
-              onClick={() => {
-                setQuickIndex(2);
-                setInputVal("0.00000005");
-              }}
-              className={[
-                styles.percentTag,
-                quickIndex === 2 ? styles.tagActive : ""
-              ].join(" ")}
-            >
-              0.0000005SOL
-            </div>
-          </div> */}
                 </div>
 
                 <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>

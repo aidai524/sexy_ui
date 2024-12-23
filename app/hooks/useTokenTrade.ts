@@ -113,17 +113,20 @@ export function useTokenTrade({
                             ),
                         );
 
-                        await walletProvider.signAndSendTransaction(xtransaction)
+                        const hash = await walletProvider.signAndSendTransaction(xtransaction)
 
-                        while (true) {
-                            try {
-                                account = await getAccount(connection, associatedToken, undefined, TOKEN_PROGRAM_ID);
-                                await sleep(500)
-                                break
-                            } catch(e) {
-                                console.log('e:', e)
+                        if (hash) {
+                            while (true) {
+                                try {
+                                    account = await getAccount(connection, associatedToken, undefined, TOKEN_PROGRAM_ID);
+                                    await sleep(500)
+                                    break
+                                } catch(e) {
+                                    console.log('e:', e)
+                                }
                             }
                         }
+
                         
                     } catch (e) {
                         console.log(e)

@@ -12,7 +12,6 @@ interface Props {
 
 export default function SmokPanel({ show, token, onSuccess, onHide }: Props) {
 
-
   return (
     <Popup
       visible={show}
@@ -35,6 +34,7 @@ export default function SmokPanel({ show, token, onSuccess, onHide }: Props) {
         </div>
 
         <Trade
+          modalShow={show}
           token={token}
           onSuccess={() => {
             onSuccess && onSuccess()
