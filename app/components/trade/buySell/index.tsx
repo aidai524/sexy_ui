@@ -86,8 +86,6 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
     sellToken,
     sellTokenWithFixedOutput,
     getRate,
-    minPrice,
-    maxPrice,
     tokenBalance,
     solBalance,
     updateBalance

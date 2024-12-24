@@ -1,0 +1,93 @@
+.Container {}
+.Card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: rgba(0, 0, 0, 0.09);
+  flex-shrink: 0;
+  border-radius: 10px;
+  padding: 14px 22px 14px 14px;
+  color: rgba(255, 255, 255, 0.60);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.Avatar {
+  width: 86.049px;
+  height: 85.024px;
+  flex-shrink: 0;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+}
+.AvatarIcon {
+  width: 28px;
+  height: 25px;
+  right: 7px;
+  bottom: 0;
+  position: absolute;
+}
+.Info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.Name {
+  color: #FFF;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.LabelItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.TickerAvatar {
+  width: 18.217px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 9px;
+}
+.Label {}
+.Value {
+  color: #6FFF00;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.Foot {
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+}
+.BuyBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  color: #FFF;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  padding: 0 24px;
+  transition: all 0.3s linear;
+}
+.BuyBtn:hover {
+  background: rgba(255, 255, 255, 0.40);
+  color: #6FFF00;
+}
+.BuyBtnIcon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}

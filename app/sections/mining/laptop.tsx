@@ -4,11 +4,13 @@ import styles from "./laptop.module.css";
 
 export default function Laptop() {
   return (
-    <div className={styles.Container}>
-      <div className={styles.BackWrapper}>
-        <Back />
+    <div className={styles.Wrapper}>
+      <div className={styles.Container}>
+        <div className={styles.BackWrapper}>
+          <Back />
+        </div>
+        <Content styles={styles} isMobile={false} />
       </div>
-      <Content styles={styles} />
     </div>
   );
 }

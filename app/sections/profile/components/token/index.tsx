@@ -17,9 +17,10 @@ interface Props {
     update: () => void;
     prepaidWithdrawDelayTime: number;
     hideHot?: boolean;
+    from?: string;
 }
 
-export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot }: Props) {
+export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot, from }: Props) {
     const router = useRouter()
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
     const [isPrepaid, setIsPrepaid] = useState(false)
@@ -47,7 +48,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot 
     }, [])
 
 
-    return <div className={styles.main}>
+    return <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
         <div className={styles.tokenMag}>
             <div className={styles.tokenImgContent} onClick={() => {
                 router.push('/detail?id=' + data.id)

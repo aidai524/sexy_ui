@@ -1,3 +1,7 @@
+.Wrapper {
+  padding: 0 30px;
+}
+
 .Container {
   background: linear-gradient(
     to top,

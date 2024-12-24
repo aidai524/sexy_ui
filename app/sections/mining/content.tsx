@@ -2,7 +2,7 @@ import Multiple from "./component/multiple";
 import Statistics from "./component/statistics";
 import Rank from "./component/rank";
 
-export default function Mining({ styles }: any) {
+export default function Mining({ styles, isMobile }: any) {
   return (
     <div className={styles.main}>
       <div className={styles.zBox}>
@@ -12,7 +12,7 @@ export default function Mining({ styles }: any) {
             justifyContent: "center"
           }}
           itemStyle={{
-            width: "20%"
+            width: isMobile ? "50%" : "20%"
           }}
         />
       </div>

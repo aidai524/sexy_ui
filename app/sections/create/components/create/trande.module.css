@@ -1,7 +1,7 @@
 .panel {
     background-color: #121719;
     border-radius: 10px;
-    padding: 12px;
+    padding: 12px 12px 5px;
     margin-left: 5px;
     margin-right: 5px;
 }
@@ -133,8 +133,14 @@
 .receiveTokenAmount {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     font-size: 12px;
     color: rgba(255, 255, 255, 0.7);
     font-weight: 300;
+    gap: 10px;
+}
+
+.launchTip {
+    background-color: rgba(255, 67, 146, 0.17);
+    padding: 15px;
+    color: rgba(255, 72, 149, 1);
 }

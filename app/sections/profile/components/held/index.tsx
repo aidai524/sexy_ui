@@ -2,12 +2,23 @@ import styles from "./held.module.css";
 
 const list = [1, 2, 3, 4];
 
-export default function Held() {
+export default function Held({ from }: any) {
   return (
-    <div className={styles.main}>
+    <div
+      className={styles.main}
+      style={{
+        backgroundColor:
+          from === "page" ? "transparent" : "rgba(255, 255, 255, 0.08)"
+      }}
+    >
       {list.map((item) => {
         return (
-          <div className={styles.heldToken} key={item}>
+          <div
+            className={`${styles.heldToken} ${
+              from === "page" && styles.PageHeldToken
+            }`}
+            key={item}
+          >
             <div className={styles.tokenMsg}>
               <img
                 className={styles.tokenImg}

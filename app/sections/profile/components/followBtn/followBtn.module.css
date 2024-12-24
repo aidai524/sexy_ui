@@ -1,33 +1,35 @@
 .isFollow {
-    color: var(--part-bg);
-    background-color: #fff;
-    height: 34px;
-    padding: 0 20px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 34px;
-    border-radius: 30px;
+  color: var(--part-bg);
+  background-color: #fff;
+  height: 34px;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 34px;
+  border-radius: 30px;
+  cursor: pointer;
 }
 
 .isFollowLoading {
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.13);
-    height: 34px;
-    padding: 0 20px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 34px;
-    border-radius: 30px;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.13);
+  height: 34px;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 34px;
+  border-radius: 30px;
 }
 
 .isFollowing {
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-    height: 34px;
-    padding: 0 20px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 34px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 1);
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 34px;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 34px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 1);
+  cursor: pointer;
 }

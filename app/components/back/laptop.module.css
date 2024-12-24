@@ -1,7 +1,7 @@
 .Container {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 6px;
   cursor: pointer;
   position: relative;
   z-index: 20;

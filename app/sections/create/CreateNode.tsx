@@ -1,4 +1,4 @@
-import type { ImageUploadItem } from "antd-mobile";
+import { Button, type ImageUploadItem } from "antd-mobile";
 import styles from "./create.module.css";
 import {
   useEffect,
@@ -17,6 +17,7 @@ import { success, fail } from "@/app/utils/toast";
 import type { Project } from "@/app/type";
 import CreateSuccessModal from "./components/createSuccessModal";
 import { useUser } from "@/app/store/useUser";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 interface Props {
   onAddDataFill: (value: Project) => void;
   show: boolean;
@@ -141,9 +142,8 @@ export default forwardRef(function CreateNode(
               onChange={(e) => {
                 setTokenName(e.target.value);
               }}
-              className={`${styles.inputText} ${
-                inValidVals["tokenName"] ? styles.inputError : ""
-              } ${!isMobile && styles.laptopInputText}`}
+              className={`${styles.inputText} ${inValidVals["tokenName"] ? styles.inputError : ""
+                } ${!isMobile && styles.laptopInputText}`}
               placeholder="Meme name"
             />
           </div>
@@ -164,9 +164,8 @@ export default forwardRef(function CreateNode(
               onChange={(e) => {
                 setTicker(e.target.value);
               }}
-              className={`${styles.inputText} ${
-                inValidVals["ticker"] ? styles.inputError : ""
-              } ${!isMobile && styles.laptopInputText}`}
+              className={`${styles.inputText} ${inValidVals["ticker"] ? styles.inputError : ""
+                } ${!isMobile && styles.laptopInputText}`}
               placeholder="say something"
             />
           </div>
@@ -240,9 +239,8 @@ export default forwardRef(function CreateNode(
             onChange={(e) => {
               setAbout(e.target.value);
             }}
-            className={`${styles.inputText} ${
-              inValidVals["about"] ? styles.inputError : ""
-            } ${!isMobile && styles.laptopInputText}`}
+            className={`${styles.inputText} ${inValidVals["about"] ? styles.inputError : ""
+              } ${!isMobile && styles.laptopInputText}`}
             placeholder="say something"
           />
         </div>
@@ -301,6 +299,7 @@ export default forwardRef(function CreateNode(
           />
         </div>
       </div>
+
 
       {isMobile && (
         <div className={styles.btnWapper}>

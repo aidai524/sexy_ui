@@ -1,119 +1,129 @@
 .main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 10px 15px;
+  .tokenMag {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background-color: rgba(255, 255, 255, 0.08);
-    padding: 10px 15px;
-    .tokenMag {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+    gap: 10px;
 
-        .tokenImgContent {
-            width: 84px;
-            height: 84px;
-            position: relative;
-            .tokenImg {
-                width: 100%;
-                height: 100%;
-                border-radius: 8px;
-            }
-        }
-
-        .nameContent {
-            font-size: 14px;
-            .name {
-                color: #fff;
-            }
-            .trikerContent{
-                color: rgba(255, 255, 255, 0.6);
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                margin-top: 5px;
-                .tickerName {
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    max-width: 160px;
-                }
-                .createrImg {
-                    width: 16px;
-                    height: 16px;
-                    border-radius: 16px;
-                }
-            }
-            .MarketCap {
-                margin-top: 5px;
-                color: rgba(111, 255, 0, 1);
-            }
-            .createTime {
-                margin-top: 5px;
-                color: rgba(255, 255, 255, 0.6);
-            }
-        }
+    .tokenImgContent {
+      width: 84px;
+      height: 84px;
+      position: relative;
+      .tokenImg {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+      }
     }
 
-    .actionContent {
+    .nameContent {
+      font-size: 14px;
+      .name {
+        color: #fff;
+      }
+      .trikerContent {
+        color: rgba(255, 255, 255, 0.6);
         display: flex;
+        align-items: center;
         gap: 5px;
-        align-items: center;
-        .actionTimes {
-            margin-top: 5px;
-            color: rgba(255, 255, 255, 0.6);
-            text-align: center;
-            width: 36px;
-            position: relative;
-            white-space: nowrap;
-            .whiteAmount {
-                color: #fff;
-                .timeFormat {
-                    position: absolute;
-                    right: 0;
-                    width: 60px;
-                }
-            }
+        margin-top: 5px;
+        .tickerName {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 160px;
         }
-
-        .withdraw {
-            border: 1px solid rgba(201, 255, 93, 1);
-            color: rgba(201, 255, 93, 1);
-            padding: 0 10px;
-            border-radius: 22px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-
+        .createrImg {
+          width: 16px;
+          height: 16px;
+          border-radius: 16px;
         }
+      }
+      .MarketCap {
+        margin-top: 5px;
+        color: rgba(111, 255, 0, 1);
+      }
+      .createTime {
+        margin-top: 5px;
+        color: rgba(255, 255, 255, 0.6);
+      }
     }
+  }
+
+  .actionContent {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    .actionTimes {
+      margin-top: 5px;
+      color: rgba(255, 255, 255, 0.6);
+      text-align: center;
+      width: 36px;
+      position: relative;
+      white-space: nowrap;
+      .whiteAmount {
+        color: #fff;
+        .timeFormat {
+          position: absolute;
+          right: 0;
+          width: 60px;
+        }
+      }
+    }
+
+    .withdraw {
+      border: 1px solid rgba(201, 255, 93, 1);
+      color: rgba(201, 255, 93, 1);
+      padding: 0 10px;
+      border-radius: 22px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .launchTag {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 5px 0;
-    text-align: center;
-    color: #fff;
-    font-size: 10px;
-    font-weight: 300;
-    border-radius: 1000px;
-    white-space: nowrap;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 5px 0;
+  text-align: center;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 300;
+  border-radius: 1000px;
+  white-space: nowrap;
+  background-color: rgba(80, 73, 100, 1);
+  &.launch1 {
     background-color: rgba(80, 73, 100, 1);
-    &.launch1 {
-        background-color: rgba(80, 73, 100, 1);
-    }
-    &.launch2 {
-        background-color: var(--part-bg);
-    }
-    &.launch3 {
-        background-color: rgba(100, 43, 255, 1);
-    }
+  }
+  &.launch2 {
+    background-color: var(--part-bg);
+  }
+  &.launch3 {
+    background-color: rgba(100, 43, 255, 1);
+  }
 }
 
 .actionIcon {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.PageToken {
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 14px;
+  background-color: transparent;
+}
+
+.PageToken:hover {
+  background-color: #ffffff14;
 }

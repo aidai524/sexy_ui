@@ -247,6 +247,7 @@ export async function initAuthorization() {
 
   // @ts-ignore
   const { walletProvider, sexAddress, connect } = window;
+
   if (!walletProvider || !sexAddress) {
     console.log("connect", connect);
     await connect();
@@ -296,8 +297,8 @@ export function logOut() {
   window.sexAddress = null;
   window.localStorage.removeItem(AUTH_KEY);
 
-  clearAll('launching')
-  clearAll('preLaunch')
+  clearAll("launching");
+  clearAll("preLaunch");
 }
 
 export function getFullNum(value: any) {
@@ -352,7 +353,7 @@ export function mapDataToProject(currentToken: any): Project {
     creater: currentToken.account_data,
     boostTime: currentToken.boost_time,
     status: currentToken.status,
-    createdAt: new Date(currentToken.created_at).getTime(),
+    createdAt: new Date(currentToken.created_at).getTime()
   };
 }
 

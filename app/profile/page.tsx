@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 
-const ProfileCom = dynamic(() => import('../sections/profile'), {
-    ssr: false
-})
+const ProfileCom = dynamic(() => import("../sections/profile/index"), {
+  ssr: false
+});
 
 export default function Prpfile() {
-    return <ProfileCom />
+  return <ProfileCom />;
 }

@@ -39,11 +39,11 @@ export default function RootLayout({
       </head>
       <body>
         <MessageContextProvider>
-          <WalletConnect>
-            <UserAgentProvider>
+          <UserAgentProvider>
+            <WalletConnect>
               <Layout>{children}</Layout>
-            </UserAgentProvider>
-          </WalletConnect>
+            </WalletConnect>
+          </UserAgentProvider>
         </MessageContextProvider>
       </body>
     </html>

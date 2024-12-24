@@ -5,34 +5,18 @@ import Top from '@/app/sections/trends/components/top';
 import Carousel from '@/app/sections/trends/components/carousel';
 import Header from '@/app/sections/trends/components/header';
 import Item from '@/app/sections/trends/components/item';
-import { useState } from 'react';
-import { Trend, useTrends } from '@/app/sections/trends/hooks';
-import BuyModal from '@/app/sections/trends/components/buy';
-import { useTrade } from '@/app/sections/trends/hooks/trade';
+import { useTrends } from '@/app/sections/trends/hooks';
 
-export default function Mobile() {
-  const { tradeToken, onTrade, setTradeToken } = useTrade();
+export default function Mobile(props: any) {
+  const { handleBuy } = props;
 
-  const [visible, setVisible] = useState(false);
-
-  const { list, top1 } = useTrends();
-
-  const handleBuy = (trend?: Trend) => {
-    if (!trend) return;
-    onTrade(trend);
-    setVisible(true);
-  };
-
-  const handleBuyClose = () => {
-    setVisible(false);
-    setTradeToken({});
-  };
+  const { list, top1 } = useTrends({ isPolling: true });
 
   return (
     <div className={styles.Container}>
       <Header />
       <Carousel />
-      <Top onBuy={() => handleBuy(top1)} trend={top1} />
+      <Top onBuy={() => handleBuy(top1)} trend={top1} isMobile />
       <div className={styles.List}>
         {
           list.map((item) => (
@@ -44,11 +28,6 @@ export default function Mobile() {
           ))
         }
       </div>
-      <BuyModal
-        visible={visible}
-        tradeToken={tradeToken}
-        onClose={handleBuyClose}
-      />
     </div>
   );
 }

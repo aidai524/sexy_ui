@@ -7,24 +7,23 @@ import { useUser } from "@/app/store/useUser";
 import useUserInfo from "../../../../hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 
-interface Props {
-  address: string | undefined;
-  type: string;
-  prepaidWithdrawDelayTime: number;
-  hideHot?: boolean;
-}
-
 const urls: any = {
   created: "/project/account/list",
   hot: "/project/super_like/list",
   liked: "/project/like/list"
 };
 
-export default function Created({ address, type, prepaidWithdrawDelayTime, hideHot = false }: Props) {
+export default function Created({
+  address,
+  type,
+  prepaidWithdrawDelayTime,
+  from,
+  hideHot = false
+}: any) {
   const [list, setList] = useState<Project[]>([]);
   const [refresh, setRefresh] = useState<number>(1);
-  const userStore: any = useUser()
-  const { fecthUserInfo } = useUserInfo(undefined)
+  const userStore: any = useUser();
+  const { fecthUserInfo } = useUserInfo(undefined);
 
   useEffect(() => {
     if (address) {
@@ -43,22 +42,26 @@ export default function Created({ address, type, prepaidWithdrawDelayTime, hideH
   return (
     <div>
       {list.map((item) => {
-        return <Token
-          data={item}
-          key={item.id}
-          hideHot={hideHot}
-          prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
-          update={async () => {
-            setRefresh(refresh + 1)
-            const userInfo = await fecthUserInfo(address as string)
-            console.log('userInfo:', userInfo)
-            
-            if (userInfo) {
-              userStore.set({
-                userInfo
-              })
-            }
-          }} />;
+        return (
+          <Token
+            from={from}
+            data={item}
+            key={item.id}
+            hideHot={hideHot}
+            prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
+            update={async () => {
+              setRefresh(refresh + 1);
+              const userInfo = await fecthUserInfo(address as string);
+              console.log("userInfo:", userInfo);
+
+              if (userInfo) {
+                userStore.set({
+                  userInfo
+                });
+              }
+            }}
+          />
+        );
       })}
     </div>
   );

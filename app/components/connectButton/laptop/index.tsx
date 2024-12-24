@@ -2,7 +2,7 @@
 
 import React from "react";
 import styles from "./index.module.css";
-import { WalletModalButton } from "@solana/wallet-adapter-react-ui";
+import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function ConnectButton({ userInfo }: any) {
