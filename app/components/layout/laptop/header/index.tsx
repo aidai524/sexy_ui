@@ -11,6 +11,9 @@ export default function Header({ tab, userInfo }: any) {
       <div className={styles.Actions}>
         <PointsLabel />
         <ConnectButton userInfo={userInfo} />
+        <a href="/mining" className="button">
+          <img src="/img/tabs/tab2-active.svg" />
+        </a>
         <Messages />
       </div>
     </div>
