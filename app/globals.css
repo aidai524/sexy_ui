@@ -215,3 +215,12 @@ div.adm-tab-bar-wrap {
 .adm-modal .adm-mask {
   backdrop-filter: blur(10px);
 }
+
+.adm-checkbox div.adm-checkbox-icon {
+  border-radius: 2px;
+}
+
+.adm-checkbox.adm-checkbox-checked div.adm-checkbox-icon {
+  border-color: rgba(146, 144, 177, 0.6);
+  background-color: var(--part-bg);
+}

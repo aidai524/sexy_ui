@@ -64,7 +64,7 @@ export default function WalletConnect({ children }: { children: React.ReactNode 
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider
-       autoConnect
+       autoConnect={true}
        wallets={wallets}
       >
         <WalletModalProvider sortedWallets={sortedWallets} disabledWallets={disabledWallets}>

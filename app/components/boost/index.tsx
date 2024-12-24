@@ -135,7 +135,14 @@ export default function Boost({
   const iconStyle = isBigIcon ? {
     width: 48,
     height: 48
-  } : {}
+  } : {
+    width: 36,
+    height: 36
+  }
+
+  return <div style={iconStyle}>
+    <img style={iconStyle} src="/img/profile/coming-boost.png" />
+  </div>
 
   return (
     <div

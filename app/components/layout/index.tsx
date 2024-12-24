@@ -4,6 +4,9 @@ import Laptop from "./laptop";
 import { useUser } from "@/app/store/useUser";
 import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
+
+import { useConfig } from "@/app/store/useConfig";
+import { httpGet } from "@/app/utils";
 import { useEffect, useCallback, useState } from "react";
 import useNotice from "../../hooks/use-notice";
 import {
@@ -15,6 +18,7 @@ export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
   const { address, walletProvider } = useAccount();
   const userStore: any = useUser();
+  const configStore: any = useConfig()
   const { userInfo, onQueryInfo } = useUserInfo(address);
   const [showLoginModal, setShowLoginModal] = useState(false);
   useNotice();
@@ -24,9 +28,20 @@ export default function Layout(props: any) {
       userStore.set({
         userInfo: userInfo
       });
+
+      setShowLoginModal(false)
     }
   }, [userInfo, address]);
 
+  useEffect(() => {
+    httpGet('/config').then(res => {
+      if (res.code === 0) {
+        configStore.set({
+          config: res.data
+        })
+      }
+    })
+  }, [])
   const initToken = useCallback(async () => {
     const auth = await getAuthorizationByLocalAndServer();
     if (!auth) {

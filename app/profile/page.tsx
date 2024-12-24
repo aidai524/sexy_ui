@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const ProfileCom = dynamic(() => import("../sections/profile/mobile"), {
+const ProfileCom = dynamic(() => import("../sections/profile/index"), {
   ssr: false
 });
 

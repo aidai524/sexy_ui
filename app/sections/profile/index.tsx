@@ -59,7 +59,6 @@ export default memo(function Home(props: any) {
   useEffect(() => {
     if (address && isOther) {
       httpAuthGet("/follower/account", { address: address }).then((res) => {
-        console.log("res:", res);
         if (res.code === 0) {
           if (res.data) {
             setIsFollower(res.data.is_follower);
@@ -70,6 +69,8 @@ export default memo(function Home(props: any) {
       });
     }
   }, [address, isOther, refreshNum]);
+
+  console.log('address:', address)
 
   return (
     <>

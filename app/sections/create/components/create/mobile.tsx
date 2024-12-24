@@ -20,7 +20,7 @@ export default function Create({
         borderTopLeftRadius: "8px",
         borderTopRightRadius: "8px",
         paddingTop: 30,
-        paddingBottom: 30
+        paddingBottom: 0
         // height: '50vh'
       }}
     >

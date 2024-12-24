@@ -6,7 +6,9 @@ import MainBtn from "@/app/components/mainBtn";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { getFullNum, httpGet } from "@/app/utils";
 import { Avatar } from "@/app/components/thumbnail";
+import { Checkbox } from 'antd-mobile'
 import type { Project } from "@/app/type";
+import { fail } from "@/app/utils/toast";
 
 type Token = {
   tokenName: string;
@@ -51,6 +53,7 @@ export default function Create({
 
   const [solPercent, setSolPercent] = useState(0);
   const [valInput, setValInput] = useState("");
+  const [launchChecked, setLaunchChecked] = useState(false)
 
   const { createToken } = useTokenTrade({
     tokenName,
@@ -61,50 +64,7 @@ export default function Create({
 
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
-  useEffect(() => {
-    // if (debounceVal) {
-    //     if (activeIndex === 0) {
-    //         let buyInSol = ''
-    //         if (tokenType === 1) {
-    //             buyInSol = new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toFixed(0)
-    //             const buyIn = new Big(debounceVal).mul(rate).toFixed(2)
-    //             setBuyIn(buyIn)
-    //         } else if (tokenType === 0) {
-    //             buyInSol = new Big(debounceVal).div(new Big(rate)).mul(10 ** SOL.tokenDecimals).toFixed(0)
-    //             if (Number(buyInSol) > 1) {
-    //                 setBuyIn(debounceVal)
-    //             } else {
-    //                 setBuyIn('')
-    //                 buyInSol = ''
-    //             }
-    //         }
-    //         if (buyInSol) {
-    //             setIsError(false)
-    //             setErrorMsg('Enter a amount');
-    //         }
-    //         setBuyInSol(buyInSol)
-    //     } else if (activeIndex === 1) {
-    //         let sellOut = ''
-    //         if (tokenType === 1) {
-    //             sellOut = new Big(debounceVal).mul(rate).mul(10 ** token.tokenDecimals).toFixed(0)
-    //         } else if (tokenType === 0) {
-    //             sellOut = new Big(debounceVal).mul(10 ** token.tokenDecimals).toFixed(0)
-    //         }
-    //         console.log('sellOut:', sellOut)
-    //         setSellOut(sellOut)
-    //         if (sellOut) {
-    //             setIsError(false)
-    //             setErrorMsg('Enter a amount');
-    //         }
-    //     }
-    // } else {
-    //     setBuyIn('')
-    //     setBuyInSol('')
-    //     setSellOut('')
-    //     setIsError(true)
-    //     setErrorMsg('Enter a amount');
-    // }
-  }, [debounceVal, tokenType, currentToken]);
+
 
   return (
     <>
@@ -186,7 +146,10 @@ export default function Create({
                 </div> */}
 
         <div style={{ marginTop: 20 }} className={styles.receiveTokenAmount}>
-          <div className={styles.receiveTitle} style={{ textAlign: "center" }}>
+          <Checkbox onChange={() => {
+            setLaunchChecked(!launchChecked)
+          }} checked={launchChecked} />
+          <div className={styles.receiveTitle}>
             Its optional but buying a small amount of coins helps protect your
             coin from snipers
           </div>
@@ -203,24 +166,32 @@ export default function Create({
 
                 setIsLoading(true);
 
-                await createToken({
+                const hash = await createToken({
                   name: tokenName,
                   symbol: tokenSymbol,
                   uri: tokenUri,
+                  launching: launchChecked,
                   amount: valInput
                     ? new Big(valInput).mul(10 ** 9).toString()
                     : ""
                 });
 
-                await onCreateTokenSuccess();
-                onHide();
-                setShowSuccessModal(true);
+                if (!hash) {
+                  throw 'Create token error'
+                }
+
+                const isSuccess = await onCreateTokenSuccess();
+                if (isSuccess) {
+                  onHide();
+                  setShowSuccessModal(true);
+                }
+                
                 setIsLoading(false);
                 // success('Transtion success')
-              } catch (e) {
-                console.log(e);
+              } catch (e: any) {
+                console.log(e, e.toString());
                 setIsLoading(false);
-                // fail('Transtion fail')
+                fail('Create token error')
               }
             }}
             style={{ background: "rgba(255, 47, 116, 1)" }}
@@ -229,6 +200,10 @@ export default function Create({
           </MainBtn>
         </div>
       </div>
+
+      <div className={styles.launchTip}>
+            After successful creation, the creator will not be able to Pre-buy again
+          </div>
     </>
   );
 }

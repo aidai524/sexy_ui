@@ -3,7 +3,8 @@ import FirstTimeLike from "./firstTimeLike"
 import SecondTimeLike from "./secondTimesLike"
 import type { Project } from "@/app/type"
 import { httpAuthPost } from "@/app/utils"
-import { fail } from "assert"
+import { fail } from "@/app/utils/toast"
+
 
 export const FIRST_LIKE_TIMES = 10
 export const SECOND_LIKE_TIMES = 15
