@@ -52,7 +52,7 @@ export default function SmokeBtn({ onClick, token, isBigIcon = false }: Props) {
           return
         }
 
-        if (token.isSuperLike) {
+        if (token.isSuperLike || token.account === address) {
           return
         }
 
