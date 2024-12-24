@@ -39,8 +39,6 @@ export function useAccount() {
         //   signature: tx,
         // });
 
-
-
         // @ts-ignore
         if (wallet?.adapter && wallet.adapter.wallet) {
           // @ts-ignore
