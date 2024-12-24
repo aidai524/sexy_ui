@@ -6,7 +6,6 @@ import Thumbnail from "@/app/components/thumbnail";
 import NextButton from "./next-button";
 import TokenCardActions from "../main/token-card-actions";
 import CreateButton from "../main/actions-bar/create-button";
-import MiningButton from "../main/actions-bar/mining-button";
 import { mapDataToProject } from "@/app/utils";
 import LaunchingActions from "@/app/components/action/launching";
 import styles from "./index.module.css";
@@ -116,7 +115,6 @@ export default function Fullscreen({
       </div>
       <div className={styles.SexyFi} />
       <div className={styles.Buttons}>
-        <MiningButton />
         <CreateButton />
       </div>
       <div

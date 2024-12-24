@@ -225,9 +225,20 @@
   font-size: 20px;
   line-height: 30px;
   margin: 0;
-  padding: 20px 0;
+  padding-top: 20px;
   text-align: center;
   color: #fff;
+  font-family: Unbounded;
+}
+.wallet-adapter-modal-sub-title {
+  color: #7e8a93;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 14.4px */
+  padding-bottom: 40px;
 }
 
 @media (max-width: 374px) {
@@ -274,6 +285,7 @@
   align-items: center;
   background-color: transparent;
   color: #fff;
+  font-family: Unbounded;
 }
 
 .wallet-adapter-modal-list-more svg {
