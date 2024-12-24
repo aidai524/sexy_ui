@@ -1,0 +1,113 @@
+.Container {
+  padding: 3px 10px 3px 3px;
+  border-radius: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.Box {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.Logo {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 18px;
+}
+
+.Panel {
+  padding: 20px 16px;
+  background-color: #fff3f8;
+  position: absolute;
+  border-radius: 8px;
+  right: 0px;
+  top: 40px;
+  z-index: 20;
+}
+
+.PanelTitle {
+  color: rgba(0, 0, 0, 0.6);
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.PanelAddressBox {
+  margin-top: 12px;
+  background-color: #efd8ff;
+  border-radius: 8px;
+  width: 295px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 12px;
+}
+
+.PanelAddress {
+  color: #374c5b;
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.PanelSol {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  color: #000;
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.SolnaIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+}
+
+.Disconnect {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  margin-left: 18px;
+  color: #374c5b;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.Item {
+  padding-left: 15px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: #374c5b;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: #f4eaf4;
+  border-radius: 8px;
+  cursor: pointer;
+}

@@ -1,22 +1,17 @@
 "use client";
 
 import React from "react";
-import styles from "./index.module.css";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
+import Info from "../info";
 import { useWallet } from "@solana/wallet-adapter-react";
 
-export default function ConnectButton({ userInfo }: any) {
-  const { connected, publicKey, disconnect } = useWallet();
+export default function ConnectButton() {
+  const { connected } = useWallet();
 
   return (
     <div>
       {connected ? (
-        <div className={styles.Button} onClick={disconnect}>
-          {userInfo?.icon && (
-            <img src={userInfo.icon} className={styles.Avatar} />
-          )}
-          <div className={styles.Name}>{userInfo?.name || "Dis"}</div>
-        </div>
+        <Info />
       ) : (
         <WalletModalButton
           style={{
