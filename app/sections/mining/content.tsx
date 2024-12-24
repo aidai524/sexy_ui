@@ -2,11 +2,11 @@ import Multiple from "./component/multiple";
 import Statistics from "./component/statistics";
 import Rank from "./component/rank";
 
-export default function Mining({ styles, isMobile }: any) {
+export default function Mining({ styles, isMobile, info }: any) {
   return (
     <div className={styles.main}>
       <div className={styles.zBox}>
-        <Multiple />
+        <Multiple num={info?.once_like_amount || 0} />
         <Statistics
           style={{
             justifyContent: "center"
@@ -14,6 +14,7 @@ export default function Mining({ styles, isMobile }: any) {
           itemStyle={{
             width: isMobile ? "50%" : "20%"
           }}
+          info={info}
         />
       </div>
       <Rank />

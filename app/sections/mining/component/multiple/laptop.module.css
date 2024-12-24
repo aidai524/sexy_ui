@@ -1,0 +1,53 @@
+.Container {
+  margin: 0 auto;
+  position: relative;
+  width: 160px;
+  height: 160px;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  border-radius: 200px;
+  padding: 10px;
+}
+
+.Box {
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 3px solid #ff2681;
+  backdrop-filter: blur(5px);
+  border-radius: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Text {
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 42px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  background: linear-gradient(180deg, #ff2681 0%, #ffa2c9 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.BigIcon {
+  width: 88.217px;
+  height: 93.75px;
+  position: absolute;
+  transform: rotate(96deg);
+  left: -32px;
+  top: 80px;
+}
+
+.SmallIcon {
+  width: 45.71px;
+  height: 48.577px;
+  position: absolute;
+  top: 8px;
+  right: 5px;
+}

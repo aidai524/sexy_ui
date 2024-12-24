@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { httpAuthGet } from "@/app/utils";
+import { useAccount } from "@/app/hooks/useAccount";
 
 const PAGE_SIZE = 50;
 
 export default function useList() {
+  const { address: userAddress } = useAccount();
   const [list, setList] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
@@ -34,8 +36,8 @@ export default function useList() {
   };
 
   useEffect(() => {
-    onQuery();
-  }, []);
+    if (userAddress) onQuery();
+  }, [userAddress]);
 
   return {
     list,

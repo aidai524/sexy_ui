@@ -1,13 +1,14 @@
 import LimitProject from "../limitProjects";
 import styles from "./index.module.css";
+import { addThousandSeparator } from "@/app/utils/common";
 
-export default function Statistics({ itemStyle, style }: any) {
+export default function Statistics({ itemStyle, style, info }: any) {
   return (
     <div className={styles.statistics} style={style}>
       <div className={styles.statisticsItem} style={itemStyle}>
         <div className={styles.statisticsTitle}>Total Mining</div>
         <div style={{ fontSize: 26 }} className={styles.value}>
-          5,256
+          {info?.minted ? addThousandSeparator(info?.minted) : "-"}
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
@@ -16,17 +17,17 @@ export default function Statistics({ itemStyle, style }: any) {
           style={{ borderBottom: "1px dashed #fff" }}
           className={styles.value}
         >
-          5,256
+          {info?.liked ? addThousandSeparator(info?.liked) : "-"}
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
         <div className={styles.statisticsTitle}>Launching Rate</div>
-        <div className={styles.value}>0.37%</div>
+        <div className={styles.value}>{info?.launching_rate || "-"}%</div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
         <div className={styles.statisticsTitle}>Launched Projects</div>
         <div style={{ marginTop: 5 }}>
-          <LimitProject />
+          <LimitProject list={info?.launched_project} />
         </div>
       </div>
     </div>

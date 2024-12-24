@@ -1,6 +1,6 @@
 import Content from "./content";
 import styles from "./ming.module.css";
 
-export default function Mining() {
-  return <Content styles={styles} isMobile={true} />;
+export default function Mining(props: any) {
+  return <Content styles={styles} isMobile={true} {...props} />;
 }
