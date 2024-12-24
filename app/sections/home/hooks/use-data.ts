@@ -25,11 +25,8 @@ export default function useData(launchType: string) {
           setHasNext(false);
         }
 
-        if (isInit) {
-          setisLoading(false);
-        }
-        console.log("res", res);
         if (res.code !== 0 || !res.data?.list) return;
+        // res.data.list = []
         let _list: any = [];
         if (isInit) {
           _list = res.data?.list;
@@ -38,10 +35,17 @@ export default function useData(launchType: string) {
         } else {
           _list = [...(listRef.current || []), ...res.data.list];
         }
+
         listRef.current = _list;
         setAll(listRef.current, launchType);
-        console.log("_list", _list);
         setFullList(JSON.parse(JSON.stringify(_list)));
+
+        if (isInit) {
+          setTimeout(() => {
+            setisLoading(false);
+          }, 10)
+          
+        }
       }
     );
   };
@@ -59,6 +63,8 @@ export default function useData(launchType: string) {
     if (list.length > 1) {
       const currentToken = list[1];
       setInfoData(mapDataToProject(currentToken));
+    } else {
+      setInfoData(undefined)
     }
   };
 
@@ -72,13 +78,24 @@ export default function useData(launchType: string) {
     setRenderIndex(renderIndexRef.current);
 
     setTimeout(() => {
-      if (list.length > 1) {
+      if (list.length > 0) {
         const currentToken = list[1];
         if (renderIndexRef.current === 1) {
           setInfoData2(mapDataToProject(currentToken));
         } else {
           setInfoData(mapDataToProject(currentToken));
         }
+
+        if (list.length === 1) {
+          if (renderIndexRef.current === 1) {
+            setInfoData(undefined);
+          } else {
+            setInfoData2(undefined);
+          }
+        }
+      } else {
+        setInfoData(undefined);
+        setInfoData2(undefined);
       }
     }, 0);
   };
