@@ -268,37 +268,57 @@ export default forwardRef(function CreateNode(
 
       <div className={styles.group}>
         <div className={styles.groupTitle}>Community</div>
-        <div className={styles.groupContent}>
-          <Link
-            value={twitter}
-            onChange={(val) => {
-              setTwitter(val);
+        <div
+          className={styles.Flex}
+          style={{
+            columnGap: isMobile ? 0 : 20
+          }}
+        >
+          <div
+            className={styles.groupContent}
+            style={{
+              width: isMobile ? "100%" : "calc(50% - 10px)"
             }}
-            type="X"
-            img="/img/community/x.svg"
-          />
-        </div>
-
-        <div className={styles.groupContent}>
-          <Link
-            value={telegram}
-            onChange={(val) => {
-              setTelegram(val);
+          >
+            <Link
+              value={twitter}
+              onChange={(val) => {
+                setTwitter(val);
+              }}
+              type="X"
+              img="/img/community/x.svg"
+            />
+          </div>
+          <div
+            className={styles.groupContent}
+            style={{
+              width: isMobile ? "100%" : "calc(50% - 10px)"
             }}
-            type="Telegram"
-            img="/img/community/telegram.svg"
-          />
-        </div>
-
-        <div className={styles.groupContent}>
-          <Link
-            value={discord}
-            onChange={(val) => {
-              setDiscord(val);
+          >
+            <Link
+              value={telegram}
+              onChange={(val) => {
+                setTelegram(val);
+              }}
+              type="Telegram"
+              img="/img/community/telegram.svg"
+            />
+          </div>
+          <div
+            className={styles.groupContent}
+            style={{
+              width: isMobile ? "100%" : "calc(50% - 10px)"
             }}
-            type="Discord"
-            img="/img/community/discard.svg"
-          />
+          >
+            <Link
+              value={discord}
+              onChange={(val) => {
+                setDiscord(val);
+              }}
+              type="Discord"
+              img="/img/community/discard.svg"
+            />
+          </div>
         </div>
       </div>
 
