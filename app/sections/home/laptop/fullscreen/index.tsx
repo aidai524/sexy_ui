@@ -10,6 +10,7 @@ import { mapDataToProject } from "@/app/utils";
 import LaunchingActions from "@/app/components/action/launching";
 import PointsLabel from "@/app/components/points-label";
 import Empty from "@/app/components/empty/prelaunch";
+import { shareToX } from "@/app/utils/share";
 import styles from "./index.module.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -109,7 +110,15 @@ export default function Fullscreen({
       <Title type="primary" className={styles.Title} />
       <div className={styles.Actions}>
         <PointsLabel />
-        <button className="button">
+        <button
+          className="button"
+          onClick={() => {
+            shareToX(
+              list[index].tokenName,
+              "https://sexyfi.dumpdump.fun/detail?id=" + list[index].id
+            );
+          }}
+        >
           <ShareIcon />
         </button>
         <button className="button" onClick={onExit}>
@@ -128,9 +137,11 @@ export default function Fullscreen({
       >
         Click the blank area means ‘unlike’ it, and check the next one.
       </div>
-      <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
-        <Empty />
-      </div>
+      {index === list.length - 1 && (
+        <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
+          <Empty />
+        </div>
+      )}
     </motion.div>
   );
 }
