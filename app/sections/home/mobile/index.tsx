@@ -180,25 +180,27 @@ export default function Home() {
   async function like() {
     if (
       launchingList &&
-      launchingList.current &&
-      launchingList.current.length > 1
+      launchingList.current
     ) {
-      const data = launchingList.current[0]
-      if (renderLaunchingIndexRef.current === 0) {
-        setActionStyle2(styles.like);
-      } else {
-        setActionStyle(styles.like);
+      if (launchingList.current.length > 0) {
+        const data = launchingList.current[0]
+        if (renderLaunchingIndexRef.current === 0) {
+          setActionStyle2(styles.like);
+        } else {
+          setActionStyle(styles.like);
+        }
+  
+        setTimeout(async () => {
+          getLaunchingNext();
+          setActionStyle2(null);
+          setActionStyle(null);
+          setMovingStyle({})
+          setMovingStyle2({})
+        }, 800);
+  
+        await actionLikeTrigger(data)
       }
-
-      setTimeout(async () => {
-        getLaunchingNext();
-        setActionStyle2(null);
-        setActionStyle(null);
-        setMovingStyle({})
-        setMovingStyle2({})
-      }, 800);
-
-      await actionLikeTrigger(data)
+      
     }
 
   }
@@ -207,7 +209,7 @@ export default function Home() {
     if (
       launchingList &&
       launchingList.current &&
-      launchingList.current.length > 1
+      launchingList.current.length > 0
     ) {
       const data = launchingList.current[0]
 

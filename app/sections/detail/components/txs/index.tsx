@@ -3,6 +3,7 @@ import CA from "../ca";
 import styles from "./txs.module.css";
 import { formatAddressLast, httpGet } from "@/app/utils";
 import Big from "big.js";
+import Empty from "@/app/components/empty";
 
 const addressReg = /(\w{2}).+(\w{2})/;
 export function formatAddress(address: string) {
@@ -78,6 +79,8 @@ export default function Txs({ from, data }: any) {
                   </div>
                 })
               }
+
+              {(!list || list.length === 0) && <Empty height={300} text="No Data" />}
             </div>
           </>
         }
