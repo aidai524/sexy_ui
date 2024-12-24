@@ -113,8 +113,8 @@ a {
 }
 
 .adm-toast-mask div.adm-toast-main {
-  transform: translateY(-200%);
-  max-width: 90%;
+  top: 40px !important;
+  max-width: 366px;
   width: 90%;
   margin: 0 auto;
   display: flex;
@@ -123,6 +123,13 @@ a {
   padding: 10px;
   background-color: rgba(0, 0, 0, 1);
   border-radius: 20px;
+}
+
+@media screen and (min-width: 960px) {
+  .adm-toast-mask div.adm-toast-main {
+    margin-left: calc(100vw - 386px);
+    top: 98px !important;
+  }
 }
 
 .adm-toast-mask .adm-toast-main-icon div.adm-toast-icon {
@@ -175,7 +182,6 @@ input::placeholder {
   opacity: 0.6;
 }
 
-
 a.adm-picker-header-button {
   color: #fff;
 }
@@ -198,21 +204,20 @@ div.adm-tab-bar-wrap {
   overflow: visible;
 }
 
-.buy-sell-modal.adm-modal .adm-center-popup-wrap div.adm-center-popup-body{
+.buy-sell-modal.adm-modal .adm-center-popup-wrap div.adm-center-popup-body {
   background-color: transparent;
 }
 
-
-.no-bg.adm-modal .adm-center-popup-wrap div.adm-center-popup-body{
+.no-bg.adm-modal .adm-center-popup-wrap div.adm-center-popup-body {
   background-color: transparent;
 }
 
 .adm-modal .adm-mask {
-  backdrop-filter: blur(10px)
+  backdrop-filter: blur(10px);
 }
 
 .adm-checkbox div.adm-checkbox-icon {
-  border-radius: 2px
+  border-radius: 2px;
 }
 
 .adm-checkbox.adm-checkbox-checked div.adm-checkbox-icon {

@@ -81,9 +81,16 @@ const Item = ({ item, isMobile }: any) => {
     }
     if (item.type === "token_launching") {
       return [
-        `Congratulations, the ${item.content_2} Token you created has received a lot of user interest and has successfully entered the Launching stage.`,
+        `Congratulations, the ${item.content_2} Token you SmokeHot has received a lot of user interest and has successfully entered the Launching stage.`,
         "Click to view Token details.",
         `/detail?id=${item.msg_id}`
+      ];
+    }
+    if (item.type === "token_launching_owner") {
+      return [
+        "Congratulations, you have successfully purchased a Boost privilege.",
+        "Click to view your profile.",
+        "/profile"
       ];
     }
     if (item.type === "token_list") {

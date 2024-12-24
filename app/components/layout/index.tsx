@@ -8,6 +8,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useConfig } from "@/app/store/useConfig";
 import { httpGet } from "@/app/utils";
 import { useEffect, useCallback, useState } from "react";
+import useNotice from "../../hooks/use-notice";
 import {
   getAuthorizationByLocalAndServer,
   initAuthorization
@@ -20,6 +21,7 @@ export default function Layout(props: any) {
   const configStore: any = useConfig()
   const { userInfo, onQueryInfo } = useUserInfo(address);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  useNotice();
 
   useEffect(() => {
     if (address && userInfo) {
