@@ -8,6 +8,8 @@ import TokenCardActions from "../main/token-card-actions";
 import CreateButton from "../main/actions-bar/create-button";
 import { mapDataToProject } from "@/app/utils";
 import LaunchingActions from "@/app/components/action/launching";
+import PointsLabel from "@/app/components/points-label";
+import Empty from "@/app/components/empty/prelaunch";
 import styles from "./index.module.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -106,6 +108,7 @@ export default function Fullscreen({
       />
       <Title type="primary" className={styles.Title} />
       <div className={styles.Actions}>
+        <PointsLabel />
         <button className="button">
           <ShareIcon />
         </button>
@@ -124,6 +127,9 @@ export default function Fullscreen({
         }}
       >
         Click the blank area means ‘unlike’ it, and check the next one.
+      </div>
+      <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
+        <Empty />
       </div>
     </motion.div>
   );

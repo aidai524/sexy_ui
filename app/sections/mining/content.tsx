@@ -17,7 +17,7 @@ export default function Mining({ styles, isMobile, info }: any) {
           info={info}
         />
       </div>
-      <Rank />
+      <Rank list={info?.mining_rank || []} />
       <div className={styles.bottomAni}>
         <div className={styles.boxAni} style={{ width: "200%" }}>
           {[1, 2].map((item) => {
