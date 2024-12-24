@@ -1,4 +1,5 @@
 import { Toast } from "antd-mobile";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export function success(msg: string) {
   Toast.show({
@@ -21,7 +22,7 @@ export function success(msg: string) {
         />
       </svg>
     ),
-    duration: 2000
+    duration: 0
   });
 }
 

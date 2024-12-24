@@ -1,0 +1,33 @@
+.Container {
+  flex-shrink: 0;
+  background-color: #0000004d;
+  padding: 3px 10px 3px 3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 30px;
+}
+
+.Logo {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.Title {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.Desc {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

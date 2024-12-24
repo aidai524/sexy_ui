@@ -35,6 +35,8 @@
 .Banner {
   width: calc(100vw - 32px);
   height: calc(50vw - 16px);
+  max-width: 422px;
+  max-height: 212px;
   margin-top: 10px;
   border-radius: 20px;
 }
