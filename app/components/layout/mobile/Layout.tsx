@@ -8,7 +8,6 @@ import LoginModal from "@/app/components/loginModal";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import Link from "next/link";
-import useJupiter from "@/app/hooks/useJupiter";
 
 function CustomIcon({
   url,
@@ -107,8 +106,6 @@ export default function Component({
       return pathname.indexOf(tab.key) === 0;
     });
   }, [pathname]);
-
-  const { trade } = useJupiter()
 
   return (
     <div className="min-h-screen bg-black text-white">

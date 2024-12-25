@@ -33,7 +33,7 @@ const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig['options'] = {
 
 function getEndpoint(netType: WalletAdapterNetwork) {
   if (netType === WalletAdapterNetwork.Mainnet) {
-    return 'https://mainnet.helius-rpc.com/?api-key=88a744d8-9b40-4c38-bb22-5ff967f522a3'
+    return 'https://swr.xnftdata.com/rpc-proxy/'
   }
 
   return clusterApiUrl(netType)

@@ -24,7 +24,7 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.00000001, 0.00000005];
+const SOL_PERCENT_LIST = [0.01, 0.05, 35];
 
 export default function Create({
   token,
@@ -150,8 +150,7 @@ export default function Create({
             setLaunchChecked(!launchChecked)
           }} checked={launchChecked} />
           <div className={styles.receiveTitle}>
-            Its optional but buying a small amount of coins helps protect your
-            coin from snipers
+          For an additional <strong style={{ color: '#C36EFF' }}>0.1SOL</strong>, you can directly enter the Launching phase
           </div>
         </div>
         <div style={{ marginTop: 18 }}>

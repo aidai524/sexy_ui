@@ -6,34 +6,28 @@ import { useConnection } from '@solana/wallet-adapter-react';
 
 import * as anchor from "@coral-xyz/anchor";
 
-export default function useJupiter() {
+interface Params {
+    tokenAddress: string | undefined
+}
+
+const wsol = 'So11111111111111111111111111111111111111112'
+
+export default function useJupiter({ tokenAddress }: Params) {
     const { connection } = useConnection()
     const { publicKey, walletProvider,  } = useAccount()
 
     const trade = useCallback(async () => {
-        console.log('publicKey:', publicKey)
 
         if (publicKey) {
             const useAccount = await getUserUSDCTokenAccount(publicKey)
-            console.log('useAccount:', useAccount)
-            const swapInfo = await fetchSwapInfo()
+            const swapInfo = await fetchSwapInfo(wsol, tokenAddress as string, '100000')
             const { swapTransaction, lastValidBlockHeight } = await fetchSwapTransaction(publicKey.toBase58(), useAccount.toBase58(), swapInfo)
 
-            console.log(swapTransaction, connection)
-
-            const connection1 = new Connection('https://mainnet.helius-rpc.com/?api-key=88a744d8-9b40-4c38-bb22-5ff967f522a3', 'confirmed')
-
-            console.log( connection1)
+            console.log(swapTransaction, swapInfo)
 
             // const bhInfo = await connection.getLatestBlockhashAndContext({ commitment: "finalized" });
 
             const latestBlockhash = await connection?.getLatestBlockhash();
-
-            console.log('connection', connection, connection1)
-
-            // const signatureBytes = Buffer.from(swapTransaction, 'base64')
-
-            //  const transaction = Transaction.from(signatureBytes)
       
             const vTransaction: any = VersionedTransaction.deserialize(Buffer.from(swapTransaction, 'base64'));
 
@@ -73,8 +67,8 @@ async function getUserUSDCTokenAccount(userWalletPublicKey: PublicKey) {
 
 
 // Step 1: Fetch swap info
-async function fetchSwapInfo() {
-    const response = await fetch('https://quote-api.jup.ag/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=1000000&dynamicSlippage=true&swapMode=ExactIn&onlyDirectRoutes=false&asLegacyTransaction=false&maxAccounts=64&minimizeSlippage=false&tokenCategoryBasedIntermediateTokens=true');
+async function fetchSwapInfo(inputMint: string, outputMint: string, amount: string) {
+    const response = await fetch(`https://quote-api.jup.ag/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&dynamicSlippage=true&swapMode=ExactIn&onlyDirectRoutes=false&asLegacyTransaction=false&maxAccounts=64&minimizeSlippage=false&tokenCategoryBasedIntermediateTokens=true`);
     const data = await response.json();
     return {
         inAmount: data.inAmount,
