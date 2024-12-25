@@ -80,6 +80,13 @@
         gap: 5px;
         font-size: 16px;
 
+        .tokenName {
+          white-space: nowrap;
+          overflow: hidden;
+          max-width: 80px;
+          text-overflow: ellipsis;
+        }
+
         .tokenImg {
           width: 30px;
           height: 30px;

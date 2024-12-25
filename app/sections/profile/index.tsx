@@ -70,7 +70,6 @@ export default memo(function Home(props: any) {
     }
   }, [address, isOther, refreshNum]);
 
-  console.log('address:', address)
 
   return (
     <>
