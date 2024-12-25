@@ -4,7 +4,13 @@ import LaunchingActions from "@/app/components/action/launching";
 import LaunchedActions from "@/app/components/action/launched";
 import styles from "./index.module.css";
 
-export default function ActionsBar({ tokenInfo, onLike, onHate }: any) {
+export default function ActionsBar({
+  tokenInfo,
+  onLike,
+  onHate,
+  onSuperLike,
+  onBoost
+}: any) {
   return (
     <div className={styles.Prelaunch}>
       <TrendsButton id="guid-home-trends" />
