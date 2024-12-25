@@ -11,6 +11,7 @@ import FollowerModal from "./follower-modal";
 import VipModal from "@/app/sections/profile/components/vip-modal";
 
 import { useState } from "react";
+import Refer from '@/app/components/layout/laptop/user/refer';
 
 export default function User({ address, userInfo, onQueryInfo }: any) {
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -84,6 +85,7 @@ export default function User({ address, userInfo, onQueryInfo }: any) {
           setOpenVipModal(false);
         }}
       />
+      <Refer />
     </div>
   );
 }

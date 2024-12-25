@@ -8,6 +8,7 @@ import Txs from "@/app/sections/detail/components/txs";
 import CommentComp from "@/app/components/comment";
 import PanelWrapper from "./panel-wrapper";
 import Chart from "@/app/sections/detail/components/chart";
+import Empty from "@/app/components/empty/prelaunch";
 import { useState } from "react";
 
 export default function Token({
@@ -45,48 +46,53 @@ export default function Token({
           onOpenFull={onOpenFull}
           type={type}
         />
-        {infoData2 && (
-          <div className={styles.Content}>
-            <TokenCard token={infoData2} />
-            {currentTab === "info" && (
-              <PanelWrapper>
-                <InfoPart
-                  showLikes={false}
-                  data={infoData2}
-                  showThumbnailHead={false}
-                  showTop={false}
-                  theme="light"
-                  sepSize={2}
-                />
-                <CommentComp id={infoData2.id} theme="light" />
-              </PanelWrapper>
-            )}
-            {currentTab === "chart" && (
-              <PanelWrapper>
-                <Chart
-                  data={infoData2}
-                  style={{
-                    padding: "10px",
-                    marginRight: "10px",
-                    borderRadius: "10px",
-                    backgroundColor: "#121719",
-                    height: "calc(100vh - 310px)"
-                  }}
-                />
-              </PanelWrapper>
-            )}
-            {currentTab === "buy/sell" && (
-              <PanelWrapper>
-                <BuyAndSell data={infoData2} from="laptop" />
-              </PanelWrapper>
-            )}
-            {currentTab === "txs" && (
-              <PanelWrapper>
-                <Txs from="laptop" />
-              </PanelWrapper>
-            )}
-          </div>
-        )}
+
+        <div className={styles.Content}>
+          {infoData2 ? (
+            <>
+              <TokenCard token={infoData2} />
+              {currentTab === "info" && (
+                <PanelWrapper>
+                  <InfoPart
+                    showLikes={false}
+                    data={infoData2}
+                    showThumbnailHead={false}
+                    showTop={false}
+                    theme="light"
+                    sepSize={2}
+                  />
+                  <CommentComp id={infoData2.id} theme="light" />
+                </PanelWrapper>
+              )}
+              {currentTab === "chart" && (
+                <PanelWrapper>
+                  <Chart
+                    data={infoData2}
+                    style={{
+                      padding: "10px",
+                      marginRight: "10px",
+                      borderRadius: "10px",
+                      backgroundColor: "#121719",
+                      height: "calc(100vh - 310px)"
+                    }}
+                  />
+                </PanelWrapper>
+              )}
+              {currentTab === "buy/sell" && (
+                <PanelWrapper>
+                  <BuyAndSell data={infoData2} from="laptop" />
+                </PanelWrapper>
+              )}
+              {currentTab === "txs" && (
+                <PanelWrapper>
+                  <Txs from="laptop" />
+                </PanelWrapper>
+              )}
+            </>
+          ) : (
+            <Empty />
+          )}
+        </div>
       </div>
       <ActionsBar tokenInfo={infoData2} onLike={like} onHate={hate} />
     </>

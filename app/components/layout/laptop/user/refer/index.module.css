@@ -1,0 +1,93 @@
+.Container {
+  position: absolute;
+  z-index: 1;
+  left: 10px;
+  bottom: 8px;
+  font-family: Unbounded;
+}
+.Entry {
+  position: relative;
+  z-index: 2;
+}
+.Card {
+  width: 408px;
+  height: 93px;
+  background: url("/img/home/refer-entry-bg.svg") no-repeat center / cover;
+  position: absolute;
+  z-index: 1;
+  left: 16px;
+  bottom: 12px;
+}
+.CardInner {
+  padding: 18px 34px 0 34px;
+  width: 100%;
+  height: 100%;
+}
+.ReferBtn {
+  width: 100px;
+  height: 36px;
+  background: url("/img/home/refer-btn-bg.svg") no-repeat center / contain;
+  position: relative;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+}
+.ReferBtnText {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(104deg, #C300FF 16.13%, #FF1A63 77.08%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Rebates {
+  display: flex;
+  align-items: flex-end;
+  flex: 1;
+  gap: 4px;
+  color: #FE1A62;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+  margin-top: 4px;
+}
+.RebatesValue {
+  font-size: 36px;
+  background: linear-gradient(104deg, #D651FF 16.13%, #FF2F71 77.08%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "Lilita One";
+}
+.RebatesUnit {
+  transform: translateY(-5px);
+}
+.Title {
+  color: rgba(0, 0, 0, 0.90);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+}
+.Content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.CloseBtn {
+  width: 14px;
+  height: 14px;
+  background: url("/img/home/refer-close-btn.svg") no-repeat center / contain;
+  position: absolute;
+  right: 14px;
+  top: 14px;
+}

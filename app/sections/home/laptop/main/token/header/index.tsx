@@ -4,6 +4,7 @@ import ShareIcon from "@/app/components/icons/share";
 import ZoomOutIcon from "@/app/components/icons/zoom-out";
 import TypesTabs from "../../../../tabs";
 import styles from "./index.module.css";
+import { shareToX } from "@/app/utils/share";
 
 export default function Header({
   tokenInfo,
@@ -13,6 +14,7 @@ export default function Header({
   onOpenFull
 }: any) {
   const router = useRouter();
+
   return (
     <div className={styles.Container}>
       <TypesTabs
@@ -26,7 +28,15 @@ export default function Header({
           <Tabs currentTab={currentTab} onChangeTab={setCurrentTab} />
         )}
         <div className={styles.Buttons}>
-          <button className="button">
+          <button
+            className="button"
+            onClick={() => {
+              shareToX(
+                tokenInfo.tokenName,
+                "https://sexyfi.dumpdump.fun/detail?id=" + tokenInfo.id
+              );
+            }}
+          >
             <ShareIcon />
           </button>
           <button className="button" onClick={onOpenFull}>

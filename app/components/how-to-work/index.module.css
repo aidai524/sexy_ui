@@ -1,0 +1,95 @@
+.Container {
+  width: 90vw;
+  max-width: 842px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #18131c;
+  padding: 40px 4px 30px 40px;
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.Title {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.HeaderHints {
+  width: 560px;
+  padding: 12px;
+  background-color: #ffafd0;
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+  position: relative;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.36px;
+  margin-top: 8px;
+}
+
+.HeaderHintsAnchor {
+  position: absolute;
+  left: -8px;
+  top: 12px;
+}
+
+.Content {
+  height: 50vh;
+  overflow-y: auto;
+  margin-top: 40px;
+  padding-right: 20px;
+}
+
+.SubTitle {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.Desc {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: Unbounded;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 130%; /* 16.9px */
+}
+
+.Items {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.Item {
+  border-radius: 8px;
+  border: 2px solid rgba(146, 144, 177, 0.4);
+  backdrop-filter: blur(5px);
+  padding: 11px 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: Unbounded;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.ItemActive {
+  border-color: #ff2681;
+  background-color: #ff2681;
+  color: #fff;
+}

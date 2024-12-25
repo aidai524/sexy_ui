@@ -1,0 +1,159 @@
+.Container {
+  width: 681px;
+  height: 536px;
+  background: url("/img/home/refer-modal-bg.svg") no-repeat center / contain;
+  font-family: Unbounded;
+}
+.Title {
+  color: #000;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 30px 40px 0;
+}
+.Earned {
+  width: 601px;
+  height: 261px;
+  background: url("/img/home/refer-modal-content-bg.svg") no-repeat center / contain;
+  padding: 21px 28px 0;
+}
+.Content {
+  padding: 30px 40px 40px;
+}
+.EarnedTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #505050;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+.EarnedTitleText {}
+.EarnedTitleValue {
+  color: #000;
+  font-size: 16px;
+  font-weight: 700;
+}
+.Progress {
+  width: 100%;
+  height: 14px;
+  border-radius: 29px;
+  background: rgba(215, 215, 215, 0.56);
+  margin-top: 111px;
+  position: relative;
+}
+.ProgressValue {
+  width: 0;
+  height: 100%;
+  border-radius: 29px;
+  background: linear-gradient(90deg, #FFE093 0%, #FFD979 100%);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+.NodeList {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  justify-content: center;
+}
+.Node {
+  width: 100%;
+  height: 53px;
+  background: url("/img/home/refer-modal-progress-node.svg") no-repeat center / 53px 53px;
+  transform: translateY(-20px);
+  position: relative;
+}
+.NodeLabel {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  left: 0;
+  bottom: -45px;
+  color: #634F56;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%;
+}
+.NodeReward {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  width: 100%;
+  height: 40px;
+  left: 0;
+  top: -55px;
+}
+.NodeRewardLabel {
+  color: #505050;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 14.4px */
+}
+.NodeRewardContent {
+  display: flex;
+  gap: 1px;
+  color: #505050;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%;
+  white-space: nowrap;
+  justify-content: center;
+}
+.NodeRewardValue {
+  color: #FF2681;
+  font-weight: 600;
+}
+.NodeRewardUnit {}
+.Invite {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.InviteText {
+  color: #505050;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%;
+}
+.InviteTextPrimary {
+  color: #642BFF;
+  font-size: 20px;
+  font-weight: 700;
+}
+.InviteBtn {
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: #FF2681;
+  color: #FFF;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 0 100px;
+  font-family: Unbounded;
+}
