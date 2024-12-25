@@ -27,6 +27,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
     const [isLoading, setIsLoading] = useState(false)
     const [updateNum, setUpdateNum] = useState(1)
     const [isClaimed, setIsClaimed] = useState(false)
+    const [isWithdrawed, setIsWithdrawed] = useState(false)
 
     const { prepaidSolWithdraw, prepaidTokenWithdraw, checkPrePayed } = useTokenTrade({
         tokenName: data.tokenName,
@@ -79,7 +80,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                     isDelay ? <div className={styles.actionContent}>
                         <div className={styles.actionItem}>
                             {
-                                isPrepaid && <div className={styles.withdraw} onClick={async () => {
+                                isPrepaid && (isWithdrawed ? <div className={ styles.withdrawGrey }>Withdraw</div> : <div className={styles.withdraw} onClick={async () => {
                                     setIsLoading(true)
                                     const res = await prepaidSolWithdraw()
 
@@ -87,13 +88,10 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                                         fail('Withdraw fail')
                                     } else {
                                         success('Withdraw success')
-                                        setUpdateNum(updateNum + 1)
-                                        setTimeout(() => {
-                                            setUpdateNum(updateNum + 1)
-                                        }, 1000)
+                                        setIsWithdrawed(true)
                                     }
                                     setIsLoading(false)
-                                }}>{isLoading ? <DotLoading /> : 'withdraw'}</div>
+                                }}>{isLoading ? <DotLoading /> : 'Withdraw'}</div>)
                             }
                         </div>
                     </div> : <div className={styles.actionContent}>
@@ -131,7 +129,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                     </div>
                 ) : <div className={styles.actionContent}>
                     {
-                        isPrepaid && (isClaimed ? <div className={styles.withdrawGrey}>claimed</div> : <div className={styles.withdraw} onClick={async () => {
+                        isPrepaid && (isClaimed ? <div className={styles.withdrawGrey}>Claimed</div> : <div className={styles.withdraw} onClick={async () => {
                             setIsLoading(true)
                             const res = await prepaidTokenWithdraw()
                             if (!res) {
@@ -141,7 +139,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                                 setIsClaimed(true)
                             }
                             setIsLoading(false)
-                        }}>{isLoading ? <DotLoading /> : 'claim'}</div>)
+                        }}>{isLoading ? <DotLoading /> : 'Claim'}</div>)
                     }
                     <LauncdedAction data={data} justPlus={true} />
                 </div>

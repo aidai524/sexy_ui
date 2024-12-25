@@ -86,7 +86,13 @@
     }
 
     .withdrawGrey {
-
+        border: 1px solid rgba(127, 112, 138, 0.5);
+        color: rgba(127, 112, 138, 0.5);
+        padding: 0 10px;
+        border-radius: 22px;
+        height: 28px;
+        display: flex;
+        align-items: center;
     }
   }
 }
