@@ -10,8 +10,6 @@ const Refer = (props: any) => {
   const store = useReferStore();
   const { address } = useAccount();
 
-  console.log(address);
-
   const handleEntryOpen = () => {
     store.setEntryVisible(true);
   };
