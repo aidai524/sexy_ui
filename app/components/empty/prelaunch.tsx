@@ -202,7 +202,7 @@ export default function Prelanuch() {
           color: "#FFFFFFA6"
         }}
       >
-        That's all done...
+        That{"'"}s all done...
       </div>
       <div
         className={styles.Text}

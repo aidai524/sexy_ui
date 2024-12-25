@@ -70,6 +70,7 @@ export default function HowToWork({ open, onClose }: any) {
           >
             {config.map((item: any, i: number) => (
               <button
+                key={i}
                 className={`${styles.Item} ${
                   i === currentIndex && styles.ItemActive
                 }`}
