@@ -4,9 +4,11 @@ import { motion } from 'framer-motion';
 import styles from './index.module.css';
 import { useReferStore } from '@/app/store/useRefer';
 import ReferModal from '@/app/components/layout/laptop/user/refer/modal';
+import { useAccount } from '@/app/hooks/useAccount';
 
-const Refer = () => {
+const Refer = (props: any) => {
   const store = useReferStore();
+  const { address } = useAccount();
 
   const handleEntryOpen = () => {
     store.setEntryVisible(true);
@@ -17,6 +19,11 @@ const Refer = () => {
   };
 
   const handleOpen = () => {
+    if (!address) {
+      //@ts-ignore
+      window.connect();
+      return;
+    }
     store.setVisible(true);
   };
 
@@ -273,7 +280,7 @@ const Refer = () => {
           onClick={handleEntryClose}
         />
       </motion.div>
-      <ReferModal />
+      <ReferModal {...props} />
     </div>
   );
 };
