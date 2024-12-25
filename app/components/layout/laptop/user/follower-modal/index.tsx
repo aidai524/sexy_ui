@@ -41,10 +41,10 @@ export default function FollowerModal({ address, type, open, onClose }: any) {
           />
         </div>
         <div className={styles.ListContainer}>
-          <FollowerList
+          {/* <FollowerList
             list={filteredList}
             followerType={type === "following" ? 2 : 1}
-          />
+          /> */}
         </div>
       </div>
     </Modal>

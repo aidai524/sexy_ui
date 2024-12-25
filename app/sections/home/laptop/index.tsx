@@ -17,9 +17,8 @@ export default function Laptop() {
             },
             content: (
               <>
-                Clicking <span style={{ fontWeight: "bold" }}>"Unlike"</span>{" "}
-                means you don't think much of the project and won't push it for
-                you next time.
+                Clicking <span style={{ fontWeight: "bold" }}>{'"Unlike"'}</span>{" "}
+                {"means you don't think much of the project and won't push it for you next time."}
               </>
             ),
             placement: MaskPlacement.TopLeft
@@ -84,8 +83,7 @@ export default function Laptop() {
             },
             content: (
               <>
-                <span style={{ fontWeight: "bold" }}>Like</span> the projects
-                you love, participate in SexyFi's points{" "}
+                <span style={{ fontWeight: "bold" }}>Like</span>{"the projects you love, participate in SexyFi's points"}{" "}
                 <span style={{ fontWeight: "bold" }}>mining</span> campaign.
               </>
             ),
