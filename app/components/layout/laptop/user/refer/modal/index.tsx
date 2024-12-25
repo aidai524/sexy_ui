@@ -1,12 +1,28 @@
 import styles from './index.module.css';
 import { useReferStore } from '@/app/store/useRefer';
 import Modal from '@/app/components/modal';
+import { fail, success } from '@/app/utils/toast';
+import { useAccount } from '@/app/hooks/useAccount';
 
-const ReferModal = () => {
+const ReferModal = (props: any) => {
+  const { userInfo } = props;
   const store = useReferStore();
+  const { address } = useAccount();
 
   const handleClose = () => {
     store.setVisible(false);
+  };
+
+  const handleCopy = () => {
+    const shareLink = new URL(window?.location?.origin);
+    shareLink.searchParams.set('code', address ?? '');
+    navigator.clipboard.writeText(shareLink.toString())
+      .then(() => {
+        success('Copied share link!');
+      })
+      .catch(err => {
+        fail('Copy failed!');
+      });
   };
 
   return (
@@ -30,13 +46,13 @@ const ReferModal = () => {
                 EARNED
               </div>
               <div className={styles.EarnedTitleValue}>
-                0.8 SOL
+                {userInfo?.referralFee || 0} SOL
               </div>
             </div>
             <div className={styles.Progress}>
-              <div className={styles.ProgressValue} style={{ width: '50%' }} />
+              <div className={styles.ProgressValue} style={{ width: '25%' }} />
               <div className={styles.NodeList}>
-                <div className={styles.Node}>
+                <div className={styles.NodeActive}>
                   <div className={styles.NodeLabel}>
                     Vol.50k
                   </div>
@@ -92,6 +108,7 @@ const ReferModal = () => {
             <button
               type="button"
               className={styles.InviteBtn}
+              onClick={handleCopy}
             >
               Invite now
             </button>

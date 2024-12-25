@@ -85,7 +85,7 @@ export default function User({ address, userInfo, onQueryInfo }: any) {
           setOpenVipModal(false);
         }}
       />
-      <Refer />
+      <Refer userInfo={userInfo} />
     </div>
   );
 }

@@ -75,6 +75,10 @@
   transform: translateY(-20px);
   position: relative;
 }
+.NodeActive {
+  composes: Node;
+  background-image: url("/img/home/refer-modal-progress-node-active.svg");
+}
 .NodeLabel {
   position: absolute;
   width: 100%;
