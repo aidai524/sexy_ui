@@ -9,6 +9,8 @@ import { fail } from "@/app/utils/toast"
 export const FIRST_LIKE_TIMES = 10
 export const SECOND_LIKE_TIMES = 30
 
+const LIKE_ERROR = -1
+
 
 const onLike = async (data: Project) => {
   try {
@@ -18,6 +20,7 @@ const onLike = async (data: Project) => {
         return v.data
       } else if (v.code === 100002) {
         fail("You've run out of like times. You can come back tomorrow")
+        return -1
       }
     }
   } catch (e) {
@@ -37,6 +40,10 @@ const onHate = async (data: Project) => {
 
 export async function actionLikeTrigger(data: Project) {
   const times = await onLike(data)
+  if (times === LIKE_ERROR) {
+    return false
+  }
+
   if (times === FIRST_LIKE_TIMES) {
     if (data) {
       const timeLikeHandler = Modal.show({
@@ -64,6 +71,8 @@ export async function actionLikeTrigger(data: Project) {
       })
     }
   }
+
+  return true
 }
 
 export function actionHateTrigger(data: Project) {

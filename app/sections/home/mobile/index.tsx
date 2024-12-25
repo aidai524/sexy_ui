@@ -185,6 +185,13 @@ export default function Home() {
     ) {
       if (launchingList.current.length > 0) {
         const data = launchingList.current[0]
+        const isError = await actionLikeTrigger(data)
+
+        // like times is over
+        if (isError) {
+          return false
+        }
+
         if (renderLaunchingIndexRef.current === 0) {
           setActionStyle2(styles.like);
         } else {
@@ -199,11 +206,9 @@ export default function Home() {
           setMovingStyle2({})
         }, 800);
   
-        await actionLikeTrigger(data)
+        return true
       }
-      
     }
-
   }
 
   async function hate() {
