@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SmokPanel from "./smoke-panel";
 import type { Project } from "@/app/type";
 import { Modal } from "antd-mobile";
@@ -6,6 +6,7 @@ import BoostVip from "../boost/boostVip";
 import { useUser } from "@/app/store/useUser";
 import { useAccount } from "@/app/hooks/useAccount";
 import BoostSuperNoTimes from "../boost/boostSuperNoTimes";
+import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 
 interface Props {
   token: Project;
@@ -25,6 +26,18 @@ export default function SmokeBtn({
   const { userInfo }: any = useUser();
   const { address } = useAccount();
   const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
+  const { prepaidDelayTime } = usePrepaidDelayTimeStore()
+
+  const isDelay = useMemo(() => {
+    if (prepaidDelayTime && token.createdAt && Date.now() - token.createdAt > prepaidDelayTime) {
+      return true
+    }
+    return false
+  }, [prepaidDelayTime, token])
+
+  const isDisabled = useMemo(() => {
+    return token.isSuperLike || token.account === address || isDelay
+  }, [isDelay, token, address])
 
   const VipModal = (
     <BoostVip
@@ -60,7 +73,7 @@ export default function SmokeBtn({
           return;
         }
 
-        if (token.isSuperLike || token.account === address) {
+        if (isDisabled) {
           return;
         }
 
@@ -90,7 +103,7 @@ export default function SmokeBtn({
           overflow: "hidden"
         }}
       >
-        {token.isSuperLike || token.account === address ? (
+        {isDisabled ? (
           <SmokeIcon isGrey={true} id={id} />
         ) : (
           <SmokeIcon id={id} />

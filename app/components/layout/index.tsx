@@ -13,14 +13,24 @@ import {
   getAuthorizationByLocalAndServer,
   initAuthorization
 } from "@/app/utils";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
   const { address, walletProvider } = useAccount();
   const userStore: any = useUser();
   const configStore: any = useConfig()
+  const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore()
   const { userInfo, onQueryInfo } = useUserInfo(address);
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const { getConfig } = useTokenTrade({
+    tokenName: "",
+    tokenSymbol: "",
+    tokenDecimals: 2
+  });
+
   useNotice();
 
   useEffect(() => {
@@ -42,6 +52,15 @@ export default function Layout(props: any) {
       }
     })
   }, [])
+
+  useEffect(() => {
+    getConfig().then((stateData) => {
+      setPrepaidDelayTime(
+        stateData.prepaidWithdrawDelayTime.toNumber()
+      );
+    });
+  }, []);
+
   const initToken = useCallback(async () => {
     const auth = await getAuthorizationByLocalAndServer();
     if (!auth) {

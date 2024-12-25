@@ -10,10 +10,10 @@ import styles from "./detail.module.css";
 import { useCallback, useEffect, useState } from "react";
 import Tab from "@/app/components/tab";
 import type { Project } from "@/app/type";
-import { useVip } from "@/app/hooks/useVip";
 import { useRouter, useSearchParams } from "next/navigation";
-import { httpGet } from "@/app/utils";
+import { httpGet, sleep } from "@/app/utils";
 import { mapDataToProject } from "@/app/utils/mapTo";
+import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 
 export default function Detail() {
   const params = useSearchParams();
@@ -27,9 +27,8 @@ export default function Detail() {
   const getDetailInfo = useCallback(() => {
     const id = params.get("id");
     if (id) {
-      httpGet("/project", { id }).then((res) => {
+      return httpGet("/project", { id }).then((res) => {
         if (res.code === 0 && res.data) {
-          // console.log(res)
           const infoData = mapDataToProject(res.data[0]);
           console.log('infoData:', infoData)
           setInfoData(infoData);
@@ -43,37 +42,42 @@ export default function Detail() {
   }
 
   return (
-    <div className={styles.main}>
-      <AvatarBack data={infoData} />
+    <SexPullToRefresh
+      onRefresh={async () => {
+        await getDetailInfo()
+      }}>
+      <div className={styles.main}>
+        <AvatarBack data={infoData} />
 
-      {infoData.status === 0 ? (
-        <Info data={infoData} onUpdate={() => {  getDetailInfo() }} />
-      ) : (
-        <Tab
-          activeNode={activeKey}
-          onTabChange={(nodeName) => {
-            setActiveKey(nodeName);
-          }}
-          nodes={[
-            {
-              name: "Info",
-              content: <Info data={infoData} onUpdate={() => { getDetailInfo() }} />
-            },
-            {
-              name: "Chart",
-              content: <Chart data={infoData} />
-            },
-            {
-              name: "Buy/Sell",
-              content: <Trade data={infoData} />
-            },
-            {
-              name: "Txs",
-              content: <Txs data={infoData} />
-            }
-          ]}
-        />
-      )}
-    </div>
+        {infoData.status === 0 ? (
+          <Info data={infoData} onUpdate={() => { getDetailInfo() }} />
+        ) : (
+          <Tab
+            activeNode={activeKey}
+            onTabChange={(nodeName) => {
+              setActiveKey(nodeName);
+            }}
+            nodes={[
+              {
+                name: "Info",
+                content: <Info data={infoData} onUpdate={() => { getDetailInfo() }} />
+              },
+              {
+                name: "Chart",
+                content: <Chart data={infoData} />
+              },
+              {
+                name: "Buy/Sell",
+                content: <Trade data={infoData} />
+              },
+              {
+                name: "Txs",
+                content: <Txs data={infoData} />
+              }
+            ]}
+          />
+        )}
+      </div>
+    </SexPullToRefresh>
   );
 }

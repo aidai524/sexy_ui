@@ -51,7 +51,6 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
         })
     }, [updateNum])
 
-
     return <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
         <div className={styles.tokenMag}>
             <div className={styles.tokenImgContent} onClick={() => {

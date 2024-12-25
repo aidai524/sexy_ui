@@ -2,9 +2,8 @@ import Tab from "./tab";
 import Created from "./created";
 import Held from "./held";
 import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 
 export default function Tabs({
   showHot,
@@ -14,24 +13,10 @@ export default function Tabs({
   from,
   onTabChange
 }: any) {
-  const router = useRouter();
-  const params = useSearchParams();
-  const [prepaidWithdrawDelayTime, setPrepaidWithdrawDelayTime] = useState(0);
   const { set: setProfileTabIndex }: any = useHomeTab();
+  const { prepaidDelayTime } = usePrepaidDelayTimeStore()
 
-  const { getConfig } = useTokenTrade({
-    tokenName: "",
-    tokenSymbol: "",
-    tokenDecimals: 2
-  });
-
-  useEffect(() => {
-    getConfig().then((stateData) => {
-      setPrepaidWithdrawDelayTime(
-        stateData.prepaidWithdrawDelayTime.toNumber()
-      );
-    });
-  }, []);
+  console.log('prepaidDelayTime:', prepaidDelayTime)
 
   const tabs = useMemo(() => {
     const _tabs = [
@@ -46,7 +31,7 @@ export default function Tabs({
             hideHot={true}
             address={address}
             type="created"
-            prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
+            prepaidWithdrawDelayTime={prepaidDelayTime}
             from={from}
           />
         )
@@ -57,7 +42,7 @@ export default function Tabs({
           <Created
             address={address}
             type="hot"
-            prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
+            prepaidWithdrawDelayTime={prepaidDelayTime}
           />
         )
       },
@@ -67,13 +52,13 @@ export default function Tabs({
           <Created
             address={address}
             type="liked"
-            prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
+            prepaidWithdrawDelayTime={prepaidDelayTime}
           />
         )
       }
     ];
     return _tabs;
-  }, [showHot, address, prepaidWithdrawDelayTime]);
+  }, [showHot, address, prepaidDelayTime]);
 
   const activeNode = useMemo(() => {
     return tabs[defaultIndex || 0].name;
@@ -91,14 +76,6 @@ export default function Tabs({
         setProfileTabIndex({
           profileTabIndex: defaultIndex
         });
-
-        // const account = params.get("account")?.toString()
-        // let url = '/profile?tabIndex=' + defaultIndex
-        // if (account) {
-        //   url += ('&account=' + account)
-        // }
-
-        // router.push(url)
       }}
       activeNode={activeNode}
       tabContentStyle={tabContentStyle}

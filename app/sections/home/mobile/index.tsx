@@ -188,9 +188,9 @@ export default function Home() {
         const isError = await actionLikeTrigger(data)
 
         // like times is over
-        if (isError) {
-          return false
-        }
+        // if (isError) {
+        //   return false
+        // }
 
         if (renderLaunchingIndexRef.current === 0) {
           setActionStyle2(styles.like);
