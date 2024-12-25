@@ -7,18 +7,18 @@ import { fail } from "@/app/utils/toast"
 
 
 export const FIRST_LIKE_TIMES = 10
-export const SECOND_LIKE_TIMES = 15
+export const SECOND_LIKE_TIMES = 30
 
 
 const onLike = async (data: Project) => {
   try {
     if (data) {
-      const v = await httpAuthPost("/project/like?id=" + data!.id, {});
-      if (v.code === 0) {
-        return v.data
-      } else if (v.code === 100002) {
-        fail("You've run out of like times. You can come back tomorrow")
-      }
+      // const v = await httpAuthPost("/project/like?id=" + data!.id, {});
+      // if (v.code === 0) {
+      //   return v.data
+      // } else if (v.code === 100002) {
+      //   fail("You've run out of like times. You can come back tomorrow")
+      // }
     }
   } catch (e) {
   }

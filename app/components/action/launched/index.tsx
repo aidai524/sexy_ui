@@ -21,6 +21,8 @@ export default function Action({ data, justPlus = false, from }: Props) {
     ? styles.justPlus
     : styles.action + " " + styles.launched;
 
+console.log('Action-data', data)
+
   if (!data) {
     return;
   }

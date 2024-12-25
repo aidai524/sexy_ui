@@ -1,33 +1,45 @@
 import { shareToX } from "@/app/utils/share";
 import styles from "./likes.module.css";
+import type { Project } from "@/app/type";
 
-export default function Likes({ data }: any) {
+export default function Likes({ data }: { data: Project }) {
   return (
     <div className={styles.box}>
       <div className={styles.likeNums}>
+        {
+          data.DApp === 'pump' && <div className={[styles.pump, styles.likeCustom].join(" ")}>
+          <PumpIcon />
+          <span className={styles.likesNums}>Imported</span>
+        </div>
+        }
 
-        <div className={[styles.likes, styles.likeCustom].join(" ")}>
-          {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
-          <span className={styles.likesNums}>{data.like}</span>
-          /
-          <span className={styles.likesNums}>100</span>
-        </div>
-        <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
-          <SuperLikeIcon />
-          <span className={styles.tips}>
-            Smoky
-            <br />
-            HOT
-          </span>
-          <span className={styles.likesNums}>{data.superLike}</span>
-        </div>
+        {
+          data.DApp === 'sexy' && <>
+            <div className={[styles.likes, styles.likeCustom].join(" ")}>
+              {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
+              <span className={styles.likesNums}>{data.like}</span>
+              /
+              <span className={styles.likesNums}>100</span>
+            </div>
+            <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
+              <SuperLikeIcon />
+              <span className={styles.tips}>
+                Smoky
+                <br />
+                HOT
+              </span>
+              <span className={styles.likesNums}>{data.superLike}</span>
+            </div>
+          </>
+        }
+
         <div className={[styles.holder, styles.likeCustom].join(" ")}>
           <span className={styles.likesNums}>Holders 0</span>
         </div>
 
       </div>
 
-      <div className={ styles.share } onClick={() => {
+      <div className={styles.share} onClick={() => {
         shareToX(data.tokenName, "https://sexyfi.dumpdump.fun//detail?id=" + data.id)
       }}>
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,4 +99,10 @@ function SuperLikeIcon() {
       />
     </svg>
   );
+}
+
+
+
+function PumpIcon() {
+  return <img className={ styles.punmIcon } src="/img/home/pump.png"/>
 }
