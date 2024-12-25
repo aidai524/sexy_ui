@@ -45,6 +45,8 @@ export function useAccount() {
           ...confirmationStrategy,
           ...sendOptions,
         });
+
+        alert(tx)
         // const tx = await connection.sendTransaction(transaction, [payer], {
         //   ...confirmationStrategy,
         //   ...sendOptions,
@@ -60,9 +62,13 @@ export function useAccount() {
           signature: tx,
         });
 
+        alert(JSON.stringify(confirmRes))
+
         if (confirmRes.value.err) {
           return null
         }
+
+        alert(tx)
 
         return tx
 
