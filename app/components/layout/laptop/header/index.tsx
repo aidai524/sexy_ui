@@ -9,9 +9,9 @@ export default function Header({ tab, userInfo }: any) {
     <div className={styles.Container}>
       <TrendBanner />
       <div className={styles.Actions}>
-        <PointsLabel />
+        <PointsLabel id="layout-points-label" />
         <ConnectButton userInfo={userInfo} />
-        <a href="/mining" className="button">
+        <a href="/mining" className="button" id="layout-mining">
           <img src="/img/tabs/tab2-active.svg" />
         </a>
         <Messages />

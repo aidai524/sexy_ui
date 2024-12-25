@@ -39,7 +39,7 @@ export default function Header({
           >
             <ShareIcon />
           </button>
-          <button className="button" onClick={onOpenFull}>
+          <button id="layout-zoom-out" className="button" onClick={onOpenFull}>
             <ZoomOutIcon />
           </button>
         </div>

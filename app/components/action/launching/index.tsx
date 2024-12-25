@@ -9,6 +9,7 @@ import type { Project } from "@/app/type";
 interface Props {
   token: Project | undefined;
   style?: any;
+  ids?: any;
   onLike?: () => void;
   onSuperLike?: () => void;
   onHate?: () => void;
@@ -18,6 +19,7 @@ interface Props {
 export default function Action({
   style,
   token,
+  ids,
   onLike,
   onSuperLike,
   onHate,
@@ -36,6 +38,7 @@ export default function Action({
           onClick={() => {
             onBoost && onBoost();
           }}
+          id={ids?.boost}
         />
       </div>
       <MainAction
@@ -45,6 +48,7 @@ export default function Action({
         onHate={() => {
           onHate && onHate();
         }}
+        ids={ids}
       />
       <div>
         <SmokeBtn
@@ -53,6 +57,7 @@ export default function Action({
           onClick={() => {
             onSuperLike && onSuperLike();
           }}
+          id={ids?.smoke}
         />
       </div>
     </div>

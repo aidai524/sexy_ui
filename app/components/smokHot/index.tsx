@@ -5,25 +5,32 @@ import { Modal } from "antd-mobile";
 import BoostVip from "../boost/boostVip";
 import { useUser } from "@/app/store/useUser";
 import { useAccount } from "@/app/hooks/useAccount";
+import SmokeIcon from "./icon";
 import BoostSuperNoTimes from "../boost/boostSuperNoTimes";
 
 interface Props {
   token: Project;
   isBigIcon?: boolean;
+  id?: string;
   onClick: () => void;
 }
 
-export default function SmokeBtn({ onClick, token, isBigIcon = false }: Props) {
+export default function SmokeBtn({
+  onClick,
+  token,
+  isBigIcon = false,
+  id
+}: Props) {
   const [panelShow, setPanelShow] = useState(false);
   const [vipShow, setVipShow] = useState(false);
-  const { userInfo }: any = useUser()
-  const { address } = useAccount()
+  const { userInfo }: any = useUser();
+  const { address } = useAccount();
   const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
 
   const VipModal = (
     <BoostVip
       onStartVip={() => {
-        setPanelShow(true)
+        setPanelShow(true);
       }}
       onCanceVip={() => {
         setVipShow(false);
@@ -31,29 +38,31 @@ export default function SmokeBtn({ onClick, token, isBigIcon = false }: Props) {
     />
   );
 
-  const BoostSuperNoTimesModal = <BoostSuperNoTimes
-    token={token}
-    usingNum={userInfo?.usingBoostNum}
-    num={userInfo?.superLikeNum}
-    onClose={() => {
-      setBoostSuperNoTimesShow(false)
-    }}
-    type={2}
-  />
+  const BoostSuperNoTimesModal = (
+    <BoostSuperNoTimes
+      token={token}
+      usingNum={userInfo?.usingBoostNum}
+      num={userInfo?.superLikeNum}
+      onClose={() => {
+        setBoostSuperNoTimesShow(false);
+      }}
+      type={2}
+    />
+  );
 
-  const size = isBigIcon ? 48 : 36
+  const size = isBigIcon ? 48 : 36;
 
   return (
     <div
       onClick={() => {
         if (!address) {
           //@ts-ignore
-          window.connect()
-          return
+          window.connect();
+          return;
         }
 
         if (token.isSuperLike || token.account === address) {
-          return
+          return;
         }
 
         setPanelShow(true);
@@ -68,15 +77,25 @@ export default function SmokeBtn({ onClick, token, isBigIcon = false }: Props) {
         //   }
 
         // }
-        
       }}
     >
-      <div style={{ width: size, height: size, overflow: 'hidden' }}>
-        {
-          token.isSuperLike || token.account === address
-          ? <img style={{ width: size }} src="/img/profile/smoke-hot-grey.png" />
-          : <img style={{ width: size }} src="/img/profile/smoke-hot.png" />
-        }
+      <div
+        style={{
+          width: size,
+          height: size,
+          borderRadius: 100,
+          backgroundColor: "rgba(0,0,0,0.4",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflow: "hidden"
+        }}
+      >
+        {token.isSuperLike || token.account === address ? (
+          <SmokeIcon isGrey={true} id={id} />
+        ) : (
+          <SmokeIcon id={id} />
+        )}
       </div>
 
       <Modal
@@ -93,7 +112,7 @@ export default function SmokeBtn({ onClick, token, isBigIcon = false }: Props) {
         token={token}
         show={panelShow}
         onSuccess={() => {
-          onClick && onClick()
+          onClick && onClick();
           setPanelShow(false);
         }}
         onHide={() => {

@@ -8,6 +8,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 interface Props {
   onLike: () => void;
   onHate: () => void;
+  ids?: any;
 }
 
 const likeAnis = [
@@ -17,7 +18,7 @@ const likeAnis = [
   "/img/home/likeAni4.svg"
 ];
 
-export default function MainAction({ onLike, onHate }: Props) {
+export default function MainAction({ onLike, onHate, ids }: Props) {
   const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } =
     useMessage();
   const { address } = useAccount();
@@ -44,7 +45,7 @@ export default function MainAction({ onLike, onHate }: Props) {
           "button"
         ].join(" ")}
       >
-        <DisLike fill={hateTrigger ? "#000000" : "#C7DDEE"} />
+        <DisLike fill={hateTrigger ? "#000000" : "#C7DDEE"} id={ids?.dislike} />
 
         {/* <DisLike fill="#000000" /> */}
       </div>
@@ -73,7 +74,7 @@ export default function MainAction({ onLike, onHate }: Props) {
           "button"
         ].join(" ")}
       >
-        <Like />
+        <Like id={ids?.like} />
         {likeAnis.map((item, index) => {
           return (
             <div
@@ -93,7 +94,7 @@ export default function MainAction({ onLike, onHate }: Props) {
   );
 }
 
-function DisLike({ fill = "#C7DDEE" }: { fill?: string }) {
+function DisLike({ fill = "#C7DDEE", id }: { fill?: string; id?: string }) {
   return (
     <svg
       width="30"
@@ -101,6 +102,7 @@ function DisLike({ fill = "#C7DDEE" }: { fill?: string }) {
       viewBox="0 0 30 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      id={id}
     >
       <path
         fillRule="evenodd"
@@ -112,7 +114,7 @@ function DisLike({ fill = "#C7DDEE" }: { fill?: string }) {
   );
 }
 
-function Like() {
+function Like({ id }: any) {
   return (
     <div className={styles.likeSvg}>
       <svg
@@ -121,6 +123,7 @@ function Like() {
         viewBox="0 0 30 26"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        id={id}
       >
         <path
           d="M8.25 0C3.69365 0 0 3.69368 0 8.25C0 16.5 9.75 24 15 25.7446C20.25 24 30 16.5 30 8.25C30 3.69368 26.3063 0 21.75 0C18.9598 0 16.493 1.38518 15 3.50535C13.507 1.38518 11.0402 0 8.25 0Z"

@@ -1,0 +1,77 @@
+.Mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+}
+
+.Panel {
+  width: 359px;
+  border-radius: 20px;
+  background: #fff3f8;
+  position: relative;
+  padding: 24px;
+}
+
+.Button {
+  border-radius: 8px;
+  background: #ff2681;
+  padding: 7px 12px;
+  color: #fff;
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  float: right;
+}
+
+.Text {
+  color: #202020;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%; /* 24px */
+}
+
+.IconWrapper {
+  background-color: #00000066;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border: 2px solid #ff008a80;
+}
+
+.IconInner {
+  border: 2px solid #ff008a;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ButtonWrapper {
+  border-radius: 40px;
+  border: 2px solid #ff008a80;
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.ButtonInner {
+  border: 2px solid #ff008a;
+  border-radius: 40px;
+  margin: 4px;
+  box-sizing: border-box;
+}
