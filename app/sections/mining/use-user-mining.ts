@@ -10,7 +10,7 @@ export default function useUserMining() {
   const onQuery = async () => {
     try {
       setLoading(true);
-      const response = await httpAuthGet("/account/mint");
+      const response = await httpAuthGet("/account/mining");
       setInfo(response.data);
     } catch (err) {
     } finally {

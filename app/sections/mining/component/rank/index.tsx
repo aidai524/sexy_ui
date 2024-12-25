@@ -3,7 +3,7 @@ import Avatar from "./avatar";
 import { useUserAgent } from "@/app/context/user-agent";
 import { numberFormatter } from "@/app/utils/common";
 
-export default function Rank({ list }: any) {
+export default function Rank({ list, rank }: any) {
   const { isMobile } = useUserAgent();
   return (
     <div className={styles.Container}>
@@ -11,23 +11,26 @@ export default function Rank({ list }: any) {
         <div className={styles.Title}>Mining Rank</div>
         <div className={styles.YourRank}>
           <span>Your Rank:</span>
-          <div className={styles.YourRankTag}>123</div>
+          <div className={styles.YourRankTag}>{rank || "-"}</div>
         </div>
       </div>
       <div className={styles.List}>
         {list.map((item: any, index: number) => (
           <div className={styles.Item} key={index}>
             <div className={styles.ItemLeft}>
-              <Avatar rank={index + 1} />
+              <Avatar rank={index + 1} src={item.account_data.icon} />
               <div>
-                <div className={styles.ItemTitle}>Party Girl</div>
+                <div className={styles.ItemTitle}>{item.account_data.name}</div>
                 {isMobile && (
-                  <div className={styles.ItemDesc}>245 followers</div>
+                  <div className={styles.ItemDesc}>
+                    {item.account_data.followers} followers
+                  </div>
                 )}
               </div>
               {!isMobile && (
                 <div className={styles.ItemTitle} style={{ marginLeft: 60 }}>
-                  245 <span style={{ color: "#FFFFFFB5" }}>followers</span>
+                  {item.account_data.followers}{" "}
+                  <span style={{ color: "#FFFFFFB5" }}>followers</span>
                 </div>
               )}
             </div>
