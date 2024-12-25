@@ -330,8 +330,6 @@ export function useTokenTrade({
 
         const program = new Program<any>(idl, programId, walletProvider as any);
 
-        console.log('program:', program)
-
         const buyInstruction = await program.methods.buyTokenWithFixedOutput(
             {
                 outputAmount: new anchor.BN(outputAmount),
@@ -552,7 +550,7 @@ export function useTokenTrade({
             .add(instruction2)
             .add(createInfoTransition)
 
-        
+
 
         if (launching) {
             const instructions = await call('launching', keys.tokenInfo.toBase58(), true)
@@ -564,81 +562,145 @@ export function useTokenTrade({
         }
 
         const confirmationStrategy: any = {
-            skipPreflight: false,
+            skipPreflight: true,
             maxRetries: 10,
             preflightCommitment: 'finalized',
         };
+
+        if (amount && Number(amount) > 0) {
+            console.log(11111)
+            const prepaidInstructions = await prePaid(amount, true)
+            if (prepaidInstructions) {
+                console.log('prepaidInstructions:', prepaidInstructions)
+                transaction.add(prepaidInstructions as any)
+            }
+            
+        }
 
         const v3 = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
 
         console.log('v3:', v3)
 
-        if (amount && Number(amount) > 0) {
-            const prepaidTrans = await prePaid(amount, tokenName, tokenSymbol, true)
-        }
-
         return v3
 
     }, [connection, walletProvider, programId, wsol])
 
-    const prePaid = useCallback(async (amount: number | string, tokenName: string, tokenSymbol: string, justTransaction: boolean = false) => {
-        let val
-        val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
-        if (val.code !== 0) {
-            throw 'fetch prepaid data error'
-        }
+    const prePaid = useCallback(async (amount: number | string, justTransaction: boolean = false) => {
 
-        const signatureBytes = Buffer.from(val.data, 'base64')
+        const keysAndIns = await getKeys()
 
-        const serverTransaction = Transaction.from(signatureBytes)
-
-        if (justTransaction) {
-            const hashServerTransaction = await walletProvider.signAndSendTransaction(serverTransaction)
-            console.log('hash', hashServerTransaction)
+        if (!keysAndIns) {
             return
         }
 
+        const { keys, instructions } = keysAndIns
+
+
         const transaction = new Transaction();
 
-        console.log('val:', val)
+        instructions.forEach((ins) => {
+            ins && transaction.add(ins)
+        })
 
-        const userSolAccount = await _getOrCreateAssociatedTokenAccount(
-            wsol,
-            walletProvider.publicKey!,
+        const program = new Program<any>(idl, programId, walletProvider as any);
+
+        const paidRecord = PublicKey.findProgramAddressSync(
+            [Buffer.from("prepaid_record"), keys.pool.toBuffer(), walletProvider.publicKey!.toBuffer()],
+            programId
         );
 
-        if (!userSolAccount) {
-            throw 'Create userSolAccount failed'
+        const protocolSolAccount = await _getOrCreateAssociatedTokenAccount(wsol, keys.launchpad)
+
+        if (!protocolSolAccount) {
+            throw 'Create protocolSolAccount failed'
         }
 
-        if (userSolAccount.instruction) {
-            transaction.add(userSolAccount.instruction)
+        if (protocolSolAccount.instruction) {
+            transaction.add(protocolSolAccount.instruction)
+        }
+
+        const prepaidInstruction = await program.methods.prepaid(new anchor.BN(amount)).accounts({
+            ...keys,
+            paidRecord: paidRecord[0],
+            protocolWsolAccount: protocolSolAccount.address
+        }).instruction()
+
+        if (justTransaction) {
+            return prepaidInstruction
         }
 
         const instruction1 = SystemProgram.transfer({
             fromPubkey: walletProvider.publicKey!,
-            toPubkey: userSolAccount?.address,
+            toPubkey: keys.userWsolAccount,
             lamports: Number(amount),
         })
-        const instruction2 = createSyncNativeInstruction(userSolAccount?.address, TOKEN_PROGRAM_ID)
+        const instruction2 = createSyncNativeInstruction(keys.userWsolAccount, TOKEN_PROGRAM_ID)
 
-        console.log('serverTransaction:', serverTransaction)
+        transaction.add(instruction1).add(instruction2)
 
-        transaction
-            .add(instruction1)
-            .add(instruction2)
-            // .add(serverTransaction)
+        transaction.add(prepaidInstruction)
 
-        console.log('transaction:', transaction)    
+        const hash2 = await walletProvider.signAndSendTransaction(transaction)
 
-        const hash1 = await walletProvider.signAndSendTransaction(transaction)
+        return hash2
 
-        // console.log('hash', hash1)
+        // let val
+        // val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
+        // if (val.code !== 0) {
+        //     throw 'fetch prepaid data error'
+        // }
 
-        const hash2 = await walletProvider.signAndSendTransaction(serverTransaction)
-        console.log('hash', hash2)
+        // const signatureBytes = Buffer.from(val.data, 'base64')
 
-        return hash1   
+        // const serverTransaction = Transaction.from(signatureBytes)
+
+        // if (justTransaction) {
+        //     const hashServerTransaction = await walletProvider.signAndSendTransaction(serverTransaction)
+        //     console.log('hash', hashServerTransaction)
+        //     return
+        // }
+
+        // const transaction = new Transaction();
+
+        // console.log('val:', val)
+
+        // const userSolAccount = await _getOrCreateAssociatedTokenAccount(
+        //     wsol,
+        //     walletProvider.publicKey!,
+        // );
+
+        // if (!userSolAccount) {
+        //     throw 'Create userSolAccount failed'
+        // }
+
+        // if (userSolAccount.instruction) {
+        //     transaction.add(userSolAccount.instruction)
+        // }
+
+        // const instruction1 = SystemProgram.transfer({
+        //     fromPubkey: walletProvider.publicKey!,
+        //     toPubkey: userSolAccount?.address,
+        //     lamports: Number(amount),
+        // })
+        // const instruction2 = createSyncNativeInstruction(userSolAccount?.address, TOKEN_PROGRAM_ID)
+
+
+
+        // transaction
+        //     .add(instruction1)
+        //     .add(instruction2)
+        //     // .add(serverTransaction)
+
+        // console.log('transaction:', transaction)    
+
+        // // const hash1 = await walletProvider.signAndSendTransaction(transaction)
+
+        // // console.log('hash', hash1)
+
+        // const hash2 = await walletProvider.signAndSendTransaction(serverTransaction)
+        // console.log('hash', hash2)
+
+        return hash2
     }, [programId, walletProvider, connection, wsol])
 
     const prepaidSolWithdraw = useCallback(async () => {
@@ -702,8 +764,10 @@ export function useTokenTrade({
             const transaction = new Transaction();
 
             const prepaidTokenWithdrawInstruction = await program.methods.prepaidTokenWithdraw(
-                new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
-                keys.proxySolAccount
+                {
+                    recommender: new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+                    proxy: keys.proxySolAccount
+                }
             ).accounts({
                 ...keys,
                 paidRecord: paidRecord[0]
