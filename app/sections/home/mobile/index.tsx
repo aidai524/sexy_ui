@@ -65,6 +65,8 @@ export default function Home() {
     updateCurrentToken: updateLaunchedToken,
   } = useData("launching");
 
+  console.log('launchedList:', launchedList)
+
   useSwip(
     containerPreLaunchRef,
     () => {

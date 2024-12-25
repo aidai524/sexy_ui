@@ -108,7 +108,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                                 {
                                     timeFormat ? <div className={styles.whiteAmount}>
                                         <div className={styles.timeFormat}>{timeFormat}</div>
-                                    </div> : <div style={{ transform: 'translateX(-30%)' }}></div>
+                                    </div> : <div style={{ transform: 'translateX(-30%)', visibility: 'hidden' }}>-</div>
                                 }
                             </div>
                         </div>

@@ -559,7 +559,7 @@ export function useTokenTrade({
                 console.log('prepaidInstructions:', prepaidInstructions)
                 transaction.add(prepaidInstructions as any)
             }
-            
+
         }
 
         const v3 = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
@@ -831,7 +831,7 @@ export function useTokenTrade({
     }, [programId, walletProvider, connection, tokenName, tokenSymbol, tokenDecimals, loadData, reFreshBalnace])
 
     useEffect(() => {
-        if (connection && loadData) {
+        if (connection && loadData && walletProvider.publicKey) {
             connection.getBalance(walletProvider.publicKey!).then(res => {
                 if (res) {
                     setSolBalance(new Big(res).div(10 ** 9).toString())

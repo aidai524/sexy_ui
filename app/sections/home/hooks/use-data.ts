@@ -26,7 +26,10 @@ export default function useData(launchType: string) {
           setHasNext(false);
         }
 
-        if (res.code !== 0 || !res.data?.list) return;
+        if (res.code !== 0 || !res.data?.list) {
+          setisLoading(false);
+          return
+        }
         // res.data.list = []
         let _list: any = [];
         if (isInit) {
