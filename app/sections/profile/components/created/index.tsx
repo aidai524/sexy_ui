@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Token from "../token";
-import { httpGet, mapDataToProject } from "@/app/utils";
+import { httpGet } from "@/app/utils";
 import Empty from "../empty";
 import type { Project } from "@/app/type";
 import { useUser } from "@/app/store/useUser";
 import useUserInfo from "../../../../hooks/useUserInfo";
-import { useAccount } from "@/app/hooks/useAccount";
+import { InfiniteScroll, List } from 'antd-mobile'
+import { mapDataToProject } from "@/app/utils/mapTo";
+import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 
 const urls: any = {
   created: "/project/account/list",
   hot: "/project/super_like/list",
   liked: "/project/like/list"
 };
+
+const LIMIT = 10
 
 export default function Created({
   address,
@@ -22,18 +26,33 @@ export default function Created({
 }: any) {
   const [list, setList] = useState<Project[]>([]);
   const [refresh, setRefresh] = useState<number>(1);
+  const [hasMore, setHasMore] = useState(false)
+  const [offset, setOffset] = useState(0)
   const userStore: any = useUser();
+
   const { fecthUserInfo } = useUserInfo(undefined);
 
   useEffect(() => {
     if (address) {
-      httpGet(urls[type], { address, limit: 20 }).then((res) => {
-        if (res.code === 0 && res.data?.list?.length > 0) {
-          setList(res.data?.list.map(mapDataToProject));
-        }
-      });
+      loadMore()
     }
   }, [address, type, refresh]);
+
+  const loadMore = useCallback(() => {
+      return httpGet(urls[type], { address, limit: LIMIT, offset }).then((res) => {
+        setHasMore(res.data?.has_next_page || false)
+        if (res.code === 0 && res.data?.list?.length > 0) {
+          const newMapList = res.data?.list.map(mapDataToProject)
+          const newList = [
+            ...list,
+            ...newMapList,
+          ]
+
+          setOffset(newList.length)
+          setList(newList);
+        }
+      });
+  }, [address, type, offset, list])
 
   if (list.length === 0) {
     return <Empty msg={"No sexy coins " + type + " yet"} />;
@@ -63,6 +82,8 @@ export default function Created({
           />
         );
       })}
+
+      <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} />
     </div>
   );
 }

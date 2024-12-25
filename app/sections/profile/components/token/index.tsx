@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styles from './token.module.css'
-import { Modal } from 'antd-mobile'
+import { DotLoading, Modal } from 'antd-mobile'
 import BoostJust from '@/app/components/boost/boostJust'
 import type { Project } from '@/app/type'
 import { timeAgo } from '@/app/utils'
@@ -24,6 +24,8 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
     const router = useRouter()
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
     const [isPrepaid, setIsPrepaid] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [updateNum, setUpdateNum] = useState(1)
 
     const { prepaidSolWithdraw, prepaidTokenWithdraw, checkPrePayed } = useTokenTrade({
         tokenName: data.tokenName,
@@ -45,7 +47,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                 setIsPrepaid(true)
             }
         })
-    }, [])
+    }, [updateNum])
 
 
     return <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
@@ -77,13 +79,20 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                         <div className={styles.actionItem}>
                             {
                                 isPrepaid && <div className={styles.withdraw} onClick={async () => {
+                                    setIsLoading(true)
                                     const res = await prepaidSolWithdraw()
+
                                     if (!res) {
                                         fail('Withdraw fail')
                                     } else {
                                         success('Withdraw success')
+                                        setUpdateNum(updateNum + 1)
+                                        setTimeout(() => {
+                                            setUpdateNum(updateNum + 1)
+                                        }, 1000)
                                     }
-                                }}>withdraw</div>
+                                    setIsLoading(false)
+                                }}>{isLoading ? <DotLoading /> : 'withdraw'}</div>
                             }
                         </div>
                     </div> : <div className={styles.actionContent}>
@@ -122,13 +131,19 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                 ) : <div className={styles.actionContent}>
                     {
                         isPrepaid && <div className={styles.withdraw} onClick={async () => {
+                            setIsLoading(true)
                             const res = await prepaidTokenWithdraw()
                             if (!res) {
                                 fail('Cliam fail')
                             } else {
                                 success('Cliam success')
+                                setUpdateNum(updateNum + 1)
+                                setTimeout(() => {
+                                    setUpdateNum(updateNum + 1)
+                                }, 1000)
                             }
-                        }}> cliam</div>
+                            setIsLoading(false)
+                        }}>{isLoading ? <DotLoading /> : 'cliam'}</div>
                     }
                     <LauncdedAction data={data} justPlus={true} />
                 </div>

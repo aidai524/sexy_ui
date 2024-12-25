@@ -57,5 +57,6 @@ export interface UserInfo {
     education?: string;
     vipExpirationTime?: number;
     vipStartTime?: number;
+    isFollower?: boolean;
 }
 

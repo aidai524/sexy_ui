@@ -9,7 +9,6 @@ export default function useFollow(account?: string) {
 
 
     useEffect(() => {
-        console.log('freshNum:', account, freshNum)
         if (account) {
             httpAuthGet('/account/follower/list', {
                 address: account,

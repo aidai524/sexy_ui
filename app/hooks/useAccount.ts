@@ -70,7 +70,7 @@ export function useAccount() {
           if (status?.value?.confirmationStatus === 'finalized' || status?.value?.err) {
             done = true;
           } else {
-            await sleep(2000);
+            await sleep(1000);
           }
         }
 

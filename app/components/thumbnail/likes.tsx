@@ -101,8 +101,6 @@ function SuperLikeIcon() {
   );
 }
 
-
-
 function PumpIcon() {
   return <img className={ styles.punmIcon } src="/img/home/pump.png"/>
 }

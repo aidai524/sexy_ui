@@ -1,7 +1,8 @@
-import { httpGet, httpAuthPost, mapDataToProject } from "@/app/utils";
+import { httpGet, httpAuthPost } from "@/app/utils";
 import { useEffect, useState, useRef, useCallback } from "react";
 import type { Project } from "@/app/type";
 import { getAll, setAll } from "@/app/utils/listStore";
+import { mapDataToProject } from "@/app/utils/mapTo";
 
 const limit = 10;
 const left_num = 3;

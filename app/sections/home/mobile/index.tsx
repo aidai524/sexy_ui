@@ -14,11 +14,12 @@ import Tabs from "../tabs";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import useSwip from "./hooks/useSwip";
-import { httpAuthGet, mapDataToProject } from "@/app/utils";
+import { httpAuthGet } from "@/app/utils";
 import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { Modal } from "antd-mobile";
 import SeenAll from "@/app/components/timesLike/seenAll";
+import { mapDataToProject } from "@/app/utils/mapTo";
 
 export default function Home() {
   const router = useRouter();

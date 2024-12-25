@@ -11,8 +11,12 @@ import useFollow from '../hooks/useFollow'
 export default function Follower() {
     const params = useSearchParams()
     const [account] = useState(params.get('account')?.toString())
-    const { userInfo } = useUserInfo(account)
-    const { followerList, followingList, update } = useFollow(account)
+    const { userInfo, onQueryInfo } = useUserInfo(account)
+
+    const [refeashFollowers, setRefeashFollowers] = useState(0)
+    const [refeashFollowing, setRefeashFollowing] = useState(0)
+
+    console.log('userInfo:', userInfo)
 
     return <div className={ styles.main }>
         <div className={ styles.header }>
@@ -22,15 +26,17 @@ export default function Follower() {
 
         <Tab nodes={[
             {
-                name: followerList.length + ' Followers',
-                content: <FollowerList list={followerList} followerType={1} onAction={() => {
-                    update()
+                name: (userInfo?.followers || 0) + ' Followers',
+                content: <FollowerList refresh={refeashFollowers} currentUser={userInfo} followerType={1} onAction={() => {
+                    onQueryInfo()
+                    setRefeashFollowing(refeashFollowing + 1)
                 }}/>
             },
             {
-                name: followingList.length + ' Following',
-                content: <FollowerList list={followingList} followerType={2} onAction={() => {
-                    update()
+                name: (userInfo?.following || 0) + ' Following',
+                content: <FollowerList refresh={refeashFollowing} currentUser={userInfo} followerType={2} onAction={() => {
+                    onQueryInfo()
+                    setRefeashFollowers(refeashFollowers + 1)
                 }}/>
             }
         ]}/>

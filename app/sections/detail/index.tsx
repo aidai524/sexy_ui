@@ -1,5 +1,4 @@
 "use client";
-import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import Info from "./components/info/detail";
 import Chart from "./components/chart/index";
 import Trade from "./components/trade/index";
@@ -13,7 +12,8 @@ import Tab from "@/app/components/tab";
 import type { Project } from "@/app/type";
 import { useVip } from "@/app/hooks/useVip";
 import { useRouter, useSearchParams } from "next/navigation";
-import { httpGet, mapDataToProject } from "@/app/utils";
+import { httpGet } from "@/app/utils";
+import { mapDataToProject } from "@/app/utils/mapTo";
 
 export default function Detail() {
   const params = useSearchParams();

@@ -1,10 +1,7 @@
 import {
     PublicKey,
     SystemProgram,
-    TransactionInstruction,
-    TransactionSignature,
     Transaction,
-    SYSVAR_RENT_PUBKEY,
     ComputeBudgetProgram,
 } from '@solana/web3.js';
 import Big from 'big.js'
@@ -14,9 +11,6 @@ import { getOrCreateAssociatedTokenAccount, getAssociatedTokenAddressSync, getAc
 import { useCallback, useEffect, useMemo, useState } from "react";
 import idl from './meme_launchpad.json'
 import { BN, Program } from '@coral-xyz/anchor';
-import * as borsh from 'borsh';
-import bs58 from 'bs58';
-import { httpAuthPost, sleep } from '../utils';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useAccount } from '@/app/hooks/useAccount';
 import { useVip } from './useVip';
@@ -170,12 +164,10 @@ export function useTokenTrade({
             pool[0],
         );
 
-
-        console.log('poolTokenAccount:', poolTokenAccount)
-
         if (!poolTokenAccount) {
             return null
         }
+
         instructions.push(poolTokenAccount.instruction)
 
         const referralRecord = PublicKey.findProgramAddressSync(
@@ -193,8 +185,6 @@ export function useTokenTrade({
             }
         } catch (e) {
         }
-
-        console.log('accountInfo:', referralUser)
 
         const referralFeeRateRecord = PublicKey.findProgramAddressSync(
             [Buffer.from("referral_fee_rate_record"), state[0].toBuffer(), referralUser.toBuffer()],
@@ -346,9 +336,6 @@ export function useTokenTrade({
         })
 
         transaction.add(instruction1).add(instruction2).add(buyInstruction)
-
-        // buyInstruction.recentBlockhash = latestBlockhash!.blockhash
-        // buyInstruction.feePayer = walletProvider.publicKey!
 
         const confirmationStrategy: any = {
             skipPreflight: true,
@@ -543,14 +530,12 @@ export function useTokenTrade({
             )
             .add(
                 ComputeBudgetProgram.setComputeUnitPrice({
-                    microLamports: 2000000,
+                    microLamports: 20000,
                 })
             )
             .add(instruction1)
             .add(instruction2)
             .add(createInfoTransition)
-
-
 
         if (launching) {
             const instructions = await call('launching', keys.tokenInfo.toBase58(), true)

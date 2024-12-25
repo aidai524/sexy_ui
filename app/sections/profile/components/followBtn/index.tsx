@@ -24,9 +24,9 @@ export default function FollowBtn({ address, isFollower, onSuccess }: Props) {
             }
             setFollowLoading(true);
             await follow(address);
-            onSuccess && onSuccess();
             setTimeout(() => {
               setFollowLoading(false);
+              onSuccess && onSuccess();
             }, 1200);
           }}
         >
@@ -40,9 +40,9 @@ export default function FollowBtn({ address, isFollower, onSuccess }: Props) {
             }
             setFollowingLoading(true);
             await unFollow(address);
-            onSuccess && onSuccess();
             setTimeout(() => {
               setFollowingLoading(false);
+              onSuccess && onSuccess();
             }, 1200);
           }}
           className={
