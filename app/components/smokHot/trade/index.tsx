@@ -106,8 +106,7 @@ export default function Trade({ token, panelStyle, modalShow, onSuccess }: Props
                                     const inputNum = new Big(inputVal).mul(10 ** 9).toFixed(0);
                                     await prePaid(
                                         inputNum,
-                                        token.tokenName,
-                                        token.tokenSymbol || token.tokenName.toUpperCase()
+                                        false,
                                     );
                                     setIsLoading(false);
                                     success("Smoke like success");

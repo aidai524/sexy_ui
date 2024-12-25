@@ -34,7 +34,9 @@ export default function useUserInfo(address: string | undefined) {
           vipType: res.data.vip_type,
           education: res.data.education,
           vipExpirationTime: res.data.vip_expiration_time,
-          vipStartTime: res.data.vip_start_time
+          vipStartTime: res.data.vip_start_time,
+          proxyFee: res.data.proxy_fee,
+          referralFee: res.data.referral_fee,
         };
 
         return userInfo;

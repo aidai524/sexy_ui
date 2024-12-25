@@ -44,7 +44,6 @@ export default function useData(launchType: string) {
           setTimeout(() => {
             setisLoading(false);
           }, 10)
-          
         }
       }
     );
@@ -73,24 +72,33 @@ export default function useData(launchType: string) {
       return;
     }
 
-    renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
-
-    setRenderIndex(renderIndexRef.current);
+    
 
     setTimeout(() => {
       if (list.length > 0) {
-        const currentToken = list[1];
-        if (renderIndexRef.current === 1) {
-          setInfoData2(mapDataToProject(currentToken));
-        } else {
-          setInfoData(mapDataToProject(currentToken));
+        if (list.length > 1) {
+          renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
+          setRenderIndex(renderIndexRef.current);
+          const currentToken = list[1];
+          if (renderIndexRef.current === 1) {
+            setInfoData2(mapDataToProject(currentToken));
+          } else {
+            setInfoData(mapDataToProject(currentToken));
+          }
         }
+        
+        console.log('list:', list)
 
         if (list.length === 1) {
-          if (renderIndexRef.current === 1) {
+          // renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
+          // setRenderIndex(renderIndexRef.current);
+          const currentToken = list[0];
+          if (renderIndexRef.current === 0) {
+            setInfoData2(mapDataToProject(currentToken))
             setInfoData(undefined);
           } else {
             setInfoData2(undefined);
+            setInfoData(mapDataToProject(currentToken))
           }
         }
       } else {
@@ -126,9 +134,9 @@ export default function useData(launchType: string) {
     const list = getAll(launchType);
 
     if (list && list.length > 0) {
+      listRef.current = list;
       if (list.length === 1) {
         onQueryList(false).then(() => {
-          listRef.current = list;
           if (listRef.current) {
             renderTwoSimple(listRef.current);
           }
@@ -139,7 +147,6 @@ export default function useData(launchType: string) {
         onQueryList(false);
       } else {
         renderTwoSimple(list);
-        listRef.current = list;
         setFullList(JSON.parse(JSON.stringify(list)));
       }
       setisLoading(false);
@@ -147,6 +154,8 @@ export default function useData(launchType: string) {
       onQueryList(true);
     }
   }, []);
+
+  // console.log('infoData', infoData, infoData2)
 
   return {
     infoData,

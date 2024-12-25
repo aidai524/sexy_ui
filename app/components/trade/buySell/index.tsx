@@ -81,10 +81,8 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
   }, [initType])
 
   const {
-    buyToken,
     buyTokenWithFixedOutput,
     sellToken,
-    sellTokenWithFixedOutput,
     getRate,
     tokenBalance,
     solBalance,
@@ -474,6 +472,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                 }
                 
               } catch (e) {
+                console.log(e)
                 setIsLoading(false);
                 fail("Transtion fail");
               }

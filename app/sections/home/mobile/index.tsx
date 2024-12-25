@@ -212,7 +212,6 @@ export default function Home() {
       launchingList.current.length > 0
     ) {
       const data = launchingList.current[0]
-
       if (renderLaunchingIndexRef.current === 0) {
         setActionStyle2(styles.hate);
       } else {
@@ -236,7 +235,7 @@ export default function Home() {
     if (
       launchedList &&
       launchedList.current &&
-      launchedList.current.length > 1
+      launchedList.current.length > 0
     ) {
 
       if (scrollRef.current) {
@@ -245,6 +244,7 @@ export default function Home() {
 
       scrollRef.current = true
       const style = type === "like" ? styles.like : styles.hate;
+
       if (renderLaunchedIndexRef.current === 0) {
         setActionStyle2(style);
       } else {
@@ -405,7 +405,7 @@ export default function Home() {
             )}
           </div>
 
-          {(infoDataLaunched2 || infoDataLaunched) && <LaunchedAction data={renderLaunchedIndex === 0 ? infoDataLaunched2 : infoDataLaunched} />}
+          {(!!infoDataLaunched2 || !!infoDataLaunched) && <LaunchedAction data={renderLaunchedIndex === 0 ? infoDataLaunched2 : infoDataLaunched} />}
         </>
       )}
     </div>

@@ -101,7 +101,7 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
                     runNexting(0)
                 }
 
-                moveTime = Date.now()
+                // moveTime = Date.now()
             });
             
 

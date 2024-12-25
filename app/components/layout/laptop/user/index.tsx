@@ -12,11 +12,15 @@ import VipModal from "@/app/sections/profile/components/vip-modal";
 
 import { useState } from "react";
 import Refer from '@/app/components/layout/laptop/user/refer';
+import { useHomeTab } from "@/app/store/useHomeTab";
+
+
 
 export default function User({ address, userInfo, onQueryInfo }: any) {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [followModalType, setFollowModalType] = useState("");
   const [openVipModal, setOpenVipModal] = useState(false);
+  const { profileTabIndex, set: setProfileTabIndex }: any = useHomeTab();
 
   return (
     <div className={styles.Container}>
@@ -43,16 +47,17 @@ export default function User({ address, userInfo, onQueryInfo }: any) {
             }}
           />
           {address && <Address address={address} />}
-          <HotBoost
+          {/* <HotBoost
             onMoreClick={() => {
               setOpenVipModal(true);
             }}
             style={{ margin: "10px" }}
-          />
+          /> */}
         </div>
         <Tabs
           address={address}
           showHot={true}
+          defaultIndex={profileTabIndex}
           tabContentStyle={{
             height: userInfo?.name
               ? "calc(100vh - 430px)"
@@ -85,7 +90,7 @@ export default function User({ address, userInfo, onQueryInfo }: any) {
           setOpenVipModal(false);
         }}
       />
-      <Refer />
+      <Refer userInfo={userInfo} />
     </div>
   );
 }

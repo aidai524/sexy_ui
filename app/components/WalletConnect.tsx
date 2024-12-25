@@ -30,9 +30,18 @@ const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig['options'] = {
   },
 };
 
+
+function getEndpoint(netType: WalletAdapterNetwork) {
+  if (netType === WalletAdapterNetwork.Mainnet) {
+    return 'https://mainnet.helius-rpc.com/?api-key=88a744d8-9b40-4c38-bb22-5ff967f522a3'
+  }
+
+  return clusterApiUrl(netType)
+}
+
 export default function WalletConnect({ children }: { children: React.ReactNode }) {
   const network = WalletAdapterNetwork.Devnet;
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const endpoint = useMemo(() => getEndpoint(network), [network]);
   const wallets = useMemo(
     () => {
       if(typeof window === 'undefined') return [];

@@ -24,7 +24,7 @@ export interface Project {
     creater?: any;
     status?: number;
     createdAt?: number;
-
+    DApp?: string;
 }
 
 export interface Comment {

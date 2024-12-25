@@ -7,7 +7,7 @@ import { fail } from "@/app/utils/toast"
 
 
 export const FIRST_LIKE_TIMES = 10
-export const SECOND_LIKE_TIMES = 15
+export const SECOND_LIKE_TIMES = 30
 
 
 const onLike = async (data: Project) => {

@@ -353,7 +353,8 @@ export function mapDataToProject(currentToken: any): Project {
     creater: currentToken.account_data,
     boostTime: currentToken.boost_time,
     status: currentToken.status,
-    createdAt: new Date(currentToken.created_at).getTime()
+    createdAt: new Date(currentToken.created_at).getTime(),
+    DApp: currentToken.DApp,
   };
 }
 

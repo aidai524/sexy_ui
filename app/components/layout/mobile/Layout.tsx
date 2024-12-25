@@ -1,6 +1,6 @@
 "use client";
 
-import { TabBar } from "antd-mobile";
+import { Button, TabBar } from "antd-mobile";
 import { useRouter, usePathname } from "next/navigation";
 import styles from "./layout.module.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -8,6 +8,7 @@ import LoginModal from "@/app/components/loginModal";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import Link from "next/link";
+import useJupiter from "@/app/hooks/useJupiter";
 
 function CustomIcon({
   url,
@@ -107,8 +108,14 @@ export default function Component({
     });
   }, [pathname]);
 
+  const { trade } = useJupiter()
+
   return (
     <div className="min-h-screen bg-black text-white">
+
+      {/* <Button onClick={() => {
+        trade()
+      }}>juipter</Button> */}
       <main className="pb-16">{children}</main>
       <LoginModal
         modalShow={showLoginModal}
