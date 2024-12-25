@@ -271,23 +271,9 @@
       ],
       "args": [
         {
-          "name": "solAmount",
-          "type": "u64"
-        },
-        {
-          "name": "maxPrice",
-          "type": "f64"
-        },
-        {
-          "name": "recommenderOp",
+          "name": "buyTokenParam",
           "type": {
-            "option": "publicKey"
-          }
-        },
-        {
-          "name": "proxyOp",
-          "type": {
-            "option": "publicKey"
+            "defined": "BuyParam"
           }
         }
       ]
@@ -383,23 +369,9 @@
       ],
       "args": [
         {
-          "name": "outputAmount",
-          "type": "u64"
-        },
-        {
-          "name": "maxWsolAmount",
-          "type": "u64"
-        },
-        {
-          "name": "recommenderOp",
+          "name": "buyTokenParam",
           "type": {
-            "option": "publicKey"
-          }
-        },
-        {
-          "name": "proxyOp",
-          "type": {
-            "option": "publicKey"
+            "defined": "BuyParam"
           }
         }
       ]
@@ -495,23 +467,9 @@
       ],
       "args": [
         {
-          "name": "amount",
-          "type": "u64"
-        },
-        {
-          "name": "minWsolAmount",
-          "type": "u64"
-        },
-        {
-          "name": "recommenderOp",
+          "name": "sellParam",
           "type": {
-            "option": "publicKey"
-          }
-        },
-        {
-          "name": "proxyOp",
-          "type": {
-            "option": "publicKey"
+            "defined": "SellParam"
           }
         }
       ]
@@ -607,23 +565,9 @@
       ],
       "args": [
         {
-          "name": "outputAmount",
-          "type": "u64"
-        },
-        {
-          "name": "maxMemeAmount",
-          "type": "u64"
-        },
-        {
-          "name": "recommenderOp",
+          "name": "sellParam",
           "type": {
-            "option": "publicKey"
-          }
-        },
-        {
-          "name": "proxyOp",
-          "type": {
-            "option": "publicKey"
+            "defined": "SellParam"
           }
         }
       ]
@@ -682,11 +626,6 @@
           "isSigner": true
         },
         {
-          "name": "operator",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -695,10 +634,6 @@
       "args": [
         {
           "name": "amount",
-          "type": "u64"
-        },
-        {
-          "name": "timestamp",
           "type": "u64"
         }
       ]
@@ -855,15 +790,9 @@
       ],
       "args": [
         {
-          "name": "recommenderOp",
+          "name": "referralParam",
           "type": {
-            "option": "publicKey"
-          }
-        },
-        {
-          "name": "proxyOp",
-          "type": {
-            "option": "publicKey"
+            "defined": "ReferralParam"
           }
         }
       ]
@@ -1238,6 +1167,11 @@
       "accounts": [
         {
           "name": "launchpad",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "recommender",
           "isMut": false,
           "isSigner": false
         },
@@ -1962,6 +1896,82 @@
           {
             "name": "tickSpace",
             "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReferralParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "recommender",
+            "type": "publicKey"
+          },
+          {
+            "name": "proxy",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BuyParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "solAmount",
+            "type": "u64"
+          },
+          {
+            "name": "maxPrice",
+            "type": "f64"
+          },
+          {
+            "name": "outputAmount",
+            "type": "u64"
+          },
+          {
+            "name": "maxWsolAmount",
+            "type": "u64"
+          },
+          {
+            "name": "referralParam",
+            "type": {
+              "defined": "ReferralParam"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "SellParam",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "minWsolAmount",
+            "type": "u64"
+          },
+          {
+            "name": "outputAmount",
+            "type": "u64"
+          },
+          {
+            "name": "maxMemeAmount",
+            "type": "u64"
+          },
+          {
+            "name": "referralParam",
+            "type": {
+              "defined": "ReferralParam"
+            }
           }
         ]
       }

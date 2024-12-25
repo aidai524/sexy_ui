@@ -6,13 +6,10 @@ import {
     Transaction,
     SYSVAR_RENT_PUBKEY,
     ComputeBudgetProgram,
-    // ComputeBudgetProgram,
 } from '@solana/web3.js';
 import Big from 'big.js'
 import * as anchor from "@coral-xyz/anchor";
 // @ts-ignore
-import { u64 } from '@solana/buffer-layout-utils';
-import { struct, u8, u32, f64, ns64, u48, blob } from "@solana/buffer-layout";
 import { getOrCreateAssociatedTokenAccount, getAssociatedTokenAddressSync, getAccount, Account, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, TokenAccountNotFoundError, TokenInvalidAccountOwnerError, createSyncNativeInstruction } from '@solana/spl-token'
 import { useCallback, useEffect, useMemo, useState } from "react";
 import idl from './meme_launchpad.json'
@@ -22,8 +19,6 @@ import bs58 from 'bs58';
 import { httpAuthPost, sleep } from '../utils';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useAccount } from '@/app/hooks/useAccount';
-import { useClickAway } from 'ahooks';
-import { constants } from 'node:fs';
 import { useVip } from './useVip';
 
 interface Props {
@@ -78,7 +73,7 @@ export function useTokenTrade({
         );
     }, [programId, state, tokenName, tokenSymbol])
 
-    const _getOrCreateAssociatedTokenAccount = useCallback(async (mint: PublicKey, owner: PublicKey, isCreate: boolean = true) => {
+    const _getOrCreateAssociatedTokenAccount = useCallback(async (mint: PublicKey, owner: PublicKey) => {
         if (!connection) {
             return null
         }
@@ -100,21 +95,6 @@ export function useTokenTrade({
 
             if (error instanceof TokenAccountNotFoundError || error instanceof TokenInvalidAccountOwnerError) {
                 try {
-                    // const latestBlockhash = await connection?.getLatestBlockhash();
-                    // const xtransaction = new Transaction({
-                    //     recentBlockhash: latestBlockhash!.blockhash,
-                    //     feePayer: walletProvider.publicKey!
-                    // }).add(
-                    //     createAssociatedTokenAccountInstruction(
-                    //         walletProvider.publicKey!,
-                    //         associatedToken,
-                    //         owner,
-                    //         mint,
-                    //         TOKEN_PROGRAM_ID,
-                    //         ASSOCIATED_TOKEN_PROGRAM_ID,
-                    //     ),
-                    // );
-
                     instruction = createAssociatedTokenAccountInstruction(
                         walletProvider.publicKey!,
                         associatedToken,
@@ -123,27 +103,10 @@ export function useTokenTrade({
                         TOKEN_PROGRAM_ID,
                         ASSOCIATED_TOKEN_PROGRAM_ID,
                     )
-
-                    // const hash = await walletProvider.signAndSendTransaction(xtransaction)
-
-                    // if (hash) {
-                    //     while (true) {
-                    //         try {
-                    //             account = await getAccount(connection, associatedToken, undefined, TOKEN_PROGRAM_ID);
-                    //             await sleep(500)
-                    //             break
-                    //         } catch(e) {
-                    //             console.log('e:', e)
-                    //         }
-                    //     }
-                    // }
-
-
                 } catch (e) {
                     console.log(e)
                 }
             }
-
         }
 
         return {
@@ -163,7 +126,7 @@ export function useTokenTrade({
         const proxy = new PublicKey('8GBcwJAfUU9noxPNh5jnfwkKipK8XRHUPS5va9TAXr5f')
 
 
-        const protocolSolAccount = await _getOrCreateAssociatedTokenAccount(wsol, state[0], false)
+        const protocolSolAccount = await _getOrCreateAssociatedTokenAccount(wsol, state[0])
 
         if (!protocolSolAccount) {
             return null
@@ -172,8 +135,7 @@ export function useTokenTrade({
 
         const userSolAccount = await _getOrCreateAssociatedTokenAccount(
             wsol,
-            walletProvider.publicKey!,
-            false,
+            walletProvider.publicKey!
         );
 
         if (!userSolAccount) {
@@ -185,8 +147,7 @@ export function useTokenTrade({
 
         const poolSolAccount = await _getOrCreateAssociatedTokenAccount(
             wsol,
-            pool[0],
-            false,
+            pool[0]
         );
 
         if (!poolSolAccount) {
@@ -196,8 +157,7 @@ export function useTokenTrade({
 
         const userTokenAccount = await _getOrCreateAssociatedTokenAccount(
             tokenInfo[0],
-            walletProvider.publicKey!,
-            false,
+            walletProvider.publicKey!
         );
 
         if (!userTokenAccount) {
@@ -208,7 +168,6 @@ export function useTokenTrade({
         const poolTokenAccount = await _getOrCreateAssociatedTokenAccount(
             tokenInfo[0],
             pool[0],
-            false,
         );
 
 
@@ -349,56 +308,7 @@ export function useTokenTrade({
 
     }, [programId, state, pool, tokenInfo])
 
-    const buyToken = useCallback(async (amount: string | number) => {
-
-        const latestBlockhash = await connection?.getLatestBlockhash();
-
-        const keys = await getKeys()
-
-        if (!keys) {
-            return
-        }
-
-        const instruction1 = SystemProgram.transfer({
-            fromPubkey: walletProvider.publicKey!,
-            toPubkey: keys.keys.userWsolAccount,
-            lamports: Number(amount),
-        })
-        const instruction2 = createSyncNativeInstruction(keys.keys.userWsolAccount, TOKEN_PROGRAM_ID)
-
-        const transaction = new Transaction({
-            recentBlockhash: latestBlockhash!.blockhash,
-            feePayer: walletProvider.publicKey!
-        });
-
-        const program = new Program<any>(idl, programId, walletProvider as any);
-
-        const buyInstruction = await program.methods.buyToken(
-            new anchor.BN(amount),
-            new anchor.BN(1),
-            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
-            keys.keys.proxySolAccount
-        ).accounts(keys.keys).instruction()
-
-        keys.instructions.forEach((keyIns) => {
-            if (keyIns) {
-                transaction.add(keyIns)
-            }
-        })
-
-        console.log('buyInstruction:', buyInstruction)
-
-        transaction.add(instruction1).add(instruction2).add(buyInstruction)
-
-
-        const v = await walletProvider.signAndSendTransaction(transaction)
-
-        console.log('v:', v)
-    }, [connection, walletProvider, programId])
-
     const buyTokenWithFixedOutput = useCallback(async (outputAmount: string | number, maxWsolAmount: string | number,) => {
-        const latestBlockhash = await connection?.getLatestBlockhash();
-
         const keysAndIns = await getKeys()
 
         if (!keysAndIns) {
@@ -416,18 +326,21 @@ export function useTokenTrade({
         })
         const instruction2 = createSyncNativeInstruction(keys.userWsolAccount, TOKEN_PROGRAM_ID)
 
-        const transaction = new Transaction({
-            recentBlockhash: latestBlockhash!.blockhash,
-            feePayer: walletProvider.publicKey!
-        });
+        const transaction = new Transaction();
 
         const program = new Program<any>(idl, programId, walletProvider as any);
 
+        console.log('program:', program)
+
         const buyInstruction = await program.methods.buyTokenWithFixedOutput(
-            new anchor.BN(outputAmount),
-            new anchor.BN(maxWsolAmount),
-            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
-            keys.proxySolAccount
+            {
+                outputAmount: new anchor.BN(outputAmount),
+                maxWsolAmount: new anchor.BN(maxWsolAmount),
+                referralParam: {
+                    recommender: new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+                    proxy: keys.proxySolAccount
+                }
+            }
         ).accounts(keys).instruction()
 
         instructions.forEach((ins) => {
@@ -444,6 +357,8 @@ export function useTokenTrade({
             // preflightCommitment: 'processed',
         };
 
+        console.log('transaction:', transaction)
+
         const hash = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
 
         console.log('hash:', hash)
@@ -452,8 +367,6 @@ export function useTokenTrade({
     }, [connection, walletProvider, programId])
 
     const sellToken = useCallback(async (amount: number | string, minWsolAmount: number | string,) => {
-        const latestBlockhash = await connection?.getLatestBlockhash();
-
         const keysAndIns = await getKeys()
 
         if (!keysAndIns) {
@@ -462,18 +375,19 @@ export function useTokenTrade({
 
         const { keys, instructions } = keysAndIns
 
-        const transaction = new Transaction({
-            recentBlockhash: latestBlockhash!.blockhash,
-            feePayer: walletProvider.publicKey!
-        });
+        const transaction = new Transaction();
 
         const program = new Program<any>(idl, programId, { connection: connection } as any);
 
         const sellInstruction = await program.methods.sellToken(
-            new anchor.BN(amount),
-            new anchor.BN(minWsolAmount),
-            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
-            keys.proxySolAccount,
+            {
+                amount: new anchor.BN(amount),
+                minWsolAmount: new anchor.BN(minWsolAmount),
+                referralParam: {
+                    recommender: new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+                    proxy: keys.proxySolAccount
+                }
+            }
         ).accounts(keys).instruction()
 
         instructions.forEach((ins) => {
@@ -493,56 +407,10 @@ export function useTokenTrade({
 
     }, [connection, walletProvider, programId])
 
-    const sellTokenWithFixedOutput = useCallback(async (outputAmount: string | number, maxMemeAmount: string | number,) => {
-        const latestBlockhash = await connection?.getLatestBlockhash();
-
-        const keysAndIns = await getKeys()
-
-        if (!keysAndIns) {
-            return
-        }
-
-        const { keys, instructions } = keysAndIns
-
-        const program = new Program<any>(idl, programId, { connection: connection } as any);
-
-        const transaction = new Transaction({
-            recentBlockhash: latestBlockhash!.blockhash,
-            feePayer: walletProvider.publicKey!
-        });
-
-        const sellInstruction = await program.methods.sellTokenWithFixedOutput(
-            new anchor.BN(outputAmount),
-            new anchor.BN(maxMemeAmount),
-            new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
-            keys.proxySolAccount,
-        ).accounts(keys).instruction()
-
-        instructions.forEach((ins) => {
-            ins && transaction.add(ins)
-        })
-
-        transaction.add(sellInstruction)
-
-        const hash = await walletProvider.signAndSendTransaction(transaction)
-
-        return hash
-
-    }, [connection, walletProvider, programId])
-
     const createToken = useCallback(async ({ name, symbol, uri, launching, amount }: { name: string, symbol: string, uri: string, launching: boolean, amount?: string }) => {
-        const latestBlockhash = await connection?.getLatestBlockhash();
-
-        const transaction = new Transaction({
-            recentBlockhash: latestBlockhash!.blockhash,
-            feePayer: walletProvider.publicKey!
-        });
+        const transaction = new Transaction();
 
         const program = new Program<any>(idl, programId, walletProvider as any);
-
-        // const name = 'HeHe'
-        // const symbol = 'HEHE'
-        // const uri = 'https://www.npmjs.com/npm-avatar/eyJhbG'
 
         const keys = await getCreateKeys(name, symbol)
 
@@ -569,9 +437,6 @@ export function useTokenTrade({
 
         transaction.add(createAccountInstruction)
 
-        // const v2 = await walletProvider.signAndSendTransaction(createAccountTransition)
-
-        // console.log('create account success', v2)
 
         const METADATA_SEED = "metadata";
         const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
@@ -733,12 +598,7 @@ export function useTokenTrade({
             return
         }
 
-        const latestBlockhash = await connection?.getLatestBlockhash();
-
-        const transaction = new Transaction({
-            recentBlockhash: latestBlockhash!.blockhash,
-            feePayer: walletProvider.publicKey!
-        });
+        const transaction = new Transaction();
 
         console.log('val:', val)
 
@@ -764,12 +624,6 @@ export function useTokenTrade({
 
         console.log('serverTransaction:', serverTransaction)
 
-        const confirmationStrategy: any = {
-            skipPreflight: true,
-            maxRetries: 10,
-            preflightCommitment: 'processed',
-        };
-
         transaction
             .add(instruction1)
             .add(instruction2)
@@ -777,11 +631,11 @@ export function useTokenTrade({
 
         console.log('transaction:', transaction)    
 
-        const hash1 = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
+        const hash1 = await walletProvider.signAndSendTransaction(transaction)
 
         // console.log('hash', hash1)
 
-        const hash2 = await walletProvider.signAndSendTransaction(serverTransaction, confirmationStrategy)
+        const hash2 = await walletProvider.signAndSendTransaction(serverTransaction)
         console.log('hash', hash2)
 
         return hash1   
@@ -804,11 +658,7 @@ export function useTokenTrade({
         console.log('outputAmount:', outputAmount)
 
         if (outputAmount > 0) {
-            const latestBlockhash = await connection?.getLatestBlockhash();
-            const transaction = new Transaction({
-                recentBlockhash: latestBlockhash!.blockhash,
-                feePayer: walletProvider.publicKey!
-            });
+            const transaction = new Transaction();
 
             instructions.forEach((ins) => {
                 ins && transaction.add(ins)
@@ -820,12 +670,7 @@ export function useTokenTrade({
 
             transaction.add(prepaidSolWithdrawInstruction)
 
-            const confirmationStrategy: any = {
-                skipPreflight: true,
-                // preflightCommitment: 'processed',
-            };
-
-            const hash = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
+            const hash = await walletProvider.signAndSendTransaction(transaction)
 
             return hash
         }
@@ -854,11 +699,7 @@ export function useTokenTrade({
         console.log('outputAmount:', outputAmount)
 
         if (outputAmount > 0) {
-            const latestBlockhash = await connection?.getLatestBlockhash();
-            const transaction = new Transaction({
-                recentBlockhash: latestBlockhash!.blockhash,
-                feePayer: walletProvider.publicKey!
-            });
+            const transaction = new Transaction();
 
             const prepaidTokenWithdrawInstruction = await program.methods.prepaidTokenWithdraw(
                 new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
@@ -874,12 +715,7 @@ export function useTokenTrade({
 
             transaction.add(prepaidTokenWithdrawInstruction)
 
-            const confirmationStrategy: any = {
-                skipPreflight: true,
-                // preflightCommitment: 'processed',
-            };
-
-            const hash = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
+            const hash = await walletProvider.signAndSendTransaction(transaction)
 
             return hash
         }
@@ -930,7 +766,6 @@ export function useTokenTrade({
                 const userToken = await _getOrCreateAssociatedTokenAccount(
                     tokenInfo[0],
                     walletProvider.publicKey!,
-                    false
                 );
 
 
@@ -961,10 +796,8 @@ export function useTokenTrade({
 
     return {
         getRate,
-        buyToken,
         buyTokenWithFixedOutput,
         sellToken,
-        sellTokenWithFixedOutput,
         createToken,
         prepaidSolWithdraw,
         prepaidTokenWithdraw,

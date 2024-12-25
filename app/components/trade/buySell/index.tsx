@@ -474,6 +474,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                 }
                 
               } catch (e) {
+                console.log(e)
                 setIsLoading(false);
                 fail("Transtion fail");
               }
