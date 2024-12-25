@@ -2,6 +2,7 @@ import bs58 from 'bs58';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { SolanaSignAndSendTransaction, SolanaSignMessage, SolanaSignTransaction } from '@solana/wallet-standard-features';
 import * as anchor from "@coral-xyz/anchor";
+import { sleep } from '../utils';
 
 export function useAccount() {
   const { connected, connecting, disconnect, publicKey, signTransaction, sendTransaction, signMessage, wallet, connect } = useWallet();
@@ -57,24 +58,57 @@ export function useAccount() {
           value: { blockhash, lastValidBlockHeight }
         } = await connection.getLatestBlockhashAndContext();
 
-        try {
-          const confirmRes = await connection.confirmTransaction({
-            blockhash: blockhash,
-            lastValidBlockHeight: lastValidBlockHeight,
-            signature: tx,
+        const startTime = Date.now();
+        const timeout = 120000
+        let done = false;
+        let status
+
+        while(!done && Date.now() - startTime < timeout) {
+          status = await connection.getSignatureStatus(tx, {
+            searchTransactionHistory: true,
           });
-
-          alert(JSON.stringify(confirmRes))
-
-          if (confirmRes.value.err) {
-            return null
+          if (status?.value?.confirmationStatus === 'finalized' || status?.value?.err) {
+            done = true;
+          } else {
+            await sleep(2000);
           }
-
-          alert(tx)
-  
-        } catch(e) {
-          alert(e)
         }
+
+        if (!status) {
+          throw new Error(`Transaction confirmation failed for signature ${tx}`);
+        }
+
+        if (!status.value || status.value?.err) {
+          alert(JSON.stringify(status.value?.err))
+          throw new Error(
+            status.value?.err
+              ? `send transaction failed: ${
+                  typeof status.value.err === 'string'
+                    ? status.value.err
+                    : JSON.stringify(status.value.err)
+                }`
+              : `send transaction failed, please try again later`,
+          );
+        }
+
+        // try {
+        //   const confirmRes = await connection.confirmTransaction({
+        //     blockhash: blockhash,
+        //     lastValidBlockHeight: lastValidBlockHeight,
+        //     signature: tx,
+        //   });
+
+        //   alert(JSON.stringify(confirmRes))
+
+        //   if (confirmRes.value.err) {
+        //     return null
+        //   }
+
+        //   alert(tx)
+  
+        // } catch(e) {
+        //   alert(e)
+        // }
 
         return tx
 
