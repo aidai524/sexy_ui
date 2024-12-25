@@ -19,12 +19,14 @@ export default function Boost({
   onClick,
   token,
   isBigIcon = false,
-  isGrey = false
+  isGrey = false,
+  id
 }: {
   onClick: () => void;
   token: Project;
   isBigIcon?: boolean;
   isGrey?: boolean;
+  id?: string;
 }) {
   const [vipShow, setVipShow] = useState(false);
   const [boostVipShow, setBoostVipShow] = useState(false);
@@ -123,7 +125,7 @@ export default function Boost({
     ) {
       setBoostShow(true);
     } else {
-      fail('Boost time is over')
+      fail("Boost time is over");
       // if (userInfo.vipType === "vip") {
       //   setBoostSuperNoTimesShow(true);
       // } else {
@@ -132,17 +134,21 @@ export default function Boost({
     }
   };
 
-  const iconStyle = isBigIcon ? {
-    width: 48,
-    height: 48
-  } : {
-    width: 36,
-    height: 36
-  }
+  const iconStyle = isBigIcon
+    ? {
+        width: 48,
+        height: 48
+      }
+    : {
+        width: 36,
+        height: 36
+      };
 
-  return <div style={iconStyle}>
-    <img style={iconStyle} src="/img/profile/coming-boost.png" />
-  </div>
+  return (
+    <div style={iconStyle}>
+      <img id={id} style={iconStyle} src="/img/profile/coming-boost.png" />
+    </div>
+  );
 
   return (
     <div
@@ -153,14 +159,11 @@ export default function Boost({
           return;
         }
 
-
-
         if (token.boostTime && Number(token.boostTime) - Date.now() > 0) {
           setBoostTimeShow(true);
           return;
         }
 
-        
         checkBoostVip();
 
         // onClick();

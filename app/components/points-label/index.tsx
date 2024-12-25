@@ -1,8 +1,8 @@
 import styles from "./index.module.css";
 
-export default function PointsLabel() {
+export default function PointsLabel({ id }: any) {
   return (
-    <div className={styles.Container}>
+    <div className={styles.Container} id={id}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="30"
@@ -33,7 +33,7 @@ export default function PointsLabel() {
         </defs>
       </svg>
       <div>
-        <div className={styles.Title}>3,234.56</div>
+        <div className={styles.Title}>0.00</div>
         <div className={styles.Desc}>$SEXYFI</div>
       </div>
     </div>

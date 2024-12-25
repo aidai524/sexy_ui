@@ -21,17 +21,19 @@ export default function Token({
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
 
-  const like = () => {
+  const next = () => {
     setTimeout(() => {
       getnext();
     }, 1000);
+  };
+
+  const like = () => {
+    next();
     onLike();
   };
 
   const hate = () => {
-    setTimeout(() => {
-      getnext();
-    }, 1000);
+    next();
     onHate();
   };
 
@@ -94,7 +96,13 @@ export default function Token({
           )}
         </div>
       </div>
-      <ActionsBar tokenInfo={infoData2} onLike={like} onHate={hate} />
+      <ActionsBar
+        tokenInfo={infoData2}
+        onLike={like}
+        onHate={hate}
+        onSuperLike={next}
+        onBoost={next}
+      />
     </>
   );
 }
