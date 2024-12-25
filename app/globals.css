@@ -19,6 +19,13 @@ div.adm-image-uploader {
   font-stretch: 75% 125%;
 }
 
+@font-face {
+  font-family: "Lilita One";
+  src: url("/font/LilitaOne-Regular.ttf");
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
