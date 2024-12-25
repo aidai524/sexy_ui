@@ -32,7 +32,8 @@ export function useAccount() {
 
         const confirmationStrategy: any = {
           skipPreflight: true,
-          preflightCommitment: 'processed',
+          maxRetries: 10,
+          preflightCommitment: 'finalized',
         };
 
         // const x = signTransition.serialize()
@@ -56,19 +57,24 @@ export function useAccount() {
           value: { blockhash, lastValidBlockHeight }
         } = await connection.getLatestBlockhashAndContext();
 
-        const confirmRes = await connection.confirmTransaction({
-          blockhash: blockhash,
-          lastValidBlockHeight: lastValidBlockHeight,
-          signature: tx,
-        });
+        try {
+          const confirmRes = await connection.confirmTransaction({
+            blockhash: blockhash,
+            lastValidBlockHeight: lastValidBlockHeight,
+            signature: tx,
+          });
 
-        alert(JSON.stringify(confirmRes))
+          alert(JSON.stringify(confirmRes))
 
-        if (confirmRes.value.err) {
-          return null
+          if (confirmRes.value.err) {
+            return null
+          }
+
+          alert(tx)
+  
+        } catch(e) {
+          alert(e)
         }
-
-        alert(tx)
 
         return tx
 
