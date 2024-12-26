@@ -39,19 +39,21 @@ export default function Created({
   }, [address, type, refresh]);
 
   const loadMore = useCallback(() => {
-      return httpGet(urls[type], { address, limit: LIMIT, offset }).then((res) => {
-        setHasMore(res.data?.has_next_page || false)
-        if (res.code === 0 && res.data?.list?.length > 0) {
-          const newMapList = res.data?.list.map(mapDataToProject)
-          const newList = [
-            ...list,
-            ...newMapList,
-          ]
+    console.log(2222)
 
-          setOffset(newList.length)
-          setList(newList);
-        }
-      });
+    return httpGet(urls[type], { address, limit: LIMIT, offset }).then((res) => {
+      setHasMore(res.data?.has_next_page || false)
+      if (res.code === 0 && res.data?.list?.length > 0) {
+        const newMapList = res.data?.list.map(mapDataToProject)
+        const newList = [
+          ...list,
+          ...newMapList,
+        ]
+
+        setOffset(newList.length)
+        setList(newList);
+      }
+    });
   }, [address, type, offset, list])
 
   if (list.length === 0) {
