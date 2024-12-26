@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Panel from "../panel";
 import styles from "./comment.module.css";
 
@@ -27,6 +27,7 @@ export default function CommentComp({
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
   const [reReashNum, setReReashNum] = useState(1);
+  const isInit = useRef(false)
   const [offset, setOffset] = useState(0)
   const [hasMore, setHasMore] = useState(true)
   const [isSubmiting, setIsSubmiting] = useState(false);
@@ -71,28 +72,31 @@ export default function CommentComp({
       offset: newOffset === 0 ? newOffset : offset,
     }).then(
       (res) => {
-        if (res?.code === 0 && res.data.list?.length) {
+        if (res?.code === 0) {
           setHasMore(res.data?.has_next_page || false)
-          const newMapList = res.data.list.map((item: any) => {
-            return mapDataToComment(item);
-          });
-
-          let newList = []
-          if (newOffset === 0) {
-            newList = newMapList
-          } else {
-            newList = [
-              ...commentList,
-              ...newMapList,
-            ]
+          if (res.data.list?.length) {
+            const newMapList = res.data.list.map((item: any) => {
+              return mapDataToComment(item);
+            });
+  
+            let newList = []
+            if (newOffset === 0) {
+              newList = newMapList
+            } else {
+              newList = [
+                ...commentList,
+                ...newMapList,
+              ]
+            }
+  
+            setOffset(newList.length)
+            setCommentList(newList);
           }
-
-          setOffset(newList.length)
-          setCommentList(newList);
+         
         }
       }
     );
-  }, [id, offset])
+  }, [id, offset, hasMore])
 
   const Content = (
     <>

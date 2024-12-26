@@ -190,6 +190,9 @@
         color: #fff;
         font-size: 14px;
         display: inline-block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 160px;
     }
 
     .launchTag {
