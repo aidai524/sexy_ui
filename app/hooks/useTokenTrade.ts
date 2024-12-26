@@ -22,6 +22,8 @@ interface Props {
     loadData?: boolean;
 }
 
+const referral_address = 'EEYm1sXVhH1EpsUan6Sj31zdydALoAVCEYdVncJQJ8s6'
+
 export function useTokenTrade({
     tokenName, tokenSymbol, tokenDecimals, loadData = true
 }: Props) {
@@ -80,7 +82,6 @@ export function useTokenTrade({
             ASSOCIATED_TOKEN_PROGRAM_ID,
         );
 
-
         let account: Account | null = null;
         let instruction = null
         try {
@@ -116,7 +117,7 @@ export function useTokenTrade({
 
         const instructions = []
 
-        const referral = new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm')
+        const referral = new PublicKey(referral_address)
         const proxy = new PublicKey('8GBcwJAfUU9noxPNh5jnfwkKipK8XRHUPS5va9TAXr5f')
 
 
@@ -175,19 +176,24 @@ export function useTokenTrade({
             programId
         )
 
-        let referralUser: any = PublicKey.default
-        try {
-            const accountInfo = await connection.getAccountInfo(referralRecord[0]);
-            if (accountInfo) {
-                const program = new Program<any>(idl, programId, { connection: connection } as any);
-                const referralAccount: any = await program.account.referralRecord.fetch(referralRecord[0]);
-                referralUser = referralAccount.user
-            }
-        } catch (e) {
-        }
+
+        // try {
+        //     const accountInfo = await connection.getAccountInfo(referralRecord[0]);
+
+        //     if (accountInfo) {
+        //         const program = new Program<any>(idl, programId, { connection: connection } as any);
+        //         const referralAccount: any = await program.account.referralRecord.fetch(referralRecord[0]);
+        //         console.log('referralRecord:', referralRecord, referralAccount, walletProvider.publicKey)
+        //         referralUser = referralAccount.user
+        //     } else {
+
+        //     }
+        // } catch (e) {
+        //     console.log(e)
+        // }
 
         const referralFeeRateRecord = PublicKey.findProgramAddressSync(
-            [Buffer.from("referral_fee_rate_record"), state[0].toBuffer(), referralUser.toBuffer()],
+            [Buffer.from("referral_fee_rate_record"), state[0].toBuffer(), referral.toBuffer()],
             programId
         )
 
@@ -325,7 +331,7 @@ export function useTokenTrade({
                 outputAmount: new anchor.BN(outputAmount),
                 maxWsolAmount: new anchor.BN(maxWsolAmount),
                 referralParam: {
-                    recommender: new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+                    recommender: new PublicKey(referral_address),
                     proxy: keys.proxySolAccount
                 }
             }
@@ -369,7 +375,7 @@ export function useTokenTrade({
                 amount: new anchor.BN(amount),
                 minWsolAmount: new anchor.BN(minWsolAmount),
                 referralParam: {
-                    recommender: new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+                    recommender: new PublicKey('EEYm1sXVhH1EpsUan6Sj31zdydALoAVCEYdVncJQJ8s6'),
                     proxy: keys.proxySolAccount
                 }
             }
