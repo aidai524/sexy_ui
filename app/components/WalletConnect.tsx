@@ -30,7 +30,6 @@ const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig['options'] = {
   },
 };
 
-
 function getEndpoint(netType: WalletAdapterNetwork) {
   if (netType === WalletAdapterNetwork.Mainnet) {
     return 'https://swr.xnftdata.com/rpc-proxy/'

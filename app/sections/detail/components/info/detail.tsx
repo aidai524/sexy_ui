@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import type { Comment, Project } from "@/app/type";
 import { httpAuthPost, httpGet } from "@/app/utils";
 import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
+import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   data: Project;
@@ -19,6 +20,8 @@ interface Props {
 }
 
 export default function Info({ data, onUpdate }: Props) {
+  const { isMobile } = useUserAgent();
+
   return (
     <div className={styles.main}>
       <InfoPart showLikes={true} data={data} showThumbnailHead={false} />
@@ -28,10 +31,9 @@ export default function Info({ data, onUpdate }: Props) {
         {data.status === 0 ? (
           <LaunchingAction
             token={data}
-            style={{ position: "static" }}
+            style={{ position: isMobile ? "fixed" : "static", bottom: 20 }}
             onLike={async () => {
               await actionLikeTrigger(data)
-              // await httpAuthPost("/project/like?id=" + data!.id, {});
               onUpdate()
             }}
             onHate={async () => {

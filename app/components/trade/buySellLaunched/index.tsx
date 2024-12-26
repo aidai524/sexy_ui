@@ -85,7 +85,7 @@ export default function BuySellLaunched({ token, initType, from, onClose }: Prop
     }
   }, [initType])
 
-  const { trade } = useJupiter({
+  const { trade, getQoute, qoute } = useJupiter({
     tokenAddress: '4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump'
   })
 
@@ -97,8 +97,6 @@ export default function BuySellLaunched({ token, initType, from, onClose }: Prop
 
   useEffect(() => {
     if (debounceVal) {
-      setIsError(false);
-      return
 
       setIsError(false);
       setIsLoading(true)
@@ -112,7 +110,23 @@ export default function BuySellLaunched({ token, initType, from, onClose }: Prop
             return
           }
 
-         
+          const buyIn = new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toFixed(0)
+
+          getQoute(buyIn, 'buy').then((res: any) => {
+            if (res.quoteResponse) {
+              setBuyIn(new Big(res.quoteResponse?.outAmount).div(10 ** desToken.tokenDecimals).toFixed(desToken.tokenDecimals))
+              setBuyInSol(buyIn)
+              setIsError(false);
+            } else {
+              setIsError(true);
+            }
+            setIsLoading(false)
+          }).catch(e => {
+            console.log(e)
+            setIsError(true);
+            setIsLoading(false)
+          })
+
         } else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
@@ -121,15 +135,24 @@ export default function BuySellLaunched({ token, initType, from, onClose }: Prop
             return
           }
 
-
-         
+          const buyIn = new Big(debounceVal).mul(10 ** desToken.tokenDecimals)
+          const buyInSol = buyIn.div(qoute).toFixed(SOL.tokenDecimals)
+          if (buyInSol) {
+            setBuyIn(debounceVal)
+            setBuyInSol(buyInSol)
+            setIsError(false)
+            setIsLoading(false)
+          } else {
+            setIsError(true)
+          }
         }
       } else if (activeIndex === 1) {
         let sellOut = ''
         let sellSolOut = ''
         if (tokenType === 1) {
          
-        } 
+        }
+
         else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
@@ -138,7 +161,22 @@ export default function BuySellLaunched({ token, initType, from, onClose }: Prop
             return
           }
 
-          
+          const sellOut = new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toFixed(0)
+
+          getQoute(sellOut, 'sell').then((res: any) => {
+            if (res.quoteResponse) {
+              setSellOutSol(new Big(res.quoteResponse?.outAmount).div(10 ** SOL.tokenDecimals).toFixed(SOL.tokenDecimals))
+              setSellOut(sellOut)
+              setIsError(false);
+            } else {
+              setIsError(true);
+            }
+            setIsLoading(false)
+          }).catch(e => {
+            console.log(e)
+            setIsError(true);
+            setIsLoading(false)
+          })
         }
       }
     } else {
@@ -357,8 +395,10 @@ export default function BuySellLaunched({ token, initType, from, onClose }: Prop
 
                 let hash
                 if (activeIndex === 0) {
+                  hash = await trade(buyIn, 'buy')
                   setIsLoading(true);
                 } else if (activeIndex === 1) {
+                  hash = await trade(sellOut, 'sell')
                   setIsLoading(true);
                 }
                 setIsLoading(false);
