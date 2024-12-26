@@ -11,10 +11,11 @@ import {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState
 } from "react";
-import datafeed from "./datafeed";
+import datafeedFn from "./datafeed";
 import { useDebounceFn } from "ahooks";
 import Script from "next/script";
 import { storageStore } from "@/app/utils/common";
@@ -22,6 +23,7 @@ import Loading from "../Loading";
 
 export type TradingViewChartProps = {
   symbol: string;
+  address: string;
   style?: any;
   onLoaded?: () => void;
 };
@@ -38,7 +40,7 @@ export default forwardRef(TradingViewChart);
 const tvStorage = storageStore("tradingview");
 
 function TradingViewChart(
-  { style, symbol, onLoaded }: TradingViewChartProps,
+  { style, symbol, address, onLoaded }: TradingViewChartProps,
   ref: Ref<TradingViewChartExposes>
 ) {
   useImperativeHandle(ref, () => ({
@@ -50,6 +52,8 @@ function TradingViewChart(
   const tvWidgetRef = useRef<IChartingLibraryWidget>();
 
   const [loading, setLoading] = useState(false);
+
+  const datafeed = useMemo(() => datafeedFn(address), [address]);
 
   const { run } = useDebounceFn(
     () => {
@@ -277,7 +281,7 @@ function TradingViewChart(
 }
 
 function getStoredInterval() {
-  const interval = tvStorage?.get("interval") || "30";
+  const interval = tvStorage?.get("interval") || "1";
   return interval as ResolutionString;
 }
 

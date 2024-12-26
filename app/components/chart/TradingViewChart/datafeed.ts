@@ -5,7 +5,11 @@ import {
   type LibrarySymbolInfo
 } from "@/public/libs/charting_library";
 import dayjs from "@/app/utils/dayjs";
-import { fetchData } from "../fetch-data";
+import { fetchData, fetchLastData } from "../fetch-data";
+
+let page = 0;
+let hasNext = true;
+let pullingQueryPriceTimer: any = null;
 
 interface SymbolInfo extends LibrarySymbolInfo {
   full_name: string;
@@ -13,13 +17,13 @@ interface SymbolInfo extends LibrarySymbolInfo {
 
 const supported_resolutions = [
   "1",
-  "5",
-  "15",
-  "30",
-  "1H",
-  "1D",
-  "1W",
-  "1M"
+  "5"
+  // "15",
+  // "30",
+  // "1H",
+  // "1D",
+  // "1W",
+  // "1M"
 ] as ResolutionString[];
 
 const configurationData: DatafeedConfiguration = {
@@ -35,7 +39,9 @@ const configurationData: DatafeedConfiguration = {
   supports_timescale_marks: true
 };
 
-const datafeed: ChartingLibraryWidgetOptions["datafeed"] = {
+const datafeed: (
+  address: string
+) => ChartingLibraryWidgetOptions["datafeed"] = (address) => ({
   onReady: (callback) => {
     setTimeout(() => callback(configurationData));
   },
@@ -55,9 +61,8 @@ const datafeed: ChartingLibraryWidgetOptions["datafeed"] = {
       type: "stock",
       session: "24x7",
       timezone: "Etc/UTC",
-      exchange: "Trade",
       minmov: 1,
-      pricescale: 10 ** 2,
+      pricescale: 10 ** 8,
       has_intraday: true,
       visible_plots_set: "ohlc",
       has_weekly_and_monthly: true,
@@ -65,8 +70,8 @@ const datafeed: ChartingLibraryWidgetOptions["datafeed"] = {
       volume_precision: 4,
       data_status: "streaming",
       full_name: symbolName,
-      listed_exchange: "",
-      format: "price"
+      format: "price",
+      has_empty_bars: true
     };
     setTimeout(() => onSymbolResolvedCallback(symbolInfo), 0);
   },
@@ -79,18 +84,13 @@ const datafeed: ChartingLibraryWidgetOptions["datafeed"] = {
     onErrorCallback
   ) => {
     try {
-      const { from, to, firstDataRequest } = periodParams;
-      console.log("83", firstDataRequest);
-      let _from = from;
-      if (resolution === "1D") {
-        _from = dayjs().subtract(1, "month").startOf("day").valueOf() / 1000;
-      } else if (resolution === "1W") {
-        _from = dayjs().subtract(6, "week").startOf("week").valueOf() / 1000;
-      } else if (resolution === "1M") {
-        _from = dayjs().subtract(1, "year").startOf("month").valueOf() / 1000;
+      if (!hasNext) {
+        onHistoryCallback([], { noData: true });
+        return;
       }
-
-      const data = await fetchData();
+      page++;
+      const { data, hasNextPage } = await fetchData(address, resolution, page);
+      hasNext = hasNextPage;
       const bars = data.map((item: any) => ({
         time: item[6],
         low: item[3],
@@ -118,22 +118,30 @@ const datafeed: ChartingLibraryWidgetOptions["datafeed"] = {
     subscriberId,
     onResetCacheNeededCallback
   ) => {
-    const price = 4012;
-    const bar = {
-      time: Date.now(),
-      low: price,
-      high: price,
-      open: price,
-      close: price,
-      volume: 0
+    if (pullingQueryPriceTimer) {
+      clearInterval(pullingQueryPriceTimer);
+    }
+    const fetchPrice = async () => {
+      const item = await fetchLastData(address, resolution);
+      const bar = {
+        time: item[6],
+        low: item[3],
+        high: item[2],
+        open: item[1],
+        close: item[4],
+        volume: item[5]
+      };
+
+      onRealtimeCallback(bar);
     };
-    onRealtimeCallback(bar);
+
+    pullingQueryPriceTimer = setInterval(fetchPrice, 3000);
   },
 
   unsubscribeBars: (id) => {
     // console.log("unsubscribeBars", id);
-    // id === "custom" && clearInterval(pullingQueryPriceTimer);
+    id === "custom" && clearInterval(pullingQueryPriceTimer);
   }
-};
+});
 
 export default datafeed;
