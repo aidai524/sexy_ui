@@ -4,6 +4,7 @@
   background-size: 100% auto;
   padding-top: 50px;
   padding-bottom: 100px;
+  position: relative;
 
   .zBox {
     position: relative;
@@ -35,7 +36,7 @@
     z-index: 1;
     left: 0;
     right: 0;
-    bottom: 40px;
+    bottom: 60px;
     pointer-events: none;
     width: 100vw;
     overflow-x: hidden;
@@ -62,4 +63,10 @@
   100% {
     transform: translateX(0);
   }
+}
+
+.Gitbook {
+  position: absolute;
+  right: 20px;
+  top: 25px;
 }

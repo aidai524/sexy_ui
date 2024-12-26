@@ -1,20 +1,40 @@
 .multipleContent {
-  width: 110px;
-  height: 110px;
-  border: 3px solid var(--part-bg);
+  width: 104px;
+  height: 104px;
   border-radius: 110px;
   position: relative;
   background-color: #000;
   text-align: center;
-  color: var(--part-bg);
   font-size: 26px;
   font-weight: 700;
   padding-top: 50px;
-  margin: 0 auto;
+
   .multipleIcon {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     top: -20px;
   }
+}
+
+.Wrapper {
+  width: 110px;
+  height: 110px;
+  background: linear-gradient(to bottom, #ff2681, #ffa2c9);
+  border-radius: 200px;
+  padding: 3px;
+  margin: 0 auto;
+}
+
+.multipleNum {
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  background: linear-gradient(180deg, #ff2681 0%, #ffa2c9 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
