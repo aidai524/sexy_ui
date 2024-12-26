@@ -1,4 +1,4 @@
-import mockData from "./mock-data";
+import { httpGet } from "@/app/utils";
 
 /**
 [
@@ -12,19 +12,28 @@ import mockData from "./mock-data";
     1499644799999,      // 收盘时间
     "2434.19055334",    // 成交额
     308,                // 成交笔数
-    "1756.87402397",    // 主动买入成交量
-    "28.46694368",      // 主动买入成交额
-    "17928899.62484339" // 请忽略该参数
   ]
 ]
 **/
 
-export async function fetchData() {
-  // const response = await fetch(
-  //   `https://v1-mainnet-backend.degate.com/order-book-ws-api/klines?base_token_id=0&quote_token_id=2&start=1733604546000&end=1733901486316&granularity=900&limit=1000&totalLimit=329`
-  // );
-  // const result = await response.json();
-  // console.log(result);
+export async function fetchData(
+  address: string,
+  granularity: string,
+  page: number
+) {
+  const response = await httpGet(
+    `/kline/list?address=${address}&granularity=${
+      Number(granularity) * 60
+    }&limit=1000&offset=${(page - 1) * 1000}`
+  );
+  // return { data: mockData.data, hasNextPage: false };
+  return { data: response.data.list, hasNextPage: response.data.has_next_page };
+}
 
-  return mockData.data;
+export async function fetchLastData(address: string, granularity: string) {
+  const response = await httpGet(
+    `/kline/last?address=${address}&granularity=${Number(granularity) * 60}`
+  );
+  // return { data: mockData.data, hasNextPage: false };
+  return response.data;
 }

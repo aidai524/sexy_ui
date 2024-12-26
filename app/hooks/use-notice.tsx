@@ -17,7 +17,7 @@ export default function useNotice() {
         </div>
       ),
       position: "top",
-      duration: 2000,
+      duration: 5000,
       afterClose() {
         noticesRef.current = list;
         if (list.length) {
@@ -40,12 +40,12 @@ export default function useNotice() {
       onToast(list);
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
-          onQuery();
+        onQuery();
       }, 10000);
     } catch (err) {}
   };
 
   useEffect(() => {
-    if (userAddress && process.env.NODE_ENV !== 'development') onQuery();
+    if (userAddress && process.env.NODE_ENV !== "development") onQuery();
   }, [userAddress]);
 }

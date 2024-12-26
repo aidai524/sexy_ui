@@ -21,6 +21,7 @@ export default function Chart({ data, style = {} }: any) {
         <TradingViewChart
           style={{ height: "100%" }}
           symbol={data.tokenName}
+          address={data.address}
           onLoaded={() => {}}
           forwardedRef={tvRef}
         />
