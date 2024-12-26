@@ -8,7 +8,7 @@ export default function Statistics({ itemStyle, style, info }: any) {
       <div className={styles.statisticsItem} style={itemStyle}>
         <div className={styles.statisticsTitle}>Total Mining</div>
         <div style={{ fontSize: 26 }} className={styles.value}>
-          {info?.minted ? addThousandSeparator(info?.minted) : "-"}
+          {info?.minted ? addThousandSeparator(info?.minted) : "0"}
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
@@ -17,12 +17,12 @@ export default function Statistics({ itemStyle, style, info }: any) {
           style={{ borderBottom: "1px dashed #fff" }}
           className={styles.value}
         >
-          {info?.liked ? addThousandSeparator(info?.liked) : "-"}
+          {info?.liked ? addThousandSeparator(info?.liked) : "0"}
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
         <div className={styles.statisticsTitle}>Launching Rate</div>
-        <div className={styles.value}>{info?.launching_rate || "-"}%</div>
+        <div className={styles.value}>{info?.launching_rate || "0"}%</div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
         <div className={styles.statisticsTitle}>Launched Projects</div>

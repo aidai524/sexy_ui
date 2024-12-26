@@ -8,6 +8,7 @@ import LoginModal from "@/app/components/loginModal";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import Link from "next/link";
+import Refer, { ReferContentCard } from '@/app/components/layout/laptop/user/refer';
 
 function CustomIcon({
   url,
@@ -36,26 +37,34 @@ function CustomIcon({
   );
 }
 
-const CreateIcon = (
-  <Link href="/create">
-    <div className={styles.createIcon}>
-      <svg
-        width="28"
-        height="28"
-        viewBox="0 0 28 28"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M14 0L17.7813 10.2187L28 14L17.7813 17.7813L14 28L10.2187 17.7813L0 14L10.2187 10.2187L14 0Z"
-          fill="white"
-        />
-      </svg>
-    </div>
-  </Link>
-);
+const CreateIcon = (pathname: string) => {
+  const isRefer = /^\/profile/.test(pathname);
+  return (
+    <Link href="/create" className={styles.CreateIconLink}>
+      <div className={styles.createIcon}>
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M14 0L17.7813 10.2187L28 14L17.7813 17.7813L14 28L10.2187 17.7813L0 14L10.2187 10.2187L14 0Z"
+            fill="white"
+          />
+        </svg>
+      </div>
+      {
+        isRefer && (
+          <Refer isMobile />
+        )
+      }
+    </Link>
+  );
+};
 
-const tabs = [
+const Tabs = (pathname: string) => ([
   {
     key: "/",
     title: "CLUB",
@@ -71,7 +80,7 @@ const tabs = [
   {
     key: "/create",
     title: "CREATE",
-    icon: CreateIcon,
+    icon: CreateIcon(pathname),
     iconActive: <CustomIcon url="/img/tabs/tab3-active.svg" link="/create" />
   },
   {
@@ -88,7 +97,7 @@ const tabs = [
     icon: <CustomIcon url="/img/tabs/tab4.svg" link="/profile" />,
     iconActive: <CustomIcon url="/img/tabs/tab4-active.svg" link="/profile" />
   }
-];
+]);
 
 export default function Component({
   showLoginModal,
@@ -99,7 +108,7 @@ export default function Component({
   const { address } = useAccount();
 
   const showTabs = useMemo(() => {
-    return tabs.find((tab) => {
+    return Tabs(pathname).find((tab) => {
       if (tab.key === "/") {
         return pathname === tab.key;
       }
@@ -137,7 +146,7 @@ export default function Component({
             // router.push(key);
           }}
         >
-          {tabs.map((item) => {
+          {Tabs(pathname).map((item) => {
             if (item.title === "CREATE") {
               return (
                 <TabBar.Item
@@ -159,6 +168,8 @@ export default function Component({
           })}
         </TabBar>
       )}
+
+      <ReferContentCard />
     </div>
   );
 }

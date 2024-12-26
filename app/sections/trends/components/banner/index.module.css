@@ -2,7 +2,7 @@
   font-family: Unbounded;
   height: 56px;
   flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.80);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
@@ -30,9 +30,10 @@
   left: -26px;
   top: -20px;
 }
-.Content {}
+.Content {
+}
 .Title {
-  color: #FFF;
+  color: #fff;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -41,9 +42,10 @@
   align-items: center;
   gap: 4px;
 }
-.Name {}
+.Name {
+}
 .Rank {
-  color: #AF0;
+  color: #af0;
 }
 .Summaries {
   margin-top: 4px;
@@ -58,14 +60,15 @@
   gap: 4px;
 }
 .SummaryLabel {
-  color: rgba(255, 255, 255, 0.60);
+  color: rgba(255, 255, 255, 0.6);
 }
-.SummaryValue {}
+.SummaryValue {
+}
 .Trade {
   height: 20px;
   flex-shrink: 0;
-  background: #AF0;
-  color: #230;
+  border: 1px solid #fefffbcc;
+  color: #fff;
   font-size: 10px;
   font-style: normal;
   font-weight: 400;

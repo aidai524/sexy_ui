@@ -9,12 +9,17 @@
   padding: 10px;
 }
 
+.Wrapper {
+  background: linear-gradient(to bottom, #ff2681, #ffa2c9);
+  border-radius: 200px;
+  padding: 3px;
+}
+
 .Box {
-  width: 140px;
-  height: 140px;
+  width: 134px;
+  height: 134px;
   flex-shrink: 0;
   background-color: rgba(0, 0, 0, 0.7);
-  border: 3px solid #ff2681;
   backdrop-filter: blur(5px);
   border-radius: 200px;
   display: flex;
