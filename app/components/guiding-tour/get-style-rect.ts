@@ -47,8 +47,19 @@ export const getPositionStyle = (
   elementWidth: number,
   elementHeight: number,
   contentWidth: number,
-  contentHeight: number
+  contentHeight: number,
+  isMobile: boolean
 ) => {
+  if (isMobile) {
+    switch (placement) {
+      case MaskPlacement.Top:
+        return {
+          left: (window.innerWidth - contentWidth) / 2,
+          top: top - elementHeight - contentHeight - 10
+        };
+    }
+  }
+
   const highlightWidth = elementWidth + HIGHLIGHT_PADDING * 2;
   const highlightHeight = elementHeight + HIGHLIGHT_PADDING * 2;
   const highlightLeft = left - HIGHLIGHT_PADDING;

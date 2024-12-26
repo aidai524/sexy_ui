@@ -61,19 +61,28 @@ const GuidingTour: FC<IGuidingTourProps> = (props) => {
   };
 
   useEffect(() => {
-    if (popoverRef.current) {
-      setContentSize({
-        width: popoverRef.current.offsetWidth,
-        height: popoverRef.current.offsetHeight
-      });
-    }
-  }, [popoverRef.current]);
+    let timer: any = null;
+    const check = () => {
+      if (popoverRef.current) {
+        setContentSize({
+          width: popoverRef.current.offsetWidth,
+          height: popoverRef.current.offsetHeight
+        });
+        clearTimeout(timer);
+      } else {
+        timer = setTimeout(() => {
+          check();
+        }, 1000);
+      }
+    };
+    check();
+  }, [popoverRef.current, currentStep]);
 
-  const renderPopover = (wrapper: React.ReactNode) => {
+  const renderPopover = () => {
     const config = getCurrentStep();
 
     if (!config) {
-      return wrapper;
+      return null;
     }
 
     const { content } = config;
@@ -103,9 +112,7 @@ const GuidingTour: FC<IGuidingTourProps> = (props) => {
       </button>
     );
 
-    return isMaskMoving ? (
-      wrapper
-    ) : (
+    return isMaskMoving ? null : (
       <div ref={popoverRef} className={styles.Panel}>
         <div className={styles.Text}>{content}</div>
         <div style={{ height: 30 }}>{operation}</div>
@@ -134,7 +141,7 @@ const GuidingTour: FC<IGuidingTourProps> = (props) => {
       placement={getCurrentStep().placement as unknown as MaskPlacement}
       container={currentContainerElement}
       element={currentSelectedElement}
-      renderMaskContent={(wrapper) => renderPopover(wrapper)}
+      renderMaskContent={renderPopover}
       contentWidth={contentSize.width}
       contentHeight={contentSize.height}
       type={getCurrentStep().type}
