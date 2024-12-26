@@ -91,8 +91,6 @@ export default function useData(launchType: string) {
           }
         }
         
-        console.log('list:', list)
-
         if (list.length === 1) {
           // renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
           // setRenderIndex(renderIndexRef.current);

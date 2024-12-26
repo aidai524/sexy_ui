@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Hammer from "hammerjs";
 import { useThrottleFn } from 'ahooks';
 
-export default function useSwip(containerRef: any, onPre: any, onNext: any, onPreing: any, onNexting: any, reBind: boolean) {
+export default function useSwip(containerRef: any, onPre: any, onNext: any, onPreing: any, onNexting: any, reBind: boolean, isBloacked: boolean) {
 
     const { run: runPreing } = useThrottleFn(onPreing, {
         wait: 200, 
@@ -38,23 +38,30 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
             // });
 
             const winWidth = window.innerWidth
-            let maxDistance = 0
+            let startDistance = 0
             let direction = 0 // 0 right 1 left
             let moveTime = 0
             let isStart = false;
 
             manager.on('panstart', (e) => {
+                // console.log('starting:', e)
+                if (isBloacked) {
+                    isStart = false
+                    return
+                }
+
                 if (Date.now() - moveTime < 800) {
                     isStart = false
                     return
                 }
                 direction = 0
-                maxDistance = 0
+                startDistance = 0
                 moveTime = Date.now()
                 isStart = true
             });
 
             manager.on('panmove', (e) => {
+                // console.log('move', isStart)
                 if (!isStart) {
                     return
                 }
@@ -67,32 +74,38 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
                     direction = -1
                 }
 
-                if (e.distance > maxDistance) {
-                    maxDistance = e.distance
-                }
-                
+                // if (e.distance > maxDistance) {
+                //     maxDistance = e.distance
+                // }
                 
                 if (e.deltaX < 0) {
                     runPreing(e.distance / winWidth)
                 } else {
                     runNexting(e.distance / winWidth)
                 }
+
+                // setTimeout(() => {
+                //     // console.log('move2--', isStart)
+                // }, 100)
                
             });
 
             manager.on('panend', (e) => {
-                console.log('direction: ', direction, 'e.distance:', e.distance , 'maxDistance:', maxDistance)
                 if (!isStart) {
                     return
                 }
+                isStart = false
+
+                console.log('direction: ', direction, 'e.distance:', e.distance , 'startDistance:', startDistance)
+
                 if (direction === 0) {
-                    if (e.distance > maxDistance - 20) {
+                    if (e.distance > startDistance + 20) {
                         onNext && onNext()
                     } else {
                         runNexting(0)
                     }
                 } else if (direction === 1) {
-                    if (e.distance > maxDistance - 20) {
+                    if (e.distance > startDistance + 20) {
                         onPre && onPre()
                     } else {
                         runPreing(0)
@@ -100,7 +113,8 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
                 } else {
                     runNexting(0)
                 }
-
+                
+                
                 // moveTime = Date.now()
             });
             
