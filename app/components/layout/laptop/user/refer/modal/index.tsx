@@ -60,20 +60,20 @@ const ReferModalContent = (props: any) => {
 
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
-      <div className={styles.Title}>
+      <div className={isMobile ? styles.TitleMobile : styles.Title}>
         Referral Earning
       </div>
       <div className={isMobile ? styles.ContentMobile : styles.Content}>
         <div className={isMobile ? styles.EarnedMobile : styles.Earned}>
-          <div className={styles.EarnedTitle}>
+          <div className={isMobile ? styles.EarnedTitleMobile : styles.EarnedTitle}>
             <div className={styles.EarnedTitleText}>
               EARNED
             </div>
-            <div className={styles.EarnedTitleValue}>
+            <div className={isMobile ? styles.EarnedTitleValueMobile : styles.EarnedTitleValue}>
               {userInfo?.referralFee || 0} SOL
             </div>
           </div>
-          <div className={styles.Progress}>
+          <div className={isMobile ? styles.ProgressMobile : styles.Progress}>
             <div className={styles.ProgressValue} style={{ width: '25%' }} />
             <div className={styles.NodeList}>
               <div className={styles.NodeActive}>

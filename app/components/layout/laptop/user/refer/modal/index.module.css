@@ -17,6 +17,10 @@
   line-height: normal;
   padding: 30px 40px 0;
 }
+.TitleMobile {
+  composes: Title;
+  padding: 30px 10px 0;
+}
 .Earned {
   width: 601px;
   height: 261px;
@@ -26,7 +30,7 @@
 .EarnedMobile {
   composes: Earned;
   width: 100%;
-  padding: 30px 15px 0;
+  padding: 60px 15px 0;
 }
 .Content {
   padding: 30px 40px 40px;
@@ -46,11 +50,19 @@
   font-weight: 300;
   line-height: normal;
 }
+.EarnedTitleMobile {
+  composes: EarnedTitle;
+  font-size: 12px;
+}
 .EarnedTitleText {}
 .EarnedTitleValue {
   color: #000;
   font-size: 16px;
   font-weight: 700;
+}
+.EarnedTitleValueMobile {
+  composes: EarnedTitleValue;
+  font-size: 12px;
 }
 .Progress {
   width: 100%;
@@ -59,6 +71,10 @@
   background: rgba(215, 215, 215, 0.56);
   margin-top: 111px;
   position: relative;
+}
+.ProgressMobile {
+  composes: Progress;
+  margin-top: 85px;
 }
 .ProgressValue {
   width: 0;
