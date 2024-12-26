@@ -187,7 +187,7 @@ export default function Home() {
     ) {
       if (launchingList.current.length > 0) {
         const data = launchingList.current[0]
-        const isError = await actionLikeTrigger(data)
+        
 
         // like times is over
         // if (isError) {
@@ -208,7 +208,7 @@ export default function Home() {
           setMovingStyle2({})
         }, 800);
   
-        return true
+        const isError = await actionLikeTrigger(data)
       }
     }
   }
