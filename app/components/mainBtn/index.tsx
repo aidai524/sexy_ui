@@ -1,4 +1,4 @@
-import { Button } from "antd-mobile";
+import { Button, SpinLoading } from "antd-mobile";
 
 export default function MainBtn({ children, onClick, style, isLoading = false, isDisabled = false}: {
     children: React.ReactNode;
@@ -7,5 +7,5 @@ export default function MainBtn({ children, onClick, style, isLoading = false, i
     isDisabled?: boolean;
     style?: any
 }) {
-    return <Button disabled={isDisabled} loading={isLoading} style={style} onClick={onClick} className="main-btn">{ children }</Button>
+    return <Button loadingIcon={<SpinLoading color={'#fff'} style={{ '--size': '24px', marginRight: 10 }}/>} loadingText={children as any} disabled={isDisabled} loading={isLoading} style={style} onClick={onClick} className="main-btn">{ children }</Button>
 }
