@@ -8,15 +8,19 @@ import LoginModal from "@/app/components/loginModal";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import Link from "next/link";
-import Refer, { ReferContentCard } from '@/app/components/layout/laptop/user/refer';
+import Refer, {
+  ReferContentCard
+} from "@/app/components/layout/laptop/user/refer";
 
 function CustomIcon({
   url,
   link,
+  id,
   showPlus = false
 }: {
   url: string;
   link: string;
+  id?: string;
   showPlus?: boolean;
 }) {
   const { likeTrigger } = useMessage();
@@ -24,7 +28,7 @@ function CustomIcon({
   return (
     <div className={styles.tabIconWapper}>
       <Link href={link}>
-        <img className={styles.tabIcon} src={url} />
+        <img id={id} className={styles.tabIcon} src={url} />
         {showPlus && (
           <div
             className={styles.showPlus + " " + (likeTrigger ? styles.ani : "")}
@@ -37,7 +41,7 @@ function CustomIcon({
   );
 }
 
-const CreateIcon = (pathname: string) => {
+const CreateIcon = (pathname: string, id?: string) => {
   const isRefer = /^\/profile/.test(pathname);
   return (
     <Link href="/create" className={styles.CreateIconLink}>
@@ -48,6 +52,7 @@ const CreateIcon = (pathname: string) => {
           viewBox="0 0 28 28"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          id={id}
         >
           <path
             d="M14 0L17.7813 10.2187L28 14L17.7813 17.7813L14 28L10.2187 17.7813L0 14L10.2187 10.2187L14 0Z"
@@ -55,16 +60,12 @@ const CreateIcon = (pathname: string) => {
           />
         </svg>
       </div>
-      {
-        isRefer && (
-          <Refer isMobile />
-        )
-      }
+      {isRefer && <Refer isMobile />}
     </Link>
   );
 };
 
-const Tabs = (pathname: string) => ([
+const Tabs = (pathname: string) => [
   {
     key: "/",
     title: "CLUB",
@@ -74,20 +75,31 @@ const Tabs = (pathname: string) => ([
   {
     key: "/trends",
     title: "TRENDS",
-    icon: <CustomIcon url="/img/tabs/tab5.svg" link="/trends" />,
+    icon: (
+      <CustomIcon
+        id="guid-home-trends"
+        url="/img/tabs/tab5.svg"
+        link="/trends"
+      />
+    ),
     iconActive: <CustomIcon url="/img/tabs/tab5-active.svg" link="/trends" />
   },
   {
     key: "/create",
     title: "CREATE",
-    icon: CreateIcon(pathname),
+    icon: CreateIcon(pathname, "guid-home-create-mobile"),
     iconActive: <CustomIcon url="/img/tabs/tab3-active.svg" link="/create" />
   },
   {
     key: "/mining",
     title: "MINING",
     icon: (
-      <CustomIcon showPlus={true} url="/img/tabs/tab2.svg" link="/mining" />
+      <CustomIcon
+        id="guid-home-mining-mobile"
+        showPlus={true}
+        url="/img/tabs/tab2.svg"
+        link="/mining"
+      />
     ),
     iconActive: <CustomIcon url="/img/tabs/tab2-active.svg" link="/mining" />
   },
@@ -97,7 +109,7 @@ const Tabs = (pathname: string) => ([
     icon: <CustomIcon url="/img/tabs/tab4.svg" link="/profile" />,
     iconActive: <CustomIcon url="/img/tabs/tab4-active.svg" link="/profile" />
   }
-]);
+];
 
 export default function Component({
   showLoginModal,
@@ -118,7 +130,6 @@ export default function Component({
 
   return (
     <div className="min-h-screen bg-black text-white">
-
       {/* <Button onClick={() => {
         trade()
       }}>juipter</Button> */}
@@ -168,7 +179,6 @@ export default function Component({
           })}
         </TabBar>
       )}
-
       <ReferContentCard />
     </div>
   );

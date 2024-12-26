@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import styles from './index.module.css';
-import { useReferStore } from '@/app/store/useRefer';
-import ReferModal from '@/app/components/layout/laptop/user/refer/modal';
-import { useAccount } from '@/app/hooks/useAccount';
+import { motion } from "framer-motion";
+import styles from "./index.module.css";
+import { useReferStore } from "@/app/store/useRefer";
+import ReferModal from "@/app/components/layout/laptop/user/refer/modal";
+import { useAccount } from "@/app/hooks/useAccount";
+import { useGuidingTour } from "@/app/store/use-guiding-tour";
 
 const Refer = (props: any) => {
   const { isMobile } = props;
@@ -33,17 +34,15 @@ const Refer = (props: any) => {
 
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
-      {
-        isMobile && store.entryVisible ? null : (
-          <button
-            type="button"
-            className={isMobile ? styles.EntryMobile : styles.Entry}
-            onClick={handleEntryOpen}
-          >
-            <EntryAnimation />
-          </button>
-        )
-      }
+      {isMobile && store.entryVisible ? null : (
+        <button
+          type="button"
+          className={isMobile ? styles.EntryMobile : styles.Entry}
+          onClick={handleEntryOpen}
+        >
+          <EntryAnimation />
+        </button>
+      )}
       <motion.div
         className={styles.Card}
         variants={{
@@ -53,20 +52,20 @@ const Refer = (props: any) => {
             x: 0,
             y: 0,
             transition: {
-              type: 'spring',
+              type: "spring",
               stiffness: 200,
-              damping: 20,
+              damping: 20
             }
           },
           invisible: {
             opacity: 0,
             scale: 0,
-            x: '-100%',
-            y: '100%',
-          },
+            x: "-100%",
+            y: "100%"
+          }
         }}
         initial="invisible"
-        animate={store.entryVisible && !isMobile ? 'visible' : 'invisible'}
+        animate={store.entryVisible && !isMobile ? "visible" : "invisible"}
       >
         <ReferContent
           handleOpen={handleOpen}
@@ -86,26 +85,18 @@ const ReferContent = (props: any) => {
   return (
     <>
       <div className={isMobile ? styles.CardInnerMobile : styles.CardInner}>
-        <div className={styles.Title}>
-          Refer to Earn
-        </div>
+        <div className={styles.Title}>Refer to Earn</div>
         <div className={styles.Content}>
           <div className={styles.Rebates}>
-            <div className={styles.RebatesValue}>
-              $5000
-            </div>
-            <div className={styles.RebatesUnit}>
-              Rebates
-            </div>
+            <div className={styles.RebatesValue}>$5000</div>
+            <div className={styles.RebatesUnit}>Rebates</div>
           </div>
           <button
             type="button"
             className={styles.ReferBtn}
             onClick={handleOpen}
           >
-            <div className={styles.ReferBtnText}>
-              REFER
-            </div>
+            <div className={styles.ReferBtnText}>REFER</div>
           </button>
         </div>
       </div>
@@ -121,7 +112,14 @@ const ReferContent = (props: any) => {
 const EntryAnimation = (props: any) => {
   const { style } = props;
   return (
-    <motion.svg width="52" height="72" viewBox="0 0 52 72" fill="none" xmlns="http://www.w3.org/2000/svg" style={style}>
+    <motion.svg
+      width="52"
+      height="72"
+      viewBox="0 0 52 72"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={style}
+    >
       <g filter="url(#filter0_f_4629_544)">
         <path
           fillRule="evenodd"
@@ -139,7 +137,10 @@ const EntryAnimation = (props: any) => {
           fill="url(#paint1_radial_4629_544)"
         />
       </g>
-      <g style={{ mixBlendMode: 'soft-light' }} filter="url(#filter2_i_4629_544)">
+      <g
+        style={{ mixBlendMode: "soft-light" }}
+        filter="url(#filter2_i_4629_544)"
+      >
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -165,7 +166,7 @@ const EntryAnimation = (props: any) => {
               ease: "easeInOut",
               times: [0, 0.5, 1],
               repeat: Infinity,
-              delay: 0.5,
+              delay: 0.5
             }
           }
         }}
@@ -183,7 +184,7 @@ const EntryAnimation = (props: any) => {
               duration: 1,
               ease: "easeInOut",
               times: [0, 0.5, 1],
-              repeat: Infinity,
+              repeat: Infinity
             }
           }
         }}
@@ -228,8 +229,16 @@ const EntryAnimation = (props: any) => {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-          <feGaussianBlur stdDeviation="3.5" result="effect1_foregroundBlur_4629_544" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
+          <feGaussianBlur
+            stdDeviation="3.5"
+            result="effect1_foregroundBlur_4629_544"
+          />
         </filter>
         <filter
           id="filter1_i_4629_544"
@@ -241,7 +250,12 @@ const EntryAnimation = (props: any) => {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -251,8 +265,15 @@ const EntryAnimation = (props: any) => {
           <feOffset />
           <feGaussianBlur stdDeviation="3.5" />
           <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
-          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_4629_544" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="shape"
+            result="effect1_innerShadow_4629_544"
+          />
         </filter>
         <filter
           id="filter2_i_4629_544"
@@ -264,7 +285,12 @@ const EntryAnimation = (props: any) => {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -274,8 +300,15 @@ const EntryAnimation = (props: any) => {
           <feOffset />
           <feGaussianBlur stdDeviation="3.5" />
           <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
-          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_4629_544" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="shape"
+            result="effect1_innerShadow_4629_544"
+          />
         </filter>
         <radialGradient
           id="paint0_radial_4629_544"
@@ -317,6 +350,7 @@ const EntryAnimation = (props: any) => {
 
 export const ReferContentCard = (props: any) => {
   const {} = props;
+  const { hasShownTour } = useGuidingTour();
 
   const store = useReferStore();
   const { address } = useAccount();
@@ -342,20 +376,22 @@ export const ReferContentCard = (props: any) => {
           opacity: 1,
           y: 0,
           transition: {
-            type: 'spring',
+            type: "spring",
             stiffness: 200,
-            damping: 20,
+            damping: 20
           }
         },
         invisible: {
           opacity: 0,
-          y: '100%',
-        },
+          y: "100%"
+        }
       }}
       initial="invisible"
-      animate={store.entryVisible ? 'visible' : 'invisible'}
+      animate={store.entryVisible && hasShownTour ? "visible" : "invisible"}
     >
-      <EntryAnimation style={{ flexShrink: 0, transform: 'scale(0.8) translateY(-10px)' }} />
+      <EntryAnimation
+        style={{ flexShrink: 0, transform: "scale(0.8) translateY(-10px)" }}
+      />
       <ReferContent
         handleOpen={handleOpen}
         handleEntryClose={handleEntryClose}
