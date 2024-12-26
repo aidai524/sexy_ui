@@ -4,6 +4,11 @@
   background: url("/img/home/refer-modal-bg.svg") no-repeat center / contain;
   font-family: Unbounded;
 }
+.ContainerMobile {
+  composes: Container;
+  width: 100dvw;
+  background: radial-gradient(89.59% 86.58% at 40.75% 0%, #FFBCD8 0%, #FFE8F1 100%);
+}
 .Title {
   color: #000;
   font-size: 22px;
@@ -18,8 +23,17 @@
   background: url("/img/home/refer-modal-content-bg.svg") no-repeat center / contain;
   padding: 21px 28px 0;
 }
+.EarnedMobile {
+  composes: Earned;
+  width: 100%;
+  padding: 30px 15px 0;
+}
 .Content {
   padding: 30px 40px 40px;
+}
+.ContentMobile {
+  composes: Content;
+  padding: 15px 10px 0px;
 }
 .EarnedTitle {
   display: flex;
