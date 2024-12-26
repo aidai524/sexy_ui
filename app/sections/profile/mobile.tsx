@@ -6,6 +6,7 @@ import FollowerActions from "./components/follower-actions";
 import Address from "./components/address";
 import HotBoost from "./components/hot-boost";
 import FollowBtn from "./components/followBtn";
+import { useReferStore } from '@/app/store/useRefer';
 
 export default function Profile({
   userInfo,
@@ -21,6 +22,7 @@ export default function Profile({
   showHot = true,
   isOther = false
 }: any) {
+  const store = useReferStore();
   const backgroundImgStyle = userInfo?.banner
     ? {
         backgroundImage: `linear-gradient(360deg, #0D1012 41.35%, rgba(0, 0, 0, 0) 100%)`,
@@ -36,7 +38,7 @@ export default function Profile({
     : {};
 
   return (
-    <div className={styles.main}>
+    <div className={styles.main} style={store.entryVisible ? { paddingBottom: 200 } : {}}>
       <div style={backgroundImgStyle1} className={styles.avatarBox}>
         {isOther ? (
           <div className={styles.isOther}>

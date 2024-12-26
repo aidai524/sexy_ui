@@ -4,6 +4,11 @@
   background: url("/img/home/refer-modal-bg.svg") no-repeat center / contain;
   font-family: Unbounded;
 }
+.ContainerMobile {
+  composes: Container;
+  width: 100dvw;
+  background: radial-gradient(89.59% 86.58% at 40.75% 0%, #FFBCD8 0%, #FFE8F1 100%);
+}
 .Title {
   color: #000;
   font-size: 22px;
@@ -12,14 +17,27 @@
   line-height: normal;
   padding: 30px 40px 0;
 }
+.TitleMobile {
+  composes: Title;
+  padding: 30px 10px 0;
+}
 .Earned {
   width: 601px;
   height: 261px;
   background: url("/img/home/refer-modal-content-bg.svg") no-repeat center / contain;
   padding: 21px 28px 0;
 }
+.EarnedMobile {
+  composes: Earned;
+  width: 100%;
+  padding: 60px 15px 0;
+}
 .Content {
   padding: 30px 40px 40px;
+}
+.ContentMobile {
+  composes: Content;
+  padding: 15px 10px 0px;
 }
 .EarnedTitle {
   display: flex;
@@ -32,11 +50,19 @@
   font-weight: 300;
   line-height: normal;
 }
+.EarnedTitleMobile {
+  composes: EarnedTitle;
+  font-size: 12px;
+}
 .EarnedTitleText {}
 .EarnedTitleValue {
   color: #000;
   font-size: 16px;
   font-weight: 700;
+}
+.EarnedTitleValueMobile {
+  composes: EarnedTitleValue;
+  font-size: 12px;
 }
 .Progress {
   width: 100%;
@@ -45,6 +71,10 @@
   background: rgba(215, 215, 215, 0.56);
   margin-top: 111px;
   position: relative;
+}
+.ProgressMobile {
+  composes: Progress;
+  margin-top: 85px;
 }
 .ProgressValue {
   width: 0;

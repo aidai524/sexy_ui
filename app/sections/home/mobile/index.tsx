@@ -65,8 +65,6 @@ export default function Home() {
     updateCurrentToken: updateLaunchedToken,
   } = useData("launching");
 
-  console.log('launchedList:', launchedList)
-
   useSwip(
     containerPreLaunchRef,
     () => {
@@ -126,7 +124,8 @@ export default function Home() {
         setMovingStyle(style);
       }
     },
-    homeTabIndex === 0
+    homeTabIndex === 0,
+    likeTriggerRef.current || likeTriggerRef.current,
   );
 
   useSwip(
@@ -142,7 +141,7 @@ export default function Home() {
         return;
       }
 
-      console.log('preing')
+      console.log('preing') 
       const style = {
         opacity: 1 - percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${100 * percent}vh)`
@@ -158,7 +157,7 @@ export default function Home() {
         return;
       }
 
-      console.log('nexting')
+      console.log('nexting', percent)
       const style = {
         opacity: 1 - percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent}vh)`
@@ -169,7 +168,8 @@ export default function Home() {
         setMovingStyle(style);
       }
     },
-    homeTabIndex === 1
+    homeTabIndex === 1,
+    scrollRef.current,
   );
 
   useEffect(() => {
@@ -188,12 +188,6 @@ export default function Home() {
       if (launchingList.current.length > 0) {
         const data = launchingList.current[0]
         
-
-        // like times is over
-        // if (isError) {
-        //   return false
-        // }
-
         if (renderLaunchingIndexRef.current === 0) {
           setActionStyle2(styles.like);
         } else {
@@ -245,10 +239,11 @@ export default function Home() {
       launchedList.current &&
       launchedList.current.length > 0
     ) {
-
       if (scrollRef.current) {
         return
       }
+
+      console.log('justNext')
 
       scrollRef.current = true
       const style = type === "like" ? styles.like : styles.hate;
