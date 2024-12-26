@@ -3,11 +3,12 @@ import Tags from "../tags";
 import styles from "./thumbnail.module.css";
 import type { Project } from "@/app/type";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommentComp from "../comment";
 import { videoReg } from "../upload";
 import Likes from "./likes";
 import Holder from "../holder";
+import LoadMore from "./loadMore";
 
 interface Props {
   showDesc: boolean;
@@ -35,6 +36,8 @@ export default function Thumbnail({
   style = {}
 }: Props) {
   const [progressIndex, setProgressIndex] = useState(0);
+  const [loadCommentNum, setLoadCommentNum] = useState(1)
+  const commentRef = useRef<any>()
   const [height, setHeight] = useState("calc(100vh - 232px)");
 
   useEffect(() => {
@@ -112,12 +115,26 @@ export default function Thumbnail({
         {progressIndex === 1 && (
           <div className={styles.commentList}>
             <Avatar data={data} showBackIcon={true} />
-            <CommentComp
-              titleStyle={{ color: "#fff" }}
-              id={data.id}
-              showEdit={false}
-              usePanel={false}
-            />
+            <div className={styles.commentBox} ref={commentRef}>
+              <CommentComp
+                titleStyle={{ color: "#fff" }}
+                id={data.id}
+                showEdit={false}
+                usePanel={false}
+                
+              />
+            </div>
+            <LoadMore onClick={() => {
+              console.log(commentRef)
+              // setLoadCommentNum(loadCommentNum + 1)
+              if (commentRef.current) {
+                console.log('commentRef.current.scrollHeight:', commentRef.current.scrollHeight, commentRef.current.clientHeight)
+
+                commentRef.current.scrollTo({
+                  top: commentRef.current.scrollHeight + commentRef.current.clientHeight
+                })
+              }
+            }}/>
           </div>
         )}
 
