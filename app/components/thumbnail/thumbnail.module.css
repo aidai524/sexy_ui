@@ -28,6 +28,17 @@
         padding: 30px 10px;
         backdrop-filter: blur(10px);
         background-color: rgba(0, 0, 0, 0.6);
+        overflow: hidden;
+    }
+
+    .commentBox {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 90px;
+        bottom: 0;
+        padding: 0 10px;
+        overflow: auto;
     }
 
     .descContent {
@@ -200,5 +211,27 @@
         &.launch3 {
             background-color: rgba(100, 43, 255, 1);
         }
+    }
+}
+
+.loadMore {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(181.52deg, rgba(0, 0, 0, 0) 1.29%, #000000 98.71%);
+    .loadBox {
+        flex: 1;
+        height: 30px;
+        border: 1px solid rgba(147, 121, 166, 1);
+        border-radius: 8px;
+        color: rgba(240, 221, 255, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }

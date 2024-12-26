@@ -13,6 +13,7 @@ import type { Comment, Project } from "@/app/type";
 import { httpAuthPost, httpGet } from "@/app/utils";
 import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useUserAgent } from "@/app/context/user-agent";
+import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 
 interface Props {
   data: Project;
@@ -51,6 +52,8 @@ export default function Info({ data, onUpdate }: Props) {
           <LaunchedAction data={data} />
         )}
       </div>
+
+      
     </div>
   );
 }
