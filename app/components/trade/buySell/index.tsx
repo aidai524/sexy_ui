@@ -144,7 +144,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
         } else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
-            
+
             setErrorMsg("Invalid value");
             return
           }
@@ -184,7 +184,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
           //   .mul(rate)
           //   .mul(10 ** token.tokenDecimals)
           //   .toFixed(0);
-        } 
+        }
         else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
@@ -397,7 +397,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                       setTokenPercent(item);
                       const tokenPercentVal = new Big(tokenBalance)
                         .mul(item / 100)
-                        .toFixed(2);
+                        .toFixed(2, 0);
                       setValInput(tokenPercentVal);
                     }}
                     key={item}
@@ -450,7 +450,6 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                 }
                 setIsLoading(false);
 
-
                 if (hash) {
                   const modalHandler = Modal.show({
                     content: <TradeSuccessModal
@@ -458,19 +457,19 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                       userInfo={userInfo}
                       token={token}
                       solAmount={activeIndex === 0 ? buyInSol : sellOutSol}
-                      amount={ new Big(activeIndex === 0 ? buyIn : sellOut).div(10 ** token.tokenDecimals!).toFixed(2) }
+                      amount={new Big(activeIndex === 0 ? buyIn : sellOut).div(10 ** token.tokenDecimals!).toFixed(2)}
                       onClose={() => {
                         modalHandler.close()
                       }} />,
                     className: 'buy-sell-modal',
                     closeOnMaskClick: true,
                   })
-  
+
                   updateBalance();
                   setValInput('')
                   onClose()
                 }
-                
+
               } catch (e) {
                 console.log(e)
                 setIsLoading(false);

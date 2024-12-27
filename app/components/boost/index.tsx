@@ -146,11 +146,11 @@ export default function Boost({
       height: 36
     };
 
-  // return (
-  //   <div style={iconStyle}>
-  //     <img id={id} style={iconStyle} src="/img/profile/coming-boost.png" />
-  //   </div>
-  // );
+  return (
+    <div style={iconStyle}>
+      <img id={id} style={iconStyle} src="/img/profile/coming-boost.png" />
+    </div>
+  );
 
   return (
     <div

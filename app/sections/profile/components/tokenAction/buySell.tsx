@@ -13,7 +13,7 @@ export default function BuySell({ token }: Props) {
     return <>
         <div className={styles.actionBtn} onClick={() => { setTradeShow(true) }}>
             <BuySellIcon />
-            <div>Bus/Sell</div>
+            <div>Buy/Sell</div>
         </div>
 
         <TradeModal

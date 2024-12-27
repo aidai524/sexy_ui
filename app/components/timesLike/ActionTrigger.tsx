@@ -3,7 +3,7 @@ import FirstTimeLike from "./firstTimeLike"
 import SecondTimeLike from "./secondTimesLike"
 import type { Project } from "@/app/type"
 import { httpAuthPost } from "@/app/utils"
-import { fail } from "@/app/utils/toast"
+import { fail, success } from "@/app/utils/toast"
 
 
 export const FIRST_LIKE_TIMES = 10
@@ -17,7 +17,8 @@ const onLike = async (data: Project) => {
     if (data) {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
       if (v.code === 0) {
-        return v.data
+        success('You liked ' + data.tokenName + ', You are expected to receive ' + v.data?.point)
+        return v.data?.likeNum
       } else if (v.code === 100002) {
         fail("You've run out of like times. You can come back tomorrow")
         return -1
