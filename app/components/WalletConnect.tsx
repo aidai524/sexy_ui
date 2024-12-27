@@ -25,8 +25,8 @@ import { getDeviceType } from "../utils";
 const WALLET_CONNECT_METADATA = {
   name: "FlipN",
   description: "FlipN",
-  url: "https://sexyfi.dumpdump.fun",
-  icons: ["https://sexyfi.dumpdump.fun/favicon.ico"]
+  url: "https://app.flipn.fun",
+  icons: ["https://app.flipn.fun/favicon.ico"]
 };
 
 const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig["options"] = {

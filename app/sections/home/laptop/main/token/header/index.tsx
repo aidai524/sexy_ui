@@ -33,7 +33,7 @@ export default function Header({
             onClick={() => {
               shareToX(
                 tokenInfo.tokenName,
-                "https://sexyfi.dumpdump.fun/detail?id=" + tokenInfo.id
+                "https://app.flipn.fun/detail?id=" + tokenInfo.id
               );
             }}
           >

@@ -51,10 +51,7 @@ function SuccessModal({
         const data = v.data[0];
         onClose();
 
-        shareToX(
-          token.tokenName,
-          "https://sexyfi.dumpdump.fun//detail?id=" + data.id
-        );
+        shareToX(token.tokenName, "https://app.flipn.fun/detail?id=" + data.id);
       }
     }
   }, [token]);
