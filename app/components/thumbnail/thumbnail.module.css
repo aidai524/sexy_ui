@@ -189,7 +189,8 @@
         display: inline-block;
         white-space: nowrap;
         text-overflow: ellipsis;
-        max-width: 160px;
+        overflow: hidden;
+        width: 160px;
     }
 
     .launchTag {
