@@ -23,6 +23,7 @@ interface Props {
 }
 
 const referral_address = 'EEYm1sXVhH1EpsUan6Sj31zdydALoAVCEYdVncJQJ8s6'
+const programId_address = '67g5ZLhs2Nhobhm69u5vdxJutF5VesaB21G23RdXWshx'
 
 export function useTokenTrade({
     tokenName, tokenSymbol, tokenDecimals, loadData = true
@@ -36,7 +37,7 @@ export function useTokenTrade({
     const [reFreshBalnace, setReFreshBalnace] = useState(0)
 
     const programId = useMemo(() => {
-        return new PublicKey("AYdgC17ymp4CkbbZ7pED2oa5hdnsp4dZVKJtt9542kFh")
+        return new PublicKey(programId_address)
     }, [])
 
     const wsol = useMemo(() => {
