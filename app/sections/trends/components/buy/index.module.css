@@ -2,6 +2,8 @@
 .BuyContent {
   position: relative;
   padding-top: 30px;
+  background: #121719;
+  border-radius: 10px;
 }
 .BuyContentLogo {
   width: 94px;

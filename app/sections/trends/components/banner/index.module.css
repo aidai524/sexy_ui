@@ -13,6 +13,21 @@
   gap: 8px;
   border-radius: 31px;
 }
+.ContainerMobile {
+  composes: Container;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: unset;
+  padding: 26px 22px 13px 19px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
 .Avatar {
   width: 42px;
   height: 42px;
@@ -31,6 +46,7 @@
   top: -20px;
 }
 .Content {
+  flex: 1;
 }
 .Title {
   color: #fff;
@@ -42,7 +58,17 @@
   align-items: center;
   gap: 4px;
 }
-.Name {
+.TitleRight {
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+}
+.CloseBtnMobile {
+  width: 14px;
+  height: 14px;
+  background: url("/img/trends/icon-close.svg") no-repeat center / contain;
 }
 .Rank {
   color: #af0;

@@ -28,7 +28,8 @@ const BuyModal = (props: Omit<Props, 'isMobile'>) => {
       open={visible}
       onClose={onClose}
       mainStyle={{
-        background: '#19030D'
+        background: 'unset',
+        border: 0,
       }}
     >
       <Content {...props} isMobile={isMobile} />
@@ -45,7 +46,7 @@ const Content = (props: Props) => {
         isMobile && (
           <div
             className={styles.BuyContentLogo}
-            style={{ backgroundImage: `url("${tradeToken?.tokenUri}")` }}
+            style={{ backgroundImage: `url("${tradeToken?.tokenIcon}")` }}
           >
             {
               tradeToken?.tickerAvatar && (

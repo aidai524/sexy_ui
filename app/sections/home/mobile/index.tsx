@@ -24,11 +24,17 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import { Modal } from "antd-mobile";
 import SeenAll from "@/app/components/timesLike/seenAll";
 import { mapDataToProject } from "@/app/utils/mapTo";
+import TrendBanner from '@/app/sections/trends/components/banner';
+import { useTrends } from '@/app/sections/home/mobile/hooks/useTrends';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useGuidingTour } from '@/app/store/use-guiding-tour';
 
 export default function Home() {
   const router = useRouter();
   const { address } = useAccount();
   const params = useSearchParams();
+  const { visible: trendsVisible, handleClose: handleTrendsClose } = useTrends();
+  const { hasShownTour } = useGuidingTour();
 
   const { homeTabIndex, set: setHomeTabIndex }: any = useHomeTab();
 
@@ -269,6 +275,25 @@ export default function Home() {
 
   return (
     <>
+      <AnimatePresence mode="wait">
+        {
+          trendsVisible && hasShownTour && (
+            <motion.div
+              style={{ position: 'relative', zIndex: 9 }}
+              initial={{ y: -200 }}
+              exit={{ y: -200 }}
+              animate={{ y: 0 }}
+              transition={{
+                type: 'spring',
+                stiffness: 200,
+                damping: 20,
+              }}
+            >
+              <TrendBanner isMobile onClose={handleTrendsClose} />
+            </motion.div>
+          )
+        }
+      </AnimatePresence>
       <div className={styles.main}>
         <div className={styles.header}>
           <div

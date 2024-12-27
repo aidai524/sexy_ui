@@ -10,7 +10,7 @@ import { useTrends } from '@/app/sections/trends/hooks';
 export default function Mobile(props: any) {
   const { handleBuy } = props;
 
-  const { list, top1 } = useTrends({ isPolling: true });
+  const { list, top1 } = useTrends({ isPolling: false });
 
   return (
     <div className={styles.Container}>

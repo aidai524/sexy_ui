@@ -7,9 +7,10 @@ export function useTrade() {
   const onTrade = (token: Trend) => {
     if (!token) return;
     setTradeToken({
+      DApp: 'pump',
       tokenName: token?.token_name,
       tokenSymbol: token?.token_symbol,
-      tokenUri: token?.Icon,
+      tokenIcon: token?.Icon,
       ticker: token?.ticker,
       tokenDecimals: 18,
       tickerAvatar: '',

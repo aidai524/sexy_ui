@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
-import { httpAuthGet, timeAgo } from '@/app/utils';
+import { httpGet, timeAgo } from '@/app/utils';
 import { useTrendsStore } from '@/app/store/useTrends';
 
 export function useTrends(props: any) {
   const { isPolling } = props;
 
-  const store = useTrendsStore();
+  const {
+    list,
+    allList,
+    top1,
+    setTop1,
+    setList,
+    setAllList,
+  } = useTrendsStore();
 
-  const [list, setList] = useState<Trend[]>([]);
-  const [allList, setAllList] = useState<Trend[]>([]);
-  const [top1, setTop1] = useState<Trend | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const [currentFilter, setCurrentFilter] = useState<number>(1);
   const [orderBy, setOrderBy] = useState<Record<string, 'asc' | 'desc' | '' | undefined>>({});
@@ -17,7 +21,7 @@ export function useTrends(props: any) {
   const getList = async () => {
     setLoading(true);
     try {
-      const res = await httpAuthGet(`/project/trends/list`, {});
+      const res = await httpGet(`/project/trends/list`, {});
       const _list: Trend[] = res.data || [];
       let _top1: Trend = _list[0];
       let _top1Idx = 0;
@@ -32,9 +36,6 @@ export function useTrends(props: any) {
       setAllList(_list);
       setList(lastList);
       setTop1(_top1);
-      store.setList(lastList);
-      store.setAllList(_list);
-      store.setTop1(_top1);
       setLoading(false);
     } catch (err) {
       console.log('get trends list err: %o', err);
@@ -65,6 +66,7 @@ export function useTrends(props: any) {
   };
 
   useEffect(() => {
+    console.log('isPolling: %o', isPolling);
     if (!isPolling) return;
     const timer = setInterval(() => {
       getList();
