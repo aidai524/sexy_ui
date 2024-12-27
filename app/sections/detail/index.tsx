@@ -23,7 +23,7 @@ export default function Detail() {
   const params = useSearchParams();
   const [activeKey, setActiveKey] = useState("Info");
   const [infoData, setInfoData] = useState<Project>();
-  const [mc, setMC] = useState<string | number>('')
+  const [mc, setMC] = useState<string | number>('-')
 
   const {
     getMC,
@@ -41,12 +41,12 @@ export default function Detail() {
   }, [params]);
 
   useEffect(() => {
-    if (pool && pool.length > 0) {
+    if (pool && pool.length > 0 && infoData?.DApp === 'sexy' && infoData?.status === 1) {
       getMC().then(res => {
         setMC(res as number)
       })
     }
-  }, [pool])
+  }, [pool, infoData])
 
   const getDetailInfo = useCallback(() => {
     const id = params.get("id");

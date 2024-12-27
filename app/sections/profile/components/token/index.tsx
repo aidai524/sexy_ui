@@ -3,7 +3,7 @@ import styles from './token.module.css'
 import { DotLoading, Modal } from 'antd-mobile'
 import BoostJust from '@/app/components/boost/boostJust'
 import type { Project } from '@/app/type'
-import { timeAgo } from '@/app/utils'
+import { simplifyNum, timeAgo } from '@/app/utils'
 import SmokeBtn from '@/app/components/smokHot'
 import { useRouter } from 'next/navigation'
 import Boost from '@/app/components/boost'
@@ -23,10 +23,25 @@ interface Props {
 
 export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot, from }: Props) {
     const router = useRouter()
-    const { timeFormat } = useTimeLeft({ time: data.boostTime })
-    
+    const [mc, setMC] = useState<string | number>('-')
 
-    
+    const {
+        getMC,
+        pool,
+    } = useTokenTrade({
+        tokenName: data?.tokenName as string,
+        tokenSymbol: data?.tokenSymbol as string,
+        tokenDecimals: data?.tokenDecimals as number,
+        loadData: false
+    });
+
+    useEffect(() => {
+        if (pool && pool.length > 0 && data?.DApp === 'sexy' && data?.status === 1) {
+            getMC().then(res => {
+                setMC(res as number)
+            })
+        }
+    }, [pool, data])
 
     return <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
         <div className={styles.tokenMag}>
@@ -45,7 +60,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                         router.push('/profile/user?account=' + data.account)
                     }} className={styles.createrImg} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" /> */}
                 </div>
-                <div className={styles.MarketCap}>Market cap: -</div>
+                <div className={styles.MarketCap}>Market cap: {(mc && mc !== '-') ? simplifyNum(Number(mc)) : '-'}</div>
                 <div className={styles.createTime}>{timeAgo(data.time)}</div>
             </div>
         </div>
@@ -123,7 +138,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                 </div>
         } */}
 
-        <TokenAction token={data} prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}/>
+        <TokenAction token={data} prepaidWithdrawDelayTime={prepaidWithdrawDelayTime} />
 
     </div>
 }
