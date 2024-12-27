@@ -1,0 +1,19 @@
+.actionBtn {
+    color: #fff;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #fff;
+    border-radius: 42px;
+    margin-top: 20px;
+    gap: 10px;
+    &.isGrey {
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+
+.actionbox {
+    padding: 20px;
+}

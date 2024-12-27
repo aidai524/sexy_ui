@@ -13,12 +13,14 @@ interface Props {
   isBigIcon?: boolean;
   id?: string;
   onClick: () => void;
+  actionChildren?: React.ReactNode;
 }
 
 export default function SmokeBtn({
   onClick,
   token,
   isBigIcon = false,
+  actionChildren,
   id
 }: Props) {
   const [panelShow, setPanelShow] = useState(false);
@@ -91,24 +93,27 @@ export default function SmokeBtn({
         // }
       }}
     >
-      <div
-        style={{
-          width: size,
-          height: size,
-          borderRadius: 100,
-          backgroundColor: "rgba(0,0,0,0.4",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          overflow: "hidden"
-        }}
-      >
-        {isDisabled ? (
-          <SmokeIcon isGrey={true} id={id} />
-        ) : (
-          <SmokeIcon id={id} />
-        )}
-      </div>
+      {
+        actionChildren ? actionChildren : <div
+          style={{
+            width: size,
+            height: size,
+            borderRadius: 100,
+            backgroundColor: "rgba(0,0,0,0.4",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            overflow: "hidden"
+          }}
+        >
+          {isDisabled ? (
+            <SmokeIcon isGrey={true} id={id} />
+          ) : (
+            <SmokeIcon id={id} />
+          )}
+        </div>
+      }
+
 
       <Modal
         visible={vipShow}

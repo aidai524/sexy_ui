@@ -56,7 +56,7 @@ export default function Layout(props: any) {
   useEffect(() => {
     getConfig().then((stateData) => {
       setPrepaidDelayTime(
-        stateData.prepaidWithdrawDelayTime.toNumber()
+        stateData.prepaidWithdrawDelayTime.toNumber() * 1000
       );
     });
   }, []);

@@ -117,7 +117,7 @@ export function useTokenTrade({
 
         const instructions = []
 
-        const referral = new PublicKey(referral_address)
+        let referral = new PublicKey(referral_address)
         const proxy = new PublicKey('8GBcwJAfUU9noxPNh5jnfwkKipK8XRHUPS5va9TAXr5f')
 
 
@@ -177,20 +177,20 @@ export function useTokenTrade({
         )
 
 
-        // try {
-        //     const accountInfo = await connection.getAccountInfo(referralRecord[0]);
+        try {
+            const accountInfo = await connection.getAccountInfo(referralRecord[0]);
 
-        //     if (accountInfo) {
-        //         const program = new Program<any>(idl, programId, { connection: connection } as any);
-        //         const referralAccount: any = await program.account.referralRecord.fetch(referralRecord[0]);
-        //         console.log('referralRecord:', referralRecord, referralAccount, walletProvider.publicKey)
-        //         referralUser = referralAccount.user
-        //     } else {
+            if (accountInfo) {
+                const program = new Program<any>(idl, programId, { connection: connection } as any);
+                const referralAccount: any = await program.account.referralRecord.fetch(referralRecord[0]);
+                console.log('referralRecord:', referralRecord, referralAccount, walletProvider.publicKey)
+                referral = referralAccount.user
+            } else {
 
-        //     }
-        // } catch (e) {
-        //     console.log(e)
-        // }
+            }
+        } catch (e) {
+            console.log(e)
+        }
 
         const referralFeeRateRecord = PublicKey.findProgramAddressSync(
             [Buffer.from("referral_fee_rate_record"), state[0].toBuffer(), referral.toBuffer()],
@@ -236,6 +236,7 @@ export function useTokenTrade({
         return {
             keys,
             instructions,
+            referral,
         }
 
     }, [programId, wsol, state, pool, tokenInfo, tokenName, tokenSymbol, walletProvider, connection])
@@ -311,7 +312,7 @@ export function useTokenTrade({
             return
         }
 
-        const { keys, instructions } = keysAndIns
+        const { keys, instructions, referral } = keysAndIns
 
         console.log(keys)
 
@@ -331,7 +332,7 @@ export function useTokenTrade({
                 outputAmount: new anchor.BN(outputAmount),
                 maxWsolAmount: new anchor.BN(maxWsolAmount),
                 referralParam: {
-                    recommender: new PublicKey(referral_address),
+                    recommender: referral,
                     proxy: keys.proxySolAccount
                 }
             }
@@ -364,7 +365,7 @@ export function useTokenTrade({
             return
         }
 
-        const { keys, instructions } = keysAndIns
+        const { keys, instructions, referral } = keysAndIns
 
         const transaction = new Transaction();
 
@@ -375,7 +376,7 @@ export function useTokenTrade({
                 amount: new anchor.BN(amount),
                 minWsolAmount: new anchor.BN(minWsolAmount),
                 referralParam: {
-                    recommender: new PublicKey('EEYm1sXVhH1EpsUan6Sj31zdydALoAVCEYdVncJQJ8s6'),
+                    recommender: referral,
                     proxy: keys.proxySolAccount
                 }
             }
@@ -635,63 +636,6 @@ export function useTokenTrade({
 
         return hash2
 
-        // let val
-        // val = await httpAuthPost(`/project/prepaid?amount=${amount}&name=${tokenName}&symbol=${tokenSymbol}`)
-        // if (val.code !== 0) {
-        //     throw 'fetch prepaid data error'
-        // }
-
-        // const signatureBytes = Buffer.from(val.data, 'base64')
-
-        // const serverTransaction = Transaction.from(signatureBytes)
-
-        // if (justTransaction) {
-        //     const hashServerTransaction = await walletProvider.signAndSendTransaction(serverTransaction)
-        //     console.log('hash', hashServerTransaction)
-        //     return
-        // }
-
-        // const transaction = new Transaction();
-
-        // console.log('val:', val)
-
-        // const userSolAccount = await _getOrCreateAssociatedTokenAccount(
-        //     wsol,
-        //     walletProvider.publicKey!,
-        // );
-
-        // if (!userSolAccount) {
-        //     throw 'Create userSolAccount failed'
-        // }
-
-        // if (userSolAccount.instruction) {
-        //     transaction.add(userSolAccount.instruction)
-        // }
-
-        // const instruction1 = SystemProgram.transfer({
-        //     fromPubkey: walletProvider.publicKey!,
-        //     toPubkey: userSolAccount?.address,
-        //     lamports: Number(amount),
-        // })
-        // const instruction2 = createSyncNativeInstruction(userSolAccount?.address, TOKEN_PROGRAM_ID)
-
-
-
-        // transaction
-        //     .add(instruction1)
-        //     .add(instruction2)
-        //     // .add(serverTransaction)
-
-        // console.log('transaction:', transaction)    
-
-        // // const hash1 = await walletProvider.signAndSendTransaction(transaction)
-
-        // // console.log('hash', hash1)
-
-        // const hash2 = await walletProvider.signAndSendTransaction(serverTransaction)
-        // console.log('hash', hash2)
-
-        return hash2
     }, [programId, walletProvider, connection, wsol])
 
     const prepaidSolWithdraw = useCallback(async () => {
@@ -740,7 +684,7 @@ export function useTokenTrade({
             return
         }
 
-        const { keys, instructions } = keysAndIns
+        const { keys, instructions, referral } = keysAndIns
 
         const paidRecord = PublicKey.findProgramAddressSync(
             [Buffer.from("prepaid_record"), keys.pool.toBuffer(), walletProvider.publicKey!.toBuffer()],
@@ -756,7 +700,7 @@ export function useTokenTrade({
 
             const prepaidTokenWithdrawInstruction = await program.methods.prepaidTokenWithdraw(
                 {
-                    recommender: new PublicKey('5zKNPpWLaBkt2HMCyxUCyLAEJiUpLd4xYbQyvuh2Bqnm'),
+                    recommender: referral,
                     proxy: keys.proxySolAccount
                 }
             ).accounts({

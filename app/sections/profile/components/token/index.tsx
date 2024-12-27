@@ -11,6 +11,7 @@ import useTimeLeft from '@/app/hooks/useTimeLeft'
 import LauncdedAction from '@/app/components/action/launched'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade'
 import { fail, success } from '@/app/utils/toast'
+import TokenAction from '../tokenAction'
 
 interface Props {
     data: Project;
@@ -23,33 +24,9 @@ interface Props {
 export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot, from }: Props) {
     const router = useRouter()
     const { timeFormat } = useTimeLeft({ time: data.boostTime })
-    const [isPrepaid, setIsPrepaid] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [updateNum, setUpdateNum] = useState(1)
-    const [isClaimed, setIsClaimed] = useState(false)
-    const [isWithdrawed, setIsWithdrawed] = useState(false)
+    
 
-    const { prepaidSolWithdraw, prepaidTokenWithdraw, checkPrePayed } = useTokenTrade({
-        tokenName: data.tokenName,
-        tokenSymbol: data.tokenSymbol as string,
-        tokenDecimals: data.tokenDecimals as number,
-        loadData: false
-    })
-
-    const isDelay = useMemo(() => {
-        if (prepaidWithdrawDelayTime && data.createdAt && Date.now() - data.createdAt > prepaidWithdrawDelayTime) {
-            return true
-        }
-        return false
-    }, [prepaidWithdrawDelayTime, data])
-
-    useEffect(() => {
-        checkPrePayed().then(res => {
-            if (Number(res) > 0) {
-                setIsPrepaid(true)
-            }
-        })
-    }, [updateNum])
+    
 
     return <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
         <div className={styles.tokenMag}>
@@ -73,7 +50,9 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
             </div>
         </div>
 
-        {
+
+
+        {/* {
             data.status === 0
                 ? (
                     isDelay ? <div className={styles.actionContent}>
@@ -142,7 +121,9 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                     }
                     <LauncdedAction data={data} justPlus={true} />
                 </div>
-        }
+        } */}
+
+        <TokenAction token={data} prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}/>
 
     </div>
 }
