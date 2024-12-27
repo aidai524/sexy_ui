@@ -18,7 +18,7 @@ interface Props {
 }
 
 const defaultAvatar = "/img/avatar.png";
-const LIMIT = 10
+const LIMIT = 50
 
 const url: any = {
   2: '/account/follower/list',
@@ -116,6 +116,21 @@ return (
                 address={item.address}
                 isFollower={item.isFollower}
                 onSuccess={() => {
+                  if (item.isFollower) {
+                    let curIndex = -1
+                    list.some((listItem, index) => {
+                      if (listItem === item) {
+                        curIndex = index
+                        return true
+                      }
+                      return false
+                    }) 
+
+                    if (curIndex !== -1) {
+                      list.splice(curIndex, 1)
+                    }
+                  }
+                  
                   item.isFollower = !item.isFollower
                   setList([
                     ...list

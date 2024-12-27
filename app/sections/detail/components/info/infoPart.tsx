@@ -33,7 +33,13 @@ export default function InfoPart({
   const router = useRouter();
   const userName = useMemo(() => {
     if (data.creater) {
-      return data.creater.name || formatAddress(data.creater.address);
+      if (data.creater.name) {
+        return data.creater.name
+      }
+
+      if (data.creater.address) {
+        return formatAddress(data.creater.address)
+      }
     }
 
     if (data.account) {
@@ -45,6 +51,8 @@ export default function InfoPart({
   if (!data) {
     return;
   }
+
+  console.log('data', data)
 
   return (
     <div>
@@ -89,7 +97,7 @@ export default function InfoPart({
           </div>
         )}
         <div className={styles.author}>
-          <div className={styles.authorTitle}>Create time:</div>
+          <div className={styles.authorTitle}>{data.DApp === 'pump' ? 'Import time' : 'Create time'}:</div>
           <div className={styles.authorDesc}>
             {specialTime ? specialTime : timeAgo(data.time)}
           </div>

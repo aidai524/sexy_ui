@@ -6,6 +6,9 @@ import Big from "big.js";
 import Empty from "@/app/components/empty";
 
 const addressReg = /(\w{2}).+(\w{2})/;
+const defaultAvatar = "/img/avatar.png";
+
+
 export function formatAddress(address: string) {
   if (!address) {
     return "";
@@ -57,7 +60,7 @@ export default function Txs({ from, data }: any) {
                 list.map((item: any) => {
                   return <div key={item.id} className={styles.item}>
                     <div className={styles.account}>
-                      <img className={styles.avatar} src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect" />
+                      <img className={styles.avatar} src={ item.icon || defaultAvatar } />
                       <span>{  formatAddress(item.address) }</span>
                     </div>
 

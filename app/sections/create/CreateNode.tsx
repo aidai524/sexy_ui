@@ -23,6 +23,8 @@ interface Props {
   show: boolean;
 }
 
+const name_reg = /^[a-zA-Z0-9]{1,10}$/
+
 export default forwardRef(function CreateNode(
   { onAddDataFill, show }: Props,
   ref: any
@@ -45,7 +47,7 @@ export default forwardRef(function CreateNode(
   const onPreview = useCallback(() => {
     let isValid = false;
     const inValidVals: any = {};
-    if (!tokenName) {
+    if (!name_reg.test(tokenName)) {
       inValidVals["tokenName"] = true;
       isValid = true;
     }
@@ -326,7 +328,6 @@ export default forwardRef(function CreateNode(
           <MainBtn onClick={onPreview}>Preview</MainBtn>
         </div>
       )}
-      {/* <CreateSuccessModal show={true} onHide={() => {}}/> */}
     </div>
   );
 });

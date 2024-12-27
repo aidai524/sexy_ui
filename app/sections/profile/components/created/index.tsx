@@ -39,8 +39,6 @@ export default function Created({
   }, [address, type, refresh]);
 
   const loadMore = useCallback(() => {
-    console.log(2222)
-
     return httpGet(urls[type], { address, limit: LIMIT, offset }).then((res) => {
       setHasMore(res.data?.has_next_page || false)
       if (res.code === 0 && res.data?.list?.length > 0) {

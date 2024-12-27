@@ -76,8 +76,8 @@ export default function Profile({
 
       <FollowerActions
         userInfo={userInfo}
-        onItemClick={() => {
-          router.push("/profile/follower?account=" + address);
+        onItemClick={(action: string) => {
+          router.push("/profile/follower?account=" + address + '&action=' + action);
         }}
       />
 

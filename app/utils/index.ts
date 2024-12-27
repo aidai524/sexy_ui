@@ -330,33 +330,7 @@ export function sleep(time: number) {
   });
 }
 
-export function mapDataToProject(currentToken: any): Project {
-  return {
-    id: currentToken.id,
-    address: currentToken.address,
-    tokenName: currentToken.token_name,
-    tokenSymbol: currentToken.token_symbol,
-    ticker: currentToken.ticker,
-    about: currentToken.about_us,
-    website: currentToken.website,
-    tokenIcon: currentToken.icon || currentToken.video,
-    tokenImg: currentToken.video || currentToken.icon,
-    tokenDecimals: currentToken.token_decimals,
-    isLike: currentToken.is_like,
-    isUnLike: currentToken.isUnLike,
-    isSuperLike: currentToken.isSuperLike,
-    like: currentToken.like,
-    unLike: currentToken.un_like,
-    superLike: currentToken.super_like,
-    time: currentToken.time,
-    account: currentToken.account,
-    creater: currentToken.account_data,
-    boostTime: currentToken.boost_time,
-    status: currentToken.status,
-    createdAt: new Date(currentToken.created_at).getTime(),
-    DApp: currentToken.DApp
-  };
-}
+
 
 const addressReg = /(\w{5}).+(\w{5})/;
 export function formatAddress(address: string) {
@@ -486,7 +460,7 @@ export async function upload(
     const cropX = (naturalWidth - cropWidth) / 2;
     const cropY = (naturalHeight - cropHeight) / 2;
 
-    const canvasWidth = 256 * 2;
+    const canvasWidth = 128 * 2;
     const canvasHeight = canvasWidth * percent;
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -549,7 +523,33 @@ export function timeAgo(time?: number, currentTime?: number) {
   if (!time) {
     return;
   }
-  return dayjs(time).fromNow(true);
+
+  const date = new Date(time);
+
+  const now = currentTime ? new Date(currentTime) : new Date();
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+  let interval = Math.floor(seconds / 31536000);
+
+  if (interval >= 1) {
+    return interval === 1 ? "1 year ago" : `${interval} years ago`;
+  }
+  interval = Math.floor(seconds / 2592000); // months
+  if (interval >= 1) {
+    return interval === 1 ? "1 month ago" : `${interval} months ago`;
+  }
+  interval = Math.floor(seconds / 86400); // days
+  if (interval >= 1) {
+    return interval === 1 ? "1 day ago" : `${interval} days ago`;
+  }
+  interval = Math.floor(seconds / 3600); // hours
+  if (interval >= 1) {
+    return interval === 1 ? "1 hour ago" : `${interval} hours ago`;
+  }
+  interval = Math.floor(seconds / 60); // minutes
+  if (interval >= 1) {
+    return interval === 1 ? "1 minute ago" : `${interval} minutes ago`;
+  }
+  return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
 }
 
 export function formatDateEn(time: number) {

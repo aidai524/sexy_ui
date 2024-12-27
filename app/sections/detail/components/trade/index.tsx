@@ -10,6 +10,9 @@ interface Props {
 }
 
 export default function TradeInfo({ data, from }: Props) {
+
+  console.log('from:', from)
+
   return (
     <div className={from === "laptop" ? styles.LaptopContainer : ""}>
       <CA from={from} data={data}/>

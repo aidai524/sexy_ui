@@ -26,6 +26,7 @@
   }
   .authorDesc {
     color: #ffffff;
+    white-space: nowrap;
     &.authorDescEs {
       color: var(--part-bg);
     }

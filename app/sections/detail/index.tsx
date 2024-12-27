@@ -14,8 +14,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { httpGet, sleep } from "@/app/utils";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Detail() {
+  const { isMobile } = useUserAgent()
   const params = useSearchParams();
   const [activeKey, setActiveKey] = useState("Info");
   const [infoData, setInfoData] = useState<Project>();
@@ -40,6 +42,8 @@ export default function Detail() {
   if (!infoData) {
     return <></>;
   }
+
+  console.log('isMobile:', isMobile)
 
   return (
     <SexPullToRefresh
@@ -68,7 +72,7 @@ export default function Detail() {
               },
               {
                 name: "Buy/Sell",
-                content: <Trade data={infoData} />
+                content: <Trade from={isMobile ? 'mobile' : 'laptop'} data={infoData} />
               },
               {
                 name: "Txs",
