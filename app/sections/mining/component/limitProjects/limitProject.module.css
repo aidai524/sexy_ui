@@ -1,26 +1,27 @@
 .main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  .img {
+    width: 26px;
+    height: 26px;
+    border-radius: 26px;
+    margin-left: -5px;
+    border: 2px solid rgba(0, 0, 0, 1);
+  }
+  .more {
+    width: 28px;
+    height: 28px;
+    border-radius: 26px;
+    background-color: rgba(127, 112, 138, 1);
+    border: 2px solid rgba(0, 0, 0, 1);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    .img {
-        width: 26px;
-        height: 26px;
-        border-radius: 26px;
-        margin-left: -5px;
-        border: 2px solid rgba(0, 0, 0, 1);
-    }
-    .more {
-        width: 28px;
-        height: 28px;
-        border-radius: 26px;
-        background-color: rgba(127, 112, 138, 1);
-        border: 2px solid rgba(0, 0, 0, 1);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        font-weight: 500;
-        margin-left: -5px;
-    }
+    font-size: 10px;
+    font-weight: 500;
+    margin-left: -5px;
+  }
 }
