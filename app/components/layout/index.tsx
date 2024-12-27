@@ -28,7 +28,7 @@ export default function Layout(props: any) {
   const { getConfig } = useTokenTrade({
     tokenName: "",
     tokenSymbol: "",
-    tokenDecimals: 2
+    tokenDecimals: 6
   });
 
   useNotice();
