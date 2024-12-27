@@ -1,6 +1,7 @@
 import { useUserAgent } from "@/app/context/user-agent";
 import Mobile from "./mobile/Layout";
 import Laptop from "./laptop";
+import { redirect } from "next/navigation";
 import { useUser } from "@/app/store/useUser";
 import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
@@ -15,15 +16,24 @@ import {
 } from "@/app/utils";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
+import { useSearchParams, usePathname } from "next/navigation";
+import { useCodeStore, CODE } from "../../store/use-code";
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
   const { address, walletProvider } = useAccount();
   const userStore: any = useUser();
-  const configStore: any = useConfig()
-  const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore()
+  const configStore: any = useConfig();
+  const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
   const { userInfo, onQueryInfo } = useUserInfo(address);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const searchParams = useSearchParams();
+  const codeStore: any = useCodeStore();
+  const pathname = usePathname();
+
+  if (codeStore.a !== CODE && pathname !== "/") {
+    redirect("/");
+  }
 
   const { getConfig } = useTokenTrade({
     tokenName: "",
@@ -39,25 +49,24 @@ export default function Layout(props: any) {
         userInfo: userInfo
       });
 
-      setShowLoginModal(false)
+      setShowLoginModal(false);
     }
   }, [userInfo, address]);
 
   useEffect(() => {
-    httpGet('/config').then(res => {
+    if (searchParams.get("a") === CODE) {
+      codeStore.set();
+    }
+    httpGet("/config").then((res) => {
       if (res.code === 0) {
         configStore.set({
           config: res.data
-        })
+        });
       }
-    })
-  }, [])
+    });
 
-  useEffect(() => {
     getConfig().then((stateData) => {
-      setPrepaidDelayTime(
-        stateData.prepaidWithdrawDelayTime.toNumber() * 1000
-      );
+      setPrepaidDelayTime(stateData.prepaidWithdrawDelayTime.toNumber() * 1000);
     });
   }, []);
 

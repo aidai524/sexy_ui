@@ -258,7 +258,7 @@ export async function initAuthorization() {
 
   isInitingAuthorization = true;
   const now = Date.now();
-  const text = `login sexy,time:${now}`;
+  const text = `login FlipN,time:${now}`;
   const encodedMessage = new TextEncoder().encode(text);
   try {
     const signMessage = await walletProvider!.signMessage(encodedMessage);
@@ -333,8 +333,6 @@ export function sleep(time: number) {
     setTimeout(resolve, time);
   });
 }
-
-
 
 const addressReg = /(\w{5}).+(\w{5})/;
 export function formatAddress(address: string) {
@@ -611,18 +609,17 @@ export function formatSortAddress(address: string | undefined) {
 }
 
 export const simplifyNum = (number: number) => {
-  if (typeof Number(number) !== 'number') return 0;
+  if (typeof Number(number) !== "number") return 0;
   if (isNaN(Number(number))) return 0;
 
   let str_num;
   if (number >= 1e3 && number < 1e6) {
     str_num = number / 1e3;
-    return Math.floor(str_num) + 'K';
+    return Math.floor(str_num) + "K";
   } else if (number >= 1e6) {
     str_num = number / 1e6;
-    return Math.floor(str_num) + 'M';
+    return Math.floor(str_num) + "M";
   } else {
     return Number(number).toFixed(2);
   }
 };
-

@@ -40,7 +40,7 @@ export default function Token({
   return (
     <>
       <div className={styles.Container}>
-        <div className={styles.SexyFi} />
+        <div className={styles.Flip} />
         <Header
           tokenInfo={infoData2}
           currentTab={currentTab}

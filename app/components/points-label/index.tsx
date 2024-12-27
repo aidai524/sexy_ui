@@ -4,7 +4,7 @@ import Icon from "./Reicon";
 import { httpAuthGet } from "@/app/utils";
 import { numberFormatter } from "@/app/utils/common";
 
-export default function PointsLabel({ id }: any) {
+export default function PointsLabel({ id, reverse = false, bg }: any) {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +23,15 @@ export default function PointsLabel({ id }: any) {
   }, []);
 
   return (
-    <div className={styles.Container} id={id}>
+    <div
+      className={styles.Container}
+      id={id}
+      style={{
+        flexDirection: reverse ? "row-reverse" : "row",
+        backgroundColor: bg || "#0000004d",
+        textAlign: reverse ? "right" : "left"
+      }}
+    >
       <Icon size={30} />
       <div>
         <div className={styles.Title}>
@@ -31,7 +39,7 @@ export default function PointsLabel({ id }: any) {
             isShort: true
           })}
         </div>
-        <div className={styles.Desc}>$SEXYFI</div>
+        <div className={styles.Desc}>$FlipN</div>
       </div>
     </div>
   );

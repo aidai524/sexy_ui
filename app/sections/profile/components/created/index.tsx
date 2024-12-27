@@ -5,7 +5,7 @@ import Empty from "../empty";
 import type { Project } from "@/app/type";
 import { useUser } from "@/app/store/useUser";
 import useUserInfo from "../../../../hooks/useUserInfo";
-import { InfiniteScroll, List } from 'antd-mobile'
+import { InfiniteScroll, List } from "antd-mobile";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 
@@ -15,7 +15,7 @@ const urls: any = {
   liked: "/project/like/list"
 };
 
-const LIMIT = 10
+const LIMIT = 10;
 
 export default function Created({
   address,
@@ -26,36 +26,35 @@ export default function Created({
 }: any) {
   const [list, setList] = useState<Project[]>([]);
   const [refresh, setRefresh] = useState<number>(1);
-  const [hasMore, setHasMore] = useState(false)
-  const [offset, setOffset] = useState(0)
+  const [hasMore, setHasMore] = useState(false);
+  const [offset, setOffset] = useState(0);
   const userStore: any = useUser();
 
   const { fecthUserInfo } = useUserInfo(undefined);
 
   useEffect(() => {
     if (address) {
-      loadMore()
+      loadMore();
     }
   }, [address, type, refresh]);
 
   const loadMore = useCallback(() => {
-    return httpGet(urls[type], { address, limit: LIMIT, offset }).then((res) => {
-      setHasMore(res.data?.has_next_page || false)
-      if (res.code === 0 && res.data?.list?.length > 0) {
-        const newMapList = res.data?.list.map(mapDataToProject)
-        const newList = [
-          ...list,
-          ...newMapList,
-        ]
+    return httpGet(urls[type], { address, limit: LIMIT, offset }).then(
+      (res) => {
+        setHasMore(res.data?.has_next_page || false);
+        if (res.code === 0 && res.data?.list?.length > 0) {
+          const newMapList = res.data?.list.map(mapDataToProject);
+          const newList = [...list, ...newMapList];
 
-        setOffset(newList.length)
-        setList(newList);
+          setOffset(newList.length);
+          setList(newList);
+        }
       }
-    });
-  }, [address, type, offset, list])
+    );
+  }, [address, type, offset, list]);
 
   if (list.length === 0) {
-    return <Empty msg={"No sexy coins " + type + " yet"} />;
+    return <Empty msg={"No FlipN coins " + type + " yet"} />;
   }
 
   return (

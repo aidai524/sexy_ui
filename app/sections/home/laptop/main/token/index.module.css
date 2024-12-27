@@ -6,11 +6,11 @@
   border-radius: 28px;
 }
 
-.SexyFi {
+.Flip {
   position: absolute;
   width: 492px;
   height: 160px;
-  background: url(/img/laptop/sexyfi-1.png) no-repeat;
+  background: url(/img/laptop/flip-1.png) no-repeat;
   bottom: 0;
   z-index: 1;
 }

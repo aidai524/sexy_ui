@@ -5,7 +5,7 @@ import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
 import { MessageContextProvider } from "./context/messageContext";
 import { UserAgentProvider } from "@/app/context/user-agent";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 export default function RootLayout({
   children
@@ -13,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    window.AddToHomeScreenInstance = window.AddToHomeScreen({
-      appName: "Sexyfi",
+    window.AddToHomeScreenInstance = window?.AddToHomeScreen?.({
+      appName: "FlipN",
       appNameDisplay: "standalone",
       appIconUrl: "/192x192.png",
       assetUrl: "/libs/add_to_homescreen/img/", // Link to directory of library image assets.
@@ -24,8 +24,9 @@ export default function RootLayout({
       displayOptions: { showMobile: true, showDesktop: true }, // show on mobile/desktop [Optional] Default: show everywhere
       allowClose: true
     });
-    window.AddToHomeScreenInstance.show("en"); // show "add-to-homescreen" instructions to user, or do nothing if already added to homescreen
+    window.AddToHomeScreenInstance?.show("en"); // show "add-to-homescreen" instructions to user, or do nothing if already added to homescreen
   }, []);
+
   return (
     <html lang="en">
       <head>
@@ -35,13 +36,16 @@ export default function RootLayout({
         />
         <link rel="stylesheet" href="/libs/add_to_homescreen/index.css" />
         <link rel="manifest" href="/manifest.json" />
+        <title>FlipN</title>
         <script async src="/libs/add_to_homescreen/index.js" />
       </head>
       <body>
         <MessageContextProvider>
           <UserAgentProvider>
             <WalletConnect>
-              <Layout>{children}</Layout>
+              <Suspense>
+                <Layout>{children}</Layout>
+              </Suspense>
             </WalletConnect>
           </UserAgentProvider>
         </MessageContextProvider>

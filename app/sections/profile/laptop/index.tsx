@@ -22,7 +22,7 @@ export default function Laptop({
 }: any) {
   return (
     <div className={styles.Container}>
-      <div className={styles.SexyFi} />
+      <div className={styles.Flip} />
       <div className={styles.BackWrapper}>
         <Back />
       </div>

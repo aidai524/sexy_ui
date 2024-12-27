@@ -37,7 +37,8 @@ export default function useNotice() {
       if (response.data?.list) {
         list = [...list, ...response.data.list];
       }
-      onToast(list);
+      // TODO
+      // onToast(list);
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         onQuery();
