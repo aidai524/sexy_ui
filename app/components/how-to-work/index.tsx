@@ -11,7 +11,7 @@ export default function HowToWork({ open, onClose }: any) {
         <div className={styles.Header}>
           <Avatar />
           <div>
-            <div className={styles.Title}>SexyFi: Pump Launchpad 2.0</div>
+            <div className={styles.Title}>FlipN: Pump Launchpad 2.0</div>
             <div className={styles.HeaderHints}>
               <span>
                 Focusing on Social Interaction that is addictive and fun!
@@ -40,7 +40,7 @@ export default function HowToWork({ open, onClose }: any) {
               marginTop: 16
             }}
           >
-            SexyFi is a next-generation meme token launch platform on Solana,
+            FlipN is a next-generation meme token launch platform on Solana,
             blending social interaction, gamification, and cutting-edge UX to
             empower project creators, users, and influencers.
           </div>
@@ -50,7 +50,7 @@ export default function HowToWork({ open, onClose }: any) {
               marginTop: 16
             }}
           >
-            Inspired by pump.fun, SexyFi stands out with its platform token,
+            Inspired by pump.fun, FlipN stands out with its platform token,
             Tinder-like experience, and a swipe-to-earn economy, where both
             creators and users benefit from meaningful engagement.
           </div>

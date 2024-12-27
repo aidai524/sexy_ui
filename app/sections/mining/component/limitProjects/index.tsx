@@ -6,7 +6,7 @@ export default function LimitProject({ list = [] }: any) {
       {list?.map((item: any) => {
         return <img className={styles.img} key={item.id} src={item.icon} />;
       })}
-      {list?.length === 0 && <span>-</span>}
+      {(!list || list?.length === 0) && <span>-</span>}
       {list?.length > 5 && (
         <div className={styles.more}>+{list.length - 5}</div>
       )}

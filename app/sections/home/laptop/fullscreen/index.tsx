@@ -98,7 +98,7 @@ export default function Fullscreen({
               />
             </div>
           ) : (
-            <img src={item.icon} className={styles.Item} key={i} />
+            <img src={item?.icon} className={styles.Item} key={i} />
           );
         })}
       </div>
@@ -125,7 +125,7 @@ export default function Fullscreen({
           <ZoomInIcon />
         </button>
       </div>
-      <div className={styles.SexyFi} />
+
       <div className={styles.Buttons}>
         <CreateButton />
       </div>

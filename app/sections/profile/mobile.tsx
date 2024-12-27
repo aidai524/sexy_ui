@@ -6,7 +6,8 @@ import FollowerActions from "./components/follower-actions";
 import Address from "./components/address";
 import HotBoost from "./components/hot-boost";
 import FollowBtn from "./components/followBtn";
-import { useReferStore } from '@/app/store/useRefer';
+import PointsLabel from "@/app/components/points-label";
+import { useReferStore } from "@/app/store/useRefer";
 
 export default function Profile({
   userInfo,
@@ -38,8 +39,14 @@ export default function Profile({
     : {};
 
   return (
-    <div className={styles.main} style={store.entryVisible ? { paddingBottom: 200 } : {}}>
+    <div
+      className={styles.main}
+      style={store.entryVisible ? { paddingBottom: 200 } : {}}
+    >
       <div style={backgroundImgStyle1} className={styles.avatarBox}>
+        <div className={styles.Points}>
+          <PointsLabel reverse={true} bg="transparent" />
+        </div>
         {isOther ? (
           <div className={styles.isOther}>
             <div>
@@ -77,7 +84,9 @@ export default function Profile({
       <FollowerActions
         userInfo={userInfo}
         onItemClick={(action: string) => {
-          router.push("/profile/follower?account=" + address + '&action=' + action);
+          router.push(
+            "/profile/follower?account=" + address + "&action=" + action
+          );
         }}
       />
 

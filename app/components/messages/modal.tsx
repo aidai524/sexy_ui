@@ -102,7 +102,7 @@ const Item = ({ item, isMobile }: any) => {
     }
     if (item.type === "add_vip") {
       return [
-        "Congratulations, you have become a prestigious SexyFi VIP user.",
+        "Congratulations, you have become a prestigious FlipN VIP user.",
         "Click to view your profile.",
         "/profile"
       ];

@@ -24,11 +24,11 @@
   background: linear-gradient(to top, #0d1012 35.66%, #ff2f74 99.63%);
 }
 
-.SexyFi {
+.Flip {
   position: absolute;
   width: 467px;
   height: 191px;
-  background: url(/img/laptop/sexyfi.png) no-repeat;
+  background: url(/img/laptop/flip.png) no-repeat;
 }
 
 .Avatar {

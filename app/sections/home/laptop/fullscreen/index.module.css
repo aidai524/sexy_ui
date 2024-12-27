@@ -59,16 +59,6 @@
   z-index: 56;
 }
 
-.SexyFi {
-  position: absolute;
-  width: 738px;
-  height: 212px;
-  background: url(/img/laptop/full-sexfi.png) no-repeat;
-  bottom: 0;
-  right: 0;
-  z-index: 56;
-}
-
 .Content {
   height: 100vh;
   display: flex;

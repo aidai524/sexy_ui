@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   useEffect(() => {
     window.AddToHomeScreenInstance = window.AddToHomeScreen({
-      appName: "Sexyfi",
+      appName: "FlipN",
       appNameDisplay: "standalone",
       appIconUrl: "/192x192.png",
       assetUrl: "/libs/add_to_homescreen/img/", // Link to directory of library image assets.
@@ -35,6 +35,7 @@ export default function RootLayout({
         />
         <link rel="stylesheet" href="/libs/add_to_homescreen/index.css" />
         <link rel="manifest" href="/manifest.json" />
+        <title>FlipN</title>
         <script async src="/libs/add_to_homescreen/index.js" />
       </head>
       <body>
