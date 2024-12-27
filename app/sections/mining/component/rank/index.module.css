@@ -43,6 +43,7 @@
 
 .List {
   padding-top: 3px;
+  overflow-y: auto;
 }
 
 .Item {
@@ -84,10 +85,13 @@
 
 .ItemRight {
   color: #fff;
-  text-align: right;
   font-family: Unbounded;
   font-size: 15px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
 }
