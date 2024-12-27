@@ -1,6 +1,6 @@
 import styles from "./index.module.css";
 import Avatar from "./avatar";
-import Icon from "@/app/components/points-label/icon";
+import Icon from "@/app/components/points-label/Reicon";
 import { useUserAgent } from "@/app/context/user-agent";
 import { numberFormatter } from "@/app/utils/common";
 

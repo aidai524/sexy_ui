@@ -1,5 +1,5 @@
 import styles from "./index.module.css";
-import Icon from "./icon";
+import Icon from "./Reicon";
 
 export default function PointsLabel({ id }: any) {
   return (

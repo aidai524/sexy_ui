@@ -6,13 +6,13 @@ import Thumbnail from "@/app/components/thumbnail";
 import NextButton from "./next-button";
 import TokenCardActions from "../main/token-card-actions";
 import CreateButton from "../main/actions-bar/create-button";
-import { mapDataToProject } from "@/app/utils";
 import LaunchingActions from "@/app/components/action/launching";
 import PointsLabel from "@/app/components/points-label";
 import Empty from "@/app/components/empty/prelaunch";
 import { shareToX } from "@/app/utils/share";
 import styles from "./index.module.css";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { mapDataToProject } from "@/app/utils/mapTo";
 
 export default function Fullscreen({
   list = [],
