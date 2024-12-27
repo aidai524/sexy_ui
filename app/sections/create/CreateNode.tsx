@@ -15,15 +15,12 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { success, fail } from "@/app/utils/toast";
 
 import type { Project } from "@/app/type";
-import CreateSuccessModal from "./components/createSuccessModal";
-import { useUser } from "@/app/store/useUser";
-import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 interface Props {
   onAddDataFill: (value: Project) => void;
   show: boolean;
 }
 
-const name_reg = /^[a-zA-Z0-9]{1,10}$/
+const name_reg = /^[a-zA-Z0-9]{1,16}$/
 
 export default forwardRef(function CreateNode(
   { onAddDataFill, show }: Props,

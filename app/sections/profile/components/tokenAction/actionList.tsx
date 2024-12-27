@@ -100,7 +100,7 @@ export default function ActionList({
         {
             token.status === 1 && <>
                 {
-                    isDelay && isPrepaid && (isClaimed ? <div className={styles.actionBtn + ' ' + styles.isGrey}>Claimed</div> : <div className={styles.actionBtn} onClick={async () => {
+                    isPrepaid && (isClaimed ? <div className={styles.actionBtn + ' ' + styles.isGrey}>Claimed</div> : <div className={styles.actionBtn} onClick={async () => {
                         setIsLoading(true)
                         try {
                             const res = await prepaidTokenWithdraw()
