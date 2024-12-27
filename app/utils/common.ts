@@ -1,4 +1,4 @@
-import Big from 'big.js';
+import Big from "big.js";
 
 export function isIOS() {
   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -99,7 +99,11 @@ export function generateUrl(
   return url;
 }
 
-export function formatLongText(text?: string, front: number = 4, ending: number = 2) {
+export function formatLongText(
+  text?: string,
+  front: number = 4,
+  ending: number = 2
+) {
   if (!text) return text;
   if (text.length <= front + ending) {
     return text;
@@ -108,11 +112,12 @@ export function formatLongText(text?: string, front: number = 4, ending: number 
 }
 
 export const addThousandSeparator = (numberString: string) => {
-  const parts = numberString.split('.');
-  const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  const decimalPart = parts[1] ? `.${parts[1]}` : '';
+  if (!numberString) return "";
+  const parts = String(numberString).split(".");
+  const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const decimalPart = parts[1] ? `.${parts[1]}` : "";
   return integerPart + decimalPart;
-}
+};
 
 export const numberFormatter = (
   value: string | number | Big.Big | undefined,
@@ -134,12 +139,12 @@ export const numberFormatter = (
   }
 ): any => {
   const {
-    prefix = '',
+    prefix = "",
     isLTIntegerZero,
     isZeroPrecision,
     isShort,
     isShortUppercase,
-    round = Big.roundHalfUp,
+    round = Big.roundHalfUp
   } = options || {};
 
   const isValid = () => {
@@ -162,12 +167,12 @@ export const numberFormatter = (
     if (isZeroPrecision) {
       return {
         integer: `${prefix}0`,
-        decimal: Big(0).toFixed(precision, round).replace(/^\d/, '')
+        decimal: Big(0).toFixed(precision, round).replace(/^\d/, "")
       };
     }
     return {
       integer: `${prefix}0`,
-      decimal: ''
+      decimal: ""
     };
   }
 
@@ -178,20 +183,23 @@ export const numberFormatter = (
     if (isLTIntegerZero) {
       return {
         integer: `< ${prefix}0`,
-        decimal: Big(10).pow(-precision).toFixed(precision, round).replace(/^\d/, '')
+        decimal: Big(10)
+          .pow(-precision)
+          .toFixed(precision, round)
+          .replace(/^\d/, "")
       };
     }
     return {
-      integer: '',
+      integer: "",
       decimal: `< ${prefix}${Big(10).pow(-precision).toFixed(precision, round)}`
     };
   }
 
   const finalValue = addThousandSeparator(Big(value).toFixed(precision, round));
-  const firstPart = finalValue.split('.')[0];
-  let secondPart = finalValue.split('.')[1] || '';
+  const firstPart = finalValue.split(".")[0];
+  let secondPart = finalValue.split(".")[1] || "";
   if (secondPart) {
-    secondPart = '.' + secondPart;
+    secondPart = "." + secondPart;
   }
   if (isSimple) {
     if (isShort) {
@@ -199,25 +207,25 @@ export const numberFormatter = (
         const _num = Big(value)
           .div(split)
           .toFixed(precision, 0)
-          .replace(/(?:\.0*|(\.\d+?)0+)$/, '$1');
-        const inter = _num.split('.')?.[0]?.replace(/\d(?=(\d{3})+\b)/g, '$&,');
-        const decimal = _num.split('.')?.[1] ?? '';
-        return `${prefix}${inter}${decimal ? '.' + decimal : ''}${unit}`;
+          .replace(/(?:\.0*|(\.\d+?)0+)$/, "$1");
+        const inter = _num.split(".")?.[0]?.replace(/\d(?=(\d{3})+\b)/g, "$&,");
+        const decimal = _num.split(".")?.[1] ?? "";
+        return `${prefix}${inter}${decimal ? "." + decimal : ""}${unit}`;
       };
       if (Big(value).gte(1e9)) {
-        return formatter(1e9, isShortUppercase ? 'B' : 'b');
+        return formatter(1e9, isShortUppercase ? "B" : "b");
       }
       if (Big(value).gte(1e6)) {
-        return formatter(1e6, isShortUppercase ? 'M' : 'm');
+        return formatter(1e6, isShortUppercase ? "M" : "m");
       }
       if (Big(value).gte(1e3)) {
-        return formatter(1e3, isShortUppercase ? 'K' : 'k');
+        return formatter(1e3, isShortUppercase ? "K" : "k");
       }
     }
     if (isZeroPrecision) {
       return `${prefix}${firstPart}${secondPart}`;
     }
-    return `${prefix}${firstPart}${secondPart.replace(/[.]?0*$/, '')}`;
+    return `${prefix}${firstPart}${secondPart.replace(/[.]?0*$/, "")}`;
   }
   if (isZeroPrecision) {
     return {
@@ -227,10 +235,10 @@ export const numberFormatter = (
   }
   return {
     integer: `${prefix}${firstPart}`,
-    decimal: secondPart.replace(/[.]?0*$/, '')
+    decimal: secondPart.replace(/[.]?0*$/, "")
   };
 };
 
 export const numberRemoveEndZero = (value: string) => {
-  return value.replace(/\.?0+$/, '');
+  return value.replace(/\.?0+$/, "");
 };
