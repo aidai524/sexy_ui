@@ -27,6 +27,7 @@ export function mapDataToProject(currentToken: any): Project {
       DApp: currentToken.DApp,
       initiativeLaunching: currentToken.initiative_launching,
       prePaidAmount: currentToken.pre_paid_amount,
+      prePaid: currentToken.pre_paid,
     };
 }
 

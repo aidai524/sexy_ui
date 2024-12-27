@@ -14,8 +14,10 @@ const LIKE_ERROR = -1
 
 const onLike = async (data: Project) => {
   try {
+    console.log('data:', data)
     if (data) {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
+      console.log('v:', v)
       if (v.code === 0) {
         success('You liked ' + data.tokenName + ', You are expected to receive ' + v.data?.point)
         return v.data?.likeNum

@@ -27,13 +27,13 @@ export default function LoginModal({ modalShow, onHide }: Props) {
         visible={modalShow}
         content={<LoginBox onHide={() => {
           onHide && onHide()
-          router.replace('/')
+          // router.replace('/')
         }} />}
         closeOnMaskClick
         closeOnAction
         onClose={() => {
           onHide && onHide();
-          router.replace('/')
+          // router.replace('/')
         }}
       />
     </>
