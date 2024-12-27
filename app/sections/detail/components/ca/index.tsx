@@ -1,15 +1,16 @@
 import type { Project } from "@/app/type";
 import styles from "./ca.module.css";
-import { formatAddress, formatAddressLast } from "@/app/utils";
+import { formatAddress, formatAddressLast, simplifyNum } from "@/app/utils";
 
 export default function CA({
   from,
-  data
+  data,
+  mc,
 }: {
   from: string | undefined;
   data: Project;
+  mc: string | number;
 }) {
-  console.log("data:", data);
 
   return (
     <div
@@ -20,7 +21,7 @@ export default function CA({
     >
       <div className={styles.marketCap}>
         <div className={styles.mcTitle}>Market cap:</div>
-        <div className={styles.mcAmount}>5.78K</div>
+        <div className={styles.mcAmount}>{ mc && simplifyNum(Number(mc))}</div>
       </div>
       <div className={styles.ca}>
         <div className={styles.caAddress}>

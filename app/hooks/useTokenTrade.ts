@@ -14,6 +14,8 @@ import { BN, Program } from '@coral-xyz/anchor';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useAccount } from '@/app/hooks/useAccount';
 import { useVip } from './useVip';
+import { programId_address, referral_address, total_supply } from '../utils/config';
+import { useSolPriceStore } from '../store/useSolPrice';
 
 interface Props {
     tokenName: string;
@@ -21,9 +23,6 @@ interface Props {
     tokenDecimals: number;
     loadData?: boolean;
 }
-
-const referral_address = 'EEYm1sXVhH1EpsUan6Sj31zdydALoAVCEYdVncJQJ8s6'
-const programId_address = '67g5ZLhs2Nhobhm69u5vdxJutF5VesaB21G23RdXWshx'
 
 export function useTokenTrade({
     tokenName, tokenSymbol, tokenDecimals, loadData = true
@@ -35,6 +34,7 @@ export function useTokenTrade({
     const [tokenBalance, setTokenBalance] = useState('0')
     const [solBalance, setSolBalance] = useState('0')
     const [reFreshBalnace, setReFreshBalnace] = useState(0)
+    const { solPrice } = useSolPriceStore()
 
     const programId = useMemo(() => {
         return new PublicKey(programId_address)
@@ -120,7 +120,6 @@ export function useTokenTrade({
 
         let referral = new PublicKey(referral_address)
         const proxy = new PublicKey('8GBcwJAfUU9noxPNh5jnfwkKipK8XRHUPS5va9TAXr5f')
-
 
         const protocolSolAccount = await _getOrCreateAssociatedTokenAccount(wsol, state[0])
 
@@ -415,7 +414,7 @@ export function useTokenTrade({
             name: name,
             symbol: symbol,
             uri: uri,
-            totalSupply: new anchor.BN(100000000),
+            totalSupply: new anchor.BN(total_supply),
             decimals: new anchor.BN(2),
         }).accounts({
             launchpad: keys.launchpad,
@@ -429,7 +428,6 @@ export function useTokenTrade({
         }).instruction()
 
         transaction.add(createAccountInstruction)
-
 
         const METADATA_SEED = "metadata";
         const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
@@ -495,7 +493,7 @@ export function useTokenTrade({
             name: name,
             symbol: symbol,
             uri: uri,
-            totalSupply: new anchor.BN(100000000000),
+            totalSupply: new anchor.BN(total_supply),
             decimals: new anchor.BN(6),
         }).accounts({
             launchpad: keys.launchpad,
@@ -760,6 +758,18 @@ export function useTokenTrade({
         return stateData
     }, [programId, state, connection])
 
+    const getMC = useCallback(async () => {
+        if (pool && pool.length) {
+            const program = new Program<any>(idl, programId, { connection: connection } as any);
+            const poolData: any = await program.account.pool.fetch(pool[0])
+            const poolToken = new Big(poolData!.virtualTokenAmount.toNumber())
+            const solToken = new Big(poolData!.virtualWsolAmount.toNumber())
+
+            return new Big(solToken).div(10 ** 9).mul(10 ** tokenDecimals).mul(solPrice as number).div(poolToken).mul(total_supply).toNumber()
+        }
+
+    }, [programId, state, pool, tokenDecimals, connection])
+
     useEffect(() => {
         if (programId && connection && tokenName && tokenSymbol && loadData && tokenInfo) {
             setTimeout(async () => {
@@ -807,6 +817,8 @@ export function useTokenTrade({
         prePaid,
         checkPrePayed,
         getConfig,
+        getMC,
+        pool,
     }
 
 }

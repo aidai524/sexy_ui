@@ -116,7 +116,7 @@ return (
                 address={item.address}
                 isFollower={item.isFollower}
                 onSuccess={() => {
-                  if (item.isFollower) {
+                  if (followerType === 2 && item.isFollower) {
                     let curIndex = -1
                     list.some((listItem, index) => {
                       if (listItem === item) {

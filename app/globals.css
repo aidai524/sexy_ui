@@ -6,6 +6,7 @@
 
 :root body {
   --adm-font-family: Unbounded, Arial, Helvetica, sans-serif;
+  --w3m-z-index: 9999;
 }
 
 div.adm-image-uploader {

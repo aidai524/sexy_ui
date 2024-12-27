@@ -64,7 +64,23 @@ export default function Create({
 
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
+  useEffect(() => {
+    if (!debounceVal) {
+      setIsError(false)
+      return 
+    }
 
+    if (debounceVal) {
+      if (isNaN(Number(debounceVal))) {
+        setIsError(true)
+      }
+      if (Number(debounceVal) > 0 && Number(debounceVal) <= 35) {
+        setIsError(false)
+      } else {
+        setIsError(true)
+      }
+    }
+  }, [debounceVal])
 
   return (
     <>
@@ -76,19 +92,6 @@ export default function Create({
         <div className={styles.inputArea}>
           <div className={styles.actionArea}>
             <div className={styles.slippage}>Pre-Buy (optional)</div>
-
-            {/* <div className={styles.switchToken} onClick={() => {
-                            if (tokenType === 0) {
-                                setCurrentToken(SOL)
-                                setTokenType(1)
-                            } else {
-                                setCurrentToken(desToken)
-                                setTokenType(0)
-                            }
-                        }}>
-                            <span className={styles.switchTitle}>switch to </span>
-                            <span className={styles.switchTokenName}>{tokenType === 0 ? SOL.tokenName : tokenName}</span>
-                        </div> */}
           </div>
 
           <div className={styles.inputArea}>
@@ -139,11 +142,6 @@ export default function Create({
             </div>
           ) : null}
         </div>
-
-        {/* <div style={{ marginTop: 10 }} className={styles.receiveTokenAmount}>
-                    <div className={styles.receiveTitle}>You will buy in</div>
-                    <div className={styles.receiveAmount}>{buyIn} {tokenName}</div>
-                </div> */}
 
         <div style={{ marginTop: 20 }} className={styles.receiveTokenAmount}>
           <Checkbox onChange={() => {

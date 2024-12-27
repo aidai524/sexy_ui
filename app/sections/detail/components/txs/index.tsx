@@ -21,7 +21,7 @@ export function formatAddress(address: string) {
   }
 }
 
-export default function Txs({ from, data }: any) {
+export default function Txs({ from, data, mc }: any) {
   const [list, setList] = useState([])
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function Txs({ from, data }: any) {
 
   return (
     <div className={styles.main}>
-      <CA from={from} data={data} />
+      <CA from={from} data={data} mc={mc}/>
 
       <div
         className={`${styles.txContent} ${from === "laptop" ? styles.LaptopContent : ""

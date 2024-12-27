@@ -14,7 +14,7 @@ export default function Likes({ data }: { data: Project }) {
         }
 
         {
-          data.DApp === 'sexy' && <>
+          data.DApp === 'sexy' && !data.initiativeLaunching && <>
             <div className={[styles.likes, styles.likeCustom].join(" ")}>
               {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
               <span className={styles.likesNums}>{data.like}</span>

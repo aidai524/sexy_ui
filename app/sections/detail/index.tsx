@@ -15,16 +15,38 @@ import { httpGet, sleep } from "@/app/utils";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import { useUserAgent } from "@/app/context/user-agent";
+import { SpinLoading } from "antd-mobile";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 export default function Detail() {
   const { isMobile } = useUserAgent()
   const params = useSearchParams();
   const [activeKey, setActiveKey] = useState("Info");
   const [infoData, setInfoData] = useState<Project>();
+  const [mc, setMC] = useState<string | number>('')
+
+  const {
+    getMC,
+    pool,
+  } = useTokenTrade({
+    tokenName: infoData?.tokenName as string,
+    tokenSymbol: infoData?.tokenSymbol as string,
+    tokenDecimals: infoData?.tokenDecimals as number,
+    loadData: false
+  });
 
   useEffect(() => {
     getDetailInfo()
+    
   }, [params]);
+
+  useEffect(() => {
+    if (pool && pool.length > 0) {
+      getMC().then(res => {
+        setMC(res as number)
+      })
+    }
+  }, [pool])
 
   const getDetailInfo = useCallback(() => {
     const id = params.get("id");
@@ -32,7 +54,6 @@ export default function Detail() {
       return httpGet("/project", { id }).then((res) => {
         if (res.code === 0 && res.data) {
           const infoData = mapDataToProject(res.data[0]);
-          console.log('infoData:', infoData)
           setInfoData(infoData);
         }
       });
@@ -40,10 +61,8 @@ export default function Detail() {
   }, [params])
 
   if (!infoData) {
-    return <></>;
+    return <div className={ styles.loadingBox }><SpinLoading style={{ '--size': '148px' }} /></div>;
   }
-
-  console.log('isMobile:', isMobile)
 
   return (
     <SexPullToRefresh
@@ -72,11 +91,11 @@ export default function Detail() {
               },
               {
                 name: "Buy/Sell",
-                content: <Trade from={isMobile ? 'mobile' : 'laptop'} data={infoData} />
+                content: <Trade mc={mc} from={isMobile ? 'mobile' : 'laptop'} data={infoData} />
               },
               {
                 name: "Txs",
-                content: <Txs data={infoData} />
+                content: <Txs mc={mc} data={infoData} />
               }
             ]}
           />

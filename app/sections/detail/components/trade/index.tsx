@@ -7,15 +7,13 @@ import type { Project } from "@/app/type";
 interface Props {
   data: Project;
   from?: string;
+  mc: string | number;
 }
 
-export default function TradeInfo({ data, from }: Props) {
-
-  console.log('from:', from)
-
+export default function TradeInfo({ data, from, mc }: Props) {
   return (
     <div className={from === "laptop" ? styles.LaptopContainer : ""}>
-      <CA from={from} data={data}/>
+      <CA from={from} data={data} mc={mc}/>
       <Trade
         token={data}
         from={from}

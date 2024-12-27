@@ -25,6 +25,7 @@ export function mapDataToProject(currentToken: any): Project {
       status: currentToken.status,
       createdAt: new Date(currentToken.created_at).getTime(),
       DApp: currentToken.DApp,
+      initiativeLaunching: currentToken.initiative_launching,
     };
 }
 

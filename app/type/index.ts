@@ -25,6 +25,7 @@ export interface Project {
     status?: number;
     createdAt?: number;
     DApp?: string;
+    initiativeLaunching?: boolean;
 }
 
 export interface Comment {

@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { Trend } from '@/app/sections/trends/hooks';
 
 interface PrepaidDelayTimeState {
   prepaidDelayTime: number | undefined;

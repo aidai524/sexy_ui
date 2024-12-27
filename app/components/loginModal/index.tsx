@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import styles from "./login.module.css";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useAccount } from "@/app/hooks/useAccount";
+import { useRouter } from "next/navigation";
+
 
 interface Props {
   modalShow: boolean;
@@ -11,6 +13,7 @@ interface Props {
 
 export default function LoginModal({ modalShow, onHide }: Props) {
   const { address } = useAccount();
+  const router = useRouter()
 
   useEffect(() => {
     if (address) {
@@ -22,11 +25,15 @@ export default function LoginModal({ modalShow, onHide }: Props) {
     <>
       <Modal
         visible={modalShow}
-        content={<LoginBox onHide={onHide} />}
+        content={<LoginBox onHide={() => {
+          onHide && onHide()
+          router.replace('/')
+        }} />}
         closeOnMaskClick
         closeOnAction
         onClose={() => {
           onHide && onHide();
+          router.replace('/')
         }}
       />
     </>
@@ -34,6 +41,8 @@ export default function LoginModal({ modalShow, onHide }: Props) {
 }
 
 function LoginBox({ onHide }: any) {
+  
+
   return (
     <div className={styles.main}>
       <div className={styles.tipBox}>
