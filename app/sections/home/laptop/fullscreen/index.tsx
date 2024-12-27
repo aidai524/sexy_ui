@@ -115,7 +115,7 @@ export default function Fullscreen({
           onClick={() => {
             shareToX(
               list[index].tokenName,
-              "https://sexyfi.dumpdump.fun/detail?id=" + list[index].id
+              "https://app.flipn.fun/detail?id=" + list[index].id
             );
           }}
         >
