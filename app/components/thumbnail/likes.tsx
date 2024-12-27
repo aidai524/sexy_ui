@@ -27,7 +27,7 @@ export default function Likes({ data }: { data: Project }) {
                 <br />
                 HOT
               </span>
-              <span className={styles.likesNums}>{data.superLike}</span>
+              <span className={styles.likesNums}>{data.prePaidAmount}</span>
             </div>
           </>
         )}

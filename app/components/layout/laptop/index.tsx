@@ -11,6 +11,8 @@ export default function Laptop({
   showLoginModal,
   setShowLoginModal
 }: any) {
+
+  
   return (
     <>
       <div className={styles.Container}>

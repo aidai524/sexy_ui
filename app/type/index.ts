@@ -26,6 +26,7 @@ export interface Project {
     createdAt?: number;
     DApp?: string;
     initiativeLaunching?: boolean;
+    prePaidAmount?: string;
 }
 
 export interface Comment {
