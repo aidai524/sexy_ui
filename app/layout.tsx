@@ -5,20 +5,13 @@ import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
 import { MessageContextProvider } from "./context/messageContext";
 import { UserAgentProvider } from "@/app/context/user-agent";
-import { useEffect, useState } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { useCodeStore, CODE } from "./store/use-code";
+import { Suspense, useEffect } from "react";
 
 export default function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const codeStore: any = useCodeStore();
-  const pathname = usePathname();
-
   useEffect(() => {
     window.AddToHomeScreenInstance = window?.AddToHomeScreen?.({
       appName: "FlipN",
@@ -34,11 +27,6 @@ export default function RootLayout({
     window.AddToHomeScreenInstance?.show("en"); // show "add-to-homescreen" instructions to user, or do nothing if already added to homescreen
   }, []);
 
-  if (searchParams.get("a") === CODE || codeStore.a === CODE) {
-    codeStore.set();
-  } else if (pathname !== "/") {
-    router.replace("/");
-  }
   return (
     <html lang="en">
       <head>
@@ -55,7 +43,9 @@ export default function RootLayout({
         <MessageContextProvider>
           <UserAgentProvider>
             <WalletConnect>
-              <Layout>{children}</Layout>
+              <Suspense>
+                <Layout>{children}</Layout>
+              </Suspense>
             </WalletConnect>
           </UserAgentProvider>
         </MessageContextProvider>
