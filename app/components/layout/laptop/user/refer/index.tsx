@@ -350,7 +350,6 @@ const EntryAnimation = (props: any) => {
 
 export const ReferContentCard = (props: any) => {
   const {} = props;
-  const { hasShownTour } = useGuidingTour();
 
   const store = useReferStore();
   const { address } = useAccount();
@@ -387,7 +386,7 @@ export const ReferContentCard = (props: any) => {
         }
       }}
       initial="invisible"
-      animate={store.entryVisible && hasShownTour ? "visible" : "invisible"}
+      animate={store.entryVisible ? "visible" : "invisible"}
     >
       <EntryAnimation
         style={{ flexShrink: 0, transform: "scale(0.8) translateY(-10px)" }}

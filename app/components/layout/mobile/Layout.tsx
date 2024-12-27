@@ -128,6 +128,10 @@ export default function Component({
     });
   }, [pathname]);
 
+  const isRefer = useMemo(() => {
+    return /^\/profile/.test(pathname);
+  }, [pathname]);
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* <Button onClick={() => {
@@ -179,7 +183,9 @@ export default function Component({
           })}
         </TabBar>
       )}
-      <ReferContentCard />
+      {isRefer && (
+        <ReferContentCard />
+      )}
     </div>
   );
 }
