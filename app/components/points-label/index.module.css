@@ -8,12 +8,6 @@
   border-radius: 30px;
 }
 
-.Logo {
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-}
-
 .Title {
   color: #fff;
   font-family: Unbounded;
