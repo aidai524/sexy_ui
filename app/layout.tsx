@@ -5,15 +5,22 @@ import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
 import { MessageContextProvider } from "./context/messageContext";
 import { UserAgentProvider } from "@/app/context/user-agent";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useCodeStore, CODE } from "./store/use-code";
 
 export default function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const codeStore: any = useCodeStore();
+  const pathname = usePathname();
+
   useEffect(() => {
-    window.AddToHomeScreenInstance = window.AddToHomeScreen({
+    window.AddToHomeScreenInstance = window?.AddToHomeScreen?.({
       appName: "FlipN",
       appNameDisplay: "standalone",
       appIconUrl: "/192x192.png",
@@ -24,8 +31,14 @@ export default function RootLayout({
       displayOptions: { showMobile: true, showDesktop: true }, // show on mobile/desktop [Optional] Default: show everywhere
       allowClose: true
     });
-    window.AddToHomeScreenInstance.show("en"); // show "add-to-homescreen" instructions to user, or do nothing if already added to homescreen
+    window.AddToHomeScreenInstance?.show("en"); // show "add-to-homescreen" instructions to user, or do nothing if already added to homescreen
   }, []);
+
+  if (searchParams.get("a") === CODE || codeStore.a === CODE) {
+    codeStore.set();
+  } else if (pathname !== "/") {
+    router.replace("/");
+  }
   return (
     <html lang="en">
       <head>
