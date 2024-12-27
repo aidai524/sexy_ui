@@ -549,7 +549,7 @@ export default function Home() {
             content: (
               <>
                 <span style={{ fontWeight: "bold" }}>Like</span>
-                {"the projects you love, participate in SexyFi's points"}{" "}
+                {"the projects you love, participate in FlipN's points"}{" "}
                 <span style={{ fontWeight: "bold" }}>mining</span> campaign.
               </>
             ),
