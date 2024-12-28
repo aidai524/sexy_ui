@@ -14,7 +14,7 @@ export default function SeenAll({ show }: Props) {
     }
     return <div className={ styles.sellAll }>
         <img className={ styles.sellAllImg } src="/img/home/empty.png" />
-        <div className={ styles.textMain }>That's all done...</div>
+        <div className={ styles.textMain }>That{"'"}s all done...</div>
         <div className={ styles.textMain2 }>You can go to <span onClick={() => {
             setHomeTabIndex({
                 homeTabIndex: 1
