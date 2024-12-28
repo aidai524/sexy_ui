@@ -8,8 +8,7 @@ export function useAccount() {
   const { connected, connecting, disconnect, publicKey, signTransaction, sendTransaction, signMessage, wallet, connect } = useWallet();
   const { connection } = useConnection();
 
-
-  return {
+  return { 
     connected,
     connecting,
     connect,

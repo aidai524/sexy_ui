@@ -22,7 +22,7 @@ import {
 } from "@/app/components/timesLike/ActionTrigger";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { Modal } from "antd-mobile";
-import SeenAll from "@/app/components/timesLike/seenAll";
+import SeenAll from "./seenAll";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import TrendBanner from "@/app/sections/trends/components/banner";
 import { useTrends } from "@/app/sections/home/mobile/hooks/useTrends";
@@ -125,9 +125,8 @@ export default function Home() {
       console.log("nexting");
       const style = {
         opacity: 1 - percent,
-        transform: `rotate(${40 * percent}deg) translate(0, ${
-          -100 * percent
-        }vh)`
+        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent
+          }vh)`
       };
       if (renderLaunchingIndexRef.current === 0) {
         setMovingStyle2(style);
@@ -171,9 +170,8 @@ export default function Home() {
       console.log("nexting", percent);
       const style = {
         opacity: 1 - percent,
-        transform: `rotate(${40 * percent}deg) translate(0, ${
-          -100 * percent
-        }vh)`
+        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent
+          }vh)`
       };
       if (renderLaunchedIndexRef.current === 0) {
         setMovingStyle2(style);
@@ -197,7 +195,9 @@ export default function Home() {
     if (launchingList && launchingList.current) {
       if (launchingList.current.length > 0) {
         const data = launchingList.current[0];
-        actionLikeTrigger(data);
+        console.log('data:', launchingList, data)
+
+        // actionLikeTrigger(data);
         if (renderLaunchingIndexRef.current === 0) {
           setActionStyle2(styles.like);
         } else {
@@ -212,7 +212,6 @@ export default function Home() {
           setMovingStyle2({});
         }, 800);
 
-        
       }
     }
   }
@@ -358,6 +357,15 @@ export default function Home() {
                   />
                 </div>
               )}
+
+              <SeenAll
+                show={
+                  !isLaunchingLoading &&
+                  homeTabIndex === 0 &&
+                  !infoDataLaunching &&
+                  !infoDataLaunching2
+                }
+              />
             </div>
 
             <LaunchingAction
@@ -413,15 +421,7 @@ export default function Home() {
           </>
         )}
 
-        <SeenAll
-          show={
-            !isLaunchingLoading &&
-            homeTabIndex === 0 &&
-            !infoDataLaunching &&
-            !infoDataLaunching2
-          }
-          onClose={() => {}}
-        />
+
 
         {homeTabIndex === 1 && (
           <>

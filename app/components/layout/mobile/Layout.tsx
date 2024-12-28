@@ -158,7 +158,6 @@ export default function Component({
                 return;
               }
             }
-            // router.push(key);
           }}
         >
           {Tabs(pathname).map((item) => {

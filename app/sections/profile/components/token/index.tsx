@@ -28,12 +28,22 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
     const {
         getMC,
         pool,
+        checkPrePayed
     } = useTokenTrade({
         tokenName: data?.tokenName as string,
         tokenSymbol: data?.tokenSymbol as string,
         tokenDecimals: data?.tokenDecimals as number,
         loadData: false
     });
+
+    const isDelay = useMemo(() => {
+        if (prepaidWithdrawDelayTime && data.createdAt && Date.now() - data.createdAt > prepaidWithdrawDelayTime) {
+            console.log('Date.now() - token.createdAt', Date.now() - data.createdAt, prepaidWithdrawDelayTime)
+
+            return true
+        }
+        return false
+    }, [prepaidWithdrawDelayTime, data])
 
     useEffect(() => {
         if (pool && pool.length > 0 && data?.DApp === 'sexy' && data?.status === 1) {
@@ -138,7 +148,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                 </div>
         } */}
 
-        <TokenAction token={data} prepaidWithdrawDelayTime={prepaidWithdrawDelayTime} />
+        <TokenAction isDelay={isDelay} token={data} prepaidWithdrawDelayTime={prepaidWithdrawDelayTime} />
 
     </div>
 }

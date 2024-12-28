@@ -66,3 +66,29 @@
     opacity: 0;
   }
 }
+
+
+.sellAll {
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .sellAllImg {
+    width: 173px;
+  }
+  .textMain {
+    margin-top: 15px;
+    color: rgba(255, 255, 255, 0.65);
+  }
+  .textMain2 {
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.65);
+    .textMore {
+      color: #fff;
+    }
+  }
+}

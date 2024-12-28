@@ -26,7 +26,7 @@ export default function Action({
   onBoost
 }: Props) {
   if (!token) {
-    return null;
+    return <div className={styles.actionEmptyBox}><img src="/img/home/emptyAction.png" /></div>;
   }
 
   return (

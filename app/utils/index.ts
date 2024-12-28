@@ -240,15 +240,16 @@ export async function getAuthorizationByLocalAndServer() {
   return auth;
 }
 
+export function removeAuth() {
+  window.localStorage.removeItem(AUTH_KEY)
+}
+
 export async function initAuthorization() {
   if (isInitingAuthorization) {
     return;
   }
-
   // @ts-ignore
   const { walletProvider, sexAddress, connect } = window;
-
-  console.log('sexAddress:walletProvider', walletProvider, sexAddress)
 
   if (!walletProvider || !sexAddress) {
     // console.log("connect", connect);
@@ -272,8 +273,6 @@ export async function initAuthorization() {
       signature: b64encoded,
       time: now
     });
-
-    console.log('v: v', v)
 
     if (v.data) {
       window.localStorage.setItem(AUTH_KEY, v.data);
