@@ -108,7 +108,7 @@ export default function Home() {
 
       console.log("preing");
       const style = {
-        // opacity: percent,
+        opacity: 1 - percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${100 * percent}vh)`
       };
       if (renderLaunchingIndexRef.current === 0) {
@@ -124,7 +124,7 @@ export default function Home() {
 
       console.log("nexting");
       const style = {
-        // opacity: percent,
+        opacity: 1 - percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${
           -100 * percent
         }vh)`
@@ -197,7 +197,7 @@ export default function Home() {
     if (launchingList && launchingList.current) {
       if (launchingList.current.length > 0) {
         const data = launchingList.current[0];
-
+        actionLikeTrigger(data);
         if (renderLaunchingIndexRef.current === 0) {
           setActionStyle2(styles.like);
         } else {
@@ -212,7 +212,7 @@ export default function Home() {
           setMovingStyle2({});
         }, 800);
 
-        const isError = await actionLikeTrigger(data);
+        
       }
     }
   }

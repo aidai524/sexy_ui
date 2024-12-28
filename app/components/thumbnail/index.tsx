@@ -317,7 +317,9 @@ export function Avatar({
         <div>
           <div className={styles.tokenName}>{data.tokenName}</div>
           <div className={styles.tickerContent1}>
-            <div className={styles.ticker}>Ticker: {data.ticker}</div>
+            {
+              data.ticker && <div className={styles.ticker}>Ticker: {data.ticker}</div>
+            }
             {showLaunchType && <LaunchTag type={data.status as number} />}
           </div>
         </div>

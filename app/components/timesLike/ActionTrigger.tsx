@@ -4,6 +4,7 @@ import SecondTimeLike from "./secondTimesLike"
 import type { Project } from "@/app/type"
 import { httpAuthPost } from "@/app/utils"
 import { fail, success } from "@/app/utils/toast"
+import Big from "big.js"
 
 
 export const FIRST_LIKE_TIMES = 10
@@ -12,14 +13,14 @@ export const SECOND_LIKE_TIMES = 30
 const LIKE_ERROR = -1
 
 
-const onLike = async (data: Project) => {
+const onLike = async (data: any) => {
   try {
     console.log('data:', data)
     if (data) {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
       console.log('v:', v)
       if (v.code === 0) {
-        success('You liked ' + data.tokenName + ', You are expected to receive ' + v.data?.point)
+        success('You liked ' + data.token_name + ', You are expected to receive ' + new Big(v.data?.point || 0).toFixed(2))
         return v.data?.likeNum
       } else if (v.code === 100002) {
         fail("You've run out of like times. You can come back tomorrow")

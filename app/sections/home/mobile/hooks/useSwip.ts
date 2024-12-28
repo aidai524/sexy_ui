@@ -27,16 +27,6 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
             });
             manager.add(Pan);
 
-            // manager.on("swipe", function (e) {
-            //     console.log(11)
-            //     const direction = e.offsetDirection;
-            //     if (direction === 2 || direction === 16) {
-            //         onPre && onPre()
-            //     } else if (direction === 4 || direction === 8) {
-            //         onNext && onNext()
-            //     }
-            // });
-
             const winWidth = window.innerWidth
             let startDistance = 0
             let direction = 0 // 0 right 1 left

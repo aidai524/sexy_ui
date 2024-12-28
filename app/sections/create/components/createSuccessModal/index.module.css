@@ -30,8 +30,16 @@
       margin-top: 10px;
       gap: 20px;
       font-size: 12px;
+      align-items: flex-start;
       .name {
         font-weight: 700;
+        flex:2;
+        text-align: right;
+      }
+      .ticker {
+        flex: 3;
+        word-break: break-all;
+        padding-right: 10px;
       }
     }
     .successText {

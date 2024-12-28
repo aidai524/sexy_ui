@@ -79,7 +79,7 @@ export default function ActionList({
                                 }
                                
                                 setIsLoading(false)
-                            }}>Withdraw</div>)
+                            }}>{isLoading ? <DotLoading /> : 'Withdraw'}</div>)
                         }</>
                         : <>
                             {/* <Boost actionChildren={<div className={styles.actionBtn}>
@@ -89,7 +89,7 @@ export default function ActionList({
                             {
                                 !disableSmooke && <SmokeHot actionChildren={<div className={styles.actionBtn}>
                                     <SmookIcon />
-                                    Smook Hot
+                                    Smoke Hot
                                 </div>} token={token} onClick={() => { }} />
                             }
                         </>

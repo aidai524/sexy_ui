@@ -291,6 +291,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
 
                   }
                   setValInput("");
+                  setSolPercent(0)
                 }}
               >
                 <span className={styles.switchTitle}>switch to </span>
@@ -397,7 +398,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
                       setTokenPercent(item);
                       const tokenPercentVal = new Big(tokenBalance)
                         .mul(item / 100)
-                        .toFixed(2, 0);
+                        .toFixed(item === 100 ? tokenDecimals : 2, 0);
                       setValInput(tokenPercentVal);
                     }}
                     key={item}
