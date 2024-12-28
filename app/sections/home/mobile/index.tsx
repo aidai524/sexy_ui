@@ -191,13 +191,14 @@ export default function Home() {
     likeTriggerRef.current = likeTrigger;
   }, [likeTrigger]);
 
-  async function like() {
+  async function like(isLike: boolean = true) {
     if (launchingList && launchingList.current) {
       if (launchingList.current.length > 0) {
-        const data = launchingList.current[0];
-        console.log('data:', launchingList, data)
-
-        // actionLikeTrigger(data);
+        if (isLike) {
+          const data = launchingList.current[0];
+          actionLikeTrigger(data);
+        }
+        
         if (renderLaunchingIndexRef.current === 0) {
           setActionStyle2(styles.like);
         } else {
@@ -382,29 +383,30 @@ export default function Home() {
               }}
               onLike={async () => {
                 await like();
-                const token =
-                  renderLaunchingIndex === 0
-                    ? infoDataLaunching2
-                    : infoDataLaunching;
-                const val = await httpAuthGet("/project/?id=" + token?.id);
-                if (val.code === 0) {
-                  const newTokenInfo = mapDataToProject(val.data[0]);
-                  updateLaunchingToken(newTokenInfo);
-                }
+                // const token =
+                //   renderLaunchingIndex === 0
+                //     ? infoDataLaunching2
+                //     : infoDataLaunching;
+                // const val = await httpAuthGet("/project/?id=" + token?.id);
+                // if (val.code === 0) {
+                //   const newTokenInfo = mapDataToProject(val.data[0]);
+                //   updateLaunchingToken(newTokenInfo);
+                // }
               }}
               onHate={async () => {
                 await hate();
               }}
               onSuperLike={async () => {
-                const token =
-                  renderLaunchingIndex === 0
-                    ? infoDataLaunching2
-                    : infoDataLaunching;
-                const val = await httpAuthGet("/project/?id=" + token?.id);
-                if (val.code === 0) {
-                  const newTokenInfo = mapDataToProject(val.data[0]);
-                  updateLaunchingToken(newTokenInfo);
-                }
+                like(false)
+                // const token =
+                //   renderLaunchingIndex === 0
+                //     ? infoDataLaunching2
+                //     : infoDataLaunching;
+                // const val = await httpAuthGet("/project/?id=" + token?.id);
+                // if (val.code === 0) {
+                //   const newTokenInfo = mapDataToProject(val.data[0]);
+                //   updateLaunchingToken(newTokenInfo);
+                // }
               }}
               onBoost={async () => {
                 const token =

@@ -76,8 +76,6 @@ export default function useData(launchType: string) {
       return;
     }
 
-    
-
     setTimeout(() => {
       if (list.length > 0) {
         if (list.length > 1) {
@@ -157,7 +155,8 @@ export default function useData(launchType: string) {
     }
   }, []);
 
-  // console.log('infoData', infoData, infoData2)
+
+  
 
   return {
     infoData,
