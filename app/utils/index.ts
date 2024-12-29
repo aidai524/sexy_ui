@@ -447,36 +447,67 @@ export async function upload(
       }
     );
 
-    const targetAspectRatio = 1 / percent;
-    let cropWidth, cropHeight;
+    
 
-    if (naturalWidth / naturalHeight > targetAspectRatio) {
-      cropHeight = naturalHeight;
-      cropWidth = cropHeight * targetAspectRatio;
+    if (percent === 0) {
+      const canvasWidth = 128 * 2;
+      const canvasHeight = canvasWidth * 2;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+      console.log(naturalWidth, naturalHeight)
+
+      let scale = Math.min(canvasWidth / naturalWidth, canvasHeight / naturalHeight);
+
+      console.log(scale)
+
+      let newWidth = naturalWidth * scale;
+      let newHeight = naturalHeight * scale;
+      let x = (canvasWidth - newWidth) / 2;
+      let y = (canvasHeight - newHeight) / 2;
+
+      console.log(img, x, y, newWidth, newHeight)
+
+      ctx.drawImage(img, x, y, newWidth, newHeight);
+
     } else {
-      cropWidth = naturalWidth;
-      cropHeight = cropWidth / targetAspectRatio;
+      const targetAspectRatio = 1 / percent;
+      let cropWidth, cropHeight;
+  
+      if (naturalWidth / naturalHeight > targetAspectRatio) {
+        cropHeight = naturalHeight;
+        cropWidth = cropHeight * targetAspectRatio;
+      } else {
+        cropWidth = naturalWidth;
+        cropHeight = cropWidth / targetAspectRatio;
+      }
+  
+      const cropX = (naturalWidth - cropWidth) / 2;
+      const cropY = (naturalHeight - cropHeight) / 2;
+  
+      const canvasWidth = 128 * 2;
+      const canvasHeight = canvasWidth * percent;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+      ctx.drawImage(
+        img,
+        cropX,
+        cropY,
+        cropWidth,
+        cropHeight,
+        0,
+        0,
+        canvasWidth,
+        canvasHeight
+      );
     }
-
-    const cropX = (naturalWidth - cropWidth) / 2;
-    const cropY = (naturalHeight - cropHeight) / 2;
-
-    const canvasWidth = 128 * 2;
-    const canvasHeight = canvasWidth * percent;
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-    ctx.drawImage(
-      img,
-      cropX,
-      cropY,
-      cropWidth,
-      cropHeight,
-      0,
-      0,
-      canvasWidth,
-      canvasHeight
-    );
+    
     const base64Url = canvas.toDataURL("image/webp");
+
+    console.log(base64Url)
 
     const bloBData = base64ToBlob(base64Url);
 

@@ -3,6 +3,7 @@ import ActionList from './actionList'
 import styles from './index.module.css'
 import type { Project } from "@/app/type"
 import { Popup } from "antd-mobile";
+import { useUser } from '@/app/store/useUser';
 
 interface Props {
     token: Project;
@@ -16,12 +17,13 @@ export default function TokenAction({
     prepaidWithdrawDelayTime,
 }: Props) {
     const [modalShow, setModalShow] = useState(false)
+    const { userInfo }: any = useUser()
 
     const showAction = useMemo(() => {
         if (token.status !== 0) {
             return true
         }
-        if (token.status === 0 && !isDelay) {
+        if (token.status === 0 && !isDelay && token.account !== userInfo.address) {
             return true
         }
         if (token.status === 0 && isDelay && token.prePaidAmount !== '0') {

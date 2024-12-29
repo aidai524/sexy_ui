@@ -193,6 +193,7 @@ export default forwardRef(function CreateNode(
           style={{ paddingLeft: 15, paddingTop: 10 }}
         >
           <Upload
+            percent={0}
             type="token"
             accept="image/*, video/mp4"
             fileList={tokenImg}

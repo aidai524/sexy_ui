@@ -112,6 +112,8 @@ a {
     padding: 0;
     .adm-modal-content {
       padding: 0;
+      max-height: 85vh;
+      overflow: hidden;
     }
   }
 }

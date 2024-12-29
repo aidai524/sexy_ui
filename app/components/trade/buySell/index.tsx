@@ -34,7 +34,7 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.0001, 0.0005, 0.001];
+const SOL_PERCENT_LIST = [0.0005, 0.001];
 
 export default function BuySell({ token, initType, from, onClose }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
@@ -266,6 +266,7 @@ export default function BuySell({ token, initType, from, onClose }: Props) {
               setCurrentToken(desToken);
               setTokenType(0);
               setValInput("");
+              setTokenPercent(0)
             }}
             className={[
               styles.tab,
