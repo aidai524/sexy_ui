@@ -226,8 +226,8 @@ export default function Home() {
     if (launchingList && launchingList.current) {
       if (launchingList.current.length > 0) {
         if (isLike) {
-          // const data = launchingList.current[0];
-          // actionLikeTrigger(data);
+          const data = launchingList.current[0];
+          actionLikeTrigger(data);
         }
         
         if (renderLaunchingIndexRef.current === 0) {
