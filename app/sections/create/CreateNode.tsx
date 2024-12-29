@@ -93,14 +93,14 @@ export default forwardRef(function CreateNode(
       telegram,
       discord
     });
-  }, [tokenName, ticker, tokenImg, about]);
+  }, [tokenName, ticker, tokenImg, about, tokenIcon, website, twitter, telegram, discord]);
 
   useImperativeHandle(
     ref,
     () => ({
       onPreview
     }),
-    [tokenName, ticker, tokenImg, about]
+    [tokenName, ticker, tokenImg, about, tokenIcon, website, twitter, telegram, discord]
   );
 
   useEffect(() => {
