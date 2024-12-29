@@ -51,49 +51,48 @@ export default function ActionList({
     }, [updateNum])
 
     const disableSmooke = useMemo(() => {
-        return token.isSuperLike || token.account === userInfo.address || isDelay
+        return token.isSuperLike || token.account === userInfo.address
     }, [])
-
-    console.log('token:', token, isDelay)
 
     return <div className={styles.actionbox}>
         {
             token.status === 0 && <>
                 {
                     isDelay
-                        ? <>{
-                            isPrepaid && (isWithdrawed ? <div className={styles.actionBtn + ' ' + styles.isGrey}>Withdrawed</div> : <div className={styles.actionBtn} onClick={ async() => {
-                                setIsLoading(true)
-                                try { 
-                                    const res = await prepaidSolWithdraw()
+                    && <>{
+                        isPrepaid && (isWithdrawed ? <div className={styles.actionBtn + ' ' + styles.isGrey}>Withdrawed</div> : <div className={styles.actionBtn} onClick={async () => {
+                            setIsLoading(true)
+                            try {
+                                const res = await prepaidSolWithdraw()
 
-                                    if (!res) {
-                                        fail('Withdraw fail')
-                                    } else {
-                                        success('Withdraw success')
-                                        setIsWithdrawed(true)
-                                    }
-                                } catch (e) {
-                                    console.log(e)
-                                     fail('Withdraw fail')
+                                if (!res) {
+                                    fail('Withdraw fail')
+                                } else {
+                                    success('Withdraw success')
+                                    setIsWithdrawed(true)
                                 }
-                               
-                                setIsLoading(false)
-                            }}>{isLoading ? <DotLoading /> : 'Withdraw'}</div>)
-                        }</>
-                        : <>
-                            {/* <Boost actionChildren={<div className={styles.actionBtn}>
-                                <BoostIcon />
-                                Boost
-                            </div>} token={token} onClick={() => { }} /> */}
-                            {
-                                !disableSmooke && <SmokeHot actionChildren={<div className={styles.actionBtn}>
-                                    <SmookIcon />
-                                    Smoke Hot
-                                </div>} token={token} onClick={() => { }} />
+                            } catch (e) {
+                                console.log(e)
+                                fail('Withdraw fail')
                             }
-                        </>
+
+                            setIsLoading(false)
+                        }}>{isLoading ? <DotLoading /> : 'Withdraw'}</div>)
+                    }</>
                 }
+
+                <>
+                    {/* <Boost actionChildren={<div className={styles.actionBtn}>
+                        <BoostIcon />
+                        Boost
+                    </div>} token={token} onClick={() => { }} /> */}
+                    {
+                        !disableSmooke && <SmokeHot actionChildren={<div className={styles.actionBtn}>
+                            <SmookIcon />
+                            Smoky Hot
+                        </div>} token={token} onClick={() => { }} />
+                    }
+                </>
             </>
         }
 

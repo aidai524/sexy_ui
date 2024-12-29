@@ -17,7 +17,7 @@ export default function Content({ onClose, data, initType }: any) {
 
           <div className={styles.nameContent}>
             <div className={styles.name}>{data.tokenName}</div>
-            <div>/Ticker:{data.ticker}</div>
+            <div className={styles.ticker}>/Ticker:{data.ticker}</div>
           </div>
         </div>
       )}

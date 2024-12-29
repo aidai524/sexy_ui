@@ -17,6 +17,7 @@ import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import { useUserAgent } from "@/app/context/user-agent";
 import { SpinLoading } from "antd-mobile";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import { updateOneInList } from "@/app/utils/listStore";
 
 export default function Detail() {
   const { isMobile } = useUserAgent()
@@ -37,7 +38,6 @@ export default function Detail() {
 
   useEffect(() => {
     getDetailInfo()
-    
   }, [params]);
 
   useEffect(() => {
@@ -52,9 +52,12 @@ export default function Detail() {
     const id = params.get("id");
     if (id) {
       return httpGet("/project", { id }).then((res) => {
-        if (res.code === 0 && res.data) {
+        if (res.code === 0 && res.data && res.data.length) {
           const infoData = mapDataToProject(res.data[0]);
           setInfoData(infoData);
+          updateOneInList({
+            ...res.data[0],
+          })
         }
       });
     }

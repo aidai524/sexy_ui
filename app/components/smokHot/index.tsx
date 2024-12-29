@@ -21,6 +21,7 @@ export default function SmokeBtn({
   token,
   isBigIcon = false,
   actionChildren,
+  
   id
 }: Props) {
   const [panelShow, setPanelShow] = useState(false);
@@ -38,7 +39,7 @@ export default function SmokeBtn({
   }, [prepaidDelayTime, token])
 
   const isDisabled = useMemo(() => {
-    return token.isSuperLike || token.account === address || isDelay
+    return token.isSuperLike || token.account === address
   }, [isDelay, token, address])
 
   const VipModal = (

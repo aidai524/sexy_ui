@@ -4,7 +4,7 @@ const TIME_DURATION = 1000 * 60 * 60
 
 export function getAll(type: string) {
     if (!checkTimeExpired(type)) {
-        return
+        return []
     }
 
     const listStr = window.localStorage.getItem(SEX_FI_LAUNCHED_LIST_KEY + '_' + type)
@@ -34,6 +34,34 @@ export function setAll(list: any, type: string) {
 export function clearAll(type: string) {
     window.localStorage.removeItem(SEX_FI_LAUNCHED_LIST_KEY + '_' + type)
     window.localStorage.removeItem(SEX_FI_LAUNCHED_LIST_TIME + '_' + type)
+}
+
+export function updateOneInList(item: any) {
+    if (!item) {
+        return
+    }
+
+    let list = []
+    if (item.status === 0) {
+        list = getAll('preLaunch')
+    } else if (item.status === 1) {
+        list = getAll('launching')
+    }
+    
+    list.some((oldItem: any) => {
+        if (oldItem.id === item.id) {
+            Object.assign(oldItem, item)
+            return true
+        }
+
+        return false
+    })
+
+    if (item.status === 0) {
+        setAll(list, 'preLaunch')
+    } else if (item.status === 1) {
+        setAll(list, 'launching')
+    }
 }
 
 function setTime(type: string) {
