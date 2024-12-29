@@ -7,13 +7,13 @@ import MainBtn from '../mainBtn';
 import { useUser } from '@/app/store/useUser';
 import { formatAddress, formatDateEn, formatDateTime } from '@/app/utils';
 import type { UserInfo } from '@/app/type';
+import { defaultAvatar } from '@/app/utils/config';
 
 interface Props {
     onStartVip: () => void;
     onCanceVip: () => void;
 }
 
-const defaultAvatar = '/img/avatar.png'
 const threeDays = 259200000
 
 export default function BoostVip({

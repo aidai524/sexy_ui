@@ -9,8 +9,8 @@ import {
 import styles from "./item.module.css";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { defaultAvatar } from "@/app/utils/config";
 
-const defaultAvatar = "/img/avatar.png";
 
 export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
   const router = useRouter();

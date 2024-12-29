@@ -14,7 +14,7 @@
         .tokenImg {
             display: block;
             width: 100%;
-            /* height: 100%; */
+            height: 100%;
             /* border-radius: 5px; */
         }
     }
@@ -39,6 +39,8 @@
         bottom: 0;
         padding: 0 10px;
         overflow: auto;
+        -webkit-overflow-scrolling: touch; 
+        touch-action: none;
     }
 
     .descContent {

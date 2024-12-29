@@ -446,33 +446,23 @@ export async function upload(
         img.src = url;
       }
     );
-
     
-
     if (percent === 0) {
       const canvasWidth = 128 * 2;
-      const canvasHeight = canvasWidth * 2;
+      const canvasHeight = canvasWidth * 1.5;
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
 
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-      console.log(naturalWidth, naturalHeight)
-
       let scale = Math.min(canvasWidth / naturalWidth, canvasHeight / naturalHeight);
-
-      console.log(scale)
-
       let newWidth = naturalWidth * scale;
       let newHeight = naturalHeight * scale;
       let x = (canvasWidth - newWidth) / 2;
       let y = (canvasHeight - newHeight) / 2;
 
-      console.log(img, x, y, newWidth, newHeight)
-
       ctx.drawImage(img, x, y, newWidth, newHeight);
-
     } else {
       const targetAspectRatio = 1 / percent;
       let cropWidth, cropHeight;

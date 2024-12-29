@@ -4,6 +4,7 @@ import MainBtn from "@/app/components/mainBtn";
 import type { Project, UserInfo } from "@/app/type";
 import { httpGet } from "@/app/utils";
 import { useCallback } from "react";
+import { defaultAvatar } from "@/app/utils/config";
 
 interface Props {
   onClose: () => void;
@@ -24,7 +25,6 @@ const typeText = {
   1: 'sold'
 } as any
 
-const defaultAvatar = '/img/avatar.png'
 
 export default function TradeSuccessModal({
   onClose,

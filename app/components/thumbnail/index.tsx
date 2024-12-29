@@ -9,6 +9,7 @@ import { videoReg } from "../upload";
 import Likes from "./likes";
 import Holder from "../holder";
 import LoadMore from "./loadMore";
+import PreUser from "./preUser";
 
 interface Props {
   showDesc: boolean;
@@ -87,17 +88,15 @@ export default function Thumbnail({
                 progressIndex === 1 ? styles.progressItemActive : ""
               ].join(" ")}
             ></div>
-            {data.status !== 0 && (
-              <div
-                onClick={() => {
-                  setProgressIndex(2);
-                }}
-                className={[
-                  styles.progressItem,
-                  progressIndex === 2 ? styles.progressItemActive : ""
-                ].join(" ")}
-              ></div>
-            )}
+            <div
+              onClick={() => {
+                setProgressIndex(2);
+              }}
+              className={[
+                styles.progressItem,
+                progressIndex === 2 ? styles.progressItemActive : ""
+              ].join(" ")}
+            ></div>
           </div>
         )}
 
@@ -121,20 +120,18 @@ export default function Thumbnail({
                 id={data.id}
                 showEdit={false}
                 usePanel={false}
-                
+
               />
             </div>
             <LoadMore onClick={() => {
-              console.log(commentRef)
+              // console.log(commentRef)
               // setLoadCommentNum(loadCommentNum + 1)
               if (commentRef.current) {
-                console.log('commentRef.current.scrollHeight:', commentRef.current.scrollHeight, commentRef.current.clientHeight)
-
                 commentRef.current.scrollTo({
                   top: commentRef.current.scrollHeight + commentRef.current.clientHeight
                 })
               }
-            }}/>
+            }} />
           </div>
         )}
 
@@ -142,7 +139,19 @@ export default function Thumbnail({
           <div className={styles.commentList}>
             <Avatar data={data} showBackIcon={true} />
             <div style={{ height: 10 }}></div>
-            <Holder/>
+            <div className={styles.commentBox} ref={commentRef}>
+              {
+                data.status === 0 ? <PreUser token={data}/> : <Holder />
+              }
+            </div>
+            <LoadMore onClick={() => {
+              console.log(commentRef)
+              if (commentRef.current) {
+                commentRef.current.scrollTo({
+                  top: commentRef.current.scrollHeight + commentRef.current.clientHeight
+                })
+              }
+            }} />
           </div>
         )}
 

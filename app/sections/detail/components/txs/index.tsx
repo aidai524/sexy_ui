@@ -4,9 +4,9 @@ import styles from "./txs.module.css";
 import { formatAddressLast, httpGet } from "@/app/utils";
 import Big from "big.js";
 import Empty from "@/app/components/empty";
+import { defaultAvatar } from "@/app/utils/config";
 
 const addressReg = /(\w{2}).+(\w{2})/;
-const defaultAvatar = "/img/avatar.png";
 
 
 export function formatAddress(address: string) {

@@ -9,6 +9,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { mapDataToUser } from "@/app/utils/mapTo";
 import InfiniteScroll from "@/app/components/sexInfiniteScroll";
+import { defaultAvatar } from "@/app/utils/config";
 
 interface Props {
   followerType: number;
@@ -17,7 +18,6 @@ interface Props {
   currentUser: UserInfo | undefined;
 }
 
-const defaultAvatar = "/img/avatar.png";
 const LIMIT = 50
 
 const url: any = {

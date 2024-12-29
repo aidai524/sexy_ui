@@ -1,0 +1,52 @@
+.main {
+    .title {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .userItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 15px;
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 36px;
+            overflow: hidden;
+
+            .avatarImg {
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        .userBox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .userName {
+                color: #fff;
+            }
+
+            .followers {
+                color: rgba(146, 144, 177, 1);
+                margin-top: 3px;
+            }
+        }
+
+        .creator {
+            color: rgba(201, 255, 93, 1);
+        }
+
+        .like {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #fff;
+        }
+    }
+}

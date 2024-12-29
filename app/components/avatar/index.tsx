@@ -3,8 +3,8 @@ import Pencil from "../icons/pencil";
 import Vip from "./vip";
 import { useAccount } from "@/app/hooks/useAccount";
 import { formatAddress } from "@/app/utils";
+import { defaultAvatar } from "@/app/utils/config";
 
-const defaultAvatar = "/img/avatar.png";
 
 export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
   const { address } = useAccount();
