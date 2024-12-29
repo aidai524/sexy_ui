@@ -37,7 +37,8 @@ export default function useData(launchType: string) {
 
           renderTwoSimple(res.data?.list);
         } else {
-          _list = [...(listRef.current || []), ...res.data.list];
+          const mergedList = new Map([...(listRef.current || []), ...res.data.list].map(item => [item.id, item]))
+          _list = mergedList.values().toArray();
         }
 
         listRef.current = _list;
@@ -88,7 +89,7 @@ export default function useData(launchType: string) {
             setInfoData(mapDataToProject(currentToken));
           }
         }
-        
+
         if (list.length === 1) {
           // renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
           // setRenderIndex(renderIndexRef.current);
@@ -131,7 +132,19 @@ export default function useData(launchType: string) {
   };
 
   useEffect(() => {
-    const list = getAll(launchType);
+    let list = getAll(launchType);
+
+    if (list && list.length > 0) {
+      if (launchType === 'preLaunch') {
+        list = list.filter((item: any) => {
+          if (item.status !== 0 || item.is_like || item.is_super_like || item.is_un_like) {
+            return false
+          }
+          return true
+        })
+        list = list || []
+      }
+    }
 
     if (list && list.length > 0) {
       listRef.current = list;
@@ -153,10 +166,8 @@ export default function useData(launchType: string) {
     } else {
       onQueryList(true);
     }
+
   }, []);
-
-
-  
 
   return {
     infoData,

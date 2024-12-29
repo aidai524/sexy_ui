@@ -78,12 +78,6 @@ export default function Home() {
   useSwip(
     containerPreLaunchRef,
     () => {
-      if (!address) {
-        //@ts-ignore
-        window.connect();
-        return;
-      }
-
       if (hateTriggerRef.current) {
         return;
       }
@@ -96,12 +90,6 @@ export default function Home() {
       }, 1600);
     },
     () => {
-      if (!address) {
-        //@ts-ignore
-        window.connect();
-        return;
-      }
-
       if (likeTriggerRef.current) {
         return;
       }
@@ -114,7 +102,8 @@ export default function Home() {
       }, 1600);
     },
     (percent: number) => {
-      if (!address) {
+      // @ts-ignore
+      if (!window.sexAddress) {
         //@ts-ignore
         window.connect();
         return;
@@ -136,11 +125,14 @@ export default function Home() {
       }
     },
     (percent: number) => {
-      if (!address) {
+      //@ts-ignore
+      if (!window.sexAddress) {
         //@ts-ignore
         window.connect();
         return;
       }
+
+      console.log('likeTriggerRef.current:', likeTriggerRef.current)
 
       if (likeTriggerRef.current) {
         return;
@@ -171,7 +163,8 @@ export default function Home() {
       justNext("like");
     },
     (percent: number) => {
-      if (!address) {
+      //@ts-ignore
+      if (!window.sexAddress) {
         //@ts-ignore
         window.connect();
         return;
@@ -193,7 +186,8 @@ export default function Home() {
       }
     },
     (percent: number) => {
-      if (!address) {
+      //@ts-ignore
+      if (!window.sexAddress) {
         //@ts-ignore
         window.connect();
         return;
@@ -228,6 +222,7 @@ export default function Home() {
   }, [likeTrigger]);
 
   async function like(isLike: boolean = true) {
+
     if (launchingList && launchingList.current) {
       if (launchingList.current.length > 0) {
         if (isLike) {
@@ -279,11 +274,11 @@ export default function Home() {
   }
 
   async function justNext(type: string) {
-    if (!address) {
-      //@ts-ignore
-      window.connect();
-      return;
-    }
+    // if (!address) {
+    //   //@ts-ignore
+    //   window.connect();
+    //   return;
+    // }
 
     if (
       launchedList &&
