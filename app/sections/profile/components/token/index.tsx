@@ -58,7 +58,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
             <div className={styles.tokenImgContent} onClick={() => {
                 router.push('/detail?id=' + data.id)
             }}>
-                <img className={styles.tokenImg} src={data.tokenIcon || data.tokenImg} />
+                <img className={styles.tokenImg} src={data.tokenIcon || data.tokenImg || '/img/token-placeholder.png'} />
                 <LaunchTag type={data.status as number} />
             </div>
 

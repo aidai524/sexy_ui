@@ -108,7 +108,7 @@ export default function Thumbnail({
               Your browser does not support the video tag.
             </video>
           ) : (
-            <img className={styles.tokenImg} src={data.tokenImg} />
+            <img className={styles.tokenImg} src={data.tokenImg || '/img/token-placeholder.png'} />
           )}
         </div>
 
