@@ -1,0 +1,12 @@
+.errMsg {
+    background: rgba(109, 8, 50, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .msgText {
+        color: var(--part-bg);
+    }
+}

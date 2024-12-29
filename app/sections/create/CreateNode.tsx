@@ -13,8 +13,9 @@ import MainBtn from "@/app/components/mainBtn";
 import CheckBox from "@/app/components/checkBox";
 import { useUserAgent } from "@/app/context/user-agent";
 import { success, fail } from "@/app/utils/toast";
-
+import ErrMsg from "./components/errMsg";
 import type { Project } from "@/app/type";
+
 interface Props {
   onAddDataFill: (value: Project) => void;
   show: boolean;
@@ -45,30 +46,30 @@ export default forwardRef(function CreateNode(
     let isValid = false;
     const inValidVals: any = {};
     if (!name_reg.test(tokenName)) {
-      inValidVals["tokenName"] = true;
+      inValidVals["tokenName"] = 'Only uppercase and lowercase letters and numbers are supported and the length is less than 16';
       isValid = true;
     }
 
     if (!ticker) {
-      inValidVals["ticker"] = true;
+      inValidVals["ticker"] = 'Ticker cannot be empty';
       isValid = true;
     }
 
     if (tokenImg.length === 0) {
-      inValidVals["tokenImg"] = true;
+      inValidVals["tokenImg"] = 'Token image cannot be empty';
       isValid = true;
     } else {
       const tokenImgObj = tokenImg[0];
-      if (videoReg.test(tokenImgObj.url)) {
+      if (videoReg.test(tokenImgObj.url) || showTokenSymbol) {
         if (tokenIcon.length === 0) {
-          inValidVals["tokenIcon"] = true;
+          inValidVals["tokenIcon"] = 'Token icon cannot be empty';
           isValid = true;
         }
       }
     }
 
     if (!about) {
-      inValidVals["about"] = true;
+      inValidVals["about"] = 'About icon cannot be empty';
       isValid = true;
     }
 
@@ -93,7 +94,7 @@ export default forwardRef(function CreateNode(
       telegram,
       discord
     });
-  }, [tokenName, ticker, tokenImg, about, tokenIcon, website, twitter, telegram, discord]);
+  }, [tokenName, ticker, tokenImg, about, tokenIcon, website, twitter, telegram, discord, showTokenSymbol]);
 
   useImperativeHandle(
     ref,
@@ -146,6 +147,9 @@ export default forwardRef(function CreateNode(
               placeholder="Meme name"
             />
           </div>
+          {
+            inValidVals["tokenName"] && <ErrMsg>{ inValidVals["tokenName"] }</ErrMsg>
+          }
         </div>
 
         <div
@@ -168,6 +172,9 @@ export default forwardRef(function CreateNode(
               placeholder="say something"
             />
           </div>
+          {
+            inValidVals["ticker"] && <ErrMsg>{ inValidVals["ticker"] }</ErrMsg>
+          }
         </div>
       </div>
 
@@ -193,6 +200,9 @@ export default forwardRef(function CreateNode(
           />
           <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
         </div>
+        {
+            inValidVals["tokenImg"] && <ErrMsg>{ inValidVals["tokenImg"] }</ErrMsg>
+          }
         <div className={styles.tokenSymbol}>
           <CheckBox
             checked={showTokenSymbol}
@@ -204,7 +214,7 @@ export default forwardRef(function CreateNode(
             Another image for token symbol
           </div>
         </div>
-        {showTokenSymbol && (
+        {showTokenSymbol && (<>
           <div
             className={
               styles.groupContent +
@@ -225,6 +235,10 @@ export default forwardRef(function CreateNode(
             />
             <div className={styles.uploadTip}>Support img/png/svg</div>
           </div>
+          {
+            inValidVals["tokenIcon"] && <ErrMsg>{ inValidVals["tokenIcon"] }</ErrMsg>
+          }
+          </>
         )}
       </div>
 
@@ -243,6 +257,9 @@ export default forwardRef(function CreateNode(
             placeholder="say something"
           />
         </div>
+        {
+            inValidVals["about"] && <ErrMsg>{ inValidVals["about"] }</ErrMsg>
+          }
       </div>
 
       <div className={styles.group}>
@@ -319,7 +336,7 @@ export default forwardRef(function CreateNode(
         </div>
       </div>
 
-
+      
       {isMobile && (
         <div className={styles.btnWapper}>
           <MainBtn onClick={onPreview}>Preview</MainBtn>

@@ -78,6 +78,12 @@ export default function Home() {
   useSwip(
     containerPreLaunchRef,
     () => {
+      if (!address) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
+
       if (hateTriggerRef.current) {
         return;
       }
@@ -90,6 +96,12 @@ export default function Home() {
       }, 1600);
     },
     () => {
+      if (!address) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
+
       if (likeTriggerRef.current) {
         return;
       }
@@ -102,6 +114,12 @@ export default function Home() {
       }, 1600);
     },
     (percent: number) => {
+      if (!address) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
+
       if (hateTriggerRef.current) {
         return;
       }
@@ -118,6 +136,12 @@ export default function Home() {
       }
     },
     (percent: number) => {
+      if (!address) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
+
       if (likeTriggerRef.current) {
         return;
       }
@@ -147,6 +171,12 @@ export default function Home() {
       justNext("like");
     },
     (percent: number) => {
+      if (!address) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
+
       if (scrollRef.current) {
         return;
       }
@@ -163,6 +193,12 @@ export default function Home() {
       }
     },
     (percent: number) => {
+      if (!address) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
+
       if (scrollRef.current) {
         return;
       }
@@ -243,6 +279,12 @@ export default function Home() {
   }
 
   async function justNext(type: string) {
+    if (!address) {
+      //@ts-ignore
+      window.connect();
+      return;
+    }
+
     if (
       launchedList &&
       launchedList.current &&
