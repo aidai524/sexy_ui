@@ -28,6 +28,8 @@ export function mapDataToProject(currentToken: any): Project {
       initiativeLaunching: currentToken.initiative_launching,
       prePaidAmount: currentToken.pre_paid_amount,
       prePaid: currentToken.pre_paid,
+      x: currentToken.x,
+      tg: currentToken.tg,
     };
 }
 

@@ -109,13 +109,13 @@ export default forwardRef(function PreviewNode(
             about_us: data.about,
             discord: data.discord,
             icon: data.tokenIcon,
-            tg: "",
+            tg: data.tg,
             ticker: data.ticker,
             token_name: data.tokenName,
             token_symbol: data.tokenName.toUpperCase(),
             video: data.tokenImg,
             website: data.website,
-            x: data.twitter
+            x: data.x
           };
 
           const queryStr = Object.keys(query)

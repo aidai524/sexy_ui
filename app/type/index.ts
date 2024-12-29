@@ -5,8 +5,9 @@ export interface Project {
     ticker: string;
     about: string;
     website?: string;
-    twitter?: string;
+    x?: string;
     telegram?: string;
+    tg?: string;
     discord?: string;
     tokenImg: string;
     tokenIcon?: string;

@@ -653,3 +653,8 @@ export const simplifyNum = (number: number) => {
     return Number(number).toFixed(2);
   }
 };
+
+export function isValidURL(url: string) {
+  const regex = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/[a-z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/i;
+  return regex.test(url);
+}

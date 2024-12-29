@@ -15,6 +15,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { success, fail } from "@/app/utils/toast";
 import ErrMsg from "./components/errMsg";
 import type { Project } from "@/app/type";
+import { isValidURL } from "@/app/utils";
 
 interface Props {
   onAddDataFill: (value: Project) => void;
@@ -35,8 +36,8 @@ export default forwardRef(function CreateNode(
   const [ticker, setTicker] = useState("");
   const [about, setAbout] = useState("");
   const [website, setWebsite] = useState("");
-  const [twitter, setTwitter] = useState("");
-  const [telegram, setTelegram] = useState("");
+  const [x, setTwitter] = useState("");
+  const [tg, setTelegram] = useState("");
   const [discord, setDiscord] = useState("");
 
   const [canValid, setCanValid] = useState(false);
@@ -75,6 +76,27 @@ export default forwardRef(function CreateNode(
 
     setInvaldVasl(inValidVals);
 
+    if (website) {
+      if (!isValidURL(website)) {
+        inValidVals["website"] = 'Website is not a valid url';
+        isValid = true;
+      }
+    }
+
+    if (tg) {
+      if (!isValidURL(tg)) {
+        inValidVals["tg"] = 'Tg is not a valid url';
+        isValid = true;
+      }
+    }
+
+    if (x) {
+      if (!isValidURL(x)) {
+        inValidVals["x"] = 'Twitter is not a valid url';
+        isValid = true;
+      }
+    }
+
     if (isValid) {
       window.scrollTo({
         top: 0
@@ -90,18 +112,18 @@ export default forwardRef(function CreateNode(
       tokenSymbol: tokenName.toUpperCase(),
       tokenIcon: tokenIcon.length > 0 ? tokenIcon[0].url : tokenImg[0].url,
       website,
-      twitter,
-      telegram,
+      x,
+      tg,
       discord
     });
-  }, [tokenName, ticker, tokenImg, about, tokenIcon, website, twitter, telegram, discord, showTokenSymbol]);
+  }, [tokenName, ticker, tokenImg, about, tokenIcon, website, x, tg, discord, showTokenSymbol]);
 
   useImperativeHandle(
     ref,
     () => ({
       onPreview
     }),
-    [tokenName, ticker, tokenImg, about, tokenIcon, website, twitter, telegram, discord]
+    [tokenName, ticker, tokenImg, about, tokenIcon, website, x, tg, discord]
   );
 
   useEffect(() => {
@@ -148,7 +170,7 @@ export default forwardRef(function CreateNode(
             />
           </div>
           {
-            inValidVals["tokenName"] && <ErrMsg>{ inValidVals["tokenName"] }</ErrMsg>
+            inValidVals["tokenName"] && <ErrMsg>{inValidVals["tokenName"]}</ErrMsg>
           }
         </div>
 
@@ -173,7 +195,7 @@ export default forwardRef(function CreateNode(
             />
           </div>
           {
-            inValidVals["ticker"] && <ErrMsg>{ inValidVals["ticker"] }</ErrMsg>
+            inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>
           }
         </div>
       </div>
@@ -202,8 +224,8 @@ export default forwardRef(function CreateNode(
           <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
         </div>
         {
-            inValidVals["tokenImg"] && <ErrMsg>{ inValidVals["tokenImg"] }</ErrMsg>
-          }
+          inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>
+        }
         <div className={styles.tokenSymbol}>
           <CheckBox
             checked={showTokenSymbol}
@@ -237,9 +259,9 @@ export default forwardRef(function CreateNode(
             <div className={styles.uploadTip}>Support img/png/svg</div>
           </div>
           {
-            inValidVals["tokenIcon"] && <ErrMsg>{ inValidVals["tokenIcon"] }</ErrMsg>
+            inValidVals["tokenIcon"] && <ErrMsg>{inValidVals["tokenIcon"]}</ErrMsg>
           }
-          </>
+        </>
         )}
       </div>
 
@@ -259,8 +281,8 @@ export default forwardRef(function CreateNode(
           />
         </div>
         {
-            inValidVals["about"] && <ErrMsg>{ inValidVals["about"] }</ErrMsg>
-          }
+          inValidVals["about"] && <ErrMsg>{inValidVals["about"]}</ErrMsg>
+        }
       </div>
 
       <div className={styles.group}>
@@ -279,6 +301,9 @@ export default forwardRef(function CreateNode(
             }}
           />
         </div>
+        {
+          inValidVals["website"] && <ErrMsg>{inValidVals["website"]}</ErrMsg>
+        }
       </div>
 
       <div className={styles.group}>
@@ -296,13 +321,16 @@ export default forwardRef(function CreateNode(
             }}
           >
             <Link
-              value={twitter}
+              value={x}
               onChange={(val) => {
                 setTwitter(val);
               }}
               type="X"
               img="/img/community/x.svg"
             />
+            {
+              inValidVals["x"] && <ErrMsg>{inValidVals["x"]}</ErrMsg>
+            }
           </div>
           <div
             className={styles.groupContent}
@@ -311,13 +339,16 @@ export default forwardRef(function CreateNode(
             }}
           >
             <Link
-              value={telegram}
+              value={tg}
               onChange={(val) => {
                 setTelegram(val);
               }}
               type="Telegram"
               img="/img/community/telegram.svg"
             />
+            {
+              inValidVals["tg"] && <ErrMsg>{inValidVals["tg"]}</ErrMsg>
+            }
           </div>
           <div
             className={styles.groupContent}
@@ -333,11 +364,14 @@ export default forwardRef(function CreateNode(
               type="Discord"
               img="/img/community/discard.svg"
             />
+            {
+              inValidVals["discord"] && <ErrMsg>{inValidVals["discord"]}</ErrMsg>
+            }
           </div>
         </div>
       </div>
 
-      
+
       {isMobile && (
         <div className={styles.btnWapper}>
           <MainBtn onClick={onPreview}>Preview</MainBtn>
@@ -346,21 +380,3 @@ export default forwardRef(function CreateNode(
     </div>
   );
 });
-
-// { tokenName, ticker, about, website, twitter, telegram, discord }:
-function validateVal(params: any) {
-  const isValid = Object.values(params).every((val) => !!val);
-
-  if (params.tokenImg?.length === 0) {
-    return false;
-  }
-
-  const tokenImg = params.tokenImg[0];
-  if (videoReg.test(tokenImg.url)) {
-    if (params.tokenIcon.length === 0) {
-      return false;
-    }
-  }
-
-  return isValid;
-}

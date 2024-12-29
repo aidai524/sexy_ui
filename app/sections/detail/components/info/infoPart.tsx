@@ -52,7 +52,7 @@ export default function InfoPart({
     return;
   }
 
-  console.log('data', data)
+  console.log('data:', data)
 
   return (
     <div>
@@ -133,19 +133,19 @@ export default function InfoPart({
 
       <Sep size={sepSize} />
 
-      {(data.twitter || data.telegram || data.discord) && (
+      {(data.x || data.tg || data.discord) && (
         <Panel theme={theme}>
           <div className={styles.aboutUs}>
             <div className={styles.aboutHeader}>Community</div>
             <div className={styles.communityIcons}>
-              {data.twitter && (
-                <a className={styles.link} target="_blank" href={data.twitter}>
+              {data.x && (
+                <a className={styles.link} target="_blank" href={data.x}>
                   <img src="/img/community/x.svg" />
                 </a>
               )}
 
-              {data.telegram && (
-                <a className={styles.link} target="_blank" href={data.telegram}>
+              {data.tg && (
+                <a className={styles.link} target="_blank" href={data.tg}>
                   <img src="/img/community/telegram.svg" />
                 </a>
               )}
