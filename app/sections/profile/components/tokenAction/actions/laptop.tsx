@@ -6,6 +6,7 @@ export default function Laptop({
   modalShow,
   setModalShow,
   token,
+  isOther,
   prepaidWithdrawDelayTime
 }: any) {
   useEffect(() => {
@@ -36,6 +37,7 @@ export default function Laptop({
         }}
       >
         <ActionList
+          isOther={isOther}
           token={token}
           prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
         />

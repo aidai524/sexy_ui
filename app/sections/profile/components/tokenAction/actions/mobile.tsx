@@ -4,6 +4,7 @@ export default function Mobile({
   modalShow,
   setModalShow,
   token,
+  isOther,
   prepaidWithdrawDelayTime
 }: any) {
   return (
@@ -24,6 +25,7 @@ export default function Mobile({
       }}
     >
       <ActionList
+        isOther={isOther}
         token={token}
         prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
       />
