@@ -30,14 +30,14 @@ export default function Laptop({
         <Back />
       </div>
       {userInfo && (
-        <>
+        <div className={styles.Content}>
           <div className={styles.Top}>
             <img src={userInfo.icon} className={styles.Avatar} />
             <div className={styles.Desc}>
               <div className={styles.NameTop}>
                 <div className={styles.NameWrapper}>
                   <div>{userInfo.name}</div>
-                  <Vip {...{ userInfo, address, onVipShow: setShowVip }} />
+                  {/* <Vip {...{ userInfo, address, onVipShow: setShowVip }} /> */}
                 </div>
                 <div className={styles.Buttons}>
                   <FollowBtn
@@ -68,6 +68,7 @@ export default function Laptop({
               {address && (
                 <Address
                   address={address}
+                  isFull={true}
                   color="#fff"
                   fontSize={12}
                   style={{
@@ -89,7 +90,7 @@ export default function Laptop({
               overflowY: "auto"
             }}
           />
-        </>
+        </div>
       )}
       <FollowerModal
         address={address}

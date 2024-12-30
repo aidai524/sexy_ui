@@ -7,7 +7,8 @@ export default function Address({
   address,
   color = "rgba(126, 138, 147, 1)",
   fontSize = 10,
-  style
+  style,
+  isFull = false
 }: any) {
   const { disconnect, address: loginAddress } = useAccount();
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function Address({
           window.open(`https://solscan.io/account/${address}?cluster=devnet`);
         }}
       >
-        <div>{formatAddressLast(address)}</div>
+        <div>{isFull ? address:formatAddressLast(address)}</div>
         <svg
           width={fontSize}
           height={fontSize}
