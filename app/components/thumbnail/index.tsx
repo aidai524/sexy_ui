@@ -10,6 +10,7 @@ import Likes from "./likes";
 import Holder from "../holder";
 import LoadMore from "./loadMore";
 import PreUser from "./preUser";
+import AvatarBox from "./avatar-box";
 
 interface Props {
   showDesc: boolean;
@@ -21,6 +22,7 @@ interface Props {
   showLaunchType?: boolean;
   showLikes?: boolean;
   showTags?: boolean;
+  showDropdownIcon?: boolean;
   style?: any;
 }
 
@@ -33,12 +35,13 @@ export default function Thumbnail({
   showLaunchType = true,
   showLikes = false,
   showTags = true,
+  showDropdownIcon = true,
   data,
   style = {}
 }: Props) {
   const [progressIndex, setProgressIndex] = useState(0);
-  const [loadCommentNum, setLoadCommentNum] = useState(1)
-  const commentRef = useRef<any>()
+  const [loadCommentNum, setLoadCommentNum] = useState(1);
+  const commentRef = useRef<any>();
   const [height, setHeight] = useState("calc(100vh - 232px)");
 
   useEffect(() => {
@@ -107,7 +110,10 @@ export default function Thumbnail({
               Your browser does not support the video tag.
             </video>
           ) : (
-            <img className={styles.tokenImg} src={data.tokenImg || '/img/token-placeholder.png'} />
+            <img
+              className={styles.tokenImg}
+              src={data.tokenImg || "/img/token-placeholder.png"}
+            />
           )}
         </div>
 
@@ -120,16 +126,21 @@ export default function Thumbnail({
                 id={data.id}
                 showEdit={false}
                 usePanel={false}
-
               />
             </div>
-            <LoadMore onClick={() => {
-              if (commentRef.current) {
-                commentRef.current.scrollTo({
-                  top: commentRef.current.scrollHeight + commentRef.current.clientHeight
-                })
-              }
-            }} />
+            <LoadMore
+              onClick={() => {
+                // console.log(commentRef)
+                // setLoadCommentNum(loadCommentNum + 1)
+                if (commentRef.current) {
+                  commentRef.current.scrollTo({
+                    top:
+                      commentRef.current.scrollHeight +
+                      commentRef.current.clientHeight
+                  });
+                }
+              }}
+            />
           </div>
         )}
 
@@ -138,18 +149,20 @@ export default function Thumbnail({
             <Avatar data={data} showBackIcon={true} />
             <div style={{ height: 10 }}></div>
             <div className={styles.commentBox} ref={commentRef}>
-              {
-                data.status === 0 ? <PreUser token={data}/> : <Holder />
-              }
+              {data.status === 0 ? <PreUser token={data} /> : <Holder />}
             </div>
-            <LoadMore onClick={() => {
-              console.log(commentRef)
-              if (commentRef.current) {
-                commentRef.current.scrollTo({
-                  top: commentRef.current.scrollHeight + commentRef.current.clientHeight
-                })
-              }
-            }} />
+            <LoadMore
+              onClick={() => {
+                console.log(commentRef);
+                if (commentRef.current) {
+                  commentRef.current.scrollTo({
+                    top:
+                      commentRef.current.scrollHeight +
+                      commentRef.current.clientHeight
+                  });
+                }
+              }}
+            />
           </div>
         )}
 
@@ -162,11 +175,13 @@ export default function Thumbnail({
 
               <div className={styles.desc}>{data.about}</div>
 
-              <div className={styles.detailLink}>
-                <Link href={"/detail?id=" + data.id}>
-                  <Arrow />
-                </Link>
-              </div>
+              {showDropdownIcon && (
+                <div className={styles.detailLink}>
+                  <Link href={"/detail?id=" + data.id}>
+                    <Arrow />
+                  </Link>
+                </div>
+              )}
             </div>
             {showTags && <Tags data={data} />}
           </div>
@@ -290,20 +305,6 @@ interface AvatarProps {
   showLaunchType?: boolean;
 }
 
-function LaunchTag({ type }: { type: number }) {
-  if (type === 0) {
-    return (
-      <div className={styles.launchTag + " " + styles.launch1}>Pre-Launch</div>
-    );
-  }
-
-  if (type === 1) {
-    return (
-      <div className={styles.launchTag + " " + styles.launch2}>Launching</div>
-    );
-  }
-}
-
 export function Avatar({
   data,
   showBackIcon = false,
@@ -317,20 +318,7 @@ export function Avatar({
 
   return (
     <div className={styles.titles}>
-      <div className={styles.avatarBox}>
-        <div className={styles.tokenImgBox}>
-          <img className={styles.tokenImg} src={data.tokenIcon} />
-        </div>
-        <div>
-          <div className={styles.tokenName}>{data.tokenName}</div>
-          <div className={styles.tickerContent1}>
-            {
-              data.ticker && <div className={styles.ticker}>Ticker: {data.ticker}</div>
-            }
-            {showLaunchType && <LaunchTag type={data.status as number} />}
-          </div>
-        </div>
-      </div>
+      <AvatarBox data={data} showLaunchType={showLaunchType} />
       {showBackIcon && (
         <div
           onClick={() => {

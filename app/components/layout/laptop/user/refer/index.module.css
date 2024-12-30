@@ -1,6 +1,6 @@
 .Container {
   position: absolute;
-  z-index: 1;
+  z-index: 10;
   left: 10px;
   bottom: 8px;
   font-family: Unbounded;
@@ -13,7 +13,7 @@
 }
 .Entry {
   position: relative;
-  z-index: 2;
+  z-index: 12;
 }
 .EntryMobile {
   composes: Entry;
@@ -24,7 +24,7 @@
   height: 93px;
   background: url("/img/home/refer-entry-bg.svg") no-repeat center / cover;
   position: absolute;
-  z-index: 1;
+  z-index: 11;
   left: 16px;
   bottom: 12px;
 }
@@ -62,7 +62,7 @@
 .ReferBtnText {
   width: 100%;
   height: 100%;
-  background: linear-gradient(104deg, #C300FF 16.13%, #FF1A63 77.08%);
+  background: linear-gradient(104deg, #c300ff 16.13%, #ff1a63 77.08%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -75,7 +75,7 @@
   align-items: flex-end;
   flex: 1;
   gap: 4px;
-  color: #FE1A62;
+  color: #fe1a62;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -85,7 +85,7 @@
 }
 .RebatesValue {
   font-size: 36px;
-  background: linear-gradient(104deg, #D651FF 16.13%, #FF2F71 77.08%);
+  background: linear-gradient(104deg, #d651ff 16.13%, #ff2f71 77.08%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -95,7 +95,7 @@
   transform: translateY(-5px);
 }
 .Title {
-  color: rgba(0, 0, 0, 0.90);
+  color: rgba(0, 0, 0, 0.9);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
