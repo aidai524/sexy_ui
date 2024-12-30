@@ -11,7 +11,8 @@
   width: 492px;
   height: 160px;
   background: url(/img/laptop/flip-1.png) no-repeat;
-  bottom: 0;
+  bottom: 0px;
+  left: 0px;
   z-index: 1;
 }
 

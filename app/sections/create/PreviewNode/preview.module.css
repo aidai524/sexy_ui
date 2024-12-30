@@ -16,6 +16,7 @@
 .mainContent {
   padding-top: 5px;
   min-height: 100vh;
+  position: relative;
   .actionBtns {
     display: flex;
     align-items: center;

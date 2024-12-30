@@ -1,11 +1,12 @@
-import InfoPart from "../detail/components/info/infoPart";
 import styles from "./preview.module.css";
-import Create from "./components/create";
+import Create from "../components/create";
 
 import type { Project } from "@/app/type";
 import { forwardRef, useEffect, useState, useImperativeHandle } from "react";
 import { httpAuthPost, sleep } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
+import MobileInfo from "./mobile-info";
+import LaptopInfo from "./laptop-info";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useUser } from "@/app/store/useUser";
@@ -56,19 +57,16 @@ export default forwardRef(function PreviewNode(
       className={styles.mainContent}
       style={{
         display: show ? "block" : "none",
-        paddingBottom: isMobile ? 80 : 20
+        paddingBottom: isMobile ? 80 : 0,
+        minHeight: isMobile ? "100vh" : "auto"
       }}
     >
       <div className={isMobile ? styles.main : styles.laptopMain}>
-        <InfoPart
-          showLikes={false}
-          specialTime={"just now"}
-          showBackIcon={false}
-          showThumbnailHead={true}
-          showThumbnailProgress={false}
-          data={newData}
-          theme={isMobile ? "dark" : "light"}
-        />
+        {isMobile ? (
+          <MobileInfo newData={newData} />
+        ) : (
+          <LaptopInfo newData={newData} />
+        )}
       </div>
 
       {isMobile && (
@@ -135,12 +133,12 @@ export default forwardRef(function PreviewNode(
           }
 
           if (val.code === 0) {
-            return true
+            return true;
             // success('Create token success')
             // router.push('/profile')
           } else {
             fail("Create token fail");
-            return false
+            return false;
           }
         }}
       />

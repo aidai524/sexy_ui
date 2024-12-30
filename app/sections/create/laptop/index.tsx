@@ -32,35 +32,14 @@ export default function Laptop() {
                     color: "#55FFF4"
                   }}
                 >
-                {userInfo?.name}
-              </span>
+                  {userInfo?.name}
+                </span>
               </div>
             )}
           </div>
           <div className={styles.Buttons}>
             {renderType === 1 ? (
-              <>
-                <button
-                  onClick={() => {
-                    previewRef.current?.onEdit();
-                  }}
-                  className={styles.Button}
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => {
-                    previewRef.current?.onCreate();
-                  }}
-                  className={styles.Button}
-                  style={{
-                    background: "rgba(255, 38, 129, 1)",
-                    borderColor: "rgba(255, 38, 129, 1)"
-                  }}
-                >
-                  Create
-                </button>
-              </>
+              <></>
             ) : (
               <button
                 onClick={() => {
@@ -73,7 +52,13 @@ export default function Laptop() {
             )}
           </div>
         </div>
-        <div className={styles.Content}>
+        <div
+          className={styles.Content}
+          style={{
+            height:
+              renderType === 0 ? "calc(100vh - 180px)" : "calc(100vh - 260px)"
+          }}
+        >
           <CreateNode
             show={renderType === 0}
             onAddDataFill={(value: any) => {
@@ -95,6 +80,44 @@ export default function Laptop() {
           )}
         </div>
       </div>
+      {renderType === 1 && (
+        <div
+          style={{
+            display: "flex",
+            gap: 10,
+            marginTop: 16,
+            justifyContent: "center"
+          }}
+        >
+          <button
+            onClick={() => {
+              previewRef.current?.onEdit();
+            }}
+            className={styles.Button}
+            style={{
+              width: 174,
+              height: 60
+            }}
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => {
+              previewRef.current?.onCreate();
+            }}
+            className={styles.Button}
+            style={{
+              background: "#C9FF5D",
+              borderColor: "#C9FF5D",
+              color: "#000",
+              width: 174,
+              height: 60
+            }}
+          >
+            Create
+          </button>
+        </div>
+      )}
     </div>
   );
 }
