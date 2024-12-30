@@ -1,0 +1,54 @@
+.follower {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  .followerContent {
+    display: flex;
+    gap: 10px;
+    .img {
+      width: 36px;
+      height: 36px;
+      border-radius: 36px;
+    }
+    .nameContent {
+      .name {
+        font-size: 14px;
+        color: #fff;
+      }
+      .followers {
+        font-size: 12px;
+        font-weight: 300;
+        color: rgba(146, 144, 177, 1);
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .followerAction {
+    .followBtn {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      border-radius: 1000px;
+      font-size: 12px;
+      font-weight: 500;
+      &.follow {
+        background-color: #fff;
+        color: var(--part-bg);
+        padding: 0 20px;
+      }
+      &.following {
+        color: #fff;
+        border: 1px solid #ddd;
+        padding: 0 10px;
+      }
+    }
+  }
+
+  .me {
+    color: #fff;
+  }
+}

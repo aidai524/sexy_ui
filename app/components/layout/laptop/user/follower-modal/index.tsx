@@ -1,17 +1,29 @@
 import Modal from "@/app/components/modal";
 import SearchIcon from "@/app/components/icons/search";
-import FollowerList from "@/app/sections/profile/follower/component/followerList";
+import FollowerList from "@/app/sections/profile/follower/component/followerList/list";
 import styles from "./index.module.css";
 import { useMemo, useState } from "react";
-import useFollow from "@/app/sections/profile/hooks/useFollow";
+import useFollowList from "@/app/sections/profile/hooks/useFollowList";
 
-export default function FollowerModal({ address, type, open, onClose }: any) {
-  const { followerList, followingList } = useFollow(address);
+export default function FollowerModal({
+  address,
+  type,
+  open,
+  onClose,
+  onRefresh
+}: any) {
   const [searchVal, setSearchVal] = useState("");
-  const list = useMemo(() => {
-    if (!type) return [];
-    return type === "following" ? followingList : followerList;
-  }, [type]);
+  const [refresh, setRefresh] = useState(0);
+
+  const followerType = useMemo(() => (type === "following" ? 2 : 1), [type]);
+
+  const { list, userInfo, setList, isLoading, hasMore, loadMore } =
+    useFollowList({
+      currentUser: { address },
+      followerType,
+      refresh
+    });
+
   const filteredList = useMemo(() => {
     if (!list?.length) return [];
     return list.filter((item: any) => item.name.includes(searchVal));
@@ -41,10 +53,21 @@ export default function FollowerModal({ address, type, open, onClose }: any) {
           />
         </div>
         <div className={styles.ListContainer}>
-          {/* <FollowerList
-            list={filteredList}
-            followerType={type === "following" ? 2 : 1}
-          /> */}
+          <FollowerList
+            {...{
+              list: filteredList,
+              userInfo,
+              followerType: followerType,
+              onAction() {
+                onRefresh();
+                setRefresh(refresh + 1);
+              },
+              setList,
+              isLoading,
+              loadMore,
+              hasMore
+            }}
+          />
         </div>
       </div>
     </Modal>

@@ -5,6 +5,8 @@ import FollowBtn from "../components/followBtn";
 import FollowerActions from "../components/follower-actions";
 import Tabs from "../components/tabs";
 import Address from "@/app/sections/profile/components/address";
+import FollowerModal from "@/app/components/layout/laptop/user/follower-modal";
+import { useState } from "react";
 
 export default function Laptop({
   userInfo,
@@ -20,6 +22,7 @@ export default function Laptop({
   showHot = true,
   isOther = false
 }: any) {
+  const [followModalType, setFollowModalType] = useState("");
   return (
     <div className={styles.Container}>
       <div className={styles.Flip} />
@@ -52,7 +55,9 @@ export default function Laptop({
               </div>
               <FollowerActions
                 userInfo={userInfo}
-                onItemClick={() => {}}
+                onItemClick={(action: string) => {
+                  setFollowModalType(action);
+                }}
                 style={{
                   padding: "0px",
                   gap: "30px",
@@ -86,6 +91,14 @@ export default function Laptop({
           />
         </>
       )}
+      <FollowerModal
+        address={address}
+        open={!!followModalType}
+        onClose={() => {
+          setFollowModalType("");
+        }}
+        type={followModalType}
+      />
     </div>
   );
 }

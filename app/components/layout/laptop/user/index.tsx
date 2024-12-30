@@ -11,10 +11,8 @@ import FollowerModal from "./follower-modal";
 import VipModal from "@/app/sections/profile/components/vip-modal";
 
 import { useState } from "react";
-import Refer from '@/app/components/layout/laptop/user/refer';
+import Refer from "@/app/components/layout/laptop/user/refer";
 import { useHomeTab } from "@/app/store/useHomeTab";
-
-
 
 export default function User({ address, userInfo, onQueryInfo }: any) {
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -24,7 +22,7 @@ export default function User({ address, userInfo, onQueryInfo }: any) {
 
   return (
     <div className={styles.Container}>
-      <Bg />
+      <Bg banner={userInfo?.banner} />
       <div className={styles.Content}>
         <div className={styles.Top}>
           <Title />

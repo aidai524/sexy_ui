@@ -5,6 +5,7 @@ import ZoomOutIcon from "@/app/components/icons/zoom-out";
 import TypesTabs from "../../../../tabs";
 import styles from "./index.module.css";
 import { shareToX } from "@/app/utils/share";
+import { addSearchParam } from "@/app/utils/search-params";
 
 export default function Header({
   tokenInfo,
@@ -22,7 +23,7 @@ export default function Header({
         <TypesTabs
           launchIndex={type}
           setLaunchIndex={(launchType: any) => {
-            router.push("/?launchType=" + launchType);
+            router.push("/?" + addSearchParam("launchType", launchType));
           }}
         />
       ) : (

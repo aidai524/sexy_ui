@@ -73,7 +73,7 @@ export default function Fullscreen({ list = [], getnext, onExit }: any) {
           const token = list[index] ? mapDataToProject(list[index]) : null;
 
           return i <= index && token ? (
-            <div className={`${styles.Item} ${styles.CurrentItem}`}>
+            <div className={`${styles.Item} ${styles.CurrentItem}`} key={i}>
               <Thumbnail
                 showProgress={false}
                 showDesc={true}
@@ -84,7 +84,7 @@ export default function Fullscreen({ list = [], getnext, onExit }: any) {
                   margin: 0
                 }}
               />
-              <TokenCardActions token={token} />
+              <TokenCardActions token={token} height={620} />
               <LaunchingActions
                 token={token}
                 onLike={async () => {
@@ -98,7 +98,8 @@ export default function Fullscreen({ list = [], getnext, onExit }: any) {
                 style={{
                   position: "absolute",
                   gap: 14,
-                  bottom: 0
+                  bottom: 0,
+                  padding: "0px 30px"
                 }}
               />
             </div>

@@ -25,10 +25,13 @@
 }
 
 .Flip {
-  position: absolute;
-  width: 467px;
-  height: 191px;
   background: url(/img/laptop/flip.png) no-repeat;
+}
+
+.Banner {
+  position: absolute;
+  width: 480px;
+  height: 240px;
 }
 
 .Avatar {
