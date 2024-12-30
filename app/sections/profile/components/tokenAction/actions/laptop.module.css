@@ -1,0 +1,10 @@
+.Container {
+  width: 163px;
+  border-radius: 12px;
+  background-color: rgba(60, 59, 75, 0.8);
+  border: 1px solid rgba(146, 144, 177, 0.2);
+  backdrop-filter: blur(2px);
+  position: absolute;
+  right: 0px;
+  top: 40px;
+}

@@ -2,7 +2,7 @@ import Token from "../token";
 import Fullscreen from "../../fullscreen";
 import useData from "../../../hooks/use-data";
 import { useMemo, useState } from "react";
-import styles from './index.module.css';
+import styles from "./index.module.css";
 
 export default function Content({ tab }: any) {
   const [full, setFull] = useState(false);
@@ -14,8 +14,6 @@ export default function Content({ tab }: any) {
       <Token
         {...{
           infoData2,
-          onLike: () => {},
-          onHate: () => {},
           getnext,
           type: tab,
           onOpenFull() {
