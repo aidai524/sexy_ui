@@ -8,12 +8,14 @@ import { useUser } from '@/app/store/useUser';
 interface Props {
     token: Project;
     isDelay: boolean;
+    isOther: boolean;
     prepaidWithdrawDelayTime: number;
 }
 
 export default function TokenAction({
     token,
     isDelay,
+    isOther,
     prepaidWithdrawDelayTime,
 }: Props) {
     const [modalShow, setModalShow] = useState(false)
@@ -59,7 +61,7 @@ export default function TokenAction({
                 // height: '50vh'
             }}
         >
-            <ActionList token={token} prepaidWithdrawDelayTime={prepaidWithdrawDelayTime} />
+            <ActionList isOther={isOther} token={token} prepaidWithdrawDelayTime={prepaidWithdrawDelayTime} />
         </Popup>
     </div>
 }

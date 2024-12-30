@@ -22,6 +22,7 @@ export default function Created({
   type,
   prepaidWithdrawDelayTime,
   from,
+  isOther,
   hideHot = false
 }: any) {
   const [list, setList] = useState<Project[]>([]);
@@ -64,6 +65,7 @@ export default function Created({
           <Token
             from={from}
             data={item}
+            isOther={isOther}
             key={item.id}
             hideHot={hideHot}
             prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}

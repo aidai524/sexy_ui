@@ -12,11 +12,13 @@ import { useUser } from '@/app/store/useUser';
 
 interface Props {
     token: Project;
+    isOther: boolean;
     prepaidWithdrawDelayTime: number;
 }
 
 export default function ActionList({
     token,
+    isOther,
     prepaidWithdrawDelayTime
 }: Props) {
     const [isPrepaid, setIsPrepaid] = useState(false)
@@ -43,12 +45,16 @@ export default function ActionList({
     }, [prepaidWithdrawDelayTime, token])
 
     useEffect(() => {
+        if (isOther) {
+            setIsPrepaid(false)
+            return 
+        }
         checkPrePayed().then(res => {
             if (Number(res) > 0) {
                 setIsPrepaid(true)
             }
         })
-    }, [updateNum])
+    }, [updateNum, isOther])
 
     const disableSmooke = useMemo(() => {
         return token.isSuperLike || token.account === userInfo.address
@@ -58,7 +64,7 @@ export default function ActionList({
         {
             token.status === 0 && <>
                 {
-                    isDelay
+                    isDelay && !isOther
                     && <>{
                         isPrepaid && (isWithdrawed ? <div className={styles.actionBtn + ' ' + styles.isGrey}>Withdrawed</div> : <div className={styles.actionBtn} onClick={async () => {
                             setIsLoading(true)
@@ -89,7 +95,7 @@ export default function ActionList({
                     {
                         !disableSmooke && <SmokeHot actionChildren={<div className={styles.actionBtn}>
                             <SmookIcon />
-                            Smoky Hot
+                            Flip
                         </div>} token={token} onClick={() => { }} />
                     }
                 </>
@@ -99,7 +105,7 @@ export default function ActionList({
         {
             token.status === 1 && <>
                 {
-                    isPrepaid && (isClaimed ? <div className={styles.actionBtn + ' ' + styles.isGrey}>Claimed</div> : <div className={styles.actionBtn} onClick={async () => {
+                    isPrepaid && !isOther && (isClaimed ? <div className={styles.actionBtn + ' ' + styles.isGrey}>Claimed</div> : <div className={styles.actionBtn} onClick={async () => {
                         setIsLoading(true)
                         try {
                             const res = await prepaidTokenWithdraw()

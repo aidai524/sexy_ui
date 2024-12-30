@@ -124,8 +124,6 @@ export default function Thumbnail({
               />
             </div>
             <LoadMore onClick={() => {
-              // console.log(commentRef)
-              // setLoadCommentNum(loadCommentNum + 1)
               if (commentRef.current) {
                 commentRef.current.scrollTo({
                   top: commentRef.current.scrollHeight + commentRef.current.clientHeight

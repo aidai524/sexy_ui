@@ -110,7 +110,7 @@ export default function BoostVip({
             <div className={styles.rightItem}>
                 <div className={styles.rightTitle}>Rights</div>
                 <div className={styles.rightValue}>Like</div>
-                <div className={styles.rightValue}>Smoky Hot</div>
+                <div className={styles.rightValue}>Flip</div>
                 <div className={styles.rightValue}>Boost</div>
             </div>
 

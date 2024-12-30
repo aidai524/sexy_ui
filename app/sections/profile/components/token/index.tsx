@@ -12,6 +12,7 @@ import LauncdedAction from '@/app/components/action/launched'
 import { useTokenTrade } from '@/app/hooks/useTokenTrade'
 import { fail, success } from '@/app/utils/toast'
 import TokenAction from '../tokenAction'
+import { useUser } from '@/app/store/useUser'
 
 interface Props {
     data: Project;
@@ -19,9 +20,10 @@ interface Props {
     prepaidWithdrawDelayTime: number;
     hideHot?: boolean;
     from?: string;
+    isOther: boolean;
 }
 
-export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot, from }: Props) {
+export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot, from, isOther }: Props) {
     const router = useRouter()
     const [mc, setMC] = useState<string | number>('-')
 
@@ -74,7 +76,6 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                 <div className={styles.createTime}>{timeAgo(data.time)}</div>
             </div>
         </div>
-
 
 
         {/* {
@@ -148,7 +149,7 @@ export default function Token({ data, update, prepaidWithdrawDelayTime, hideHot,
                 </div>
         } */}
 
-        <TokenAction isDelay={isDelay} token={data} prepaidWithdrawDelayTime={prepaidWithdrawDelayTime} />
+        <TokenAction isOther={isOther} isDelay={isDelay} token={data} prepaidWithdrawDelayTime={prepaidWithdrawDelayTime} />
 
     </div>
 }
