@@ -39,7 +39,6 @@ export default function Laptop({
         <ActionList
           isOther={isOther}
           token={token}
-          isOther={true}
           prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
         />
       </motion.div>
