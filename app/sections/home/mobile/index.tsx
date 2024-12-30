@@ -79,11 +79,11 @@ export default function Home() {
     containerPreLaunchRef,
     () => {
       //@ts-ignore
-      if (!window.sexAddress) {
-        //@ts-ignore
-        window.connect();
-        return;
-      }
+      // if (!window.sexAddress) {
+      //   //@ts-ignore
+      //   window.connect();
+      //   return;
+      // }
 
 
       if (hateTriggerRef.current) {
@@ -98,12 +98,12 @@ export default function Home() {
       }, 1600);
     },
     () => {
-      //@ts-ignore
-      if (!window.sexAddress) {
-        //@ts-ignore
-        window.connect();
-        return;
-      }
+      // //@ts-ignore
+      // if (!window.sexAddress) {
+      //   //@ts-ignore
+      //   window.connect();
+      //   return;
+      // }
 
 
       if (likeTriggerRef.current) {
@@ -147,8 +147,6 @@ export default function Home() {
         window.connect();
         return;
       }
-
-      console.log('likeTriggerRef.current:', likeTriggerRef.current)
 
       if (likeTriggerRef.current) {
         return;
@@ -288,11 +286,11 @@ export default function Home() {
   }
 
   async function justNext(type: string) {
-    if (!address) {
-      //@ts-ignore
-      window.connect();
-      return;
-    }
+    // if (!address) {
+    //   //@ts-ignore
+    //   window.connect();
+    //   return;
+    // }
 
     if (
       launchedList &&
