@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import styles from "./list.module.css";
 import { defaultAvatar } from "@/app/utils/config";
 import InfiniteScroll from "@/app/components/sexInfiniteScroll";
@@ -15,9 +14,9 @@ export default function List({
   setList,
   isLoading,
   loadMore,
-  hasMore
+  hasMore,
+  onItemClick
 }: any) {
-  const router = useRouter();
   return (
     <>
       {list.map((item: any) => {
@@ -26,7 +25,7 @@ export default function List({
             <div
               className={styles.followerContent}
               onClick={() => {
-                router.push("/profile/user?account=" + item.address);
+                onItemClick(item);
               }}
             >
               <img className={styles.img} src={item.icon || defaultAvatar} />

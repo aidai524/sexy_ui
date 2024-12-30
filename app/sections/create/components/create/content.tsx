@@ -4,9 +4,10 @@ import Big from "big.js";
 import styles from "./trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import { useLaptop } from "@/app/context/laptop";
 import { getFullNum, httpGet } from "@/app/utils";
 import { Avatar } from "@/app/components/thumbnail";
-import { Checkbox } from 'antd-mobile'
+import { Checkbox } from "antd-mobile";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
 
@@ -34,7 +35,7 @@ export default function Create({
   setShowSuccessModal
 }: any) {
   const { tokenName, tokenSymbol, tokenUri } = token;
-
+  const { updateUserInfo } = useLaptop();
   const [infoData, setInfoData] = useState<Project>({
     tokenName: tokenName,
     ticker: data.ticker,
@@ -53,7 +54,7 @@ export default function Create({
 
   const [solPercent, setSolPercent] = useState(0);
   const [valInput, setValInput] = useState("");
-  const [launchChecked, setLaunchChecked] = useState(false)
+  const [launchChecked, setLaunchChecked] = useState(false);
 
   const { createToken } = useTokenTrade({
     tokenName,
@@ -66,21 +67,21 @@ export default function Create({
 
   useEffect(() => {
     if (!debounceVal) {
-      setIsError(false)
-      return 
+      setIsError(false);
+      return;
     }
 
     if (debounceVal) {
       if (isNaN(Number(debounceVal))) {
-        setIsError(true)
+        setIsError(true);
       }
       if (Number(debounceVal) > 0 && Number(debounceVal) <= 35) {
-        setIsError(false)
+        setIsError(false);
       } else {
-        setIsError(true)
+        setIsError(true);
       }
     }
-  }, [debounceVal])
+  }, [debounceVal]);
 
   return (
     <>
@@ -144,11 +145,16 @@ export default function Create({
         </div>
 
         <div style={{ marginTop: 20 }} className={styles.receiveTokenAmount}>
-          <Checkbox onChange={() => {
-            setLaunchChecked(!launchChecked)
-          }} checked={launchChecked} />
+          <Checkbox
+            onChange={() => {
+              setLaunchChecked(!launchChecked);
+            }}
+            checked={launchChecked}
+          />
           <div className={styles.receiveTitle}>
-          For an additional <strong style={{ color: '#C36EFF' }}>0.1SOL</strong>, you can directly enter the Launching phase
+            For an additional{" "}
+            <strong style={{ color: "#C36EFF" }}>0.1SOL</strong>, you can
+            directly enter the Launching phase
           </div>
         </div>
         <div style={{ marginTop: 18 }}>
@@ -174,21 +180,22 @@ export default function Create({
                 });
 
                 if (!hash) {
-                  throw 'Create token error'
+                  throw "Create token error";
                 }
 
                 const isSuccess = await onCreateTokenSuccess();
                 if (isSuccess) {
                   onHide();
                   setShowSuccessModal(true);
+                  updateUserInfo?.();
                 }
-                
+
                 setIsLoading(false);
                 // success('Transtion success')
               } catch (e: any) {
                 console.log(e, e.toString());
                 setIsLoading(false);
-                fail('Create token error')
+                fail("Create token error");
               }
             }}
             style={{ background: "rgba(255, 47, 116, 1)" }}
@@ -199,8 +206,8 @@ export default function Create({
       </div>
 
       <div className={styles.launchTip}>
-            After successful creation, the creator will not be able to Pre-buy again
-          </div>
+        After successful creation, the creator will not be able to Pre-buy again
+      </div>
     </>
   );
 }

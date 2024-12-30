@@ -1,6 +1,7 @@
 import Back from "@/app/components/back/laptop";
 import CreateNode from "../CreateNode";
 import PreviewNode from "../PreviewNode";
+import { motion } from "framer-motion";
 import { useState, useRef } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
 import useUserInfo from "@/app/hooks/useUserInfo";
@@ -16,7 +17,11 @@ export default function Laptop() {
   const previewRef = useRef<any>();
 
   return (
-    <div className={styles.Wrapper}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className={styles.Wrapper}
+    >
       <div className={styles.Container}>
         <div className={styles.Header}>
           <div className={styles.BackWrapper}>
@@ -118,6 +123,6 @@ export default function Laptop() {
           </button>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

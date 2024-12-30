@@ -1,12 +1,10 @@
-import { useRouter } from "next/navigation";
 import styles from "./laptop.module.css";
 export default function GoBack() {
-  const router = useRouter();
   return (
     <button
       className={`${styles.Container} button`}
       onClick={() => {
-        router.back();
+        history.pushState({ page: "/" }, "Home", "/");
       }}
     >
       <svg

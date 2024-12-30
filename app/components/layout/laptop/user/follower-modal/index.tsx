@@ -65,7 +65,15 @@ export default function FollowerModal({
               setList,
               isLoading,
               loadMore,
-              hasMore
+              hasMore,
+              onItemClick(item: any) {
+                history.pushState(
+                  { page: "/profile/user" },
+                  "Profile",
+                  "/profile/user?address=" + item.address
+                );
+                onClose();
+              }
             }}
           />
         </div>

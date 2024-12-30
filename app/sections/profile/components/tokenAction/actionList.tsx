@@ -185,7 +185,7 @@ export default function ActionList({
             ))}
 
           <>
-            <BuySell token={token} />
+            <BuySell token={token} isMobile={isMobile} />
           </>
         </>
       )}

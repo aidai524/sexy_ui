@@ -47,12 +47,6 @@ export default function Token({
       data.createdAt &&
       Date.now() - data.createdAt > prepaidWithdrawDelayTime
     ) {
-      console.log(
-        "Date.now() - token.createdAt",
-        Date.now() - data.createdAt,
-        prepaidWithdrawDelayTime
-      );
-
       return true;
     }
     return false;
