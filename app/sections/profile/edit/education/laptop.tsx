@@ -1,16 +1,12 @@
-import styles from "./laptop.module.css";
 import { motion } from "framer-motion";
-import ActionList from "../actionList";
+import styles from "./laptop.module.css";
+import options from "./options";
 import { useEffect } from "react";
-export default function Laptop({
-  modalShow,
-  setModalShow,
-  token,
-  prepaidWithdrawDelayTime
-}: any) {
+
+export default function Laptop({ open, onClose, onSelect }: any) {
   useEffect(() => {
     const close = () => {
-      setModalShow(false);
+      onClose();
     };
 
     document.addEventListener("click", close);
@@ -19,9 +15,8 @@ export default function Laptop({
       document.removeEventListener("click", close);
     };
   }, []);
-
   return (
-    modalShow && (
+    open && (
       <motion.div
         initial={{
           opacity: 0
@@ -35,11 +30,17 @@ export default function Laptop({
           ev.nativeEvent.stopImmediatePropagation();
         }}
       >
-        <ActionList
-          token={token}
-          isOther={true}
-          prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
-        />
+        {options.map((option) => (
+          <div
+            key={option.value}
+            className={styles.Item}
+            onClick={() => {
+              onSelect(option);
+            }}
+          >
+            {option.label}
+          </div>
+        ))}
       </motion.div>
     )
   );

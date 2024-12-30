@@ -6,7 +6,7 @@ import styles from "./index.module.css";
 import { useState } from "react";
 
 const BUTTONS = ["Img", "Discussion", "Founders"];
-export default function TokenCardActions({ token }: any) {
+export default function TokenCardActions({ token, height }: any) {
   const [currentTab, setCurrentTab] = useState("Img");
   return (
     <>
@@ -26,7 +26,7 @@ export default function TokenCardActions({ token }: any) {
         ))}
       </div>
       {currentTab !== "Img" && (
-        <div className={styles.Layer}>
+        <div className={styles.Layer} style={{ height: height || "100%" }}>
           <div className={styles.AvatarBox}>
             <AvatarBox data={token} showLaunchType={true} />
           </div>

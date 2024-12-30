@@ -10,7 +10,8 @@ export default function EditProfile({ open, onClose, onSuccess }: any) {
         <div className={styles.Content}>
           <EditContent
             actionButtonsStyle={{
-              position: "inherit"
+              position: "inherit",
+              backgroundColor: "transparent"
             }}
             inputStyle={{
               border: "1px solid rgba(255, 255, 255, 0.3)",

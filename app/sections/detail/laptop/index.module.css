@@ -1,4 +1,11 @@
 .Container {
   padding: 0 30px;
   width: 100%;
+  position: relative;
+}
+
+.BackWrapper {
+  position: absolute;
+  left: 54px;
+  top: 30px;
 }
