@@ -1,5 +1,7 @@
 .Container {
   padding: 30px;
+  background-color: #18131c;
+  border-radius: 20px;
 }
 
 .Title {
