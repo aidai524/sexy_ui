@@ -30,9 +30,12 @@ export default function Likes({ data }: { data: Project }) {
           </>
         )}
 
-        <div className={[styles.holder, styles.likeCustom].join(" ")}>
-          <span className={styles.likesNums}>Holders 0</span>
-        </div>
+        {
+          data.status !== 0 && <div className={[styles.holder, styles.likeCustom].join(" ")}>
+            <span className={styles.likesNums}>Holders 0</span>
+          </div>
+        }
+
       </div>
 
       <div
