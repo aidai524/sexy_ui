@@ -15,10 +15,17 @@ import {
 } from "@/app/components/timesLike/ActionTrigger";
 import { useState } from "react";
 
-export default function Token({ infoData2, getnext, onOpenFull, type }: any) {
+export default function Token({
+  infoData2,
+  getnext,
+  onOpenFull,
+  type,
+  from
+}: any) {
   const [currentTab, setCurrentTab] = useState("info");
 
   const next = () => {
+    if (from === "detail") return;
     setTimeout(() => {
       getnext();
     }, 1000);
@@ -44,6 +51,7 @@ export default function Token({ infoData2, getnext, onOpenFull, type }: any) {
           setCurrentTab={setCurrentTab}
           onOpenFull={onOpenFull}
           type={type}
+          from={from}
         />
 
         <div className={styles.Content}>
