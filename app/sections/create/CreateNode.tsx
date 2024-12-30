@@ -56,6 +56,11 @@ export default forwardRef(function CreateNode(
       isValid = true;
     }
 
+    if (ticker.length > 80) {
+      inValidVals["ticker"] = 'Ticker cannot be length than 80';
+      isValid = true;
+    }
+
     if (tokenImg.length === 0) {
       inValidVals["tokenImg"] = 'Token image cannot be empty';
       isValid = true;
@@ -71,6 +76,11 @@ export default forwardRef(function CreateNode(
 
     if (!about) {
       inValidVals["about"] = 'About icon cannot be empty';
+      isValid = true;
+    }
+
+    if (about.length > 200) {
+      inValidVals["about"] = 'About cannot be length than 200';
       isValid = true;
     }
 

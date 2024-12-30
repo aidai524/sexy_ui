@@ -43,12 +43,30 @@ export default function Thumbnail({
   const [loadCommentNum, setLoadCommentNum] = useState(1);
   const commentRef = useRef<any>();
   const [height, setHeight] = useState("calc(100vh - 232px)");
+  const [showLoadMore, setShowLoadMore] = useState(false)
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setHeight(window.innerHeight - 232 + "px");
     }
   }, []);
+
+  useEffect(() => {
+    const inter = setInterval(() => {
+      if (progressIndex === 1 || progressIndex === 2) {
+        const hasVertical = commentRef.current.scrollHeight > commentRef.current.clientHeight
+        setShowLoadMore(hasVertical)
+      } else {
+        setShowLoadMore(false)
+      }
+    }, 500)
+
+    return () => {
+      clearInterval(inter)
+    }
+  }, [progressIndex])
+
+
 
   if (!data) {
     return;
@@ -84,6 +102,7 @@ export default function Thumbnail({
             ></div>
             <div
               onClick={() => {
+                setShowLoadMore(false)
                 setProgressIndex(1);
               }}
               className={[
@@ -93,6 +112,7 @@ export default function Thumbnail({
             ></div>
             <div
               onClick={() => {
+                setShowLoadMore(false)
                 setProgressIndex(2);
               }}
               className={[
@@ -128,19 +148,21 @@ export default function Thumbnail({
                 usePanel={false}
               />
             </div>
-            <LoadMore
-              onClick={() => {
-                // console.log(commentRef)
-                // setLoadCommentNum(loadCommentNum + 1)
-                if (commentRef.current) {
-                  commentRef.current.scrollTo({
-                    top:
-                      commentRef.current.scrollHeight +
-                      commentRef.current.clientHeight
-                  });
-                }
-              }}
-            />
+            {
+              showLoadMore && <LoadMore
+                onClick={() => {
+                  // console.log(commentRef)
+                  // setLoadCommentNum(loadCommentNum + 1)
+                  if (commentRef.current) {
+                    commentRef.current.scrollTo({
+                      top:
+                        commentRef.current.scrollHeight +
+                        commentRef.current.clientHeight
+                    });
+                  }
+                }}
+              />
+            }
           </div>
         )}
 
@@ -151,18 +173,20 @@ export default function Thumbnail({
             <div className={styles.commentBox} ref={commentRef}>
               {data.status === 0 ? <PreUser token={data} /> : <Holder />}
             </div>
-            <LoadMore
-              onClick={() => {
-                console.log(commentRef);
-                if (commentRef.current) {
-                  commentRef.current.scrollTo({
-                    top:
-                      commentRef.current.scrollHeight +
-                      commentRef.current.clientHeight
-                  });
-                }
-              }}
-            />
+            {
+              showLoadMore && <LoadMore
+                onClick={() => {
+                  console.log(commentRef);
+                  if (commentRef.current) {
+                    commentRef.current.scrollTo({
+                      top:
+                        commentRef.current.scrollHeight +
+                        commentRef.current.clientHeight
+                    });
+                  }
+                }}
+              />
+            }
           </div>
         )}
 
