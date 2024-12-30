@@ -5,7 +5,7 @@ import { getAll, setAll } from "@/app/utils/listStore";
 import { mapDataToProject } from "@/app/utils/mapTo";
 
 const limit = 10;
-const left_num = 3;
+const left_num = 5;
 
 export default function useData(launchType: string) {
   const [infoData, setInfoData] = useState<Project>();
@@ -37,8 +37,23 @@ export default function useData(launchType: string) {
 
           renderTwoSimple(res.data?.list);
         } else {
+          const newVals: any = {}
+          if (listRef.current) {
+            listRef.current.forEach((item: any) => {
+              newVals[item.id] = item
+            })
+          }
+
+          if (res.data.list) {
+            res.data.list.forEach((item: any) => {
+              if (!newVals[item.id]) {
+                newVals[item.id] = item
+              }
+            })
+          }
+
           const mergedList = new Map([...(listRef.current || []), ...res.data.list].map(item => [item.id, item]))
-          _list = mergedList.values().toArray();
+          _list = Object.values(newVals);
         }
 
         listRef.current = _list;
@@ -116,6 +131,7 @@ export default function useData(launchType: string) {
       renderTwoItems(listRef.current);
       setAll(listRef.current, launchType);
     }
+
     if (listRef.current.length <= left_num) {
       if (hasNext) {
         onQueryList(false);
