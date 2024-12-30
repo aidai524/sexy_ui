@@ -11,18 +11,23 @@ export default function Header({
   currentTab,
   type,
   setCurrentTab,
-  onOpenFull
+  onOpenFull,
+  from
 }: any) {
   const router = useRouter();
 
   return (
     <div className={styles.Container}>
-      <TypesTabs
-        launchIndex={type}
-        setLaunchIndex={(launchType: any) => {
-          router.push("/?launchType=" + launchType);
-        }}
-      />
+      {from !== "detail" ? (
+        <TypesTabs
+          launchIndex={type}
+          setLaunchIndex={(launchType: any) => {
+            router.push("/?launchType=" + launchType);
+          }}
+        />
+      ) : (
+        <div />
+      )}
       <div className={styles.Actions}>
         {tokenInfo?.status === 1 && (
           <Tabs currentTab={currentTab} onChangeTab={setCurrentTab} />
@@ -39,9 +44,15 @@ export default function Header({
           >
             <ShareIcon />
           </button>
-          <button id="layout-zoom-out" className="button" onClick={onOpenFull}>
-            <ZoomOutIcon />
-          </button>
+          {onOpenFull && (
+            <button
+              id="layout-zoom-out"
+              className="button"
+              onClick={onOpenFull}
+            >
+              <ZoomOutIcon />
+            </button>
+          )}
         </div>
       </div>
     </div>
