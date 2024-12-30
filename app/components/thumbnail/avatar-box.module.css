@@ -1,0 +1,66 @@
+.avatarBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tokenImgBox {
+  border: 1px dashed #fff;
+  border-radius: 46px;
+  display: flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+}
+
+.tokenImg {
+  width: 46px;
+  height: 46px;
+  border-radius: 46px;
+  opacity: 0.3;
+}
+
+.tokenName {
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.tickerContent1 {
+  margin-top: 5px;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row;
+  display: flex;
+
+  .ticker {
+    color: #fff;
+    font-size: 14px;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 160px;
+  }
+
+  .launchTag {
+    display: inline-block;
+    height: 20px;
+    padding: 0 10px;
+    white-space: nowrap;
+    border-radius: 1000px;
+    color: #fff;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    &.launch1 {
+      background-color: rgba(80, 73, 100, 1);
+    }
+    &.launch2 {
+      background-color: rgba(215, 48, 129, 1);
+    }
+    &.launch3 {
+      background-color: rgba(100, 43, 255, 1);
+    }
+  }
+}

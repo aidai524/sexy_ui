@@ -22,14 +22,14 @@ export default function CommentComp({
   usePanel = true,
   titleStyle,
   theme = "dark",
-  loadMoreData,
+  loadMoreData
 }: Props) {
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
   const [reReashNum, setReReashNum] = useState(1);
-  const isInit = useRef(false)
-  const [offset, setOffset] = useState(0)
-  const [hasMore, setHasMore] = useState(true)
+  const isInit = useRef(false);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
   const [isSubmiting, setIsSubmiting] = useState(false);
 
   const CommentList = commentList.map((item) => {
@@ -49,54 +49,51 @@ export default function CommentComp({
 
   useEffect(() => {
     if (id) {
-      loadMore()
+      loadMore();
     } else {
       setCommentList([]);
-      setOffset(0)
+      setOffset(0);
     }
   }, [id]);
 
   useEffect(() => {
     if (loadMoreData && loadMoreData > 1) {
-      loadMore()
+      loadMore();
     }
-  }, [loadMoreData])
+  }, [loadMoreData]);
 
-  const loadMore = useCallback(({ newOffset }: any = {}) => {
-    if (newOffset !== 0 && !hasMore) {
-      return Promise.resolve()
-    }
-    return httpGet("/project/comment/list", { 
-      limit: 10, 
-      project_id: id, 
-      offset: newOffset === 0 ? newOffset : offset,
-    }).then(
-      (res) => {
+  const loadMore = useCallback(
+    ({ newOffset }: any = {}) => {
+      if (newOffset !== 0 && !hasMore) {
+        return Promise.resolve();
+      }
+      return httpGet("/project/comment/list", {
+        limit: 10,
+        project_id: id,
+        offset: newOffset === 0 ? newOffset : offset
+      }).then((res) => {
         if (res?.code === 0) {
-          setHasMore(res.data?.has_next_page || false)
+          setHasMore(res.data?.has_next_page || false);
           if (res.data.list?.length) {
             const newMapList = res.data.list.map((item: any) => {
               return mapDataToComment(item);
             });
-  
-            let newList = []
+
+            let newList = [];
             if (newOffset === 0) {
-              newList = newMapList
+              newList = newMapList;
             } else {
-              newList = [
-                ...commentList,
-                ...newMapList,
-              ]
+              newList = [...commentList, ...newMapList];
             }
-  
-            setOffset(newList.length)
+
+            setOffset(newList.length);
             setCommentList(newList);
           }
-         
         }
-      }
-    );
-  }, [id, offset, hasMore])
+      });
+    },
+    [id, offset, hasMore]
+  );
 
   const Content = (
     <>
@@ -124,7 +121,7 @@ export default function CommentComp({
                 const val = await httpAuthPost("/project/comment?" + queryStr);
 
                 if (val.code === 0) {
-                  loadMore({ newOffset: 0 })
+                  loadMore({ newOffset: 0 });
                   // setReReashNum(reReashNum + 1);
                   setCommentText("");
                 }
@@ -135,8 +132,9 @@ export default function CommentComp({
             onChange={(e) => {
               setCommentText(e.target.value);
             }}
-            className={`${styles.input} ${theme === "light" ? styles.LightInput : styles.DarkInput
-              }`}
+            className={`${styles.input} ${
+              theme === "light" ? styles.LightInput : styles.DarkInput
+            }`}
             placeholder="Say something..."
           />
 

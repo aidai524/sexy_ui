@@ -1,240 +1,181 @@
 .thumbnail {
-    position: relative;
-    z-index: 10;
-    height: calc(100vh - 232px);
-    margin: 10px;
-    border-radius: 20px;
+  position: relative;
+  z-index: 10;
+  height: calc(100vh - 232px);
+  margin: 10px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #000;
+
+  .imgList {
+    width: 100%;
+    height: 100%;
+
+    .tokenImg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      /* border-radius: 5px; */
+    }
+  }
+
+  .commentList {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 30px 10px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.6);
     overflow: hidden;
-    background-color: #000;
+  }
 
-    .imgList {
-        width: 100%;
-        height: 100%;
+  .commentBox {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 90px;
+    bottom: 0;
+    padding: 0 10px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: none;
+  }
 
-        .tokenImg {
-            display: block;
-            width: 100%;
-            height: 100%;
-            /* border-radius: 5px; */
-        }
-    }
+  .descContent {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 30.43%);
+  }
 
-    .commentList {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        padding: 30px 10px;
-        backdrop-filter: blur(10px);
-        background-color: rgba(0, 0, 0, 0.6);
-        overflow: hidden;
-    }
+  .bottomLike {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 
-    .commentBox {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 90px;
-        bottom: 0;
-        padding: 0 10px;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch; 
-        touch-action: none;
-    }
+  .teleGram {
+    position: absolute;
+    top: 14px;
+    right: 12px;
+  }
 
-    .descContent {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 30.43%);
-    }
-
-    .bottomLike {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-
-    .teleGram {
-        position: absolute;
-        top: 14px;
-        right: 12px;
-    }
-
-    .tokenMsg {
-        /* position: absolute;
+  .tokenMsg {
+    /* position: absolute;
         left: 0;
         right: 0;
         bottom: 0;
         top: 50%; */
-        /* background: linear-gradient(181.33deg,
+    /* background: linear-gradient(181.33deg,
                 rgba(13, 16, 18, 0) 1.14%,
                 #0d1012 98.87%); */
-        padding: 0 25px 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-
-        .desc {
-            font-size: 13px;
-            font-weight: 300;
-            margin-top: 10px;
-            color: #979abe;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .detailLink {
-            position: absolute;
-            right: 20px;
-            top: 50px;
-        }
-    }
-}
-
-.avatarBox {
+    padding: 0 25px 10px;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    .desc {
+      font-size: 13px;
+      font-weight: 300;
+      margin-top: 10px;
+      color: #979abe;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .detailLink {
+      position: absolute;
+      right: 20px;
+      top: 50px;
+    }
+  }
 }
 
 .picProgress {
-    display: flex;
-    margin: 10px 10px;
-    height: 4px;
-    gap: 8px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    z-index: 2;
+  display: flex;
+  margin: 10px 10px;
+  height: 4px;
+  gap: 8px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
 }
 
 .progressItem {
-    flex: 1;
-    opacity: 0.5;
-    background-color: #fff;
-    border-radius: 100px;
+  flex: 1;
+  opacity: 0.5;
+  background-color: #fff;
+  border-radius: 100px;
 }
 
 .progressItemActive {
-    opacity: 1;
+  opacity: 1;
 }
 
 .detailTitle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 0;
 }
 
 .titles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  .tokenImgBox {
+    border: 1px dashed #fff;
+    border-radius: 46px;
     display: flex;
+    width: 46px;
+    height: 46px;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
+  }
 
-    .tokenImgBox {
-        border: 1px dashed #fff;
-        border-radius: 46px;
-        display: flex;
-        width: 46px;
-        height: 46px;
-        align-items: center;
-    }
+  .tokenImg {
+    width: 46px;
+    height: 46px;
+    border-radius: 46px;
+    opacity: 0.3;
+  }
 
-    .tokenImg {
-        width: 46px;
-        height: 46px;
-        border-radius: 46px;
-        opacity: 0.3;
-    }
-
-    .tokenName {
-        font-size: 26px;
-        font-weight: 700;
-        color: #fff;
-    }
-
-    .tokenImgBox {
-        border: 1px dashed #fff;
-        border-radius: 46px;
-    }
-
-    .tokenImg {
-        width: 46px;
-        height: 46px;
-        border-radius: 46px;
-        opacity: 0.3;
-    }
-
-    .tokenName {
-        font-size: 26px;
-        font-weight: 700;
-        color: #fff;
-    }
-}
-
-.tickerContent1 {
-    margin-top: 5px;
-    align-items: center;
-    gap: 10px;
-    flex-direction: row;
-    display: flex;
-
-    .ticker {
-        color: #fff;
-        font-size: 14px;
-        display: inline-block;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        width: 160px;
-    }
-
-    .launchTag {
-        display: inline-block;
-        height: 20px;
-        padding: 0 10px;
-        white-space: nowrap;
-        border-radius: 1000px;
-        color: #fff;
-        font-size: 10px;
-        display: flex;
-        align-items: center;
-        &.launch1 {
-            background-color: rgba(80, 73, 100, 1);
-        }
-        &.launch2 {
-            background-color: rgba(215, 48, 129, 1);
-        }
-        &.launch3 {
-            background-color: rgba(100, 43, 255, 1);
-        }
-    }
+  .tokenName {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+  }
 }
 
 .loadMore {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 20px;
-    height: 100px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  height: 100px;
+  display: flex;
+  align-items: flex-end;
+  background: linear-gradient(
+    181.52deg,
+    rgba(0, 0, 0, 0) 1.29%,
+    #000000 98.71%
+  );
+  .loadBox {
+    flex: 1;
+    height: 30px;
+    border: 1px solid rgba(147, 121, 166, 1);
+    border-radius: 8px;
+    color: rgba(240, 221, 255, 1);
     display: flex;
-    align-items: flex-end;
-    background: linear-gradient(181.52deg, rgba(0, 0, 0, 0) 1.29%, #000000 98.71%);
-    .loadBox {
-        flex: 1;
-        height: 30px;
-        border: 1px solid rgba(147, 121, 166, 1);
-        border-radius: 8px;
-        color: rgba(240, 221, 255, 1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    align-items: center;
+    justify-content: center;
+  }
 }

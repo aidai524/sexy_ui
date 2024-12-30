@@ -1,4 +1,7 @@
 import Comment from "@/app/components/comment";
+import AvatarBox from "@/app/components/thumbnail/avatar-box";
+import PreUser from "@/app/components/thumbnail/preUser";
+import Holder from "@/app/components/holder";
 import styles from "./index.module.css";
 import { useState } from "react";
 
@@ -24,6 +27,9 @@ export default function TokenCardActions({ token }: any) {
       </div>
       {currentTab !== "Img" && (
         <div className={styles.Layer}>
+          <div className={styles.AvatarBox}>
+            <AvatarBox data={token} showLaunchType={true} />
+          </div>
           {currentTab === "Discussion" && (
             <Comment
               id={token.id}
@@ -34,6 +40,8 @@ export default function TokenCardActions({ token }: any) {
               }}
             />
           )}
+          {currentTab === "Founders" &&
+            (token.status === 0 ? <PreUser token={token} /> : <Holder />)}
         </div>
       )}
     </>

@@ -12,8 +12,9 @@ export default function TokenCard({ token }: any) {
         data={token}
         autoHeight={true}
         showTags={false}
+        showDropdownIcon={false}
         style={{
-          height: 620,
+          height: 542,
           margin: 0
         }}
       />
