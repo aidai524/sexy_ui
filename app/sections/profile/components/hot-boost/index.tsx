@@ -67,7 +67,7 @@ export default function HotBoost({ onMoreClick, style, user }: Props) {
               </span>{" "}
               /{user?.superLikeNum}{" "}
             </span>
-            <span>Smoky Hot</span>
+            <span>Flip</span>
           </div>
           {superLikeNum === 0 && user?.vipType !== "vip" ? (
             <div onClick={onMoreClick} className={styles.getMore1}>

@@ -1,6 +1,7 @@
 import type { Project } from "@/app/type";
 import styles from "./ca.module.css";
 import { formatAddress, formatAddressLast, simplifyNum } from "@/app/utils";
+import Copyed from "@/app/components/copyed";
 
 export default function CA({
   from,
@@ -36,8 +37,12 @@ export default function CA({
           </div>
         </div>
 
-        <div className={styles.copy}>
-          <svg
+        <div className={styles.copy} onClick={() => {
+
+        }}>
+
+          <Copyed value={data.address as string} />
+          {/* <svg
             width="16"
             height="16"
             viewBox="0 0 16 16"
@@ -58,7 +63,7 @@ export default function CA({
               stroke="#979ABE"
               strokeWidth="2"
             />
-          </svg>
+          </svg> */}
         </div>
       </div>
     </div>

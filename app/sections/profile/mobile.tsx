@@ -105,6 +105,7 @@ export default function Profile({
         address={address}
         defaultIndex={profileTabIndex}
         showHot={showHot}
+        isOther={isOther}
       />
     </div>
   );

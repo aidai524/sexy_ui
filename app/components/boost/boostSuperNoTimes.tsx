@@ -18,7 +18,7 @@ interface Props {
 export default function boostSuperNoTimes({
     onClose, num, usingNum, token, type
 }: Props) {
-    const text = (type === 1 ? 'Boost' : 'Smoky hot')
+    const text = (type === 1 ? 'Boost' : 'Flip')
     return <div className={styles.panel}>
         <div className={styles.boostInit}>
             <div className={styles.initTipContent}>

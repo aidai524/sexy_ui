@@ -11,6 +11,7 @@ export default function Tabs({
   defaultIndex,
   tabContentStyle,
   from,
+  isOther,
   onTabChange
 }: any) {
   const { set: setProfileTabIndex }: any = useHomeTab();
@@ -28,17 +29,19 @@ export default function Tabs({
           hideHot={true}
           address={address}
           type="created"
+          isOther={isOther}
           prepaidWithdrawDelayTime={prepaidDelayTime}
           from={from}
         />
       )
     },
     {
-      name: "Hot",
+      name: "Flip",
       content: (
         <Created
           address={address}
           type="hot"
+          isOther={isOther}
           prepaidWithdrawDelayTime={prepaidDelayTime}
         />
       )
@@ -49,6 +52,7 @@ export default function Tabs({
         <Created
           address={address}
           type="liked"
+          isOther={isOther}
           prepaidWithdrawDelayTime={prepaidDelayTime}
         />
       )

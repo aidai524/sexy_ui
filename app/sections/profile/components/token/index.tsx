@@ -12,6 +12,7 @@ import LauncdedAction from "@/app/components/action/launched";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { fail, success } from "@/app/utils/toast";
 import TokenAction from "../tokenAction";
+import { useUser } from "@/app/store/useUser";
 
 interface Props {
   data: Project;
@@ -19,6 +20,7 @@ interface Props {
   prepaidWithdrawDelayTime: number;
   hideHot?: boolean;
   from?: string;
+  isOther: boolean;
 }
 
 export default function Token({
@@ -26,7 +28,8 @@ export default function Token({
   update,
   prepaidWithdrawDelayTime,
   hideHot,
-  from
+  from,
+  isOther
 }: Props) {
   const router = useRouter();
   const [mc, setMC] = useState<string | number>("-");
@@ -173,6 +176,7 @@ export default function Token({
         } */}
 
       <TokenAction
+        isOther={isOther}
         isDelay={isDelay}
         token={data}
         prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}

@@ -7,12 +7,14 @@ import { useUser } from "@/app/store/useUser";
 interface Props {
   token: Project;
   isDelay: boolean;
+  isOther: boolean;
   prepaidWithdrawDelayTime: number;
 }
 
 export default function TokenAction({
   token,
   isDelay,
+  isOther,
   prepaidWithdrawDelayTime
 }: Props) {
   const [modalShow, setModalShow] = useState(false);
@@ -65,7 +67,13 @@ export default function TokenAction({
         </div>
       )}
       <Actions
-        {...{ modalShow, setModalShow, token, prepaidWithdrawDelayTime }}
+        {...{
+          isOther,
+          modalShow,
+          setModalShow,
+          token,
+          prepaidWithdrawDelayTime
+        }}
       />
     </div>
   );

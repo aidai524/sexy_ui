@@ -97,6 +97,13 @@ export default forwardRef(function CreateNode(
       }
     }
 
+    if (discord) {
+      if (!isValidURL(discord)) {
+        inValidVals["discord"] = 'Discord is not a valid url';
+        isValid = true;
+      }
+    }
+
     if (isValid) {
       window.scrollTo({
         top: 0

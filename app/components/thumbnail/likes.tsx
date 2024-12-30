@@ -23,9 +23,7 @@ export default function Likes({ data }: { data: Project }) {
             <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
               <SuperLikeIcon />
               <span className={styles.tips}>
-                Smoky
-                <br />
-                HOT
+                Flip
               </span>
               <span className={styles.likesNums}>{data.prePaid}</span>
             </div>

@@ -30,6 +30,7 @@ export function mapDataToProject(currentToken: any): Project {
       prePaid: currentToken.pre_paid,
       x: currentToken.x,
       tg: currentToken.tg,
+      discord: currentToken.discord,
     };
 }
 

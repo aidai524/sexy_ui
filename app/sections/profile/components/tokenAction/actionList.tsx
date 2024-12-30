@@ -12,10 +12,15 @@ import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   token: Project;
+  isOther: boolean;
   prepaidWithdrawDelayTime: number;
 }
 
-export default function ActionList({ token, prepaidWithdrawDelayTime }: Props) {
+export default function ActionList({
+  token,
+  isOther,
+  prepaidWithdrawDelayTime
+}: Props) {
   const [isPrepaid, setIsPrepaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [updateNum, setUpdateNum] = useState(1);
@@ -50,12 +55,16 @@ export default function ActionList({ token, prepaidWithdrawDelayTime }: Props) {
   }, [prepaidWithdrawDelayTime, token]);
 
   useEffect(() => {
+    if (isOther) {
+      setIsPrepaid(false);
+      return;
+    }
     checkPrePayed().then((res) => {
       if (Number(res) > 0) {
         setIsPrepaid(true);
       }
     });
-  }, [updateNum]);
+  }, [updateNum, isOther]);
 
   const disableSmooke = useMemo(() => {
     return token.isSuperLike || token.account === userInfo.address;
@@ -68,7 +77,7 @@ export default function ActionList({ token, prepaidWithdrawDelayTime }: Props) {
     >
       {token.status === 0 && (
         <>
-          {isDelay && (
+          {isDelay && !isOther && (
             <>
               {isPrepaid &&
                 (isWithdrawed ? (
@@ -85,14 +94,6 @@ export default function ActionList({ token, prepaidWithdrawDelayTime }: Props) {
                   <div
                     className={
                       isMobile ? styles.actionBtn : styles.LaptopActionBtn
-                    }
-                    style={
-                      !isMobile
-                        ? {
-                            border: "none",
-                            marginTop: 10
-                          }
-                        : {}
                     }
                     onClick={async () => {
                       setIsLoading(true);
@@ -133,7 +134,7 @@ export default function ActionList({ token, prepaidWithdrawDelayTime }: Props) {
                     }
                   >
                     {isMobile && <SmookIcon />}
-                    Smoky Hot
+                    Flip
                   </div>
                 }
                 token={token}
@@ -147,6 +148,7 @@ export default function ActionList({ token, prepaidWithdrawDelayTime }: Props) {
       {token.status === 1 && (
         <>
           {isPrepaid &&
+            !isOther &&
             (isClaimed ? (
               <div
                 className={
