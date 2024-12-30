@@ -84,7 +84,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 5px;
-        font-size: 16px;
+        font-size: 12px;
 
         .tokenImg {
           width: 30px;
