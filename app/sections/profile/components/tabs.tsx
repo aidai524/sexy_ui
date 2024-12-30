@@ -4,6 +4,7 @@ import Held from "./held";
 import { useEffect, useMemo, useState } from "react";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Tabs({
   showHot,
@@ -15,7 +16,9 @@ export default function Tabs({
   onTabChange
 }: any) {
   const { set: setProfileTabIndex }: any = useHomeTab();
-  const { prepaidDelayTime } = usePrepaidDelayTimeStore()
+  const { prepaidDelayTime } = usePrepaidDelayTimeStore();
+  const { isMobile } = useUserAgent();
+  const [tabIndex, setTabIndex] = useState(0);
 
   const tabs = [
     {
@@ -60,8 +63,9 @@ export default function Tabs({
   ];
 
   const activeNode = useMemo(() => {
-    return tabs[defaultIndex || 0].name;
-  }, [defaultIndex, tabs]);
+    const i = isMobile ? defaultIndex || 0 : tabIndex;
+    return tabs[i].name;
+  }, [defaultIndex, tabs, tabIndex]);
 
   return (
     <Tab
@@ -72,9 +76,11 @@ export default function Tabs({
           defaultIndex = index;
           return tab.name === nodeName;
         });
-        setProfileTabIndex({
-          profileTabIndex: defaultIndex
-        });
+        isMobile
+          ? setProfileTabIndex({
+              profileTabIndex: defaultIndex
+            })
+          : setTabIndex(defaultIndex);
       }}
       activeNode={activeNode}
       tabContentStyle={tabContentStyle}
