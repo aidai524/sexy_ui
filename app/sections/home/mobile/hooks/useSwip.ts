@@ -4,13 +4,13 @@ import { useThrottleFn } from 'ahooks';
 
 export default function useSwip(containerRef: any, onPre: any, onNext: any, onPreing: any, onNexting: any, reBind: boolean, isBloacked: boolean) {
 
-    const { run: runPreing } = useThrottleFn(onPreing, {
-        wait: 200, 
-    });
+    // const { run: runPreing } = useThrottleFn(onPreing, {
+    //     wait: 200, 
+    // });
 
-    const { run: runNexting } = useThrottleFn(onNexting, {
-        wait: 200, 
-    });
+    // const { run: runNexting } = useThrottleFn(onNexting, {
+    //     wait: 200, 
+    // });
     
 
     useEffect(() => {
@@ -21,9 +21,10 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
 
             const Pan = new Hammer.Pan({
                 direction: Hammer.DIRECTION_ALL, 
-                threshold: 0,
-                velocity: 0.3,
+                threshold: 5,
+                velocity: 0,
                 pointers: 1,
+                interval: 50
             });
             manager.add(Pan);
 
@@ -67,11 +68,13 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
                 // if (e.distance > maxDistance) {
                 //     maxDistance = e.distance
                 // }
+
+                console.log('e.deltaX < 0:', e.deltaX < 0)
                 
                 if (e.deltaX < 0) {
-                    runPreing(e.distance / winWidth)
+                    onPreing(e.distance / winWidth)
                 } else {
-                    runNexting(e.distance / winWidth)
+                    onNexting(e.distance / winWidth)
                 }
 
                 // setTimeout(() => {
@@ -92,16 +95,16 @@ export default function useSwip(containerRef: any, onPre: any, onNext: any, onPr
                     if (e.distance > startDistance + 20) {
                         onNext && onNext()
                     } else {
-                        runNexting(0)
+                        onNexting(0)
                     }
                 } else if (direction === 1) {
                     if (e.distance > startDistance + 20) {
                         onPre && onPre()
                     } else {
-                        runPreing(0)
+                        onPreing(0)
                     }
                 } else {
-                    runNexting(0)
+                    onNexting(0)
                 }
                 
                 

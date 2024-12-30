@@ -78,6 +78,14 @@ export default function Home() {
   useSwip(
     containerPreLaunchRef,
     () => {
+      //@ts-ignore
+      if (!window.sexAddress) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
+
+
       if (hateTriggerRef.current) {
         return;
       }
@@ -90,6 +98,14 @@ export default function Home() {
       }, 1600);
     },
     () => {
+      //@ts-ignore
+      if (!window.sexAddress) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
+
+
       if (likeTriggerRef.current) {
         return;
       }
@@ -141,8 +157,7 @@ export default function Home() {
       console.log("nexting");
       const style = {
         opacity: 1 - percent,
-        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent
-          }vh)`
+        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent}vh)`
       };
       if (renderLaunchingIndexRef.current === 0) {
         setMovingStyle2(style);
@@ -163,7 +178,7 @@ export default function Home() {
       justNext("like");
     },
     (percent: number) => {
-      //@ts-ignore
+      // @ts-ignore
       if (!window.sexAddress) {
         //@ts-ignore
         window.connect();
@@ -200,8 +215,7 @@ export default function Home() {
       console.log("nexting", percent);
       const style = {
         opacity: 1 - percent,
-        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent
-          }vh)`
+        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent}vh)`
       };
       if (renderLaunchedIndexRef.current === 0) {
         setMovingStyle2(style);
@@ -274,11 +288,11 @@ export default function Home() {
   }
 
   async function justNext(type: string) {
-    // if (!address) {
-    //   //@ts-ignore
-    //   window.connect();
-    //   return;
-    // }
+    if (!address) {
+      //@ts-ignore
+      window.connect();
+      return;
+    }
 
     if (
       launchedList &&
