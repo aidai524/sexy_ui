@@ -49,7 +49,7 @@
       align-items: center;
       justify-content: space-between;
       color: rgba(255, 255, 255, 0.7);
-      font-size: 12px;
+      font-size: 16px;
       font-weight: 300;
 
       .switchTokenName {
@@ -76,6 +76,7 @@
         border: none;
         outline: none;
         color: #fff;
+        font-size: 16px;
       }
 
       .inputToken {
@@ -83,7 +84,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 5px;
-        font-size: 16px;
+        font-size: 12px;
 
         .tokenImg {
           width: 30px;

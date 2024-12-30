@@ -20,7 +20,7 @@ const onLike = async (data: any) => {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
       console.log('v:', v)
       if (v.code === 0) {
-        success('You liked ' + data.token_name + ', You are expected to receive ' + new Big(v.data?.point || 0).toFixed(2))
+        success('You liked ' + (data.token_name || data.tokenName) + ', You are expected to receive ' + new Big(v.data?.point || 0).toFixed(2))
         return v.data?.likeNum
       } else if (v.code === 100002) {
         fail("You've run out of like times. You can come back tomorrow")
