@@ -27,7 +27,6 @@ export default function Mobile({
       <ActionList
         isOther={isOther}
         token={token}
-        isOther={true}
         prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
       />
     </Popup>
