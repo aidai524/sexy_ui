@@ -101,7 +101,10 @@ export default function CommentComp({
         Discussion
       </div>
       {showEdit && (
-        <div className={styles.inputWrapper}>
+        <div
+          className={styles.inputWrapper}
+          style={{ backgroundColor: theme === "dark" ? "#000" : "transparent" }}
+        >
           <input
             value={commentText}
             onKeyUp={async (e) => {

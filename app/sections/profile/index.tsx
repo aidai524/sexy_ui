@@ -17,91 +17,93 @@ import { Button } from "antd-mobile";
 import useJupiter from "@/app/hooks/useJupiter";
 
 export default memo(function Home(props: any) {
-    const { showHot = true, isOther = false } = props;
-    const { isMobile } = useUserAgent();
-    const router = useRouter();
-    const params = useSearchParams();
-    const { address: userAddress } = useAccount();
-    const [isFollower, setIsFollower] = useState(false);
-    const [refreshNum, setRefreshNum] = useState(0);
-    const [showVip, setShowVip] = useState(false);
-    const { profileTabIndex, set: setProfileTabIndex }: any = useHomeTab();
+  const { showHot = true, isOther = false } = props;
+  const { isMobile } = useUserAgent();
+  const router = useRouter();
+  const params = useSearchParams();
+  const { address: userAddress } = useAccount();
+  const [isFollower, setIsFollower] = useState(false);
+  const [refreshNum, setRefreshNum] = useState(0);
+  const [showVip, setShowVip] = useState(false);
+  const { profileTabIndex, set: setProfileTabIndex }: any = useHomeTab();
 
-    useEffect(() => {
-        if (userAddress && params) {
-            if (params.get("account")?.toString() === userAddress && isOther) {
-                router.replace("/profile");
-            }
+  useEffect(() => {
+    if (userAddress && params) {
+      if (params.get("account")?.toString() === userAddress && isOther) {
+        router.replace("/profile");
+      }
+    }
+  }, [userAddress, params, isOther]);
+
+  const address = useMemo(() => {
+    if (isOther && params) {
+      return params.get("account")?.toString();
+    }
+
+    return userAddress;
+  }, [userAddress, params, isOther]);
+
+  const { onQueryInfo, userInfo } = useUserInfo(address);
+  const { userInfo: ownUserInfo, set: setUserInfo }: any = useUser();
+
+  const comProps = {
+    userInfo,
+    address,
+    isFollower,
+    refreshNum,
+    setRefreshNum,
+    onQueryInfo,
+    setUserInfo,
+    setShowVip,
+    router,
+    profileTabIndex
+  };
+
+  useEffect(() => {
+    getAccountFollower();
+  }, [address, isOther, refreshNum]);
+
+  const getAccountFollower = useCallback(() => {
+    if (address && isOther) {
+      httpAuthGet("/follower/account", { address: address }).then((res) => {
+        if (res.code === 0) {
+          if (res.data) {
+            setIsFollower(res.data.is_follower);
+          } else {
+            setIsFollower(false);
+          }
         }
-    }, [userAddress, params, isOther]);
+      });
+    }
+  }, [address, isOther, refreshNum]);
 
-    const address = useMemo(() => {
-        if (isOther && params) {
-            return params.get("account")?.toString();
-        }
+  const { trade } = useJupiter({
+    tokenAddress: "4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump"
+  });
 
-        return userAddress;
-    }, [userAddress, params, isOther]);
-
-    const { onQueryInfo, userInfo } = useUserInfo(address);
-    const { userInfo: ownUserInfo, set: setUserInfo }: any = useUser();
-
-    const comProps = {
-        userInfo,
-        address,
-        isFollower,
-        refreshNum,
-        setRefreshNum,
-        onQueryInfo,
-        setUserInfo,
-        setShowVip,
-        router,
-        profileTabIndex
-    };
-
-    useEffect(() => {
-        getAccountFollower()
-    }, [address, isOther, refreshNum]);
-
-    const getAccountFollower = useCallback(() => {
-        if (address && isOther) {
-            httpAuthGet("/follower/account", { address: address }).then((res) => {
-                if (res.code === 0) {
-                    if (res.data) {
-                        setIsFollower(res.data.is_follower);
-                    } else {
-                        setIsFollower(false);
-                    }
-                }
-            });
-        }
-    }, [address, isOther, refreshNum])
-
-    const { trade } = useJupiter({
-        tokenAddress: '4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump'
-      })
-
-    return (
-        <SexPullToRefresh
-            onRefresh={async () => {
-                await getAccountFollower()
-                await onQueryInfo()
-            }}>
-
-                {/* <Button onClick={() => {
+  return (
+    <>
+      {/* <Button onClick={() => {
                     trade('5000000', 'sell')
                 }}>test juipter</Button> */}
-            {isMobile ? (
-                <Mobile {...props} {...comProps} />
-            ) : (
-                <Laptop {...props} {...comProps} />
-            )}
-            <VipModal
-                show={showVip}
-                onClose={() => {
-                    setShowVip(false);
-                }}
-            />
+      {isMobile ? (
+        <SexPullToRefresh
+          onRefresh={async () => {
+            await getAccountFollower();
+            await onQueryInfo();
+          }}
+        >
+          <Mobile {...props} {...comProps} />
         </SexPullToRefresh>
-    );
+      ) : (
+        <Laptop {...props} {...comProps} />
+      )}
+      <VipModal
+        show={showVip}
+        onClose={() => {
+          setShowVip(false);
+        }}
+      />
+    </>
+  );
 });

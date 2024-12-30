@@ -12,15 +12,13 @@ import Empty from "@/app/components/empty/prelaunch";
 import { shareToX } from "@/app/utils/share";
 import styles from "./index.module.css";
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  actionHateTrigger,
+  actionLikeTrigger
+} from "@/app/components/timesLike/ActionTrigger";
 import { mapDataToProject } from "@/app/utils/mapTo";
 
-export default function Fullscreen({
-  list = [],
-  onLike,
-  onHate,
-  getnext,
-  onExit
-}: any) {
+export default function Fullscreen({ list = [], getnext, onExit }: any) {
   const swaperRef = useRef<any>();
   const [index, setIndex] = useState(0);
 
@@ -32,12 +30,15 @@ export default function Fullscreen({
   }, [list]);
 
   const next = async (type: 0 | 1) => {
+    type
+      ? await actionLikeTrigger(list[index])
+      : await actionHateTrigger(list[index]);
     if (index === list.length - 1) return;
     if (swaperRef.current) {
       swaperRef.current.style = "transition-duration: 0.3s;";
     }
+
     setIndex((prev) => prev + 1);
-    type ? await onLike() : await onHate();
 
     setTimeout(() => {
       getnext();
@@ -86,8 +87,12 @@ export default function Fullscreen({
               <TokenCardActions token={token} />
               <LaunchingActions
                 token={token}
-                onLike={onLike}
-                onHate={onHate}
+                onLike={async () => {
+                  await actionLikeTrigger(list[index]);
+                }}
+                onHate={async () => {
+                  await actionHateTrigger(list[index]);
+                }}
                 onSuperLike={() => {}}
                 onBoost={() => {}}
                 style={{

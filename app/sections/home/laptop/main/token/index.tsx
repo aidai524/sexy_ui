@@ -9,16 +9,13 @@ import CommentComp from "@/app/components/comment";
 import PanelWrapper from "./panel-wrapper";
 import Chart from "@/app/sections/detail/components/chart";
 import Empty from "@/app/components/empty/prelaunch";
+import {
+  actionHateTrigger,
+  actionLikeTrigger
+} from "@/app/components/timesLike/ActionTrigger";
 import { useState } from "react";
 
-export default function Token({
-  infoData2,
-  onLike,
-  onHate,
-  getnext,
-  onOpenFull,
-  type
-}: any) {
+export default function Token({ infoData2, getnext, onOpenFull, type }: any) {
   const [currentTab, setCurrentTab] = useState("info");
 
   const next = () => {
@@ -29,12 +26,12 @@ export default function Token({
 
   const like = () => {
     next();
-    onLike();
+    actionLikeTrigger(infoData2);
   };
 
   const hate = () => {
     next();
-    onHate();
+    actionHateTrigger(infoData2);
   };
 
   return (
@@ -63,6 +60,7 @@ export default function Token({
                     theme="light"
                     sepSize={2}
                   />
+                  <div style={{ height: 2 }} />
                   <CommentComp id={infoData2.id} theme="light" />
                 </PanelWrapper>
               )}
