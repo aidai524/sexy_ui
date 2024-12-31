@@ -8,6 +8,7 @@ import Address from "@/app/sections/profile/components/address";
 import FollowerModal from "@/app/components/layout/laptop/user/follower-modal";
 import { useLaptop } from "@/app/context/laptop";
 import { motion } from "framer-motion";
+import Empty from "@/app/components/empty";
 import { useState } from "react";
 
 export default function Laptop({
@@ -35,7 +36,7 @@ export default function Laptop({
       <div className={styles.BackWrapper}>
         <Back />
       </div>
-      {userInfo && (
+      {userInfo ? (
         <div className={styles.Content}>
           <div className={styles.Top}>
             <img src={userInfo.icon} className={styles.Avatar} />
@@ -101,6 +102,8 @@ export default function Laptop({
             }}
           />
         </div>
+      ) : (
+        <Empty text="No Data" height="100%" />
       )}
       <FollowerModal
         address={address}

@@ -117,7 +117,7 @@ export default function Token({
         }}
         onBoost={next}
       />
-      {!isFull && list.current?.length && <NextButton onClick={hate} />}
+      {!isFull && list?.current?.length && <NextButton onClick={hate} />}
     </>
   );
 }

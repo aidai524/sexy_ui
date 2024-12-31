@@ -19,9 +19,11 @@ export default function FollowerModal({
   const { address: walletAddress } = useAccount();
   const followerType = useMemo(() => (type === "following" ? 2 : 1), [type]);
 
+  const currentUser = useMemo(() => ({ address }), [address]);
+
   const { list, userInfo, setList, isLoading, hasMore, loadMore } =
     useFollowList({
-      currentUser: { address },
+      currentUser,
       followerType,
       refresh
     });

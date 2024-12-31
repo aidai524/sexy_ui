@@ -2,7 +2,7 @@ import styles from "./list.module.css";
 import { defaultAvatar } from "@/app/utils/config";
 import InfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { formatAddress } from "@/app/utils";
-
+import CircleLoading from "@/app/components/icons/loading";
 import FollowBtn from "../../../components/followBtn";
 import Empty from "@/app/components/empty";
 
@@ -76,7 +76,11 @@ export default function List({
       {(!list || list.length === 0) && !isLoading && (
         <Empty height={300} text="No Data" />
       )}
-
+      {isLoading && (
+        <div className={styles.LoadingWrapper}>
+          <CircleLoading size={30} />
+        </div>
+      )}
       <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
     </>
   );
