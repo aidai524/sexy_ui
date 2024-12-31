@@ -31,7 +31,6 @@ export default function Layout(props: any) {
   const codeStore: any = useCodeStore();
   const pathname = usePathname();
 
-
   if (codeStore.a !== CODE && pathname !== "/") {
     if (!process.env.NEXT_PUBLIC_BEN_DEV) {
       redirect("/");

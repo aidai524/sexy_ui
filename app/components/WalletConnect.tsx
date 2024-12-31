@@ -53,7 +53,7 @@ export default function WalletConnect({
 }: {
   children: React.ReactNode;
 }) {
-  const network = WalletAdapterNetwork.Mainnet;
+  const network = WalletAdapterNetwork.Devnet;
   const endpoint = useMemo(() => getEndpoint(network), [network]);
   const wallets = useMemo(
     () => {
