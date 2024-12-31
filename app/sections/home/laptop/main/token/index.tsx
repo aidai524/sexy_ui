@@ -14,13 +14,15 @@ import {
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
 import { useState } from "react";
+import Loading from "@/app/components/icons/loading";
 
 export default function Token({
   infoData2,
   getnext,
   onOpenFull,
   type,
-  from
+  from,
+  isLoading
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
 
@@ -97,8 +99,12 @@ export default function Token({
                 </PanelWrapper>
               )}
             </>
+          ) : isLoading ? (
+            <div className={styles.EmptyWrapper}>
+              <Loading size={40} />
+            </div>
           ) : (
-            <Empty />
+            <Empty type={type === 0 ? "preLaunch" : "launching"} />
           )}
         </div>
       </div>

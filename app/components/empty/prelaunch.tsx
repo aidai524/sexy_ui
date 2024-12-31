@@ -1,5 +1,5 @@
 import styles from "./index.module.css";
-export default function Prelanuch() {
+export default function Prelanuch({ type }: any) {
   return (
     <div
       className={styles.Container}
@@ -210,7 +210,10 @@ export default function Prelanuch() {
           color: "#FFFFFFA6"
         }}
       >
-        You can go to <span style={{ color: "#fff" }}>Launching/ed.</span>
+        You can go to{" "}
+        <span style={{ color: "#fff" }}>
+          {type === "preLaunch" ? "Launching/ed." : "PreLaunch"}
+        </span>
       </div>
     </div>
   );

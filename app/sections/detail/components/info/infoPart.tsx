@@ -1,11 +1,11 @@
 import Thumbnail, { AvatarBack } from "@/app/components/thumbnail";
 import Panel from "../../../../components/panel";
-
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
 import { formatAddress, timeAgo } from "@/app/utils";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
+import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   showThumbnailHead: boolean;
@@ -47,6 +47,7 @@ export default function InfoPart({
     }
     return "-";
   }, [data]);
+  const { isMobile } = useUserAgent();
 
   if (!data) {
     return;
@@ -141,7 +142,12 @@ export default function InfoPart({
         <Panel theme={theme}>
           <div className={styles.aboutUs}>
             <div className={styles.aboutHeader}>Community</div>
-            <div className={styles.communityIcons}>
+            <div
+              className={styles.communityIcons}
+              style={{
+                gap: isMobile ? "15vw" : "60px"
+              }}
+            >
               {data.x && (
                 <a className={styles.link} target="_blank" href={data.x}>
                   <img src="/img/community/x.svg" />

@@ -200,7 +200,7 @@ function SuccessModal({
         </div>
       </div>
 
-      <div className={style.close} onClick={onClose}>
+      <div className={`${style.close} button`} onClick={onClose}>
         <svg
           width="32"
           height="32"

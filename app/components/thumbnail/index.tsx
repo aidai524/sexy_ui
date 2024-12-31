@@ -43,7 +43,7 @@ export default function Thumbnail({
   const [loadCommentNum, setLoadCommentNum] = useState(1);
   const commentRef = useRef<any>();
   const [height, setHeight] = useState("calc(100vh - 232px)");
-  const [showLoadMore, setShowLoadMore] = useState(false)
+  const [showLoadMore, setShowLoadMore] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -54,19 +54,18 @@ export default function Thumbnail({
   useEffect(() => {
     const inter = setInterval(() => {
       if (progressIndex === 1 || progressIndex === 2) {
-        const hasVertical = commentRef.current.scrollHeight > commentRef.current.clientHeight
-        setShowLoadMore(hasVertical)
+        const hasVertical =
+          commentRef.current.scrollHeight > commentRef.current.clientHeight;
+        setShowLoadMore(hasVertical);
       } else {
-        setShowLoadMore(false)
+        setShowLoadMore(false);
       }
-    }, 500)
+    }, 500);
 
     return () => {
-      clearInterval(inter)
-    }
-  }, [progressIndex])
-
-
+      clearInterval(inter);
+    };
+  }, [progressIndex]);
 
   if (!data) {
     return;
@@ -102,7 +101,7 @@ export default function Thumbnail({
             ></div>
             <div
               onClick={() => {
-                setShowLoadMore(false)
+                setShowLoadMore(false);
                 setProgressIndex(1);
               }}
               className={[
@@ -112,7 +111,7 @@ export default function Thumbnail({
             ></div>
             <div
               onClick={() => {
-                setShowLoadMore(false)
+                setShowLoadMore(false);
                 setProgressIndex(2);
               }}
               className={[
@@ -149,8 +148,8 @@ export default function Thumbnail({
                 usePanel={false}
               />
             </div>
-            {
-              showLoadMore && <LoadMore
+            {showLoadMore && (
+              <LoadMore
                 onClick={() => {
                   // console.log(commentRef)
                   // setLoadCommentNum(loadCommentNum + 1)
@@ -163,7 +162,7 @@ export default function Thumbnail({
                   }
                 }}
               />
-            }
+            )}
           </div>
         )}
 
@@ -174,8 +173,8 @@ export default function Thumbnail({
             <div className={styles.commentBox} ref={commentRef}>
               {data.status === 0 ? <PreUser token={data} /> : <Holder />}
             </div>
-            {
-              showLoadMore && <LoadMore
+            {showLoadMore && (
+              <LoadMore
                 onClick={() => {
                   console.log(commentRef);
                   if (commentRef.current) {
@@ -187,7 +186,7 @@ export default function Thumbnail({
                   }
                 }}
               />
-            }
+            )}
           </div>
         )}
 

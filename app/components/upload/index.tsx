@@ -29,7 +29,7 @@ export default function Upload({
   setFileList: setDefaultFileList,
   accept = "image/*",
   type,
-  percent = 1.5,
+  percent = 1.5
 }: Props) {
   const [isUplaod, setIsUpload] = useState(false);
   const [fileList, setFileList] = useState<any>(defaultFileList || []);
@@ -37,7 +37,12 @@ export default function Upload({
 
   const uploadImg = useCallback(async (file: File) => {
     setIsUpload(true);
-    const url = await upload(file.name, file, (imgReg.test(file.name) && !svgReg.test(file.name)), percent);
+    const url = await upload(
+      file.name,
+      file,
+      imgReg.test(file.name) && !svgReg.test(file.name),
+      percent
+    );
     setTimeout(() => {
       setIsUpload(false);
     }, 1000);
@@ -104,7 +109,7 @@ export default function Upload({
         <>
           {fileType === "image" && (
             <div
-              className={`${StyleMaps[type][0]} ${styles.Center}`}
+              className={`${StyleMaps[type][0]} ${styles.Center} button`}
               onClick={() => {
                 onUpload();
               }}

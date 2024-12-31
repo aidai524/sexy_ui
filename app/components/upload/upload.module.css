@@ -21,15 +21,17 @@
   border-radius: 50%;
   border: 1px dashed #9290b1;
   box-sizing: border-box;
-  background-color: #21252e;
   cursor: pointer;
+  background-color: #00000029;
 }
 
 .Token {
-  width: 85px;
-  height: 85px;
-  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
   cursor: pointer;
+  border: 1px dashed #9290b1;
+  background-color: #00000029;
 }
 
 .Banner {

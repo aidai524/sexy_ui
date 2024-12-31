@@ -12,7 +12,8 @@ import { useEffect, useCallback, useState } from "react";
 import useNotice from "../../hooks/use-notice";
 import {
   getAuthorizationByLocalAndServer,
-  initAuthorization
+  initAuthorization,
+  logOut
 } from "@/app/utils";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
@@ -25,7 +26,7 @@ export default function Layout(props: any) {
   const userStore: any = useUser();
   const configStore: any = useConfig();
   const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
-  const { userInfo, onQueryInfo } = useUserInfo(address);
+  const { userInfo, onQueryInfo, setUserInfo } = useUserInfo(address);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const searchParams = useSearchParams();
   const codeStore: any = useCodeStore();
@@ -79,6 +80,14 @@ export default function Layout(props: any) {
     }
   }, [address]);
 
+  const logout = useCallback(async () => {
+    setUserInfo(undefined);
+    userStore.set({
+      userInfo: null
+    });
+    logOut();
+  }, [address]);
+
   useEffect(() => {
     if (!address) {
       return;
@@ -115,7 +124,8 @@ export default function Layout(props: any) {
         address,
         onQueryInfo,
         showLoginModal,
-        setShowLoginModal
+        setShowLoginModal,
+        logout
       }}
     />
   );

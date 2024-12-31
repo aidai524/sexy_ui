@@ -7,6 +7,7 @@ import NextButton from "./next-button";
 import TokenCardActions from "../main/token-card-actions";
 import CreateButton from "../main/actions-bar/create-button";
 import LaunchingActions from "@/app/components/action/launching";
+import LaunchedActions from "@/app/components/action/launched";
 import PointsLabel from "@/app/components/points-label";
 import Empty from "@/app/components/empty/prelaunch";
 import { shareToX } from "@/app/utils/share";
@@ -18,7 +19,7 @@ import {
 } from "@/app/components/timesLike/ActionTrigger";
 import { mapDataToProject } from "@/app/utils/mapTo";
 
-export default function Fullscreen({ list = [], getnext, onExit }: any) {
+export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
   const swaperRef = useRef<any>();
   const [index, setIndex] = useState(0);
 
@@ -85,23 +86,37 @@ export default function Fullscreen({ list = [], getnext, onExit }: any) {
                 }}
               />
               <TokenCardActions token={token} height={620} />
-              <LaunchingActions
-                token={token}
-                onLike={async () => {
-                  await actionLikeTrigger(list[index]);
-                }}
-                onHate={async () => {
-                  await actionHateTrigger(list[index]);
-                }}
-                onSuperLike={() => {}}
-                onBoost={() => {}}
-                style={{
-                  position: "absolute",
-                  gap: 14,
-                  bottom: 0,
-                  padding: "0px 30px"
-                }}
-              />
+              {token &&
+                (token.status === 0 ? (
+                  <LaunchingActions
+                    token={token}
+                    onLike={async () => {
+                      await actionLikeTrigger(list[index]);
+                    }}
+                    onHate={async () => {
+                      await actionHateTrigger(list[index]);
+                    }}
+                    onSuperLike={() => {}}
+                    onBoost={() => {}}
+                    style={{
+                      position: "absolute",
+                      gap: 14,
+                      bottom: 0,
+                      padding: "0px 30px"
+                    }}
+                  />
+                ) : (
+                  <LaunchedActions
+                    data={token}
+                    from="laptop"
+                    style={{
+                      position: "absolute",
+                      gap: 14,
+                      bottom: 0,
+                      padding: "0px 30px"
+                    }}
+                  />
+                ))}
             </div>
           ) : (
             <img src={item?.icon} className={styles.Item} key={i} />
@@ -145,7 +160,7 @@ export default function Fullscreen({ list = [], getnext, onExit }: any) {
       </div>
       {index === list.length - 1 && (
         <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
-          <Empty />
+          <Empty type={type} />
         </div>
       )}
     </motion.div>

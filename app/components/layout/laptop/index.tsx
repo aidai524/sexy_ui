@@ -28,7 +28,8 @@ export default function Laptop({
   address,
   onQueryInfo,
   showLoginModal,
-  setShowLoginModal
+  setShowLoginModal,
+  logout
 }: any) {
   const pathname = usePathname();
 
@@ -39,9 +40,14 @@ export default function Laptop({
       }}
     >
       <div className={styles.Container}>
-        <User userInfo={userInfo} address={address} onQueryInfo={onQueryInfo} />
+        <User
+          userInfo={userInfo}
+          address={address}
+          onQueryInfo={onQueryInfo}
+          logout={logout}
+        />
         <div className={styles.Content}>
-          <Header />
+          <Header logout={logout} />
           <div className={styles.ContentInner}>
             {pathname === "/" && <Main address={address} userInfo={userInfo} />}
             {pathname === "/create" && <CreatePage />}

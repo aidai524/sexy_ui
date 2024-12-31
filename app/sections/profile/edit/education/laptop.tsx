@@ -9,12 +9,13 @@ export default function Laptop({ open, onClose, onSelect }: any) {
       onClose();
     };
 
-    document.addEventListener("click", close);
+    document.body.addEventListener("click", close);
 
     return () => {
-      document.removeEventListener("click", close);
+      document.body.removeEventListener("click", close);
     };
   }, []);
+
   return (
     open && (
       <motion.div
@@ -25,10 +26,6 @@ export default function Laptop({ open, onClose, onSelect }: any) {
           opacity: 1
         }}
         className={styles.Container}
-        onClick={(ev) => {
-          ev.stopPropagation();
-          ev.nativeEvent.stopImmediatePropagation();
-        }}
       >
         {options.map((option) => (
           <div

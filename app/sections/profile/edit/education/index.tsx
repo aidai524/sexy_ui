@@ -15,7 +15,7 @@ export default memo(function Education({
   const { isMobile } = useUserAgent();
   const [showPanel, setShowPanel] = useState(false);
 
-  const onTrigger = async () => {
+  const onTrigger = async (ev: any) => {
     if (isMobile) {
       const value = await Picker.prompt({
         columns: [options],
@@ -31,35 +31,39 @@ export default memo(function Education({
         setEducation("");
       }
     } else {
+      ev.stopPropagation();
+      ev.nativeEvent.stopImmediatePropagation();
       setShowPanel(true);
     }
   };
   return (
-    <div
-      onClick={onTrigger}
-      className={styles.picker}
-      style={{ ...inputStyle, position: "relative" }}
-    >
-      {education ? (
-        <div className={styles.pickerValue}>{education}</div>
-      ) : (
-        <div className={styles.pickerTitle}>Select</div>
-      )}
+    <div style={{ position: "relative" }}>
+      <div
+        onClick={onTrigger}
+        className={`${styles.picker} button`}
+        style={{ ...inputStyle }}
+      >
+        {education ? (
+          <div className={styles.pickerValue}>{education}</div>
+        ) : (
+          <div className={styles.pickerTitle}>Select</div>
+        )}
 
-      <div>
-        <svg
-          width="16"
-          height="10"
-          viewBox="0 0 16 10"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M15.0711 1.07107L8 8.14214L0.928932 1.07107"
-            stroke="white"
-            strokeWidth="2"
-          />
-        </svg>
+        <div>
+          <svg
+            width="16"
+            height="10"
+            viewBox="0 0 16 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15.0711 1.07107L8 8.14214L0.928932 1.07107"
+              stroke="white"
+              strokeWidth="2"
+            />
+          </svg>
+        </div>
       </div>
       <Laptop
         open={showPanel}

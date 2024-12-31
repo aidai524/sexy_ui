@@ -9,7 +9,7 @@ import Big from "big.js";
 import { useEffect, useState } from "react";
 import { useConnection } from "@solana/wallet-adapter-react";
 
-export default function Info() {
+export default function Info({ loginOut }: any) {
   const { wallet, publicKey, disconnect } = useWallet();
   const [expand, setExpand] = useState(false);
   const [solBalance, setSolBalance] = useState("0");
@@ -26,13 +26,28 @@ export default function Info() {
       }
     });
   }, [publicKey, connection]);
+
+  useEffect(() => {
+    const close = () => {
+      setExpand(false);
+    };
+
+    document.body.addEventListener("click", close);
+
+    return () => {
+      document.body.removeEventListener("click", close);
+    };
+  }, []);
+
   return wallet ? (
     <>
       <div className={`${styles.Container}`}>
         <div
           className={`${styles.Box} button`}
-          onClick={() => {
+          onClick={(ev) => {
             setExpand(!expand);
+            ev.stopPropagation();
+            ev.nativeEvent.stopImmediatePropagation();
           }}
         >
           <img src={wallet.adapter.icon} className={styles.Logo} />
@@ -82,6 +97,7 @@ export default function Info() {
               className={`${styles.Disconnect} button`}
               onClick={() => {
                 disconnect();
+                loginOut?.();
               }}
             >
               <svg
