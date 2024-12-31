@@ -33,7 +33,9 @@ export default function Layout(props: any) {
   const pathname = usePathname();
 
   if (codeStore.a !== CODE && pathname !== "/") {
-    redirect("/");
+    if (!process.env.NEXT_PUBLIC_BEN_DEV) {
+      redirect("/");
+    }
   }
 
   const { getConfig } = useTokenTrade({

@@ -40,7 +40,7 @@ export default function Tabs({
       )
     },
     {
-      name: "Flip",
+      name: "Flipped",
       content: (
         <Created
           address={address}

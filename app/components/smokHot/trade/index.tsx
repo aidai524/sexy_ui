@@ -110,7 +110,7 @@ export default function Trade({
                   const inputNum = new Big(inputVal).mul(10 ** 9).toFixed(0);
                   await prePaid(inputNum, false);
                   setIsLoading(false);
-                  success("Smoke like success");
+                  success("Flip success");
 
                   onSuccess && onSuccess();
                 }
