@@ -5,7 +5,7 @@ import Holder from "@/app/components/holder";
 import styles from "./index.module.css";
 import { useState } from "react";
 
-const BUTTONS = ["Img", "Discussion", "Founders"];
+const BUTTONS = ["Img", "Discussion", "Holders"];
 export default function TokenCardActions({ token, height }: any) {
   const [currentTab, setCurrentTab] = useState("Img");
   return (
