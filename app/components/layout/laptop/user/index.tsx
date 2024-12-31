@@ -82,6 +82,9 @@ export default function User({ address, userInfo, onQueryInfo, logout }: any) {
         onClose={() => {
           setFollowModalType("");
         }}
+        onRefresh={() => {
+          onQueryInfo();
+        }}
         type={followModalType}
       />
       <VipModal

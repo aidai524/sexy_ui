@@ -35,7 +35,7 @@ export default function Create({
   setShowSuccessModal
 }: any) {
   const { tokenName, tokenSymbol, tokenUri } = token;
-  const { updateUserInfo } = useLaptop();
+  const { updateInfo } = useLaptop();
   const [infoData, setInfoData] = useState<Project>({
     tokenName: tokenName,
     ticker: data.ticker,
@@ -187,7 +187,7 @@ export default function Create({
                 if (isSuccess) {
                   onHide();
                   setShowSuccessModal(true);
-                  updateUserInfo?.();
+                  updateInfo?.("create");
                 }
 
                 setIsLoading(false);

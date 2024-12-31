@@ -68,13 +68,6 @@
   flex-wrap: nowrap;
 }
 
-.NextButton {
-  position: absolute;
-  right: 0px;
-  top: calc(50% - 75px);
-  z-index: 52;
-}
-
 .Item {
   width: 216px;
   height: 319px;

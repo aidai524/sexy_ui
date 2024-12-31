@@ -161,7 +161,7 @@ export default function CommentComp({
                     cy="12"
                     r="12"
                     fill="#888197"
-                    fill-opacity="0.22"
+                    fillOpacity="0.22"
                   />
                 </g>
                 <path
@@ -184,9 +184,9 @@ export default function CommentComp({
                     width="44"
                     height="44"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
                     <feComposite
                       in2="SourceAlpha"

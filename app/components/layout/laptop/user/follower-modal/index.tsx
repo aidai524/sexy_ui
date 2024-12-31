@@ -4,6 +4,8 @@ import FollowerList from "@/app/sections/profile/follower/component/followerList
 import styles from "./index.module.css";
 import { useMemo, useState } from "react";
 import useFollowList from "@/app/sections/profile/hooks/useFollowList";
+import { useAccount } from "@/app/hooks/useAccount";
+import { formatAddress } from "@/app/utils";
 
 export default function FollowerModal({
   address,
@@ -14,7 +16,7 @@ export default function FollowerModal({
 }: any) {
   const [searchVal, setSearchVal] = useState("");
   const [refresh, setRefresh] = useState(0);
-
+  const { address: walletAddress } = useAccount();
   const followerType = useMemo(() => (type === "following" ? 2 : 1), [type]);
 
   const { list, userInfo, setList, isLoading, hasMore, loadMore } =
@@ -28,6 +30,18 @@ export default function FollowerModal({
     if (!list?.length) return [];
     return list.filter((item: any) => item.name.includes(searchVal));
   }, [list, type]);
+
+  const title = useMemo(() => {
+    let prev = "";
+    if (walletAddress === address) {
+      prev = "My";
+    } else {
+      prev = `${userInfo?.name || formatAddress(address)}'s`;
+    }
+    return `${prev} ${type === "following" ? `Following` : `Followers`} (${
+      list?.length || 0
+    })`;
+  }, [type, list, walletAddress, userInfo, address]);
   return (
     <Modal
       open={open}
@@ -39,9 +53,7 @@ export default function FollowerModal({
       }}
     >
       <div className={styles.Container}>
-        <div className={styles.Title}>
-          {list?.length || 0} {type === "following" ? `Following` : `Followers`}
-        </div>
+        <div className={styles.Title}>{title}</div>
         <div className={styles.InputContainer}>
           <SearchIcon />
           <input
@@ -59,7 +71,7 @@ export default function FollowerModal({
               userInfo,
               followerType: followerType,
               onAction() {
-                onRefresh();
+                onRefresh?.();
                 setRefresh(refresh + 1);
               },
               setList,
@@ -70,7 +82,7 @@ export default function FollowerModal({
                 history.pushState(
                   { page: "/profile/user" },
                   "Profile",
-                  "/profile/user?address=" + item.address
+                  "/profile/user?account=" + item.address
                 );
                 onClose();
               }

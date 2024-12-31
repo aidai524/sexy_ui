@@ -25,20 +25,17 @@ export default function Likes({ data }: { data: Project }) {
             </div>
             <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
               <SuperLikeIcon />
-              <span className={styles.tips}>
-                Flipped
-              </span>
+              <span className={styles.tips}>Flipped</span>
               <span className={styles.likesNums}>{data.prePaid}</span>
             </div>
           </>
         )}
 
-        {
-          data.status !== 0 && <div className={[styles.holder, styles.likeCustom].join(" ")}>
+        {data.status !== 0 && (
+          <div className={[styles.holder, styles.likeCustom].join(" ")}>
             <span className={styles.likesNums}>Holders 0</span>
           </div>
-        }
-
+        )}
       </div>
 
       <div
@@ -61,7 +58,7 @@ export default function Likes({ data }: { data: Project }) {
           xmlns="http://www.w3.org/2000/svg"
         >
           <g filter="url(#filter0_b_4443_336)">
-            <circle cx="20" cy="20" r="20" fill="black" fill-opacity="0.4" />
+            <circle cx="20" cy="20" r="20" fill="black" fillOpacity="0.4" />
           </g>
           <circle
             cx="25.7727"
@@ -91,9 +88,9 @@ export default function Likes({ data }: { data: Project }) {
               width="60"
               height="60"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
               <feComposite
                 in2="SourceAlpha"
@@ -126,7 +123,7 @@ function LikeIcon() {
       <path
         d="M3.4122 0C1.5277 0 0 1.48403 0 3.31465C0 6.6293 4.0326 9.64262 6.20401 10.3436C8.37541 9.64262 12.408 6.6293 12.408 3.31465C12.408 1.48403 10.8803 0 8.99581 0C7.84177 0 6.82152 0.55653 6.20401 1.40837C5.58649 0.55653 4.56624 0 3.4122 0Z"
         fill="white"
-        fill-opacity="0.5"
+        fillOpacity="0.5"
       />
       <path
         d="M4.653 3.10349C4.653 3.10349 0 1.48458 0 3.31521C0 6.62986 4.0326 9.64317 6.20401 10.3441C8.37541 9.64317 12.408 6.62986 12.408 3.31521C9.30601 4.65489 6.72101 3.62067 4.653 3.10349Z"
@@ -148,7 +145,7 @@ function LikeIconEmpty() {
       <path
         d="M4.02402 0.903809C2.13951 0.903809 0.611816 2.38784 0.611816 4.21846C0.611816 7.53311 4.64442 10.5464 6.81582 11.2474C8.98722 10.5464 13.0198 7.53311 13.0198 4.21846C13.0198 2.38784 11.4921 0.903809 9.60762 0.903809C8.45359 0.903809 7.43334 1.46034 6.81582 2.31217C6.19831 1.46034 5.17806 0.903809 4.02402 0.903809Z"
         fill="white"
-        fill-opacity="0.5"
+        fillOpacity="0.5"
       />
     </svg>
   );

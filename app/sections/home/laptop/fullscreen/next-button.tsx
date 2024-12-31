@@ -1,6 +1,4 @@
-import styles from "./index.module.css";
-
-export default function NextButton({ onClick }: any) {
+export default function NextButton({ onClick, style = {} }: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,8 +6,15 @@ export default function NextButton({ onClick }: any) {
       height="150"
       viewBox="0 0 40 150"
       fill="none"
-      className={`${styles.NextButton} button`}
+      className="button"
       onClick={onClick}
+      style={{
+        position: "absolute",
+        right: 0,
+        top: "calc(50% - 75px)",
+        zIndex: 52,
+        ...style
+      }}
     >
       <path
         d="M0 20C0 8.9543 8.95431 0 20 0H40V150H20C8.95431 150 0 141.046 0 130V20Z"

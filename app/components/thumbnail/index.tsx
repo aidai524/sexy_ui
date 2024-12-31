@@ -230,7 +230,7 @@ function Arrow() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_b_60_3660)">
-        <circle cx="16" cy="16" r="16" fill="black" fill-opacity="0.4" />
+        <circle cx="16" cy="16" r="16" fill="black" fillOpacity="0.4" />
       </g>
       <path
         d="M9 13L15.5 19L22 13"
@@ -246,9 +246,9 @@ function Arrow() {
           width="52"
           height="52"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
           <feComposite
             in2="SourceAlpha"
@@ -284,7 +284,7 @@ function TopArrow() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <g filter="url(#filter0_b_1_1274)">
-          <circle cx="20" cy="20" r="20" fill="black" fill-opacity="0.4" />
+          <circle cx="20" cy="20" r="20" fill="black" fillOpacity="0.4" />
         </g>
         <path
           d="M14 22L20.5 16L27 22"
@@ -300,9 +300,9 @@ function TopArrow() {
             width="60"
             height="60"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
             <feComposite
               in2="SourceAlpha"
@@ -357,7 +357,7 @@ export function Avatar({
             xmlns="http://www.w3.org/2000/svg"
           >
             <g filter="url(#filter0_b_610_8930)">
-              <circle cx="16" cy="16" r="16" fill="black" fill-opacity="0.4" />
+              <circle cx="16" cy="16" r="16" fill="black" fillOpacity="0.4" />
             </g>
             <path
               d="M9 13L15.5 19L22 13"
@@ -373,9 +373,9 @@ export function Avatar({
                 width="52"
                 height="52"
                 filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
+                colorInterpolationFilters="sRGB"
               >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
                 <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
                 <feComposite
                   in2="SourceAlpha"

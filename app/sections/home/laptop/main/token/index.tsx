@@ -14,7 +14,9 @@ import {
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
 import { useState } from "react";
+import { useLaptop } from "@/app/context/laptop";
 import Loading from "@/app/components/icons/loading";
+import NextButton from "../../fullscreen/next-button";
 
 export default function Token({
   infoData2,
@@ -25,6 +27,7 @@ export default function Token({
   isLoading
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
+  const { updateInfo } = useLaptop();
 
   const next = () => {
     if (from === "detail") return;
@@ -33,9 +36,10 @@ export default function Token({
     }, 500);
   };
 
-  const like = () => {
+  const like = async () => {
     next();
-    actionLikeTrigger(infoData2);
+    await actionLikeTrigger(infoData2);
+    updateInfo("liked");
   };
 
   const hate = () => {
@@ -107,9 +111,13 @@ export default function Token({
         tokenInfo={infoData2}
         onLike={like}
         onHate={hate}
-        onSuperLike={next}
+        onSuperLike={() => {
+          next();
+          updateInfo("flip");
+        }}
         onBoost={next}
       />
+      <NextButton onClick={hate} style={{}} />
     </>
   );
 }

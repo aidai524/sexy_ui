@@ -25,13 +25,7 @@ export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
         </div>
       </div>
       <div className={styles.userName}>
-        <div>
-          {userInfo?.name
-            ? userInfo?.name
-            : isMobile
-            ? formatAddress(userInfo.address)
-            : userInfo.address}
-        </div>
+        <div>{userInfo?.name || formatAddress(userInfo.address)}</div>
         {/* <Vip {...{userInfo, address, onVipShow}}/> */}
       </div>
     </>
