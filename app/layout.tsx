@@ -13,6 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   useEffect(() => {
+    if (!window.navigator.userAgent.includes("Mobile")) return;
     window.AddToHomeScreenInstance = window?.AddToHomeScreen?.({
       appName: "FlipN",
       appNameDisplay: "standalone",
