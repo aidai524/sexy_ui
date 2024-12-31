@@ -44,7 +44,9 @@ export default function User({ address, userInfo, onQueryInfo, logout }: any) {
               marginTop: "20px"
             }}
           />
-          {address && <Address address={address} logout={logout} />}
+          {address && (
+            <Address address={address} logout={logout} isFull={true} />
+          )}
           {/* <HotBoost
             onMoreClick={() => {
               setOpenVipModal(true);

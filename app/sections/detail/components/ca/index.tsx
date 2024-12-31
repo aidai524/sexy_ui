@@ -23,7 +23,7 @@ export default function CA({
     >
       <div className={styles.marketCap}>
         <div className={styles.mcTitle}>Market cap:</div>
-        {data.status === 1 && data.DApp === "sexy" ? (
+        {data?.status === 1 && data.DApp === "sexy" ? (
           <div className={styles.mcAmount}>{mc && simplifyNum(Number(mc))}</div>
         ) : (
           <div className={styles.mcAmount}>-</div>
@@ -33,7 +33,7 @@ export default function CA({
         <div className={styles.caAddress}>
           <div className={styles.caTtitle}>CA:</div>
           <div className={styles.address}>
-            {data.address
+            {data?.address
               ? isMobile
                 ? formatAddress(data.address)
                 : data.address
@@ -42,7 +42,8 @@ export default function CA({
         </div>
 
         <div className={styles.copy} onClick={() => {}}>
-          <Copyed value={data.address as string} />
+          {data?.address && <Copyed value={data.address as string} />}
+
           {/* <svg
             width="16"
             height="16"

@@ -30,7 +30,7 @@ export default function Token({
     if (from === "detail") return;
     setTimeout(() => {
       getnext();
-    }, 1000);
+    }, 500);
   };
 
   const like = () => {

@@ -6,7 +6,10 @@ export default function Bg({ banner }: any) {
       {!banner ? (
         <div className={styles.Flip} />
       ) : (
-        <img src={banner} className={styles.Banner} />
+        <>
+          <img src={banner} className={styles.Banner} />
+          <div className={styles.BannerMask} />
+        </>
       )}
     </div>
   );
