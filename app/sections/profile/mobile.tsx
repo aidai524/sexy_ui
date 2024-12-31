@@ -53,7 +53,7 @@ export default function Profile({
               <Back style={{ left: 0, top: 0 }} />
             </div>
 
-            {
+            <div className={styles.FollowBtnBox}>
               <FollowBtn
                 address={address}
                 isFollower={isFollower}
@@ -65,7 +65,7 @@ export default function Profile({
                   });
                 }}
               />
-            }
+            </div>
           </div>
         ) : null}
         <div className={styles.avatarContent} style={backgroundImgStyle}>

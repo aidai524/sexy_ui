@@ -93,6 +93,7 @@ div.tabBar {
 }
 .CreateIconLink {
   position: relative;
+  display: block;
 }
 
 

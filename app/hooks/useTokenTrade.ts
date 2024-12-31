@@ -305,6 +305,61 @@ export function useTokenTrade({
 
     }, [programId, state, pool, tokenInfo])
 
+    const buyToken = useCallback(async (outputAmount: string | number, maxWsolAmount: string | number,) => {
+        const keysAndIns = await getKeys()
+
+        if (!keysAndIns) {
+            return
+        }
+
+        const { keys, instructions, referral } = keysAndIns
+
+        console.log(keys)
+
+        const instruction1 = SystemProgram.transfer({
+            fromPubkey: walletProvider.publicKey!,
+            toPubkey: keys.userWsolAccount,
+            lamports: Number(maxWsolAmount),
+        })
+        const instruction2 = createSyncNativeInstruction(keys.userWsolAccount, TOKEN_PROGRAM_ID)
+
+        const transaction = new Transaction();
+
+        const program = new Program<any>(idl, programId, walletProvider as any);
+
+        console.log('maxWsolAmount:', maxWsolAmount, outputAmount)
+
+        const buyInstruction = await program.methods.buyToken(
+            {
+                solAmount: new anchor.BN(maxWsolAmount),
+                maxPrice: new anchor.BN(outputAmount),
+                referralParam: {
+                    recommender: referral,
+                    proxy: keys.proxySolAccount
+                }
+            }
+        ).accounts(keys).instruction()
+
+        instructions.forEach((ins) => {
+            ins && transaction.add(ins)
+        })
+
+        transaction.add(instruction1).add(instruction2).add(buyInstruction)
+
+        const confirmationStrategy: any = {
+            skipPreflight: true,
+            // preflightCommitment: 'processed',
+        };
+
+        console.log('transaction:', transaction)
+
+        const hash = await walletProvider.signAndSendTransaction(transaction, confirmationStrategy)
+
+        console.log('hash:', hash)
+
+        return hash
+    }, [connection, walletProvider, programId])
+
     const buyTokenWithFixedOutput = useCallback(async (outputAmount: string | number, maxWsolAmount: string | number,) => {
         const keysAndIns = await getKeys()
 
@@ -806,6 +861,7 @@ export function useTokenTrade({
 
     return {
         getRate,
+        buyToken,
         buyTokenWithFixedOutput,
         sellToken,
         createToken,
