@@ -26,13 +26,28 @@ export default function Info({ loginOut }: any) {
       }
     });
   }, [publicKey, connection]);
+
+  useEffect(() => {
+    const close = () => {
+      setExpand(false);
+    };
+
+    document.body.addEventListener("click", close);
+
+    return () => {
+      document.body.removeEventListener("click", close);
+    };
+  }, []);
+
   return wallet ? (
     <>
       <div className={`${styles.Container}`}>
         <div
           className={`${styles.Box} button`}
-          onClick={() => {
+          onClick={(ev) => {
             setExpand(!expand);
+            ev.stopPropagation();
+            ev.nativeEvent.stopImmediatePropagation();
           }}
         >
           <img src={wallet.adapter.icon} className={styles.Logo} />
