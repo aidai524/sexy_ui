@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useUserAgent } from '@/app/context/user-agent';
-import Mobile from './mobile';
-import Laptop from './laptop';
-import BuyModal from '@/app/sections/trends/components/buy';
-import { useTrade } from '@/app/sections/trends/hooks/trade';
-import { useState } from 'react';
-import { Trend } from '@/app/sections/trends/hooks';
+import { useUserAgent } from "@/app/context/user-agent";
+import Mobile from "./mobile";
+import Laptop from "./laptop";
+import BuyModal from "@/app/sections/trends/components/buy";
+import { useTrade } from "@/app/sections/trends/hooks/trade";
+import { useState } from "react";
+import { Trend } from "@/app/sections/trends/hooks";
 
 export default function Trends() {
   const { isMobile } = useUserAgent();
@@ -27,7 +27,11 @@ export default function Trends() {
 
   return (
     <>
-      {isMobile ? <Mobile handleBuy={handleBuy} /> : <Laptop handleBuy={handleBuy} />}
+      {isMobile ? (
+        <Mobile handleBuy={handleBuy} />
+      ) : (
+        <Laptop handleBuy={handleBuy} />
+      )}
       <BuyModal
         visible={visible}
         tradeToken={tradeToken}

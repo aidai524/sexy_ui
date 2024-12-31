@@ -33,9 +33,7 @@ export function useUserAgent() {
   const context = useContext(UserAgentContext);
 
   if (!context) {
-    throw new Error(
-      "useWalletType must be used within a WalletTypeContextProvider"
-    );
+    throw new Error("");
   }
 
   return context;

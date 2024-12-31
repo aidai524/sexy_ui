@@ -5,7 +5,6 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { formatAddress } from "@/app/utils";
 import { defaultAvatar } from "@/app/utils/config";
 
-
 export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
   const { address } = useAccount();
 
@@ -20,7 +19,7 @@ export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
           className={styles.avatarImg}
           src={userInfo?.icon || defaultAvatar}
         />
-        <div className={styles.pencil} onClick={onEdit}>
+        <div className={`${styles.pencil} button`} onClick={onEdit}>
           <Pencil />
         </div>
       </div>

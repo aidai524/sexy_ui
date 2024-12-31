@@ -19,7 +19,7 @@ export default function SmokPanel({ show, token, onHide }: Props) {
       mainStyle={{ width: 502, border: "none" }}
     >
       <div className={styles.Container}>
-        <img className={styles.Img} src="/img/home/smokeHotLogo.svg" />
+        <img className={styles.Img} src="/img/home/flipLogo.png" />
 
         <Trade
           modalShow={show}

@@ -28,7 +28,7 @@ export default function useData(launchType: string) {
 
         if (res.code !== 0 || !res.data?.list) {
           setisLoading(false);
-          return
+          return;
         }
         // res.data.list = []
         let _list: any = [];
@@ -37,22 +37,27 @@ export default function useData(launchType: string) {
 
           renderTwoSimple(res.data?.list);
         } else {
-          const newVals: any = {}
+          const newVals: any = {};
           if (listRef.current) {
             listRef.current.forEach((item: any) => {
-              newVals[item.id] = item
-            })
+              newVals[item.id] = item;
+            });
           }
 
           if (res.data.list) {
             res.data.list.forEach((item: any) => {
               if (!newVals[item.id]) {
-                newVals[item.id] = item
+                newVals[item.id] = item;
               }
-            })
+            });
           }
 
-          const mergedList = new Map([...(listRef.current || []), ...res.data.list].map(item => [item.id, item]))
+          const mergedList = new Map(
+            [...(listRef.current || []), ...res.data.list].map((item) => [
+              item.id,
+              item
+            ])
+          );
           _list = Object.values(newVals);
         }
 
@@ -63,7 +68,7 @@ export default function useData(launchType: string) {
         if (isInit) {
           setTimeout(() => {
             setisLoading(false);
-          }, 10)
+          }, 10);
         }
       }
     );
@@ -83,7 +88,7 @@ export default function useData(launchType: string) {
       const currentToken = list[1];
       setInfoData(mapDataToProject(currentToken));
     } else {
-      setInfoData(undefined)
+      setInfoData(undefined);
     }
   };
 
@@ -110,11 +115,11 @@ export default function useData(launchType: string) {
           // setRenderIndex(renderIndexRef.current);
           const currentToken = list[0];
           if (renderIndexRef.current === 0) {
-            setInfoData2(mapDataToProject(currentToken))
+            setInfoData2(mapDataToProject(currentToken));
             setInfoData(undefined);
           } else {
             setInfoData2(undefined);
-            setInfoData(mapDataToProject(currentToken))
+            setInfoData(mapDataToProject(currentToken));
           }
         }
       } else {
@@ -151,14 +156,19 @@ export default function useData(launchType: string) {
     let list = getAll(launchType);
 
     if (list && list.length > 0) {
-      if (launchType === 'preLaunch') {
+      if (launchType === "preLaunch") {
         list = list.filter((item: any) => {
-          if (item.status !== 0 || item.is_like || item.is_super_like || item.is_un_like) {
-            return false
+          if (
+            item.status !== 0 ||
+            item.is_like ||
+            item.is_super_like ||
+            item.is_un_like
+          ) {
+            return false;
           }
-          return true
-        })
-        list = list || []
+          return true;
+        });
+        list = list || [];
       }
     }
 
@@ -182,8 +192,7 @@ export default function useData(launchType: string) {
     } else {
       onQueryList(true);
     }
-
-  }, []);
+  }, [launchType]);
 
   return {
     infoData,

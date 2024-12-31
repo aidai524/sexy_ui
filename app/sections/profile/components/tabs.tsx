@@ -11,6 +11,7 @@ export default function Tabs({
   address,
   defaultIndex,
   tabContentStyle,
+  tabHeaderStyle,
   from,
   isOther,
   onTabChange
@@ -84,6 +85,7 @@ export default function Tabs({
       }}
       activeNode={activeNode}
       tabContentStyle={tabContentStyle}
+      tabHeaderStyle={tabHeaderStyle}
     />
   );
 }

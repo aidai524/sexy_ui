@@ -3,6 +3,7 @@ import styles from "./follow.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
 import List from "./list";
 import useFollowList from "../../../hooks/useFollowList";
+import { useRouter } from "next/navigation";
 
 interface Props {
   followerType: number;
@@ -18,6 +19,7 @@ export default function FollowerList({
   refresh
 }: Props) {
   const { isMobile } = useUserAgent();
+  const router = useRouter();
 
   const { list, userInfo, setList, isLoading, hasMore, loadMore } =
     useFollowList({
@@ -42,7 +44,10 @@ export default function FollowerList({
           setList,
           isLoading,
           loadMore,
-          hasMore
+          hasMore,
+          onItemClick(item: any) {
+            router.push("/profile/user?account=" + item.address);
+          }
         }}
       />
     </div>

@@ -6,6 +6,7 @@ import FollowerActions from "../components/follower-actions";
 import Tabs from "../components/tabs";
 import Address from "@/app/sections/profile/components/address";
 import FollowerModal from "@/app/components/layout/laptop/user/follower-modal";
+import { motion } from "framer-motion";
 import { useState } from "react";
 
 export default function Laptop({
@@ -24,7 +25,11 @@ export default function Laptop({
 }: any) {
   const [followModalType, setFollowModalType] = useState("");
   return (
-    <div className={styles.Container}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className={styles.Container}
+    >
       <div className={styles.Flip} />
       <div className={styles.BackWrapper}>
         <Back />
@@ -87,7 +92,12 @@ export default function Laptop({
             tabContentStyle={{
               padding: "0px 30px",
               height: "calc(100vh - 400px)",
-              overflowY: "auto"
+              overflowY: "auto",
+              flex: "0"
+            }}
+            tabHeaderStyle={{
+              flex: 0,
+              padding: "0px 16px"
             }}
           />
         </div>
@@ -100,6 +110,6 @@ export default function Laptop({
         }}
         type={followModalType}
       />
-    </div>
+    </motion.div>
   );
 }

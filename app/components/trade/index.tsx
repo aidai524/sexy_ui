@@ -17,8 +17,6 @@ export default function Trade({
   from,
   onClose
 }: Props) {
-  console.log('token:', token)
-
   return (
     <div className={styles.main}>
       {
@@ -44,14 +42,13 @@ export default function Trade({
       {
         token.status === 2 && <BuySellLaunched
           token={token}
-          initType={initType}
           from={from}
+          initType={initType}
           onClose={() => {
             onClose && onClose();
           }}
         />
       }
-
     </div>
   );
 }

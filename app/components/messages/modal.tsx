@@ -7,6 +7,7 @@ import styles from "./modal.module.css";
 import dayjs from "dayjs";
 import { useState, useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useRouter } from "next/navigation";
 import CircleLoading from "../icons/loading";
 
 export default function MessagesModal({
@@ -19,6 +20,7 @@ export default function MessagesModal({
   onNextPage
 }: any) {
   const { isMobile } = useUserAgent();
+
   const [currentTab, setCurrentTab] = useState("inform");
   const data = useMemo(
     () => (currentTab === "inform" ? list : feeds),
@@ -64,57 +66,65 @@ export default function MessagesModal({
 
 const Item = ({ item, isMobile }: any) => {
   const [expand, setExpand] = useState(false);
-  const [content, linkText, link] = useMemo(() => {
+  const router = useRouter();
+  const [content, linkText, link, pageName] = useMemo(() => {
     if (item.type === "follower") {
       return [
         "You have a new follower.",
         "Click to view their profile",
-        `/profile?account=${item.msg_id}`
+        `/profile?account=${item.msg_id}`,
+        "Profile"
       ];
     }
     if (item.type === "token_create") {
       return [
         `Congratulations, you have successfully created ${item.content_2} Token`,
         "Click to view Token details.",
-        `/detail?id=${item.msg_id}`
+        `/detail?id=${item.msg_id}`,
+        "Detail"
       ];
     }
     if (item.type === "token_launching") {
       return [
         `Congratulations, the ${item.content_2} Token you Flip has received a lot of user interest and has successfully entered the Launching stage.`,
         "Click to view Token details.",
-        `/detail?id=${item.msg_id}`
+        `/detail?id=${item.msg_id}`,
+        "Detail"
       ];
     }
     if (item.type === "token_launching_owner") {
       return [
         "Congratulations, you have successfully purchased a Boost privilege.",
         "Click to view your profile.",
-        "/profile"
+        "/profile",
+        "Profile"
       ];
     }
     if (item.type === "token_list") {
       return [
         `Congratulations, the ${item.content_2} Token you created has completed the launch and has been listed on [Orca/Raydium] Dex.`,
         "Click to view Token details.",
-        `/detail?id=${item.msg_id}`
+        `/detail?id=${item.msg_id}`,
+        "Detail"
       ];
     }
     if (item.type === "add_vip") {
       return [
         "Congratulations, you have become a prestigious FlipN VIP user.",
         "Click to view your profile.",
-        "/profile"
+        "/profile",
+        "Profile"
       ];
     }
     if (item.type === "add_boost") {
       return [
         "Congratulations, you have successfully purchased a Boost privilege.",
         "Click to view your profile.",
-        "/profile"
+        "/profile",
+        "Profile"
       ];
     }
-    return ["", "", ""];
+    return ["", "", "", ""];
   }, [item]);
   return (
     <motion.div
@@ -148,9 +158,20 @@ const Item = ({ item, isMobile }: any) => {
             <>
               <div className={styles.ItemDesc}>{content}</div>
               {linkText && link && (
-                <a className={styles.ItemLink} href={link}>
+                <button
+                  className={styles.ItemLink}
+                  onClick={() => {
+                    isMobile
+                      ? router.push(link)
+                      : history.pushState(
+                          { page: link.split("?")[0] },
+                          pageName,
+                          link
+                        );
+                  }}
+                >
                   {linkText}
-                </a>
+                </button>
               )}
             </>
           ) : (

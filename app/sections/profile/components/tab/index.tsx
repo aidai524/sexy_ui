@@ -9,6 +9,7 @@ export type Node = {
 interface Props {
   nodes: Node[];
   tabContentStyle?: any;
+  tabHeaderStyle?: any;
   activeNode?: string;
   onTabChange?: (nodeName: string) => void;
 }
@@ -17,6 +18,7 @@ export default function Tab({
   nodes,
   activeNode,
   tabContentStyle = {},
+  tabHeaderStyle = {},
   onTabChange
 }: Props) {
   const [tabIndex, setTabIndex] = useState(0);
@@ -50,6 +52,7 @@ export default function Tab({
                 ? [styles.tab, styles.active]
                 : [styles.tab]
               ).join(" ")}
+              style={tabHeaderStyle}
             >
               {node.name}
             </div>

@@ -11,9 +11,15 @@ export default function Header({ tab, userInfo }: any) {
       <div className={styles.Actions}>
         <PointsLabel id="layout-points-label" />
         <ConnectButton userInfo={userInfo} />
-        <a href="/mining" className="button" id="layout-mining">
+        <button
+          onClick={() => {
+            history.pushState({ page: "/mining" }, "Mining", "/mining");
+          }}
+          className="button"
+          id="layout-mining"
+        >
           <img src="/img/tabs/tab2-active.svg" />
-        </a>
+        </button>
         <Messages />
       </div>
     </div>

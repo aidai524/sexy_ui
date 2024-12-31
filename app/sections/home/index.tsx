@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import Mobile from "./mobile";
-import Laptop from "./laptop";
+import Laptop from "./laptop/main";
 import { useUserAgent } from "@/app/context/user-agent";
 
 export default memo(function Home(props: any) {

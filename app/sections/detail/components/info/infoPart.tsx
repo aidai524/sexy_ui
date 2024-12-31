@@ -34,11 +34,11 @@ export default function InfoPart({
   const userName = useMemo(() => {
     if (data.creater) {
       if (data.creater.name) {
-        return data.creater.name
+        return data.creater.name;
       }
 
       if (data.creater.address) {
-        return formatAddress(data.creater.address)
+        return formatAddress(data.creater.address);
       }
     }
 
@@ -52,7 +52,7 @@ export default function InfoPart({
     return;
   }
 
-  console.log('data:', data)
+  console.log("data:", data);
 
   return (
     <div>
@@ -78,7 +78,9 @@ export default function InfoPart({
             onClick={() => {
               router.push("/profile/user?account=" + data.account);
             }}
-            className={[styles.authorDesc, styles.authorDescEs].join(" ")}
+            className={[styles.authorDesc, styles.authorDescEs, "button"].join(
+              " "
+            )}
           >
             {userName}
           </div>
@@ -97,7 +99,9 @@ export default function InfoPart({
           </div>
         )}
         <div className={styles.author}>
-          <div className={styles.authorTitle}>{data.DApp === 'pump' ? 'Import time' : 'Create time'}:</div>
+          <div className={styles.authorTitle}>
+            {data.DApp === "pump" ? "Import time" : "Create time"}:
+          </div>
           <div className={styles.authorDesc}>
             {specialTime ? specialTime : timeAgo(data.time)}
           </div>
