@@ -5,7 +5,7 @@ import { useMessage } from "@/app/context/messageContext";
 import { fail } from "@/app/utils/toast";
 
 export default function Likes({ data }: { data: Project }) {
-  const { getShareImg } = useMessage()
+  const { getShareImg } = useMessage();
 
   return (
     <div className={styles.box}>
@@ -42,17 +42,21 @@ export default function Likes({ data }: { data: Project }) {
       <div
         className={styles.share}
         onClick={async () => {
-          const img = await getShareImg(data)
-          console.log('img:', img)
+          const img = await getShareImg(data);
+          console.log("img:", img);
 
           if (!img) {
-            fail('Share fail')
-            return
+            fail("Share fail");
+            return;
           }
 
           shareToX(
             data.tokenName,
-            `https://test.flipn.fun/api/twitter?tokenName=${encodeURIComponent(data.tokenName)}&about=${encodeURIComponent(data.about)}&imgUrl=${encodeURIComponent(img)}&tokenId=${data.id}`
+            `https://test.flipn.fun/api/twitter?tokenName=${encodeURIComponent(
+              data.tokenName
+            )}&about=${encodeURIComponent(
+              data.about
+            )}&imgUrl=${encodeURIComponent(img)}&tokenId=${data.id}`
           );
         }}
       >
@@ -71,20 +75,20 @@ export default function Likes({ data }: { data: Project }) {
             cy="13.8636"
             r="2.86364"
             stroke="white"
-            stroke-width="2"
+            strokeWidth="2"
           />
           <circle
             cx="25.7727"
             cy="26.1366"
             r="2.86364"
             stroke="white"
-            stroke-width="2"
+            strokeWidth="2"
           />
           <circle cx="13.0908" cy="20.0001" r="4.09091" fill="white" />
           <path
             d="M23.3181 15.0908L13.9091 19.9999L23.3181 24.909"
             stroke="white"
-            stroke-width="2"
+            strokeWidth="2"
           />
           <defs>
             <filter

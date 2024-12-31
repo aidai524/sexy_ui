@@ -66,7 +66,8 @@ export default function Laptop({
                   padding: "0px",
                   gap: "30px",
                   justifyContent: "start",
-                  marginTop: "10px"
+                  marginTop: "10px",
+                  width: 200
                 }}
               />
               {address && (
@@ -90,7 +91,7 @@ export default function Laptop({
             from="page"
             tabContentStyle={{
               padding: "0px 30px",
-              height: "calc(100vh - 400px)",
+              height: "calc(100vh - 430px)",
               overflowY: "auto",
               flex: "0"
             }}

@@ -9,7 +9,7 @@ import Big from "big.js";
 import { useEffect, useState } from "react";
 import { useConnection } from "@solana/wallet-adapter-react";
 
-export default function Info({ loginOut }: any) {
+export default function Info({ logout }: any) {
   const { wallet, publicKey, disconnect } = useWallet();
   const [expand, setExpand] = useState(false);
   const [solBalance, setSolBalance] = useState("0");
@@ -32,10 +32,10 @@ export default function Info({ loginOut }: any) {
       setExpand(false);
     };
 
-    document.body.addEventListener("click", close);
+    document.addEventListener("click", close);
 
     return () => {
-      document.body.removeEventListener("click", close);
+      document.removeEventListener("click", close);
     };
   }, []);
 
@@ -81,6 +81,10 @@ export default function Info({ loginOut }: any) {
               y: 0
             }}
             className={styles.Panel}
+            onClick={(ev) => {
+              ev.stopPropagation();
+              ev.nativeEvent.stopImmediatePropagation();
+            }}
           >
             <div className={styles.PanelTitle}>WALLET</div>
             <div className={styles.PanelAddressBox}>
@@ -95,9 +99,10 @@ export default function Info({ loginOut }: any) {
             </div>
             <button
               className={`${styles.Disconnect} button`}
-              onClick={() => {
+              onClick={(ev) => {
+                console.log("101");
                 disconnect();
-                loginOut?.();
+                logout?.();
               }}
             >
               <svg

@@ -1,6 +1,6 @@
 import Token from "../token";
 import Fullscreen from "../../fullscreen";
-import useData from "../../../hooks/use-data";
+import useData from "../../../hooks/use-data-laptop";
 import { useEffect, useMemo, useState } from "react";
 import { useFullScreen } from "@/app/store/use-full-screen";
 import { useSearchParams } from "next/navigation";
@@ -34,7 +34,7 @@ export default function Content() {
     if (fullScreenStore?.isFull) {
       setFullList(JSON.parse(JSON.stringify(list.current || [])));
     }
-  }, [list]);
+  }, [list, fullScreenStore?.isFull]);
 
   return (
     <div className={styles.Container}>
@@ -44,9 +44,11 @@ export default function Content() {
           getnext,
           type: tab,
           isLoading,
+          isFull: fullScreenStore.isFull,
           onOpenFull() {
             fullScreenStore.set({ isFull: true });
-          }
+          },
+          list
         }}
       />
       {fullScreenStore?.isFull && (

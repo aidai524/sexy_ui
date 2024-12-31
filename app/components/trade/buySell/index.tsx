@@ -460,18 +460,13 @@ export default function BuySell({ token, initType, onClose }: Props) {
                 if (activeIndex === 0) {
                   setIsLoading(true);
                   if (tokenType === 1) {
-                    hash = await buyToken(
-                      new Big(buyIn).toFixed(0),
-                      buyInSol,
-                    );
+                    hash = await buyToken(new Big(buyIn).toFixed(0), buyInSol);
                   } else {
                     hash = await buyTokenWithFixedOutput(
                       new Big(buyIn).toFixed(0),
                       buyInSol
                     );
                   }
-
-                  
                 } else if (activeIndex === 1) {
                   setIsLoading(true);
                   hash = await sellToken(sellOut, sellOutSol);
@@ -525,7 +520,6 @@ export default function BuySell({ token, initType, onClose }: Props) {
         slipData={slip}
         token={token}
         onSlipDataChange={(val: any) => {
-          console.log(val);
           setSlip(val);
         }}
         onHide={() => {

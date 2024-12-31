@@ -7,7 +7,7 @@ export default function Info() {
       viewBox="0 0 18 18"
       fill="none"
     >
-      <circle cx="9" cy="9" r="8.25" stroke="#6A7279" stroke-width="1.5" />
+      <circle cx="9" cy="9" r="8.25" stroke="#6A7279" strokeWidth="1.5" />
       <path
         fillRule="evenodd"
         clipRule="evenodd"

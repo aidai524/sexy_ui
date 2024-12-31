@@ -7,9 +7,6 @@ export function useLaptop() {
   const context = useContext(LaptopContext);
   const { isMobile } = useUserAgent();
 
-  if (!context) {
-    throw new Error("");
-  }
-  if (isMobile) return {};
+  if (isMobile || !context) return {};
   return context;
 }

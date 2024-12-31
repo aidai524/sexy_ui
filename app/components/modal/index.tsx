@@ -11,6 +11,7 @@ interface ModalProps {
   closeIcon?: React.ReactNode;
   style?: React.CSSProperties;
   mainStyle?: React.CSSProperties;
+  closeStyle?: React.CSSProperties;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -19,7 +20,8 @@ const Modal: React.FC<ModalProps> = ({
   children,
   closeIcon,
   style,
-  mainStyle
+  mainStyle,
+  closeStyle
 }) => {
   useEffect(() => {
     if (open) {
@@ -65,7 +67,11 @@ const Modal: React.FC<ModalProps> = ({
               }}
             >
               {closeIcon || onClose ? (
-                <button onClick={onClose} className={styles.CloseButton}>
+                <button
+                  onClick={onClose}
+                  className={styles.CloseButton}
+                  style={closeStyle}
+                >
                   <CloseIcon />
                 </button>
               ) : null}
