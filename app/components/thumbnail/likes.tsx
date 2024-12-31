@@ -40,7 +40,7 @@ export default function Likes({ data }: { data: Project }) {
       </div>
 
       <div
-        className={styles.share}
+        className={`${styles.share} button`}
         onClick={async () => {
           const img = await getShareImg(data);
           console.log("img:", img);
