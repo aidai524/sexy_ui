@@ -13,6 +13,7 @@ import Empty from "@/app/components/empty/prelaunch";
 import { shareToX } from "@/app/utils/share";
 import styles from "./index.module.css";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLaptop } from "@/app/context/laptop";
 import {
   actionHateTrigger,
   actionLikeTrigger
@@ -21,6 +22,7 @@ import { mapDataToProject } from "@/app/utils/mapTo";
 
 export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
   const swaperRef = useRef<any>();
+  const { updateInfo } = useLaptop();
   const [index, setIndex] = useState(0);
 
   const data = useMemo(() => {
@@ -97,12 +99,14 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
                     token={token}
                     onLike={async () => {
                       await actionLikeTrigger(list[index]);
+                      updateInfo("liked");
                     }}
                     onHate={async () => {
                       await actionHateTrigger(list[index]);
                     }}
                     onSuperLike={() => {
                       next();
+                      updateInfo("flip");
                     }}
                     onBoost={() => {
                       next();

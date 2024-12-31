@@ -3,6 +3,7 @@ import LoginModal from "@/app/components/loginModal";
 import User from "./user";
 import Header from "./header";
 import { usePathname } from "next/navigation";
+import useUpdateInfo from "./use-update-info";
 import dynamic from "next/dynamic";
 import Main from "@/app/sections/home/laptop/main";
 import { LaptopContext } from "@/app/context/laptop";
@@ -32,11 +33,12 @@ export default function Laptop({
   logout
 }: any) {
   const pathname = usePathname();
-
+  const updateInfo = useUpdateInfo();
   return (
     <LaptopContext.Provider
       value={{
-        updateUserInfo: onQueryInfo
+        updateUserInfo: onQueryInfo,
+        ...updateInfo
       }}
     >
       <div className={styles.Container}>

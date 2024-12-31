@@ -82,7 +82,7 @@ export default function FollowerModal({
                 history.pushState(
                   { page: "/profile/user" },
                   "Profile",
-                  "/profile/user?address=" + item.address
+                  "/profile/user?account=" + item.address
                 );
                 onClose();
               }

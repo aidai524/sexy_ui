@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
-
+import { useLaptop } from "@/app/context/laptop";
 export default function Tabs({
   showHot,
   address,
@@ -20,6 +20,12 @@ export default function Tabs({
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
   const { isMobile } = useUserAgent();
   const [tabIndex, setTabIndex] = useState(0);
+  const { likedListKey, flipListKey, createListKey } = useLaptop();
+
+  const activeIndex = useMemo(
+    () => (isMobile ? defaultIndex || 0 : tabIndex),
+    [defaultIndex, tabIndex]
+  );
 
   const tabs = [
     {
@@ -36,6 +42,8 @@ export default function Tabs({
           isOther={isOther}
           prepaidWithdrawDelayTime={prepaidDelayTime}
           from={from}
+          refresher={createListKey}
+          isCurrent={activeIndex === 1}
         />
       )
     },
@@ -47,6 +55,8 @@ export default function Tabs({
           type="hot"
           isOther={isOther}
           prepaidWithdrawDelayTime={prepaidDelayTime}
+          refresher={flipListKey}
+          isCurrent={activeIndex === 2}
         />
       )
     },
@@ -58,15 +68,14 @@ export default function Tabs({
           type="liked"
           isOther={isOther}
           prepaidWithdrawDelayTime={prepaidDelayTime}
+          refresher={likedListKey}
+          isCurrent={activeIndex === 3}
         />
       )
     }
   ];
 
-  const activeNode = useMemo(() => {
-    const i = isMobile ? defaultIndex || 0 : tabIndex;
-    return tabs[i].name;
-  }, [defaultIndex, tabs, tabIndex]);
+  const activeNode = useMemo(() => tabs[activeIndex].name, [activeIndex, tabs]);
 
   return (
     <Tab
