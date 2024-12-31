@@ -8,7 +8,6 @@ import { fail, success } from "@/app/utils/toast";
 import { DotLoading } from "antd-mobile";
 import BuySell from "./buySell";
 import { useUser } from "@/app/store/useUser";
-import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   token: Project;
@@ -27,7 +26,6 @@ export default function ActionList({
   const [isClaimed, setIsClaimed] = useState(false);
   const [isWithdrawed, setIsWithdrawed] = useState(false);
   const { userInfo }: any = useUser();
-  const { isMobile } = useUserAgent();
 
   const { prepaidSolWithdraw, prepaidTokenWithdraw, checkPrePayed } =
     useTokenTrade({
@@ -71,30 +69,22 @@ export default function ActionList({
   }, []);
 
   return (
-    <div
-      className={styles.actionbox}
-      style={{ padding: isMobile ? 20 : "0px 10px 10px" }}
-    >
+    <div className={styles.Btns}>
+      {/* */}
       {token.status === 0 && (
         <>
+          {/* */}
           {isDelay && !isOther && (
             <>
+              {/*  */}
               {isPrepaid &&
                 (isWithdrawed ? (
-                  <div
-                    className={
-                      isMobile
-                        ? `${styles.actionBtn} ${styles.isGrey}`
-                        : styles.LaptopActionBtn
-                    }
-                  >
+                  <div className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>
                     Withdrawed
                   </div>
                 ) : (
-                  <div
-                    className={
-                      isMobile ? styles.actionBtn : styles.LaptopActionBtn
-                    }
+                  <button
+                    className={`${styles.ActionBtn} ${styles.Withdraw} button`}
                     onClick={async () => {
                       setIsLoading(true);
                       try {
@@ -115,27 +105,21 @@ export default function ActionList({
                     }}
                   >
                     {isLoading ? <DotLoading /> : "Withdraw"}
-                  </div>
+                  </button>
                 ))}
             </>
           )}
 
           <>
-            {/* <Boost actionChildren={<div className={ isMobile ? styles.actionBtn : styles.LaptopActionBtn}>
-                        <BoostIcon />
-                        Boost
-                    </div>} token={token} onClick={() => { }} /> */}
             {!disableSmooke && (
               <SmokeHot
                 actionChildren={
-                  <div
-                    className={
-                      isMobile ? styles.actionBtn : styles.LaptopActionBtn
-                    }
+                  <button
+                    className={`${styles.ActionBtn} ${styles.Withdraw} button`}
                   >
-                    {isMobile && <SmookIcon />}
+                    {/* {isMobile && <SmookIcon />} */}
                     Flip
-                  </div>
+                  </button>
                 }
                 token={token}
                 onClick={() => {}}
@@ -150,18 +134,12 @@ export default function ActionList({
           {isPrepaid &&
             !isOther &&
             (isClaimed ? (
-              <div
-                className={
-                  isMobile
-                    ? `${styles.actionBtn} ${styles.isGrey}`
-                    : styles.LaptopActionBtn
-                }
-              >
+              <div className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>
                 Claimed
               </div>
             ) : (
               <div
-                className={isMobile ? styles.actionBtn : styles.LaptopActionBtn}
+                className={styles.actionBtn}
                 onClick={async () => {
                   setIsLoading(true);
                   try {
@@ -185,7 +163,7 @@ export default function ActionList({
             ))}
 
           <>
-            <BuySell token={token} isMobile={isMobile} />
+            <BuySell token={token} />
           </>
         </>
       )}

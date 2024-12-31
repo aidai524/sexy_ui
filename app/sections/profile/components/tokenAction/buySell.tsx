@@ -5,27 +5,22 @@ import type { Project } from "@/app/type";
 
 interface Props {
   token: Project;
-  isMobile: boolean;
 }
 
-export default function BuySell({ token, isMobile }: Props) {
+export default function BuySell({ token }: Props) {
   const [tradeShow, setTradeShow] = useState(false);
 
   return (
     <>
-      <div
-        className={
-          isMobile
-            ? `${styles.actionBtn} ${styles.isGrey}`
-            : styles.LaptopActionBtn
-        }
+      <button
+        className={`${styles.ActionBtn} ${styles.Withdraw} button`}
         onClick={() => {
           setTradeShow(true);
         }}
       >
-        {isMobile && <BuySellIcon />}
-        <div>Buy/Sell</div>
-      </div>
+        {/* <BuySellIcon /> */}
+        Buy
+      </button>
 
       <TradeModal
         show={tradeShow}
