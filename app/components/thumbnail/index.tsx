@@ -156,7 +156,7 @@ export default function Thumbnail({
                     commentRef.current.scrollTo({
                       top:
                         commentRef.current.scrollHeight +
-                        commentRef.current.clientHeight
+                        2 * commentRef.current.clientHeight
                     });
                   }
                 }}
@@ -180,7 +180,7 @@ export default function Thumbnail({
                     commentRef.current.scrollTo({
                       top:
                         commentRef.current.scrollHeight +
-                        commentRef.current.clientHeight
+                        2 * commentRef.current.clientHeight
                     });
                   }
                 }}

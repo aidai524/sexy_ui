@@ -35,13 +35,12 @@ const Refer = (props: any) => {
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
       {isMobile && store.entryVisible ? null : (
-        <button
-          type="button"
+        <div
           className={isMobile ? styles.EntryMobile : styles.Entry}
           onClick={handleEntryOpen}
         >
           <EntryAnimation />
-        </button>
+        </div>
       )}
       <motion.div
         className={styles.Card}

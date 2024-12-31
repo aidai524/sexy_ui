@@ -83,6 +83,7 @@ export default function BuySell({ token, initType, onClose }: Props) {
   }, [initType]);
 
   const {
+    buyToken,
     buyTokenWithFixedOutput,
     sellToken,
     getRate,
@@ -458,10 +459,19 @@ export default function BuySell({ token, initType, onClose }: Props) {
                 let hash;
                 if (activeIndex === 0) {
                   setIsLoading(true);
-                  hash = await buyTokenWithFixedOutput(
-                    new Big(buyIn).toFixed(0),
-                    buyInSol
-                  );
+                  if (tokenType === 1) {
+                    hash = await buyToken(
+                      new Big(buyIn).toFixed(0),
+                      buyInSol,
+                    );
+                  } else {
+                    hash = await buyTokenWithFixedOutput(
+                      new Big(buyIn).toFixed(0),
+                      buyInSol
+                    );
+                  }
+
+                  
                 } else if (activeIndex === 1) {
                   setIsLoading(true);
                   hash = await sellToken(sellOut, sellOutSol);
