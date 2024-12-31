@@ -22,11 +22,11 @@ export async function GET(request: Request | NextRequest) {
             <meta name="twitter:description" content="${about}">
             <meta name="twitter:image" content="${imgUrl}"> <!-- Image URL for sharing -->
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="refresh" content="5; url=https://test.flipn.fun/detail?id=${tokenId}">
+            <meta http-equiv="refresh" content="1; url=https://test.flipn.fun/detail?id=${tokenId}">
             <title>${tokenName}</title>
         </head>
         <body>
-        <img src="${imgUrl}"/>
+        <img src="${imgUrl}" style="width: 100%" />
         </body>
         </html>`, {
         status: 200,

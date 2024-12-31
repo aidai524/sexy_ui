@@ -52,7 +52,7 @@ export const MessageContextProvider: React.FC<{
     return (
         <MessageContext.Provider value={walletTypeContextValue}>
             {children}
-            <ShareTemplate ref={shareInstance} token={currentToken}></ShareTemplate>
+            <ShareTemplate ref={shareInstance} token={currentToken} />
         </MessageContext.Provider>
     );
 }

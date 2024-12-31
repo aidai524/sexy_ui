@@ -15,20 +15,10 @@ function ShareTemplate({ token }: Props, ref: any) {
 
     useImperativeHandle(ref, () => ({
         getImgUrl: async () => {
-
-            return new Promise((resolcve, reject) => {
+            return new Promise(async (resolve, reject) => {
                 setTimeout(async () => {
                     if (containerRef.current) {
                         const canvas = await html2canvas(containerRef.current, { useCORS: true })
-                        console.log(canvas)
-
-                        const imageURL = canvas.toDataURL("image/png");
-
-                        // // Create a temporary link element to trigger the download
-                        // const link = document.createElement('a');
-                        // link.href = imageURL;
-                        // link.download = 'dom-element.png';
-                        // link.click();
 
                         const base64Url = canvas.toDataURL("image/webp");
                         const bloBData = base64ToBlob(base64Url);
@@ -38,12 +28,10 @@ function ShareTemplate({ token }: Props, ref: any) {
                         const url = await postUpload(bloBData[0], newFileName, bloBData[1])
 
                         console.log('url:', url)
-                        resolcve(url)
+                        resolve(url)
                     }
-
-                }, 50);
+                }, 10)
             })
-
         },
     }));
 
@@ -94,7 +82,7 @@ function ShareTemplate({ token }: Props, ref: any) {
         return null
     }
 
-    return <div className={styles.main} ref={containerRef}>
+    return <div style={{ width: 0, height: 0, overflow: 'hidden' }}><div className={styles.main} ref={containerRef}>
         <div className={styles.heart}>
             <div className={styles.avatar}>
                 <img className={styles.avatarImg} src={token.tokenIcon || defaultAvatar} />
@@ -117,9 +105,10 @@ function ShareTemplate({ token }: Props, ref: any) {
             </div>
         </div>
 
-        <div className={ styles.bottom }>
-            <img className={ styles.logoImg } src="/img/logo.svg" />
+        <div className={styles.bottom}>
+            <img className={styles.logoImg} src="/img/logo.svg" />
         </div>
+    </div>
     </div>
 }
 
