@@ -5,6 +5,7 @@ export const useFullScreen = create(
   persist(
     (set, get: any) => ({
       isFull: false,
+      launchType: 0,
       set: (params: any) => set(() => ({ ...params }))
     }),
     {

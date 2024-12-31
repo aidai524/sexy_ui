@@ -10,12 +10,12 @@ import styles from "./item.module.css";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { defaultAvatar } from "@/app/utils/config";
-
+import { useAccount } from "@/app/hooks/useAccount";
 
 export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
-
+  const { address } = useAccount();
   const userName = useMemo(() => {
     if (item?.creater) {
       return item.creater.name || formatAddress(item.creater.address);
@@ -26,7 +26,7 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
     }
     return "-";
   }, [item]);
-
+  const isSelf = useMemo(() => address === item?.address, [address, item]);
   return (
     <div key={item.id} className={styles.comment}>
       <div className={styles.replyer}>
@@ -44,11 +44,13 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
           </div>
           <div
             onClick={() => {
+              if (isSelf) return;
               router.push("/profile/user?account=" + item.address);
             }}
-            className={styles.name}
+            className={`${styles.name} ${!isSelf && "button"}`}
           >
             {userName}
+            {isSelf && ` (Self)`}
           </div>
           <div className={styles.time}>{formatDateTimeAndAgo(item.time)}</div>
         </div>

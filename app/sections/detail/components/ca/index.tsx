@@ -18,7 +18,7 @@ export default function CA({
     <div
       className={[
         styles.marketCa,
-        from === "laptop" ? styles.LaptopPanel : styles.panel
+        from === "laptop-home" ? styles.LaptopPanel : styles.panel
       ].join(" ")}
     >
       <div className={styles.marketCap}>

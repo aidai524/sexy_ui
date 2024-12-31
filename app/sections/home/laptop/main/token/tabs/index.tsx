@@ -12,10 +12,6 @@ const TABS = [
     key: "chart"
   },
   {
-    label: "Buy/Sell",
-    key: "buy/sell"
-  },
-  {
     label: "Txs",
     key: "txs"
   }

@@ -88,11 +88,6 @@ export default function Token({
                   />
                 </PanelWrapper>
               )}
-              {currentTab === "buy/sell" && (
-                <PanelWrapper>
-                  <BuyAndSell mc="-" data={infoData2} from="laptop" />
-                </PanelWrapper>
-              )}
               {currentTab === "txs" && (
                 <PanelWrapper>
                   <Txs from="laptop" />
