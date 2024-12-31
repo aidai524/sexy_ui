@@ -140,6 +140,7 @@ export default function Thumbnail({
         {progressIndex === 1 && (
           <div className={styles.commentList}>
             <Avatar data={data} showBackIcon={true} />
+            {showLoadMore && <div style={{ color: '#fff' }}>2222</div> }
             <div className={styles.commentBox} ref={commentRef}>
               <CommentComp
                 titleStyle={{ color: "#fff" }}

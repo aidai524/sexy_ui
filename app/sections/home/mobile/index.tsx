@@ -286,11 +286,12 @@ export default function Home() {
   }
 
   async function justNext(type: string) {
-    // if (!address) {
-    //   //@ts-ignore
-    //   window.connect();
-    //   return;
-    // }
+    // @ts-ignore
+    if (!window.sexAddress) {
+      //@ts-ignore
+      window.connect();
+      return;
+    }
 
     if (
       launchedList &&
