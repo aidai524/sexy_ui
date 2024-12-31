@@ -21,7 +21,7 @@ export default function SmokeBtn({
   token,
   isBigIcon = false,
   actionChildren,
-  
+
   id
 }: Props) {
   const [panelShow, setPanelShow] = useState(false);
@@ -29,18 +29,22 @@ export default function SmokeBtn({
   const { userInfo }: any = useUser();
   const { address } = useAccount();
   const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
-  const { prepaidDelayTime } = usePrepaidDelayTimeStore()
+  const { prepaidDelayTime } = usePrepaidDelayTimeStore();
 
   const isDelay = useMemo(() => {
-    if (prepaidDelayTime && token.createdAt && Date.now() - token.createdAt > prepaidDelayTime) {
-      return true
+    if (
+      prepaidDelayTime &&
+      token.createdAt &&
+      Date.now() - token.createdAt > prepaidDelayTime
+    ) {
+      return true;
     }
-    return false
-  }, [prepaidDelayTime, token])
+    return false;
+  }, [prepaidDelayTime, token]);
 
   const isDisabled = useMemo(() => {
-    return token.isSuperLike || token.account === address
-  }, [isDelay, token, address])
+    return token.isSuperLike || token.account === address;
+  }, [isDelay, token, address]);
 
   const VipModal = (
     <BoostVip
@@ -69,6 +73,7 @@ export default function SmokeBtn({
 
   return (
     <div
+      className="button"
       onClick={() => {
         if (!address) {
           //@ts-ignore
@@ -94,8 +99,10 @@ export default function SmokeBtn({
         // }
       }}
     >
-      {
-        actionChildren ? actionChildren : <div
+      {actionChildren ? (
+        actionChildren
+      ) : (
+        <div
           style={{
             width: size,
             height: size,
@@ -113,8 +120,7 @@ export default function SmokeBtn({
             <SmokeIcon id={id} />
           )}
         </div>
-      }
-
+      )}
 
       <Modal
         visible={vipShow}
@@ -150,7 +156,6 @@ export default function SmokeBtn({
     </div>
   );
 }
-
 
 function SmokeIcon({ isGrey, id }: any) {
   return (

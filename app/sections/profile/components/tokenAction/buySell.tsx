@@ -23,7 +23,7 @@ export default function BuySell({ token, isMobile }: Props) {
           setTradeShow(true);
         }}
       >
-        <BuySellIcon />
+        {isMobile && <BuySellIcon />}
         <div>Buy/Sell</div>
       </div>
 

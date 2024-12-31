@@ -22,7 +22,7 @@ export default function Address({
           window.open(`https://solscan.io/account/${address}?cluster=devnet`);
         }}
       >
-        <div>{isFull ? address:formatAddressLast(address)}</div>
+        <div>{isFull ? address : formatAddressLast(address)}</div>
         <svg
           width={fontSize}
           height={fontSize}
@@ -44,6 +44,7 @@ export default function Address({
             logOut();
             router.push("/");
           }}
+          className="button"
         >
           <svg
             width="38"

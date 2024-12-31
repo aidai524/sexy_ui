@@ -92,7 +92,12 @@ export default function Laptop({
             tabContentStyle={{
               padding: "0px 30px",
               height: "calc(100vh - 400px)",
-              overflowY: "auto"
+              overflowY: "auto",
+              flex: "0"
+            }}
+            tabHeaderStyle={{
+              flex: 0,
+              padding: "0px 16px"
             }}
           />
         </div>

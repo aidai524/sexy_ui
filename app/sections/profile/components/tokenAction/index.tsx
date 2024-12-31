@@ -48,6 +48,7 @@ export default function TokenAction({
             ev.nativeEvent.stopImmediatePropagation();
             setModalShow(true);
           }}
+          className="button"
         >
           <svg
             width="36"
