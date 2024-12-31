@@ -15,12 +15,12 @@ export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
 
   return (
     <>
-      <div className={styles.avatar}>
+      <div className={styles.avatar} onClick={onEdit}>
         <img
           className={styles.avatarImg}
           src={userInfo?.icon || defaultAvatar}
         />
-        <div className={`${styles.pencil} button`} onClick={onEdit}>
+        <div className={`${styles.pencil} button`}>
           <Pencil />
         </div>
       </div>
