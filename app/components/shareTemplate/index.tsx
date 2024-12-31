@@ -19,7 +19,7 @@ function ShareTemplate({ token }: Props, ref: any) {
             return new Promise((resolcve, reject) => {
                 setTimeout(async () => {
                     if (containerRef.current) {
-                        const canvas = await html2canvas(containerRef.current)
+                        const canvas = await html2canvas(containerRef.current, { useCORS: true })
                         console.log(canvas)
 
                         const imageURL = canvas.toDataURL("image/png");

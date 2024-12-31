@@ -2,6 +2,7 @@ import { shareToX } from "@/app/utils/share";
 import styles from "./likes.module.css";
 import type { Project } from "@/app/type";
 import { useMessage } from "@/app/context/messageContext";
+import { fail } from "@/app/utils/toast";
 
 export default function Likes({ data }: { data: Project }) {
   const { getShareImg } = useMessage()
@@ -43,6 +44,11 @@ export default function Likes({ data }: { data: Project }) {
         onClick={async () => {
           const img = await getShareImg(data)
           console.log('img:', img)
+
+          if (!img) {
+            fail('Share fail')
+            return
+          }
 
           shareToX(
             data.tokenName,
