@@ -64,7 +64,6 @@ export default function TradeSuccessModal({
           <span>You are expected to receive</span>
           <span className={ style.sexFi }> { Number(solAmount) / 10000 } points</span>
         </div>
-        
       </div>
 
       <div className={style.close} onClick={onClose}>

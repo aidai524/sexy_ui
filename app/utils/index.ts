@@ -405,8 +405,7 @@ export function formatDateTime(
   }
   return fmt;
 }
-
-function base64ToBlob(base64Data: string) {
+export function base64ToBlob(base64Data: string) {
   const dataArr: any = base64Data.split(",");
   const imageType = dataArr[0].match(/:(.*?);/)[1];
   const textData = window.atob(dataArr[1]);
@@ -496,15 +495,17 @@ export async function upload(
     }
     
     const base64Url = canvas.toDataURL("image/webp");
-
-    console.log(base64Url)
-
     const bloBData = base64ToBlob(base64Url);
-
     _file = bloBData[0];
   }
 
   const newFileName = generateRandomString(10) + fileName;
+
+  return postUpload(_file, newFileName, file.type)
+
+}
+
+export async function postUpload(_file: any, newFileName: string, type: string) {
   const val = await httpAuthPost(
     `/upload/data?dir=${encodeURIComponent(
       "sexy/dev/"
@@ -515,7 +516,7 @@ export async function upload(
       method: "PUT",
       body: _file,
       headers: {
-        "Content-Type": file.type
+        "Content-Type": type
       }
     });
 
@@ -527,10 +528,10 @@ export async function upload(
     return `https://deltabot-1.s3.us-east-1.amazonaws.com/sexy/dev/${newFileName}`;
   }
 
-  return null;
+  return null
 }
 
-function generateRandomString(length: number) {
+export function generateRandomString(length: number) {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";

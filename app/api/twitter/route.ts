@@ -5,7 +5,11 @@ import { NextRequest } from 'next/server';
 
 
 export async function GET(request: Request | NextRequest) {
-    const imgUrl = 'https://deltabot-1.s3.us-east-1.amazonaws.com/sexy/dev/Mb6Iw4eRhq222.jpg'
+    const parsedUrl = new URL(request.url as string);
+    const imgUrl = parsedUrl.searchParams.get('imgUrl')
+    const tokenName = parsedUrl.searchParams.get('tokenName')
+    const about = parsedUrl.searchParams.get('about')
+    const tokenId = parsedUrl.searchParams.get('tokenId')
 
     const res = new Response(`<!DOCTYPE html>
         <html lang="en">
@@ -13,20 +17,16 @@ export async function GET(request: Request | NextRequest) {
             <meta charset="UTF-8">
             <meta name="twitter:site" content="@xxx" />
             <meta name="twitter:creator" content="@xxx" />
-
-
             <meta name="twitter:card" content="summary_large_image"> <!-- Use 'summary_large_image' for large image cards -->
-            <meta name="twitter:title" content="Check Out Our Awesome Website">
-            <meta name="twitter:description" content="This is a cool website where you can find amazing content, ideas, and more!">
+            <meta name="twitter:title" content="${tokenName}">
+            <meta name="twitter:description" content="${about}">
             <meta name="twitter:image" content="${imgUrl}"> <!-- Image URL for sharing -->
-
-
-            
-            <meta content="summary_large_image" name="twitter:card" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
+            <meta http-equiv="refresh" content="5; url=https://test.flipn.fun/detail?id=${tokenId}">
+            <title>${tokenName}</title>
         </head>
         <body>
+        <img src="${imgUrl}"/>
         </body>
         </html>`, {
         status: 200,
