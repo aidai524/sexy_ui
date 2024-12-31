@@ -13,13 +13,12 @@ export default function useData(launchType: string) {
   const [renderIndex, setRenderIndex] = useState(0);
   const [isLoading, setisLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
-  const [fullList, setFullList] = useState<Project[]>();
   const listRef = useRef<Project[]>();
   const renderIndexRef = useRef<number>(0);
 
   const onQueryList = async (isInit: boolean) => {
-    await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`).then(
-      (res) => {
+    await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`)
+      .then((res) => {
         if (res.data?.has_next_page) {
           setHasNext(true);
         } else {
@@ -63,15 +62,16 @@ export default function useData(launchType: string) {
 
         listRef.current = _list;
         setAll(listRef.current, launchType);
-        setFullList(JSON.parse(JSON.stringify(_list)));
 
         if (isInit) {
           setTimeout(() => {
             setisLoading(false);
           }, 10);
         }
-      }
-    );
+      })
+      .catch(() => {
+        setisLoading(false);
+      });
   };
 
   const renderTwoSimple = (list: Project[]) => {
@@ -152,6 +152,19 @@ export default function useData(launchType: string) {
     }
   };
 
+  const onUpdateAfterExitingFull = (index: number) => {
+    if (!listRef.current) return;
+    renderIndexRef.current = 1;
+    listRef.current = listRef.current?.slice(index, listRef.current.length);
+    renderTwoItems(listRef.current);
+    setAll(listRef.current, launchType);
+    if (listRef.current.length <= left_num) {
+      if (hasNext) {
+        onQueryList(false);
+      }
+    }
+  };
+
   useEffect(() => {
     let list = getAll(launchType);
 
@@ -186,7 +199,6 @@ export default function useData(launchType: string) {
         onQueryList(false);
       } else {
         renderTwoSimple(list);
-        setFullList(JSON.parse(JSON.stringify(list)));
       }
       setisLoading(false);
     } else {
@@ -202,7 +214,7 @@ export default function useData(launchType: string) {
     isLoading,
     list: listRef,
     renderIndexRef: renderIndexRef,
-    fullList,
+    onUpdateAfterExitingFull,
     getnext,
     updateCurrentToken
   };

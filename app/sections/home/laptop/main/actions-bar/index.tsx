@@ -20,8 +20,12 @@ export default function ActionsBar({
             token={tokenInfo}
             onLike={onLike}
             onHate={onHate}
-            onSuperLike={() => {}}
-            onBoost={() => {}}
+            onSuperLike={() => {
+              onSuperLike();
+            }}
+            onBoost={() => {
+              onBoost();
+            }}
             style={{
               position: "inherit",
               gap: 14

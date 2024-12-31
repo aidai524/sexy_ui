@@ -30,11 +30,16 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
     return list;
   }, [list]);
 
-  const next = async (type: 0 | 1) => {
-    type
-      ? await actionLikeTrigger(list[index])
-      : await actionHateTrigger(list[index]);
-    if (index === list.length - 1) return;
+  const next = async (type?: 0 | 1) => {
+    if (type !== undefined) {
+      type
+        ? await actionLikeTrigger(list[index])
+        : await actionHateTrigger(list[index]);
+    }
+    if (index === list.length - 1) {
+      return;
+    }
+
     if (swaperRef.current) {
       swaperRef.current.style = "transition-duration: 0.3s;";
     }
@@ -43,7 +48,7 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
 
     setTimeout(() => {
       getnext();
-    }, 1000);
+    }, 500);
   };
 
   useEffect(() => {
@@ -96,8 +101,12 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
                     onHate={async () => {
                       await actionHateTrigger(list[index]);
                     }}
-                    onSuperLike={() => {}}
-                    onBoost={() => {}}
+                    onSuperLike={() => {
+                      next();
+                    }}
+                    onBoost={() => {
+                      next();
+                    }}
                     style={{
                       position: "absolute",
                       gap: 14,
@@ -142,7 +151,12 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
         >
           <ShareIcon />
         </button>
-        <button className="button" onClick={onExit}>
+        <button
+          className="button"
+          onClick={() => {
+            onExit(index);
+          }}
+        >
           <ZoomInIcon />
         </button>
       </div>
@@ -151,14 +165,14 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
         <CreateButton />
       </div>
       <div
-        className={styles.Layer}
+        className={`${styles.Layer}`}
         onClick={() => {
           next(0);
         }}
       >
         Click the blank area means ‘unlike’ it, and check the next one.
       </div>
-      {index === list.length - 1 && (
+      {!list.length && (
         <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
           <Empty type={type} />
         </div>

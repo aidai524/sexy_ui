@@ -1,13 +1,14 @@
 import Token from "../token";
 import Fullscreen from "../../fullscreen";
 import useData from "../../../hooks/use-data";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFullScreen } from "@/app/store/use-full-screen";
 import { useSearchParams } from "next/navigation";
 import styles from "./index.module.css";
 
 export default function Content() {
   const fullScreenStore: any = useFullScreen();
+  const [fullList, setFullList] = useState<any>([]);
 
   const params = useSearchParams();
 
@@ -26,7 +27,14 @@ export default function Content() {
 
   const type = useMemo(() => (tab ? "launching" : "preLaunch"), [tab]);
 
-  const { infoData2, fullList, isLoading, getnext } = useData(type);
+  const { infoData2, isLoading, list, getnext, onUpdateAfterExitingFull } =
+    useData(type);
+
+  useEffect(() => {
+    if (fullScreenStore?.isFull) {
+      setFullList(JSON.parse(JSON.stringify(list.current || [])));
+    }
+  }, [list]);
 
   return (
     <div className={styles.Container}>
@@ -47,8 +55,9 @@ export default function Content() {
             list: fullList,
             getnext,
             type,
-            onExit() {
+            onExit(index: number) {
               fullScreenStore.set({ isFull: false });
+              onUpdateAfterExitingFull(index);
             }
           }}
         />

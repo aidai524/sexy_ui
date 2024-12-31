@@ -32,6 +32,15 @@
   position: absolute;
   width: 480px;
   height: 240px;
+  z-index: 1;
+}
+
+.BannerMask {
+  width: 480px;
+  height: 240px;
+  position: absolute;
+  z-index: 2;
+  background: linear-gradient(0deg, #0d1012 41.35%, rgba(0, 0, 0, 0) 100%);
 }
 
 .Avatar {
