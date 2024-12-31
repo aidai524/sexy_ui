@@ -24,7 +24,7 @@ export default function Back({ style = {} }: Props) {
         xmlns="http://www.w3.org/2000/svg"
       >
         <g filter="url(#filter0_b_17_2980)">
-          <circle cx="20" cy="20" r="20" fill="black" fill-opacity="0.4" />
+          <circle cx="20" cy="20" r="20" fill="black" fillOpacity="0.4" />
         </g>
         <path
           d="M23.5 25.5L17.5 19L23.5 12.5"
@@ -40,9 +40,9 @@ export default function Back({ style = {} }: Props) {
             width="60"
             height="60"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
             <feComposite
               in2="SourceAlpha"

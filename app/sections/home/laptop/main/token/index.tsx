@@ -15,6 +15,7 @@ import {
 } from "@/app/components/timesLike/ActionTrigger";
 import { useState } from "react";
 import Loading from "@/app/components/icons/loading";
+import NextButton from "../../fullscreen/next-button";
 
 export default function Token({
   infoData2,
@@ -110,6 +111,7 @@ export default function Token({
         onSuperLike={next}
         onBoost={next}
       />
+      <NextButton onClick={hate} style={{}} />
     </>
   );
 }

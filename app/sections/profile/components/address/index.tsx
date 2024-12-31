@@ -57,7 +57,7 @@ export default function Address({
             <path
               d="M38 19C38 8.50659 29.4934 0 19 0C8.50659 0 0 8.50659 0 19C0 29.4934 8.50659 38 19 38C29.4934 38 38 29.4934 38 19Z"
               fill="white"
-              fill-opacity="0.08"
+              fillOpacity="0.08"
             />
             <path
               d="M22.8001 11.3999H12.6667V26.5999H22.8001"

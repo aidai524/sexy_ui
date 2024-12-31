@@ -23,7 +23,7 @@ export default function List({
         return (
           <div className={styles.follower} key={item.address}>
             <div
-              className={styles.followerContent}
+              className={`${styles.followerContent} button`}
               onClick={() => {
                 onItemClick(item);
               }}

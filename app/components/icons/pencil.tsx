@@ -8,13 +8,7 @@ export default function Pencil() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_b_17_2962)">
-        <circle
-          cx="14.5"
-          cy="14.5"
-          r="14.5"
-          fill="#0D1012"
-          fill-opacity="0.8"
-        />
+        <circle cx="14.5" cy="14.5" r="14.5" fill="#0D1012" fillOpacity="0.8" />
       </g>
       <path
         d="M12.1567 18.6329L10.3914 18.8002C10.3368 18.8055 10.2817 18.7986 10.23 18.7801C10.1783 18.7615 10.1314 18.7318 10.0925 18.693C10.0537 18.6542 10.0239 18.6073 10.0052 18.5557C9.98662 18.504 9.97964 18.4489 9.9848 18.3943L10.1521 16.629C10.1725 16.4134 10.2677 16.2115 10.4214 16.0578L16.9568 9.52231C17.0434 9.43575 17.1461 9.36708 17.2591 9.32023C17.3722 9.27338 17.4934 9.24927 17.6158 9.24927C17.7381 9.24927 17.8593 9.27338 17.9724 9.32023C18.0855 9.36708 18.1882 9.43575 18.2747 9.52231L19.2634 10.511C19.35 10.5975 19.4186 10.7003 19.4655 10.8133C19.5123 10.9264 19.5364 11.0476 19.5364 11.1699C19.5364 11.2923 19.5123 11.4135 19.4655 11.5266C19.4186 11.6396 19.35 11.7424 19.2634 11.8289L12.7272 18.365C12.5738 18.518 12.3718 18.6127 12.156 18.6329H12.1567Z"
@@ -32,9 +26,9 @@ export default function Pencil() {
           width="37"
           height="37"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
           <feComposite
             in2="SourceAlpha"

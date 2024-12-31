@@ -23,6 +23,7 @@ export default function Laptop({
   showHot = true,
   isOther = false
 }: any) {
+  console.log(26);
   const [followModalType, setFollowModalType] = useState("");
   return (
     <motion.div
