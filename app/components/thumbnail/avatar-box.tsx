@@ -1,3 +1,4 @@
+import { defaultAvatar } from "@/app/utils/config";
 import styles from "./avatar-box.module.css";
 
 function LaunchTag({ type }: { type: number }) {
@@ -18,7 +19,7 @@ export default function AvatarBox({ data, showLaunchType }: any) {
   return (
     <div className={styles.avatarBox}>
       <div className={styles.tokenImgBox}>
-        <img className={styles.tokenImg} src={data.tokenIcon} />
+        <img className={styles.tokenImg} src={data.tokenIcon || "/img/token-placeholder.png"} />
       </div>
       <div>
         <div className={styles.tokenName}>{data.tokenName}</div>

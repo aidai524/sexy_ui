@@ -31,7 +31,8 @@ export default function Layout(props: any) {
   const codeStore: any = useCodeStore();
   const pathname = usePathname();
 
-  if (codeStore.a !== CODE && pathname !== "/") {
+
+  if (codeStore.a !== CODE && pathname !== "/" && window.location.port === '') {
     redirect("/");
   }
 

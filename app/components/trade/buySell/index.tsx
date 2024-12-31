@@ -368,7 +368,7 @@ export default function BuySell({ token, initType, onClose }: Props) {
               </div>
             ) : (
               <div className={styles.paid}>
-                <div>You will paid by</div>
+                <div>Maximum Payment</div>
                 <div>
                   {buyInSol &&
                     new Big(buyInSol)
@@ -416,7 +416,7 @@ export default function BuySell({ token, initType, onClose }: Props) {
 
         {activeIndex === 0 && tokenType === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}>You will buy in</div>
+            <div className={styles.receiveTitle}>Minimum Received</div>
             <div className={styles.receiveAmount}>
               {buyIn
                 ? new Big(buyIn)

@@ -3,6 +3,8 @@ import styles from './preUser.module.css'
 import { useEffect, useState } from 'react'
 import { formatAddress, httpGet } from '@/app/utils'
 import { defaultAvatar } from '@/app/utils/config'
+import Big from 'big.js'
+import { useRouter } from 'next/navigation'
 
 interface Props {
     token: Project
@@ -41,9 +43,12 @@ export default function PreUser({ token }: Props) {
 }
 
 function UserItem({ item, type }: any) {
+    const router = useRouter()
 
     return <div className={styles.userItem}>
-        <div className={styles.userBox}>
+        <div className={styles.userBox} onClick={() => {
+            router.push("/profile/user?account=" + item.address);
+        }}>
             <div className={styles.avatar}>
                 <img className={styles.avatarImg} src={item.icon || defaultAvatar} />
             </div>
@@ -84,7 +89,7 @@ function UserItem({ item, type }: any) {
                         </linearGradient>
                     </defs>
                 </svg>
-                <span>0.02 SOL</span>
+                <span>{ item.buy_amount ? new Big(item.buy_amount).div(10 ** 9).toString() : 0 } SOL</span>
             </div>
         }
     </div>
