@@ -32,8 +32,10 @@ export default function Layout(props: any) {
   const pathname = usePathname();
 
 
-  if (codeStore.a !== CODE && pathname !== "/" && window.location.port === '') {
-    redirect("/");
+  if (codeStore.a !== CODE && pathname !== "/") {
+    if (!process.env.NEXT_PUBLIC_BEN_DEV) {
+      redirect("/");
+    }
   }
 
   const { getConfig } = useTokenTrade({
