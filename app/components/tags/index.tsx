@@ -1,8 +1,9 @@
 import type { Project } from "@/app/type";
 import styles from "./tags.module.css";
-import { formatAddress, timeAgo } from "@/app/utils";
-import { useMemo } from "react";
+import { formatAddress, simplifyNum, timeAgo } from "@/app/utils";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 interface Props {
   data: Project;
@@ -10,6 +11,7 @@ interface Props {
 
 export default function Tags({ data }: Props) {
   const router = useRouter();
+  const [mc, setMc] = useState(0)
   const userName = useMemo(() => {
     if (data.creater) {
       return data.creater.name || formatAddress(data.creater.address);
@@ -21,8 +23,28 @@ export default function Tags({ data }: Props) {
     return "-";
   }, [data]);
 
+  const { getMC } = useTokenTrade({
+    tokenName: data.tokenName,
+    tokenSymbol: data.tokenSymbol as string,
+    tokenDecimals: data.tokenDecimals as number,
+    loadData: false
+  });
+
+  useEffect(() => {
+    if (data && data.DApp === 'sexy' && data.status === 1) {
+        getMC().then((res) => {
+            if (!isNaN(Number(res))) {
+                setMc(Number(res))
+            }
+        })
+    }
+  }, [data])
+
   return (
     <div className={styles.tags}>
+        {
+            mc > 0 && <Tag><span className={ styles.mc }>Market Cap: { simplifyNum(mc) }</span></Tag>
+        }
       <Tag>Created in {data.time ? timeAgo(data.time) : 0}</Tag>
       <Tag
         onClick={() => {

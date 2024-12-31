@@ -20,6 +20,10 @@
     }
 }
 
+.mc {
+    color: rgba(170, 255, 0, 1);
+}
+
 @keyframes scroll {
     0% {
         transform: translateX(0);
