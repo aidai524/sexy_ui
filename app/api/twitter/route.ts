@@ -5,7 +5,7 @@ import { NextRequest } from 'next/server';
 
 
 export async function GET(request: Request | NextRequest) {
-    const imgUrl = 'https://deltabot-1.s3.us-east-1.amazonaws.com/sexy/dev/Mb6Iw4eRhq222.jp'
+    const imgUrl = 'https://deltabot-1.s3.us-east-1.amazonaws.com/sexy/dev/Mb6Iw4eRhq222.jpg'
 
     const res = new Response(`<!DOCTYPE html>
         <html lang="en">
