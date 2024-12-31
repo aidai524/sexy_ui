@@ -69,56 +69,62 @@ export default function InfoPart({
             topDesc={showThumbnailHead}
             showProgress={showThumbnailProgress}
           />
-          <Sep size={sepSize} />
         </>
       )}
-      <Panel theme={theme}>
-        <div className={styles.author}>
-          <div className={styles.authorTitle}>Created by:</div>
-          <div
-            onClick={() => {
-              router.push("/profile/user?account=" + data.account);
-            }}
-            className={[styles.authorDesc, styles.authorDescEs, "button"].join(
-              " "
-            )}
-          >
-            {userName}
-          </div>
-        </div>
-        {data.creater && data.creater.education && (
+      <>
+        <Sep size={sepSize} />
+        <Panel theme={theme}>
           <div className={styles.author}>
-            <div className={styles.authorTitle}>Education:</div>
+            <div className={styles.authorTitle}>Created by:</div>
             <div
               onClick={() => {
                 router.push("/profile/user?account=" + data.account);
               }}
-              className={[styles.authorDesc, styles.authorDescEs].join(" ")}
+              className={[
+                styles.authorDesc,
+                styles.authorDescEs,
+                "button"
+              ].join(" ")}
             >
-              {data.creater && data.creater.education}
+              {userName}
             </div>
           </div>
-        )}
-        <div className={styles.author}>
-          <div className={styles.authorTitle}>
-            {data.DApp === "pump" ? "Import time" : "Create time"}:
+          {data.creater && data.creater.education && (
+            <div className={styles.author}>
+              <div className={styles.authorTitle}>Education:</div>
+              <div
+                onClick={() => {
+                  router.push("/profile/user?account=" + data.account);
+                }}
+                className={[styles.authorDesc, styles.authorDescEs].join(" ")}
+              >
+                {data.creater && data.creater.education}
+              </div>
+            </div>
+          )}
+          <div className={styles.author}>
+            <div className={styles.authorTitle}>
+              {data.DApp === "pump" ? "Import time" : "Create time"}:
+            </div>
+            <div className={styles.authorDesc}>
+              {specialTime ? specialTime : timeAgo(data.time)}
+            </div>
           </div>
-          <div className={styles.authorDesc}>
-            {specialTime ? specialTime : timeAgo(data.time)}
+          <div className={styles.author}>
+            <div className={styles.authorTitle}>Market cap:</div>
+            <div className={styles.authorDesc}>-</div>
           </div>
-        </div>
-        <div className={styles.author}>
-          <div className={styles.authorTitle}>Market cap:</div>
-          <div className={styles.authorDesc}>-</div>
-        </div>
-      </Panel>
-      <Sep size={sepSize} />
-      <Panel theme={theme}>
-        <div className={styles.aboutUs}>
-          <div className={styles.aboutHeader}>About Us</div>
-          <div className={styles.abountDetail}>{data.about}</div>
-        </div>
-      </Panel>
+        </Panel>
+      </>
+      <>
+        <Sep size={sepSize} />
+        <Panel theme={theme}>
+          <div className={styles.aboutUs}>
+            <div className={styles.aboutHeader}>About Us</div>
+            <div className={styles.abountDetail}>{data.about}</div>
+          </div>
+        </Panel>
+      </>
 
       {data.website && (
         <>
@@ -136,38 +142,43 @@ export default function InfoPart({
         </>
       )}
 
-      <Sep size={sepSize} />
-
       {(data.x || data.tg || data.discord) && (
-        <Panel theme={theme}>
-          <div className={styles.aboutUs}>
-            <div className={styles.aboutHeader}>Community</div>
-            <div
-              className={styles.communityIcons}
-              style={{
-                gap: isMobile ? "15vw" : "60px"
-              }}
-            >
-              {data.x && (
-                <a className={styles.link} target="_blank" href={data.x}>
-                  <img src="/img/community/x.svg" />
-                </a>
-              )}
+        <>
+          <Sep size={sepSize} />
+          <Panel theme={theme}>
+            <div className={styles.aboutUs}>
+              <div className={styles.aboutHeader}>Community</div>
+              <div
+                className={styles.communityIcons}
+                style={{
+                  gap: isMobile ? "15vw" : "60px"
+                }}
+              >
+                {data.x && (
+                  <a className={styles.link} target="_blank" href={data.x}>
+                    <img src="/img/community/x.svg" />
+                  </a>
+                )}
 
-              {data.tg && (
-                <a className={styles.link} target="_blank" href={data.tg}>
-                  <img src="/img/community/telegram.svg" />
-                </a>
-              )}
+                {data.tg && (
+                  <a className={styles.link} target="_blank" href={data.tg}>
+                    <img src="/img/community/telegram.svg" />
+                  </a>
+                )}
 
-              {data.discord && (
-                <a className={styles.link} target="_blank" href={data.discord}>
-                  <img src="/img/community/discard.svg" />
-                </a>
-              )}
+                {data.discord && (
+                  <a
+                    className={styles.link}
+                    target="_blank"
+                    href={data.discord}
+                  >
+                    <img src="/img/community/discard.svg" />
+                  </a>
+                )}
+              </div>
             </div>
-          </div>
-        </Panel>
+          </Panel>
+        </>
       )}
     </div>
   );

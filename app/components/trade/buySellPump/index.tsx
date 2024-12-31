@@ -12,6 +12,7 @@ import { Button, Modal } from "antd-mobile";
 import type { Project } from "@/app/type";
 import { useUser } from "@/app/store/useUser";
 import usePump from "@/app/hooks/usePump";
+import { useUserAgent } from "@/app/context/user-agent";
 
 type Token = {
   tokenName: string;
@@ -40,7 +41,7 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
   const [slip, setSlip] = useState(3);
-
+  const { isMobile } = useUserAgent();
   const tokenUri = token.tokenIcon || token.tokenImg;
 
   console.log("token:", token);
@@ -147,7 +148,7 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
       <div
         className={[
           styles.cationArea,
-          from === "laptop" ? styles.LaptopMain : styles.panel
+          !isMobile ? styles.LaptopMain : styles.panel
         ].join(" ")}
       >
         <div className={styles.tradeTabs}>
@@ -158,7 +159,8 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
             }}
             className={[
               styles.tab,
-              activeIndex === 0 ? styles.active : null
+              activeIndex === 0 ? styles.active : null,
+              "button"
             ].join(" ")}
           >
             Buy
@@ -172,7 +174,8 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
             }}
             className={[
               styles.tab,
-              activeIndex === 1 ? styles.active : null
+              activeIndex === 1 ? styles.active : null,
+              "button"
             ].join(" ")}
           >
             Sell
@@ -183,7 +186,7 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
           <div className={styles.actionArea}>
             {activeIndex === 0 ? (
               <div
-                className={styles.switchToken}
+                className={`${styles.switchToken} button`}
                 onClick={() => {
                   if (tokenType === 0) {
                     setCurrentToken(SOL);
@@ -208,7 +211,7 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
               onClick={() => {
                 setShowSlip(true);
               }}
-              className={styles.slippage}
+              className={`${styles.slippage} button`}
             >
               Set max slippage
             </div>
@@ -243,7 +246,7 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
                     setSolPercent(0);
                     setValInput("");
                   }}
-                  className={styles.percentTag}
+                  className={`${styles.percentTag} button`}
                 >
                   Reset
                 </div>
@@ -257,7 +260,8 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
                       key={item}
                       className={[
                         styles.percentTag,
-                        item === solPercent ? styles.tagActive : ""
+                        item === solPercent ? styles.tagActive : "",
+                        "button"
                       ].join(" ")}
                     >
                       {getFullNum(item)}SOL

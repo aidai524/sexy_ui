@@ -257,7 +257,8 @@ export default function BuySell({ token, initType, onClose }: Props) {
             }}
             className={[
               styles.tab,
-              activeIndex === 0 ? styles.active : null
+              activeIndex === 0 ? styles.active : null,
+              "button"
             ].join(" ")}
           >
             Buy
@@ -272,7 +273,8 @@ export default function BuySell({ token, initType, onClose }: Props) {
             }}
             className={[
               styles.tab,
-              activeIndex === 1 ? styles.active : null
+              activeIndex === 1 ? styles.active : null,
+              "button"
             ].join(" ")}
           >
             Sell
@@ -283,7 +285,7 @@ export default function BuySell({ token, initType, onClose }: Props) {
           <div className={styles.actionArea}>
             {activeIndex === 0 ? (
               <div
-                className={styles.switchToken}
+                className={`${styles.switchToken} button`}
                 onClick={() => {
                   if (tokenType === 0) {
                     setCurrentToken(SOL);
@@ -344,7 +346,7 @@ export default function BuySell({ token, initType, onClose }: Props) {
                     setSolPercent(0);
                     setValInput("");
                   }}
-                  className={styles.percentTag}
+                  className={`${styles.percentTag} button`}
                 >
                   Reset
                 </div>
@@ -358,7 +360,8 @@ export default function BuySell({ token, initType, onClose }: Props) {
                       key={item}
                       className={[
                         styles.percentTag,
-                        item === solPercent ? styles.tagActive : ""
+                        item === solPercent ? styles.tagActive : "",
+                        "button"
                       ].join(" ")}
                     >
                       {getFullNum(item)}SOL
