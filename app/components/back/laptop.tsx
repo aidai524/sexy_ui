@@ -1,10 +1,17 @@
 import styles from "./laptop.module.css";
+import { useFullScreen } from "@/app/store/use-full-screen";
+
 export default function GoBack() {
+  const fullScreenStore: any = useFullScreen();
   return (
     <button
       className={`${styles.Container} button`}
       onClick={() => {
-        history.pushState({ page: "/" }, "Home", "/");
+        history.pushState(
+          { page: "/" },
+          "Home",
+          `/?launchType=${fullScreenStore.launchType || 0}`
+        );
       }}
     >
       <svg

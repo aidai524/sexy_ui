@@ -1,18 +1,19 @@
 import type { Project } from "@/app/type";
 import styles from "./ca.module.css";
-import { formatAddress, formatAddressLast, simplifyNum } from "@/app/utils";
+import { formatAddress, simplifyNum } from "@/app/utils";
 import Copyed from "@/app/components/copyed";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function CA({
   from,
   data,
-  mc,
+  mc
 }: {
   from: string | undefined;
   data: Project;
   mc: string | number;
 }) {
-
+  const { isMobile } = useUserAgent();
   return (
     <div
       className={[
@@ -22,25 +23,25 @@ export default function CA({
     >
       <div className={styles.marketCap}>
         <div className={styles.mcTitle}>Market cap:</div>
-        {
-          (data.status === 1 && data.DApp === 'sexy') 
-          ? <div className={styles.mcAmount}>{ mc && simplifyNum(Number(mc))}</div>
-          : <div className={styles.mcAmount}>-</div>
-        }
-        
+        {data.status === 1 && data.DApp === "sexy" ? (
+          <div className={styles.mcAmount}>{mc && simplifyNum(Number(mc))}</div>
+        ) : (
+          <div className={styles.mcAmount}>-</div>
+        )}
       </div>
       <div className={styles.ca}>
         <div className={styles.caAddress}>
           <div className={styles.caTtitle}>CA:</div>
           <div className={styles.address}>
-            {data.address ? formatAddress(data.address) : ""}
+            {data.address
+              ? isMobile
+                ? formatAddress(data.address)
+                : data.address
+              : ""}
           </div>
         </div>
 
-        <div className={styles.copy} onClick={() => {
-
-        }}>
-
+        <div className={styles.copy} onClick={() => {}}>
           <Copyed value={data.address as string} />
           {/* <svg
             width="16"

@@ -1,6 +1,6 @@
 .Container {
   border-radius: 12px;
-  background-color: rgba(60, 59, 75, 0.8);
+  background-color: rgba(60, 59, 75, 1);
   border: 1px solid rgba(146, 144, 177, 0.2);
   backdrop-filter: blur(2px);
   position: absolute;

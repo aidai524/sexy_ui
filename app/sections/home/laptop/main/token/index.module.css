@@ -33,3 +33,11 @@
   width: calc(100% - 381px);
   --part-bg: #55fff4;
 }
+
+.EmptyWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

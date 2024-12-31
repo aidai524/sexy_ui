@@ -8,7 +8,8 @@ export default function Address({
   color = "rgba(126, 138, 147, 1)",
   fontSize = 10,
   style,
-  isFull = false
+  isFull = false,
+  logout
 }: any) {
   const { disconnect, address: loginAddress } = useAccount();
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function Address({
         <div
           onClick={async () => {
             await disconnect();
-            logOut();
+            logout?.();
             router.push("/");
           }}
           className="button"

@@ -10,9 +10,10 @@ interface Props {
   data?: Project;
   justPlus?: boolean;
   from?: string;
+  style?: any;
 }
 
-export default function Action({ data, justPlus = false, from }: Props) {
+export default function Action({ data, justPlus = false, from, style }: Props) {
   const [tradeShow, setTradeShow] = useState(false);
   const [initType, setInitType] = useState("buy");
   const { address } = useAccount();
@@ -29,6 +30,7 @@ export default function Action({ data, justPlus = false, from }: Props) {
     <div
       key={data.id}
       className={`${usedStyle} ${from === "laptop" && styles.LaptopContainer}`}
+      style={style}
     >
       {justPlus ? (
         <>

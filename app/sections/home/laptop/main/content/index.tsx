@@ -14,6 +14,9 @@ export default function Content() {
   const tab = useMemo(() => {
     if (!params) return 0;
     const launchType = params.get("launchType");
+    fullScreenStore.set({
+      launchType
+    });
     let _t = 0;
     if (launchType === "1") {
       _t = 1;
@@ -23,7 +26,7 @@ export default function Content() {
 
   const type = useMemo(() => (tab ? "launching" : "preLaunch"), [tab]);
 
-  const { infoData2, fullList, getnext } = useData(type);
+  const { infoData2, fullList, isLoading, getnext } = useData(type);
 
   return (
     <div className={styles.Container}>
@@ -32,6 +35,7 @@ export default function Content() {
           infoData2,
           getnext,
           type: tab,
+          isLoading,
           onOpenFull() {
             fullScreenStore.set({ isFull: true });
           }
@@ -42,6 +46,7 @@ export default function Content() {
           {...{
             list: fullList,
             getnext,
+            type,
             onExit() {
               fullScreenStore.set({ isFull: false });
             }

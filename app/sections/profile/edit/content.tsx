@@ -134,7 +134,7 @@ export default function EditContent({
           onClick={() => {
             onClose();
           }}
-          className={styles.cancel + " " + styles.btn}
+          className={styles.cancel + " " + styles.btn + " button"}
         >
           Cancel
         </div>

@@ -8,7 +8,7 @@ import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useUserAgent } from "@/app/context/user-agent";
 import { getFullNum } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
-import SlipPage from "../slippage/slippage";
+import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
 import { Modal } from "antd-mobile";
 import type { Project } from "@/app/type";
@@ -309,7 +309,7 @@ export default function BuySell({ token, initType, onClose }: Props) {
               onClick={() => {
                 setShowSlip(true);
               }}
-              className={styles.slippage}
+              className={`${styles.slippage} button`}
             >
               Set max slippage
             </div>

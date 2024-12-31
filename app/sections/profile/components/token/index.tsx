@@ -69,7 +69,7 @@ export default function Token({
     <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
       <div className={styles.tokenMag}>
         <div
-          className={styles.tokenImgContent}
+          className={`${styles.tokenImgContent} button`}
           onClick={() => {
             router.push("/detail?id=" + data.id);
           }}

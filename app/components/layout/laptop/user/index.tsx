@@ -14,7 +14,7 @@ import { useState } from "react";
 import Refer from "@/app/components/layout/laptop/user/refer";
 import { useHomeTab } from "@/app/store/useHomeTab";
 
-export default function User({ address, userInfo, onQueryInfo }: any) {
+export default function User({ address, userInfo, onQueryInfo, logout }: any) {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [followModalType, setFollowModalType] = useState("");
   const [openVipModal, setOpenVipModal] = useState(false);
@@ -44,7 +44,7 @@ export default function User({ address, userInfo, onQueryInfo }: any) {
               marginTop: "20px"
             }}
           />
-          {address && <Address address={address} />}
+          {address && <Address address={address} logout={logout} />}
           {/* <HotBoost
             onMoreClick={() => {
               setOpenVipModal(true);

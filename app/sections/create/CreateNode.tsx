@@ -22,7 +22,7 @@ interface Props {
   show: boolean;
 }
 
-const name_reg = /^[a-zA-Z0-9]{1,16}$/
+const name_reg = /^[a-zA-Z0-9]{1,16}$/;
 
 export default forwardRef(function CreateNode(
   { onAddDataFill, show }: Props,
@@ -47,40 +47,41 @@ export default forwardRef(function CreateNode(
     let isValid = false;
     const inValidVals: any = {};
     if (!name_reg.test(tokenName)) {
-      inValidVals["tokenName"] = 'Only uppercase and lowercase letters and numbers are supported and the length is less than 16';
+      inValidVals["tokenName"] =
+        "Only uppercase and lowercase letters and numbers are supported and the length is less than 16";
       isValid = true;
     }
 
     if (!ticker) {
-      inValidVals["ticker"] = 'Ticker cannot be empty';
+      inValidVals["ticker"] = "Ticker cannot be empty";
       isValid = true;
     }
 
     if (ticker.length > 80) {
-      inValidVals["ticker"] = 'Ticker cannot be length than 80';
+      inValidVals["ticker"] = "Ticker cannot be length than 80";
       isValid = true;
     }
 
     if (tokenImg.length === 0) {
-      inValidVals["tokenImg"] = 'Token image cannot be empty';
+      inValidVals["tokenImg"] = "Token image cannot be empty";
       isValid = true;
     } else {
       const tokenImgObj = tokenImg[0];
       if (videoReg.test(tokenImgObj.url) || showTokenSymbol) {
         if (tokenIcon.length === 0) {
-          inValidVals["tokenIcon"] = 'Token icon cannot be empty';
+          inValidVals["tokenIcon"] = "Token icon cannot be empty";
           isValid = true;
         }
       }
     }
 
     if (!about) {
-      inValidVals["about"] = 'About icon cannot be empty';
+      inValidVals["about"] = "About icon cannot be empty";
       isValid = true;
     }
 
     if (about.length > 200) {
-      inValidVals["about"] = 'About cannot be length than 200';
+      inValidVals["about"] = "About cannot be length than 200";
       isValid = true;
     }
 
@@ -88,28 +89,28 @@ export default forwardRef(function CreateNode(
 
     if (website) {
       if (!isValidURL(website)) {
-        inValidVals["website"] = 'Website is not a valid url';
+        inValidVals["website"] = "Website is not a valid url";
         isValid = true;
       }
     }
 
     if (tg) {
       if (!isValidURL(tg)) {
-        inValidVals["tg"] = 'Tg is not a valid url';
+        inValidVals["tg"] = "Tg is not a valid url";
         isValid = true;
       }
     }
 
     if (x) {
       if (!isValidURL(x)) {
-        inValidVals["x"] = 'Twitter is not a valid url';
+        inValidVals["x"] = "Twitter is not a valid url";
         isValid = true;
       }
     }
 
     if (discord) {
       if (!isValidURL(discord)) {
-        inValidVals["discord"] = 'Discord is not a valid url';
+        inValidVals["discord"] = "Discord is not a valid url";
         isValid = true;
       }
     }
@@ -133,7 +134,18 @@ export default forwardRef(function CreateNode(
       tg,
       discord
     });
-  }, [tokenName, ticker, tokenImg, about, tokenIcon, website, x, tg, discord, showTokenSymbol]);
+  }, [
+    tokenName,
+    ticker,
+    tokenImg,
+    about,
+    tokenIcon,
+    website,
+    x,
+    tg,
+    discord,
+    showTokenSymbol
+  ]);
 
   useImperativeHandle(
     ref,
@@ -181,14 +193,15 @@ export default forwardRef(function CreateNode(
               onChange={(e) => {
                 setTokenName(e.target.value);
               }}
-              className={`${styles.inputText} ${inValidVals["tokenName"] ? styles.inputError : ""
-                } ${!isMobile && styles.laptopInputText}`}
+              className={`${styles.inputText} ${
+                inValidVals["tokenName"] ? styles.inputError : ""
+              } ${!isMobile && styles.laptopInputText}`}
               placeholder="Meme name"
             />
           </div>
-          {
-            inValidVals["tokenName"] && <ErrMsg>{inValidVals["tokenName"]}</ErrMsg>
-          }
+          {inValidVals["tokenName"] && (
+            <ErrMsg>{inValidVals["tokenName"]}</ErrMsg>
+          )}
         </div>
 
         <div
@@ -206,14 +219,13 @@ export default forwardRef(function CreateNode(
               onChange={(e) => {
                 setTicker(e.target.value);
               }}
-              className={`${styles.inputText} ${inValidVals["ticker"] ? styles.inputError : ""
-                } ${!isMobile && styles.laptopInputText}`}
+              className={`${styles.inputText} ${
+                inValidVals["ticker"] ? styles.inputError : ""
+              } ${!isMobile && styles.laptopInputText}`}
               placeholder="say something"
             />
           </div>
-          {
-            inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>
-          }
+          {inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>}
         </div>
       </div>
 
@@ -240,9 +252,7 @@ export default forwardRef(function CreateNode(
           />
           <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
         </div>
-        {
-          inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>
-        }
+        {inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>}
         <div className={styles.tokenSymbol}>
           <CheckBox
             checked={showTokenSymbol}
@@ -254,31 +264,32 @@ export default forwardRef(function CreateNode(
             Another image for token symbol
           </div>
         </div>
-        {showTokenSymbol && (<>
-          <div
-            className={
-              styles.groupContent +
-              " " +
-              styles.uploadContent +
-              " " +
-              styles.avatar +
-              " " +
-              (inValidVals["tokenIcon"] ? styles.uploadError : "")
-            }
-            style={{ paddingLeft: 15, paddingTop: 10 }}
-          >
-            <Upload
-              percent={1}
-              type="token"
-              fileList={tokenIcon}
-              setFileList={setTokenIcon}
-            />
-            <div className={styles.uploadTip}>Support img/png/svg</div>
-          </div>
-          {
-            inValidVals["tokenIcon"] && <ErrMsg>{inValidVals["tokenIcon"]}</ErrMsg>
-          }
-        </>
+        {showTokenSymbol && (
+          <>
+            <div
+              className={
+                styles.groupContent +
+                " " +
+                styles.uploadContent +
+                " " +
+                styles.avatar +
+                " " +
+                (inValidVals["tokenIcon"] ? styles.uploadError : "")
+              }
+              style={{ paddingLeft: 15, paddingTop: 10 }}
+            >
+              <Upload
+                percent={1}
+                type="avatar"
+                fileList={tokenIcon}
+                setFileList={setTokenIcon}
+              />
+              <div className={styles.uploadTip}>Support img/png/svg</div>
+            </div>
+            {inValidVals["tokenIcon"] && (
+              <ErrMsg>{inValidVals["tokenIcon"]}</ErrMsg>
+            )}
+          </>
         )}
       </div>
 
@@ -292,14 +303,13 @@ export default forwardRef(function CreateNode(
             onChange={(e) => {
               setAbout(e.target.value);
             }}
-            className={`${styles.inputText} ${inValidVals["about"] ? styles.inputError : ""
-              } ${!isMobile && styles.laptopInputText}`}
+            className={`${styles.inputText} ${
+              inValidVals["about"] ? styles.inputError : ""
+            } ${!isMobile && styles.laptopInputText}`}
             placeholder="say something"
           />
         </div>
-        {
-          inValidVals["about"] && <ErrMsg>{inValidVals["about"]}</ErrMsg>
-        }
+        {inValidVals["about"] && <ErrMsg>{inValidVals["about"]}</ErrMsg>}
       </div>
 
       <div className={styles.group}>
@@ -318,9 +328,7 @@ export default forwardRef(function CreateNode(
             }}
           />
         </div>
-        {
-          inValidVals["website"] && <ErrMsg>{inValidVals["website"]}</ErrMsg>
-        }
+        {inValidVals["website"] && <ErrMsg>{inValidVals["website"]}</ErrMsg>}
       </div>
 
       <div className={styles.group}>
@@ -345,9 +353,7 @@ export default forwardRef(function CreateNode(
               type="X"
               img="/img/community/x.svg"
             />
-            {
-              inValidVals["x"] && <ErrMsg>{inValidVals["x"]}</ErrMsg>
-            }
+            {inValidVals["x"] && <ErrMsg>{inValidVals["x"]}</ErrMsg>}
           </div>
           <div
             className={styles.groupContent}
@@ -363,9 +369,7 @@ export default forwardRef(function CreateNode(
               type="Telegram"
               img="/img/community/telegram.svg"
             />
-            {
-              inValidVals["tg"] && <ErrMsg>{inValidVals["tg"]}</ErrMsg>
-            }
+            {inValidVals["tg"] && <ErrMsg>{inValidVals["tg"]}</ErrMsg>}
           </div>
           <div
             className={styles.groupContent}
@@ -381,13 +385,12 @@ export default forwardRef(function CreateNode(
               type="Discord"
               img="/img/community/discard.svg"
             />
-            {
-              inValidVals["discord"] && <ErrMsg>{inValidVals["discord"]}</ErrMsg>
-            }
+            {inValidVals["discord"] && (
+              <ErrMsg>{inValidVals["discord"]}</ErrMsg>
+            )}
           </div>
         </div>
       </div>
-
 
       {isMobile && (
         <div className={styles.btnWapper}>
