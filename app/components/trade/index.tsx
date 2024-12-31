@@ -42,7 +42,6 @@ export default function Trade({
       {
         token.status === 2 && <BuySellLaunched
           token={token}
-          from={from}
           initType={initType}
           onClose={() => {
             onClose && onClose();
