@@ -1,6 +1,7 @@
 import styles from "./trande.module.css";
 import BuySell from "./buySell";
 import BuySellLaunched from "./buySellLaunched";
+import BuySellPump from "./buySellPump";
 import type { Project } from "@/app/type";
 
 interface Props {
@@ -21,7 +22,7 @@ export default function Trade({
   return (
     <div className={styles.main}>
       {
-        token.DApp === 'pump' && <BuySellLaunched
+        token.status === 1 && token.DApp === 'pump' && <BuySellPump
           token={token}
           initType={initType}
           from={from}
@@ -31,7 +32,17 @@ export default function Trade({
         />
       }
       {
-        token.DApp === 'sexy' && <BuySell
+        token.status === 1 && token.DApp === 'sexy' && <BuySell
+          token={token}
+          initType={initType}
+          from={from}
+          onClose={() => {
+            onClose && onClose();
+          }}
+        />
+      }
+      {
+        token.status === 2 && <BuySellLaunched
           token={token}
           initType={initType}
           from={from}

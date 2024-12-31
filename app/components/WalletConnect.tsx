@@ -41,7 +41,7 @@ const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig["options"] = {
 };
 
 function getEndpoint(netType: WalletAdapterNetwork) {
-  if (netType === WalletAdapterNetwork.Mainnet) {
+  if (netType === WalletAdapterNetwork.Devnet) {
     return "https://swr.xnftdata.com/rpc-proxy/";
   }
 
@@ -53,7 +53,7 @@ export default function WalletConnect({
 }: {
   children: React.ReactNode;
 }) {
-  const network = WalletAdapterNetwork.Devnet;
+  const network = WalletAdapterNetwork.Mainnet;
   const endpoint = useMemo(() => getEndpoint(network), [network]);
   const wallets = useMemo(
     () => {
