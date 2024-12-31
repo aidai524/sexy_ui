@@ -40,15 +40,15 @@ export default function RootLayout({
         <script async src="/libs/add_to_homescreen/index.js" />
       </head>
       <body>
-        <MessageContextProvider>
-          <UserAgentProvider>
-            <WalletConnect>
+        <WalletConnect>
+          <MessageContextProvider>
+            <UserAgentProvider>
               <Suspense>
                 <Layout>{children}</Layout>
               </Suspense>
-            </WalletConnect>
-          </UserAgentProvider>
-        </MessageContextProvider>
+            </UserAgentProvider>
+          </MessageContextProvider>
+        </WalletConnect>
       </body>
     </html>
   );

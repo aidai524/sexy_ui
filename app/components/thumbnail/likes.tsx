@@ -1,8 +1,12 @@
 import { shareToX } from "@/app/utils/share";
 import styles from "./likes.module.css";
 import type { Project } from "@/app/type";
+import { useMessage } from "@/app/context/messageContext";
+import { fail } from "@/app/utils/toast";
 
 export default function Likes({ data }: { data: Project }) {
+  const { getShareImg } = useMessage()
+
   return (
     <div className={styles.box}>
       <div className={styles.likeNums}>
@@ -37,10 +41,18 @@ export default function Likes({ data }: { data: Project }) {
 
       <div
         className={styles.share}
-        onClick={() => {
+        onClick={async () => {
+          const img = await getShareImg(data)
+          console.log('img:', img)
+
+          if (!img) {
+            fail('Share fail')
+            return
+          }
+
           shareToX(
             data.tokenName,
-            "https://app.flipn.fun/detail?id=" + data.id
+            `https://test.flipn.fun/api/twitter?tokenName=${encodeURIComponent(data.tokenName)}&about=${encodeURIComponent(data.about)}&imgUrl=${encodeURIComponent(img)}&tokenId=${data.id}`
           );
         }}
       >
