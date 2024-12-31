@@ -3,11 +3,17 @@ import AvatarBox from "@/app/components/thumbnail/avatar-box";
 import PreUser from "@/app/components/thumbnail/preUser";
 import Holder from "@/app/components/holder";
 import styles from "./index.module.css";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-const BUTTONS = ["Img", "Discussion", "Holders"];
 export default function TokenCardActions({ token, height }: any) {
   const [currentTab, setCurrentTab] = useState("Img");
+  const BUTTONS = useMemo(
+    () =>
+      token.status === 1
+        ? ["Img", "Discussion", "Holders"]
+        : ["Img", "Discussion", "Founders"],
+    [token]
+  );
   return (
     <>
       <div className={styles.Container}>
@@ -40,7 +46,7 @@ export default function TokenCardActions({ token, height }: any) {
               }}
             />
           )}
-          {currentTab === "Founders" &&
+          {["Holders", "Founders"].includes(currentTab) &&
             (token.status === 0 ? <PreUser token={token} /> : <Holder />)}
         </div>
       )}
