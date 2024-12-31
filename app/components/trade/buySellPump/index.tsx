@@ -341,7 +341,7 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
           </div>
         )}
 
-        <Button
+        {/* <Button
           onClick={() => {
             buy(0.001);
           }}
@@ -355,7 +355,7 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
           }}
         >
           sell
-        </Button>
+        </Button> */}
 
         <div style={{ marginTop: 18 }}>
           <MainBtn
