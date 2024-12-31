@@ -203,6 +203,8 @@ export default function useData(launchType: string) {
       setisLoading(false);
     } else {
       onQueryList(true);
+      setInfoData(undefined);
+      setInfoData2(undefined);
     }
   }, [launchType]);
 

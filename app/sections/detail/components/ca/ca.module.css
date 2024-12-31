@@ -8,6 +8,9 @@
 
 .LaptopPanel {
   padding: 20px 14px;
+  border-radius: 10px;
+  background: #ab1f5c;
+  margin: 0px 10px 0px 0px !important;
 }
 
 .marketCa {

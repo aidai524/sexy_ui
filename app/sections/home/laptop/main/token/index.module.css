@@ -30,8 +30,9 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  width: calc(100% - 381px);
+  width: calc(100% - 360px);
   --part-bg: #55fff4;
+  padding-right: 6px;
 }
 
 .EmptyWrapper {
