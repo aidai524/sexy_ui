@@ -24,11 +24,11 @@ function ShareTemplate({ token }: Props, ref: any) {
 
                         const imageURL = canvas.toDataURL("image/png");
 
-                        // Create a temporary link element to trigger the download
-                        const link = document.createElement('a');
-                        link.href = imageURL;
-                        link.download = 'dom-element.png';
-                        link.click();
+                        // // Create a temporary link element to trigger the download
+                        // const link = document.createElement('a');
+                        // link.href = imageURL;
+                        // link.download = 'dom-element.png';
+                        // link.click();
 
                         const base64Url = canvas.toDataURL("image/webp");
                         const bloBData = base64ToBlob(base64Url);
