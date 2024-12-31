@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import styles from "./index.module.css";
 import type { Project } from "@/app/type";
 import Actions from "./actions";
+import ActionList from "./actionList";
 import { useUser } from "@/app/store/useUser";
 
 interface Props {
@@ -41,7 +42,7 @@ export default function TokenAction({
         position: "relative"
       }}
     >
-      {showAction && (
+      {/* {showAction && (
         <div
           onClick={(ev) => {
             ev.stopPropagation();
@@ -66,8 +67,15 @@ export default function TokenAction({
             />
           </svg>
         </div>
-      )}
-      <Actions
+      )} */}
+      <ActionList
+        {...{
+          token,
+          isOther,
+          prepaidWithdrawDelayTime
+        }}
+      />
+      {/* <Actions
         {...{
           isOther,
           modalShow,
@@ -75,7 +83,7 @@ export default function TokenAction({
           token,
           prepaidWithdrawDelayTime
         }}
-      />
+      /> */}
     </div>
   );
 }

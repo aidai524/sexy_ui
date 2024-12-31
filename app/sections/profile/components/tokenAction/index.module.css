@@ -1,42 +1,38 @@
-.actionBtn {
-  color: #fff;
-  height: 50px;
+.Btns {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  border: 1px solid #fff;
-  border-radius: 42px;
-  margin-top: 20px;
-  gap: 10px;
-
-  &.isGrey {
-    color: rgba(255, 255, 255, 0.5);
-  }
+  justify-content: flex-start;
+  gap: 12px;
 }
 
-.LaptopActionBtn {
-  margin-top: 10px;
-  border: none;
-  width: 139px;
-  height: 38px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 38px;
-  color: #fff;
-  text-align: center;
+.ActionBtn {
+  width: 80px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 22px;
   font-family: Unbounded;
-  font-size: 14px;
+  font-size: 10px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300;
   line-height: normal;
-  cursor: pointer;
 }
 
-.LaptopActionBtn:hover {
-  background-color: rgba(146, 144, 177, 0.2);
+.Withdraw {
+  border: 1px solid #c9ff5d;
+  color: #c9ff5d;
 }
 
-.actionbox {
-  padding: 20px;
+.DisabledBtn {
+  border-radius: 22px;
+  border: 1px solid rgba(127, 112, 138, 0.5);
+}
+
+.IconBtn {
+  border-radius: 42px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
