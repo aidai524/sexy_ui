@@ -5,7 +5,7 @@ import { NextRequest } from 'next/server';
 
 
 export async function GET(request: Request | NextRequest) {
-    const imgUrl = 'https://deltabot-1.s3.us-east-1.amazonaws.com/sexy/dev/Mb6Iw4eRhq222.jp'
+    const imgUrl = 'https://deltabot-1.s3.us-east-1.amazonaws.com/sexy/dev/Mb6Iw4eRhq222.jpg'
 
     const res = new Response(`<!DOCTYPE html>
         <html lang="en">
@@ -13,9 +13,15 @@ export async function GET(request: Request | NextRequest) {
             <meta charset="UTF-8">
             <meta name="twitter:site" content="@xxx" />
             <meta name="twitter:creator" content="@xxx" />
-            <meta property="og:url" content="${'https://juejin.cn/post/7144186468678926373'}" />
-            <meta property="og:title" content="${'你好'}" />
-            <meta property="og:image" content="${imgUrl}" />
+
+
+            <meta name="twitter:card" content="summary_large_image"> <!-- Use 'summary_large_image' for large image cards -->
+            <meta name="twitter:title" content="Check Out Our Awesome Website">
+            <meta name="twitter:description" content="This is a cool website where you can find amazing content, ideas, and more!">
+            <meta name="twitter:image" content="${imgUrl}"> <!-- Image URL for sharing -->
+
+
+            
             <meta content="summary_large_image" name="twitter:card" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Document</title>
