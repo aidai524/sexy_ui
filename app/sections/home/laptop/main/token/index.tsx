@@ -18,6 +18,7 @@ import { useLaptop } from "@/app/context/laptop";
 import Loading from "@/app/components/icons/loading";
 import NextButton from "../../fullscreen/next-button";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import { useAuth } from "@/app/context/auth";
 
 export default function Token({
   infoData2,
@@ -31,7 +32,7 @@ export default function Token({
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
   const { updateInfo } = useLaptop();
-
+  const { userInfo } = useAuth();
   const [mc, setMC] = useState<string | number>("-");
 
   const { getMC, pool } = useTokenTrade({
@@ -58,6 +59,10 @@ export default function Token({
     }
   }, [pool, infoData2]);
 
+  useEffect(() => {
+    setCurrentTab("info");
+  }, [type]);
+
   const next = () => {
     if (from === "detail") return;
     getnext();
@@ -70,11 +75,14 @@ export default function Token({
   };
 
   const hate = () => {
+    if (!userInfo) {
+      // @ts-ignore
+      window.connect();
+      return;
+    }
     next();
     actionHateTrigger(infoData2);
   };
-
-  console.log("mc::", mc);
 
   return (
     <>

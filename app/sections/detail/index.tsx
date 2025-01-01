@@ -28,7 +28,7 @@ export default memo(function Detail(props: any) {
             {
               ...res.data[0]
             },
-            useInfo.address
+            useInfo?.address
           );
         }
       });
