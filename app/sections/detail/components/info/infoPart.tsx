@@ -31,7 +31,7 @@ export default function InfoPart({
   showTop = true,
   theme = "dark",
   sepSize = 10,
-  mc,
+  mc
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
@@ -56,8 +56,6 @@ export default function InfoPart({
   if (!data) {
     return;
   }
-
-  console.log("data:", data);
 
   return (
     <div>
@@ -118,7 +116,9 @@ export default function InfoPart({
           </div>
           <div className={styles.author}>
             <div className={styles.authorTitle}>Market cap:</div>
-            <div className={styles.authorDesc} style={{ color: '#6fff00' }} >{ mc === 0 ? '-' : simplifyNum(mc as number) }</div>
+            <div className={styles.authorDesc} style={{ color: "#6fff00" }}>
+              {mc === 0 ? "-" : simplifyNum(mc as number)}
+            </div>
           </div>
         </Panel>
       </>

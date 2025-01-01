@@ -1,42 +1,17 @@
 import { useUserAgent } from "@/app/context/user-agent";
 import Mobile from "./mobile/Layout";
 import Laptop from "./laptop";
-import { redirect } from "next/navigation";
-import { useUser } from "@/app/store/useUser";
-import useUserInfo from "@/app/hooks/useUserInfo";
-import { useAccount } from "@/app/hooks/useAccount";
-
 import { useConfig } from "@/app/store/useConfig";
 import { httpGet } from "@/app/utils";
-import { useEffect, useCallback, useState } from "react";
-import useNotice from "../../hooks/use-notice";
-import {
-  getAuthorizationByLocalAndServer,
-  initAuthorization,
-  logOut
-} from "@/app/utils";
+import { useEffect } from "react";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
-import { useSearchParams, usePathname } from "next/navigation";
-import { useCodeStore, CODE } from "../../store/use-code";
+import { AuthProvider } from "@/app/context/auth";
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
-  const { address, walletProvider } = useAccount();
-  const userStore: any = useUser();
   const configStore: any = useConfig();
   const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
-  const { userInfo, onQueryInfo, setUserInfo } = useUserInfo(address);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const searchParams = useSearchParams();
-  const codeStore: any = useCodeStore();
-  const pathname = usePathname();
-
-  if (codeStore.a !== CODE && pathname !== "/") {
-    if (!process.env.NEXT_PUBLIC_BEN_DEV) {
-      redirect("/");
-    }
-  }
 
   const { getConfig } = useTokenTrade({
     tokenName: "",
@@ -44,22 +19,7 @@ export default function Layout(props: any) {
     tokenDecimals: 6
   });
 
-  useNotice();
-
   useEffect(() => {
-    if (address && userInfo) {
-      userStore.set({
-        userInfo: userInfo
-      });
-
-      setShowLoginModal(false);
-    }
-  }, [userInfo, address]);
-
-  useEffect(() => {
-    if (searchParams.get("a") === CODE) {
-      codeStore.set();
-    }
     httpGet("/config").then((res) => {
       if (res.code === 0) {
         configStore.set({
@@ -73,60 +33,9 @@ export default function Layout(props: any) {
     });
   }, []);
 
-  const initToken = useCallback(async () => {
-    const auth = await getAuthorizationByLocalAndServer();
-    if (!auth) {
-      initAuthorization();
-    }
-  }, [address]);
-
-  const logout = useCallback(async () => {
-    setUserInfo(undefined);
-    userStore.set({
-      userInfo: null
-    });
-    logOut();
-  }, [address]);
-
-  useEffect(() => {
-    if (!address) {
-      return;
-    }
-
-    // @ts-ignore
-    window.walletProvider = walletProvider;
-    // @ts-ignore
-    window.sexAddress = address;
-
-    initToken();
-  }, [address]);
-
-  useEffect(() => {
-    // @ts-ignore
-    window.connect = () => {
-      setShowLoginModal(true);
-    };
-  }, []);
-
-  return isMobile ? (
-    <Mobile
-      {...props}
-      {...{
-        showLoginModal,
-        setShowLoginModal
-      }}
-    />
-  ) : (
-    <Laptop
-      {...props}
-      {...{
-        userInfo,
-        address,
-        onQueryInfo,
-        showLoginModal,
-        setShowLoginModal,
-        logout
-      }}
-    />
+  return (
+    <AuthProvider>
+      {isMobile ? <Mobile {...props} /> : <Laptop {...props} />}
+    </AuthProvider>
   );
 }

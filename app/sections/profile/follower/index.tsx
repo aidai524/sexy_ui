@@ -2,9 +2,9 @@ import Back from "@/app/components/back";
 import styles from "./follower.module.css";
 import Tab from "../components/tab";
 import FollowerList from "./component/followerList";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { httpGet, httpAuthGet, formatAddress } from "@/app/utils";
+import { formatAddress } from "@/app/utils";
 import useUserInfo from "../../../hooks/useUserInfo";
 
 export default function Follower() {
@@ -17,9 +17,6 @@ export default function Follower() {
   const [refeashFollowers, setRefeashFollowers] = useState(0);
   const [refeashFollowing, setRefeashFollowing] = useState(0);
 
-  console.log("userInfo:", userInfo);
-  console.log("action:", action);
-
   useEffect(() => {
     if (userInfo && action) {
       if (action === "following") {
@@ -29,6 +26,11 @@ export default function Follower() {
       }
     }
   }, [userInfo, action]);
+
+  const isOther = useMemo(
+    () => account === userInfo?.address,
+    [account, userInfo]
+  );
 
   return (
     <div className={styles.main}>
@@ -55,6 +57,7 @@ export default function Follower() {
                   onQueryInfo();
                   setRefeashFollowing(refeashFollowing + 1);
                 }}
+                isOther={isOther}
               />
             )
           },
@@ -69,6 +72,7 @@ export default function Follower() {
                   onQueryInfo();
                   setRefeashFollowers(refeashFollowers + 1);
                 }}
+                isOther={isOther}
               />
             )
           }

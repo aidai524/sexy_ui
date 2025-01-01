@@ -12,6 +12,7 @@ export default function FollowerModal({
   address,
   type,
   open,
+  isOther,
   onClose,
   onRefresh
 }: any) {
@@ -21,13 +22,14 @@ export default function FollowerModal({
   const followerType = useMemo(() => (type === "following" ? 2 : 1), [type]);
 
   const currentUser = useMemo(() => ({ address }), [address]);
-  const { userInfo: currentUserInfo } = useUserInfo(address);
+  const { userInfo: currentUserInfo } = useUserInfo(address, !isOther);
 
   const { list, userInfo, setList, isLoading, hasMore, loadMore } =
     useFollowList({
       currentUser,
       followerType,
-      refresh
+      refresh,
+      isOther
     });
 
   const filteredList = useMemo(() => {

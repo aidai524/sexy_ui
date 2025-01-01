@@ -1,12 +1,12 @@
 import styles from "./index.module.css";
-import LoginModal from "@/app/components/loginModal";
 import User from "./user";
 import Header from "./header";
-import { usePathname } from "next/navigation";
 import useUpdateInfo from "./use-update-info";
 import dynamic from "next/dynamic";
 import Main from "@/app/sections/home/laptop/main";
 import { LaptopContext } from "@/app/context/laptop";
+import { useAuth } from "@/app/context/auth";
+import useNotice from "../../../hooks/use-notice";
 
 const CreatePage = dynamic(() => import("@/app/sections/create/laptop"), {
   ssr: false
@@ -24,20 +24,15 @@ const ProfileCom = dynamic(() => import("@/app/sections/profile"), {
 
 const DetailPage = dynamic(() => import("@/app/sections/detail"));
 
-export default function Laptop({
-  userInfo,
-  address,
-  onQueryInfo,
-  showLoginModal,
-  setShowLoginModal,
-  logout
-}: any) {
-  const pathname = usePathname();
+export default function Laptop() {
   const updateInfo = useUpdateInfo();
+  const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
+    useAuth();
+  useNotice();
+
   return (
     <LaptopContext.Provider
       value={{
-        updateUserInfo: onQueryInfo,
         ...updateInfo
       }}
     >
@@ -45,7 +40,7 @@ export default function Laptop({
         <User
           userInfo={userInfo}
           address={address}
-          onQueryInfo={onQueryInfo}
+          onQueryInfo={updateCurrentUserInfo}
           logout={logout}
         />
         <div className={styles.Content}>
@@ -61,12 +56,6 @@ export default function Laptop({
           </div>
         </div>
       </div>
-      <LoginModal
-        modalShow={showLoginModal}
-        onHide={() => {
-          setShowLoginModal(false);
-        }}
-      />
     </LaptopContext.Provider>
   );
 }

@@ -6,7 +6,6 @@ import Laptop from "./laptop";
 import VipModal from "./components/vip-modal";
 import { useUserAgent } from "@/app/context/user-agent";
 import useUserInfo from "../../hooks/useUserInfo";
-import { useAccount } from "@/app/hooks/useAccount";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import { useHomeTab } from "@/app/store/useHomeTab";
@@ -15,35 +14,43 @@ import { httpAuthGet } from "@/app/utils";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import { Button } from "antd-mobile";
 import useJupiter from "@/app/hooks/useJupiter";
+import { useAuth } from "@/app/context/auth";
 
 export default memo(function Home(props: any) {
   const { showHot = true, isOther = false } = props;
   const { isMobile } = useUserAgent();
   const router = useRouter();
   const params = useSearchParams();
-  const { address: userAddress } = useAccount();
+  const { accountRefresher, userInfo: currentUserInfo } = useAuth();
   const [isFollower, setIsFollower] = useState(false);
   const [refreshNum, setRefreshNum] = useState(0);
   const [showVip, setShowVip] = useState(false);
   const { profileTabIndex, set: setProfileTabIndex }: any = useHomeTab();
 
   useEffect(() => {
-    if (userAddress && params) {
-      if (params.get("account")?.toString() === userAddress && isOther) {
+    if (currentUserInfo?.address && params) {
+      if (
+        params.get("account")?.toString() === currentUserInfo.address &&
+        isOther
+      ) {
         router.replace("/profile");
       }
     }
-  }, [userAddress, params, isOther]);
+  }, [currentUserInfo, params, isOther]);
 
   const address = useMemo(() => {
     if (isOther && params) {
       return params.get("account")?.toString();
     }
 
-    return userAddress;
-  }, [userAddress, params, isOther]);
+    return currentUserInfo.address;
+  }, [currentUserInfo, params, isOther]);
 
-  const { onQueryInfo, userInfo } = useUserInfo(address);
+  const { onQueryInfo, userInfo } = useUserInfo(
+    address,
+    !isOther,
+    accountRefresher
+  );
   const { userInfo: ownUserInfo, set: setUserInfo }: any = useUser();
 
   const comProps = {
@@ -56,7 +63,8 @@ export default memo(function Home(props: any) {
     setUserInfo,
     setShowVip,
     router,
-    profileTabIndex
+    profileTabIndex,
+    isOther
   };
 
   useEffect(() => {

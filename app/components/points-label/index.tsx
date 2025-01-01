@@ -3,10 +3,12 @@ import styles from "./index.module.css";
 import Icon from "./Reicon";
 import { httpAuthGet } from "@/app/utils";
 import { numberFormatter } from "@/app/utils/common";
+import { useAuth } from "@/app/context/auth";
 
 export default function PointsLabel({ id, reverse = false, bg }: any) {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const { accountRefresher } = useAuth();
 
   useEffect(() => {
     const init = async () => {
@@ -15,12 +17,17 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
         const response = await httpAuthGet("/account/mining/user");
         setAmount(response.data.minted_amount);
       } catch (err) {
+        setAmount(0);
       } finally {
         setLoading(false);
       }
     };
-    init();
-  }, []);
+    if (accountRefresher) {
+      init();
+    } else {
+      setAmount(0);
+    }
+  }, [accountRefresher]);
 
   return (
     <div

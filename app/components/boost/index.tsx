@@ -13,7 +13,7 @@ import { httpAuthPost } from "@/app/utils";
 import type { Project } from "@/app/type";
 import { fail, success } from "@/app/utils/toast";
 import { useUser } from "@/app/store/useUser";
-import useUserInfo from "@/app/hooks/useUserInfo";
+import { useAuth } from "@/app/context/auth";
 
 export default function Boost({
   onClick,
@@ -36,10 +36,9 @@ export default function Boost({
   const [boostTimeShow, setBoostTimeShow] = useState(false);
   const [boostStatusShow, setBoostStatusShow] = useState(false);
   const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
-
+  const { updateCurrentUserInfo } = useAuth();
   const { address } = useAccount();
-  const { userInfo, set }: any = useUser();
-  const { fecthUserInfo } = useUserInfo(undefined);
+  const { userInfo }: any = useUser();
 
   const VipModal = (
     <BoostVip
@@ -73,10 +72,7 @@ export default function Boost({
         setBoostShow(false);
         setBoostStatusShow(true);
         onClick && onClick();
-        const userInfo = await fecthUserInfo(address as string);
-        set({
-          userInfo
-        });
+        updateCurrentUserInfo();
       }}
     />
   );
@@ -138,13 +134,13 @@ export default function Boost({
 
   const iconStyle = isBigIcon
     ? {
-      width: 48,
-      height: 48
-    }
+        width: 48,
+        height: 48
+      }
     : {
-      width: 36,
-      height: 36
-    };
+        width: 36,
+        height: 36
+      };
 
   return (
     <div style={iconStyle}>
@@ -171,8 +167,10 @@ export default function Boost({
         // onClick();
       }}
     >
-      {
-        actionChildren ? actionChildren : <div className={styles.btn} style={iconStyle}>
+      {actionChildren ? (
+        actionChildren
+      ) : (
+        <div className={styles.btn} style={iconStyle}>
           {token.boostTime && Number(token.boostTime) - Date.now() > 0 ? (
             <svg
               width="36"
@@ -224,9 +222,7 @@ export default function Boost({
             </svg>
           )}
         </div>
-      }
-
-
+      )}
 
       <Modal
         visible={boostVipShow}

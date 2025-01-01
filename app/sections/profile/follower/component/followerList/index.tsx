@@ -10,13 +10,15 @@ interface Props {
   refresh: number;
   onAction?: () => void;
   currentUser: UserInfo | undefined;
+  isOther: boolean;
 }
 
 export default function FollowerList({
   followerType,
   currentUser,
   onAction,
-  refresh
+  refresh,
+  isOther
 }: Props) {
   const { isMobile } = useUserAgent();
   const router = useRouter();
@@ -25,7 +27,8 @@ export default function FollowerList({
     useFollowList({
       currentUser,
       followerType,
-      refresh
+      refresh,
+      isOther
     });
 
   return (

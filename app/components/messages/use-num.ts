@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { httpAuthGet } from "@/app/utils";
-import { useAccount } from "@/app/hooks/useAccount";
+import { useAuth } from "@/app/context/auth";
 
 export default function useNum() {
   const [num, setNum] = useState(0);
-  const { address: userAddress } = useAccount();
+  const { accountRefresher } = useAuth();
 
   const onQuery = useCallback(async () => {
     try {
@@ -16,8 +16,12 @@ export default function useNum() {
   }, []);
 
   useEffect(() => {
-    if (userAddress) onQuery();
-  }, [userAddress]);
+    if (accountRefresher) {
+      onQuery();
+    } else {
+      setNum(0);
+    }
+  }, [accountRefresher]);
 
   return {
     num,

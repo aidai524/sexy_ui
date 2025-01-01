@@ -3,7 +3,11 @@ import { httpAuthGet, httpAuthPost, httpAuthPut } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import { useCallback, useEffect, useState } from "react";
 
-export default function useUserInfo(address: string | undefined) {
+export default function useUserInfo(
+  address: string | undefined,
+  isSelf = false,
+  accountRefresher?: number
+) {
   const [userInfo, setUserInfo] = useState<UserInfo>();
 
   const onQueryInfo = useCallback(async () => {
@@ -47,10 +51,13 @@ export default function useUserInfo(address: string | undefined) {
   };
 
   useEffect(() => {
-    if (address) {
+    if (address && !isSelf) {
       onQueryInfo();
     }
-  }, [address]);
+    if (isSelf && accountRefresher) {
+      onQueryInfo();
+    }
+  }, [address, accountRefresher]);
 
   async function saveUserInfo(
     banner: string,

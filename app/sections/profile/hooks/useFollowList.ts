@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { httpAuthGet } from "@/app/utils";
 import { mapDataToUser } from "@/app/utils/mapTo";
 import type { UserInfo } from "@/app/type";
+import { useAuth } from "@/app/context/auth";
 
 const url: any = {
   2: "/account/follower/list",
@@ -13,7 +14,8 @@ const LIMIT = 50;
 export default function useFollowList({
   currentUser,
   followerType,
-  refresh
+  refresh,
+  isOther
 }: any) {
   const { userInfo }: any = useUser();
   const [list, setList] = useState<UserInfo[]>([]);
@@ -22,6 +24,7 @@ export default function useFollowList({
   const [offset, setOffset] = useState(0);
   const firstLoad = useRef(false);
   const typeRef = useRef(1);
+  const { accountRefresher } = useAuth();
 
   const loadMore = useCallback(
     (rebuild: boolean = false) => {
@@ -60,10 +63,13 @@ export default function useFollowList({
   );
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser?.address && isOther) {
       loadMore(true);
     }
-  }, [currentUser]);
+    if (!isOther) {
+      accountRefresher ? loadMore(true) : setList([]);
+    }
+  }, [currentUser, accountRefresher, isOther]);
 
   useEffect(() => {
     if (refresh > 0) {

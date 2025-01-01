@@ -6,7 +6,6 @@ import FollowerActions from "../components/follower-actions";
 import Tabs from "../components/tabs";
 import Address from "@/app/sections/profile/components/address";
 import FollowerModal from "@/app/components/layout/laptop/user/follower-modal";
-import { useLaptop } from "@/app/context/laptop";
 import { motion } from "framer-motion";
 import Empty from "@/app/components/empty";
 import { useState } from "react";
@@ -17,15 +16,12 @@ export default function Laptop({
   isFollower,
   refreshNum,
   setRefreshNum,
-  onQueryInfo,
-  setUserInfo,
-  setShowVip,
-  router,
+  updateUserInfo,
   profileTabIndex,
-  showHot = true
+  showHot = true,
+  isOther
 }: any) {
   const [followModalType, setFollowModalType] = useState("");
-  const { updateUserInfo } = useLaptop();
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -52,7 +48,6 @@ export default function Laptop({
                     isFollower={isFollower}
                     onSuccess={async () => {
                       setRefreshNum(refreshNum + 1);
-                      await onQueryInfo();
                       updateUserInfo();
                     }}
                   />
@@ -113,10 +108,10 @@ export default function Laptop({
         }}
         onRefresh={() => {
           setRefreshNum(refreshNum + 1);
-          onQueryInfo();
           updateUserInfo();
         }}
         type={followModalType}
+        isOther={isOther}
       />
     </motion.div>
   );
