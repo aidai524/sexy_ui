@@ -246,9 +246,9 @@ export function removeAuth() {
 }
 
 export async function initAuthorization() {
-  if (getAuthorizationByLocal()) {
-    return 
-  }
+  // if (getAuthorizationByLocal()) {
+  //   return
+  // }
 
   if (isInitingAuthorization) {
     return;
