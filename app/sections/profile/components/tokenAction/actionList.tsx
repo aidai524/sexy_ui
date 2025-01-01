@@ -66,7 +66,7 @@ export default function ActionList({
 
   const smookeable = useMemo(() => {
     return (
-      token.isSuperLike && !token.prePaid && token.account !== userInfo.address
+      token.isSuperLike && !token.prePaid && token.account !== userInfo?.address
     );
   }, [token, userInfo]);
 

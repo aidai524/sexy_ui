@@ -16,7 +16,7 @@ export default function useData(launchType: string) {
   const onQueryList = async (isInit: boolean) => {
     await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`)
       .then((res) => {
-        if (res.data?.has_next_page) {
+        if (res.data?.has_next_page || res.data?.list.length === limit) {
           setHasNext(true);
         } else {
           setHasNext(false);
@@ -67,6 +67,7 @@ export default function useData(launchType: string) {
 
   const getnext = () => {
     if (!listRef.current) return;
+
     if (listRef.current.length) {
       listRef.current.shift();
       setAll(listRef.current, launchType);
@@ -74,6 +75,8 @@ export default function useData(launchType: string) {
 
     if (listRef.current.length) {
       setInfoData2(mapDataToProject(listRef.current[0]));
+    } else {
+      setInfoData2(undefined);
     }
 
     if (listRef.current.length <= left_num) {

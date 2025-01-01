@@ -13,7 +13,7 @@ import {
   actionHateTrigger,
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useLaptop } from "@/app/context/laptop";
 import Loading from "@/app/components/icons/loading";
 import NextButton from "../../fullscreen/next-button";
@@ -117,7 +117,8 @@ export default function Token({
         }}
         onBoost={next}
       />
-      {!isFull && list?.current?.length && <NextButton onClick={hate} />}
+
+      {!isFull && infoData2 && <NextButton onClick={hate} />}
     </>
   );
 }

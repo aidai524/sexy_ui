@@ -21,19 +21,19 @@ export default function TokenAction({
   const [modalShow, setModalShow] = useState(false);
   const { userInfo }: any = useUser();
 
-  const showAction = useMemo(() => {
-    if (token.status !== 0) {
-      return true;
-    }
-    if (token.status === 0 && !isDelay && token.account !== userInfo.address) {
-      return true;
-    }
-    if (token.status === 0 && isDelay && token.prePaidAmount !== "0") {
-      return true;
-    }
+  // const showAction = useMemo(() => {
+  //   if (token.status !== 0) {
+  //     return true;
+  //   }
+  //   if (token.status === 0 && !isDelay && token.account !== userInfo.address) {
+  //     return true;
+  //   }
+  //   if (token.status === 0 && isDelay && token.prePaidAmount !== "0") {
+  //     return true;
+  //   }
 
-    return false;
-  }, [token, isDelay]);
+  //   return false;
+  // }, [token, isDelay]);
 
   return (
     <div

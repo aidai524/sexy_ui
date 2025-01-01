@@ -7,11 +7,13 @@ import type { Project } from "@/app/type";
 interface Props {
   show: boolean;
   token: Project;
+  onSuccess: () => void;
   onHide?: () => void;
 }
 
-export default function SmokPanel({ show, token, onHide }: Props) {
+export default function SmokPanel({ show, token, onHide, onSuccess }: Props) {
   const { updateInfo } = useLaptop();
+
   return (
     <Modal
       open={show}
@@ -31,7 +33,7 @@ export default function SmokPanel({ show, token, onHide }: Props) {
           }}
           onSuccess={() => {
             updateInfo("flip");
-            onHide && onHide();
+            onSuccess && onSuccess();
           }}
         />
       </div>

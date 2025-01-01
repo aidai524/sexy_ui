@@ -102,7 +102,6 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
                     }}
                     onSuperLike={() => {
                       next();
-                      updateInfo("flip");
                     }}
                     onBoost={() => {
                       next();
