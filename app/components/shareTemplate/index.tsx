@@ -92,26 +92,30 @@ function ShareTemplate({ token, show, onClose }: Props, ref: any) {
 
     const CanvasDom = <>
         <div className={ styles.likeBox }><Likes data={token} showShare={false} /></div>
-        <div className={styles.heart}>
-            <div className={styles.avatar}>
-                <img className={styles.avatarImg} src={token.tokenIcon || defaultAvatar} />
-                <LaunchTag type={token.status as number}/>
+        <div className={ styles.twitterBox }>
+            <div className={styles.heart}>
+                <div className={styles.avatar}>
+                    <img className={styles.avatarImg} src={token.tokenIcon || defaultAvatar} />
+                    <LaunchTag type={token.status as number}/>
+                </div>
+                <div className={styles.tokenName}>{token.tokenName}</div>
+                {
+                    token.ticker && <div className={styles.ticker}>Ticker:{token.ticker}</div>
+                }
             </div>
-            <div className={styles.tokenName}>{token.tokenName}</div>
-            <div className={styles.ticker}>Ticker:{token.ticker}</div>
-        </div>
-        <div className={styles.details}>
-            <div className={styles.detailsItem}>
-                <div className={styles.detailTitle}>Created by:</div>
-                <div className={styles.detailContent}>{userName}</div>
-            </div>
-            <div className={styles.detailsItem}>
-                <div className={styles.detailTitle}>Create time:</div>
-                <div className={styles.detailContent}>{timeAgo(token.time)}</div>
-            </div>
-            <div className={styles.detailsItem}>
-                <div className={styles.detailTitle}>Market cap:</div>
-                <div className={styles.detailContent}>{mc}</div>
+            <div className={styles.details}>
+                <div className={styles.detailsItem}>
+                    <div className={styles.detailTitle}>Created by:</div>
+                    <div className={styles.detailContent}>{userName}</div>
+                </div>
+                <div className={styles.detailsItem}>
+                    <div className={styles.detailTitle}>Create time:</div>
+                    <div className={styles.detailContent}>{timeAgo(token.time)}</div>
+                </div>
+                <div className={styles.detailsItem}>
+                    <div className={styles.detailTitle}>Market cap:</div>
+                    <div className={styles.detailContent}>{mc}</div>
+                </div>
             </div>
         </div>
 

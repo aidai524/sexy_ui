@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CA from "../ca";
 import styles from "./txs.module.css";
-import { formatAddressLast, httpGet } from "@/app/utils";
+import { formatAddressLast, httpGet, simplifyNum } from "@/app/utils";
 import Big from "big.js";
 import Empty from "@/app/components/empty";
 import { defaultAvatar } from "@/app/utils/config";
@@ -92,12 +92,12 @@ export default function Txs({ from, data, mc }: any) {
 
                       <div className={styles.value}>
                         {item.sol_amount &&
-                          new Big(item.sol_amount).div(10 ** 9).toFixed(2)}
+                          simplifyNum(new Big(item.sol_amount).div(10 ** 9).toNumber())}
                       </div>
 
                       <div className={styles.vva}>
                         {item.token_amount &&
-                          new Big(item.token_amount).div(10 ** 6).toFixed(2)}
+                          simplifyNum(new Big(item.token_amount).div(10 ** 6).toNumber())}
                       </div>
 
                       <div

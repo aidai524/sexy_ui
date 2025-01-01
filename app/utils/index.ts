@@ -643,6 +643,10 @@ export const simplifyNum = (number: number) => {
   if (typeof Number(number) !== "number") return 0;
   if (isNaN(Number(number))) return 0;
 
+  if (number < 0.01) {
+    return '<0.01'
+  }
+
   let str_num;
   if (number >= 1e3 && number < 1e6) {
     str_num = number / 1e3;
