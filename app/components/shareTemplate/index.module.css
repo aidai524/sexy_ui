@@ -138,3 +138,10 @@
     top: 5%;
     white-space: nowrap;
 }
+
+.isNew {
+    position: absolute;
+    left: 50%;
+    top: -10%;
+    transform: translateX(-50%) scale(0.5);
+}

@@ -54,7 +54,7 @@ function SuccessModal({
       if (v.code === 0) {
         const data = v.data[0];
         onClose();
-        showShare(mapDataToProject(data))
+        showShare(mapDataToProject(data), true)
         // shareToX(token.tokenName, "https://app.flipn.fun/detail?id=" + data.id);
       }
     }
