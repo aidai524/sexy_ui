@@ -16,6 +16,7 @@ interface Props {
 
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
 export const svgReg = /(.+\.(svg))$/i;
+export const gifReg = /(.+\.(gif))$/i;
 export const videoReg = /(.+\.(mp4))$/i;
 const StyleMaps = {
   avatar: [styles.Avatar, styles.AvatarImg],
@@ -40,7 +41,7 @@ export default function Upload({
     const url = await upload(
       file.name,
       file,
-      imgReg.test(file.name) && !svgReg.test(file.name),
+      imgReg.test(file.name) && !svgReg.test(file.name) && !gifReg.test(file.name),
       percent
     );
     setTimeout(() => {
