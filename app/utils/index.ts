@@ -680,10 +680,10 @@ export async function getTransaction(connection: Connection, hash: string, token
     const preToken = preTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
     const postToken = postTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
 
-    console.log('preToken---', preTokenBalances, postTokenBalances, preToken, postToken)
 
-    if (postToken && preToken) {
-      const result = new Big(postToken.uiTokenAmount.amount).minus(preToken.uiTokenAmount.amount).toFixed(0)
+    if (postToken) {
+      const preAmount = preToken ? preToken.uiTokenAmount.amount : 0
+      const result = new Big(postToken.uiTokenAmount.amount).minus(preAmount).toFixed(0)
       return result
     }
   }
