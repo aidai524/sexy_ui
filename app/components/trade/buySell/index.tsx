@@ -123,8 +123,10 @@ export default function BuySell({ token, initType, onClose }: Props) {
           getRate({
             solAmount: buyInSol
           }).then((res: any) => {
+            console.log('2222', res)
+
             const buyIn = new Big(res)
-              .mul(1 - slip / 100)
+              // .mul(1 - slip / 100)
               .toFixed(token.tokenDecimals);
             setBuyIn(buyIn);
             setIsLoading(false);

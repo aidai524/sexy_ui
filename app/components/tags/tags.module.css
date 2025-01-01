@@ -2,7 +2,7 @@
     display: flex;
     padding: 16px 20px;
     gap: 10px;
-    animation: scroll linear 4s alternate infinite;
+    /* animation: scroll linear 4s alternate infinite; */
     .tag {
         background-color: #FFFFFF1C;
         border-radius: 32px;
