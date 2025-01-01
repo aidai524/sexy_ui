@@ -671,12 +671,16 @@ export async function getTransaction(connection: Connection, hash: string, token
     commitment: 'confirmed',
   });
 
+  console.log('transactionDetails:', transactionDetails)
+
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta
 
     const toeknAddress = tokenAddress
     const preToken = preTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
     const postToken = postTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
+
+    console.log('preToken---', preTokenBalances, postTokenBalances, preToken, postToken)
 
     if (postToken && preToken) {
       const result = new Big(postToken.uiTokenAmount.amount).minus(preToken.uiTokenAmount.amount).toFixed(0)

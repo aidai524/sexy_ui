@@ -6,6 +6,8 @@ import { httpGet } from "@/app/utils";
 import { useCallback } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { shareToX } from "@/app/utils/share";
+import { useMessage } from "@/app/context/messageContext";
+import { mapDataToProject } from "@/app/utils/mapTo";
 
 interface Props {
   show: boolean;
@@ -44,14 +46,16 @@ function SuccessModal({
   token: Project;
 }) {
   const { isMobile } = useUserAgent();
+  const { showShare } = useMessage();
+  
   const share = useCallback(async () => {
     if (token) {
       const v = await httpGet("/project?token_name=" + token.tokenName);
       if (v.code === 0) {
         const data = v.data[0];
         onClose();
-
-        shareToX(token.tokenName, "https://app.flipn.fun/detail?id=" + data.id);
+        showShare(mapDataToProject(data))
+        // shareToX(token.tokenName, "https://app.flipn.fun/detail?id=" + data.id);
       }
     }
   }, [token]);

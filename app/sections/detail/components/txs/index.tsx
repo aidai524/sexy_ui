@@ -86,7 +86,7 @@ export default function Txs({ from, data, mc }: any) {
                         <span>{formatAddress(item.address)}</span>
                       </div>
 
-                      <div className={styles.type + " " + styles.sell}>
+                      <div className={styles.type + " " + styles[item.type]}>
                         {item.type}
                       </div>
 
