@@ -4,97 +4,59 @@
   justify-content: space-between;
   background-color: rgba(255, 255, 255, 0.08);
   padding: 10px 15px;
-  .tokenMag {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+}
 
-    .tokenImgContent {
-      width: 84px;
-      height: 84px;
-      position: relative;
-      .tokenImg {
-        width: 100%;
-        height: 100%;
-        border-radius: 8px;
-      }
-    }
+.tokenMag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    .nameContent {
-      font-size: 14px;
-      .name {
-        color: #fff;
-      }
-      .trikerContent {
-        color: rgba(255, 255, 255, 0.6);
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        margin-top: 5px;
-        .tickerName {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          max-width: 160px;
-        }
-        .createrImg {
-          width: 16px;
-          height: 16px;
-          border-radius: 16px;
-        }
-      }
-      .MarketCap {
-        margin-top: 5px;
-        color: rgba(111, 255, 0, 1);
-      }
-      .createTime {
-        margin-top: 5px;
-        color: rgba(255, 255, 255, 0.6);
-      }
-    }
-  }
+.tokenImgContent {
+  width: 84px;
+  height: 84px;
+  position: relative;
+}
 
-  .actionContent {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    .actionTimes {
-      margin-top: 5px;
-      color: rgba(255, 255, 255, 0.6);
-      text-align: center;
-      width: 36px;
-      position: relative;
-      white-space: nowrap;
-      .whiteAmount {
-        color: #fff;
-        .timeFormat {
-          position: absolute;
-          right: 0;
-          width: 60px;
-        }
-      }
-    }
+.tokenImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
 
-    .withdraw {
-      border: 1px solid rgba(201, 255, 93, 1);
-      color: rgba(201, 255, 93, 1);
-      padding: 0 10px;
-      border-radius: 22px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-    }
+.nameContent {
+  font-size: 14px;
+  color: #fff;
+}
 
-    .withdrawGrey {
-        border: 1px solid rgba(127, 112, 138, 0.5);
-        color: rgba(127, 112, 138, 0.5);
-        padding: 0 10px;
-        border-radius: 22px;
-        height: 28px;
-        display: flex;
-        align-items: center;
-    }
-  }
+.trikerContent {
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.tickerName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.createrImg {
+  width: 16px;
+  height: 16px;
+  border-radius: 16px;
+}
+
+.MarketCap {
+  margin-top: 5px;
+  color: rgba(111, 255, 0, 1);
+}
+.createTime {
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .launchTag {

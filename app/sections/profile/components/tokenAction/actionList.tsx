@@ -65,9 +65,7 @@ export default function ActionList({
   }, [updateNum, isOther]);
 
   const smookeable = useMemo(() => {
-    return (
-      token.isSuperLike && !token.prePaid && token.account !== userInfo?.address
-    );
+    return !token.prePaid && token.account !== userInfo?.address;
   }, [token, userInfo]);
 
   return (
@@ -138,8 +136,8 @@ export default function ActionList({
                 Claimed
               </div>
             ) : (
-              <div
-                className={styles.actionBtn}
+              <button
+                className={`${styles.ActionBtn} ${styles.Withdraw} button`}
                 onClick={async () => {
                   setIsLoading(true);
                   try {
@@ -159,7 +157,7 @@ export default function ActionList({
                 }}
               >
                 {isLoading ? <DotLoading /> : "Claim"}
-              </div>
+              </button>
             ))}
 
           <>

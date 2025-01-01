@@ -232,7 +232,7 @@ export const Mask: React.FC<MaskProps> = (props) => {
             )
           }}
         >
-          <svg
+          {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
             height="9"
@@ -244,7 +244,7 @@ export const Mask: React.FC<MaskProps> = (props) => {
             }}
           >
             <path d="M0 0H15L7.5 9L0 0Z" fill="#FFF3F8" />
-          </svg>
+          </svg> */}
           <div className="w-full h-full relative">{renderMaskContent?.()}</div>
         </motion.div>
       )}
