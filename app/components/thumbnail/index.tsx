@@ -170,13 +170,14 @@ export default function Thumbnail({
           <div className={styles.commentList}>
             <Avatar data={data} showBackIcon={true} />
             <div style={{ height: 10 }}></div>
-            <div className={styles.commentBox} ref={commentRef}>
+            <div className={styles.commentBox} ref={commentRef} onScroll={(e) => {
+              console.log('111e: e', e)
+            }}>
               {data.status === 0 ? <PreUser token={data} /> : <Holder />}
             </div>
             {showLoadMore && (
               <LoadMore
                 onClick={() => {
-                  console.log(commentRef);
                   if (commentRef.current) {
                     commentRef.current.scrollTo({
                       top:
