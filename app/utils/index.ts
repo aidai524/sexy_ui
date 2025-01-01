@@ -2,6 +2,8 @@ import dayjs from "./dayjs";
 import type { Project } from "../type";
 import { fail } from "./toast";
 import { clearAll } from "./listStore";
+import { Connection } from "@solana/web3.js";
+import Big from "big.js";
 
 const BASE_URL = "https://api.dumpdump.fun/api/v1";
 const TOKEN_ERROR_CODE = -401;
@@ -37,15 +39,15 @@ export function http(
 
   let _header = headers
     ? {
-        headers: headers
-      }
+      headers: headers
+    }
     : getAuthorizationByLocal()
-    ? {
+      ? {
         headers: {
           authorization: getAuthorizationByLocal()
         }
       }
-    : {};
+      : {};
 
   return fetch(`${BASE_URL}${_path}`, {
     method: method,
@@ -247,7 +249,7 @@ export function removeAuth() {
 
 export async function initAuthorization() {
   if (getAuthorizationByLocal()) {
-    return 
+    return
   }
 
   if (isInitingAuthorization) {
@@ -327,7 +329,7 @@ export function getFullNum(value: any) {
       }
     }
     return x;
-  } catch (e) {}
+  } catch (e) { }
 
   return value;
 }
@@ -660,4 +662,26 @@ export function isValidURL(url: string) {
   const regex =
     /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/[a-z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/i;
   return regex.test(url);
+}
+
+
+export async function getTransaction(connection: Connection, hash: string, tokenAddress: string, userAddress: string) {
+  const transactionDetails = await connection.getTransaction(hash, {
+    commitment: 'confirmed',
+  });
+
+  if (transactionDetails?.meta) {
+    const { preTokenBalances, postTokenBalances } = transactionDetails?.meta
+
+    const toeknAddress = tokenAddress
+    const preToken = preTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
+    const postToken = postTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
+
+    if (postToken && preToken) {
+      const result = new Big(postToken.uiTokenAmount.amount).minus(preToken.uiTokenAmount.amount).toFixed(0)
+      return result
+    }
+  }
+
+  return null
 }

@@ -6,13 +6,14 @@ import styles from "../trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useUserAgent } from "@/app/context/user-agent";
-import { getFullNum } from "@/app/utils";
+import { getFullNum, getTransaction } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
 import { Modal } from "antd-mobile";
 import type { Project } from "@/app/type";
 import { useUser } from "@/app/store/useUser";
+import { useConnection } from "@solana/wallet-adapter-react";
 
 type Token = {
   tokenName: string;
@@ -72,6 +73,8 @@ export default function BuySell({ token, initType, onClose }: Props) {
   const [sellOut, setSellOut] = useState("0");
   const [sellOutSol, setSellOutSol] = useState("0");
 
+  const { connection } = useConnection()
+
   const { userInfo }: any = useUser();
 
   useEffect(() => {
@@ -126,7 +129,7 @@ export default function BuySell({ token, initType, onClose }: Props) {
             console.log('2222', res)
 
             const buyIn = new Big(res)
-              // .mul(1 - slip / 100)
+              .mul(1 - slip / 100)
               .toFixed(token.tokenDecimals);
             setBuyIn(buyIn);
             setIsLoading(false);
@@ -458,11 +461,19 @@ export default function BuySell({ token, initType, onClose }: Props) {
                   return;
                 }
 
+                let showBuyInToken = buyIn
                 let hash;
                 if (activeIndex === 0) {
                   setIsLoading(true);
                   if (tokenType === 1) {
                     hash = await buyToken(new Big(buyIn).toFixed(0), buyInSol);
+                    if (hash) {
+                      const  _showBuyInToken = await getTransaction(connection, hash, token.address as string, userInfo.address)
+                      if (_showBuyInToken) {
+                        showBuyInToken = _showBuyInToken
+                      }
+                    }
+                    
                   } else {
                     hash = await buyTokenWithFixedOutput(
                       new Big(buyIn).toFixed(0),
@@ -483,7 +494,7 @@ export default function BuySell({ token, initType, onClose }: Props) {
                         userInfo={userInfo}
                         token={token}
                         solAmount={activeIndex === 0 ? buyInSol : sellOutSol}
-                        amount={new Big(activeIndex === 0 ? buyIn : sellOut)
+                        amount={new Big(activeIndex === 0 ? showBuyInToken : sellOut)
                           .div(10 ** token.tokenDecimals!)
                           .toFixed(2)}
                         onClose={() => {

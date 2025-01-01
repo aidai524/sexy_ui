@@ -98,7 +98,7 @@ function ShareTemplate({ token, show, onClose }: Props, ref: any) {
                 <LaunchTag type={token.status as number}/>
             </div>
             <div className={styles.tokenName}>{token.tokenName}</div>
-            <div className={styles.ticker}>{token.ticker}</div>
+            <div className={styles.ticker}>Ticker:{token.ticker}</div>
         </div>
         <div className={styles.details}>
             <div className={styles.detailsItem}>
@@ -121,6 +121,7 @@ function ShareTemplate({ token, show, onClose }: Props, ref: any) {
     </>
 
     return <Modal
+    className='no-bg'
         visible={show}
         content={<div className={styles.main + ' ' + (isMobile ? styles.mobileBox : '')}>
             <div className={styles.box + ' ' + (isMobile ? styles.isMobile : '')}>
