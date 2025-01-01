@@ -67,33 +67,7 @@ export default function TradeSuccessModal({
       </div>
 
       <div className={style.close} onClick={onClose}>
-        <svg
-          width="32"
-          height="32"
-          viewBox="0 0 32 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M11 11L21 21"
-            stroke="#888197"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <path
-            d="M21 11L11 21"
-            stroke="#888197"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <circle
-            cx="16"
-            cy="16"
-            r="15.25"
-            stroke="#888197"
-            strokeWidth="1.5"
-          />
-        </svg>
+        <img src="/img/home/close.svg"/>
       </div>
     </div>
   );

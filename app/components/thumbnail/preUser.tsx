@@ -113,7 +113,7 @@ function UserItem({ item, type }: any) {
                     </svg>
                     <span>
                         {item.buy_amount
-                            ? new Big(item.buy_amount).div(10 ** 9).toString()
+                            ? new Big(item.buy_amount).div(1 - 0.015).div(10 ** 9).toString()
                             : 0}{" "}
                         SOL
                     </span>
