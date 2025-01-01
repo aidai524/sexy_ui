@@ -42,13 +42,13 @@ export default function RootLayout({
       </head>
       <body>
         <WalletConnect>
+        <UserAgentProvider>
           <MessageContextProvider>
-            <UserAgentProvider>
               <Suspense>
                 <Layout>{children}</Layout>
               </Suspense>
-            </UserAgentProvider>
           </MessageContextProvider>
+          </UserAgentProvider>
         </WalletConnect>
       </body>
     </html>

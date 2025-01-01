@@ -17,15 +17,16 @@ import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 
 interface Props {
   data: Project;
+  mc?: string | number;
   onUpdate: () => void;
 }
 
-export default function Info({ data, onUpdate }: Props) {
+export default function Info({ data, mc, onUpdate }: Props) {
   const { isMobile } = useUserAgent();
 
   return (
     <div className={styles.main}>
-      <InfoPart showLikes={true} data={data} showThumbnailHead={false} />
+      <InfoPart showLikes={true} mc={mc} data={data} showThumbnailHead={false} />
       <CommentComp id={data.id} />
 
       <div className={styles.action}>

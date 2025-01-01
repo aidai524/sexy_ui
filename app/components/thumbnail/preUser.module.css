@@ -48,6 +48,10 @@
             align-items: center;
             gap: 5px;
             color: #fff;
+            background-color: rgba(60, 60, 60, .4);
+            border-radius: 30px;
+            padding: 5px 10px;
+            backdrop-filter: blur(10px);
         }
     }
 }

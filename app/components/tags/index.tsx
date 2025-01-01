@@ -13,8 +13,16 @@ export default function Tags({ data }: Props) {
   const router = useRouter();
   const [mc, setMc] = useState(0)
   const userName = useMemo(() => {
+    console.log('data:', data)
+
     if (data.creater) {
-      return data.creater.name || formatAddress(data.creater.address);
+        if (data.creater.name) {
+            return data.creater.name
+        }
+
+        if (data.creater.address) {
+            return formatAddress(data.creater.address);
+        }
     }
 
     if (data.account) {

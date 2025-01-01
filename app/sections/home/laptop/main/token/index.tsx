@@ -13,10 +13,11 @@ import {
   actionHateTrigger,
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useLaptop } from "@/app/context/laptop";
 import Loading from "@/app/components/icons/loading";
 import NextButton from "../../fullscreen/next-button";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 export default function Token({
   infoData2,
@@ -30,6 +31,32 @@ export default function Token({
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
   const { updateInfo } = useLaptop();
+
+  const [mc, setMC] = useState<string | number>("-");
+
+  const { getMC, pool } = useTokenTrade({
+    tokenName: infoData2?.tokenName as string,
+    tokenSymbol: infoData2?.tokenSymbol as string,
+    tokenDecimals: infoData2?.tokenDecimals as number,
+    loadData: false
+  });
+
+   useEffect(() => {
+      if (
+        pool &&
+        pool.length > 0 &&
+        infoData2?.DApp === "sexy" &&
+        infoData2?.status === 1
+      ) {
+        getMC().then((res) => {
+          console.log('mc:', mc)
+  
+          setMC(res as number);
+        });
+      } else {
+        setMC(0)
+      }
+    }, [pool, infoData2]);
 
   const next = () => {
     if (from === "detail") return;
@@ -46,6 +73,8 @@ export default function Token({
     next();
     actionHateTrigger(infoData2);
   };
+
+  console.log('mc::', mc)
 
   return (
     <>
@@ -73,6 +102,7 @@ export default function Token({
                     showTop={false}
                     theme="light"
                     sepSize={2}
+                    mc={mc}
                   />
                   <div style={{ height: 2 }} />
                   <CommentComp id={infoData2.id} theme="light" />
@@ -94,7 +124,7 @@ export default function Token({
               )}
               {currentTab === "txs" && (
                 <PanelWrapper>
-                  <Txs from="laptop-home" />
+                  <Txs from="laptop-home" data={infoData2} mc={mc}/>
                 </PanelWrapper>
               )}
             </>

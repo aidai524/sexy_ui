@@ -1,11 +1,10 @@
 import { shareToX } from "@/app/utils/share";
 import styles from "./likes.module.css";
 import type { Project } from "@/app/type";
-import { useMessage } from "@/app/context/messageContext";
 import { fail } from "@/app/utils/toast";
+import Share from "../share";
 
-export default function Likes({ data }: { data: Project }) {
-  const { getShareImg } = useMessage();
+export default function Likes({ data, showShare = true }: { data: Project, showShare?: boolean }) {
 
   return (
     <div className={styles.box}>
@@ -19,16 +18,31 @@ export default function Likes({ data }: { data: Project }) {
 
         {data.DApp === "sexy" && !data.initiativeLaunching && (
           <>
-            <div className={[styles.likes, styles.likeCustom].join(" ")}>
-              {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
-              <span className={styles.likesNums}>{data.like}</span>/
-              <span className={styles.likesNums}>100</span>
-            </div>
-            <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
-              <SuperLikeIcon />
-              <span className={styles.tips}>Flipped</span>
-              <span className={styles.likesNums}>{data.prePaid}</span>
-            </div>
+            {
+              data.initiativeLaunching ? <>
+                <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
+                  <span className={styles.tips}>Paid</span>
+                </div>
+              </> : <>
+                <div className={[styles.likes, styles.likeCustom].join(" ")}>
+                  {
+                    data.status !== 0 ? <>
+                      <LikeFullIcon />
+                      <span className={styles.likesNums}>100</span></> : <>
+                      {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
+                      <span className={styles.likesNums}>{data.like}</span>/
+                      <span className={styles.likesNums}>100</span>
+                    </>
+                  }
+                </div>
+                <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
+                  <SuperLikeIcon />
+                  <span className={styles.tips}>Flipped</span>
+                  <span className={styles.likesNums}>{data.prePaid}</span>
+                </div>
+              </>
+            }
+
           </>
         )}
 
@@ -39,84 +53,9 @@ export default function Likes({ data }: { data: Project }) {
         )}
       </div>
 
-      <div
-        className={`${styles.share} button`}
-        onClick={async () => {
-          const img = await getShareImg(data);
-          console.log("img:", img);
-
-          if (!img) {
-            fail("Share fail");
-            return;
-          }
-
-          shareToX(
-            data.tokenName,
-            `https://test.flipn.fun/api/twitter?tokenName=${encodeURIComponent(
-              data.tokenName
-            )}&about=${encodeURIComponent(
-              data.about
-            )}&imgUrl=${encodeURIComponent(img)}&tokenId=${data.id}`
-          );
-        }}
-      >
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g filter="url(#filter0_b_4443_336)">
-            <circle cx="20" cy="20" r="20" fill="black" fillOpacity="0.4" />
-          </g>
-          <circle
-            cx="25.7727"
-            cy="13.8636"
-            r="2.86364"
-            stroke="white"
-            strokeWidth="2"
-          />
-          <circle
-            cx="25.7727"
-            cy="26.1366"
-            r="2.86364"
-            stroke="white"
-            strokeWidth="2"
-          />
-          <circle cx="13.0908" cy="20.0001" r="4.09091" fill="white" />
-          <path
-            d="M23.3181 15.0908L13.9091 19.9999L23.3181 24.909"
-            stroke="white"
-            strokeWidth="2"
-          />
-          <defs>
-            <filter
-              id="filter0_b_4443_336"
-              x="-10"
-              y="-10"
-              width="60"
-              height="60"
-              filterUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
-            >
-              <feFlood floodOpacity="0" result="BackgroundImageFix" />
-              <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
-              <feComposite
-                in2="SourceAlpha"
-                operator="in"
-                result="effect1_backgroundBlur_4443_336"
-              />
-              <feBlend
-                mode="normal"
-                in="SourceGraphic"
-                in2="effect1_backgroundBlur_4443_336"
-                result="shape"
-              />
-            </filter>
-          </defs>
-        </svg>
-      </div>
+      {
+        showShare && <Share token={data} />
+      }
     </div>
   );
 }
@@ -159,6 +98,13 @@ function LikeIconEmpty() {
       />
     </svg>
   );
+}
+
+function LikeFullIcon() {
+  return <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3.01613 0.998764C1.20448 1.19765 -0.10759 2.78505 0.0855464 4.5443C0.435253 7.72971 4.62988 10.1999 6.79129 10.6444C8.80479 9.7416 12.3636 6.42017 12.0139 3.23476C11.8207 1.47552 10.1955 0.210582 8.38388 0.409472C7.27446 0.531269 6.35237 1.17378 5.84859 2.05757C5.16508 1.30412 4.12556 0.876967 3.01613 0.998764Z" fill="white" />
+  </svg>
+
 }
 
 function SuperLikeIcon() {

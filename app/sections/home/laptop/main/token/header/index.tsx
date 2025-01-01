@@ -6,6 +6,7 @@ import TypesTabs from "../../../../tabs";
 import styles from "./index.module.css";
 import { shareToX } from "@/app/utils/share";
 import { addSearchParam } from "@/app/utils/search-params";
+import { useMessage } from "@/app/context/messageContext";
 
 export default function Header({
   tokenInfo,
@@ -16,6 +17,7 @@ export default function Header({
   from
 }: any) {
   const router = useRouter();
+  const { showShare } = useMessage()
 
   return (
     <div className={styles.Container}>
@@ -37,10 +39,11 @@ export default function Header({
           <button
             className="button"
             onClick={() => {
-              shareToX(
-                tokenInfo.tokenName,
-                "https://app.flipn.fun/detail?id=" + tokenInfo.id
-              );
+              showShare(tokenInfo)
+              // shareToX(
+              //   tokenInfo.tokenName,
+              //   "https://app.flipn.fun/detail?id=" + tokenInfo.id
+              // );
             }}
           >
             <ShareIcon />

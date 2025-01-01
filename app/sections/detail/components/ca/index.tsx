@@ -14,6 +14,9 @@ export default function CA({
   mc: string | number;
 }) {
   const { isMobile } = useUserAgent();
+
+  console.log('mc::222', mc, data)
+
   return (
     <div
       className={[
