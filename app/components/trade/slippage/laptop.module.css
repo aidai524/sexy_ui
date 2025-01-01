@@ -1,0 +1,65 @@
+.Container {
+  padding: 20px;
+  width: 268px;
+  border-radius: 20px;
+}
+
+.Title {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.Labels {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 23px;
+}
+
+.Label {
+  width: 70px;
+  height: 32px;
+  border-radius: 50px;
+  border: 1px solid rgba(146, 144, 177, 0.4);
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.ActiveLabel {
+  background: rgba(146, 144, 177, 0.4);
+}
+
+.InputWrapper {
+  margin-top: 16px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(146, 144, 177, 0.6);
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  padding: 0px 8px;
+  gap: 8px;
+}
+
+.Input {
+  flex-grow: 1;
+  width: 100px;
+  font-family: Unbounded;
+  color: #fff;
+}

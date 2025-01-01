@@ -13,7 +13,7 @@ import {
   actionHateTrigger,
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useLaptop } from "@/app/context/laptop";
 import Loading from "@/app/components/icons/loading";
 import NextButton from "../../fullscreen/next-button";
@@ -24,16 +24,16 @@ export default function Token({
   onOpenFull,
   type,
   from,
-  isLoading
+  isLoading,
+  isFull,
+  list
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
   const { updateInfo } = useLaptop();
 
   const next = () => {
     if (from === "detail") return;
-    setTimeout(() => {
-      getnext();
-    }, 500);
+    getnext();
   };
 
   const like = async () => {
@@ -94,7 +94,7 @@ export default function Token({
               )}
               {currentTab === "txs" && (
                 <PanelWrapper>
-                  <Txs from="laptop" />
+                  <Txs from="laptop-home" />
                 </PanelWrapper>
               )}
             </>
@@ -117,7 +117,8 @@ export default function Token({
         }}
         onBoost={next}
       />
-      <NextButton onClick={hate} style={{}} />
+
+      {!isFull && infoData2 && <NextButton onClick={hate} />}
     </>
   );
 }

@@ -61,10 +61,6 @@ export default function useFollowList({
 
   useEffect(() => {
     if (currentUser) {
-      if (firstLoad.current) {
-        return;
-      }
-      firstLoad.current = true;
       loadMore(true);
     }
   }, [currentUser]);

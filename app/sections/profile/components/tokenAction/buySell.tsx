@@ -58,13 +58,13 @@ function BuySellIcon() {
       <path
         d="M19.1796 14.4023L9.62451 14.4023"
         stroke="#577123"
-        stroke-width="2"
+        strokeWidth="2"
         stroke-linecap="round"
       />
       <path
         d="M14.4021 19.1794L14.4021 9.62439"
         stroke="#577123"
-        stroke-width="2"
+        strokeWidth="2"
         stroke-linecap="round"
       />
     </svg>

@@ -64,9 +64,11 @@ export default function ActionList({
     });
   }, [updateNum, isOther]);
 
-  const disableSmooke = useMemo(() => {
-    return token.isSuperLike || token.account === userInfo.address;
-  }, []);
+  const smookeable = useMemo(() => {
+    return (
+      token.isSuperLike && !token.prePaid && token.account !== userInfo?.address
+    );
+  }, [token, userInfo]);
 
   return (
     <div className={styles.Btns}>
@@ -110,22 +112,20 @@ export default function ActionList({
             </>
           )}
 
-          <>
-            {!disableSmooke && (
-              <SmokeHot
-                actionChildren={
-                  <button
-                    className={`${styles.ActionBtn} ${styles.Withdraw} button`}
-                  >
-                    {/* {isMobile && <SmookIcon />} */}
-                    Flip
-                  </button>
-                }
-                token={token}
-                onClick={() => {}}
-              />
-            )}
-          </>
+          {smookeable && (
+            <SmokeHot
+              actionChildren={
+                <button
+                  className={`${styles.ActionBtn} ${styles.Withdraw} button`}
+                >
+                  {/* {isMobile && <SmookIcon />} */}
+                  Flip
+                </button>
+              }
+              token={token}
+              onClick={() => {}}
+            />
+          )}
         </>
       )}
 

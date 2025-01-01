@@ -2,9 +2,10 @@ import Modal from "@/app/components/modal";
 import SearchIcon from "@/app/components/icons/search";
 import FollowerList from "@/app/sections/profile/follower/component/followerList/list";
 import styles from "./index.module.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useFollowList from "@/app/sections/profile/hooks/useFollowList";
 import { useAccount } from "@/app/hooks/useAccount";
+import useUserInfo from "@/app/hooks/useUserInfo";
 import { formatAddress } from "@/app/utils";
 
 export default function FollowerModal({
@@ -19,9 +20,12 @@ export default function FollowerModal({
   const { address: walletAddress } = useAccount();
   const followerType = useMemo(() => (type === "following" ? 2 : 1), [type]);
 
+  const currentUser = useMemo(() => ({ address }), [address]);
+  const { userInfo: currentUserInfo } = useUserInfo(address);
+
   const { list, userInfo, setList, isLoading, hasMore, loadMore } =
     useFollowList({
-      currentUser: { address },
+      currentUser,
       followerType,
       refresh
     });
@@ -36,12 +40,16 @@ export default function FollowerModal({
     if (walletAddress === address) {
       prev = "My";
     } else {
-      prev = `${userInfo?.name || formatAddress(address)}'s`;
+      prev = `${currentUserInfo?.name || formatAddress(address)}'s`;
     }
     return `${prev} ${type === "following" ? `Following` : `Followers`} (${
       list?.length || 0
     })`;
-  }, [type, list, walletAddress, userInfo, address]);
+  }, [type, list, walletAddress, currentUserInfo, address]);
+
+  useEffect(() => {
+    if (open) setRefresh(refresh + 1);
+  }, [open]);
   return (
     <Modal
       open={open}

@@ -1,4 +1,4 @@
-import Thumbnail, { AvatarBack } from "@/app/components/thumbnail";
+import Thumbnail from "@/app/components/thumbnail";
 import Panel from "../../../../components/panel";
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
@@ -6,6 +6,7 @@ import { formatAddress, timeAgo } from "@/app/utils";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useAccount } from "@/app/hooks/useAccount";
 
 interface Props {
   showThumbnailHead: boolean;
@@ -30,6 +31,7 @@ export default function InfoPart({
   theme = "dark",
   sepSize = 10
 }: Props) {
+  const { address } = useAccount();
   const router = useRouter();
   const userName = useMemo(() => {
     if (data.creater) {
@@ -78,7 +80,8 @@ export default function InfoPart({
             <div className={styles.authorTitle}>Created by:</div>
             <div
               onClick={() => {
-                router.push("/profile/user?account=" + data.account);
+                if (address !== data.account)
+                  router.push("/profile/user?account=" + data.account);
               }}
               className={[
                 styles.authorDesc,
@@ -87,6 +90,7 @@ export default function InfoPart({
               ].join(" ")}
             >
               {userName}
+              {address === data.account && "(Self)"}
             </div>
           </div>
           {data.creater && data.creater.education && (

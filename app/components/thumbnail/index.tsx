@@ -11,6 +11,7 @@ import Holder from "../holder";
 import LoadMore from "./loadMore";
 import PreUser from "./preUser";
 import AvatarBox from "./avatar-box";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface Props {
   showDesc: boolean;
@@ -129,7 +130,7 @@ export default function Thumbnail({
               Your browser does not support the video tag.
             </video>
           ) : (
-            <img
+            <LazyLoadImage
               className={styles.tokenImg}
               src={data.tokenImg || "/img/token-placeholder.png"}
             />

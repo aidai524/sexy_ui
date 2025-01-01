@@ -9,7 +9,7 @@ export default function Laptop({ show, onClose, data, initType }: any) {
       mainStyle={{
         width: 502,
         borderColor: "#AAFF00",
-        backgroundColor: "#0000001A",
+        backgroundColor: "#19030D",
         padding: "30px"
       }}
     >

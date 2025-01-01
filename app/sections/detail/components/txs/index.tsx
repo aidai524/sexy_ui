@@ -44,7 +44,7 @@ export default function Txs({ from, data, mc }: any) {
       {data && (
         <div
           className={`${styles.txContent} ${
-            from === "laptop" ? styles.LaptopContent : ""
+            from === "laptop-home" ? styles.LaptopContent : ""
           }`}
         >
           {data?.status === 1 && (

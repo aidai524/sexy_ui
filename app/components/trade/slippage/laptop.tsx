@@ -1,8 +1,9 @@
 import Modal from "@/app/components/modal";
-import Content from "./content";
+import styles from "./laptop.module.css";
+
+const list = [0.1, 0.5, 1];
 export default function Laptop({
   show,
-  token,
   slipData,
   onSlipDataChange,
   onHide
@@ -12,19 +13,45 @@ export default function Laptop({
       open={show}
       onClose={onHide}
       mainStyle={{
-        width: 360,
-        borderColor: "#FFFFFF33",
-        backgroundColor: "#18131C"
+        width: 268,
+        borderColor: "#9290B199",
+        backgroundColor: "#1A1927"
+      }}
+      closeStyle={{
+        transform: "scale(0.8)",
+        marginTop: "-10px"
       }}
     >
-      <Content
-        {...{
-          onHide,
-          token,
-          slipData,
-          onSlipDataChange
-        }}
-      />
+      <div className={styles.Container}>
+        <div className={styles.Title}>Set max slippage</div>
+        <div className={styles.Labels}>
+          {list.map((item: number) => (
+            <button
+              key={item}
+              className={`${styles.Label} ${
+                Number(slipData) === item && styles.ActiveLabel
+              }`}
+              onClick={() => {
+                onSlipDataChange?.(item);
+              }}
+            >
+              {item}%
+            </button>
+          ))}
+        </div>
+        <div className={styles.InputWrapper}>
+          <span>Custom</span>
+          <input
+            className={styles.Input}
+            onChange={(ev: any) => {
+              if (!isNaN(ev.target.value)) {
+                onSlipDataChange?.(ev.target.value);
+              }
+            }}
+          />
+          <span>%</span>
+        </div>
+      </div>
     </Modal>
   );
 }

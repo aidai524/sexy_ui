@@ -20,7 +20,7 @@ import {
 } from "@/app/components/timesLike/ActionTrigger";
 import { mapDataToProject } from "@/app/utils/mapTo";
 
-export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
+export default function Fullscreen({ list = [], onExit, type }: any) {
   const swaperRef = useRef<any>();
   const { updateInfo } = useLaptop();
   const [index, setIndex] = useState(0);
@@ -32,13 +32,13 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
     return list;
   }, [list]);
 
-  const next = async (type?: 0 | 1) => {
+  const next = (type?: 0 | 1) => {
+    console.log(48, index, list.length, type);
     if (type !== undefined) {
-      type
-        ? await actionLikeTrigger(list[index])
-        : await actionHateTrigger(list[index]);
+      type ? actionLikeTrigger(list[index]) : actionHateTrigger(list[index]);
     }
-    if (index === list.length - 1) {
+
+    if (index === list.length) {
       return;
     }
 
@@ -47,10 +47,6 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
     }
 
     setIndex((prev) => prev + 1);
-
-    setTimeout(() => {
-      getnext();
-    }, 500);
   };
 
   useEffect(() => {
@@ -106,7 +102,6 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
                     }}
                     onSuperLike={() => {
                       next();
-                      updateInfo("flip");
                     }}
                     onBoost={() => {
                       next();
@@ -176,7 +171,7 @@ export default function Fullscreen({ list = [], getnext, onExit, type }: any) {
       >
         Click the blank area means ‘unlike’ it, and check the next one.
       </div>
-      {!list.length && (
+      {(!list.length || index === list.length) && (
         <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
           <Empty type={type} />
         </div>

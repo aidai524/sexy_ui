@@ -35,5 +35,5 @@ export async function fetchLastData(address: string, granularity: string) {
     `/kline/last?address=${address}&granularity=${Number(granularity) * 60}`
   );
   // return { data: mockData.data, hasNextPage: false };
-  return response.data;
+  return response.data[0];
 }
