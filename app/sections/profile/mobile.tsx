@@ -26,7 +26,7 @@ export default function Profile({
   const store = useReferStore();
   const backgroundImgStyle = userInfo?.banner
     ? {
-        backgroundImage: `linear-gradient(360deg, #0D1012 41.35%, rgba(0, 0, 0, 0) 100%)`,
+        backgroundImage: `linear-gradient(360deg, #000 41.35%, rgba(0, 0, 0, 0) 100%)`,
         backgroundSize: "100% auto"
       }
     : {};

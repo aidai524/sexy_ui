@@ -1,5 +1,6 @@
 .main {
   min-height: 100vh;
+  background-color: #000;
 
   /* background: #fff; */
   padding: 0 0 100px;
@@ -19,7 +20,7 @@
     background: #000 url("/img/profile/bg.png") left top no-repeat;
     background-size: 100% auto;
   }
-  .avatarBox::after {
+  /* .avatarBox::after {
     content: " ";
     display: block;
     position: absolute;
@@ -27,8 +28,8 @@
     right: 0;
     bottom: -1px;
     height: 1px;
-    /* background-color: #000; */
-  }
+    background-color: #000;
+  } */
 
   .avatarContent {
     padding: 50px 0 16px;
