@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { Trend } from '@/app/sections/trends/hooks';
+import { Trend } from "@/app/sections/trends/hooks";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface TrendsState {
   list: Trend[];
@@ -16,5 +17,19 @@ export const useTrendsStore = create<TrendsState>((set) => ({
   top1: void 0,
   setList: (list: Trend[]) => set((state) => ({ ...state, list })),
   setAllList: (allList: Trend[]) => set((state) => ({ ...state, allList })),
-  setTop1: (top1: Trend) => set((state) => ({ ...state, top1 })),
+  setTop1: (top1: Trend) => set((state) => ({ ...state, top1 }))
 }));
+
+export const useTrendsBannerStore = create(
+  persist(
+    (set, get: any) => ({
+      visible: true,
+      set: (params: any) => set(() => ({ ...params }))
+    }),
+    {
+      name: "trends_banner",
+      version: 0.2,
+      storage: createJSONStorage(() => sessionStorage)
+    }
+  )
+);
