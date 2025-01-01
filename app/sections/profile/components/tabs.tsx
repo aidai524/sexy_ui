@@ -52,7 +52,7 @@ export default function Tabs({
       content: (
         <Created
           address={address}
-          type="hot"
+          type="flipped"
           isOther={isOther}
           prepaidWithdrawDelayTime={prepaidDelayTime}
           refresher={flipListKey}

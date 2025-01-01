@@ -18,16 +18,31 @@ export default function Likes({ data, showShare = true }: { data: Project, showS
 
         {data.DApp === "sexy" && !data.initiativeLaunching && (
           <>
-            <div className={[styles.likes, styles.likeCustom].join(" ")}>
-              {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
-              <span className={styles.likesNums}>{data.like}</span>/
-              <span className={styles.likesNums}>100</span>
-            </div>
-            <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
-              <SuperLikeIcon />
-              <span className={styles.tips}>Flipped</span>
-              <span className={styles.likesNums}>{data.prePaid}</span>
-            </div>
+            {
+              data.initiativeLaunching ? <>
+                <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
+                  <span className={styles.tips}>Paid</span>
+                </div>
+              </> : <>
+                <div className={[styles.likes, styles.likeCustom].join(" ")}>
+                  {
+                    data.status !== 0 ? <>
+                      <LikeFullIcon />
+                      <span className={styles.likesNums}>100</span></> : <>
+                      {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
+                      <span className={styles.likesNums}>{data.like}</span>/
+                      <span className={styles.likesNums}>100</span>
+                    </>
+                  }
+                </div>
+                <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
+                  <SuperLikeIcon />
+                  <span className={styles.tips}>Flipped</span>
+                  <span className={styles.likesNums}>{data.prePaid}</span>
+                </div>
+              </>
+            }
+
           </>
         )}
 
@@ -83,6 +98,13 @@ function LikeIconEmpty() {
       />
     </svg>
   );
+}
+
+function LikeFullIcon() {
+  return <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3.01613 0.998764C1.20448 1.19765 -0.10759 2.78505 0.0855464 4.5443C0.435253 7.72971 4.62988 10.1999 6.79129 10.6444C8.80479 9.7416 12.3636 6.42017 12.0139 3.23476C11.8207 1.47552 10.1955 0.210582 8.38388 0.409472C7.27446 0.531269 6.35237 1.17378 5.84859 2.05757C5.16508 1.30412 4.12556 0.876967 3.01613 0.998764Z" fill="white" />
+  </svg>
+
 }
 
 function SuperLikeIcon() {

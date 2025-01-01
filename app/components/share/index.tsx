@@ -1,8 +1,5 @@
 import type { Project } from "@/app/type"
-import { shareToX } from "@/app/utils/share"
-import { fail } from "@/app/utils/toast"
-import ShareTemplate from "../shareTemplate"
-import { useRef, useState } from "react"
+import styles from './index.module.css'
 import { useMessage } from "@/app/context/messageContext"
 
 interface Props {
@@ -11,10 +8,9 @@ interface Props {
 
 export default function Share({ token }: Props) {
     const { showShare } = useMessage()
-    // const [shareShow, setShareShow] = useState(false)
 
     return <div
-    className=""
+    className={ styles.share }
     onClick={() => {
         showShare(token)
     }}
