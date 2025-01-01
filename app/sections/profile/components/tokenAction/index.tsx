@@ -13,7 +13,6 @@ interface Props {
 
 export default function TokenAction({
   token,
-  isDelay,
   isOther,
   prepaidWithdrawDelayTime
 }: Props) {

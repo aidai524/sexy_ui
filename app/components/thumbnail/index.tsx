@@ -149,17 +149,23 @@ export default function Thumbnail({
         )}
 
         <div className={styles.imgList}>
-          {videoReg.test(data.tokenImg) ? (
-            <video width="100%" className={styles.imgPreview} autoPlay={false}>
-              <source src={data.tokenImg} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <LazyLoadImage
-              className={styles.tokenImg}
-              src={data.tokenImg || "/img/token-placeholder.png"}
-            />
-          )}
+          <div className={styles.ImgWrapper}>
+            {videoReg.test(data.tokenImg) ? (
+              <video
+                width="100%"
+                className={styles.imgPreview}
+                autoPlay={false}
+              >
+                <source src={data.tokenImg} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <LazyLoadImage
+                className={styles.tokenImg}
+                src={data.tokenImg || "/img/token-placeholder.png"}
+              />
+            )}
+          </div>
         </div>
 
         {progressIndex === 1 && (
