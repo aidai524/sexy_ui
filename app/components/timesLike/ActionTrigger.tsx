@@ -21,7 +21,7 @@ const onLike = async (data: any) => {
           "You liked " +
             (data.token_name || data.tokenName) +
             ", You are expected to receive " +
-            new Big(v.data?.point || 0).toFixed(2)
+            new Big(v.data?.point || 0).toFixed(2) + ' points'
         );
         return v.data?.likeNum;
       } else if (v.code === 100002) {

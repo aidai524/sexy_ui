@@ -18,33 +18,30 @@ export default function Likes({ data, showShare = true }: { data: Project, showS
 
         {data.DApp === "sexy" && !data.initiativeLaunching && (
           <>
-            {
-              data.initiativeLaunching ? <>
-                <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
-                  <span className={styles.tips}>Paid</span>
-                </div>
-              </> : <>
-                <div className={[styles.likes, styles.likeCustom].join(" ")}>
-                  {
-                    data.status !== 0 ? <>
-                      <LikeFullIcon />
-                      <span className={styles.likesNums}>100</span></> : <>
-                      {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
-                      <span className={styles.likesNums}>{data.like}</span>/
-                      <span className={styles.likesNums}>100</span>
-                    </>
-                  }
-                </div>
-                <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
-                  <SuperLikeIcon />
-                  <span className={styles.tips}>Flipped</span>
-                  <span className={styles.likesNums}>{data.prePaid}</span>
-                </div>
-              </>
-            }
-
+            <div className={[styles.likes, styles.likeCustom].join(" ")}>
+              {
+                data.status !== 0 ? <>
+                  <LikeFullIcon />
+                  <span className={styles.likesNums}>100</span></> : <>
+                  {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
+                  <span className={styles.likesNums}>{data.like}</span>/
+                  <span className={styles.likesNums}>100</span>
+                </>
+              }
+            </div>
+            <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
+              <SuperLikeIcon />
+              <span className={styles.tips}>Flipped</span>
+              <span className={styles.likesNums}>{data.prePaid}</span>
+            </div>
           </>
         )}
+
+        {
+          data.DApp === "sexy" && data.initiativeLaunching && <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
+            Paid
+          </div>
+        }
 
         {data.status !== 0 && (
           <div className={[styles.holder, styles.likeCustom].join(" ")}>

@@ -12,6 +12,7 @@ import LoadMore from "./loadMore";
 import PreUser from "./preUser";
 import AvatarBox from "./avatar-box";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useThrottleFn } from "ahooks";
 
 interface Props {
   showDesc: boolean;
@@ -45,6 +46,7 @@ export default function Thumbnail({
   const commentRef = useRef<any>();
   const [height, setHeight] = useState("calc(100vh - 232px)");
   const [showLoadMore, setShowLoadMore] = useState(false);
+  const [stopLoadMore, setStopLoadMore] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -54,6 +56,9 @@ export default function Thumbnail({
 
   useEffect(() => {
     const inter = setInterval(() => {
+      if (stopLoadMore) {
+        return
+      }
       if (progressIndex === 1 || progressIndex === 2) {
         const hasVertical =
           commentRef.current.scrollHeight > commentRef.current.clientHeight;
@@ -66,7 +71,20 @@ export default function Thumbnail({
     return () => {
       clearInterval(inter);
     };
-  }, [progressIndex]);
+  }, [progressIndex, stopLoadMore]);
+
+  const { run: loadMoreRun } = useThrottleFn(() => {
+    if (commentRef.current.scrollHeight === commentRef.current.scrollTop + commentRef.current.clientHeight) {
+      setStopLoadMore(true)
+      setShowLoadMore(false)
+    } else {
+      setStopLoadMore(false)
+      setShowLoadMore(true)
+    }
+  }, {
+    wait: 200,
+  });
+
 
   if (!data) {
     return;
@@ -102,6 +120,7 @@ export default function Thumbnail({
             ></div>
             <div
               onClick={() => {
+                setStopLoadMore(false)
                 setShowLoadMore(false);
                 setProgressIndex(1);
               }}
@@ -112,6 +131,7 @@ export default function Thumbnail({
             ></div>
             <div
               onClick={() => {
+                setStopLoadMore(false)
                 setShowLoadMore(false);
                 setProgressIndex(2);
               }}
@@ -140,7 +160,9 @@ export default function Thumbnail({
         {progressIndex === 1 && (
           <div className={styles.commentList}>
             <Avatar data={data} showBackIcon={true} />
-            <div className={styles.commentBox} ref={commentRef}>
+            <div className={styles.commentBox} ref={commentRef} onScroll={(e) => {
+              loadMoreRun()
+            }}>
               <CommentComp
                 titleStyle={{ color: "#fff" }}
                 id={data.id}
@@ -170,13 +192,14 @@ export default function Thumbnail({
           <div className={styles.commentList}>
             <Avatar data={data} showBackIcon={true} />
             <div style={{ height: 10 }}></div>
-            <div className={styles.commentBox} ref={commentRef}>
+            <div className={styles.commentBox} ref={commentRef} onScroll={(e) => {
+              loadMoreRun()
+            }}>
               {data.status === 0 ? <PreUser token={data} /> : <Holder />}
             </div>
             {showLoadMore && (
               <LoadMore
                 onClick={() => {
-                  console.log(commentRef);
                   if (commentRef.current) {
                     commentRef.current.scrollTo({
                       top:
