@@ -33,6 +33,8 @@ export default function Detail({ infoData, getDetailInfo }: any) {
       infoData?.status === 1
     ) {
       getMC().then((res) => {
+        console.log('mc:', mc)
+
         setMC(res as number);
       });
     }
@@ -61,6 +63,7 @@ export default function Detail({ infoData, getDetailInfo }: any) {
         {infoData.status === 0 ? (
           <Info
             data={infoData}
+            mc={mc}
             onUpdate={() => {
               getDetailInfo();
             }}
@@ -76,6 +79,7 @@ export default function Detail({ infoData, getDetailInfo }: any) {
                 name: "Info",
                 content: (
                   <Info
+                    mc={mc}
                     data={infoData}
                     onUpdate={() => {
                       getDetailInfo();

@@ -2,7 +2,7 @@ import Thumbnail from "@/app/components/thumbnail";
 import Panel from "../../../../components/panel";
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
-import { formatAddress, timeAgo } from "@/app/utils";
+import { formatAddress, simplifyNum, timeAgo } from "@/app/utils";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -18,6 +18,7 @@ interface Props {
   showTop?: boolean;
   theme?: string;
   sepSize?: number;
+  mc?: string | number;
 }
 
 export default function InfoPart({
@@ -29,7 +30,8 @@ export default function InfoPart({
   showLikes = true,
   showTop = true,
   theme = "dark",
-  sepSize = 10
+  sepSize = 10,
+  mc,
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
@@ -116,7 +118,7 @@ export default function InfoPart({
           </div>
           <div className={styles.author}>
             <div className={styles.authorTitle}>Market cap:</div>
-            <div className={styles.authorDesc}>-</div>
+            <div className={styles.authorDesc} style={{ color: '#6fff00' }} >{ mc === 0 ? '-' : simplifyNum(mc as number) }</div>
           </div>
         </Panel>
       </>

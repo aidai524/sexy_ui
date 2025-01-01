@@ -25,8 +25,6 @@ export default function Txs({ from, data, mc }: any) {
 
   useEffect(() => {
     if (data && data.tokenName) {
-      console.log(data);
-
       httpGet("/project/trade/list?limit=100&token_name=" + data.address).then(
         (res) => {
           if (res.code === 0) {
