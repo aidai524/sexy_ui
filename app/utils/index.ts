@@ -643,6 +643,10 @@ export const simplifyNum = (number: number) => {
   if (typeof Number(number) !== "number") return 0;
   if (isNaN(Number(number))) return 0;
 
+  if (number < 0.01) {
+    return '<0.01'
+  }
+
   let str_num;
   if (number >= 1e3 && number < 1e6) {
     str_num = number / 1e3;
@@ -667,12 +671,16 @@ export async function getTransaction(connection: Connection, hash: string, token
     commitment: 'confirmed',
   });
 
+  console.log('transactionDetails:', transactionDetails)
+
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta
 
     const toeknAddress = tokenAddress
     const preToken = preTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
     const postToken = postTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
+
+    console.log('preToken---', preTokenBalances, postTokenBalances, preToken, postToken)
 
     if (postToken && preToken) {
       const result = new Big(postToken.uiTokenAmount.amount).minus(preToken.uiTokenAmount.amount).toFixed(0)

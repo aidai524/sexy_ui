@@ -27,13 +27,18 @@
         top: -9999px;
     }
 
+    .twitterBox {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding-top: 70px;
+    }
+
     .heart {
         background: url(/img/share/heart.svg) no-repeat center 30px;
         min-height: 100px;
         display: flex;
         align-items: center;
-
-        padding-top: 70px;
         flex-direction: column;
         .avatar {
             width: 120px;
@@ -48,11 +53,12 @@
             }
         }
         .tokenName {
-            font-size: 48px;
+            font-size: 28px;
             font-weight: 700;
+            margin-top: 10px;
         }
         .ticker {
-            font-size: 24px;
+            font-size: 20px;
             /* height: 60px; */
         }
     }
@@ -61,10 +67,11 @@
         font-size: 18px;
         margin-top: 10px;
         font-weight: 300;
-        padding: 0 50px;
+        padding: 0 20px;
         .detailsItem {
             display: flex;
             margin-bottom: 15px;
+            gap: 10px;
             .detailTitle {
                 flex: 1;
             }
