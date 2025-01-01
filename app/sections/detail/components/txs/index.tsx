@@ -47,7 +47,13 @@ export default function Txs({ from, data, mc }: any) {
         >
           {data?.status === 1 && (
             <>
-              <div className={styles.txTtitles}>
+              <div
+                className={`${styles.txTtitles} ${
+                  from === "laptop-home"
+                    ? styles.LaptopTitles
+                    : styles.MobileTitles
+                }`}
+              >
                 <div style={{ flex: 2 }} className={styles.titleItem}>
                   Account
                 </div>
@@ -66,7 +72,13 @@ export default function Txs({ from, data, mc }: any) {
                 {list.map((item: any) => {
                   return (
                     <div key={item.id} className={styles.item}>
-                      <div className={styles.account}>
+                      <div
+                        className={`${styles.account} ${
+                          from === "laptop-home"
+                            ? styles.LaptopAccount
+                            : styles.MobileAccount
+                        }`}
+                      >
                         <img
                           className={styles.avatar}
                           src={item.icon || defaultAvatar}
