@@ -11,7 +11,7 @@
         height: 350px;
     }
     .box {
-        width: 1000px;
+        width: 600px;
         /* height: 85vh; */
         background: radial-gradient(82.51% 82.59% at 39.55% 0%, #FFCAE0 0%, #FFFEFE 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
         border: 10px solid rgba(255, 0, 138, 1);
@@ -19,7 +19,7 @@
     }
     .isMobile {
         transform-origin: 0% 0%;
-        transform: scale(0.3);
+        transform: scale(0.5);
     }
 
     .realyDom {
@@ -29,37 +29,37 @@
 
     .heart {
         background: url(/img/share/heart.svg) no-repeat center 30px;
-        min-height: 300px;
+        min-height: 100px;
         display: flex;
         align-items: center;
 
-        padding-top: 100px;
+        padding-top: 70px;
         flex-direction: column;
         .avatar {
-            width: 320px;
-            height: 320px;
-            border: 10px solid #fff;
-            border-radius: 320px;
+            width: 120px;
+            height: 120px;
+            border: 5px solid #fff;
+            border-radius: 120px;
             position: relative;
             .avatarImg {
-                width: 300px;
-                height: 300px;
-                border-radius: 320px;
+                width: 110px;
+                height: 110px;
+                border-radius: 110px;
             }
         }
         .tokenName {
-            font-size: 88px;
+            font-size: 48px;
             font-weight: 700;
         }
         .ticker {
-            font-size: 34px;
+            font-size: 24px;
             /* height: 60px; */
         }
     }
 
     .details {
-        font-size: 34px;
-        margin-top: 40px;
+        font-size: 24px;
+        margin-top: 10px;
         font-weight: 300;
         padding: 0 100px;
         .detailsItem {
@@ -85,9 +85,9 @@
 
     .shareBtn {
         position: absolute;
-        right: 100px;
-        bottom: 50px;
-        font-size: 50px;
+        right: 20px;
+        bottom: 20px;
+        font-size: 30px;
         border: 1px solid #ddd;
         background-color: rgba(0, 0, 0, .4);
         border-radius: 30px;
@@ -123,7 +123,7 @@
 .likeBox {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%) scale(2);
+    transform: translateX(-50%) scale(1.5);
     top: 5%;
 
 }
