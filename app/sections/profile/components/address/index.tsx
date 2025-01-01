@@ -1,6 +1,6 @@
 import { useAccount } from "@/app/hooks/useAccount";
 import styles from "./index.module.css";
-import { formatAddressLast, logOut } from "@/app/utils";
+import { formatAddressLast } from "@/app/utils";
 import { useRouter } from "next/navigation";
 
 export default function Address({
@@ -11,7 +11,7 @@ export default function Address({
   isFull = false,
   logout
 }: any) {
-  const { disconnect, address: loginAddress } = useAccount();
+  const { address: loginAddress } = useAccount();
   const router = useRouter();
 
   return (
@@ -41,7 +41,6 @@ export default function Address({
       {loginAddress === address && (
         <div
           onClick={async () => {
-            await disconnect();
             logout?.();
             router.push("/");
           }}

@@ -5,6 +5,7 @@ import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCodeStore, CODE } from "@/app/store/use-code";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { redirect } from "next/navigation";
 import {
   getAuthorizationByLocalAndServer,
@@ -19,6 +20,7 @@ const AuthContext = React.createContext<any | null>(null);
 export const AuthProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
+  const { disconnect } = useWallet();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const { address, walletProvider } = useAccount();
   const userStore: any = useUser();
@@ -65,6 +67,7 @@ export const AuthProvider: React.FC<{
   }, []);
 
   const logout = useCallback(async () => {
+    await disconnect?.();
     setUserInfo(undefined);
     userStore.set({
       userInfo: null

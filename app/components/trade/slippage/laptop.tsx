@@ -1,5 +1,6 @@
 import Modal from "@/app/components/modal";
 import styles from "./laptop.module.css";
+import { useState, useEffect } from "react";
 
 const list = [0.1, 0.5, 1];
 export default function Laptop({
@@ -8,6 +9,10 @@ export default function Laptop({
   onSlipDataChange,
   onHide
 }: any) {
+  const [customVal, setCustomVal] = useState("");
+  useEffect(() => {
+    setCustomVal(list.includes(Number(slipData)) ? "" : slipData);
+  }, [slipData]);
   return (
     <Modal
       open={show}
@@ -33,6 +38,7 @@ export default function Laptop({
               }`}
               onClick={() => {
                 onSlipDataChange?.(item);
+                setCustomVal("");
               }}
             >
               {item}%
@@ -43,6 +49,7 @@ export default function Laptop({
           <span>Custom</span>
           <input
             className={styles.Input}
+            value={customVal}
             onChange={(ev: any) => {
               if (!isNaN(ev.target.value)) {
                 onSlipDataChange?.(ev.target.value);
