@@ -41,22 +41,22 @@ export default function Token({
     loadData: false
   });
 
-   useEffect(() => {
-      if (
-        pool &&
-        pool.length > 0 &&
-        infoData2?.DApp === "sexy" &&
-        infoData2?.status === 1
-      ) {
-        getMC().then((res) => {
-          console.log('mc:', mc)
-  
-          setMC(res as number);
-        });
-      } else {
-        setMC(0)
-      }
-    }, [pool, infoData2]);
+  useEffect(() => {
+    if (
+      pool &&
+      pool.length > 0 &&
+      infoData2?.DApp === "sexy" &&
+      infoData2?.status === 1
+    ) {
+      getMC().then((res) => {
+        console.log("mc:", mc);
+
+        setMC(res as number);
+      });
+    } else {
+      setMC(0);
+    }
+  }, [pool, infoData2]);
 
   const next = () => {
     if (from === "detail") return;
@@ -74,7 +74,7 @@ export default function Token({
     actionHateTrigger(infoData2);
   };
 
-  console.log('mc::', mc)
+  console.log("mc::", mc);
 
   return (
     <>
@@ -124,7 +124,7 @@ export default function Token({
               )}
               {currentTab === "txs" && (
                 <PanelWrapper>
-                  <Txs from="laptop-home" data={infoData2} mc={mc}/>
+                  <Txs from="laptop-home" data={infoData2} mc={mc} />
                 </PanelWrapper>
               )}
             </>
@@ -148,7 +148,9 @@ export default function Token({
         onBoost={next}
       />
 
-      {!isFull && infoData2 && <NextButton onClick={hate} />}
+      {!isFull && infoData2 && from !== "detail" && (
+        <NextButton onClick={hate} />
+      )}
     </>
   );
 }

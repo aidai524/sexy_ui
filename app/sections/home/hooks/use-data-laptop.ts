@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import type { Project } from "@/app/type";
 import { getAll, setAll } from "@/app/utils/listStore";
 import { mapDataToProject } from "@/app/utils/mapTo";
+import { useAuth } from "@/app/context/auth";
 
 const limit = 10;
 const left_num = 5;
@@ -12,6 +13,7 @@ export default function useData(launchType: string) {
   const [isLoading, setisLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
   const listRef = useRef<Project[]>();
+  const { accountRefresher } = useAuth();
 
   const onQueryList = async (isInit: boolean) => {
     await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`)
@@ -87,18 +89,29 @@ export default function useData(launchType: string) {
   };
 
   const onUpdateAfterExitingFull = (index: number) => {
-    if (!listRef.current) return;
-    listRef.current = listRef.current?.slice(index, listRef.current.length);
-    setInfoData2(mapDataToProject(listRef.current[0]));
-    setAll(listRef.current, launchType);
-    if (listRef.current.length <= left_num) {
-      if (hasNext) {
-        onQueryList(false);
+    try {
+      if (!listRef.current?.length) {
+        throw new Error();
       }
+      listRef.current = listRef.current?.slice(index, listRef.current.length);
+      if (!listRef.current?.length) {
+        throw new Error();
+      }
+      setInfoData2(mapDataToProject(listRef.current[0]));
+      setAll(listRef.current, launchType);
+      if (listRef.current.length <= left_num) {
+        if (hasNext) {
+          onQueryList(false);
+        }
+      }
+    } catch (err) {
+      setInfoData2(undefined);
+      setAll([], launchType);
     }
   };
-
+  console.log("launchType", launchType);
   useEffect(() => {
+    console.log(104);
     let list = getAll(launchType);
 
     if (list && list.length > 0) {
@@ -139,6 +152,14 @@ export default function useData(launchType: string) {
       setInfoData2(undefined);
     }
   }, [launchType]);
+
+  useEffect(() => {
+    console.log(146, accountRefresher);
+    if (accountRefresher) {
+      onQueryList(true);
+    } else {
+    }
+  }, [accountRefresher]);
 
   return {
     infoData2,
