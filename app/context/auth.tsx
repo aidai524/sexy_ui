@@ -50,6 +50,11 @@ export const AuthProvider: React.FC<{
       window.walletProvider = walletProvider;
       // @ts-ignore
       window.sexAddress = address;
+      if (address === userStore.userInfo?.address) {
+        setAccountRefresher(1);
+        updateCurrentUserInfo();
+        return;
+      }
       await initAuthorization();
       setAccountRefresher(accountRefresher + 1);
     },
@@ -84,12 +89,6 @@ export const AuthProvider: React.FC<{
   useEffect(() => {
     if (!address) {
       setAccountRefresher(0);
-      return;
-    }
-
-    if (address === userStore.userInfo?.address) {
-      setAccountRefresher(1);
-      updateCurrentUserInfo();
       return;
     }
     updateAccount();
