@@ -1,70 +1,34 @@
 import { httpGet } from "@/app/utils";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import type { Project } from "@/app/type";
 import { getAll, setAll } from "@/app/utils/listStore";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import { useAuth } from "@/app/context/auth";
+import { useDebounceFn } from "ahooks";
 
 const limit = 10;
 const left_num = 5;
 
 export default function useData(launchType: string) {
   const [infoData2, setInfoData2] = useState<Project>();
-  const [isLoading, setisLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
   const listRef = useRef<Project[]>();
-  const { accountRefresher } = useAuth();
+  const { accountRefresher, userInfo } = useAuth();
 
-  const onQueryList = async (isInit: boolean) => {
-    await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`)
-      .then((res) => {
-        if (res.data?.has_next_page || res.data?.list.length === limit) {
-          setHasNext(true);
-        } else {
-          setHasNext(false);
-        }
-
-        if (res.code !== 0 || !res.data?.list) {
-          setisLoading(false);
-          return;
-        }
-        // res.data.list = []
-        let _list: any = [];
-        if (isInit) {
-          _list = res.data?.list;
-
-          setInfoData2(mapDataToProject(_list[0]));
-        } else {
-          const newVals: any = {};
-          if (listRef.current) {
-            listRef.current.forEach((item: any) => {
-              newVals[item.id] = item;
-            });
-          }
-
-          if (res.data.list) {
-            res.data.list.forEach((item: any) => {
-              if (!newVals[item.id]) {
-                newVals[item.id] = item;
-              }
-            });
-          }
-
-          _list = Object.values(newVals);
-        }
-
-        listRef.current = _list;
-        setAll(listRef.current, launchType);
-
-        if (isInit) {
-          setTimeout(() => {
-            setisLoading(false);
-          }, 10);
-        }
-      })
-      .catch(() => {
-        setisLoading(false);
-      });
+  const queryList = async () => {
+    try {
+      const res = await httpGet(
+        `/project/list?limit=${limit}&launchType=${launchType}`
+      );
+      setHasNext(res.data?.has_next_page || res.data?.list.length === limit);
+      if (res.code !== 0 || !res.data?.list) {
+        return [];
+      }
+      return res.data?.list;
+    } catch (err) {
+      return [];
+    }
   };
 
   const getnext = () => {
@@ -72,21 +36,50 @@ export default function useData(launchType: string) {
 
     if (listRef.current.length) {
       listRef.current.shift();
-      setAll(listRef.current, launchType);
+      setAll(listRef.current, launchType, userInfo.address);
     }
 
     if (listRef.current.length) {
       setInfoData2(mapDataToProject(listRef.current[0]));
     } else {
+      setAll([], launchType, userInfo.address);
       setInfoData2(undefined);
     }
 
     if (listRef.current.length <= left_num) {
       if (hasNext) {
-        onQueryList(false);
+        handleList(true);
       }
     }
   };
+
+  const handleList = useCallback(
+    async (isNext?: boolean) => {
+      let list = getAll(launchType, userInfo?.address) || [];
+
+      if (!isNext) setIsLoading(true);
+      const fetchedList = await queryList();
+      const data: Record<string, any> = {};
+      list.forEach((item: any) => {
+        data[item.id] = item;
+      });
+      fetchedList.forEach((item: any) => {
+        data[item.id] = item;
+      });
+      const _list = Object.values(data);
+      listRef.current = _list;
+
+      if (!isNext) {
+        if (_list.length === 0) {
+          setInfoData2(undefined);
+        } else {
+          setInfoData2(_list[0]);
+        }
+        setIsLoading(false);
+      }
+    },
+    [launchType, userInfo]
+  );
 
   const onUpdateAfterExitingFull = (index: number) => {
     try {
@@ -98,68 +91,26 @@ export default function useData(launchType: string) {
         throw new Error();
       }
       setInfoData2(mapDataToProject(listRef.current[0]));
-      setAll(listRef.current, launchType);
       if (listRef.current.length <= left_num) {
         if (hasNext) {
-          onQueryList(false);
+          handleList(true);
         }
       }
     } catch (err) {
       setInfoData2(undefined);
-      setAll([], launchType);
     }
   };
-  console.log("launchType", launchType);
-  useEffect(() => {
-    console.log(104);
-    let list = getAll(launchType);
 
-    if (list && list.length > 0) {
-      if (launchType === "preLaunch") {
-        list = list.filter((item: any) => {
-          if (
-            item.status !== 0 ||
-            item.is_like ||
-            item.is_super_like ||
-            item.is_un_like
-          ) {
-            return false;
-          }
-          return true;
-        });
-        list = list || [];
-      }
-    }
-
-    if (list && list.length > 0) {
-      listRef.current = list;
-      if (list.length === 1) {
-        onQueryList(false).then(() => {
-          if (listRef.current) {
-            setInfoData2(mapDataToProject(listRef.current[0]));
-          }
-        });
-      } else if (list.length <= left_num) {
-        listRef.current = list;
-        setInfoData2(mapDataToProject(list[0]));
-        onQueryList(false);
-      } else {
-        setInfoData2(mapDataToProject(list[0]));
-      }
-      setisLoading(false);
-    } else {
-      onQueryList(true);
-      setInfoData2(undefined);
-    }
-  }, [launchType]);
+  const { run: initList } = useDebounceFn(
+    async () => {
+      handleList();
+    },
+    { wait: 500 }
+  );
 
   useEffect(() => {
-    console.log(146, accountRefresher);
-    if (accountRefresher) {
-      onQueryList(true);
-    } else {
-    }
-  }, [accountRefresher]);
+    initList();
+  }, [launchType, accountRefresher]);
 
   return {
     infoData2,
