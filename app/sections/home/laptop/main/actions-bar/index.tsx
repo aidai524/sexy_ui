@@ -20,9 +20,7 @@ export default function ActionsBar({
             token={tokenInfo}
             onLike={onLike}
             onHate={onHate}
-            onSuperLike={() => {
-              onSuperLike();
-            }}
+            onSuperLike={onSuperLike}
             onBoost={() => {
               onBoost();
             }}

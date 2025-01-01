@@ -9,7 +9,7 @@ import { useAuth } from "@/app/context/auth";
 
 const urls: any = {
   created: "/project/account/list",
-  hot: "/project/super_like/list",
+  flipped: "/project/super_like/list",
   liked: "/project/like/list"
 };
 

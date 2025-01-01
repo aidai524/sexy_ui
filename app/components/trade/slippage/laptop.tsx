@@ -46,9 +46,9 @@ export default function Laptop({
           ))}
         </div>
         <div className={styles.InputWrapper}>
-          <span>Custom</span>
           <input
             className={styles.Input}
+            placeholder="Custom"
             value={customVal}
             onChange={(ev: any) => {
               if (!isNaN(ev.target.value)) {

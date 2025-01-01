@@ -9,64 +9,82 @@
   margin-right: 5px;
 }
 
+.LaptopContent {
+  background: linear-gradient(180deg, #b22261 0.42%, #751e46 99.58%);
+  margin: 10px 10px 0 0;
+}
+
 .txTtitles {
   display: flex;
   align-items: center;
+  padding: 15px 0;
+}
+
+.MobileTitles {
   color: rgba(146, 144, 177, 1);
   border-bottom: 1px solid rgba(146, 144, 177, 0.2);
-  padding: 15px 0;
-  .titleItem {
-    flex: 1;
-  }
+}
+
+.LaptopTitles {
+  color: #ffffff80;
+  border-bottom: 1px solid #ffffff33;
+}
+
+.titleItem {
+  flex: 1;
 }
 
 .txList {
-  .item {
-    display: flex;
-    align-items: center;
-    padding: 15px 0;
-    font-weight: 300;
-    .account {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 2;
-      color: rgba(169, 167, 208, 1);
-      .avatar {
-        width: 20px;
-        height: 20px;
-        border-radius: 20px;
-      }
-    }
+}
 
-    .type {
-      flex: 1;
-      &.sell {
-        color: rgba(255, 75, 167, 1);
-      }
-      &.buy {
-        color: rgba(111, 255, 0, 1);
-      }
-    }
+.item {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  font-weight: 300;
+}
 
-    .value {
-      flex: 1;
-      color: #fff;
-    }
+.account {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 2;
+}
 
-    .vva {
-      flex: 1;
-      color: #fff;
-    }
+.MobileAccount {
+  color: rgba(169, 167, 208, 1);
+}
 
-    .link {
-      flex: 1;
-    }
+.LaptopAccount {
+  color: #aeace1;
+}
+
+.avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+}
+
+.type {
+  flex: 1;
+  &.sell {
+    color: rgba(255, 75, 167, 1);
+  }
+  &.buy {
+    color: rgba(111, 255, 0, 1);
   }
 }
 
-.LaptopContent {
-  background-color: #121719;
-  margin: 10px 10px 0 0;
-  
+.value {
+  flex: 1;
+  color: #fff;
+}
+
+.vva {
+  flex: 1;
+  color: #fff;
+}
+
+.link {
+  flex: 1;
 }

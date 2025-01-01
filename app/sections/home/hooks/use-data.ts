@@ -3,6 +3,8 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import type { Project } from "@/app/type";
 import { getAll, setAll } from "@/app/utils/listStore";
 import { mapDataToProject } from "@/app/utils/mapTo";
+import { useAuth } from "@/app/context/auth";
+import { useDebounceFn } from "ahooks";
 
 const limit = 10;
 const left_num = 5;
@@ -15,6 +17,7 @@ export default function useData(launchType: string) {
   const [hasNext, setHasNext] = useState<boolean>(true);
   const listRef = useRef<Project[]>();
   const renderIndexRef = useRef<number>(0);
+  const { userInfo, accountRefresher } = useAuth();
 
   const onQueryList = async (isInit: boolean) => {
     await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`)
@@ -50,18 +53,11 @@ export default function useData(launchType: string) {
               }
             });
           }
-
-          const mergedList = new Map(
-            [...(listRef.current || []), ...res.data.list].map((item) => [
-              item.id,
-              item
-            ])
-          );
           _list = Object.values(newVals);
         }
 
         listRef.current = _list;
-        setAll(listRef.current, launchType);
+        setAll(listRef.current, launchType, userInfo.address);
 
         if (isInit) {
           setTimeout(() => {
@@ -134,7 +130,7 @@ export default function useData(launchType: string) {
     if (listRef.current.length) {
       listRef.current.shift();
       renderTwoItems(listRef.current);
-      setAll(listRef.current, launchType);
+      setAll(listRef.current, launchType, userInfo.address);
     }
 
     if (listRef.current.length <= left_num) {
@@ -157,7 +153,7 @@ export default function useData(launchType: string) {
     renderIndexRef.current = 1;
     listRef.current = listRef.current?.slice(index, listRef.current.length);
     renderTwoItems(listRef.current);
-    setAll(listRef.current, launchType);
+    setAll(listRef.current, launchType, userInfo.address);
     if (listRef.current.length <= left_num) {
       if (hasNext) {
         onQueryList(false);
@@ -165,48 +161,55 @@ export default function useData(launchType: string) {
     }
   };
 
-  useEffect(() => {
-    let list = getAll(launchType);
+  const { run: initList } = useDebounceFn(
+    async () => {
+      let list = getAll(launchType, userInfo.address);
 
-    if (list && list.length > 0) {
-      if (launchType === "preLaunch") {
-        list = list.filter((item: any) => {
-          if (
-            item.status !== 0 ||
-            item.is_like ||
-            item.is_super_like ||
-            item.is_un_like
-          ) {
-            return false;
-          }
-          return true;
-        });
-        list = list || [];
+      if (list && list.length > 0) {
+        if (launchType === "preLaunch") {
+          list = list.filter((item: any) => {
+            if (
+              item.status !== 0 ||
+              item.is_like ||
+              item.is_super_like ||
+              item.is_un_like
+            ) {
+              return false;
+            }
+            return true;
+          });
+          list = list || [];
+        }
       }
-    }
 
-    if (list && list.length > 0) {
-      listRef.current = list;
-      if (list.length === 1) {
-        onQueryList(false).then(() => {
-          if (listRef.current) {
-            renderTwoSimple(listRef.current);
-          }
-        });
-      } else if (list.length <= left_num) {
+      if (list && list.length > 0) {
         listRef.current = list;
-        renderTwoSimple(list);
-        onQueryList(false);
+        if (list.length === 1) {
+          onQueryList(false).then(() => {
+            if (listRef.current) {
+              renderTwoSimple(listRef.current);
+            }
+          });
+        } else if (list.length <= left_num) {
+          listRef.current = list;
+          renderTwoSimple(list);
+          onQueryList(false);
+        } else {
+          renderTwoSimple(list);
+        }
+        setisLoading(false);
       } else {
-        renderTwoSimple(list);
+        onQueryList(true);
+        setInfoData(undefined);
+        setInfoData2(undefined);
       }
-      setisLoading(false);
-    } else {
-      onQueryList(true);
-      setInfoData(undefined);
-      setInfoData2(undefined);
-    }
-  }, [launchType]);
+    },
+    { wait: 500 }
+  );
+
+  useEffect(() => {
+    initList();
+  }, [launchType, accountRefresher]);
 
   return {
     infoData,

@@ -248,9 +248,9 @@ export function removeAuth() {
 }
 
 export async function initAuthorization() {
-  if (getAuthorizationByLocal()) {
-    return
-  }
+  // if (getAuthorizationByLocal()) {
+  //   return
+  // }
 
   if (isInitingAuthorization) {
     return;
@@ -306,9 +306,6 @@ export function logOut() {
   // @ts-ignore
   window.sexAddress = null;
   window.localStorage.removeItem(AUTH_KEY);
-
-  clearAll("launching");
-  clearAll("preLaunch");
 }
 
 export function getFullNum(value: any) {
