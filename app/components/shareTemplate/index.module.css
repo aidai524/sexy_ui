@@ -1,15 +1,31 @@
 .main {
-    position: absolute;
-    left: 0;
-    top: -9999px;
-    /* z-index: 100; */
-    width: 1000px;
-    height: 1000px;
-    background: radial-gradient(82.51% 82.59% at 39.55% 0%, #FFCAE0 0%, #FFFEFE 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-    border: 10px solid;
-    border-image-source: linear-gradient(180deg, #FF008A 0%, #8D00FF 100%);
-    border-radius: 30px;
-    z-index: -1;
+    /* position: absolute;
+    left: 50%;
+    top: 50%;
+    overflow: hidden;
+    z-index: 100;
+    transform-origin: 0% 0%;
+    transform: translate(-50%, -50%); */
+    &.mobileBox {
+        width: 300px;
+        height: 350px;
+    }
+    .box {
+        width: 1000px;
+        /* height: 85vh; */
+        background: radial-gradient(82.51% 82.59% at 39.55% 0%, #FFCAE0 0%, #FFFEFE 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+        border: 10px solid rgba(255, 0, 138, 1);
+        border-radius: 30px;
+    }
+    .isMobile {
+        transform-origin: 0% 0%;
+        transform: scale(0.3);
+    }
+
+    .realyDom {
+        position: absolute;
+        top: -9999px;
+    }
 
     .heart {
         background: url(/img/share/heart.svg) no-repeat center 30px;
@@ -17,14 +33,17 @@
         display: flex;
         align-items: center;
 
-        padding-top: 140px;
+        padding-top: 100px;
         flex-direction: column;
         .avatar {
             width: 320px;
             height: 320px;
+            border: 10px solid #fff;
+            border-radius: 320px;
+            position: relative;
             .avatarImg {
-                width: 320px;
-                height: 320px;
+                width: 300px;
+                height: 300px;
                 border-radius: 320px;
             }
         }
@@ -34,7 +53,7 @@
         }
         .ticker {
             font-size: 34px;
-            height: 60px;
+            /* height: 60px; */
         }
     }
 
@@ -63,4 +82,48 @@
             height: 40px;
         }
     }
+
+    .shareBtn {
+        position: absolute;
+        right: 100px;
+        bottom: 50px;
+        font-size: 50px;
+        border: 1px solid #ddd;
+        background-color: rgba(0, 0, 0, .4);
+        border-radius: 30px;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+}
+
+.launchTag {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 200px;
+    height: 42px;
+    text-align: center;
+    line-height: 42px;
+    border-radius: 60px;
+    color: #fff;
+    transform: translateX(-50%);
+    &.launch1 {
+        background-color: rgba(80, 73, 100, 1);
+      }
+      &.launch2 {
+        background-color: var(--part-bg);
+      }
+      &.launch3 {
+        background-color: rgba(100, 43, 255, 1);
+      }
+}
+
+.likeBox {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scale(2);
+    top: 5%;
+
 }

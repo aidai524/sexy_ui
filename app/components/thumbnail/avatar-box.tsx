@@ -1,7 +1,7 @@
 import { defaultAvatar } from "@/app/utils/config";
 import styles from "./avatar-box.module.css";
 
-function LaunchTag({ type }: { type: number }) {
+export function LaunchTag({ type }: { type: number }) {
   if (type === 0) {
     return (
       <div className={styles.launchTag + " " + styles.launch1}>Pre-Launch</div>

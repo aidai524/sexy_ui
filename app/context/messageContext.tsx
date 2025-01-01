@@ -16,7 +16,7 @@ interface MessageContextValue {
     hateTrigger: boolean;
     setLikeTrigger: (val: boolean) => void;
     setHateTrigger: (val: boolean) => void;
-    getShareImg: (token: Project) => string | null;
+    showShare: (token: Project) => void;
 }
 
 const MessageContext =
@@ -28,6 +28,7 @@ export const MessageContextProvider: React.FC<{
     const [likeTrigger, setLikeTrigger] = useState(false)
     const [hateTrigger, setHateTrigger] = useState(false)
     const [currentToken, setCurrentToken] = useState<Project>()
+    const [shareTemplateShow, setShareTemplateShow] = useState<boolean>(false)
     const shareInstance = useRef<any>()
 
     const walletTypeContextValue = useMemo<MessageContextValue>(
@@ -36,23 +37,29 @@ export const MessageContextProvider: React.FC<{
             hateTrigger,
             setLikeTrigger,
             setHateTrigger,
-            getShareImg: (token: Project) => {
+            showShare: (token: Project) => {
                 setCurrentToken(token)
-                if (shareInstance.current) {
-                    return shareInstance.current.getImgUrl()
-                }
-                
+                setShareTemplateShow(true)
+                // if (shareInstance.current) {
+                //     return shareInstance.current.getImgUrl()
+                // }
+
             }
         }),
         [likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger]
     );
 
-   
-
     return (
         <MessageContext.Provider value={walletTypeContextValue}>
             {children}
-            <ShareTemplate ref={shareInstance} token={currentToken} />
+            <ShareTemplate
+                show={shareTemplateShow}
+                ref={shareInstance}
+                token={currentToken}
+                onClose={() => {
+                    setShareTemplateShow(false)
+                }} />
+
         </MessageContext.Provider>
     );
 }
