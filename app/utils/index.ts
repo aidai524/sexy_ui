@@ -246,13 +246,15 @@ export function removeAuth() {
 }
 
 export async function initAuthorization() {
+  if (getAuthorizationByLocal()) {
+    return 
+  }
+
   if (isInitingAuthorization) {
     return;
   }
   // @ts-ignore
   const { walletProvider, sexAddress, connect } = window;
-
-  console.log('walletProvider:', walletProvider, sexAddress)
 
   if (!walletProvider || !sexAddress) {
     // console.log("connect", connect);
