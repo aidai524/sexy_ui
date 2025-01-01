@@ -43,7 +43,7 @@ export default memo(function Home(props: any) {
       return params.get("account")?.toString();
     }
 
-    return currentUserInfo.address;
+    return currentUserInfo?.address;
   }, [currentUserInfo, params, isOther]);
 
   const { onQueryInfo, userInfo } = useUserInfo(

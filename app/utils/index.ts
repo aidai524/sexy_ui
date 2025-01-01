@@ -252,6 +252,8 @@ export async function initAuthorization() {
   // @ts-ignore
   const { walletProvider, sexAddress, connect } = window;
 
+  console.log('walletProvider:', walletProvider, sexAddress)
+
   if (!walletProvider || !sexAddress) {
     // console.log("connect", connect);
     // await connect();
