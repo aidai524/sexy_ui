@@ -12,7 +12,7 @@ interface Props {
 export const SECOND_LIKE_TIMES = 30;
 
 export default function SecondTimeLike({ data, onClose }: Props) {
-  const router = useRouter();
+
   const { set: setHomeTabIndex }: any = useHomeTab();
 
   return (
@@ -30,7 +30,9 @@ export default function SecondTimeLike({ data, onClose }: Props) {
             setHomeTabIndex({
               homeTabIndex: 1
             });
-            router.push("/");
+            if (window.location.pathname !== '/') {
+                window.location.href = '/'
+            }
           }}
           style={{ backgroundColor: "rgba(109, 181, 0, 1)", marginTop: 30 }}
         >

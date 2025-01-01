@@ -5,6 +5,7 @@ import type { Project } from "@/app/type";
 import { httpAuthPost } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import Big from "big.js";
+import { useRouter } from "next/navigation";
 
 export const FIRST_LIKE_TIMES = 10;
 export const SECOND_LIKE_TIMES = 30;
@@ -66,7 +67,7 @@ export async function actionLikeTrigger(data: Project) {
     }
   }
 
-  if (times === SECOND_LIKE_TIMES) {
+  if (times === SECOND_LIKE_TIMES || true) {
     if (data) {
       const timeLikeHandler = Modal.show({
         content: (
