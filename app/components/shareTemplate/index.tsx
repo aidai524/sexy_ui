@@ -2,7 +2,7 @@ import type { Project } from '@/app/type'
 import styles from './index.module.css'
 import html2canvas from 'html2canvas'
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { base64ToBlob, formatAddress, generateRandomString, postUpload, timeAgo } from '@/app/utils';
+import { base64ToBlob, formatAddress, generateRandomString, postUpload, simplifyNum, timeAgo } from '@/app/utils';
 import { defaultAvatar } from '@/app/utils/config';
 import { useTokenTrade } from '@/app/hooks/useTokenTrade';
 import { useUserAgent } from '@/app/context/user-agent';
@@ -81,7 +81,7 @@ function ShareTemplate({ token, show, onClose }: Props, ref: any) {
             token?.status === 1
         ) {
             getMC().then((res) => {
-                setMC(res as number);
+                setMC(simplifyNum(res as number));
             });
         }
     }, [pool, token]);
