@@ -4,7 +4,7 @@ import { Button, TabBar } from "antd-mobile";
 import { useRouter, usePathname } from "next/navigation";
 import styles from "./layout.module.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import LoginModal from "@/app/components/loginModal";
+import useNotice from "../../../hooks/use-notice";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import Link from "next/link";
@@ -111,11 +111,7 @@ const Tabs = (pathname: string) => [
   }
 ];
 
-export default function Component({
-  showLoginModal,
-  setShowLoginModal,
-  children
-}: any) {
+export default function Component({ children }: any) {
   const pathname = usePathname();
   const { address } = useAccount();
 
@@ -132,18 +128,14 @@ export default function Component({
     return /^\/profile/.test(pathname);
   }, [pathname]);
 
+  useNotice();
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* <Button onClick={() => {
         trade()
       }}>juipter</Button> */}
       <main className="pb-16">{children}</main>
-      <LoginModal
-        modalShow={showLoginModal}
-        onHide={() => {
-          setShowLoginModal(false);
-        }}
-      />
 
       {showTabs && (
         <TabBar
@@ -182,9 +174,7 @@ export default function Component({
           })}
         </TabBar>
       )}
-      {isRefer && (
-        <ReferContentCard />
-      )}
+      {isRefer && <ReferContentCard />}
     </div>
   );
 }

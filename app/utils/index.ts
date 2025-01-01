@@ -15,6 +15,7 @@ export function http(
   params?: any,
   headers?: any
 ) {
+  if (!path) return;
   let _path = path,
     postBody = {};
   if (method === "GET" && params) {
@@ -60,7 +61,7 @@ export async function httpGet(
 ) {
   const val = await http(path, "GET", params);
 
-  if (typeof val.code !== "undefined") {
+  if (typeof val?.code !== "undefined") {
     if (val.code === TOKEN_ERROR_CODE) {
       window.localStorage.removeItem(AUTH_KEY);
       if (isRepeat) {
@@ -241,7 +242,7 @@ export async function getAuthorizationByLocalAndServer() {
 }
 
 export function removeAuth() {
-  window.localStorage.removeItem(AUTH_KEY)
+  window.localStorage.removeItem(AUTH_KEY);
 }
 
 export async function initAuthorization() {
@@ -445,17 +446,20 @@ export async function upload(
         img.src = url;
       }
     );
-    
+
     if (percent === 0) {
       const canvasWidth = 128 * 2;
       const canvasHeight = canvasWidth * 1.5;
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
 
-      ctx.fillStyle = 'black';
+      ctx.fillStyle = "black";
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-      let scale = Math.min(canvasWidth / naturalWidth, canvasHeight / naturalHeight);
+      let scale = Math.min(
+        canvasWidth / naturalWidth,
+        canvasHeight / naturalHeight
+      );
       let newWidth = naturalWidth * scale;
       let newHeight = naturalHeight * scale;
       let x = (canvasWidth - newWidth) / 2;
@@ -465,7 +469,7 @@ export async function upload(
     } else {
       const targetAspectRatio = 1 / percent;
       let cropWidth, cropHeight;
-  
+
       if (naturalWidth / naturalHeight > targetAspectRatio) {
         cropHeight = naturalHeight;
         cropWidth = cropHeight * targetAspectRatio;
@@ -473,10 +477,10 @@ export async function upload(
         cropWidth = naturalWidth;
         cropHeight = cropWidth / targetAspectRatio;
       }
-  
+
       const cropX = (naturalWidth - cropWidth) / 2;
       const cropY = (naturalHeight - cropHeight) / 2;
-  
+
       const canvasWidth = 128 * 2;
       const canvasHeight = canvasWidth * percent;
       canvas.width = canvasWidth;
@@ -493,7 +497,7 @@ export async function upload(
         canvasHeight
       );
     }
-    
+
     const base64Url = canvas.toDataURL("image/webp");
     const bloBData = base64ToBlob(base64Url);
     _file = bloBData[0];
@@ -501,11 +505,14 @@ export async function upload(
 
   const newFileName = generateRandomString(10) + fileName;
 
-  return postUpload(_file, newFileName, file.type)
-
+  return postUpload(_file, newFileName, file.type);
 }
 
-export async function postUpload(_file: any, newFileName: string, type: string) {
+export async function postUpload(
+  _file: any,
+  newFileName: string,
+  type: string
+) {
   const val = await httpAuthPost(
     `/upload/data?dir=${encodeURIComponent(
       "sexy/dev/"
@@ -528,7 +535,7 @@ export async function postUpload(_file: any, newFileName: string, type: string) 
     return `https://deltabot-1.s3.us-east-1.amazonaws.com/sexy/dev/${newFileName}`;
   }
 
-  return null
+  return null;
 }
 
 export function generateRandomString(length: number) {
@@ -646,6 +653,7 @@ export const simplifyNum = (number: number) => {
 };
 
 export function isValidURL(url: string) {
-  const regex = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/[a-z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/i;
+  const regex =
+    /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/[a-z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/i;
   return regex.test(url);
 }

@@ -13,7 +13,6 @@ const LIKE_ERROR = -1;
 
 const onLike = async (data: any) => {
   try {
-    console.log("data:", data);
     if (data) {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
       console.log("v:", v);

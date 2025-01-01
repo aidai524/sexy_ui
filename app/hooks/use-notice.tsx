@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import { useAccount } from "@/app/hooks/useAccount";
+import { useAuth } from "@/app/context/auth";
 import { httpAuthGet } from "@/app/utils";
 import { Toast } from "antd-mobile";
 
 export default function useNotice() {
-  const { address: userAddress } = useAccount();
+  const { accountRefresher } = useAuth();
   const noticesRef = useRef<any>([]);
   const timerRef = useRef<any>();
 
@@ -47,6 +47,6 @@ export default function useNotice() {
   };
 
   useEffect(() => {
-    if (userAddress && process.env.NODE_ENV !== "development") onQuery();
-  }, [userAddress]);
+    if (accountRefresher && process.env.NODE_ENV !== "development") onQuery();
+  }, [accountRefresher]);
 }

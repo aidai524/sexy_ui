@@ -2,11 +2,11 @@ import Upload from "@/app/components/upload";
 import { useEffect, useMemo, useState } from "react";
 import type { ImageUploadItem } from "antd-mobile/es/components/image-uploader";
 import useUserInfo from "../../../hooks/useUserInfo";
-import { useAccount } from "@/app/hooks/useAccount";
 import styles from "./edit.module.css";
 import { success, fail } from "@/app/utils/toast";
 import MainBtn from "@/app/components/mainBtn";
 import Education from "./education";
+import { useAuth } from "@/app/context/auth";
 
 const defaultAvatar = "/img/avatar.png";
 const defaultBannerImg = "/img/upload-banner.png";
@@ -22,9 +22,8 @@ export default function EditContent({
   const [education, setEducation] = useState<string>("");
   const [avatar, setAvatar] = useState<ImageUploadItem[]>([]);
   const [banner, setBanner] = useState<ImageUploadItem[]>([]);
-
-  const { address } = useAccount();
-  const { userInfo, saveUserInfo } = useUserInfo(address);
+  const { userInfo } = useAuth();
+  const { saveUserInfo } = useUserInfo(userInfo?.address, true);
 
   const iaInValid = useMemo(() => {
     if (!name || avatar.length === 0) {

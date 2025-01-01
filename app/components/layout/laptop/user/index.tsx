@@ -86,6 +86,7 @@ export default function User({ address, userInfo, onQueryInfo, logout }: any) {
           onQueryInfo();
         }}
         type={followModalType}
+        isOther={false}
       />
       <VipModal
         show={openVipModal}

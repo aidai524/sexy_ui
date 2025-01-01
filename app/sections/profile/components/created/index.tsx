@@ -3,11 +3,9 @@ import Token from "../token";
 import { httpGet } from "@/app/utils";
 import Empty from "../empty";
 import type { Project } from "@/app/type";
-import { useUser } from "@/app/store/useUser";
-import useUserInfo from "../../../../hooks/useUserInfo";
-import { InfiniteScroll, List } from "antd-mobile";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
+import { useAuth } from "@/app/context/auth";
 
 const urls: any = {
   created: "/project/account/list",
@@ -31,21 +29,23 @@ export default function Created({
   const [refresh, setRefresh] = useState<number>(1);
   const [hasMore, setHasMore] = useState(false);
   const [offset, setOffset] = useState(0);
-  const userStore: any = useUser();
-  const { fecthUserInfo } = useUserInfo(undefined);
+  const { updateCurrentUserInfo, accountRefresher, userInfo } = useAuth();
   const timerRef = useRef<any>();
 
   useEffect(() => {
-    if (address) {
-      loadMore();
-    }
-  }, [address, type, refresh]);
-
-  useEffect(() => {
-    if (refresher) {
+    if (address && userInfo?.address !== address) {
       loadMore(true);
     }
-  }, [refresher]);
+    if (!address) {
+      setList([]);
+    }
+  }, [address]);
+
+  useEffect(() => {
+    if (refresher || accountRefresher) {
+      loadMore(true);
+    }
+  }, [refresher, accountRefresher]);
 
   const loadMore = useCallback(
     (isInit?: boolean, limit?: number) => {
@@ -54,6 +54,7 @@ export default function Created({
         limit: limit || LIMIT,
         offset: isInit ? 0 : offset
       }).then((res) => {
+        if (!res) return;
         setHasMore(res.data?.has_next_page || false);
         if (res.code === 0 && res.data?.list?.length > 0) {
           const newMapList = res.data?.list.map(mapDataToProject);
@@ -104,15 +105,9 @@ export default function Created({
             key={item.id}
             hideHot={hideHot}
             prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
-            update={async () => {
+            update={() => {
               setRefresh(refresh + 1);
-              const userInfo = await fecthUserInfo(address as string);
-
-              if (userInfo) {
-                userStore.set({
-                  userInfo
-                });
-              }
+              updateCurrentUserInfo();
             }}
           />
         );

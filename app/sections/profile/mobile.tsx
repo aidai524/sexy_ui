@@ -8,6 +8,7 @@ import HotBoost from "./components/hot-boost";
 import FollowBtn from "./components/followBtn";
 import PointsLabel from "@/app/components/points-label";
 import { useReferStore } from "@/app/store/useRefer";
+import { useAuth } from "@/app/context/auth";
 
 export default function Profile({
   userInfo,
@@ -24,6 +25,7 @@ export default function Profile({
   isOther = false
 }: any) {
   const store = useReferStore();
+  const { logout } = useAuth();
   const backgroundImgStyle = userInfo?.banner
     ? {
         backgroundImage: `linear-gradient(360deg, #000 41.35%, rgba(0, 0, 0, 0) 100%)`,
@@ -90,7 +92,7 @@ export default function Profile({
         }}
       />
 
-      <Address address={address} />
+      <Address address={address} logout={logout} />
       {/* {
                 !isOther && <HotBoost
                     user={ownUserInfo}

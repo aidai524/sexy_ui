@@ -3,16 +3,14 @@ import CreateNode from "../CreateNode";
 import PreviewNode from "../PreviewNode";
 import { motion } from "framer-motion";
 import { useState, useRef } from "react";
-import { useAccount } from "@/app/hooks/useAccount";
-import useUserInfo from "@/app/hooks/useUserInfo";
+import { useUser } from "@/app/store/useUser";
 import type { Project } from "@/app/type";
 import styles from "./index.module.css";
 
 export default function Laptop() {
   const [renderType, setRenderType] = useState(0);
   const [dataAdd, setDataAdd] = useState<Project>();
-  const { address } = useAccount();
-  const { userInfo } = useUserInfo(address);
+  const { userInfo }: any = useUser();
   const createRef = useRef<any>();
   const previewRef = useRef<any>();
 

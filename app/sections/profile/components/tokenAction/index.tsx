@@ -3,7 +3,6 @@ import styles from "./index.module.css";
 import type { Project } from "@/app/type";
 import Actions from "./actions";
 import ActionList from "./actionList";
-import { useUser } from "@/app/store/useUser";
 
 interface Props {
   token: Project;
@@ -19,7 +18,6 @@ export default function TokenAction({
   prepaidWithdrawDelayTime
 }: Props) {
   const [modalShow, setModalShow] = useState(false);
-  const { userInfo }: any = useUser();
 
   // const showAction = useMemo(() => {
   //   if (token.status !== 0) {
