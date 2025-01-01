@@ -56,20 +56,22 @@ export default function Created({
       }).then((res) => {
         if (!res) return;
         setHasMore(res.data?.has_next_page || false);
+        let _list: any = [];
         if (res.code === 0 && res.data?.list?.length > 0) {
           const newMapList = res.data?.list.map(mapDataToProject);
 
-          const newList = isInit ? newMapList : [...list, ...newMapList];
+          _list = isInit ? newMapList : [...list, ...newMapList];
 
-          setOffset(newList.length);
-          setList(newList);
-
-          clearTimeout(timerRef.current);
-          if (isCurrent) {
-            timerRef.current = setTimeout(() => {
-              loadMore(true, newList.length);
-            }, 1000 * 60 * 2);
-          }
+          setOffset(_list.length);
+          setList(_list);
+        } else {
+          setList([]);
+        }
+        clearTimeout(timerRef.current);
+        if (isCurrent) {
+          timerRef.current = setTimeout(() => {
+            loadMore(true, _list.length);
+          }, 1000 * 60 * 1);
         }
       });
     },

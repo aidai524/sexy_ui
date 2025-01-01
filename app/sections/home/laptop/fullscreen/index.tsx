@@ -33,7 +33,6 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
   }, [list]);
 
   const next = (type?: 0 | 1) => {
-    console.log(48, index, list.length, type);
     if (type !== undefined) {
       type ? actionLikeTrigger(list[index]) : actionHateTrigger(list[index]);
     }
@@ -94,11 +93,11 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
                   <LaunchingActions
                     token={token}
                     onLike={async () => {
-                      await actionLikeTrigger(list[index]);
+                      next(1);
                       updateInfo("liked");
                     }}
                     onHate={async () => {
-                      await actionHateTrigger(list[index]);
+                      next(0);
                     }}
                     onSuperLike={() => {
                       next();

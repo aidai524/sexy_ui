@@ -73,7 +73,7 @@ export default function useData(launchType: string) {
         if (_list.length === 0) {
           setInfoData2(undefined);
         } else {
-          setInfoData2(_list[0]);
+          setInfoData2(mapDataToProject(_list[0]));
         }
         setIsLoading(false);
       }

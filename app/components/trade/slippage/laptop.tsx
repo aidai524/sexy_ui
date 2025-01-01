@@ -11,8 +11,8 @@ export default function Laptop({
 }: any) {
   const [customVal, setCustomVal] = useState("");
   useEffect(() => {
-    setCustomVal(list.includes(Number(slipData)) ? "" : slipData);
-  }, [slipData]);
+    show && setCustomVal(list.includes(Number(slipData)) ? "" : slipData);
+  }, [show]);
   return (
     <Modal
       open={show}
@@ -51,6 +51,7 @@ export default function Laptop({
             placeholder="Custom"
             value={customVal}
             onChange={(ev: any) => {
+              setCustomVal(ev.target.value);
               if (!isNaN(ev.target.value)) {
                 onSlipDataChange?.(ev.target.value);
               }

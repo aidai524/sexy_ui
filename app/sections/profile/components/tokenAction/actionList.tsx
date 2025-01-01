@@ -68,47 +68,45 @@ export default function ActionList({
     return !token.isSuperLike && token.account !== userInfo?.address;
   }, [token, userInfo]);
 
+  const showWithdraw = useMemo(
+    () => isDelay && !isOther && isPrepaid,
+    [isDelay, isOther, isPrepaid]
+  );
+
   return (
     <div className={styles.Btns}>
-      {/* */}
       {token.status === 0 && (
         <>
-          {/* */}
-          {isDelay && !isOther && (
-            <>
-              {/*  */}
-              {isPrepaid &&
-                (isWithdrawed ? (
-                  <div className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>
-                    Withdrawed
-                  </div>
-                ) : (
-                  <button
-                    className={`${styles.ActionBtn} ${styles.Withdraw} button`}
-                    onClick={async () => {
-                      setIsLoading(true);
-                      try {
-                        const res = await prepaidSolWithdraw();
+          {showWithdraw &&
+            (isWithdrawed ? (
+              <button className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>
+                Withdrawed
+              </button>
+            ) : (
+              <button
+                className={`${styles.ActionBtn} ${styles.Withdraw} button`}
+                onClick={async () => {
+                  setIsLoading(true);
+                  try {
+                    const res = await prepaidSolWithdraw();
 
-                        if (!res) {
-                          fail("Withdraw fail");
-                        } else {
-                          success("Withdraw success");
-                          setIsWithdrawed(true);
-                        }
-                      } catch (e) {
-                        console.log(e);
-                        fail("Withdraw fail");
-                      }
+                    if (!res) {
+                      fail("Withdraw fail");
+                    } else {
+                      success("Withdraw success");
+                      setIsWithdrawed(true);
+                    }
+                  } catch (e) {
+                    console.log(e);
+                    fail("Withdraw fail");
+                  }
 
-                      setIsLoading(false);
-                    }}
-                  >
-                    {isLoading ? <DotLoading /> : "Withdraw"}
-                  </button>
-                ))}
-            </>
-          )}
+                  setIsLoading(false);
+                }}
+              >
+                {isLoading ? <DotLoading /> : "Withdraw"}
+              </button>
+            ))}
 
           {smookeable && (
             <SmokeHot
@@ -132,9 +130,9 @@ export default function ActionList({
           {isPrepaid &&
             !isOther &&
             (isClaimed ? (
-              <div className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>
+              <button className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>
                 Claimed
-              </div>
+              </button>
             ) : (
               <button
                 className={`${styles.ActionBtn} ${styles.Withdraw} button`}
