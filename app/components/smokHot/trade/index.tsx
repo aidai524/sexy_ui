@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import styles from "./trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
 import { Avatar } from "../../thumbnail";
@@ -6,7 +6,9 @@ import type { Project } from "@/app/type";
 import Big from "big.js";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { fail, success } from "@/app/utils/toast";
+import dayjs from "@/app/utils/dayjs";
 import { useAccount } from "@/app/hooks/useAccount";
+import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 
 interface Props {
   token: Project;
@@ -27,6 +29,7 @@ export default function Trade({
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
+  const { prepaidDelayTime } = usePrepaidDelayTimeStore();
 
   const { prePaid, checkPrePayed } = useTokenTrade({
     tokenName: token.tokenName,
@@ -34,6 +37,13 @@ export default function Trade({
     tokenDecimals: token.tokenDecimals as number,
     loadData: false
   });
+
+  const delayTime = useMemo(() => {
+    if (!prepaidDelayTime || !token.createdAt) return "";
+    return Date.now() - token.createdAt > prepaidDelayTime
+      ? dayjs(token.createdAt).format("YYYY-MM-DD HH:mm")
+      : "";
+  }, [prepaidDelayTime, token]);
 
   useEffect(() => {
     if (address === token.account) {
@@ -94,8 +104,10 @@ export default function Trade({
             </div>
           ) : (
             <div className={styles.receiveTitle}>
-              You will auto-buy in when this meme launched. You can withdraw
-              anytime before launching.
+              You will auto-buy in when this meme launched.{" "}
+              {delayTime
+                ? `You can withdraw after ${delayTime} delay.`
+                : "You can withdraw anytime before launching."}
             </div>
           )}
         </div>

@@ -5,6 +5,7 @@ import { formatAddressLast, httpGet } from "@/app/utils";
 import Big from "big.js";
 import Empty from "@/app/components/empty";
 import { defaultAvatar } from "@/app/utils/config";
+import { useRouter } from "next/navigation";
 
 const addressReg = /(\w{2}).+(\w{2})/;
 
@@ -22,6 +23,7 @@ export function formatAddress(address: string) {
 
 export default function Txs({ from, data, mc }: any) {
   const [list, setList] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (data && data.tokenName) {
@@ -71,7 +73,13 @@ export default function Txs({ from, data, mc }: any) {
               <div className={styles.txList}>
                 {list.map((item: any) => {
                   return (
-                    <div key={item.id} className={styles.item}>
+                    <div
+                      key={item.id}
+                      className={`${styles.item} button`}
+                      onClick={() => {
+                        router.push(`/profile/user?account=${item.address}`);
+                      }}
+                    >
                       <div
                         className={`${styles.account} ${
                           from === "laptop-home"
@@ -101,7 +109,7 @@ export default function Txs({ from, data, mc }: any) {
                       </div>
 
                       <div
-                        className={styles.link}
+                        className={`${styles.link} button`}
                         style={{ textAlign: "right" }}
                         onClick={() => {
                           window.open(

@@ -15,8 +15,6 @@ export default function CA({
 }) {
   const { isMobile } = useUserAgent();
 
-  console.log('mc::222', mc, data)
-
   return (
     <div
       className={[
@@ -27,7 +25,9 @@ export default function CA({
       <div className={styles.marketCap}>
         <div className={styles.mcTitle}>Market cap:</div>
         {data?.status === 1 && data.DApp === "sexy" ? (
-          <div className={styles.mcAmount}>{mc && simplifyNum(Number(mc))}</div>
+          <div className={styles.mcAmount}>
+            {mc && `$${simplifyNum(Number(mc))}`}
+          </div>
         ) : (
           <div className={styles.mcAmount}>-</div>
         )}

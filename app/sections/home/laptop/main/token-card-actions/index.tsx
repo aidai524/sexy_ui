@@ -36,18 +36,20 @@ export default function TokenCardActions({ token, height }: any) {
           <div className={styles.AvatarBox}>
             <AvatarBox data={token} showLaunchType={true} />
           </div>
-          {currentTab === "Discussion" && (
-            <Comment
-              id={token.id}
-              usePanel={false}
-              showEdit={false}
-              titleStyle={{
-                color: "#fff"
-              }}
-            />
-          )}
-          {["Holders", "Founders"].includes(currentTab) &&
-            (token.status === 0 ? <PreUser token={token} /> : <Holder />)}
+          <div className={styles.List}>
+            {currentTab === "Discussion" && (
+              <Comment
+                id={token.id}
+                usePanel={false}
+                showEdit={false}
+                titleStyle={{
+                  color: "#fff"
+                }}
+              />
+            )}
+            {["Holders", "Founders"].includes(currentTab) &&
+              (token.status === 0 ? <PreUser token={token} /> : <Holder />)}
+          </div>
         </div>
       )}
     </>

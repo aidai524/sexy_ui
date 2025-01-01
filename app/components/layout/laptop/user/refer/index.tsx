@@ -118,6 +118,7 @@ const EntryAnimation = (props: any) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={style}
+      className="button"
     >
       <g filter="url(#filter0_f_4629_544)">
         <path

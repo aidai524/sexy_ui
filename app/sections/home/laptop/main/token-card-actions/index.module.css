@@ -35,7 +35,6 @@
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0.03%, #de005e 99.97%);
   backdrop-filter: blur(17px);
   border-radius: 18px;
-  overflow-y: auto;
   padding: 50px 10px 20px 10px;
   top: 0px;
 }
@@ -43,4 +42,9 @@
 .AvatarBox {
   margin-top: 10px;
   margin-bottom: 20px;
+}
+
+.List {
+  height: calc(100% - 80px);
+  overflow-y: auto;
 }
