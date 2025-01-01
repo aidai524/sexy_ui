@@ -1,29 +1,31 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTrendsBannerStore } from "@/app/store/useTrends";
 
 export function useTrends() {
-  const timer = useRef<any>(0);
-  const [visible, setVisible] = useState(true);
+  // const timer = useRef<any>(0);
 
-  const startInterval = useCallback(() => {
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      setVisible(true);
-    }, 60000);
-  }, [timer.current]);
+  const trendsBannerStore: any = useTrendsBannerStore();
+
+  // const startInterval = useCallback(() => {
+  //   clearTimeout(timer.current);
+  //   timer.current = setTimeout(() => {
+  //     setVisible(true);
+  //   }, 60000);
+  // }, [timer.current]);
 
   const handleClose = () => {
-    setVisible(false);
-    startInterval();
+    // setVisible(false);
+    // startInterval();
+    trendsBannerStore.set({ visible: false });
   };
 
-  useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     clearTimeout(timer.current);
+  //   };
+  // }, []);
 
   return {
-    visible,
-    handleClose,
+    visible: trendsBannerStore.visible,
+    handleClose
   };
 }

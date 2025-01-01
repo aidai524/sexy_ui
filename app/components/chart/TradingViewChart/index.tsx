@@ -84,7 +84,6 @@ function TradingViewChart(
   }, [symbol]);
 
   function initTradingView(symbol: string) {
-    console.log(88, "init");
     setLoading(true);
     const widgetOptions: ChartingLibraryWidgetOptions = {
       symbol,
