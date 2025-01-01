@@ -10,6 +10,8 @@ import { fetchData, fetchLastData } from "../fetch-data";
 let page = 0;
 let hasNext = true;
 let pullingQueryPriceTimer: any = null;
+let kChartSubscriberList: Record<string, number> = {};
+let currentSymbolInfo: SymbolInfo | null = null;
 
 interface SymbolInfo extends LibrarySymbolInfo {
   full_name: string;
@@ -118,13 +120,17 @@ const datafeed: (
     subscriberId,
     onResetCacheNeededCallback
   ) => {
-    if (pullingQueryPriceTimer) {
-      clearInterval(pullingQueryPriceTimer);
-    }
+    if (kChartSubscriberList[subscriberId]) return;
+
+    kChartSubscriberList[subscriberId] = 1;
+    currentSymbolInfo = symbolInfo;
     const fetchPrice = async () => {
+      clearTimeout(pullingQueryPriceTimer);
+      if (!currentSymbolInfo?.name) return;
       const item = await fetchLastData(address, resolution);
+      if (!item) return;
       const bar = {
-        time: item[6],
+        time: item[0],
         low: item[3],
         high: item[2],
         open: item[1],
@@ -133,14 +139,16 @@ const datafeed: (
       };
 
       onRealtimeCallback(bar);
+      pullingQueryPriceTimer = setTimeout(fetchPrice, 3000);
     };
-
-    pullingQueryPriceTimer = setInterval(fetchPrice, 3000);
+    clearTimeout(pullingQueryPriceTimer);
+    pullingQueryPriceTimer = setTimeout(fetchPrice, 3000);
   },
 
   unsubscribeBars: (id) => {
     // console.log("unsubscribeBars", id);
-    id === "custom" && clearInterval(pullingQueryPriceTimer);
+    delete kChartSubscriberList[id];
+    id === "custom" && clearTimeout(pullingQueryPriceTimer);
   }
 });
 

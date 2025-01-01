@@ -59,8 +59,9 @@ function TradingViewChart(
     () => {
       try {
         if (!symbol) return;
-        if (!tvWidgetRef.current || loading) initTradingView(symbol);
-        else {
+        if (!tvWidgetRef.current || loading) {
+          initTradingView(symbol);
+        } else {
           tvWidgetRef.current?.setSymbol(
             symbol,
             getStoredInterval(),
@@ -78,10 +79,12 @@ function TradingViewChart(
   );
 
   useEffect(() => {
+    console.log(81111);
     run();
   }, [symbol]);
 
   function initTradingView(symbol: string) {
+    console.log(88, "init");
     setLoading(true);
     const widgetOptions: ChartingLibraryWidgetOptions = {
       symbol,
@@ -263,6 +266,12 @@ function TradingViewChart(
       rectangleEntityIds.current.push(res);
     }
   }
+
+  useEffect(() => {
+    return () => {
+      datafeed.unsubscribeBars("custom");
+    };
+  }, []);
 
   return (
     <>
