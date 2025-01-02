@@ -77,7 +77,9 @@ export default function ActionList({
     <div className={styles.Btns}>
       {token.status === 0 && (
         <>
+          {/*  */}
           {showWithdraw &&
+            //
             (isWithdrawed ? (
               <button className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>
                 Withdrawed

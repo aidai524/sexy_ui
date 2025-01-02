@@ -6,6 +6,7 @@ import type { Comment, Project } from "@/app/type";
 import { httpGet, httpAuthPost } from "@/app/utils";
 import CommentItem from "./item";
 import SexInfiniteScroll from "../sexInfiniteScroll";
+import { useAuth } from "@/app/context/auth";
 
 interface Props {
   id: number | undefined;
@@ -31,6 +32,7 @@ export default function CommentComp({
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const { userInfo } = useAuth();
 
   const CommentList = commentList.map((item) => {
     return (
@@ -108,6 +110,11 @@ export default function CommentComp({
           <input
             value={commentText}
             onKeyUp={async (e) => {
+              if (!userInfo) {
+                // @ts-ignore
+                window?.connect();
+                return;
+              }
               if (e.code === "Enter" && commentText) {
                 if (isSubmiting) {
                   return;

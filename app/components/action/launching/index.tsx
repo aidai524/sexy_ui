@@ -28,7 +28,8 @@ export default function Action({
   if (!token) {
     return (
       <div className={styles.actionEmptyBox}>
-        <img src="/img/home/emptyAction.png" />
+        {/* <img src="/img/home/emptyAction.png" /> */}
+        <img src="/img/home/empty-action.png" />
       </div>
     );
   }

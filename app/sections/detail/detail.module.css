@@ -78,5 +78,6 @@ div.tabBar {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px 0;
+  height: 80vh;
+  width: 100vw;
 }

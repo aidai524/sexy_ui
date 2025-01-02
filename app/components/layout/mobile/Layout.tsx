@@ -131,7 +131,7 @@ export default function Component({ children }: any) {
   useNotice();
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={styles.Main}>
       {/* <Button onClick={() => {
         trade()
       }}>juipter</Button> */}

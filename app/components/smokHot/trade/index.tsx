@@ -40,8 +40,8 @@ export default function Trade({
 
   const delayTime = useMemo(() => {
     if (!prepaidDelayTime || !token.createdAt) return "";
-    return Date.now() - token.createdAt > prepaidDelayTime
-      ? dayjs(token.createdAt).format("YYYY-MM-DD HH:mm")
+    return Date.now() < token.createdAt + prepaidDelayTime
+      ? dayjs(token.createdAt + prepaidDelayTime).format("YYYY-MM-DD HH:mm")
       : "";
   }, [prepaidDelayTime, token]);
 
@@ -106,7 +106,7 @@ export default function Trade({
             <div className={styles.receiveTitle}>
               You will auto-buy in when this meme launched.{" "}
               {delayTime
-                ? `You can withdraw after ${delayTime} delay.`
+                ? `You can withdraw after ${delayTime}.`
                 : "You can withdraw anytime before launching."}
             </div>
           )}
