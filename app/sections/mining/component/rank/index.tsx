@@ -3,9 +3,14 @@ import Avatar from "./avatar";
 import Icon from "@/app/components/points-label/Reicon";
 import { useUserAgent } from "@/app/context/user-agent";
 import { numberFormatter } from "@/app/utils/common";
+import { formatAddress } from "@/app/utils";
+import { useAuth } from "@/app/context/auth";
+import { useRouter } from "next/navigation";
 
 export default function Rank({ list, rank }: any) {
   const { isMobile } = useUserAgent();
+  const { userInfo } = useAuth();
+  const router = useRouter();
   return (
     <div className={styles.Container}>
       <div className={styles.Header}>
@@ -26,9 +31,25 @@ export default function Rank({ list, rank }: any) {
             <div className={styles.ItemLeft}>
               <Avatar rank={index + 1} src={item.account_data?.icon} />
               <div>
-                <div className={styles.ItemTitle}>
-                  {item.account_data?.name}
-                </div>
+                <button
+                  className={`${styles.ItemTitle} ${
+                    item.address !== userInfo?.address && "button"
+                  }`}
+                  style={{
+                    cursor: item.account_data ? "pointer" : "inherit"
+                  }}
+                  onClick={() => {
+                    if (!item.account_data) return;
+                    if (item.address !== userInfo?.address)
+                      router.push(`/profile/user?account=${item.address}`);
+                  }}
+                >
+                  {item.account_data?.name
+                    ? item.account_data.name
+                    : item.address
+                    ? formatAddress(item.address)
+                    : ""}
+                </button>
                 {isMobile && (
                   <div className={styles.ItemDesc}>
                     {item.account_data?.followers || 0} followers
