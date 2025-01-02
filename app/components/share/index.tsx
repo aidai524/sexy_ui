@@ -11,7 +11,7 @@ export default function Share({ token }: Props) {
 
   return (
     <div
-      className={styles.share}
+      className={`${styles.share} button`}
       onClick={() => {
         showShare(token);
       }}

@@ -10,7 +10,7 @@ import styles from "./detail.module.css";
 import { useEffect, useState } from "react";
 import Tab from "@/app/components/tab";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
-import { SpinLoading } from "antd-mobile";
+import CircleLoading from "@/app/components/icons/loading";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 export default function Detail({ infoData, getDetailInfo }: any) {
@@ -33,7 +33,7 @@ export default function Detail({ infoData, getDetailInfo }: any) {
       infoData?.status === 1
     ) {
       getMC().then((res) => {
-        console.log('mc:', mc)
+        console.log("mc:", mc);
 
         setMC(res as number);
       });
@@ -43,7 +43,7 @@ export default function Detail({ infoData, getDetailInfo }: any) {
   if (!infoData) {
     return (
       <div className={styles.loadingBox}>
-        <SpinLoading style={{ "--size": "148px" }} />
+        <CircleLoading size={60} />
       </div>
     );
   }

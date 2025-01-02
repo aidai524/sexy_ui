@@ -56,7 +56,6 @@ export default function useData(launchType: string) {
   const handleList = useCallback(
     async (isNext?: boolean) => {
       let list = getAll(launchType, userInfo?.address) || [];
-
       if (!isNext) setIsLoading(true);
       const fetchedList = await queryList();
       const data: Record<string, any> = {};
@@ -72,8 +71,10 @@ export default function useData(launchType: string) {
       if (!isNext) {
         if (_list.length === 0) {
           setInfoData2(undefined);
+          setAll([], launchType, userInfo.address);
         } else {
           setInfoData2(mapDataToProject(_list[0]));
+          setAll(_list, launchType, userInfo.address);
         }
         setIsLoading(false);
       }

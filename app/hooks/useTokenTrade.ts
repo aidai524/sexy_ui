@@ -952,7 +952,6 @@ export function useTokenTrade({
   }, []);
 
   const checkPrePayed = useCallback(async () => {
-    console.log("pool", pool);
     if (!pool) {
       return false;
     }
@@ -974,7 +973,6 @@ export function useTokenTrade({
       const prePaidRecordData: any = await program.account.prePaidRecord.fetch(
         prePaidRecord[0]
       );
-      console.log("prePaidRecordData", prePaidRecordData.paidAmount.toNumber());
       return prePaidRecordData.paidAmount.toNumber();
     } catch (e) {}
 

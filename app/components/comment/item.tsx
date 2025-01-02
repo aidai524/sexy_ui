@@ -5,7 +5,7 @@ import {
   httpAuthDelete,
   formatDateTimeAndAgo
 } from "@/app/utils";
-
+import Level from "../level/simple";
 import styles from "./item.module.css";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -49,8 +49,11 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
             }}
             className={`${styles.name} ${!isSelf && "button"}`}
           >
-            {userName}
-            {isSelf && ` (Self)`}
+            <span>
+              {userName}
+              {isSelf && ` (Self)`}
+            </span>
+            <Level level={item.level} />
           </div>
           <div className={styles.time}>{formatDateTimeAndAgo(item.time)}</div>
         </div>

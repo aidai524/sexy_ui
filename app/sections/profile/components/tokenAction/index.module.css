@@ -26,6 +26,8 @@
 .DisabledBtn {
   border-radius: 22px;
   border: 1px solid rgba(127, 112, 138, 0.5);
+  color: rgba(127, 112, 138, 0.5);
+  cursor: not-allowed;
 }
 
 .IconBtn {

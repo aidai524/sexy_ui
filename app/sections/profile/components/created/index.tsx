@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Token from "../token";
-import { httpGet } from "@/app/utils";
+import { http } from "@/app/utils";
 import Empty from "../empty";
 import type { Project } from "@/app/type";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { useAuth } from "@/app/context/auth";
 
-const urls: any = {
+const urls: Record<string, string> = {
   created: "/project/account/list",
   flipped: "/project/super_like/list",
   liked: "/project/like/list"
@@ -48,13 +48,19 @@ export default function Created({
   }, [refresher, accountRefresher]);
 
   const loadMore = useCallback(
-    (isInit?: boolean, limit?: number) => {
-      return httpGet(urls[type], {
-        address,
-        limit: limit || LIMIT,
-        offset: isInit ? 0 : offset
-      }).then((res) => {
-        if (!res) return;
+    async (isInit?: boolean, limit?: number) => {
+      try {
+        const res = await http(
+          urls[type],
+          "GET",
+          {
+            address,
+            limit: limit || LIMIT,
+            offset: isInit ? 0 : offset
+          },
+          {}
+        );
+        if (!res) throw new Error();
         setHasMore(res.data?.has_next_page || false);
         let _list: any = [];
         if (res.code === 0 && res.data?.list?.length > 0) {
@@ -73,7 +79,9 @@ export default function Created({
             loadMore(true, _list.length);
           }, 1000 * 60 * 1);
         }
-      });
+      } catch (err) {
+        setList([]);
+      }
     },
     [address, type, offset, list, isCurrent]
   );

@@ -6,6 +6,7 @@ import Big from "big.js";
 import Empty from "@/app/components/empty";
 import { defaultAvatar } from "@/app/utils/config";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/auth";
 
 const addressReg = /(\w{2}).+(\w{2})/;
 
@@ -24,6 +25,7 @@ export function formatAddress(address: string) {
 export default function Txs({ from, data, mc }: any) {
   const [list, setList] = useState([]);
   const router = useRouter();
+  const { userInfo } = useAuth();
 
   useEffect(() => {
     if (data && data.tokenName) {
@@ -72,12 +74,14 @@ export default function Txs({ from, data, mc }: any) {
 
               <div className={styles.txList}>
                 {list.map((item: any) => {
+                  const isSelf = item.address === userInfo.address;
                   return (
                     <div
                       key={item.id}
-                      className={`${styles.item} button`}
+                      className={`${styles.item} ${!isSelf && "button"}`}
                       onClick={() => {
-                        router.push(`/profile/user?account=${item.address}`);
+                        if (!isSelf)
+                          router.push(`/profile/user?account=${item.address}`);
                       }}
                     >
                       <div
@@ -91,7 +95,10 @@ export default function Txs({ from, data, mc }: any) {
                           className={styles.avatar}
                           src={item.icon || defaultAvatar}
                         />
-                        <span>{formatAddress(item.address)}</span>
+                        <span>
+                          {formatAddress(item.address)}
+                          {isSelf && "(Self)"}
+                        </span>
                       </div>
 
                       <div className={styles.type + " " + styles[item.type]}>
@@ -100,12 +107,16 @@ export default function Txs({ from, data, mc }: any) {
 
                       <div className={styles.value}>
                         {item.sol_amount &&
-                          simplifyNum(new Big(item.sol_amount).div(10 ** 9).toNumber())}
+                          simplifyNum(
+                            new Big(item.sol_amount).div(10 ** 9).toNumber()
+                          )}
                       </div>
 
                       <div className={styles.vva}>
                         {item.token_amount &&
-                          simplifyNum(new Big(item.token_amount).div(10 ** 6).toNumber())}
+                          simplifyNum(
+                            new Big(item.token_amount).div(10 ** 6).toNumber()
+                          )}
                       </div>
 
                       <div
@@ -156,7 +167,7 @@ export default function Txs({ from, data, mc }: any) {
             <iframe
               style={{
                 height:
-                  from === "laptop"
+                  from === "laptop-home"
                     ? "calc(100vh - 430px)"
                     : "calc(100vh - 210px)"
               }}

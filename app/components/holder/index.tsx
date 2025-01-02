@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Level from "../level/simple";
 import styles from "./index.module.css";
 
 export default function Holder({ from }: any) {
@@ -15,16 +16,10 @@ export default function Holder({ from }: any) {
         <div className={styles.item}>
           <div className={styles.itemContent}>
             <div style={{ width: 20 }}>1.</div>
-            <div>Bro098detum</div>
-          </div>
-
-          <div className={styles.itemPercent}>89.2%</div>
-        </div>
-
-        <div className={styles.item}>
-          <div className={styles.itemContent}>
-            <div style={{ width: 20 }}>2.</div>
-            <div>Bro098detum</div>
+            <div className={styles.UserName}>
+              <span>Bro098detum</span>
+              <Level level={6} />
+            </div>
           </div>
 
           <div className={styles.itemPercent}>89.2%</div>

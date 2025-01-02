@@ -1,6 +1,6 @@
 import styles from "./index.module.css";
 import Pencil from "../icons/pencil";
-import Vip from "./vip";
+import Level from "../level";
 import { useAccount } from "@/app/hooks/useAccount";
 import { formatAddress } from "@/app/utils";
 import { defaultAvatar } from "@/app/utils/config";
@@ -26,7 +26,7 @@ export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
       </div>
       <div className={styles.userName}>
         <div>{userInfo?.name || formatAddress(userInfo.address)}</div>
-        {/* <Vip {...{userInfo, address, onVipShow}}/> */}
+        <Level level={userInfo.level} />
       </div>
     </>
   );

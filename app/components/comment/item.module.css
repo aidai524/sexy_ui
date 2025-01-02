@@ -1,54 +1,61 @@
 .comment {
   font-size: 14px;
   margin-top: 15px;
-  .replyer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .person {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      .avtar {
-        width: 16px;
-        height: 16px;
-        border-radius: 16px;
-        background-color: #515b63;
-        overflow: hidden;
-        .avatarImg {
-          width: 16px;
-          border-radius: 16px;
-        }
-      }
-      .name {
-        color: rgba(169, 167, 208, 1);
-      }
-      .time {
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.6);
-      }
-    }
-    .relayBtn {
-      text-decoration: underline;
-      color: rgba(255, 255, 255, 0.6);
-    }
-  }
-  .relayText {
-    color: #fff;
-    margin-top: 5px;
-  }
+}
 
-  .commentAction {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    margin-top: 10px;
-    .zan {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      color: #ffffff99;
-      cursor: pointer;
-    }
+.replyer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.relayText {
+  color: #fff;
+  margin-top: 5px;
+}
+
+.commentAction {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+.zan {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #ffffff99;
+  cursor: pointer;
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.relayBtn {
+  text-decoration: underline;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.avtar {
+  width: 16px;
+  height: 16px;
+  border-radius: 16px;
+  background-color: #515b63;
+  overflow: hidden;
+  .avatarImg {
+    width: 16px;
+    border-radius: 16px;
   }
+}
+.name {
+  color: rgba(169, 167, 208, 1);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.time {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
 }

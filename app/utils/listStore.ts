@@ -1,14 +1,15 @@
 const SEX_FI_LAUNCHED_LIST_KEY = "SEX_FI_LAUNCHED_LIST";
 const SEX_FI_LAUNCHED_LIST_TIME = "SEX_FI_LAUNCHED_LIST_TIME";
 const TIME_DURATION = 1000 * 60 * 60;
+const DEFAULT_ACCOUNT = "flip";
 
 export function getAll(type: string, account: string) {
-  if (!checkTimeExpired(type) || !account) {
+  if (!checkTimeExpired(type)) {
     return [];
   }
-
+  const _account = account || DEFAULT_ACCOUNT;
   const listStr = window.localStorage.getItem(
-    SEX_FI_LAUNCHED_LIST_KEY + "_" + type + "_" + account
+    SEX_FI_LAUNCHED_LIST_KEY + "_" + type + "_" + _account
   );
   if (listStr) {
     try {
@@ -22,11 +23,11 @@ export function getAll(type: string, account: string) {
 }
 
 export function setAll(list: any, type: string, account: string) {
-  if (!account) return;
+  const _account = account || DEFAULT_ACCOUNT;
   if (list) {
     try {
       window.localStorage.setItem(
-        SEX_FI_LAUNCHED_LIST_KEY + "_" + type + "_" + account,
+        SEX_FI_LAUNCHED_LIST_KEY + "_" + type + "_" + _account,
         JSON.stringify(list)
       );
       setTime(type);
@@ -45,7 +46,7 @@ export function clearAll(type: string, account: string) {
 }
 
 export function updateOneInList(item: any, account: string) {
-  if (!item || !account) {
+  if (!item) {
     return;
   }
 
