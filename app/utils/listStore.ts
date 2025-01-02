@@ -4,10 +4,11 @@ const TIME_DURATION = 1000 * 60 * 60;
 const DEFAULT_ACCOUNT = "flip";
 
 export function getAll(type: string, account: string) {
-  if (!checkTimeExpired(type)) {
+  const _account = account || DEFAULT_ACCOUNT;
+  if (!checkTimeExpired(type, _account)) {
     return [];
   }
-  const _account = account || DEFAULT_ACCOUNT;
+
   const listStr = window.localStorage.getItem(
     SEX_FI_LAUNCHED_LIST_KEY + "_" + type + "_" + _account
   );
@@ -30,7 +31,7 @@ export function setAll(list: any, type: string, account: string) {
         SEX_FI_LAUNCHED_LIST_KEY + "_" + type + "_" + _account,
         JSON.stringify(list)
       );
-      setTime(type);
+      setTime(type, _account);
     } catch (e) {
       console.log("setAll list:", e);
     }
@@ -42,7 +43,9 @@ export function clearAll(type: string, account: string) {
   window.localStorage.removeItem(
     SEX_FI_LAUNCHED_LIST_KEY + "_" + type + "_" + account
   );
-  window.localStorage.removeItem(SEX_FI_LAUNCHED_LIST_TIME + "_" + type);
+  window.localStorage.removeItem(
+    SEX_FI_LAUNCHED_LIST_TIME + "_" + type + "_" + account
+  );
 }
 
 export function updateOneInList(item: any, account: string) {
@@ -73,16 +76,16 @@ export function updateOneInList(item: any, account: string) {
   }
 }
 
-function setTime(type: string) {
+function setTime(type: string, account: string) {
   window.localStorage.setItem(
-    SEX_FI_LAUNCHED_LIST_TIME + "_" + type,
+    SEX_FI_LAUNCHED_LIST_TIME + "_" + type + "_" + account,
     Date.now().toString()
   );
 }
 
-function checkTimeExpired(type: string) {
+function checkTimeExpired(type: string, account: string) {
   const time = window.localStorage.getItem(
-    SEX_FI_LAUNCHED_LIST_TIME + "_" + type
+    SEX_FI_LAUNCHED_LIST_TIME + "_" + type + "_" + account
   );
   if (time) {
     if (Date.now() - Number(time) > TIME_DURATION) {

@@ -1,9 +1,9 @@
 import { Toast } from "antd-mobile";
 
 const customStyle: any = {
-  whiteSpace: 'normal', 
-  wordBreak: 'break-word'
-}
+  whiteSpace: "normal",
+  wordBreak: "break-word"
+};
 
 export function success(msg: string | React.ReactNode) {
   Toast.show({
@@ -26,13 +26,13 @@ export function success(msg: string | React.ReactNode) {
         />
       </svg>
     ),
-    duration: 20000000
+    duration: 2000
   });
 }
 
 export function fail(msg: string) {
   Toast.show({
-    content: <div style={{ color: "#FF2681", ...customStyle  }}>{msg}</div>,
+    content: <div style={{ color: "#FF2681", ...customStyle }}>{msg}</div>,
     position: "top",
     icon: (
       <svg

@@ -13,12 +13,12 @@ export default function BuySell({ token }: Props) {
   return (
     <>
       <button
-        className={`${styles.ActionBtn} ${styles.Withdraw} button`}
+        className={`${styles.ActionBtn} ${styles.Flip} button`}
         onClick={() => {
           setTradeShow(true);
         }}
       >
-        {/* <BuySellIcon /> */}
+        <BuySellIcon />
         Buy
       </button>
 
@@ -37,35 +37,31 @@ export default function BuySell({ token }: Props) {
 function BuySellIcon() {
   return (
     <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
     >
       <path
-        d="M24.181 24.1811C28.5017 19.8605 29.1385 13.4921 25.6034 9.95706L22.0474 6.40104L7.46773 23.1143L9.95695 25.6036C13.492 29.1386 19.8604 28.5018 24.181 24.1811Z"
+        d="M16.8641 16.8644C20.5185 13.21 21.0571 7.82379 18.0672 4.83387L15.0687 2.04419L2.72827 15.9621L4.83361 18.0674C7.82353 21.0574 13.2098 20.5187 16.8641 16.8644Z"
         fill="#577123"
       />
-      <ellipse
-        cx="14.5799"
-        cy="14.5795"
-        rx="9.55505"
-        ry="11.0637"
-        transform="rotate(-135 14.5799 14.5795)"
+      <path
+        d="M3.02849 3.02849C6.68284 -0.625858 12.2037 -1.02983 15.3598 2.1262C18.5158 5.28223 18.1118 10.8031 14.4575 14.4575C10.8031 18.1118 5.28223 18.5158 2.1262 15.3598C-1.02983 12.2037 -0.625858 6.68284 3.02849 3.02849Z"
         fill="#C9FF5D"
       />
       <path
-        d="M19.1796 14.4023L9.62451 14.4023"
-        stroke="#577123"
-        strokeWidth="2"
-        stroke-linecap="round"
+        d="M12.6333 8.59277L4.55179 8.59277"
+        stroke="black"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
       <path
-        d="M14.4021 19.1794L14.4021 9.62439"
-        stroke="#577123"
-        strokeWidth="2"
-        stroke-linecap="round"
+        d="M8.59277 12.6333L8.59277 4.55179"
+        stroke="black"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
     </svg>
   );

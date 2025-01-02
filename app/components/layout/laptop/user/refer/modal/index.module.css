@@ -8,6 +8,8 @@
   composes: Container;
   width: 100dvw;
   background: radial-gradient(89.59% 86.58% at 40.75% 0%, #FFBCD8 0%, #FFE8F1 100%);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 .Title {
   color: #000;
@@ -21,16 +23,55 @@
   composes: Title;
   padding: 30px 10px 0;
 }
-.Earned {
+.EarnedWrapper {
   width: 601px;
-  height: 261px;
-  background: url("/img/home/refer-modal-content-bg.svg") no-repeat center / contain;
+  height: 267px;
+  background: #FFE7F1;
+  border-radius: 20px;
+  position: relative;
+}
+.EarnedWrapperMobile {
+  composes: EarnedWrapper;
+  width: 100%;
+  height: 157px;
+}
+.EarnedWrapper2 {
+  composes: EarnedWrapper;
+  height: 257px;
+}
+.EarnedWrapper2Mobile {
+  composes: EarnedWrapper2;
+  width: 100%;
+  height: 150px;
+}
+.EarnedTabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  left: 0;
+  top: 13px;
+}
+.EarnedTabsMobile {
+  composes: EarnedTabs;
+  top: 7px;
+}
+.Earned {
+  width: 100%;
+  height: calc(100% + 5px);
+  background: url("/img/home/refer-modal-content-bg-1.svg") no-repeat bottom / contain;
   padding: 21px 28px 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
 }
 .EarnedMobile {
   composes: Earned;
   width: 100%;
-  padding: 60px 15px 0;
+  padding: 30px 15px 0;
 }
 .Content {
   padding: 30px 40px 40px;
@@ -41,6 +82,7 @@
 }
 .EarnedTitle {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 6px;
   color: #505050;
@@ -49,6 +91,7 @@
   font-style: normal;
   font-weight: 300;
   line-height: normal;
+  flex: 1;
 }
 .EarnedTitleMobile {
   composes: EarnedTitle;
@@ -80,7 +123,7 @@
   width: 0;
   height: 100%;
   border-radius: 29px;
-  background: linear-gradient(90deg, #FFE093 0%, #FFD979 100%);
+  background: linear-gradient(90deg, #B443FF 0%, #47FFDA 100%);
   position: absolute;
   left: 0;
   top: 0;
@@ -104,6 +147,7 @@
   background: url("/img/home/refer-modal-progress-node.svg") no-repeat center / 53px 53px;
   transform: translateY(-20px);
   position: relative;
+  cursor: pointer;
 }
 .NodeActive {
   composes: Node;
@@ -121,25 +165,40 @@
   font-style: normal;
   font-weight: 300;
   line-height: 120%;
+  pointer-events: none;
 }
 .NodeReward {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   position: absolute;
   width: 100%;
   height: 40px;
   left: 0;
   top: -55px;
+  pointer-events: none;
 }
 .NodeRewardLabel {
-  color: #505050;
-  text-align: center;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  border: 1px solid #FF2681;
+  background: rgba(255, 38, 129, 0.10);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  color: #FF2681;
   font-size: 12px;
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 120%; /* 14.4px */
+  padding: 0 7px 0 2px;
+}
+.NodeRewardIcon {
+  width: 16px;
+  height: 16px;
 }
 .NodeRewardContent {
   display: flex;
@@ -153,7 +212,7 @@
   justify-content: center;
 }
 .NodeRewardValue {
-  color: #FF2681;
+  color: #000;
   font-weight: 600;
 }
 .NodeRewardUnit {}
@@ -164,6 +223,10 @@
   align-items: center;
   gap: 20px;
 }
+.InviteMobile {
+  composes: Invite;
+  margin-top: 100px;
+}
 .InviteText {
   color: #505050;
   text-align: center;
@@ -173,7 +236,7 @@
   line-height: 150%;
 }
 .InviteTextPrimary {
-  color: #642BFF;
+  color: #FF2681;
   font-size: 20px;
   font-weight: 700;
 }

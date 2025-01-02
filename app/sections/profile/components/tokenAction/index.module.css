@@ -7,12 +7,12 @@
 }
 
 .ActionBtn {
-  width: 86px;
+  width: 80px;
   height: 28px;
   flex-shrink: 0;
   border-radius: 22px;
   font-family: Unbounded;
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
@@ -21,6 +21,15 @@
 .Withdraw {
   border: 1px solid #c9ff5d;
   color: #c9ff5d;
+}
+
+.Flip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid #ffffff66;
+  color: #ffffff;
 }
 
 .DisabledBtn {
