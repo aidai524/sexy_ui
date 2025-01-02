@@ -28,6 +28,7 @@ export default function useFollowList({
 
   const loadMore = useCallback(
     (rebuild: boolean = false) => {
+      if (!currentUser?.address) return;
       if (rebuild) {
         setIsLoading(true);
         setList([]);

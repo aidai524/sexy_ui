@@ -31,13 +31,13 @@ export default function Rank({ list, rank }: any) {
                 </div>
                 {isMobile && (
                   <div className={styles.ItemDesc}>
-                    {item.account_data?.followers} followers
+                    {item.account_data?.followers || 0} followers
                   </div>
                 )}
               </div>
               {!isMobile && (
                 <div className={styles.ItemTitle} style={{ marginLeft: 60 }}>
-                  {item.account_data?.followers}{" "}
+                  {item.account_data?.followers || 0}{" "}
                   <span style={{ color: "#FFFFFFB5" }}>followers</span>
                 </div>
               )}

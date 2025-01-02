@@ -89,6 +89,7 @@ export const AuthProvider: React.FC<{
   useEffect(() => {
     if (!address) {
       setAccountRefresher(0);
+      logout();
       return;
     }
     updateAccount();

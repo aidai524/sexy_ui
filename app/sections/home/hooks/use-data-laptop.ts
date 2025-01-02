@@ -71,10 +71,10 @@ export default function useData(launchType: string) {
       if (!isNext) {
         if (_list.length === 0) {
           setInfoData2(undefined);
-          setAll([], launchType, userInfo.address);
+          setAll([], launchType, userInfo?.address);
         } else {
           setInfoData2(mapDataToProject(_list[0]));
-          setAll(_list, launchType, userInfo.address);
+          setAll(_list, launchType, userInfo?.address);
         }
         setIsLoading(false);
       }
