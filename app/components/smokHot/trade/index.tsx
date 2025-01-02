@@ -9,6 +9,7 @@ import { fail, success } from "@/app/utils/toast";
 import dayjs from "@/app/utils/dayjs";
 import { useAccount } from "@/app/hooks/useAccount";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
+import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   token: Project;
@@ -25,13 +26,14 @@ export default function Trade({
   panelStyle,
   modalShow,
   onSuccess,
-  onClose,
+  onClose
 }: Props) {
   const [inputVal, setInputVal] = useState(max.toString());
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
+  const { isMobile } = useUserAgent();
 
   const { prePaid, checkPrePayed } = useTokenTrade({
     tokenName: token.tokenName,
@@ -65,7 +67,7 @@ export default function Trade({
   }, [modalShow]);
 
   return (
-    <div className={styles.main}>
+    <div className={styles.main} style={{ paddingTop: isMobile ? 0 : 90 }}>
       <div className={styles.avatar}>
         <Avatar data={token} showLaunchType={true} />
       </div>
@@ -139,9 +141,14 @@ export default function Trade({
             Pre-Buy
           </MainBtn>
 
-          <div onClick={() => {
-            onClose && onClose()
-          }} className={ styles.cancel }>Cancel</div>
+          <div
+            onClick={() => {
+              onClose && onClose();
+            }}
+            className={styles.cancel}
+          >
+            Cancel
+          </div>
         </div>
       </div>
     </div>
