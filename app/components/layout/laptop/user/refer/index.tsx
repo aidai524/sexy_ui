@@ -71,7 +71,7 @@ const Refer = (props: any) => {
           handleEntryClose={handleEntryClose}
         />
       </motion.div>
-      <ReferModal {...props} />
+      <ReferModal {...props} isInvite={store.isInvite} />
     </div>
   );
 };
