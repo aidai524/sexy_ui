@@ -9,7 +9,7 @@ import Tabs from "@/app/sections/profile/components/tabs";
 import EditProfile from "./edit-profile";
 import FollowerModal from "./follower-modal";
 import VipModal from "@/app/sections/profile/components/vip-modal";
-
+import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useState } from "react";
 import Refer from "@/app/components/layout/laptop/user/refer";
 import { useHomeTab } from "@/app/store/useHomeTab";
@@ -22,79 +22,98 @@ export default function User({ address, userInfo, onQueryInfo, logout }: any) {
 
   return (
     <div className={styles.Container}>
-      <Bg banner={userInfo?.banner} />
-      <div className={styles.Content}>
-        <div className={styles.Top}>
-          <Title />
-          <AvaterName
-            userInfo={userInfo}
-            onEdit={() => {
-              setOpenEditModal(true);
-            }}
-          />
-          <FollowerActions
-            userInfo={userInfo}
-            onItemClick={(type: string) => {
-              setFollowModalType(type);
-            }}
-            style={{
-              padding: "0px",
-              gap: "60px",
-              justifyContent: "center",
-              marginTop: "20px"
-            }}
-          />
-          {address && (
-            <Address address={address} logout={logout} isFull={true} />
-          )}
-          {/* <HotBoost
+      <>
+        <Bg banner={userInfo?.banner} />
+        <div className={styles.Content}>
+          <div className={styles.Top}>
+            <Title />
+            <AvaterName
+              userInfo={userInfo}
+              onEdit={() => {
+                setOpenEditModal(true);
+              }}
+            />
+            <FollowerActions
+              userInfo={userInfo}
+              onItemClick={(type: string) => {
+                setFollowModalType(type);
+              }}
+              style={{
+                padding: "0px",
+                gap: "60px",
+                justifyContent: "center",
+                marginTop: "20px"
+              }}
+            />
+            {address && (
+              <Address address={address} logout={logout} isFull={true} />
+            )}
+            {/* <HotBoost
             onMoreClick={() => {
               setOpenVipModal(true);
             }}
             style={{ margin: "10px" }}
           /> */}
+          </div>
+          <Tabs
+            address={address}
+            showHot={true}
+            defaultIndex={profileTabIndex}
+            tabContentStyle={{
+              height: userInfo?.name
+                ? "calc(100vh - 430px)"
+                : "calc(100vh - 408px)",
+              overflowY: "auto"
+            }}
+          />
         </div>
-        <Tabs
-          address={address}
-          showHot={true}
-          defaultIndex={profileTabIndex}
-          tabContentStyle={{
-            height: userInfo?.name
-              ? "calc(100vh - 430px)"
-              : "calc(100vh - 408px)",
-            overflowY: "auto"
+        <EditProfile
+          open={openEditModal}
+          onClose={() => {
+            setOpenEditModal(false);
+          }}
+          onSuccess={() => {
+            onQueryInfo();
+            setOpenEditModal(false);
           }}
         />
-      </div>
-      <EditProfile
-        open={openEditModal}
-        onClose={() => {
-          setOpenEditModal(false);
-        }}
-        onSuccess={() => {
-          onQueryInfo();
-          setOpenEditModal(false);
-        }}
-      />
-      <FollowerModal
-        address={address}
-        open={!!followModalType}
-        onClose={() => {
-          setFollowModalType("");
-        }}
-        onRefresh={() => {
-          onQueryInfo();
-        }}
-        type={followModalType}
-        isOther={false}
-      />
-      <VipModal
-        show={openVipModal}
-        onClose={() => {
-          setOpenVipModal(false);
-        }}
-      />
-      <Refer userInfo={userInfo} />
+        <FollowerModal
+          address={address}
+          open={!!followModalType}
+          onClose={() => {
+            setFollowModalType("");
+          }}
+          onRefresh={() => {
+            onQueryInfo();
+          }}
+          type={followModalType}
+          isOther={false}
+        />
+        <VipModal
+          show={openVipModal}
+          onClose={() => {
+            setOpenVipModal(false);
+          }}
+        />
+        <Refer userInfo={userInfo} />
+      </>
+      {!userInfo && (
+        <div className={styles.Empty}>
+          <WalletModalButton
+            style={{
+              background: "transparent",
+              borderRadius: 48,
+              border: "1px solid #fff",
+              color: "#FFFFFF",
+              height: 53,
+              fontSize: 16,
+              width: 200
+            }}
+          >
+            Connect Wallet
+          </WalletModalButton>
+        </div>
+      )}
     </div>
   );
 }
