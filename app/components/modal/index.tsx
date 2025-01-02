@@ -12,6 +12,7 @@ interface ModalProps {
   style?: React.CSSProperties;
   mainStyle?: React.CSSProperties;
   closeStyle?: React.CSSProperties;
+  maskClose?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -21,7 +22,8 @@ const Modal: React.FC<ModalProps> = ({
   closeIcon,
   style,
   mainStyle,
-  closeStyle
+  closeStyle,
+  maskClose = true
 }) => {
   useEffect(() => {
     if (open) {
@@ -36,6 +38,7 @@ const Modal: React.FC<ModalProps> = ({
   if (!open) return null;
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!maskClose) return;
     if (e.target === e.currentTarget) {
       onClose && onClose();
     }

@@ -6,8 +6,11 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
 import { Popup } from "antd-mobile";
 import Tab, { AnimateVariants, TabTitle } from '@/app/components/layout/laptop/user/refer/modal/tab';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { httpAuthGet } from '@/app/utils';
+import Loading from '@/app/components/icons/loading';
+import { useAirdrop } from '@/app/components/airdrop/hooks';
 
 const ReferModal = (props: any) => {
   const { isMobile } = props;
@@ -47,13 +50,28 @@ const ReferModal = (props: any) => {
 export default ReferModal;
 
 const ReferModalContent = (props: any) => {
-  const { userInfo, isMobile } = props;
+  const { userInfo, isMobile, isInvite } = props;
   const { address } = useAccount();
-  const [currentTab, setCurrentTab] = useState(1);
+  const { getAirdropData, airdropData } = useAirdrop({});
+  const [currentTab, setCurrentTab] = useState(isInvite ? 2 : 1);
+  const [loading, setLoading] = useState(false);
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
+    if (loading) return;
+    setLoading(true);
     const shareLink = new URL(window?.location?.origin);
     shareLink.searchParams.set("code", address ?? "");
+    if (currentTab === 2) {
+      const res = await httpAuthGet("/airdrop/referral/code", {
+        find: false,
+      });
+      if (res.code !== 0) {
+        fail("Failed to obtain the invitation code");
+        setLoading(false);
+        return;
+      }
+      shareLink.searchParams.set("airdrop", res.data);
+    }
     navigator.clipboard
       .writeText(shareLink.toString())
       .then(() => {
@@ -61,6 +79,9 @@ const ReferModalContent = (props: any) => {
       })
       .catch((err) => {
         fail("Copy failed!");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -68,6 +89,10 @@ const ReferModalContent = (props: any) => {
     if (currentTab === tab) return;
     setCurrentTab(tab);
   };
+
+  useEffect(() => {
+    getAirdropData();
+  }, []);
 
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
@@ -89,7 +114,7 @@ const ReferModalContent = (props: any) => {
             <TabTitle
               {...props}
               label="EARNED"
-              value={userInfo?.proxy_fee || 0}
+              value={airdropData?.referral_points || 0}
               unit="Points"
               tab={2}
               current={currentTab}
@@ -232,8 +257,14 @@ const ReferModalContent = (props: any) => {
             type="button"
             className={styles.InviteBtn}
             onClick={handleCopy}
+            disabled={loading}
           >
-            Invite now
+            {
+              loading && (
+                <Loading size={16} />
+              )
+            }
+            <span>Invite now</span>
           </button>
         </div>
       </div>
