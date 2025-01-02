@@ -123,8 +123,7 @@ export default function CommentComp({
                 window?.connect();
                 return;
               }
-              console.log(e.code, commentText);
-              if (e.code === "Enter" && commentText) {
+              if (e.keyCode === 13 && commentText) {
                 if (isSubmiting) {
                   return;
                 }
