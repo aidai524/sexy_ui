@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./index.module.css";
 
-export default function PanelWrapper({ children }: any) {
+export default function PanelWrapper({ children, style = {} }: any) {
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -17,6 +17,7 @@ export default function PanelWrapper({ children }: any) {
         exit="hidden"
         animate="visible"
         className={styles.PanelWrapper}
+        style={style}
       >
         {children}
       </motion.div>

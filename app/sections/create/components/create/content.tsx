@@ -6,7 +6,7 @@ import MainBtn from "@/app/components/mainBtn";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useLaptop } from "@/app/context/laptop";
 import { getFullNum, httpGet } from "@/app/utils";
-import { Avatar } from "@/app/components/thumbnail";
+import { Avatar } from "@/app/components/thumbnail/avatar";
 import { Checkbox } from "antd-mobile";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";

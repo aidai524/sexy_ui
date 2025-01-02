@@ -1,10 +1,13 @@
+import { getAuthorizationByLocal } from ".";
+
 const SEX_FI_LAUNCHED_LIST_KEY = "SEX_FI_LAUNCHED_LIST";
 const SEX_FI_LAUNCHED_LIST_TIME = "SEX_FI_LAUNCHED_LIST_TIME";
 const TIME_DURATION = 1000 * 60 * 60;
 const DEFAULT_ACCOUNT = "flip";
 
 export function getAll(type: string, account: string) {
-  const _account = account || DEFAULT_ACCOUNT;
+  const auth = getAuthorizationByLocal();
+  const _account = auth && account ? account : DEFAULT_ACCOUNT;
   if (!checkTimeExpired(type, _account)) {
     return [];
   }
@@ -24,7 +27,8 @@ export function getAll(type: string, account: string) {
 }
 
 export function setAll(list: any, type: string, account: string) {
-  const _account = account || DEFAULT_ACCOUNT;
+  const auth = getAuthorizationByLocal();
+  const _account = auth && account ? account : DEFAULT_ACCOUNT;
   if (list) {
     try {
       window.localStorage.setItem(

@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import styles from "./trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
-import { Avatar } from "../../thumbnail";
+import { Avatar } from "../../thumbnail/avatar";
 import type { Project } from "@/app/type";
 import Big from "big.js";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
@@ -145,7 +145,7 @@ export default function Trade({
             onClick={() => {
               onClose && onClose();
             }}
-            className={styles.cancel}
+            className={`${styles.cancel} button`}
           >
             Cancel
           </div>

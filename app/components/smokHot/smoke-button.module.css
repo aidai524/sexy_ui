@@ -1,0 +1,15 @@
+.Container {
+  border-radius: 100px;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.Container:active {
+  background-color: #fff;
+  box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 1);
+}

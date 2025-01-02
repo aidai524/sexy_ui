@@ -21,6 +21,9 @@ export default function SmokPanel({ show, token, onHide, onSuccess }: Props) {
         onHide && onHide();
       }}
       mainStyle={{ width: 502, border: "none" }}
+      closeStyle={{
+        display: "none"
+      }}
     >
       <div className={styles.Container}>
         <img className={styles.Img} src="/img/home/flipLogo.png" />

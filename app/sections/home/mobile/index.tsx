@@ -3,7 +3,7 @@
 import GuidingTour from "@/app/components/guiding-tour";
 import { MaskPlacement } from "@/app/components/guiding-tour/get-style-rect";
 import styles from "./home.module.css";
-import Thumbnail from "@/app/components/thumbnail";
+import ThumbnailWithFlip from "@/app/components/thumbnail/with-flip";
 import LaunchingAction from "@/app/components/action/launching";
 import LaunchedAction from "@/app/components/action/launched";
 import Messages from "@/app/components/messages";
@@ -85,7 +85,6 @@ export default function Home() {
         return;
       }
 
-
       if (hateTriggerRef.current) {
         return;
       }
@@ -104,7 +103,6 @@ export default function Home() {
         window.connect();
         return;
       }
-
 
       if (likeTriggerRef.current) {
         return;
@@ -155,7 +153,9 @@ export default function Home() {
       console.log("nexting");
       const style = {
         opacity: 1 - percent,
-        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent}vh)`
+        transform: `rotate(${40 * percent}deg) translate(0, ${
+          -100 * percent
+        }vh)`
       };
       if (renderLaunchingIndexRef.current === 0) {
         setMovingStyle2(style);
@@ -213,7 +213,9 @@ export default function Home() {
       console.log("nexting", percent);
       const style = {
         opacity: 1 - percent,
-        transform: `rotate(${40 * percent}deg) translate(0, ${-100 * percent}vh)`
+        transform: `rotate(${40 * percent}deg) translate(0, ${
+          -100 * percent
+        }vh)`
       };
       if (renderLaunchedIndexRef.current === 0) {
         setMovingStyle2(style);
@@ -234,14 +236,13 @@ export default function Home() {
   }, [likeTrigger]);
 
   async function like(isLike: boolean = true) {
-
     if (launchingList && launchingList.current) {
       if (launchingList.current.length > 0) {
         if (isLike) {
           const data = launchingList.current[0];
           actionLikeTrigger(data);
         }
-        
+
         if (renderLaunchingIndexRef.current === 0) {
           setActionStyle2(styles.like);
         } else {
@@ -255,7 +256,6 @@ export default function Home() {
           setMovingStyle({});
           setMovingStyle2({});
         }, 800);
-
       }
     }
   }
@@ -384,7 +384,7 @@ export default function Home() {
                   key={infoDataLaunching.id}
                   className={[styles.thumbnailBox, actionStyle].join(" ")}
                 >
-                  <Thumbnail
+                  <ThumbnailWithFlip
                     showProgress={true}
                     showDesc={true}
                     data={infoDataLaunching}
@@ -401,7 +401,7 @@ export default function Home() {
                   }}
                   className={[styles.thumbnailBox, actionStyle2].join(" ")}
                 >
-                  <Thumbnail
+                  <ThumbnailWithFlip
                     showProgress={true}
                     showDesc={true}
                     data={infoDataLaunching2}
@@ -425,6 +425,7 @@ export default function Home() {
                   ? infoDataLaunching2
                   : infoDataLaunching
               }
+              canFlip={true}
               ids={{
                 dislike: "guid-home-dislike",
                 like: "guid-home-like",
@@ -447,7 +448,7 @@ export default function Home() {
                 await hate();
               }}
               onSuperLike={async () => {
-                like(false)
+                like(false);
                 // const token =
                 //   renderLaunchingIndex === 0
                 //     ? infoDataLaunching2
@@ -473,8 +474,6 @@ export default function Home() {
           </>
         )}
 
-
-
         {homeTabIndex === 1 && (
           <>
             <div className={styles.thumbnailListBox} ref={containerLaunchedRef}>
@@ -487,7 +486,7 @@ export default function Home() {
                   }}
                   className={[styles.thumbnailBox, actionStyle].join(" ")}
                 >
-                  <Thumbnail
+                  <ThumbnailWithFlip
                     showProgress={true}
                     showDesc={true}
                     data={infoDataLaunched}
@@ -504,7 +503,7 @@ export default function Home() {
                   }}
                   className={[styles.thumbnailBox, actionStyle2].join(" ")}
                 >
-                  <Thumbnail
+                  <ThumbnailWithFlip
                     showProgress={true}
                     showDesc={true}
                     data={infoDataLaunched2}

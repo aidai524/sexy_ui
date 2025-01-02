@@ -1,14 +1,17 @@
 .main {
-    position: relative;
-    .smokeLogo {
-        /* position: absolute; */
-        /* left: 50%; */
-        /* transform: translate(-50%, 0); */
-        .smokeImg {
-            width: 233px;
-            display: block;
-            margin: 10px auto;
-        }
-    }
+  position: relative;
+  padding-top: 70px;
+}
 
+.smokeLogo {
+  position: absolute;
+  left: 50%;
+  top: -90px;
+  transform: translate(-50%, 0);
+}
+
+.smokeImg {
+  width: 233px;
+  display: block;
+  margin: 10px auto;
 }
