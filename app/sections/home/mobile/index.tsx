@@ -79,11 +79,11 @@ export default function Home() {
     containerPreLaunchRef,
     () => {
       //@ts-ignore
-      // if (!window.sexAddress) {
-      //   //@ts-ignore
-      //   window.connect();
-      //   return;
-      // }
+      if (!window.sexAddress) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
 
 
       if (hateTriggerRef.current) {
@@ -98,12 +98,12 @@ export default function Home() {
       }, 1600);
     },
     () => {
-      // //@ts-ignore
-      // if (!window.sexAddress) {
-      //   //@ts-ignore
-      //   window.connect();
-      //   return;
-      // }
+      //@ts-ignore
+      if (!window.sexAddress) {
+        //@ts-ignore
+        window.connect();
+        return;
+      }
 
 
       if (likeTriggerRef.current) {

@@ -163,7 +163,7 @@ export default function useData(launchType: string) {
 
   const { run: initList } = useDebounceFn(
     async () => {
-      let list = getAll(launchType, userInfo.address);
+      let list = getAll(launchType, userInfo?.address || '');
 
       if (list && list.length > 0) {
         if (launchType === "preLaunch") {
