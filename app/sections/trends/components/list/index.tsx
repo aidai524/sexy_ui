@@ -32,17 +32,17 @@ const List = (props: any) => {
             </div>
             <div
               className={[styles.TableCol, styles.TableColPointer].join(' ')}
-              onClick={() => onOrderBy('market_value')}
+              onClick={() => onOrderBy('market_cap')}
             >
               <div>Marketcap</div>
-              <SortDirection value={'market_value' in orderBy ? orderBy['market_value'] : void 0} />
+              <SortDirection value={'market_cap' in orderBy ? orderBy['market_cap'] : void 0} />
             </div>
             <div
               className={[styles.TableCol, styles.TableColPointer].join(' ')}
-              onClick={() => onOrderBy('market_trend')}
+              onClick={() => onOrderBy('market_cap_percentage')}
             >
               <div>Marketcap %</div>
-              <SortDirection value={'market_trend' in orderBy ? orderBy['market_trend'] : void 0} />
+              <SortDirection value={'market_cap_percentage' in orderBy ? orderBy['market_cap_percentage'] : void 0} />
             </div>
             <Popover
               placement={PopoverPlacement.TopRight}
@@ -92,16 +92,16 @@ const List = (props: any) => {
                   <div>{item.token_symbol}</div>
                 </div>
                 <div className={styles.TableCol}>
-                  {item.created_by || '-'}
+                  {item.address ? `${item.address.slice(0, 3)}*${item.address.slice(-4)}` : '-'}
                 </div>
                 <div className={styles.TableCol}>
-                  {numberFormatter(item.market_value, 2, true, { prefix: '$', isShort: true })}
+                  {numberFormatter(item.market_cap, 2, true, { prefix: '$', isShort: true })}
                 </div>
                 <div className={styles.TableCol} style={{ color: index % 2 === 0 ? '#6FFF00' : '#FF378B' }}>
-                  +0.00%
+                  +{item.market_cap_percentage}%
                 </div>
                 <div className={styles.TableCol}>
-                  {numberFormatter(item.market_value, 2, true, { prefix: '$', isShort: true })}
+                  {numberFormatter(item.virtual_volume, 2, true, { prefix: '$', isShort: true })}
                 </div>
               </div>
             ))
