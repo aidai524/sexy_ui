@@ -1,8 +1,13 @@
 import { Toast } from "antd-mobile";
 
-export function success(msg: string) {
+const customStyle: any = {
+  whiteSpace: 'normal', 
+  wordBreak: 'break-word'
+}
+
+export function success(msg: string | React.ReactNode) {
   Toast.show({
-    content: <div style={{ color: "#AAFF00" }}>{msg}</div>,
+    content: <div style={{ color: "#AAFF00", ...customStyle }}>{msg}</div>,
     position: "top",
     icon: (
       <svg
@@ -21,13 +26,13 @@ export function success(msg: string) {
         />
       </svg>
     ),
-    duration: 2000
+    duration: 20000000
   });
 }
 
 export function fail(msg: string) {
   Toast.show({
-    content: <div style={{ color: "#FF2681" }}>{msg}</div>,
+    content: <div style={{ color: "#FF2681", ...customStyle  }}>{msg}</div>,
     position: "top",
     icon: (
       <svg

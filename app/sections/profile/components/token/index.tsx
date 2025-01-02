@@ -81,7 +81,7 @@ export default function Token({
             <div className={styles.tickerName}>Ticker: {data.ticker}</div>
           </div>
           <div className={styles.MarketCap}>
-            Market cap: {mc && mc !== "-" ? `$${simplifyNum(Number(mc))}` : "-"}
+            Mc: {mc && mc !== "-" ? `$${simplifyNum(Number(mc))}` : "-"}
           </div>
           <div className={styles.createTime}>{timeAgo(data.time)}</div>
         </div>
