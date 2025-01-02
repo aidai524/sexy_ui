@@ -67,7 +67,7 @@ export async function actionLikeTrigger(data: Project) {
     }
   }
 
-  if (times === SECOND_LIKE_TIMES || true) {
+  if (times === SECOND_LIKE_TIMES) {
     if (data) {
       const timeLikeHandler = Modal.show({
         content: (

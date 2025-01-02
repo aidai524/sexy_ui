@@ -1,11 +1,13 @@
 .main {
     position: relative;
     .smokeLogo {
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        /* position: absolute; */
+        /* left: 50%; */
+        /* transform: translate(-50%, 0); */
         .smokeImg {
             width: 233px;
+            display: block;
+            margin: 10px auto;
         }
     }
 

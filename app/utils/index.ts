@@ -511,6 +511,8 @@ export async function upload(
   return postUpload(_file, newFileName, file.type);
 }
 
+const s3_dir = process.env.NEXT_PUBLIC_S3_DIR || "flip/dev/"
+
 export async function postUpload(
   _file: any,
   newFileName: string,
@@ -518,7 +520,7 @@ export async function postUpload(
 ) {
   const val = await httpAuthPost(
     `/upload/data?dir=${encodeURIComponent(
-      "sexy/dev/"
+      s3_dir
     )}&file_name=${newFileName}`
   );
   if (val?.code === 0) {
@@ -535,7 +537,7 @@ export async function postUpload(
       return null;
     }
 
-    return `https://deltabot-1.s3.us-east-1.amazonaws.com/sexy/dev/${newFileName}`;
+    return `https://deltabot-1.s3.us-east-1.amazonaws.com/${s3_dir}${newFileName}`;
   }
 
   return null;
@@ -670,8 +672,6 @@ export async function getTransaction(connection: Connection, hash: string, token
   const transactionDetails = await connection.getTransaction(hash, {
     commitment: 'confirmed',
   });
-
-  console.log('transactionDetails:', transactionDetails)
 
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta
