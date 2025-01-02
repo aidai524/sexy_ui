@@ -161,6 +161,7 @@ export default function Thumbnail({
               </video>
             ) : (
               <LazyLoadImage
+                effect="blur"
                 className={styles.tokenImg}
                 src={data.tokenImg || "/img/token-placeholder.png"}
               />

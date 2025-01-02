@@ -222,12 +222,13 @@ div.adm-tab-bar-wrap {
   background-color: transparent;
 }
 
-.trans-flip.adm-modal .adm-center-popup-wrap .adm-center-popup-body .adm-modal-content {
+.trans-flip.adm-modal
+  .adm-center-popup-wrap
+  .adm-center-popup-body
+  .adm-modal-content {
   max-height: 100vh;
   overflow: visible;
 }
-
-
 
 .trans-flip.adm-modal .adm-modal-body {
   overflow: visible;
