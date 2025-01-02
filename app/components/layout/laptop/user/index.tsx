@@ -97,7 +97,7 @@ export default function User({ address, userInfo, onQueryInfo, logout }: any) {
         />
         <Refer userInfo={userInfo} />
       </>
-      {!userInfo && (
+      {!userInfo?.address && (
         <div className={styles.Empty}>
           <WalletModalButton
             style={{
