@@ -16,22 +16,30 @@ export default memo(function Detail(props: any) {
   const params = useSearchParams();
   const [infoData, setInfoData] = useState<Project>();
   const { useInfo } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
   const getDetailInfo = useCallback(() => {
     const id = params.get("id");
+
     if (id) {
-      return httpGet("/project", { id }).then((res) => {
-        if (res.code === 0 && res.data && res.data.length) {
-          const infoData = mapDataToProject(res.data[0]);
-          setInfoData(infoData);
-          updateOneInList(
-            {
-              ...res.data[0]
-            },
-            useInfo?.address
-          );
-        }
-      });
+      setIsLoading(true);
+      return httpGet("/project", { id })
+        .then((res) => {
+          if (res.code === 0 && res.data && res.data.length) {
+            const infoData = mapDataToProject(res.data[0]);
+            setInfoData(infoData);
+            updateOneInList(
+              {
+                ...res.data[0]
+              },
+              useInfo?.address
+            );
+          }
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+        });
     }
   }, [params, useInfo]);
 
@@ -44,6 +52,6 @@ export default memo(function Detail(props: any) {
   return isMobile ? (
     <Mobile {...props} {...comParams} />
   ) : (
-    <Laptop {...props} {...comParams} />
+    <Laptop {...props} {...comParams} isLoading={isLoading} />
   );
 });

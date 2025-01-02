@@ -1,57 +1,62 @@
 .main {
-    .title {
-        color: #fff;
-        font-size: 24px;
-        font-weight: 500;
-    }
+}
 
-    .userItem {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 15px;
+.title {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+}
 
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 36px;
-            overflow: hidden;
-            cursor: pointer;
+.userItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
 
-            .avatarImg {
-                width: 36px;
-                height: 36px;
-            }
-        }
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 36px;
+  overflow: hidden;
+  cursor: pointer;
+}
 
-        .userBox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            .userName {
-                color: #fff;
-            }
+.avatarImg {
+  width: 36px;
+  height: 36px;
+}
 
-            .followers {
-                color: rgba(146, 144, 177, 1);
-                margin-top: 3px;
-            }
-        }
+.userBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
 
-        .creator {
-            color: rgba(201, 255, 93, 1);
-        }
+.userName {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 
-        .like {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #fff;
-            background-color: rgba(60, 60, 60, .4);
-            border-radius: 30px;
-            padding: 5px 10px;
-            backdrop-filter: blur(10px);
-        }
-    }
+.followers {
+  color: rgba(146, 144, 177, 1);
+  margin-top: 3px;
+}
+
+.creator {
+  color: rgba(201, 255, 93, 1);
+}
+
+.like {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  background-color: rgba(60, 60, 60, 0.4);
+  border-radius: 30px;
+  padding: 5px 10px;
+  backdrop-filter: blur(10px);
 }

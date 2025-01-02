@@ -30,3 +30,9 @@
   padding: 16px;
   margin-right: 10px;
 }
+
+.UserName {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

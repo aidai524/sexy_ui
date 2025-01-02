@@ -21,6 +21,9 @@
   font-weight: 700;
   margin-top: 10px;
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   .vipImg {
     position: absolute;
     left: 120%;

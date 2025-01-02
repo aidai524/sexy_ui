@@ -141,7 +141,7 @@ export default function Token({
               <Loading size={40} />
             </div>
           ) : (
-            <Empty type={type === 0 ? "preLaunch" : "launching"} />
+            <Empty type={type === 0 ? "preLaunch" : "launching"} from={from} />
           )}
         </div>
       </div>
