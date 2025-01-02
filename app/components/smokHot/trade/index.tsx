@@ -15,6 +15,7 @@ interface Props {
   onSuccess?: () => void;
   panelStyle?: any;
   modalShow: boolean;
+  onClose?: () => void;
 }
 
 const max = 0.05;
@@ -23,7 +24,8 @@ export default function Trade({
   token,
   panelStyle,
   modalShow,
-  onSuccess
+  onSuccess,
+  onClose,
 }: Props) {
   const [inputVal, setInputVal] = useState(max.toString());
   const [isLoading, setIsLoading] = useState(false);
@@ -136,6 +138,10 @@ export default function Trade({
           >
             Pre-Buy
           </MainBtn>
+
+          <div onClick={() => {
+            onClose && onClose()
+          }} className={ styles.cancel }>Cancel</div>
         </div>
       </div>
     </div>

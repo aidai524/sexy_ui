@@ -1,5 +1,5 @@
 .main {
-  padding-top: 90px;
+  /* padding-top: 90px; */
 
   .avatar {
     padding: 0 20px;
@@ -49,7 +49,7 @@
       align-items: center;
       justify-content: space-between;
       color: rgba(255, 255, 255, 0.7);
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 300;
 
       .switchTokenName {
@@ -153,4 +153,12 @@
       }
     }
   }
+}
+
+
+.cancel {
+  font-size: 16px;
+  color: rgba(146, 144, 177, 1);
+  text-align: center;
+  margin-top: 20px;
 }

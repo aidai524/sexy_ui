@@ -185,12 +185,12 @@ input::placeholder {
   transition: 0.3s;
   cursor: pointer;
 }
-.button:hover {
+/* .button:hover {
   opacity: 0.8;
 }
 .button:active {
   opacity: 0.6;
-}
+} */
 
 a.adm-picker-header-button {
   color: #fff;
@@ -220,6 +220,17 @@ div.adm-tab-bar-wrap {
 
 .no-bg.adm-modal .adm-center-popup-wrap div.adm-center-popup-body {
   background-color: transparent;
+}
+
+.trans-flip.adm-modal .adm-center-popup-wrap .adm-center-popup-body .adm-modal-content {
+  max-height: 100vh;
+  overflow: visible;
+}
+
+
+
+.trans-flip.adm-modal .adm-modal-body {
+  overflow: visible;
 }
 
 .adm-modal .adm-mask {
