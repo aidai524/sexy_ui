@@ -4,6 +4,7 @@ import { fail } from "./toast";
 import { clearAll } from "./listStore";
 import { Connection } from "@solana/web3.js";
 import Big from "big.js";
+import { deleteCookie } from "./common";
 
 const BASE_URL = "https://api.dumpdump.fun/api/v1";
 const TOKEN_ERROR_CODE = -401;
@@ -304,6 +305,7 @@ export function logOut() {
   // @ts-ignore
   window.sexAddress = null;
   window.localStorage.removeItem(AUTH_KEY);
+  deleteCookie('referral')
 }
 
 export function getFullNum(value: any) {

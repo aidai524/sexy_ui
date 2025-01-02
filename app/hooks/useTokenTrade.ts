@@ -27,10 +27,11 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useVip } from "./useVip";
 import {
   programId_address,
-  referral_address,
+//   referral_address,
   total_supply
 } from "../utils/config";
 import { useSolPriceStore } from "../store/useSolPrice";
+import { useReferraltore } from "../store/useReferral";
 
 interface Props {
   tokenName: string;
@@ -53,6 +54,7 @@ export function useTokenTrade({
   const [solBalance, setSolBalance] = useState("0");
   const [reFreshBalnace, setReFreshBalnace] = useState(0);
   const { solPrice } = useSolPriceStore();
+  const { referral: referral_address } = useReferraltore()
 
   const programId = useMemo(() => {
     return new PublicKey(programId_address);
