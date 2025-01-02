@@ -10,6 +10,7 @@ export async function GET(request: Request | NextRequest) {
     const tokenName = parsedUrl.searchParams.get('tokenName')
     const about = parsedUrl.searchParams.get('about')
     const tokenId = parsedUrl.searchParams.get('tokenId')
+    const referral = parsedUrl.searchParams.get('referral')
 
     const res = new Response(`<!DOCTYPE html>
         <html lang="en">
@@ -21,8 +22,6 @@ export async function GET(request: Request | NextRequest) {
             <meta name="twitter:title" content="${tokenName}">
             <meta name="twitter:description" content="${about}">
             <meta name="twitter:image" content="${imgUrl}"> <!-- Image URL for sharing -->
-            <meta name="twitter:image:width" content="600">
-            <meta name="twitter:image:height" content="524">
 
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="refresh" content="1; url=https://test.flipn.fun/detail?id=${tokenId}">
@@ -36,6 +35,9 @@ export async function GET(request: Request | NextRequest) {
     });
 
     res.headers.set('Content-Type', 'text/html');
+    if (referral) {
+        res.headers.set("Set-Cookie", `referral=${referral};Path=/;`);
+    }
 
     return res
 }  

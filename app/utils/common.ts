@@ -242,3 +242,20 @@ export const numberFormatter = (
 export const numberRemoveEndZero = (value: string) => {
   return value.replace(/\.?0+$/, "");
 };
+
+
+export function getCookie(name: string) {
+  const cookies = document.cookie
+    .split("; ")
+    .reduce((acc: any, cookie) => {
+      const [key, value] = cookie.split("=");
+      acc[key] = decodeURIComponent(value);
+      return acc;
+    }, {});
+
+  return cookies[name];
+}
+
+export function deleteCookie(name: string) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+}

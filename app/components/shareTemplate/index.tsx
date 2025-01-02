@@ -189,7 +189,7 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
                                         token.tokenName
                                     )}&about=${encodeURIComponent(
                                         token.about
-                                    )}&imgUrl=${encodeURIComponent(img)}&tokenId=${token.id}`
+                                    )}&imgUrl=${encodeURIComponent(img)}&tokenId=${token.id}&referral=${token.address}`
                                 );
                                 setIsSharing(false);
                             }}
