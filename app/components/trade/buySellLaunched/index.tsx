@@ -13,6 +13,7 @@ import type { Project } from "@/app/type";
 import { useUser } from "@/app/store/useUser";
 import useJupiter from "@/app/hooks/useJupiter";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useSlip } from "@/app/store/useSlip";
 
 type Token = {
   tokenName: string;
@@ -39,7 +40,7 @@ const SOL_PERCENT_LIST = [0.0001, 0.0005, 0.001];
 export default function BuySellLaunched({ token, initType, onClose }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
-  const [slip, setSlip] = useState(3);
+  const { slip, set: setSlip }: any = useSlip()
   const { isMobile } = useUserAgent();
 
   const tokenUri = token.tokenIcon || token.tokenImg;
@@ -198,7 +199,6 @@ export default function BuySellLaunched({ token, initType, onClose }: Props) {
     }
   }, [debounceVal, tokenType, slip, currentToken]);
 
-  console.log();
 
   return (
     <div>
@@ -468,8 +468,9 @@ export default function BuySellLaunched({ token, initType, onClose }: Props) {
         slipData={slip}
         token={token}
         onSlipDataChange={(val: any) => {
-          console.log(val);
-          setSlip(val);
+          setSlip({
+            slip: val
+          });
         }}
         onHide={() => {
           setShowSlip(false);

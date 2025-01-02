@@ -14,6 +14,7 @@ import { Modal } from "antd-mobile";
 import type { Project } from "@/app/type";
 import { useUser } from "@/app/store/useUser";
 import { useConnection } from "@solana/wallet-adapter-react";
+import { useSlip } from "@/app/store/useSlip";
 
 type Token = {
   tokenName: string;
@@ -42,7 +43,8 @@ export default function BuySell({ token, initType, onClose }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const { isMobile } = useUserAgent();
   const [showSlip, setShowSlip] = useState(false);
-  const [slip, setSlip] = useState(3);
+  // const [slip, setSlip] = useState(3);
+  const { slip, set: setSlip }: any = useSlip()
 
   const tokenUri = token.tokenIcon || token.tokenImg;
 
@@ -533,7 +535,9 @@ export default function BuySell({ token, initType, onClose }: Props) {
         slipData={slip}
         token={token}
         onSlipDataChange={(val: any) => {
-          setSlip(val);
+          setSlip({
+            slip: val
+          });
         }}
         onHide={() => {
           setShowSlip(false);
