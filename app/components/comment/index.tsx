@@ -7,6 +7,7 @@ import { httpGet, httpAuthPost } from "@/app/utils";
 import CommentItem from "./item";
 import SexInfiniteScroll from "../sexInfiniteScroll";
 import { useAuth } from "@/app/context/auth";
+import { useDebounceFn } from "ahooks";
 
 interface Props {
   id: number | undefined;
@@ -33,36 +34,6 @@ export default function CommentComp({
   const [hasMore, setHasMore] = useState(true);
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { userInfo } = useAuth();
-
-  const CommentList = commentList.map((item) => {
-    return (
-      <CommentItem
-        key={item.id}
-        item={item}
-        onSuccessNow={(item: Comment) => {
-          setCommentList([...commentList]);
-        }}
-        onSuccess={(item: Comment) => {
-          // setReReashNum(reReashNum + 1);
-        }}
-      />
-    );
-  });
-
-  useEffect(() => {
-    if (id) {
-      loadMore();
-    } else {
-      setCommentList([]);
-      setOffset(0);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (loadMoreData && loadMoreData > 1) {
-      loadMore();
-    }
-  }, [loadMoreData]);
 
   const loadMore = useCallback(
     ({ newOffset }: any = {}) => {
@@ -97,6 +68,43 @@ export default function CommentComp({
     [id, offset, hasMore]
   );
 
+  const { run: loadData } = useDebounceFn(
+    async (args: any = {}) => {
+      await loadMore(args);
+    },
+    { wait: 500 }
+  );
+
+  const CommentList = commentList.map((item) => {
+    return (
+      <CommentItem
+        key={item.id}
+        item={item}
+        onSuccessNow={(item: Comment) => {
+          setCommentList([...commentList]);
+        }}
+        onSuccess={(item: Comment) => {
+          // setReReashNum(reReashNum + 1);
+        }}
+      />
+    );
+  });
+
+  useEffect(() => {
+    if (id) {
+      loadData();
+    } else {
+      setCommentList([]);
+      setOffset(0);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (loadMoreData && loadMoreData > 1) {
+      loadData();
+    }
+  }, [loadMoreData]);
+
   const Content = (
     <>
       <div className={styles.title} style={titleStyle}>
@@ -115,6 +123,7 @@ export default function CommentComp({
                 window?.connect();
                 return;
               }
+              console.log(e.code, commentText);
               if (e.code === "Enter" && commentText) {
                 if (isSubmiting) {
                   return;
@@ -131,7 +140,7 @@ export default function CommentComp({
                 const val = await httpAuthPost("/project/comment?" + queryStr);
 
                 if (val.code === 0) {
-                  loadMore({ newOffset: 0 });
+                  loadData({ newOffset: 0 });
                   // setReReashNum(reReashNum + 1);
                   setCommentText("");
                 }
