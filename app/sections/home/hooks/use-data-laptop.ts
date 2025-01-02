@@ -36,13 +36,13 @@ export default function useData(launchType: string) {
 
     if (listRef.current.length) {
       listRef.current.shift();
-      // setAll(listRef.current, launchType, userInfo.address);
+      setAll(listRef.current, launchType, userInfo.address);
     }
 
     if (listRef.current.length) {
       setInfoData2(mapDataToProject(listRef.current[0]));
     } else {
-      // setAll([], launchType, userInfo.address);
+      setAll([], launchType, userInfo.address);
       setInfoData2(undefined);
     }
 
@@ -55,8 +55,7 @@ export default function useData(launchType: string) {
 
   const handleList = useCallback(
     async (isNext?: boolean) => {
-      // let list = getAll(launchType, userInfo?.address) || [];
-      let list: any = [];
+      let list = getAll(launchType, userInfo?.address) || [];
       if (!isNext) setIsLoading(true);
       const fetchedList = await queryList();
       const data: Record<string, any> = {};
@@ -72,8 +71,10 @@ export default function useData(launchType: string) {
       if (!isNext) {
         if (_list.length === 0) {
           setInfoData2(undefined);
+          setAll([], launchType, userInfo.address);
         } else {
           setInfoData2(mapDataToProject(_list[0]));
+          setAll(_list, launchType, userInfo.address);
         }
         setIsLoading(false);
       }

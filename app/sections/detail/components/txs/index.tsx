@@ -167,7 +167,7 @@ export default function Txs({ from, data, mc }: any) {
             <iframe
               style={{
                 height:
-                  from === "laptop"
+                  from === "laptop-home"
                     ? "calc(100vh - 430px)"
                     : "calc(100vh - 210px)"
               }}
