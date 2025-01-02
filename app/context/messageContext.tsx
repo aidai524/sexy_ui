@@ -16,7 +16,7 @@ interface MessageContextValue {
     hateTrigger: boolean;
     setLikeTrigger: (val: boolean) => void;
     setHateTrigger: (val: boolean) => void;
-    showShare: (token: Project, shareTemplateNew: boolean) => void;
+    showShare: (token: Project, shareTemplateNew?: boolean) => void;
 }
 
 const MessageContext =
