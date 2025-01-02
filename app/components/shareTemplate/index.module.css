@@ -35,7 +35,7 @@
     }
 
     .heart {
-        background: url(/img/share/heart.svg) no-repeat center 30px;
+        /* background: url(/img/share/heart.svg) no-repeat center 30px; */
         min-height: 100px;
         display: flex;
         align-items: center;
