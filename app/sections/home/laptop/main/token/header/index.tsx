@@ -39,6 +39,12 @@ export default function Header({
           <button
             className="button"
             onClick={() => {
+              //@ts-ignore
+              if (!window.sexAddress) {
+                //@ts-ignore
+                window.connect();
+                return;
+              }
               showShare(tokenInfo)
               // shareToX(
               //   tokenInfo.tokenName,
