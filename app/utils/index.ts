@@ -144,8 +144,6 @@ export async function httpAuthDelete(
 ) {
   const authorization = await getAuthorization();
 
-  console.log("authorization:", authorization);
-
   const header = {
     authorization
   };

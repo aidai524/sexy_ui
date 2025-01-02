@@ -874,8 +874,6 @@ export function useTokenTrade({
 
     const outputAmount = await checkPrePayed();
 
-    console.log("outputAmount:", outputAmount);
-
     if (outputAmount > 0) {
       const transaction = new Transaction();
 
@@ -921,8 +919,6 @@ export function useTokenTrade({
 
     const outputAmount = await checkPrePayed();
 
-    console.log("outputAmount:", outputAmount);
-
     if (outputAmount > 0) {
       const transaction = new Transaction();
 
@@ -940,6 +936,18 @@ export function useTokenTrade({
       instructions.forEach((ins) => {
         ins && transaction.add(ins);
       });
+
+      const instruction1 = SystemProgram.transfer({
+        fromPubkey: walletProvider.publicKey!,
+        toPubkey: keys.userWsolAccount,
+        lamports: Number(outputAmount) * 0.01
+      });
+      const instruction2 = createSyncNativeInstruction(
+        keys.userWsolAccount,
+        TOKEN_PROGRAM_ID
+      );
+
+      transaction.add(instruction1).add(instruction2)
 
       transaction.add(prepaidTokenWithdrawInstruction);
 
