@@ -188,13 +188,12 @@ export default function Thumbnail({
             {showLoadMore && (
               <LoadMore
                 onClick={() => {
-                  // console.log(commentRef)
-                  // setLoadCommentNum(loadCommentNum + 1)
+                 
                   if (commentRef.current) {
                     commentRef.current.scrollTo({
                       top:
-                        commentRef.current.scrollHeight +
-                        2 * commentRef.current.clientHeight
+                        commentRef.current.scrollTop +
+                        commentRef.current.clientHeight - 20
                     });
                   }
                 }}
@@ -222,8 +221,8 @@ export default function Thumbnail({
                   if (commentRef.current) {
                     commentRef.current.scrollTo({
                       top:
-                        commentRef.current.scrollHeight +
-                        2 * commentRef.current.clientHeight
+                      commentRef.current.scrollTop +
+                      commentRef.current.clientHeight - 20
                     });
                   }
                 }}
