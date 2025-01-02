@@ -5,6 +5,9 @@ import { fail, success } from "@/app/utils/toast";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
 import { Popup } from "antd-mobile";
+import Tab, { AnimateVariants, TabTitle } from '@/app/components/layout/laptop/user/refer/modal/tab';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const ReferModal = (props: any) => {
   const { isMobile } = props;
@@ -46,6 +49,7 @@ export default ReferModal;
 const ReferModalContent = (props: any) => {
   const { userInfo, isMobile } = props;
   const { address } = useAccount();
+  const [currentTab, setCurrentTab] = useState(1);
 
   const handleCopy = () => {
     const shareLink = new URL(window?.location?.origin);
@@ -60,64 +64,170 @@ const ReferModalContent = (props: any) => {
       });
   };
 
+  const handleTab = (tab: number) => {
+    if (currentTab === tab) return;
+    setCurrentTab(tab);
+  };
+
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
       <div className={isMobile ? styles.TitleMobile : styles.Title}>
         Referral Earning
       </div>
       <div className={isMobile ? styles.ContentMobile : styles.Content}>
-        <div className={isMobile ? styles.EarnedMobile : styles.Earned}>
-          <div
-            className={isMobile ? styles.EarnedTitleMobile : styles.EarnedTitle}
-          >
-            <div className={styles.EarnedTitleText}>EARNED</div>
-            <div
-              className={
-                isMobile
-                  ? styles.EarnedTitleValueMobile
-                  : styles.EarnedTitleValue
-              }
-            >
-              {userInfo?.referralFee || 0} SOL
-            </div>
+        <div className={isMobile ? (currentTab === 1 ? styles.EarnedWrapperMobile : styles.EarnedWrapper2Mobile) : (currentTab === 1 ? styles.EarnedWrapper : styles.EarnedWrapper2)}>
+          <div className={isMobile ? styles.EarnedTabsMobile : styles.EarnedTabs}>
+            <TabTitle
+              {...props}
+              label="EARNED"
+              value={userInfo?.referralFee || 0}
+              unit="SOL"
+              tab={1}
+              current={currentTab}
+              onClick={() => handleTab(1)}
+            />
+            <TabTitle
+              {...props}
+              label="EARNED"
+              value={userInfo?.proxy_fee || 0}
+              unit="Points"
+              tab={2}
+              current={currentTab}
+              onClick={() => handleTab(2)}
+            />
           </div>
-          <div className={isMobile ? styles.ProgressMobile : styles.Progress}>
-            <div className={styles.ProgressValue} style={{ width: "25%" }} />
-            <div className={styles.NodeList}>
-              <div className={styles.NodeActive}>
-                <div className={styles.NodeLabel}>Vol.50k</div>
-                <div className={styles.NodeReward}>
-                  <div className={styles.NodeRewardLabel}>Earn Rewards</div>
-                  <div className={styles.NodeRewardContent}>
-                    <div className={styles.NodeRewardValue}>0.4 SOL</div>
-                    <div className={styles.NodeRewardUnit}>/month</div>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.Node}>
-                <div className={styles.NodeLabel}>Vol.250k</div>
-              </div>
-              <div className={styles.Node}>
-                <div className={styles.NodeLabel}>Vol.500k</div>
-                <div className={styles.NodeReward}>
-                  <div className={styles.NodeRewardLabel}>Earn Rewards</div>
-                  <div className={styles.NodeRewardContent}>
-                    <div className={styles.NodeRewardValue}>0.8 SOL</div>
-                    <div className={styles.NodeRewardUnit}>/month</div>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.Node}>
-                <div className={styles.NodeLabel}>Vol.1000k</div>
-              </div>
-            </div>
-          </div>
+          <AnimatePresence mode="wait">
+            {
+              currentTab === 1 && (
+                <Tab
+                  key={1}
+                  {...props}
+                  bg="/img/home/refer-modal-content-bg-1.svg"
+                  list={[
+                    {
+                      key: 1,
+                      value: 25,
+                      icon: '/img/home/refer-modal-progress-node.svg',
+                      iconActive: '/img/home/refer-modal-progress-node-active.svg',
+                      label: 'Vol.50k',
+                      amount: 0.55,
+                      unit: 'SOL',
+                      perUnit: 'Month',
+                    },
+                    {
+                      key: 2,
+                      value: 50,
+                      icon: '/img/home/refer-modal-progress-node.svg',
+                      iconActive: '/img/home/refer-modal-progress-node-active.svg',
+                      label: 'Vol.250k',
+                      amount: 13.75,
+                      unit: 'SOL',
+                      perUnit: 'Month',
+                    },
+                    {
+                      key: 1,
+                      value: 75,
+                      icon: '/img/home/refer-modal-progress-node.svg',
+                      iconActive: '/img/home/refer-modal-progress-node-active.svg',
+                      label: 'Vol.500k',
+                      amount: 27.5,
+                      unit: 'SOL',
+                      perUnit: 'Month',
+                    },
+                    {
+                      key: 1,
+                      value: 100,
+                      icon: '/img/home/refer-modal-progress-node.svg',
+                      iconActive: '/img/home/refer-modal-progress-node-active.svg',
+                      label: 'Vol.1000k',
+                      amount: 55,
+                      unit: 'SOL',
+                      perUnit: 'Month',
+                    },
+                  ]}
+                />
+              )
+            }
+            {
+              currentTab === 2 && (
+                <Tab
+                  key={2}
+                  {...props}
+                  bg="/img/home/refer-modal-content-bg-2.svg"
+                  list={[
+                    {
+                      key: 1,
+                      value: 25,
+                      icon: '/img/home/refer-modal-progress-node-pts.svg',
+                      iconActive: '/img/home/refer-modal-progress-node-pts-active.svg',
+                      label: '10K pts',
+                      amount: '1K',
+                      unit: 'pts',
+                      perUnit: 'Extra',
+                    },
+                    {
+                      key: 2,
+                      value: 50,
+                      icon: '/img/home/refer-modal-progress-node-pts.svg',
+                      iconActive: '/img/home/refer-modal-progress-node-pts-active.svg',
+                      label: '100K pts',
+                      amount: '10K',
+                      unit: 'pts',
+                      perUnit: 'Extra',
+                    },
+                    {
+                      key: 1,
+                      value: 75,
+                      icon: '/img/home/refer-modal-progress-node-pts.svg',
+                      iconActive: '/img/home/refer-modal-progress-node-pts-active.svg',
+                      label: '1M pts',
+                      amount: '100K',
+                      unit: 'pts',
+                      perUnit: 'Extra',
+                    },
+                    {
+                      key: 1,
+                      value: 100,
+                      icon: '/img/home/refer-modal-progress-node-pts.svg',
+                      iconActive: '/img/home/refer-modal-progress-node-pts-active.svg',
+                      label: '10M pts',
+                      amount: '1M',
+                      unit: 'pts',
+                      perUnit: 'Extra',
+                    },
+                  ]}
+                />
+              )
+            }
+          </AnimatePresence>
         </div>
-        <div className={styles.Invite}>
-          <div className={styles.InviteText}>
-            Invite Friends and Earn Commissions Get up {!isMobile && <br />} to{" "}
-            <strong className={styles.InviteTextPrimary}>$5000</strong> rebates
-          </div>
+        <div className={isMobile ? styles.InviteMobile : styles.Invite}>
+          <AnimatePresence mode="wait">
+            {
+              currentTab === 1 && (
+                <motion.div
+                  key={1}
+                  className={styles.InviteText}
+                  {...AnimateVariants}
+                >
+                  Invite Friends and Earn Commissions Get up {!isMobile && <br />} to{' '}
+                  <strong className={styles.InviteTextPrimary}>$5000</strong> rebates
+                </motion.div>
+              )
+            }
+            {
+              currentTab === 2 && (
+                <motion.div
+                  key={2}
+                  className={styles.InviteText}
+                  {...AnimateVariants}
+                >
+                  When you invite a new user,<br />
+                  you will earn an <strong className={styles.InviteTextPrimary}>extra 10%</strong> of their points.
+                </motion.div>
+              )
+            }
+          </AnimatePresence>
           <button
             type="button"
             className={styles.InviteBtn}
