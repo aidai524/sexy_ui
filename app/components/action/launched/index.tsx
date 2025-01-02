@@ -5,6 +5,7 @@ import TradeModal from "../../trade-modal";
 import { useState } from "react";
 import type { Project } from "@/app/type";
 import { useAccount } from "@/app/hooks/useAccount";
+import Boost from "../../boost";
 
 interface Props {
   data?: Project;
@@ -101,6 +102,8 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
             {from === "laptop" ? <LaptopBuyIcon /> : <MobileBuyIcon />}
             <div>Buy</div>
           </div>
+
+          <Boost token={data} isBigIcon={true} onClick={() => {}}/>
 
           <div
             className={`${styles.actionBtn} ${

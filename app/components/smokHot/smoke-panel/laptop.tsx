@@ -31,6 +31,9 @@ export default function SmokPanel({ show, token, onHide, onSuccess }: Props) {
           panelStyle={{
             backgroundColor: "transparent"
           }}
+          onClose={() => {
+            onHide && onHide();
+          }}
           onSuccess={() => {
             updateInfo("flip");
             onSuccess && onSuccess();
