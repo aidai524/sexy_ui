@@ -25,6 +25,7 @@ type Token = {
 interface Props {
   token: Project;
   initType: string;
+  show?: boolean;
   onClose: () => void;
 }
 
@@ -37,7 +38,7 @@ const SOL: Token = {
 
 const SOL_PERCENT_LIST = [0.0001, 0.0005, 0.001];
 
-export default function BuySellLaunched({ token, initType, onClose }: Props) {
+export default function BuySellLaunched({ token, initType, onClose, show }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
   const { slip, set: setSlip }: any = useSlip()
@@ -80,10 +81,14 @@ export default function BuySellLaunched({ token, initType, onClose }: Props) {
   useEffect(() => {
     if (initType === "buy") {
       setActiveIndex(0);
+      setTokenType(1)
+      setCurrentToken(SOL)
     } else {
       setActiveIndex(1);
+      setCurrentToken(desToken)
+      setActiveIndex(1);
     }
-  }, [initType]);
+  }, [initType, show]);
 
   const { trade, getQoute, qoute } = useJupiter({
     tokenAddress: "4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump"

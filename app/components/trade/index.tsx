@@ -8,6 +8,7 @@ interface Props {
   token: Project;
   initType?: string;
   from?: string;
+  show?: boolean;
   onClose?: () => void;
 }
 
@@ -15,6 +16,7 @@ export default function Trade({
   token,
   initType = "buy",
   from,
+  show,
   onClose
 }: Props) {
   return (
@@ -23,6 +25,7 @@ export default function Trade({
         token.status === 1 && token.DApp === 'pump' && <BuySellPump
           token={token}
           initType={initType}
+          show={show}
           from={from}
           onClose={() => {
             onClose && onClose();
@@ -34,6 +37,7 @@ export default function Trade({
           token={token}
           initType={initType}
           from={from}
+          show={show}
           onClose={() => {
             onClose && onClose();
           }}
@@ -43,6 +47,7 @@ export default function Trade({
         token.status === 2 && <BuySellLaunched
           token={token}
           initType={initType}
+          show={show}
           onClose={() => {
             onClose && onClose();
           }}

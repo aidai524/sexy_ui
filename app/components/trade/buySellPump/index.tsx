@@ -26,6 +26,7 @@ interface Props {
   token: Project;
   initType: string;
   from?: string;
+  show?: boolean;
   onClose: () => void;
 }
 
@@ -38,7 +39,7 @@ const SOL: Token = {
 
 const SOL_PERCENT_LIST = [0.0001, 0.0005, 0.001];
 
-export default function BuySellPump({ token, initType, from, onClose }: Props) {
+export default function BuySellPump({ token, initType, from, show, onClose }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
   const { slip, set: setSlip }: any = useSlip()
@@ -82,10 +83,14 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
   useEffect(() => {
     if (initType === "buy") {
       setActiveIndex(0);
+      setTokenType(1)
+      setCurrentToken(SOL)
     } else {
       setActiveIndex(1);
+      setCurrentToken(desToken)
+      setActiveIndex(1);
     }
-  }, [initType]);
+  }, [initType, show]);
 
   const { buy, sell } = usePump({
     tokenAddress: "526d8UxmsTQJKN9bbsZsjaYShzRMnPBPQuniBnC1K3Ao"
