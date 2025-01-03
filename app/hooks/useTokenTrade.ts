@@ -32,6 +32,7 @@ import {
 } from "../utils/config";
 import { useSolPriceStore } from "../store/useSolPrice";
 import { useReferraltore } from "../store/useReferral";
+import { useConfig } from "../store/useConfig";
 
 interface Props {
   tokenName: string;
@@ -53,7 +54,7 @@ export function useTokenTrade({
   const [tokenBalance, setTokenBalance] = useState("0");
   const [solBalance, setSolBalance] = useState("0");
   const [reFreshBalnace, setReFreshBalnace] = useState(0);
-  const { solPrice } = useSolPriceStore();
+  const { config }: any = useConfig()
   const { referral: referral_address } = useReferraltore()
 
   const programId = useMemo(() => {
@@ -1006,6 +1007,7 @@ export function useTokenTrade({
       connection: connection
     } as any);
     const stateData: any = await program.account.launchpad.fetch(state[0]);
+
     const prepaidWithdrawDelayTime =
       stateData.prepaidWithdrawDelayTime.toNumber();
     return stateData;
@@ -1023,7 +1025,7 @@ export function useTokenTrade({
       return new Big(solToken)
         .div(10 ** 9)
         .mul(10 ** tokenDecimals)
-        .mul(solPrice as number)
+        .mul(config.SolPrice)
         .div(poolToken)
         .mul(total_supply)
         .toNumber();
@@ -1049,6 +1051,9 @@ export function useTokenTrade({
           const balance = new Big(Number(userToken.account.amount))
             .div(10 ** tokenDecimals)
             .toString();
+
+            console.log('balance:', balance)
+
           setTokenBalance(balance);
           return;
         }

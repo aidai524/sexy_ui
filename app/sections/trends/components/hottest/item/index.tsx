@@ -26,7 +26,7 @@ const HottestItem = (props: { trend: Trend; index: number; onBuy(trend: Trend): 
           <div className={styles.Name}>{trend.token_symbol}</div>
           <div className={styles.LabelItem}>
             <div className="">Ticker: {trend.ticker}</div>
-            {/*<img src="/192x192.png" alt="" className={styles.TickerAvatar} />*/}
+            <img src="/192x192.png" alt="" className={styles.TickerAvatar} />
           </div>
           <div className={styles.LabelItem}>
             <div className={styles.Label}>Market cap:</div>
@@ -35,6 +35,7 @@ const HottestItem = (props: { trend: Trend; index: number; onBuy(trend: Trend): 
             </div>
           </div>
           <div className={styles.LabelItem}>
+            <div className={styles.Label}>{trend.progress}%</div>
             <div className={styles.Label}>{trend.created2Now}</div>
           </div>
         </div>

@@ -9,7 +9,7 @@ export default function Item(props: Props) {
   const ticker = trend?.ticker;
   const icon = trend?.Icon;
   const tickerAvatar = '';
-  const marketVal = trend?.market_value;
+  const marketCap = trend?.market_cap;
 
   return (
     <div className={styles.Item}>
@@ -49,7 +49,7 @@ export default function Item(props: Props) {
             Market cap:
           </div>
           <div className={styles.ItemMarketCapValue}>
-            {numberFormatter(marketVal, 2, true, { prefix: '$', isShort: true, isShortUppercase: true })}
+            {numberFormatter(marketCap, 2, true, { prefix: '$', isShort: true, isShortUppercase: true })}
           </div>
         </div>
         <div className={styles.ItemCreateTime}>

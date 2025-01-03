@@ -215,7 +215,7 @@ export default function Thumbnail({
                 loadMoreRun();
               }}
             >
-              {data.status === 0 ? <PreUser token={data} /> : <Holder />}
+              {data.status === 0 ? <PreUser token={data} /> : <Holder hideBg={true} address={data.address}/>}
             </div>
             {showLoadMore && (
               <LoadMore

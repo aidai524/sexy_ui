@@ -7,6 +7,8 @@ export const programId_address = process.env.NEXT_PUBLIC_PROGRAM_ID || '67g5ZLhs
 
 export const defaultAvatar = "/img/avatar.png";
 
+export const solana_api_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkQXQiOjE3MzQ5NjY4NzIwMzUsImVtYWlsIjoiemVyb2NobHdvcmtAZ21haWwuY29tIiwiYWN0aW9uIjoidG9rZW4tYXBpIiwiYXBpVmVyc2lvbiI6InYyIiwiaWF0IjoxNzM0OTY2ODcyfQ.IHW9Ohb7kpn0hUDwlBKlN7C-qREogjwr_VxQvP9pJQw'
+
 // pump address
 export const GLOBAL = new PublicKey("4wTV1YmiEkRvAtNtsSGPtUrqRYQMe5SKy2uB4Jjaxnjf");
 export const FEE_RECIPIENT = new PublicKey("CebN5WGQ4jvEPvsVU4EoHEpgzq1VV7AbicfhtW4xC9iM");
