@@ -1,10 +1,12 @@
 import styles from './index.module.css';
 import SortDirection from '@/app/sections/trends/components/sort';
 import { numberFormatter } from '@/app/utils/common';
-import Popover, { PopoverPlacement, PopoverTrigger } from '@/app/components/popover';
+import { useCreator } from '@/app/sections/trends/hooks/creator';
 
 const List = (props: any) => {
   const { data, currentFilter, onCurrentFilter, orderBy, onOrderBy } = props;
+
+  const creator = useCreator();
 
   return (
     <div className={styles.Container}>
@@ -94,7 +96,13 @@ const List = (props: any) => {
                   <img src={item.Icon} alt="" className={styles.TokenImg} />
                   <div>{item.token_symbol}</div>
                 </div>
-                <div className={styles.TableCol}>
+                <div
+                  className={styles.TableCol}
+                  style={{ cursor: 'pointer', color: '#55FFF4', fontSize: 16 }}
+                  onClick={() => {
+                    creator.onClick(item.project_creator);
+                  }}
+                >
                   {item.address ? `${item.project_creator.slice(0, 3)}*${item.address.slice(-4)}` : '-'}
                 </div>
                 <div className={styles.TableCol}>
