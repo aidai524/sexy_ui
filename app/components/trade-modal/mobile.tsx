@@ -14,7 +14,7 @@ export default function Mobile({ show, onClose, data, initType }: any) {
         paddingBottom: 10
       }}
     >
-      <Content {...{ onClose, data, initType }} />
+      <Content {...{ onClose, data, initType, show }} />
     </Popup>
   );
 }

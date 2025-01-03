@@ -4,16 +4,32 @@ import { useTrends } from "@/app/sections/trends/hooks";
 import GoBack from "@/app/components/back/laptop";
 import Hottest from "@/app/sections/trends/components/hottest";
 import List from "@/app/sections/trends/components/list";
-import { useTrendsStore } from "@/app/store/useTrends";
 import { motion } from "framer-motion";
+import { useEffect } from 'react';
 
 const Laptop = (props: any) => {
   const { handleBuy } = props;
 
-  const { list, allList, top1 } = useTrendsStore();
+  const {
+    tableList,
+    hottestList,
+    top1,
+    getHottestList,
+    getTableList,
+    handleCurrentFilter,
+    currentFilter,
+    handleOrderBy,
+    orderBy,
+    searchText,
+    handleSearchText,
+    handleSearchTextClear,
+    tableListPageMore,
+    tableListPageIndex,
+  } = useTrends();
 
-  const { handleCurrentFilter, currentFilter, handleOrderBy, orderBy } =
-    useTrends({ isPolling: false });
+  useEffect(() => {
+    getHottestList();
+  }, []);
 
   return (
     <motion.div
@@ -25,13 +41,19 @@ const Laptop = (props: any) => {
         <GoBack />
       </div>
       <Top onBuy={() => handleBuy(top1)} trend={top1} />
-      <Hottest data={allList} onBuy={handleBuy} />
+      <Hottest data={hottestList} onBuy={handleBuy} />
       <List
         currentFilter={currentFilter}
         onCurrentFilter={handleCurrentFilter}
-        data={allList}
+        data={tableList}
         orderBy={orderBy}
         onOrderBy={handleOrderBy}
+        searchText={searchText}
+        onSearchText={handleSearchText}
+        onSearchTextClear={handleSearchTextClear}
+        getTableList={getTableList}
+        tableListPageMore={tableListPageMore}
+        tableListPageIndex={tableListPageIndex}
       />
     </motion.div>
   );

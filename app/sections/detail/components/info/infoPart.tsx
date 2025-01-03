@@ -139,7 +139,7 @@ export default function InfoPart({
           <div className={styles.author}>
             <div className={styles.authorTitle}>Market cap:</div>
             <div className={styles.authorDesc} style={{ color: "#6fff00" }}>
-              {mc === 0 || mc === "0" ? "-" : `$${simplifyNum(mc as number)}`}
+              {mc === 0 || mc === "0" ? "-" : `$${simplifyNum(mc as number, 2)}`}
             </div>
           </div>
         </Panel>

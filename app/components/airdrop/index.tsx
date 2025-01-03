@@ -7,6 +7,7 @@ import AirdropMoreModal from '@/app/components/airdrop/more/modal';
 import { useContext, useEffect, useMemo } from 'react';
 import Loading from '@/app/components/icons/loading';
 import { InfiniteScroll } from "antd-mobile";
+import InfiniteScrollContent from '@/app/components/infinite-scroll-content';
 
 const AirdropList = (props: any) => {
   const {} = props;
@@ -96,15 +97,3 @@ const AirdropList = (props: any) => {
 };
 
 export default AirdropList;
-
-const InfiniteScrollContent = ({ hasMore }: { hasMore?: boolean }) => (
-  <>
-    {
-      hasMore ? (
-        <>Loading...</>
-      ) : (
-        <span>No more data</span>
-      )
-    }
-  </>
-);

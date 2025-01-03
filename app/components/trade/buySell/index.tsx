@@ -27,6 +27,7 @@ interface Props {
   token: Project;
   initType: string;
   from?: string;
+  show?: boolean;
   onClose: () => void;
 }
 
@@ -39,7 +40,7 @@ const SOL: Token = {
 
 const SOL_PERCENT_LIST = [0.0005, 0.001];
 
-export default function BuySell({ token, initType, onClose }: Props) {
+export default function BuySell({ token, initType, onClose, show }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const { isMobile } = useUserAgent();
   const [showSlip, setShowSlip] = useState(false);
@@ -82,10 +83,14 @@ export default function BuySell({ token, initType, onClose }: Props) {
   useEffect(() => {
     if (initType === "buy") {
       setActiveIndex(0);
+      setTokenType(1)
+      setCurrentToken(SOL)
     } else {
+      setTokenType(0)
+      setCurrentToken(desToken)
       setActiveIndex(1);
     }
-  }, [initType]);
+  }, [initType, show]);
 
   const {
     buyToken,
@@ -331,6 +336,19 @@ export default function BuySell({ token, initType, onClose }: Props) {
                 value={valInput}
                 onChange={(e) => {
                   setValInput(e.target.value);
+                  if (activeIndex === 1) {
+                    setTokenPercent(0)
+
+                    TOKEN_PERCENT_LIST.forEach(percent => {
+                      const tokenPercentVal = new Big(tokenBalance)
+                        .mul(percent / 100)
+                        .toFixed(percent === 100 ? tokenDecimals : 2, 0)
+                      
+                        if (Number(tokenPercentVal) === Number(e.target.value)) {
+                          setTokenPercent(percent);
+                        } 
+                    })
+                  }
                 }}
                 className={styles.input}
               />

@@ -117,8 +117,9 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
                 return;
               }
 
-              setTradeShow(true);
               setInitType("sell");
+              setTradeShow(true);
+              
             }}
           >
             {from === "laptop" ? <LaptopSellIcon /> : <MobileSellIcon />}
