@@ -30,7 +30,7 @@ export function useTrends(props: any) {
           _top1 = it;
           _top1Idx = index;
         }
-        it.created2Now = timeAgo(new Date(it.created_at).getTime(), new Date().getTime());
+        it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
       });
       const lastList = _list.filter((_, idx) => idx !== _top1Idx);
       setAllList(_list);
@@ -113,7 +113,9 @@ export interface Trend {
   token_reserve: string;
   sol_reserve: string;
   market_cap: string;
+  project_creator: string;
 
   // front-end attributes
   created2Now?: string;
+  progress?: string;
 }

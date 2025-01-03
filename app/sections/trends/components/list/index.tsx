@@ -37,50 +37,53 @@ const List = (props: any) => {
               <div>Marketcap</div>
               <SortDirection value={'market_cap' in orderBy ? orderBy['market_cap'] : void 0} />
             </div>
-            <div
-              className={[styles.TableCol, styles.TableColPointer].join(' ')}
-              onClick={() => onOrderBy('market_cap_percentage')}
-            >
-              <div>Marketcap %</div>
-              <SortDirection value={'market_cap_percentage' in orderBy ? orderBy['market_cap_percentage'] : void 0} />
+            <div className={styles.TableCol}>
+              Progress
             </div>
-            <Popover
-              placement={PopoverPlacement.TopRight}
-              trigger={PopoverTrigger.Hover}
-              content={(
-                <div className={styles.Dropdown}>
-                  {
-                    SpacingList.map((s) => (
-                      <div
-                        key={s.value}
-                        className={`${currentFilter === s.value ? styles.DropdownItemActive : styles.DropdownItem}`}
-                        onClick={() => onCurrentFilter(s.value)}
-                      >
-                        {s.label}
-                      </div>
-                    ))
-                  }
-                </div>
-              )}
-            >
-              <div className={[styles.TableCol, styles.TableColPointer].join(' ')}>
-                <div>1h Volume</div>
-                <button
-                  type="button"
-                  className={styles.Button}
-                >
-                  <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M10.9999 1L6.1999 5L1.3999 1"
-                      stroke="white"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </Popover>
+            {/*<div
+             className={[styles.TableCol, styles.TableColPointer].join(' ')}
+             onClick={() => onOrderBy('market_cap_percentage')}
+             >
+             <div>Marketcap %</div>
+             <SortDirection value={'market_cap_percentage' in orderBy ? orderBy['market_cap_percentage'] : void 0} />
+             </div>*/}
+            {/*<Popover
+             placement={PopoverPlacement.TopRight}
+             trigger={PopoverTrigger.Hover}
+             content={(
+             <div className={styles.Dropdown}>
+             {
+             SpacingList.map((s) => (
+             <div
+             key={s.value}
+             className={`${currentFilter === s.value ? styles.DropdownItemActive : styles.DropdownItem}`}
+             onClick={() => onCurrentFilter(s.value)}
+             >
+             {s.label}
+             </div>
+             ))
+             }
+             </div>
+             )}
+             >
+             <div className={[styles.TableCol, styles.TableColPointer].join(' ')}>
+             <div>1h Volume</div>
+             <button
+             type="button"
+             className={styles.Button}
+             >
+             <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+             <path
+             d="M10.9999 1L6.1999 5L1.3999 1"
+             stroke="white"
+             strokeWidth="1.5"
+             strokeLinecap="round"
+             strokeLinejoin="round"
+             />
+             </svg>
+             </button>
+             </div>
+             </Popover>*/}
           </div>
         </div>
         <div className={styles.TableBody}>
@@ -92,17 +95,20 @@ const List = (props: any) => {
                   <div>{item.token_symbol}</div>
                 </div>
                 <div className={styles.TableCol}>
-                  {item.address ? `${item.address.slice(0, 3)}*${item.address.slice(-4)}` : '-'}
+                  {item.address ? `${item.project_creator.slice(0, 3)}*${item.address.slice(-4)}` : '-'}
                 </div>
                 <div className={styles.TableCol}>
                   {numberFormatter(item.market_cap, 2, true, { prefix: '$', isShort: true })}
                 </div>
-                <div className={styles.TableCol} style={{ color: index % 2 === 0 ? '#6FFF00' : '#FF378B' }}>
-                  +{item.market_cap_percentage}%
-                </div>
                 <div className={styles.TableCol}>
-                  {numberFormatter(item.virtual_volume, 2, true, { prefix: '$', isShort: true })}
+                  {item.progress}%
                 </div>
+                {/*<div className={styles.TableCol} style={{ color: index % 2 === 0 ? '#6FFF00' : '#FF378B' }}>
+                 +{item.market_cap_percentage}%
+                 </div>*/}
+                {/*<div className={styles.TableCol}>
+                 {numberFormatter(item.virtual_volume, 2, true, { prefix: '$', isShort: true })}
+                 </div>*/}
               </div>
             ))
           }
