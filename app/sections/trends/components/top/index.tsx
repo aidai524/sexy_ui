@@ -81,7 +81,13 @@ export default function Top(props: Props) {
           </div>
         </div>
       </div>
-      <div className={styles.TopBadges} ref={topBadgesRef}>
+      <div
+        className={styles.TopBadges}
+        ref={topBadgesRef}
+        style={{
+          justifyContent: topBadgesRef.current?.scrollWidth > topBadgesRef.current?.clientWidth ? 'flex-start' : 'center',
+        }}
+      >
         <div className={[styles.Badge, styles.TopBadge].join(' ')}>
           Created in {trend?.created2Now?.replace?.(/ago$/, '')}
         </div>

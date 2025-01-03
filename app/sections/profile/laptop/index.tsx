@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import Empty from "@/app/components/empty";
 import { defaultAvatar } from "@/app/utils/config";
 import { useState } from "react";
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Laptop({
   userInfo,
@@ -22,7 +23,10 @@ export default function Laptop({
   showHot = true,
   isOther
 }: any) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [followModalType, setFollowModalType] = useState("");
+  const isTrends = searchParams.get('from') === 'trends';
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -31,7 +35,11 @@ export default function Laptop({
     >
       <div className={styles.Flip} />
       <div className={styles.BackWrapper}>
-        <Back />
+        <Back
+          onBack={isTrends ? () => {
+            router.back();
+          } : void 0}
+        />
       </div>
       {userInfo ? (
         <div className={styles.Content}>
