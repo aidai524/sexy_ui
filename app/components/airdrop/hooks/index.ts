@@ -63,12 +63,16 @@ export function useAirdrop(props: any): Airdrop {
       setPointListLoading(false);
       return;
     }
+    const _pointList = pointList.slice();
+    if (pointListPageIndex === 1) {
+      setPointList([...res.data.list]);
+    } else {
+      setPointList([..._pointList, ...res.data.list]);
+    }
     setPointListPageMore(res.data.has_next_page);
     if (res.data.has_next_page) {
       setPointListPageIndex(pointListPageIndex + 1);
     }
-    const _pointList = pointList.slice();
-    setPointList([..._pointList, ...res.data.list]);
     setPointListLoading(false);
   };
 
