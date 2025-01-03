@@ -56,7 +56,7 @@ export default function BuySellPump({ token, initType, from, onClose }: Props) {
 
   const [activeIndex, setActiveIndex] = useState(initType === "buy" ? 0 : 1);
   const [tokenType, setTokenType] = useState<number>(1);
-  const [currentToken, setCurrentToken] = useState<Token>(desToken);
+  const [currentToken, setCurrentToken] = useState<Token>(SOL);
   const [errorMsg, setErrorMsg] = useState("");
   const [isError, setIsError] = useState(false);
 

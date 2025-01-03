@@ -50,7 +50,7 @@ export default function Tags({ data }: Props) {
     <div className={styles.tags}>
       {mc > 0 && (
         <Tag>
-          <span className={styles.mc}>Market Cap: ${simplifyNum(mc)}</span>
+          <span className={styles.mc}>Market Cap: ${simplifyNum(mc, 2)}</span>
         </Tag>
       )}
       {data.status === 0 && (

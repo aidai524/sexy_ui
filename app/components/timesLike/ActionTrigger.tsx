@@ -18,11 +18,13 @@ const onLike = async (data: any) => {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
       console.log("v:", v);
       if (v.code === 0) {
+        const points = Number(v.data?.point) < 0.01 ? '0.01' : new Big(v.data?.point || 0).toFixed(2, 0)
+
         success(
           "You liked " +
             (data.token_name || data.tokenName) +
             ", You are expected to receive " +
-            new Big(v.data?.point || 0).toFixed(2) + ' points'
+            points + ' points'
         );
         return v.data?.likeNum;
       } else if (v.code === 100002) {

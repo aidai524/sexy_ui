@@ -643,9 +643,13 @@ export function formatSortAddress(address: string | undefined) {
   }
 }
 
-export const simplifyNum = (number: number) => {
+export const simplifyNum = (number: number, precision: number = 0 ) => {
   if (typeof Number(number) !== "number") return 0;
   if (isNaN(Number(number))) return 0;
+
+  if (number === 0) {
+    return '0'
+  }
 
   if (number < 0.01) {
     return "<0.01";
@@ -654,14 +658,15 @@ export const simplifyNum = (number: number) => {
   let str_num;
   if (number >= 1e3 && number < 1e6) {
     str_num = number / 1e3;
-    return Math.floor(str_num) + "K";
+    return new Big(str_num).toFixed(precision, 0) + "K";
   } else if (number >= 1e6) {
     str_num = number / 1e6;
-    return Math.floor(str_num) + "M";
+    return new Big(str_num).toFixed(precision, 0) + "M";
   } else {
     return Number(number).toFixed(2);
   }
 };
+
 
 export function isValidURL(url: string) {
   const regex =
