@@ -23,13 +23,14 @@ export default function useData(launchType: string) {
   const [hasNext, setHasNext] = useState<boolean>(true);
   const listRef = useRef<Project[]>();
   const { accountRefresher, userInfo } = useAuth();
+  const mountedRef = useRef(false);
 
   const queryList = async () => {
     try {
       const res = await httpGet(
         `/project/list?limit=${limit}&launchType=${launchType}`
       );
-      setHasNext(res.data?.has_next_page || res.data?.list.length === limit);
+      setHasNext(res.data?.list.length === limit);
       if (res.code !== 0 || !res.data?.list) {
         return [];
       }
@@ -118,39 +119,51 @@ export default function useData(launchType: string) {
     }
   };
 
+  const initList = () => {
+    let list = getAll(launchType, userInfo?.address) || [];
+    if (list.length === 0) {
+      handleList(false);
+      return;
+    }
+    if (launchType === "preLaunch") {
+      list = list.filter(
+        (item: any) =>
+          !(
+            item.status !== 0 ||
+            item.is_like ||
+            item.is_super_like ||
+            item.is_un_like
+          )
+      );
+    }
+    listRef.current = list;
+    setInfoData2(mapDataToProject(list[0]));
+
+    if (list.length <= left_num && hasNext) {
+      handleList(true);
+    } else {
+      setIsLoading(false);
+    }
+  };
+
   const { run: debounceList } = useDebounceFn(
-    async () => {
-      let list = getAll(launchType, userInfo?.address) || [];
-      if (list.length === 0) {
-        handleList(false);
-        return;
-      }
-      if (launchType === "preLaunch") {
-        list = list.filter(
-          (item: any) =>
-            !(
-              item.status !== 0 ||
-              item.is_like ||
-              item.is_super_like ||
-              item.is_un_like
-            )
-        );
-      }
-      listRef.current = list;
-      setInfoData2(mapDataToProject(list[0]));
-      if (list.length <= left_num) {
-        handleList(true);
-      } else {
-        setIsLoading(false);
-      }
+    () => {
+      initList();
+      mountedRef.current = true;
     },
-    { wait: 50 }
+    { wait: 1000 }
   );
+
+  useEffect(() => {
+    if (!mountedRef.current) return;
+    setInfoData2(undefined);
+    initList();
+  }, [launchType]);
 
   useEffect(() => {
     setInfoData2(undefined);
     debounceList();
-  }, [launchType, accountRefresher]);
+  }, [accountRefresher]);
 
   return {
     infoData2,

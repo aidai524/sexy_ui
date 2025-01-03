@@ -184,7 +184,7 @@ export default function Token({
         onBoost={next}
       />
 
-      {!isFull && infoData2 && from !== "detail" && (
+      {!isFull && infoData2 && from !== "detail" && type && (
         <NextButton
           onClick={() => {
             if (type === 0) {
