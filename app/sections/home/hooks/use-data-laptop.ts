@@ -102,15 +102,36 @@ export default function useData(launchType: string) {
     }
   };
 
-  const { run: initList } = useDebounceFn(
+  const { run: debounceList } = useDebounceFn(
     async () => {
-      handleList();
+      let list = getAll(launchType, userInfo?.address) || [];
+      if (list.length === 0) {
+        handleList(false);
+        setInfoData2(undefined);
+        return;
+      }
+      if (launchType === "preLaunch") {
+        list = list.filter(
+          (item: any) =>
+            !(
+              item.status !== 0 ||
+              item.is_like ||
+              item.is_super_like ||
+              item.is_un_like
+            )
+        );
+      }
+      listRef.current = list;
+      setInfoData2(mapDataToProject(list[0]));
+      if (list.length <= left_num) {
+        handleList(true);
+      }
     },
     { wait: 500 }
   );
 
   useEffect(() => {
-    initList();
+    debounceList();
   }, [launchType, accountRefresher]);
 
   return {

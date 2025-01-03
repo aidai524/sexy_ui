@@ -164,6 +164,7 @@ export default function Thumbnail({
                 effect="blur"
                 className={styles.tokenImg}
                 src={data.tokenImg || "/img/token-placeholder.png"}
+                placeholderSrc="/img/token-placeholder.png"
               />
             )}
           </div>
