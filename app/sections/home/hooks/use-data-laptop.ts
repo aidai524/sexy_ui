@@ -9,6 +9,14 @@ import { useDebounceFn } from "ahooks";
 const limit = 10;
 const left_num = 5;
 
+function preloadImages(urls: string[]) {
+  urls.forEach((url) => {
+    if (!url) return;
+    const img = new Image();
+    img.src = url;
+  });
+}
+
 export default function useData(launchType: string) {
   const [infoData2, setInfoData2] = useState<Project>();
   const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +33,8 @@ export default function useData(launchType: string) {
       if (res.code !== 0 || !res.data?.list) {
         return [];
       }
+      const icons = res.data?.list.map((token: any) => token.icon);
+      preloadImages(icons);
       return res.data?.list;
     } catch (err) {
       return [];
