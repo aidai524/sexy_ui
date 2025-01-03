@@ -1,56 +1,75 @@
 .main {
   min-height: 100vh;
-  background: url(/img/mining/top-bg.png) left top no-repeat;
-  background-size: 100% auto;
-  padding-top: 50px;
   padding-bottom: 100px;
   position: relative;
+}
 
-  .zBox {
-    position: relative;
-    z-index: 11;
-  }
+.zBox {
+  position: relative;
+  z-index: 11;
+  top: 0;
+  background: url(/img/mining/top-bg.png) left 0px no-repeat;
+  background-size: 100% auto;
+  padding-top: 50px;
+}
 
-  .group {
-    margin: 30px 10px 0;
-    .groupTitle {
-      color: #fff;
-      font-size: 14px;
-      font-weight: 500;
-    }
-    .groupContent {
-      color: rgba(146, 144, 177, 1);
-      font-size: 14px;
-      font-weight: 300;
-      margin-top: 10px;
-    }
-    .gitbook {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-  }
+.Bg {
+  width: 100%;
+  height: 144px;
+  background: linear-gradient(to top, #0d1012 0%, #ff2f74 100%);
+  position: absolute;
+  z-index: 1;
+}
 
-  .bottomAni {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    right: 0;
-    bottom: 60px;
-    pointer-events: none;
-    width: 100vw;
-    overflow-x: hidden;
-    /* height: 26vh; */
-    .boxAni {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: scroll 30s linear infinite;
-      .boxImg {
-        width: 100vw;
-      }
+.group {
+  margin: 30px 10px 0;
+  .groupTitle {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .groupContent {
+    color: rgba(146, 144, 177, 1);
+    font-size: 14px;
+    font-weight: 300;
+    margin-top: 10px;
+  }
+  .gitbook {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.bottomAni {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+  pointer-events: none;
+  width: 100vw;
+  overflow-x: hidden;
+  /* height: 26vh; */
+  .boxAni {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scroll 30s linear infinite;
+    .boxImg {
+      width: 100vw;
     }
   }
+}
+
+.AniBg {
+  width: 100%;
+  height: 113px;
+  background: linear-gradient(0deg, #0d1012 41.35%, rgba(0, 0, 0, 0) 100%);
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: 2;
 }
 
 @keyframes scroll {
@@ -69,4 +88,11 @@
   position: absolute;
   right: 20px;
   top: 25px;
+}
+
+.Content {
+  height: calc(100vh - 120px);
+  overflow: hidden;
+  position: relative;
+  z-index: 5;
 }

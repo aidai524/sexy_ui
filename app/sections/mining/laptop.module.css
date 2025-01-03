@@ -9,7 +9,7 @@
     rgba(13, 16, 18, 0.8) 100%
   );
   border-radius: 20px;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 110px);
   position: relative;
   overflow: hidden;
 }
@@ -21,14 +21,14 @@
 }
 
 .main {
-  background: url(/img/mining/swipe-to-earn.png) center top no-repeat;
-  background-size: 590px 120px;
+  background: url(/img/mining/top-bg.png) center 10px no-repeat;
+  background-size: 476px 92px;
 }
 
 .zBox {
   position: relative;
   z-index: 11;
-  padding-top: 110px;
+  padding-top: 90px;
 }
 
 .group {
