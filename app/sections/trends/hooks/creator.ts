@@ -8,7 +8,7 @@ export function useCreator() {
   const onClick = (address?: string) => {
     if (!address) return;
     if (address !== userInfo?.address) {
-      router.push(`/profile/user?account=${address}`);
+      router.push(`/profile/user?account=${address}&from=trends`);
     }
   };
 
