@@ -44,6 +44,7 @@
 .followers {
   color: rgba(146, 144, 177, 1);
   margin-top: 3px;
+  text-align: left;
 }
 
 .creator {
