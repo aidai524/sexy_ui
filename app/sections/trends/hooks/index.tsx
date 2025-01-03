@@ -56,6 +56,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   };
 
   const formatList = async (_list: Trend[] = []) => {
+    _list = Array.isArray(_list) ? _list : [];
     for (let i = 0; i < _list.length; i++) {
       const it = _list[i];
       it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());

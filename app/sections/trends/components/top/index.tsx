@@ -87,7 +87,7 @@ export default function Top(props: Props) {
         </div>
         <div className={[styles.Badge, styles.TopBadge].join(' ')}>
           <div>Created by</div>
-          <div style={{ color: '#FF37A3' }}>{top1Ticker}</div>
+          <div style={{ color: '#FF37A3' }}>{top1CreateBy}</div>
         </div>
       </div>
       <div className={styles.TopMarketCap}>

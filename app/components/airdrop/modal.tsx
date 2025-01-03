@@ -6,15 +6,13 @@ import AirdropConnectModal from '@/app/components/airdrop/connect/modal';
 import AirdropMoreModal from '@/app/components/airdrop/more/modal';
 
 const AirdropModal = (props: any) => {
-  const { visible, onClose } = props;
-
-  const airdrop = useAirdrop(props);
+  const airdrop = useAirdrop();
 
   return (
     <AirdropContext.Provider value={{ ...airdrop }}>
       <Modal
-        open={visible}
-        onClose={onClose}
+        open={airdrop.airdropVisible}
+        onClose={airdrop.onClose}
         mainStyle={{
           border: 0,
         }}
