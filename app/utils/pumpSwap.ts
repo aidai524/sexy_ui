@@ -72,7 +72,6 @@ export async function pumpFunBuy(mintStr: string, solIn: number, slippageDecimal
             { pubkey: PUMP_FUN_PROGRAM, isSigner: false, isWritable: false },
         ];
 
-
         console.log('keys:', keys)
 
         const data = Buffer.concat([
