@@ -21,8 +21,8 @@ export default function Mining({ styles, isMobile, info }: any) {
         </div>
         <Rank rank={info?.your_rank} />
       </div>
-      <div className={styles.AniBg} />
-      <div className={styles.bottomAni}>
+      {/* <div className={styles.AniBg} /> */}
+      {/* <div className={styles.bottomAni}>
         <div className={styles.boxAni} style={{ width: "200%" }}>
           {[1, 2].map((item) => {
             return (
@@ -34,7 +34,7 @@ export default function Mining({ styles, isMobile, info }: any) {
             );
           })}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

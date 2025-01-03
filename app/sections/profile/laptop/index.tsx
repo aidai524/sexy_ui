@@ -8,6 +8,7 @@ import Address from "@/app/sections/profile/components/address";
 import FollowerModal from "@/app/components/layout/laptop/user/follower-modal";
 import { motion } from "framer-motion";
 import Empty from "@/app/components/empty";
+import CircleLoading from "@/app/components/icons/loading";
 import { defaultAvatar } from "@/app/utils/config";
 import { useState } from "react";
 
@@ -20,7 +21,8 @@ export default function Laptop({
   updateUserInfo,
   profileTabIndex,
   showHot = true,
-  isOther
+  isOther,
+  isLoading
 }: any) {
   const [followModalType, setFollowModalType] = useState("");
   return (
@@ -101,6 +103,10 @@ export default function Laptop({
             }}
             isOther={isOther}
           />
+        </div>
+      ) : isLoading ? (
+        <div className={styles.LoadingWrapper}>
+          <CircleLoading size={40} />
         </div>
       ) : (
         <Empty text="No Data" height="100%" />

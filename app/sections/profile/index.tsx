@@ -46,7 +46,7 @@ export default memo(function Home(props: any) {
     return currentUserInfo?.address;
   }, [currentUserInfo, params, isOther]);
 
-  const { onQueryInfo, userInfo } = useUserInfo(
+  const { onQueryInfo, userInfo, isLoading } = useUserInfo(
     address,
     !isOther,
     accountRefresher
@@ -64,7 +64,8 @@ export default memo(function Home(props: any) {
     setShowVip,
     router,
     profileTabIndex,
-    isOther
+    isOther,
+    isLoading
   };
 
   useEffect(() => {

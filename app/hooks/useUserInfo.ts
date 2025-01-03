@@ -9,13 +9,16 @@ export default function useUserInfo(
   accountRefresher?: number
 ) {
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [isLoading, setIsLoading] = useState(true);
 
   const onQueryInfo = useCallback(async () => {
     if (address) {
+      setIsLoading(true);
       const userInfo = await fecthUserInfo(address);
       if (userInfo) {
         setUserInfo(userInfo);
       }
+      setIsLoading(false);
     }
   }, [address]);
 
@@ -90,6 +93,7 @@ export default function useUserInfo(
 
   return {
     userInfo,
+    isLoading,
     saveUserInfo,
     fecthUserInfo,
     onQueryInfo,
