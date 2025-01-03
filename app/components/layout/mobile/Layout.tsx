@@ -43,7 +43,6 @@ function CustomIcon({
 }
 
 const CreateIcon = (pathname: string, id?: string) => {
-  const isRefer = /^\/profile/.test(pathname);
   return (
     <Link href="/create" className={styles.CreateIconLink}>
       <div className={styles.createIcon}>
@@ -61,7 +60,7 @@ const CreateIcon = (pathname: string, id?: string) => {
           />
         </svg>
       </div>
-      {isRefer && <Refer isMobile />}
+      <Refer isMobile />
     </Link>
   );
 };

@@ -1,7 +1,8 @@
 import styles from './index.module.css';
 import HottestItem from '@/app/sections/trends/components/hottest/item';
 
-const Hottest = () => {
+const Hottest = (props: any) => {
+  const { data, onBuy } = props;
 
   return (
     <div className={styles.Container}>
@@ -9,12 +10,11 @@ const Hottest = () => {
         The hottest
       </div>
       <div className={styles.List}>
-        <HottestItem />
-        <HottestItem />
-        <HottestItem />
-        <HottestItem />
-        <HottestItem />
-        <HottestItem />
+        {
+          data.map((it: any, idx: number) => (
+            <HottestItem key={idx} index={idx} trend={it} onBuy={onBuy} />
+          ))
+        }
       </div>
     </div>
   );

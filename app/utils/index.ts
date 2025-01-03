@@ -117,7 +117,8 @@ export async function httpAuthPost(
   console.log("authorization:", authorization);
 
   const header = {
-    authorization
+    authorization,
+    'Content-Type': 'application/json'
   };
   const val = await http(path, "POST", params, header);
 
