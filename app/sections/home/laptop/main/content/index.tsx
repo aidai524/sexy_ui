@@ -48,7 +48,7 @@ export default function Content() {
           onOpenFull() {
             fullScreenStore.set({ isFull: true });
           },
-          list
+          list: list.current
         }}
       />
       {fullScreenStore?.isFull && (
