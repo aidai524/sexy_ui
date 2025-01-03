@@ -22,7 +22,7 @@ export function useAirdrop(props: any): Airdrop {
   const [userData, setUserData] = useState<Record<string, any>>({});
   const [airdropData, setAirdropData] = useState<Record<string, any>>({});
   const [pointList, setPointList] = useState<Record<string, any>[]>([]);
-  const [pointListPageIndex, setPointListPageIndex] = useState<number>(1);
+  const [pointListPageIndex, setPointListPageIndex] = useState<number>(0);
   const [pointListPageMore, setPointListPageMore] = useState<boolean>(true);
   const [pointListLoading, setPointListLoading] = useState(false);
 
