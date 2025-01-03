@@ -400,6 +400,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                         amount={new Big(activeIndex === 0 ? buyIn : sellOut)
                           .div(10 ** token.tokenDecimals!)
                           .toFixed(2)}
+                        point={'0'}
                         onClose={() => {
                           modalHandler.close();
                         }}

@@ -11,7 +11,7 @@ export default function Content({ onClose, data, initType, show }: any) {
           <div className={styles.avatar}>
             <img
               className={styles.avatarImg}
-              src={data.tokenIcon || data.tokenImg}
+              src={data.tokenIcon || data.tokenImg || '/img/token-placeholder.png'}
             />
           </div>
 

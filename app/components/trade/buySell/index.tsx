@@ -6,7 +6,7 @@ import styles from "../trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useUserAgent } from "@/app/context/user-agent";
-import { getFullNum, getTransaction } from "@/app/utils";
+import { getFullNum, getPointByVolume, getTransaction } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
@@ -507,6 +507,9 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
                 setIsLoading(false);
 
                 if (hash) {
+                  const volume = activeIndex === 0 ? buyInSol : sellOutSol
+                  const pointByVolume = await getPointByVolume(Big(volume).div(10 ** SOL.tokenDecimals).toFixed(SOL.tokenDecimals), 'sexy')
+
                   const modalHandler = Modal.show({
                     content: (
                       <TradeSuccessModal
@@ -514,9 +517,10 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
                         userInfo={userInfo}
                         token={token}
                         solAmount={activeIndex === 0 ? buyInSol : sellOutSol}
-                        amount={new Big(activeIndex === 0 ? showBuyInToken : sellOut)
-                          .div(10 ** token.tokenDecimals!)
-                          .toFixed(2)}
+                        amount={new Big(activeIndex === 0 ? buyIn : sellOut)
+                                                  .div(10 ** token.tokenDecimals!)
+                                                  .toFixed(2)}
+                        point={pointByVolume.data}
                         onClose={() => {
                           modalHandler.close();
                         }}
