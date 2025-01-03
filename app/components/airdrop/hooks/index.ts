@@ -16,7 +16,7 @@ export function useAirdrop(props: any): Airdrop {
     return search.get('airdrop');
   }, [search]);
   const inviter = useMemo(() => {
-    return search.get('code');
+    return search.get('referral');
   }, [search]);
 
   const [userData, setUserData] = useState<Record<string, any>>({});
@@ -77,7 +77,7 @@ export function useAirdrop(props: any): Airdrop {
     setBinding(true);
     const res = await httpAuthPost(`/airdrop/binding/code`, {
       code: airdrop,
-    });
+    }, true, true);
     if (res.code !== 0) {
       if (!referStore.bind) {
         fail(`Binding failed${res.message ? ': ' + res.message : ''}`);
