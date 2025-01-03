@@ -10,6 +10,7 @@ import dayjs from "@/app/utils/dayjs";
 import { useAccount } from "@/app/hooks/useAccount";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
+import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 
 interface Props {
   token: Project;
@@ -127,7 +128,7 @@ export default function Trade({
                   await prePaid(inputNum, false);
                   setIsLoading(false);
                   success("Flip success");
-
+                  await actionLikeTrigger(token);
                   onSuccess && onSuccess();
                 }
               } catch (e: any) {

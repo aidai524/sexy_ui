@@ -1,58 +1,47 @@
 .Container {
-  margin: 0 auto;
-  position: relative;
-  width: 160px;
-  height: 160px;
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
-  border-radius: 200px;
-  padding: 10px;
+  width: calc(100% - 60px);
+  border-radius: 12px;
+  background: linear-gradient(to bottom, #ff2681, #ff91bf);
+  margin: 10px auto;
+  padding: 2px;
 }
 
 .Wrapper {
-  background: linear-gradient(to bottom, #ff2681, #ffa2c9);
-  border-radius: 200px;
-  padding: 3px;
-}
-
-.Box {
-  width: 134px;
-  height: 134px;
+  height: 122px;
   flex-shrink: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-  border-radius: 200px;
+  background: url(/img/mining/like-bg-p.png) center no-repeat;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  border-radius: 12px;
   justify-content: center;
+  gap: 5px;
 }
 
-.Text {
+.Num {
   text-align: center;
   font-family: Unbounded;
-  font-size: 42px;
+  font-size: 26px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  background: linear-gradient(180deg, #ff2681 0%, #ffa2c9 100%);
+  background: linear-gradient(0deg, #ff076f 9.62%, #ffa2c9 87.5%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-family: Unbounded;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 
-.BigIcon {
-  width: 88.217px;
-  height: 93.75px;
-  position: absolute;
-  transform: rotate(96deg);
-  left: -32px;
-  top: 80px;
-}
-
-.SmallIcon {
-  width: 45.71px;
-  height: 48.577px;
-  position: absolute;
-  top: 8px;
-  right: 5px;
+.Desc {
+  color: #fff;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
