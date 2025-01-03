@@ -13,6 +13,7 @@ interface Props {
   type: number;
   solAmount: string;
   amount: string;
+  point: string;
 }
 
 const typeCls = {
@@ -32,7 +33,8 @@ export default function TradeSuccessModal({
   userInfo,
   type,
   solAmount,
-  amount
+  amount,
+  point
 }: Props) {
   
 
@@ -42,7 +44,7 @@ export default function TradeSuccessModal({
         <div className={style.avatar}>
           <img
             className={style.avatarImg}
-            src={token.tokenIcon || token.tokenImg}
+            src={token.tokenIcon || token.tokenImg || '/img/token-placeholder.png'}
           />
         </div>
 
@@ -62,7 +64,7 @@ export default function TradeSuccessModal({
 
         <div className={ style.tips }>
           <span>You are expected to receive</span>
-          <span className={ style.sexFi }> { Number(solAmount) / 10000 } points</span>
+          <span className={ style.sexFi }> { point } points</span>
         </div>
       </div>
 

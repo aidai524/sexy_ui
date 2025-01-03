@@ -438,6 +438,7 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
                         amount={new Big(activeIndex === 0 ? buyIn : sellOut)
                           .div(10 ** token.tokenDecimals!)
                           .toFixed(2)}
+                        point={'0'}
                         onClose={() => {
                           modalHandler.close();
                         }}

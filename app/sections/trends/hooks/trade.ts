@@ -8,7 +8,7 @@ export function useTrade() {
     if (!token) return;
 
     setTradeToken({
-      DApp: "pump",
+      DApp: 'sexy',
       tokenName: token?.token_name,
       tokenSymbol: token?.token_symbol,
       tokenIcon: token?.Icon,
