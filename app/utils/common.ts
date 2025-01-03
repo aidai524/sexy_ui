@@ -119,6 +119,8 @@ export const addThousandSeparator = (numberString: string) => {
   return integerPart + decimalPart;
 };
 
+
+
 export const numberFormatter = (
   value: string | number | Big.Big | undefined,
   precision: number,
@@ -238,6 +240,7 @@ export const numberFormatter = (
     decimal: secondPart.replace(/[.]?0*$/, "")
   };
 };
+
 
 export const numberRemoveEndZero = (value: string) => {
   return value.replace(/\.?0+$/, "");

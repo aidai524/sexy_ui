@@ -12,8 +12,9 @@ const AirdropMoreModal = (props: any) => {
         border: 0,
       }}
       closeStyle={{
-        display: 'none',
+        color: '#fff',
       }}
+      maskClose={false}
     >
       <Index {...props} />
     </Modal>

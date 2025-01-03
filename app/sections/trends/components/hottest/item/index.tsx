@@ -28,7 +28,7 @@ const HottestItem = (props: { trend: Trend; index: number; onBuy(trend: Trend): 
             <div className="">Ticker: {trend.ticker}</div>
             <img src="/192x192.png" alt="" className={styles.TickerAvatar} />
           </div>
-          <div className={styles.LabelItem}>
+          <div className={styles.LabelItem} style={{ fontSize: 14 }}>
             <div className={styles.Label}>Market cap:</div>
             <div className={styles.Value}>
               {numberFormatter(trend.market_cap, 2, true, { prefix: '$', isShort: true })}

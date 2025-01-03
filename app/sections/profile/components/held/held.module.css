@@ -25,6 +25,8 @@
         border-radius: 30px;
         padding: 5px 10px;
         margin-top: 5px;
+        display: inline-block;
+        cursor: pointer;
         .viewCoinText {
           margin-right: 5px;
         }
