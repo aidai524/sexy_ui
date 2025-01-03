@@ -13,7 +13,7 @@ export function useTrade() {
       tokenSymbol: token?.token_symbol,
       tokenIcon: token?.Icon,
       ticker: token?.ticker,
-      tokenDecimals: 18,
+      tokenDecimals: token?.token_decimals,
       tickerAvatar: "",
       status: 1
     });

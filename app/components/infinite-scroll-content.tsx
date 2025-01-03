@@ -1,10 +1,12 @@
-const InfiniteScrollContent = ({ hasMore }: { hasMore?: boolean }) => (
+const InfiniteScrollContent = ({ hasMore, text }: { hasMore?: boolean; text?: string; }) => (
   <>
     {
       hasMore ? (
         <>Loading...</>
       ) : (
-        <span>No more data</span>
+        <span>
+          {text ? text : 'No more data'}
+        </span>
       )
     }
   </>

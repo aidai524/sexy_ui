@@ -170,7 +170,7 @@ const List = (props: any) => {
             }}
             hasMore={tableListPageMore}
           >
-            <InfiniteScrollContent hasMore={tableListPageMore} />
+            <InfiniteScrollContent hasMore={tableListPageMore} text=" " />
           </InfiniteScroll>
         </div>
       </div>
