@@ -70,7 +70,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
       const res = await httpGet(`/project/trends/list`, {
         limit: params.limit,
         offset: params.offset ?? 0,
-        searchText: params.search,
+        text: params.search,
       });
       // const _list: Trend[] = res.data.list || [];
       // let _top1: Trend = _list[0];
