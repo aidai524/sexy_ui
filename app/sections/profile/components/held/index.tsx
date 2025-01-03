@@ -1,8 +1,53 @@
+import { useCallback, useEffect, useState } from "react";
 import styles from "./held.module.css";
+import { getTokenByHolder } from "@/app/utils/solanaScanApi";
+import { useAccount } from "@/app/hooks/useAccount";
+import Big from "big.js";
+import { simplifyNum } from "@/app/utils";
+import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 
-const list = [1, 2, 3, 4];
+const pageSize = 40
 
 export default function Held({ from }: any) {
+  const { address } = useAccount()
+  const [list, setList] = useState<any[]>([])
+  const [hasMore, setHasMore] = useState(true)
+  const [pageIndex, setPageIndex] = useState(1)
+  const [tokenInfo, setTokenInfo] = useState<any>({})
+
+  const loadMore = useCallback(async () => {
+    if (address) {
+      return getTokenByHolder(address, pageIndex, pageSize).then(res => {
+        const newList = [
+          ...list,
+          ...(res.data || [])
+        ]
+
+        setList(newList)
+        const newTokenInfo = {
+          ...res.metadata.tokens,
+          ...tokenInfo,
+        }
+        setTokenInfo(newTokenInfo)
+
+        if (res.data) {
+          if (res.data.length < pageSize) {
+            setHasMore(false)
+          } else {
+            setPageIndex(pageIndex + 1)
+            setHasMore(true)
+          }
+        }
+        
+      })
+    }
+    
+  }, [address, list, tokenInfo, pageIndex])
+
+  useEffect(() => {
+    // loadMore()
+  }, [address])
+
   return (
     <div
       className={styles.main}
@@ -11,22 +56,24 @@ export default function Held({ from }: any) {
           from === "page" ? "transparent" : "rgba(255, 255, 255, 0.08)"
       }}
     >
-      {list.map((item) => {
+      {list.map((item: any) => {
         return (
           <div
             className={`${styles.heldToken} ${
               from === "page" && styles.PageHeldToken
             }`}
-            key={item}
+            key={item.token_address}
           >
             <div className={styles.tokenMsg}>
               <img
                 className={styles.tokenImg}
-                src="https://pump.mypinata.cloud/ipfs/QmNTApMWbitxnQci6pqnZJXTZYGkmXdBew3MNT2pD8hEG6?img-width=128&img-dpr=2&img-onerror=redirect"
+                src={tokenInfo[item.token_address].token_icon}
               />
               <div className={styles.tokenNames}>
-                <div className={styles.name}>CAT</div>
-                <div className={styles.viewCoin}>
+                <div className={styles.name}>{ tokenInfo[item.token_address].token_name }</div>
+                <div className={styles.viewCoin} onClick={() => {
+                  window.open('https://solscan.io/account/' + item.token_account)
+                }}>
                   <span className={styles.viewCoinText}>View Coin</span>
                   <svg
                     width="8"
@@ -45,12 +92,14 @@ export default function Held({ from }: any) {
             </div>
 
             <div className={styles.tokenValue}>
-              <div className={styles.tokenAmount}>10.32K</div>
-              <div className={styles.solPrice}>0.005 SOL</div>
+              <div className={styles.tokenAmount}>{ (new Big(item.amount).div(10 ** item.token_decimals).toNumber()) }</div>
+              {/* <div className={styles.solPrice}>0.005 SOL</div> */}
             </div>
           </div>
         );
       })}
+
+      <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} />
     </div>
   );
 }
