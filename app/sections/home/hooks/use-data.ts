@@ -36,7 +36,9 @@ export default function useData(launchType: string) {
         let _list: any = [];
         if (isInit) {
           _list = res.data?.list;
-
+          _list.forEach((item: any) => {
+            item.fetched_time = Date.now();
+          });
           renderTwoSimple(res.data?.list);
         } else {
           const newVals: any = {};
@@ -51,11 +53,12 @@ export default function useData(launchType: string) {
               if (!newVals[item.id]) {
                 newVals[item.id] = item;
               }
+              item.fetched_time = Date.now();
             });
           }
           _list = Object.values(newVals);
         }
-
+        _list.sort((a: any, b: any) => a.fetched_time - b.fetched_time);
         listRef.current = _list;
         setAll(listRef.current, launchType, userInfo.address);
 
@@ -163,7 +166,7 @@ export default function useData(launchType: string) {
 
   const { run: initList } = useDebounceFn(
     async () => {
-      let list = getAll(launchType, userInfo?.address || '');
+      let list = getAll(launchType, userInfo?.address || "");
 
       if (list && list.length > 0) {
         if (launchType === "preLaunch") {

@@ -70,13 +70,18 @@ export default function useData(launchType: string) {
       if (!isNext) setIsLoading(true);
       const fetchedList = await queryList();
       const data: Record<string, any> = {};
+
       list.forEach((item: any) => {
         data[item.id] = item;
       });
+
       fetchedList.forEach((item: any) => {
         data[item.id] = item;
+        item.fetched_time = Date.now();
       });
+
       const _list = Object.values(data);
+      _list.sort((a, b) => a.fetched_time - b.fetched_time);
       listRef.current = _list;
 
       if (!isNext) {
