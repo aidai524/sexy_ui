@@ -92,7 +92,7 @@ export default function Top(props: Props) {
           Market Cap:
         </div>
         <div className={styles.TopMarketCapValue}>
-          {numberFormatter(trend?.market_cap, 2, true, { prefix: '$', isShort: Big(trend?.market_value || 0).gt(1e10) })}
+          {numberFormatter(trend?.market_cap, 2, true, { prefix: '$', isShort: Big(trend?.market_cap || 0).gt(1e10) })}
         </div>
       </div>
       <div className={styles.TopBuy}>
@@ -144,6 +144,16 @@ export default function Top(props: Props) {
                 <div>{top1CreateBy}</div>
               </div>
             </div>
+          </div>
+          <div className={styles.LaptopTopTicker}>
+            <div className={styles.LaptopTopTickerItem}>
+              <div className={styles.LaptopTopTickerLabel}>
+                Progress:
+              </div>
+              <div className={styles.LaptopTopTickerValue}>
+                {trend?.progress}%
+              </div>
+            </div>
             <div className={styles.LaptopTopTickerItem}>
               <div className={styles.LaptopTopTickerTime}>
                 {trend?.created2Now}
@@ -153,7 +163,10 @@ export default function Top(props: Props) {
           <div className={styles.LaptopTopMarketCap}>
             <div className={styles.LaptopTopMarketCapValue}>
               <div className="">
-                {numberFormatter(trend?.market_cap, 2, true, { prefix: '$', isShort: Big(trend?.market_value || 0).gt(1e10) })}
+                {numberFormatter(trend?.market_cap, 2, true, {
+                  prefix: '$',
+                  isShort: Big(trend?.market_cap || 0).gt(1e10)
+                })}
               </div>
               <div className={styles.LaptopTopMarketCapTrend}>
                 +{trend?.market_cap_percentage}%
