@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 import styles from "./index.module.css";
 import Icon from "./Reicon";
 import { httpAuthGet } from "@/app/utils";
@@ -9,8 +9,10 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const { accountRefresher } = useAuth();
+  const timer = useRef<any>();
 
   useEffect(() => {
+    timer.current && clearInterval(timer.current);
     const init = async () => {
       try {
         setLoading(true);
@@ -24,9 +26,15 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
     };
     if (accountRefresher) {
       init();
+      // fix#REF-8995
+      timer.current = setInterval(init, 60000);
     } else {
       setAmount(0);
     }
+
+    return () => {
+      timer.current && clearInterval(timer.current);
+    };
   }, [accountRefresher]);
 
   return (
