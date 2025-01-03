@@ -9,6 +9,14 @@ import { useDebounceFn } from "ahooks";
 const limit = 10;
 const left_num = 5;
 
+function preloadImages(urls: string[]) {
+  urls.forEach((url) => {
+    if (!url) return;
+    const img = new Image();
+    img.src = url;
+  });
+}
+
 export default function useData(launchType: string) {
   const [infoData2, setInfoData2] = useState<Project>();
   const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +33,8 @@ export default function useData(launchType: string) {
       if (res.code !== 0 || !res.data?.list) {
         return [];
       }
+      const icons = res.data?.list.map((token: any) => token.icon);
+      preloadImages(icons);
       return res.data?.list;
     } catch (err) {
       return [];
@@ -102,15 +112,36 @@ export default function useData(launchType: string) {
     }
   };
 
-  const { run: initList } = useDebounceFn(
+  const { run: debounceList } = useDebounceFn(
     async () => {
-      handleList();
+      let list = getAll(launchType, userInfo?.address) || [];
+      if (list.length === 0) {
+        handleList(false);
+        setInfoData2(undefined);
+        return;
+      }
+      if (launchType === "preLaunch") {
+        list = list.filter(
+          (item: any) =>
+            !(
+              item.status !== 0 ||
+              item.is_like ||
+              item.is_super_like ||
+              item.is_un_like
+            )
+        );
+      }
+      listRef.current = list;
+      setInfoData2(mapDataToProject(list[0]));
+      if (list.length <= left_num) {
+        handleList(true);
+      }
     },
     { wait: 500 }
   );
 
   useEffect(() => {
-    initList();
+    debounceList();
   }, [launchType, accountRefresher]);
 
   return {

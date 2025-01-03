@@ -9,6 +9,7 @@ export default function Mobile({ newData }: any) {
       showThumbnailProgress={false}
       data={newData}
       theme="light"
+      withoutFlip={true}
     />
   );
 }

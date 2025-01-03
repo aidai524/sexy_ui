@@ -20,6 +20,7 @@ interface Props {
   theme?: string;
   sepSize?: number;
   mc?: string | number;
+  withoutFlip?: boolean;
 }
 
 export default function InfoPart({
@@ -32,7 +33,8 @@ export default function InfoPart({
   showTop = true,
   theme = "dark",
   sepSize = 10,
-  mc
+  mc,
+  withoutFlip
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
@@ -62,7 +64,7 @@ export default function InfoPart({
     <div>
       {showTop && (
         <>
-          {!isMobile ? (
+          {!isMobile || withoutFlip ? (
             <Thumbnail
               showLikes={showLikes}
               showLaunchType={false}

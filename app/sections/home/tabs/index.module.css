@@ -15,17 +15,15 @@
     color: #fff;
     text-shadow: 0px 0px 8px rgba(255, 255, 255, 1);
   }
-  .launchPadTabTitleActive::after {
-    content: " ";
-    display: block;
-    position: absolute;
-    width: 50%;
-    height: 3px;
-    background-color: #fff;
-    border-radius: 100px;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 1);
-  }
+}
+
+.Line {
+  position: absolute;
+  border-radius: 4px;
+  width: 50%;
+  height: 3px;
+  background-color: #fff;
+  bottom: 0;
+  left: 50%;
+  box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 1);
 }

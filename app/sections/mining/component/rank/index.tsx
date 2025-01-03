@@ -63,7 +63,7 @@ export default function Rank({ rank }: any) {
           >
             <div className={styles.ItemLeft}>
               <Avatar rank={index + 1} src={item.account_data?.icon} />
-              <div>
+              <div style={{ width: isMobile ? "auto" : 120 }}>
                 <button
                   className={`${styles.ItemTitle} ${
                     item.address !== userInfo?.address && "button"

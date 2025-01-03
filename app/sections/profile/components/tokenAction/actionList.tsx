@@ -45,7 +45,7 @@ export default function ActionList({
         setIsPrepaid(true);
       }
     });
-  }, [updateNum, isOther]);
+  }, [updateNum, isOther, token]);
 
   const smookeable = useMemo(() => {
     return !token.isSuperLike && token.account !== userInfo?.address;

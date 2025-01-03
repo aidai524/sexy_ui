@@ -13,20 +13,11 @@ export default function Withdraw({
   const [isWithdrawed, setIsWithdrawed] = useState(false);
 
   const isDelay = useMemo(() => {
-    if (
+    return (
       prepaidWithdrawDelayTime &&
       token.createdAt &&
       Date.now() - token.createdAt > prepaidWithdrawDelayTime
-    ) {
-      console.log(
-        "Date.now() - token.createdAt",
-        Date.now() - token.createdAt,
-        prepaidWithdrawDelayTime
-      );
-
-      return true;
-    }
-    return false;
+    );
   }, [prepaidWithdrawDelayTime, token]);
 
   const showWithdraw = useMemo(
