@@ -60,7 +60,7 @@ const ReferModalContent = (props: any) => {
     if (loading) return;
     setLoading(true);
     const shareLink = new URL(window?.location?.origin);
-    shareLink.searchParams.set("code", address ?? "");
+    shareLink.searchParams.set("referral", address ?? "");
     if (currentTab === 2) {
       const res = await httpAuthGet("/airdrop/referral/code", {
         find: false,

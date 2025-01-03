@@ -7,11 +7,13 @@ import Big from 'big.js';
 export default function Top(props: Props) {
   const { onBuy, trend, isMobile } = props;
 
-  const [top1Name, top1Ticker, top1Icon, top1TickerAvatar, top1Likes, top1Holders] = useMemo(() => {
+  const [top1Name, top1Ticker, top1Icon, top1TickerAvatar, top1Likes, top1Holders, top1CreateBy] = useMemo(() => {
     const _top1Name = trend?.token_symbol;
     const _top1Ticker = trend?.ticker;
     const _top1Icon = trend?.Icon;
-    return [_top1Name, _top1Ticker, _top1Icon, '', numberFormatter(trend?.like, 0, true, { isShort: true }), '0'];
+    const _top1Like = numberFormatter(trend?.like, 0, true, { isShort: true });
+    const _createBy = formatLongText(trend?.address, 3, 4);
+    return [_top1Name, _top1Ticker, _top1Icon, '', _top1Like, '0', _createBy];
   }, [trend]);
 
   const topBadgesRef = useRef<any>();
@@ -139,7 +141,7 @@ export default function Top(props: Props) {
               </div>
               <div className={styles.LaptopTopTickerValue}>
                 <img src="/192x192.png" alt="" className={styles.LaptopTopTickerAvatar} />
-                <div>Party Girl</div>
+                <div>{top1CreateBy}</div>
               </div>
             </div>
             <div className={styles.LaptopTopTickerItem}>

@@ -20,9 +20,9 @@ export default function Layout(props: any) {
 
   const isAirdrop = useMemo(() => {
     if (!publicKey) return false;
+    if (!search.get('referral')) return false;
+    if (publicKey.toString() === search.get('referral')) return false;
     if (!search.get('airdrop')) return false;
-    if (!search.get('code')) return false;
-    if (publicKey.toString() === search.get('code')) return false;
     return true;
   }, [search, publicKey]);
 
