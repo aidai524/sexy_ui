@@ -54,7 +54,6 @@ export function useTokenTrade({
   const [tokenBalance, setTokenBalance] = useState("0");
   const [solBalance, setSolBalance] = useState("0");
   const [reFreshBalnace, setReFreshBalnace] = useState(0);
-  const { solPrice } = useSolPriceStore();
   const { config }: any = useConfig()
   const { referral: referral_address } = useReferraltore()
 
@@ -1026,7 +1025,7 @@ export function useTokenTrade({
       return new Big(solToken)
         .div(10 ** 9)
         .mul(10 ** tokenDecimals)
-        .mul(solPrice as number)
+        .mul(config.SolPrice)
         .div(poolToken)
         .mul(total_supply)
         .toNumber();

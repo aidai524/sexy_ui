@@ -10,8 +10,8 @@ export async function getTokenByHolder(address: string, page: number = 1, pageSi
     }).then(res => res.json())
 }
 
-export async function getHoldersByToken() {
-    return fetch(`${api_prefix}/account/token-accounts`, {
+export async function getHoldersByToken(address: string, page: number = 1, pageSize: number = 40) {
+    return fetch(`${api_prefix}/token/holders?address=${'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'}&page=${page}&page_size=${pageSize}`, {
         headers: {
             token: solana_api_key
         }
