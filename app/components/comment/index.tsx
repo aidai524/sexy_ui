@@ -118,7 +118,7 @@ export default function CommentComp({
           <input
             value={commentText}
             onKeyUp={async (e) => {
-              if (!userInfo) {
+              if (!userInfo?.address) {
                 // @ts-ignore
                 window?.connect();
                 return;

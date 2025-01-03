@@ -4,7 +4,7 @@ import Chart from "./components/chart/index";
 import Trade from "./components/trade/index";
 import Txs from "./components/txs/index";
 
-import { AvatarBack } from "@/app/components/thumbnail";
+import { AvatarBack } from "@/app/components/thumbnail/avatar";
 
 import styles from "./detail.module.css";
 import { useEffect, useState } from "react";

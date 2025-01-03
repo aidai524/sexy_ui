@@ -1,6 +1,7 @@
 "use client";
 
 import "./globals.css";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
 import { MessageContextProvider } from "./context/messageContext";
@@ -42,12 +43,12 @@ export default function RootLayout({
       </head>
       <body>
         <WalletConnect>
-        <UserAgentProvider>
-          <MessageContextProvider>
+          <UserAgentProvider>
+            <MessageContextProvider>
               <Suspense>
                 <Layout>{children}</Layout>
               </Suspense>
-          </MessageContextProvider>
+            </MessageContextProvider>
           </UserAgentProvider>
         </WalletConnect>
       </body>

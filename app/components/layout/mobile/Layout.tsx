@@ -11,6 +11,7 @@ import Link from "next/link";
 import Refer, {
   ReferContentCard
 } from "@/app/components/layout/laptop/user/refer";
+import { FlipProvider } from "@/app/context/flip";
 
 function CustomIcon({
   url,
@@ -42,7 +43,6 @@ function CustomIcon({
 }
 
 const CreateIcon = (pathname: string, id?: string) => {
-  const isRefer = /^\/profile/.test(pathname);
   return (
     <Link href="/create" className={styles.CreateIconLink}>
       <div className={styles.createIcon}>
@@ -60,7 +60,7 @@ const CreateIcon = (pathname: string, id?: string) => {
           />
         </svg>
       </div>
-      {isRefer && <Refer isMobile />}
+      <Refer isMobile />
     </Link>
   );
 };
@@ -131,50 +131,52 @@ export default function Component({ children }: any) {
   useNotice();
 
   return (
-    <div className={styles.Main}>
-      {/* <Button onClick={() => {
+    <FlipProvider>
+      <div className={styles.Main}>
+        {/* <Button onClick={() => {
         trade()
       }}>juipter</Button> */}
-      <main className="pb-16">{children}</main>
+        <main className="pb-16">{children}</main>
 
-      {showTabs && (
-        <TabBar
-          className={styles.tabBar}
-          activeKey={pathname}
-          safeArea={true}
-          onChange={(key) => {
-            if (key !== "/") {
-              if (!address) {
-                // @ts-ignore
-                window.connect();
-                return;
+        {showTabs && (
+          <TabBar
+            className={styles.tabBar}
+            activeKey={pathname}
+            safeArea={true}
+            onChange={(key) => {
+              if (key !== "/") {
+                if (!address) {
+                  // @ts-ignore
+                  window.connect();
+                  return;
+                }
               }
-            }
-          }}
-        >
-          {Tabs(pathname).map((item) => {
-            if (item.title === "CREATE") {
+            }}
+          >
+            {Tabs(pathname).map((item) => {
+              if (item.title === "CREATE") {
+                return (
+                  <TabBar.Item
+                    key={item.key}
+                    icon={item.icon}
+                    className={styles.activeTab}
+                    title={""}
+                  />
+                );
+              }
               return (
                 <TabBar.Item
                   key={item.key}
-                  icon={item.icon}
+                  icon={pathname === item.key ? item.iconActive : item.icon}
                   className={styles.activeTab}
-                  title={""}
+                  title={item.title}
                 />
               );
-            }
-            return (
-              <TabBar.Item
-                key={item.key}
-                icon={pathname === item.key ? item.iconActive : item.icon}
-                className={styles.activeTab}
-                title={item.title}
-              />
-            );
-          })}
-        </TabBar>
-      )}
-      {isRefer && <ReferContentCard />}
-    </div>
+            })}
+          </TabBar>
+        )}
+        {isRefer && <ReferContentCard />}
+      </div>
+    </FlipProvider>
   );
 }

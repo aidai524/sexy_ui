@@ -4,12 +4,14 @@ import styles from "../action.module.css";
 import MainAction from "@/app/components/MainAction";
 import Boost from "@/app/components/boost";
 import SmokeBtn from "../../smokHot";
+import SmokeButtonWithFlip from "../../smokHot/smoke-button-flip";
 import type { Project } from "@/app/type";
 
 interface Props {
   token: Project | undefined;
   style?: any;
   ids?: any;
+  canFlip: boolean;
   onLike?: () => void;
   onSuperLike?: () => void;
   onHate?: () => void;
@@ -20,6 +22,7 @@ export default function Action({
   style,
   token,
   ids,
+  canFlip,
   onLike,
   onSuperLike,
   onHate,
@@ -56,14 +59,25 @@ export default function Action({
         ids={ids}
       />
       <div>
-        <SmokeBtn
-          isBigIcon={true}
-          token={token}
-          onClick={() => {
-            onSuperLike && onSuperLike();
-          }}
-          id={ids?.smoke}
-        />
+        {canFlip ? (
+          <SmokeButtonWithFlip
+            size={48}
+            onClick={() => {
+              onSuperLike && onSuperLike();
+            }}
+            token={token}
+            id={ids?.smoke}
+          />
+        ) : (
+          <SmokeBtn
+            isBigIcon={true}
+            token={token}
+            onClick={() => {
+              onSuperLike && onSuperLike();
+            }}
+            id={ids?.smoke}
+          />
+        )}
       </div>
     </div>
   );

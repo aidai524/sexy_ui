@@ -25,7 +25,7 @@ const Laptop = (props: any) => {
         <GoBack />
       </div>
       <Top onBuy={() => handleBuy(top1)} trend={top1} />
-      <Hottest />
+      <Hottest data={allList} onBuy={handleBuy} />
       <List
         currentFilter={currentFilter}
         onCurrentFilter={handleCurrentFilter}

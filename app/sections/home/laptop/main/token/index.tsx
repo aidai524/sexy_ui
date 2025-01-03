@@ -3,7 +3,6 @@ import styles from "./index.module.css";
 import Header from "./header";
 import TokenCard from "../token-card";
 import InfoPart from "@/app/sections/detail/components/info/infoPart";
-import BuyAndSell from "@/app/sections/detail/components/trade";
 import Txs from "@/app/sections/detail/components/txs";
 import CommentComp from "@/app/components/comment";
 import PanelWrapper from "./panel-wrapper";
@@ -75,7 +74,7 @@ export default function Token({
   };
 
   const hate = () => {
-    if (!userInfo) {
+    if (!userInfo?.address) {
       // @ts-ignore
       window.connect();
       return;
@@ -102,7 +101,12 @@ export default function Token({
             <>
               <TokenCard token={infoData2} />
               {currentTab === "info" && (
-                <PanelWrapper>
+                <PanelWrapper
+                  style={{
+                    backgroundColor: "#ab1f5c",
+                    marginRight: 15
+                  }}
+                >
                   <InfoPart
                     showLikes={false}
                     data={infoData2}

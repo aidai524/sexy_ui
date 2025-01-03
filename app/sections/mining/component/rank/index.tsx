@@ -6,11 +6,14 @@ import { numberFormatter } from "@/app/utils/common";
 import { formatAddress } from "@/app/utils";
 import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
+import useMiningList from "../../use-mining-list";
+import CircleLoading from "@/app/components/icons/loading";
 
-export default function Rank({ list, rank }: any) {
+export default function Rank({ rank }: any) {
   const { isMobile } = useUserAgent();
   const { userInfo } = useAuth();
   const router = useRouter();
+  const { list, loading } = useMiningList();
   return (
     <div
       className={styles.Container}
@@ -104,6 +107,16 @@ export default function Rank({ list, rank }: any) {
           </div>
         ))}
       </div>
+      {loading && (
+        <div
+          style={{
+            paddingTop: 60,
+            textAlign: "center"
+          }}
+        >
+          <CircleLoading size={30} />
+        </div>
+      )}
     </div>
   );
 }

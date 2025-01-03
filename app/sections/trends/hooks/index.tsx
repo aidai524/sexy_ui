@@ -22,7 +22,7 @@ export function useTrends(props: any) {
     setLoading(true);
     try {
       const res = await httpGet(`/project/trends/list`, {});
-      const _list: Trend[] = res.data || [];
+      const _list: Trend[] = res.data.list || [];
       let _top1: Trend = _list[0];
       let _top1Idx = 0;
       _list.forEach((it, index) => {
@@ -30,7 +30,7 @@ export function useTrends(props: any) {
           _top1 = it;
           _top1Idx = index;
         }
-        it.created2Now = timeAgo(new Date(it.created_at).getTime(), it.time);
+        it.created2Now = timeAgo(new Date(it.created_at).getTime(), new Date().getTime());
       });
       const lastList = _list.filter((_, idx) => idx !== _top1Idx);
       setAllList(_list);
@@ -104,6 +104,15 @@ export interface Trend {
   token_symbol: string;
   updated_at: string;
   virtual_volume: string;
+  market_cap_percentage: string;
+  project_created: string;
+  address: string;
+  like: string;
+  token_decimals: number;
+  token_supply: string;
+  token_reserve: string;
+  sol_reserve: string;
+  market_cap: string;
 
   // front-end attributes
   created2Now?: string;

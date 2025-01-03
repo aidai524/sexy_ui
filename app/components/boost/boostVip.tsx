@@ -22,7 +22,7 @@ export default function BoostVip({ onStartVip, onCanceVip }: Props) {
   const { userInfo }: any = useUser();
 
   const { startTime, endTime, vipType } = useMemo(() => {
-    if (!userInfo) {
+    if (!userInfo?.address) {
       return {
         startTime: -1,
         endTime: -1,

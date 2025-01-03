@@ -11,7 +11,7 @@ export default function Top(props: Props) {
     const _top1Name = trend?.token_symbol;
     const _top1Ticker = trend?.ticker;
     const _top1Icon = trend?.Icon;
-    return [_top1Name, _top1Ticker, _top1Icon, '', '5.23K', '2.2K'];
+    return [_top1Name, _top1Ticker, _top1Icon, '', numberFormatter(trend?.like, 0, true, { isShort: true }), '0'];
   }, [trend]);
 
   const topBadgesRef = useRef<any>();
@@ -90,7 +90,7 @@ export default function Top(props: Props) {
           Market Cap:
         </div>
         <div className={styles.TopMarketCapValue}>
-          {numberFormatter(trend?.market_value, 2, true, { prefix: '$', isShort: Big(trend?.market_value || 0).gt(1e10) })}
+          {numberFormatter(trend?.market_cap, 2, true, { prefix: '$', isShort: Big(trend?.market_value || 0).gt(1e10) })}
         </div>
       </div>
       <div className={styles.TopBuy}>
@@ -151,10 +151,10 @@ export default function Top(props: Props) {
           <div className={styles.LaptopTopMarketCap}>
             <div className={styles.LaptopTopMarketCapValue}>
               <div className="">
-                {numberFormatter(trend?.market_value, 2, true, { prefix: '$', isShort: Big(trend?.market_value || 0).gt(1e10) })}
+                {numberFormatter(trend?.market_cap, 2, true, { prefix: '$', isShort: Big(trend?.market_value || 0).gt(1e10) })}
               </div>
               <div className={styles.LaptopTopMarketCapTrend}>
-                +0.00
+                +{trend?.market_cap_percentage}%
               </div>
             </div>
             <div className={styles.LaptopTopMarketCapLabel}>

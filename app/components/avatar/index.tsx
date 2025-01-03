@@ -9,7 +9,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
   const { address } = useAccount();
   const { isMobile } = useUserAgent();
-  if (!userInfo) {
+  if (!userInfo?.address) {
     return null;
   }
 

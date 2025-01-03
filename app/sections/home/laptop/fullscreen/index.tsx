@@ -92,6 +92,7 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
                 (token.status === 0 ? (
                   <LaunchingActions
                     token={token}
+                    canFlip={false}
                     onLike={async () => {
                       next(1);
                       updateInfo("liked");

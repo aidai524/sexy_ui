@@ -1,10 +1,11 @@
 import Thumbnail from "@/app/components/thumbnail";
+import ThumbnailWithFlip from "@/app/components/thumbnail/with-flip";
 import Panel from "../../../../components/panel";
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
 import { formatAddress, simplifyNum, timeAgo } from "@/app/utils";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useAccount } from "@/app/hooks/useAccount";
 
@@ -61,16 +62,35 @@ export default function InfoPart({
     <div>
       {showTop && (
         <>
-          <Thumbnail
-            showLikes={showLikes}
-            showLaunchType={false}
-            autoHeight={true}
-            showBackIcon={showBackIcon}
-            data={data}
-            showDesc={false}
-            topDesc={showThumbnailHead}
-            showProgress={showThumbnailProgress}
-          />
+          {!isMobile ? (
+            <Thumbnail
+              showLikes={showLikes}
+              showLaunchType={false}
+              autoHeight={true}
+              showBackIcon={showBackIcon}
+              data={data}
+              showDesc={false}
+              topDesc={showThumbnailHead}
+              showProgress={showThumbnailProgress}
+            />
+          ) : (
+            <>
+              <ThumbnailWithFlip
+                showLikes={showLikes}
+                showLaunchType={false}
+                style={{
+                  height: 580
+                }}
+                autoHeight={false}
+                showBackIcon={showBackIcon}
+                data={data}
+                showDesc={false}
+                topDesc={showThumbnailHead}
+                showProgress={showThumbnailProgress}
+              />
+              <Sep size={sepSize} />
+            </>
+          )}
         </>
       )}
       <>

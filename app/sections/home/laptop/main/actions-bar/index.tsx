@@ -21,6 +21,7 @@ export default function ActionsBar({
             onLike={onLike}
             onHate={onHate}
             onSuperLike={onSuperLike}
+            canFlip={false}
             onBoost={() => {
               onBoost();
             }}

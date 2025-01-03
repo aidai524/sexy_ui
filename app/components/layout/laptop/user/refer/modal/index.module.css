@@ -253,4 +253,13 @@
   line-height: normal;
   padding: 0 100px;
   font-family: Unbounded;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease-in-out;
+}
+.InviteBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }

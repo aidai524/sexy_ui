@@ -86,6 +86,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-align: left;
     }
 
     .detailLink {
@@ -116,42 +117,6 @@
 
 .progressItemActive {
   opacity: 1;
-}
-
-.detailTitle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px 0;
-}
-
-.titles {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-
-  .tokenImgBox {
-    border: 1px dashed #fff;
-    border-radius: 46px;
-    display: flex;
-    width: 46px;
-    height: 46px;
-    align-items: center;
-  }
-
-  .tokenImg {
-    width: 46px;
-    height: 46px;
-    border-radius: 46px;
-    opacity: 0.3;
-  }
-
-  .tokenName {
-    font-size: 26px;
-    font-weight: 700;
-    color: #fff;
-  }
 }
 
 .loadMore {

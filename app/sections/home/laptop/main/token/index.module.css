@@ -33,6 +33,7 @@
   width: calc(100% - 360px);
   --part-bg: #55fff4;
   padding-right: 6px;
+  border-radius: 10px;
 }
 
 .EmptyWrapper {
