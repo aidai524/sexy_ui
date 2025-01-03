@@ -40,15 +40,15 @@ export function http(
 
   let _header = headers
     ? {
-      headers: headers
-    }
+        headers: headers
+      }
     : getAuthorizationByLocal()
-      ? {
+    ? {
         headers: {
           authorization: getAuthorizationByLocal()
         }
       }
-      : {};
+    : {};
 
   return fetch(`${BASE_URL}${_path}`, {
     method: method,
@@ -110,16 +110,19 @@ export async function httpAuthGet(
 export async function httpAuthPost(
   path: string,
   params: any = {},
-  isRepeat: boolean = true
+  isRepeat: boolean = true,
+  isJson?: boolean
 ) {
   const authorization = await getAuthorization();
 
   console.log("authorization:", authorization);
 
-  const header = {
-    authorization,
-    'Content-Type': 'application/json'
-  };
+  const header = isJson
+    ? {
+        authorization,
+        "Content-Type": "application/json"
+      }
+    : { authorization };
   const val = await http(path, "POST", params, header);
 
   if (typeof val.code !== "undefined") {
@@ -306,7 +309,7 @@ export function logOut() {
   // @ts-ignore
   window.sexAddress = null;
   window.localStorage.removeItem(AUTH_KEY);
-  deleteCookie('referral')
+  deleteCookie("referral");
 }
 
 export function getFullNum(value: any) {
@@ -327,7 +330,7 @@ export function getFullNum(value: any) {
       }
     }
     return x;
-  } catch (e) { }
+  } catch (e) {}
 
   return value;
 }
@@ -512,7 +515,7 @@ export async function upload(
   return postUpload(_file, newFileName, file.type);
 }
 
-const s3_dir = process.env.NEXT_PUBLIC_S3_DIR || "flip/dev/"
+const s3_dir = process.env.NEXT_PUBLIC_S3_DIR || "flip/dev/";
 
 export async function postUpload(
   _file: any,
@@ -520,9 +523,7 @@ export async function postUpload(
   type: string
 ) {
   const val = await httpAuthPost(
-    `/upload/data?dir=${encodeURIComponent(
-      s3_dir
-    )}&file_name=${newFileName}`
+    `/upload/data?dir=${encodeURIComponent(s3_dir)}&file_name=${newFileName}`
   );
   if (val?.code === 0) {
     const res = await fetch(val.data, {
@@ -647,7 +648,7 @@ export const simplifyNum = (number: number) => {
   if (isNaN(Number(number))) return 0;
 
   if (number < 0.01) {
-    return '<0.01'
+    return "<0.01";
   }
 
   let str_num;
@@ -668,26 +669,35 @@ export function isValidURL(url: string) {
   return regex.test(url);
 }
 
-
-export async function getTransaction(connection: Connection, hash: string, tokenAddress: string, userAddress: string) {
+export async function getTransaction(
+  connection: Connection,
+  hash: string,
+  tokenAddress: string,
+  userAddress: string
+) {
   const transactionDetails = await connection.getTransaction(hash, {
-    commitment: 'confirmed',
+    commitment: "confirmed"
   });
 
   if (transactionDetails?.meta) {
-    const { preTokenBalances, postTokenBalances } = transactionDetails?.meta
+    const { preTokenBalances, postTokenBalances } = transactionDetails?.meta;
 
-    const toeknAddress = tokenAddress
-    const preToken = preTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
-    const postToken = postTokenBalances?.find(item => item.mint === toeknAddress && item.owner === userAddress)
-
+    const toeknAddress = tokenAddress;
+    const preToken = preTokenBalances?.find(
+      (item) => item.mint === toeknAddress && item.owner === userAddress
+    );
+    const postToken = postTokenBalances?.find(
+      (item) => item.mint === toeknAddress && item.owner === userAddress
+    );
 
     if (postToken) {
-      const preAmount = preToken ? preToken.uiTokenAmount.amount : 0
-      const result = new Big(postToken.uiTokenAmount.amount).minus(preAmount).toFixed(0)
-      return result
+      const preAmount = preToken ? preToken.uiTokenAmount.amount : 0;
+      const result = new Big(postToken.uiTokenAmount.amount)
+        .minus(preAmount)
+        .toFixed(0);
+      return result;
     }
   }
 
-  return null
+  return null;
 }
