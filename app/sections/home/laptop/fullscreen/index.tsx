@@ -32,9 +32,9 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
     return list;
   }, [list]);
 
-  const next = (type?: 0 | 1) => {
-    if (type !== undefined) {
-      type ? actionLikeTrigger(list[index]) : actionHateTrigger(list[index]);
+  const next = (_t?: 0 | 1) => {
+    if (_t !== undefined && type !== "launching") {
+      _t ? actionLikeTrigger(list[index]) : actionHateTrigger(list[index]);
     }
 
     if (index === list.length) {
@@ -82,6 +82,7 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
                 showDesc={true}
                 data={token}
                 autoHeight={true}
+                showDropdownIcon={false}
                 style={{
                   height: 620,
                   margin: 0

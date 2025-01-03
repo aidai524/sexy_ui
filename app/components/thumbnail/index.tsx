@@ -45,12 +45,17 @@ export default function Thumbnail({
   const [loadCommentNum, setLoadCommentNum] = useState(1);
   const commentRef = useRef<any>();
   const [height, setHeight] = useState("calc(100vh - 232px)");
+  const [imgHeight, setImgHeight] = useState("80%");
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [stopLoadMore, setStopLoadMore] = useState(false);
+  const descContentRef = useRef<any>();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setHeight(window.innerHeight - 232 + "px");
+    }
+    if (descContentRef.current) {
+      setImgHeight(`calc(100% - ${descContentRef.current.clientHeight}px)`);
     }
   }, []);
 
@@ -149,7 +154,12 @@ export default function Thumbnail({
         )}
 
         <div className={styles.imgList}>
-          <div className={styles.ImgWrapper}>
+          <div
+            className={styles.ImgWrapper}
+            style={{
+              height: imgHeight
+            }}
+          >
             {videoReg.test(data.tokenImg) ? (
               <video
                 width="100%"
@@ -215,7 +225,11 @@ export default function Thumbnail({
                 loadMoreRun();
               }}
             >
-              {data.status === 0 ? <PreUser token={data} /> : <Holder hideBg={true} address={data.address}/>}
+              {data.status === 0 ? (
+                <PreUser token={data} />
+              ) : (
+                <Holder hideBg={true} address={data.address} />
+              )}
             </div>
             {showLoadMore && (
               <LoadMore
@@ -235,7 +249,7 @@ export default function Thumbnail({
         )}
 
         {showDesc && progressIndex === 0 && (
-          <div className={styles.descContent}>
+          <div className={styles.descContent} ref={descContentRef}>
             <Likes data={data} />
 
             <div className={styles.tokenMsg}>
@@ -256,7 +270,7 @@ export default function Thumbnail({
         )}
 
         {showLikes && (
-          <div className={styles.bottomLike}>
+          <div className={styles.bottomLike} ref={descContentRef}>
             <Likes data={data} />{" "}
           </div>
         )}

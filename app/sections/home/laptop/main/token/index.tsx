@@ -184,8 +184,21 @@ export default function Token({
         onBoost={next}
       />
 
-      {!isFull && infoData2 && from !== "detail" && (
-        <NextButton onClick={hate} />
+      {!isFull && infoData2 && from !== "detail" && type && (
+        <NextButton
+          onClick={() => {
+            if (type === 0) {
+              hate();
+            } else {
+              if (!userInfo?.address) {
+                // @ts-ignore
+                window.connect();
+                return;
+              }
+              next();
+            }
+          }}
+        />
       )}
     </div>
   );
