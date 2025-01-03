@@ -185,7 +185,20 @@ export default function Token({
       />
 
       {!isFull && infoData2 && from !== "detail" && (
-        <NextButton onClick={hate} />
+        <NextButton
+          onClick={() => {
+            if (type === 0) {
+              hate();
+            } else {
+              if (!userInfo?.address) {
+                // @ts-ignore
+                window.connect();
+                return;
+              }
+              next();
+            }
+          }}
+        />
       )}
     </div>
   );
