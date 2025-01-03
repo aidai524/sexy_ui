@@ -34,8 +34,12 @@ export default function FollowerModal({
 
   const filteredList = useMemo(() => {
     if (!list?.length) return [];
-    return list.filter((item: any) => item.name.includes(searchVal));
-  }, [list, type]);
+    return list.filter((item: any) => {
+      if (!searchVal) return true;
+      if (!item.name) return false;
+      return item.name.toLowerCase().includes(searchVal.toLowerCase());
+    });
+  }, [list, type, searchVal]);
 
   const title = useMemo(() => {
     let prev = "";
@@ -50,7 +54,10 @@ export default function FollowerModal({
   }, [type, list, walletAddress, currentUserInfo, address]);
 
   useEffect(() => {
-    if (open) setRefresh(refresh + 1);
+    if (open) {
+      setRefresh(refresh + 1);
+      setSearchVal("");
+    }
   }, [open]);
   return (
     <Modal

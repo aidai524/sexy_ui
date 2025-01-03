@@ -88,7 +88,7 @@ const TrendBanner = (props: any) => {
             <div className={styles.Summary}>
               <div className={styles.SummaryLabel}>[Market Cap]</div>
               <div className={styles.SummaryValue}>
-                {numberFormatter(top1?.market_value, 2, true, {
+                {numberFormatter(top1?.market_cap, 2, true, {
                   prefix: "$",
                   isShort: true
                 })}
@@ -96,7 +96,7 @@ const TrendBanner = (props: any) => {
             </div>
             <div className={styles.Summary}>
               <div className={styles.SummaryLabel}>[Progress]</div>
-              <div className={styles.SummaryValue}>0%</div>
+              <div className={styles.SummaryValue}>{top1?.progress}%</div>
             </div>
             {!isMobile && <CreateTime top1={top1} />}
             {!isMobile && (

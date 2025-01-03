@@ -61,7 +61,7 @@ export default function User({ address, userInfo, onQueryInfo, logout }: any) {
             defaultIndex={profileTabIndex}
             tabContentStyle={{
               height: userInfo?.name
-                ? "calc(100vh - 430px)"
+                ? "calc(100vh - 390px)"
                 : "calc(100vh - 408px)",
               overflowY: "auto"
             }}

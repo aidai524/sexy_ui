@@ -8,7 +8,7 @@ const List = (props: any) => {
 
   return (
     <div className={styles.Container}>
-      <div className={styles.Filters}>
+      {/*<div className={styles.Filters}>
         {
           SpacingList.map((s) => (
             <div
@@ -20,7 +20,7 @@ const List = (props: any) => {
             </div>
           ))
         }
-      </div>
+      </div>*/}
       <div className={styles.Table}>
         <div className={styles.TableHeader}>
           <div className={styles.TableRow}>
