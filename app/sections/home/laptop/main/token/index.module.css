@@ -16,14 +16,17 @@
   z-index: 1;
 }
 
+.Wrapper {
+  height: calc(100% - 98px);
+  position: relative;
+  z-index: 2;
+}
+
 .Content {
   display: flex;
   gap: 16px;
   padding-top: 16px;
   padding-left: 24px;
-  height: calc(100% - 98px);
-  position: relative;
-  z-index: 2;
 }
 
 .PanelWrapper {

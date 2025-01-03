@@ -66,6 +66,7 @@ export default function useData(launchType: string) {
   const handleList = useCallback(
     async (isNext?: boolean) => {
       let list = getAll(launchType, userInfo?.address) || [];
+
       if (!isNext) setIsLoading(true);
       const fetchedList = await queryList();
       const data: Record<string, any> = {};
@@ -86,8 +87,8 @@ export default function useData(launchType: string) {
           setInfoData2(mapDataToProject(_list[0]));
           setAll(_list, launchType, userInfo?.address);
         }
-        setIsLoading(false);
       }
+      setIsLoading(false);
     },
     [launchType, userInfo]
   );
@@ -117,7 +118,6 @@ export default function useData(launchType: string) {
       let list = getAll(launchType, userInfo?.address) || [];
       if (list.length === 0) {
         handleList(false);
-        setInfoData2(undefined);
         return;
       }
       if (launchType === "preLaunch") {
@@ -135,12 +135,15 @@ export default function useData(launchType: string) {
       setInfoData2(mapDataToProject(list[0]));
       if (list.length <= left_num) {
         handleList(true);
+      } else {
+        setIsLoading(false);
       }
     },
-    { wait: 500 }
+    { wait: 50 }
   );
 
   useEffect(() => {
+    setInfoData2(undefined);
     debounceList();
   }, [launchType, accountRefresher]);
 

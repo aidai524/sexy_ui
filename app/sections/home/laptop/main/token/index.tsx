@@ -1,5 +1,6 @@
 import ActionsBar from "../actions-bar";
 import styles from "./index.module.css";
+import { motion } from "framer-motion";
 import Header from "./header";
 import TokenCard from "../token-card";
 import InfoPart from "@/app/sections/detail/components/info/infoPart";
@@ -83,8 +84,10 @@ export default function Token({
     actionHateTrigger(infoData2);
   };
 
+  const isListEmpty = useMemo(() => !list?.length, [list]);
+
   return (
-    <>
+    <div>
       <div className={styles.Container}>
         <div className={styles.Flip} />
         <Header
@@ -96,9 +99,25 @@ export default function Token({
           from={from}
         />
 
-        <div className={styles.Content}>
+        <div className={styles.Wrapper}>
           {infoData2 ? (
-            <>
+            <motion.div
+              initial="hidden"
+              animate="show"
+              variants={{
+                hidden: {
+                  opacity: 0
+                },
+                show: {
+                  opacity: 1,
+
+                  transition: {
+                    staggerChildren: 0.3
+                  }
+                }
+              }}
+              className={styles.Content}
+            >
               <TokenCard token={infoData2} />
               {currentTab === "info" && (
                 <PanelWrapper
@@ -139,13 +158,18 @@ export default function Token({
                   <Txs from="laptop-home" data={infoData2} mc={mc} />
                 </PanelWrapper>
               )}
-            </>
+            </motion.div>
           ) : isLoading ? (
             <div className={styles.EmptyWrapper}>
               <Loading size={40} />
             </div>
           ) : (
-            <Empty type={type === 0 ? "preLaunch" : "launching"} from={from} />
+            isListEmpty && (
+              <Empty
+                type={type === 0 ? "preLaunch" : "launching"}
+                from={from}
+              />
+            )
           )}
         </div>
       </div>
@@ -163,6 +187,6 @@ export default function Token({
       {!isFull && infoData2 && from !== "detail" && (
         <NextButton onClick={hate} />
       )}
-    </>
+    </div>
   );
 }
