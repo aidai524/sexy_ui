@@ -5,13 +5,16 @@ import styles from "./index.module.css";
 import { useReferStore } from "@/app/store/useRefer";
 import ReferModal from "@/app/components/layout/laptop/user/refer/modal";
 import { useAccount } from "@/app/hooks/useAccount";
-import { useGuidingTour } from "@/app/store/use-guiding-tour";
+import { usePathname } from 'next/navigation';
 
 const Refer = (props: any) => {
   const { isMobile } = props;
 
+  const pathname = usePathname();
   const store = useReferStore();
   const { address } = useAccount();
+
+  const isProfile = /^\/profile/.test(pathname);
 
   const handleEntryOpen = (e: any) => {
     e.stopPropagation();
@@ -35,12 +38,21 @@ const Refer = (props: any) => {
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
       {isMobile && store.entryVisible ? null : (
-        <div
-          className={isMobile ? styles.EntryMobile : styles.Entry}
-          onClick={handleEntryOpen}
-        >
-          <EntryAnimation />
-        </div>
+        isMobile ? isProfile && (
+          <div
+            className={isMobile ? styles.EntryMobile : styles.Entry}
+            onClick={handleEntryOpen}
+          >
+            <EntryAnimation />
+          </div>
+        ) : (
+          <div
+            className={isMobile ? styles.EntryMobile : styles.Entry}
+            onClick={handleEntryOpen}
+          >
+            <EntryAnimation />
+          </div>
+        )
       )}
       <motion.div
         className={styles.Card}

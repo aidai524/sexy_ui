@@ -41,6 +41,7 @@ const ReferModal = (props: any) => {
       mainStyle={{
         border: 0
       }}
+      maskClose={false}
     >
       <ReferModalContent {...props} />
     </Modal>

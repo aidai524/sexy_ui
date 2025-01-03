@@ -3,9 +3,12 @@ import { formatLongText, numberFormatter } from '@/app/utils/common';
 import { useEffect, useMemo, useRef } from 'react';
 import { Trend } from '@/app/sections/trends/hooks';
 import Big from 'big.js';
+import { useCreator } from '@/app/sections/trends/hooks/creator';
 
 export default function Top(props: Props) {
   const { onBuy, trend, isMobile } = props;
+
+  const creator = useCreator();
 
   const [top1Name, top1Ticker, top1Icon, top1TickerAvatar, top1Likes, top1Holders, top1CreateBy] = useMemo(() => {
     const _top1Name = trend?.token_symbol;
@@ -139,7 +142,15 @@ export default function Top(props: Props) {
               <div className={styles.LaptopTopTickerLabel}>
                 Create by:
               </div>
-              <div className={styles.LaptopTopTickerValue}>
+              <div
+                className={styles.LaptopTopTickerValue}
+                style={{
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  creator.onClick(trend?.project_creator);
+                }}
+              >
                 <img src="/192x192.png" alt="" className={styles.LaptopTopTickerAvatar} />
                 <div>{top1CreateBy}</div>
               </div>
