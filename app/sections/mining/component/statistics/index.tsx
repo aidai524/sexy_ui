@@ -1,6 +1,6 @@
 import LimitProject from "../limitProjects";
 import styles from "./index.module.css";
-import { addThousandSeparator } from "@/app/utils/common";
+import { addThousandSeparator, numberFormatter } from "@/app/utils/common";
 import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Statistics({ itemStyle, style, info }: any) {
@@ -8,9 +8,11 @@ export default function Statistics({ itemStyle, style, info }: any) {
   return (
     <div className={styles.statistics} style={style}>
       <div className={styles.statisticsItem} style={itemStyle}>
-        <div className={styles.statisticsTitle}>Total Mining</div>
+        <div className={styles.statisticsTitle}>My Mining</div>
         <div style={{ fontSize: 26 }} className={styles.value}>
-          {info?.minted ? addThousandSeparator(info?.minted) : "0"}
+          {info?.minted
+            ? numberFormatter(info?.minted, 2, true, { isShort: true })
+            : "0"}
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>

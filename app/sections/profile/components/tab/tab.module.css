@@ -16,17 +16,14 @@
         color: #fff;
       }
     }
-    .tab.active::after {
-      content: " ";
-      display: block;
-      position: absolute;
-      width: 80%;
-      height: 4px;
-      background-color: #fff;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 1000px;
-      bottom: 20%;
-    }
   }
+}
+
+.Line {
+  position: absolute;
+  border-radius: 4px;
+  height: 4px;
+  width: 50%;
+  bottom: 20%;
+  background-color: #fff;
 }

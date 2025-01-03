@@ -12,7 +12,7 @@ export default function Top(props: Props) {
     const _top1Ticker = trend?.ticker;
     const _top1Icon = trend?.Icon;
     const _top1Like = numberFormatter(trend?.like, 0, true, { isShort: true });
-    const _createBy = formatLongText(trend?.address, 3, 4);
+    const _createBy = formatLongText(trend?.project_creator, 3, 4);
     return [_top1Name, _top1Ticker, _top1Icon, '', _top1Like, '0', _createBy];
   }, [trend]);
 

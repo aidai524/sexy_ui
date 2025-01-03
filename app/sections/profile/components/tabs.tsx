@@ -57,6 +57,7 @@ export default function Tabs({
           prepaidWithdrawDelayTime={prepaidDelayTime}
           refresher={flipListKey}
           isCurrent={activeIndex === 2}
+          from={from}
         />
       )
     },
@@ -70,6 +71,7 @@ export default function Tabs({
           prepaidWithdrawDelayTime={prepaidDelayTime}
           refresher={likedListKey}
           isCurrent={activeIndex === 3}
+          from={from}
         />
       )
     }

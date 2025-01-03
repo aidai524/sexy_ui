@@ -175,6 +175,7 @@ input {
   background-color: transparent;
   border: none;
   outline: none;
+  font-family: "Unbounded";
 }
 input::placeholder {
   color: #7e8a93;
