@@ -146,7 +146,6 @@
 }
 
 .ImgWrapper {
-  min-height: 410px;
   max-height: 100%;
   display: flex;
   justify-content: center;

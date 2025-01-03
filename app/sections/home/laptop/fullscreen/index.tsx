@@ -82,6 +82,7 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
                 showDesc={true}
                 data={token}
                 autoHeight={true}
+                showDropdownIcon={false}
                 style={{
                   height: 620,
                   margin: 0

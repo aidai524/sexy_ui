@@ -16,34 +16,33 @@
 .marketCa {
   margin: 20px 5px 5px;
   font-size: 14px;
+}
+.marketCap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #6fff00;
+}
 
-  .marketCap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: #6fff00;
+.ca {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  flex: 1;
+  gap: 10px;
+}
+
+.caAddress {
+  display: flex;
+  align-items: center;
+
+  .caTtitle {
+    color: rgba(255, 255, 255, 0.6);
   }
 
-  .ca {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
-    flex: 1;
-    gap: 10px;
-
-    .caAddress {
-      display: flex;
-      align-items: center;
-
-      .caTtitle {
-        color: rgba(255, 255, 255, 0.6);
-      }
-
-      .address {
-        color: #fff;
-        margin-left: 5px;
-      }
-    }
+  .address {
+    color: #fff;
+    margin-left: 5px;
   }
 }

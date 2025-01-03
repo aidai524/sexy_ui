@@ -81,7 +81,7 @@ export default function InfoPart({
                 showLikes={showLikes}
                 showLaunchType={false}
                 style={{
-                  height: 580
+                  height: 500
                 }}
                 autoHeight={false}
                 showBackIcon={showBackIcon}
