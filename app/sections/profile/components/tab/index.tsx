@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
 import styles from "./tab.module.css";
 
 export type Node = {
@@ -22,6 +23,7 @@ export default function Tab({
   onTabChange
 }: Props) {
   const [tabIndex, setTabIndex] = useState(0);
+  const prevI = useRef<number[]>([0]);
 
   useEffect(() => {
     if (activeNode) {
@@ -47,6 +49,8 @@ export default function Tab({
               onClick={() => {
                 setTabIndex(index);
                 onTabChange && onTabChange(node.name);
+                prevI.current.push(index);
+                if (prevI.current.length > 2) prevI.current.shift();
               }}
               className={(tabIndex === index
                 ? [styles.tab, styles.active]
@@ -54,7 +58,25 @@ export default function Tab({
               ).join(" ")}
               style={tabHeaderStyle}
             >
-              {node.name}
+              <span> {node.name}</span>
+              {tabIndex === index && (
+                <motion.div
+                  initial="hidden"
+                  animate="show"
+                  variants={{
+                    hidden: {
+                      x: index < prevI.current[0] ? "50%" : "-50%"
+                    },
+                    show: {
+                      x: "0%",
+                      transition: {
+                        staggerChildren: 0.3
+                      }
+                    }
+                  }}
+                  className={styles.Line}
+                />
+              )}
             </div>
           );
         })}
