@@ -151,19 +151,6 @@ export default function useData(launchType: string) {
     }
   };
 
-  const onUpdateAfterExitingFull = (index: number) => {
-    if (!listRef.current) return;
-    renderIndexRef.current = 1;
-    listRef.current = listRef.current?.slice(index, listRef.current.length);
-    renderTwoItems(listRef.current);
-    setAll(listRef.current, launchType, userInfo.address);
-    if (listRef.current.length <= left_num) {
-      if (hasNext) {
-        onQueryList(false);
-      }
-    }
-  };
-
   const { run: initList } = useDebounceFn(
     async () => {
       let list = getAll(launchType, userInfo?.address || "");
@@ -222,7 +209,6 @@ export default function useData(launchType: string) {
     isLoading,
     list: listRef,
     renderIndexRef: renderIndexRef,
-    onUpdateAfterExitingFull,
     getnext,
     updateCurrentToken
   };

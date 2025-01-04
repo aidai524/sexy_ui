@@ -33,7 +33,7 @@ Click to view Token details.`,
   ],
   token_list: (item: any) => [
     "Token List",
-    `Congratulations, the ${item.content_2} Token you created has completed the launch and has been listed on [Orca/Raydium] Dex.`,
+    `Congratulations, the ${item.content_2} Token you created has completed the launch and has been listed on [Orca] Dex.`,
     "Click to view Token details.",
     `/detail?address=${item.id}`,
     "Detail"

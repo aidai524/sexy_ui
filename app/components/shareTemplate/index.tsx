@@ -25,6 +25,7 @@ import { fail } from "@/app/utils/toast";
 import { shareToX } from "@/app/utils/share";
 import { DotLoading, Modal } from "antd-mobile";
 import Likes from "../thumbnail/likes";
+import { useAuth } from "@/app/context/auth";
 
 interface Props {
   token: Project | undefined;
@@ -37,6 +38,7 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
   const containerRef = useRef(null);
   const { isMobile } = useUserAgent();
   const [isSharing, setIsSharing] = useState(false);
+  const { userInfo } = useAuth();
 
   useImperativeHandle(ref, () => ({
     getShareImg
@@ -212,7 +214,7 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
                     token.about
                   )}&imgUrl=${encodeURIComponent(img)}&tokenAddress=${
                     token.address
-                  }&referral=${token.address}`
+                  }&referral=${userInfo.address}`
                 );
                 setIsSharing(false);
               }}

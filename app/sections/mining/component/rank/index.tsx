@@ -98,7 +98,7 @@ export default function Rank({ rank }: any) {
             </div>
             <div className={styles.ItemRight}>
               <span>
-                {numberFormatter(item.minted_amount, 2, true, {
+                {numberFormatter(item.minted_amount, 3, true, {
                   isShort: true
                 })}
               </span>

@@ -27,14 +27,13 @@ export default function Content() {
 
   const type = useMemo(() => (tab ? "launching" : "preLaunch"), [tab]);
 
-  const { infoData2, isLoading, list, getnext, onUpdateAfterExitingFull } =
-    useData(type);
+  const { infoData2, isLoading, list, getnext } = useData(type);
 
   useEffect(() => {
     if (fullScreenStore?.isFull) {
       setFullList(JSON.parse(JSON.stringify(list.current || [])));
     }
-  }, [list, fullScreenStore?.isFull]);
+  }, [list.current, fullScreenStore?.isFull]);
 
   return (
     <div className={styles.Container}>
@@ -55,11 +54,11 @@ export default function Content() {
         <Fullscreen
           {...{
             list: fullList,
+            isLoading,
             getnext,
             type,
             onExit(index: number) {
               fullScreenStore.set({ isFull: false });
-              onUpdateAfterExitingFull(index);
             }
           }}
         />

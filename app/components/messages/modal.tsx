@@ -56,7 +56,7 @@ export default function MessagesModal({
                 key={item.id}
                 item={item}
                 isMobile={isMobile}
-                onExpand={onRead}
+                onRead={onRead}
               />
             ))}
             <InfiniteScroll loadMore={onNextPage} hasMore={hasMore}>
@@ -72,7 +72,7 @@ export default function MessagesModal({
   );
 }
 
-const Item = ({ item, isMobile }: any) => {
+const Item = ({ item, isMobile, onRead }: any) => {
   const [expand, setExpand] = useState(false);
   const router = useRouter();
   const { userInfo } = useAuth();
@@ -147,6 +147,7 @@ const Item = ({ item, isMobile }: any) => {
               className="button"
               onClick={() => {
                 setExpand(true);
+                onRead(item.id);
               }}
             >
               <path

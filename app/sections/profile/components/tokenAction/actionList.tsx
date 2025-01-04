@@ -24,6 +24,7 @@ export default function ActionList({
   const [isPrepaid, setIsPrepaid] = useState(false);
 
   const [updateNum, setUpdateNum] = useState(1);
+  const [isClaimed, setIsClaimed] = useState(false);
 
   const { userInfo }: any = useUser();
 
@@ -80,12 +81,19 @@ export default function ActionList({
         </>
       )}
 
-      {token.status === 1 && (
-        <>
-          <Claim {...{ isPrepaid, isOther, prepaidTokenWithdraw }} />
-          <BuySell token={token} />
-        </>
+      {[1, 2, 3].includes(Number(token.status)) && (
+        <Claim
+          {...{
+            isPrepaid,
+            isOther,
+            prepaidTokenWithdraw,
+            isClaimed,
+            setIsClaimed
+          }}
+        />
       )}
+      {[1, 3].includes(Number(token.status)) &&
+        (!(isPrepaid && !isOther) || isClaimed) && <BuySell token={token} />}
     </div>
   );
 }

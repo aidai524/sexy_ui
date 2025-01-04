@@ -5,24 +5,25 @@ import MessagesModal from "./modal";
 import useNum from "./use-num";
 import useList from "./use-list";
 import { useEffect, useState } from "react";
-import useRead from "./use-read";
 import { useAuth } from "@/app/context/auth";
 
 export default function MessagesAlarm() {
-  const [showPop, setShowPop] = useState<boolean>();
   const [showModal, setShowModal] = useState(false);
-  const { list, loading, hasMore, onNextPage, onQuery } = useList();
   const { num, onQuery: onQueryNum } = useNum();
+  const { list, loading, hasMore, onNextPage, onInit } = useList({
+    onSuccess: onQueryNum
+  });
+
   const { userInfo } = useAuth();
-  const { onRead } = useRead();
+
   const feeds: any = [];
+
   useEffect(() => {
-    if (showPop === false) {
-      onRead({
-        ids: list.slice(0, 4).map((item: any) => item.id)
-      });
+    if (showModal) {
+      onInit();
     }
-  }, [showPop]);
+  }, [showModal]);
+
   return (
     <>
       <Badge isSimple={true} number={num}>
@@ -40,13 +41,13 @@ export default function MessagesAlarm() {
                 return;
               }
               if (list?.length) {
-                setShowPop(true);
+                setShowModal(true);
               }
             }}
           >
             <AlarmIcon />
           </div>
-          {showPop && (
+          {/* {showPop && (
             <MessagesPop
               onClose={() => {
                 setShowPop(false);
@@ -61,7 +62,7 @@ export default function MessagesAlarm() {
               onRead={onRead}
               num={num}
             />
-          )}
+          )} */}
         </div>
       </Badge>
       <MessagesModal
@@ -75,7 +76,6 @@ export default function MessagesAlarm() {
         }}
         num={num}
         hasMore={hasMore}
-        onRead={onRead}
       />
     </>
   );

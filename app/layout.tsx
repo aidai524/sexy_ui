@@ -4,7 +4,6 @@ import "./globals.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
-import { MessageContextProvider } from "./context/messageContext";
 import { UserAgentProvider } from "@/app/context/user-agent";
 import { Suspense, useEffect } from "react";
 
@@ -44,11 +43,9 @@ export default function RootLayout({
       <body>
         <WalletConnect>
           <UserAgentProvider>
-            <MessageContextProvider>
-              <Suspense>
-                <Layout>{children}</Layout>
-              </Suspense>
-            </MessageContextProvider>
+            <Suspense>
+              <Layout>{children}</Layout>
+            </Suspense>
           </UserAgentProvider>
         </WalletConnect>
       </body>

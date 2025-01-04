@@ -28,36 +28,29 @@ export const AuthProvider: React.FC<{
   const searchParams = useSearchParams();
   const codeStore: any = useCodeStore();
   const [accountRefresher, setAccountRefresher] = useState(0);
-  const { userInfo, onQueryInfo, setUserInfo, fecthUserInfo } = useUserInfo(
+  const { onQueryInfo, setUserInfo, fecthUserInfo } = useUserInfo(
     address,
     true,
-    accountRefresher
+    0
   );
-
-  useEffect(() => {
-    if (address && userInfo) {
-      userStore.set({
-        userInfo: userInfo
-      });
-
-      setShowLoginModal(false);
-    }
-  }, [userInfo, address]);
 
   const { run: updateAccount } = useDebounceFn(
     async () => {
       // @ts-ignore
       window.walletProvider = walletProvider;
+
       // @ts-ignore
       window.sexAddress = address;
 
+      console.log("auth", address, userStore.userInfo?.address);
       if (address === userStore.userInfo?.address) {
         setAccountRefresher(1);
         updateCurrentUserInfo();
         return;
       }
-      console.log("auth", address, userStore.userInfo?.address);
+
       await initAuthorization();
+      await updateCurrentUserInfo();
       setAccountRefresher(accountRefresher + 1);
     },
     { wait: 500 }
@@ -91,9 +84,15 @@ export const AuthProvider: React.FC<{
   useEffect(() => {
     if (!address) {
       setAccountRefresher(0);
-
+      setTimeout(() => {
+        // @ts-ignore
+        if (!window.sexAddress) {
+          logout();
+        }
+      }, 3000);
       return;
     }
+
     updateAccount();
   }, [address]);
 

@@ -11,7 +11,7 @@ export default function Statistics({ itemStyle, style, info }: any) {
         <div className={styles.statisticsTitle}>My Mining</div>
         <div style={{ fontSize: 26 }} className={styles.value}>
           {info?.minted
-            ? numberFormatter(info?.minted, 2, true, {
+            ? numberFormatter(info?.minted, 3, true, {
                 isShort: true
               })
             : "0"}
@@ -21,7 +21,6 @@ export default function Statistics({ itemStyle, style, info }: any) {
         <div className={styles.statisticsTitle}>You Liked</div>
         <div
           style={{
-            borderBottom: "1px dashed #fff",
             fontSize: isMobile ? 18 : 22
           }}
           className={styles.value}
@@ -37,7 +36,7 @@ export default function Statistics({ itemStyle, style, info }: any) {
             fontSize: isMobile ? 18 : 22
           }}
         >
-          {info?.launching_rate || "0"}%
+          {info?.launching_rate ? info.launching_rate * 100 : "0"}%
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
