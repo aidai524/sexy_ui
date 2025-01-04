@@ -86,7 +86,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
         limit: params.limit,
         offset: params.offset ?? 0,
         text: params.search,
-        order: params.order?.toUpperCase?.(),
+        order: params.order?.toUpperCase?.() ?? '',
       });
       const _list = await formatList(res.data.list);
       return { list: _list, hasMore: res.data.has_next_page };
