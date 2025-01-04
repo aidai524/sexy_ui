@@ -36,6 +36,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
 
   const getPoolToken = async (token: Trend) => {
     try {
+      console.log('getPoolToken programId_address: %o', programId_address);
       const programId = new PublicKey(programId_address);
       const state = PublicKey.findProgramAddressSync(
         [Buffer.from("launchpad")],
