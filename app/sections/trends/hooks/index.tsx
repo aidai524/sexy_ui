@@ -139,7 +139,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
       limit: 20,
       offset: pageIndex,
       search: params.searchText ?? searchText,
-      order: params.orderBy ?? orderBy['market_cap'],
+      order: params.orderBy ?? orderBy['market_cap'] ?? '',
     });
     if (pageIndex === 0) {
       setTableList(res.list);

@@ -44,13 +44,17 @@ const List = (props: any) => {
             <img src="/img/trends/search.svg" alt="" className={styles.TableSearchIcon} />
             <input value={searchText} type="text" className={styles.TableSearchInput} onInput={onSearchText} />
           </div>
-          <button
-            type="button"
-            className={styles.TableSearchRight}
-            onClick={onSearchTextClear}
-          >
-            <img src="/img/trends/close.svg" alt="" className={styles.TableSearchClose} />
-          </button>
+          {
+            !!searchText && (
+              <button
+                type="button"
+                className={styles.TableSearchRight}
+                onClick={onSearchTextClear}
+              >
+                <img src="/img/trends/close.svg" alt="" className={styles.TableSearchClose} />
+              </button>
+            )
+          }
         </div>
       </div>
       <div className={styles.Table}>

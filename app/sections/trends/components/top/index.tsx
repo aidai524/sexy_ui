@@ -190,7 +190,7 @@ export default function Top(props: Props) {
                 })}
               </div>
               <div className={trend?.marketCapTrendsDirection === '-' ? styles.LaptopTopMarketCapTrendDown : styles.LaptopTopMarketCapTrend}>
-                {trend?.marketCapTrendsDirection}{trend?.marketCapTrends}%
+                {trend?.marketCapTrendsDirection === '-' ? '' : trend?.marketCapTrendsDirection}{trend?.marketCapTrends}%
               </div>
             </div>
             <div className={styles.LaptopTopMarketCapLabel}>
