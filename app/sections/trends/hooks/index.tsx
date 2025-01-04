@@ -80,12 +80,13 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     return _list;
   };
 
-  const getList = async (params: { limit: number; offset?: number; search?: string; }) => {
+  const getList = async (params: { limit: number; offset?: number; search?: string; order?: 'desc' | 'asc' | ''; }) => {
     try {
       const res = await httpGet(`/project/trends/list`, {
         limit: params.limit,
         offset: params.offset ?? 0,
         text: params.search,
+        order: params.order?.toUpperCase?.(),
       });
       const _list = await formatList(res.data.list);
       return { list: _list, hasMore: res.data.has_next_page };
@@ -131,10 +132,15 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     setHottestListLoading(false);
   };
 
-  const getTableList = async (params: { pageIndex: number; searchText?: string; }) => {
+  const getTableList = async (params: { pageIndex: number; searchText?: string; orderBy?: 'desc' | 'asc' | '' }) => {
     setTableListLoading(true);
     const { pageIndex } = params;
-    const res = await getList({ limit: 20, offset: pageIndex, search: params.searchText ?? searchText });
+    const res = await getList({
+      limit: 20,
+      offset: pageIndex,
+      search: params.searchText ?? searchText,
+      order: params.orderBy ?? orderBy['market_cap'],
+    });
     if (pageIndex === 0) {
       setTableList(res.list);
     } else {
@@ -159,16 +165,16 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     if (tableListLoading) return;
     if (orderBy[key] === 'asc') {
       setOrderBy({ [key]: 'desc' });
-      getTableListDelay({ pageIndex: 0 });
+      getTableListDelay({ pageIndex: 0, orderBy: 'desc' });
       return;
     }
     if (orderBy[key] === 'desc') {
       setOrderBy({ [key]: '' });
-      getTableListDelay({ pageIndex: 0 });
+      getTableListDelay({ pageIndex: 0, orderBy: '' });
       return;
     }
     setOrderBy({ [key]: 'asc' });
-    getTableListDelay({ pageIndex: 0 });
+    getTableListDelay({ pageIndex: 0, orderBy: 'asc' });
   };
 
   const handleSearchText = (e: any) => {

@@ -99,14 +99,16 @@
   line-height: normal;
 }
 .TopBadges {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   margin-top: 10px;
   padding: 0 10px;
   width: 100%;
   overflow-x: auto;
   scrollbar-width: none;
+}
+.TopBadgesInner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .TopBadge {
   height: 31px;

@@ -1,9 +1,10 @@
 import styles from "./index.module.css";
 import { formatLongText, numberFormatter } from '@/app/utils/common';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Trend } from '@/app/sections/trends/hooks';
 import Big from 'big.js';
 import { useCreator } from '@/app/sections/trends/hooks/creator';
+import { motion } from "framer-motion";
 
 export default function Top(props: Props) {
   const { onBuy, trend, isMobile } = props;
@@ -20,28 +21,14 @@ export default function Top(props: Props) {
   }, [trend]);
 
   const topBadgesRef = useRef<any>();
+  const [contentWidth, setContentWidth] = useState(0);
 
   useEffect(() => {
     if (!topBadgesRef.current) return;
     const scrollWidth = topBadgesRef.current.scrollWidth;
-    const clientWidth = topBadgesRef.current.clientWidth;
-    if (scrollWidth <= clientWidth) return;
-    const timer1 = setInterval(() => {
-      topBadgesRef.current.scrollTo({
-        left: scrollWidth,
-        behavior: 'smooth',
-      });
-    }, 4000);
-    const timer2 = setInterval(() => {
-      topBadgesRef.current.scrollTo({
-        left: 0,
-        behavior: 'smooth',
-      });
-    }, 8000);
-    return () => {
-      clearInterval(timer1);
-      clearInterval(timer2);
-    };
+    const offsetWidth = topBadgesRef.current.offsetWidth;
+    if (scrollWidth <= offsetWidth) return;
+    setContentWidth(scrollWidth - offsetWidth);
   }, [topBadgesRef, trend]);
 
   return isMobile ? (
@@ -81,26 +68,38 @@ export default function Top(props: Props) {
           </div>
         </div>
       </div>
-      <div
+      <motion.div
         className={styles.TopBadges}
         ref={topBadgesRef}
-        style={{
-          justifyContent: topBadgesRef.current?.scrollWidth > topBadgesRef.current?.clientWidth ? 'flex-start' : 'center',
-        }}
       >
-        <div className={[styles.Badge, styles.TopBadge].join(' ')}>
-          Created in {trend?.created2Now?.replace?.(/ago$/, '')}
-        </div>
-        <div
-          className={[styles.Badge, styles.TopBadge].join(' ')}
-          onClick={() => {
-            creator.onClick(trend?.project_creator);
+        <motion.div
+          className={styles.TopBadgesInner}
+          style={{
+            justifyContent: topBadgesRef.current?.scrollWidth > topBadgesRef.current?.offsetWidth ? 'flex-start' : 'center',
+          }}
+          animate={topBadgesRef.current?.scrollWidth > topBadgesRef.current?.offsetWidth ? {
+            x: [10, -contentWidth - 10, 10],
+          } : {}}
+          transition={{
+            duration: 8,
+            ease: 'linear',
+            repeat: Infinity,
           }}
         >
-          <div>Created by</div>
-          <div style={{ color: '#FF37A3' }}>{top1CreateBy}</div>
-        </div>
-      </div>
+          <div className={[styles.Badge, styles.TopBadge].join(' ')}>
+            Created in {trend?.created2Now?.replace?.(/ago$/, '')}
+          </div>
+          <div
+            className={[styles.Badge, styles.TopBadge].join(' ')}
+            onClick={() => {
+              creator.onClick(trend?.project_creator);
+            }}
+          >
+            <div>Created by</div>
+            <div style={{ color: '#FF37A3' }}>{top1CreateBy}</div>
+          </div>
+        </motion.div>
+      </motion.div>
       <div className={styles.TopMarketCap}>
         <div className={styles.TopMarketCapLabel}>
           Market Cap:
