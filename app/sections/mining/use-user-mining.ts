@@ -1,9 +1,9 @@
 import { httpAuthGet } from "@/app/utils";
 import { useEffect, useState } from "react";
-import { useAccount } from "@/app/hooks/useAccount";
+import { useAuth } from "@/app/context/auth";
 
 export default function useUserMining() {
-  const { address: userAddress } = useAccount();
+  const { accountRefresher } = useAuth();
   const [info, setInfo] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
@@ -19,8 +19,8 @@ export default function useUserMining() {
   };
 
   useEffect(() => {
-    if (userAddress) onQuery();
-  }, [userAddress]);
+    if (accountRefresher) onQuery();
+  }, [accountRefresher]);
 
   return {
     info,

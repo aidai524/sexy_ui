@@ -18,12 +18,6 @@ export default function MessagesAlarm() {
 
   const feeds: any = [];
 
-  useEffect(() => {
-    if (showModal) {
-      onInit();
-    }
-  }, [showModal]);
-
   return (
     <>
       <Badge isSimple={true} number={num}>

@@ -57,6 +57,7 @@ export default function MessagesModal({
                 item={item}
                 isMobile={isMobile}
                 onRead={onRead}
+                onClose={onClose}
               />
             ))}
             <InfiniteScroll loadMore={onNextPage} hasMore={hasMore}>
@@ -72,7 +73,7 @@ export default function MessagesModal({
   );
 }
 
-const Item = ({ item, isMobile, onRead }: any) => {
+const Item = ({ item, isMobile, onRead, onClose }: any) => {
   const [expand, setExpand] = useState(false);
   const router = useRouter();
   const { userInfo } = useAuth();
@@ -116,6 +117,7 @@ const Item = ({ item, isMobile, onRead }: any) => {
                 <button
                   className={styles.ItemLink}
                   onClick={() => {
+                    onClose?.();
                     isMobile
                       ? router.push(link)
                       : history.pushState(
@@ -147,7 +149,6 @@ const Item = ({ item, isMobile, onRead }: any) => {
               className="button"
               onClick={() => {
                 setExpand(true);
-                onRead(item.id);
               }}
             >
               <path
