@@ -4,7 +4,7 @@ import { BN } from "@coral-xyz/anchor";
 import Big from "big.js";
 import styles from "../trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
-import { getFullNum } from "@/app/utils";
+import { getFullNum, getPointByVolume, getTransaction } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
@@ -14,6 +14,8 @@ import { useUser } from "@/app/store/useUser";
 import usePump from "@/app/hooks/usePump";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useSlip } from "@/app/store/useSlip";
+import useBalance from "@/app/hooks/useBalance";
+import { useConnection } from "@solana/wallet-adapter-react";
 
 type Token = {
   tokenName: string;
@@ -74,11 +76,9 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
   const [sellOut, setSellOut] = useState("0");
   const [sellOutSol, setSellOutSol] = useState("0");
+  const [reFreshBalnace, setReFreshBalnace] = useState(1)
 
   const { userInfo }: any = useUser();
-
-  const tokenBalance = 0;
-  const solBalance = 0;
 
   useEffect(() => {
     if (initType === "buy") {
@@ -88,12 +88,19 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
     } else {
       setActiveIndex(1);
       setCurrentToken(desToken)
-      setActiveIndex(1);
+      setTokenType(0);
     }
   }, [initType, show]);
 
-  const { buy, sell } = usePump({
-    tokenAddress: "526d8UxmsTQJKN9bbsZsjaYShzRMnPBPQuniBnC1K3Ao"
+  const { solBalance, tokenBalance } = useBalance({
+    mint: token.address as string,
+    tokenDecimals: token.tokenDecimals as number,
+    reFreshBalnace: reFreshBalnace,
+  })
+  const { connection } = useConnection()
+
+  const { buy, sell, estimateToken, estimateSol } = usePump({
+    tokenAddress: token.address as string
   });
 
   const TOKEN_PERCENT_LIST = useMemo(() => {
@@ -108,6 +115,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
       setIsLoading(true);
       if (activeIndex === 0) {
         let buyInSol = "";
+
         if (tokenType === 1) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
@@ -115,13 +123,50 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
             setIsLoading(false);
             return;
           }
+
+          if (Number(debounceVal) > Number(solBalance)) {
+            setIsError(true);
+            setErrorMsg("Invalid balance");
+            return;
+          }
+
+          estimateToken(new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toNumber(), slip)
+            .then(res => {
+              setBuyInSol(debounceVal)
+              setBuyIn(new Big(res).toFixed(desToken.tokenDecimals))
+              setIsLoading(false)
+              setIsError(false)
+            }).catch(e => {
+              setIsLoading(false)
+              setIsError(false)
+            })
+
         } else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
-
             setErrorMsg("Invalid value");
             return;
           }
+
+          if (Number(debounceVal) > Number(tokenBalance)) {
+            setIsError(true);
+            setErrorMsg("Invalid balance");
+            return;
+          }
+
+          estimateSol(new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(), slip / 100)
+            .then(res => {
+              console.log('res:', res, debounceVal)
+
+              setBuyIn(debounceVal)
+              setBuyInSol(new Big(res).div(10 ** SOL.tokenDecimals).toString())
+
+              setIsLoading(false)
+              setIsError(false)
+            }).catch(e => {
+              setIsLoading(false)
+              setIsError(false)
+            })
         }
       } else if (activeIndex === 1) {
         let sellOut = "";
@@ -138,6 +183,18 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
           const sellOut = new Big(debounceVal)
             .mul(10 ** desToken.tokenDecimals)
             .toFixed(0);
+          
+            estimateSol(new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(), slip / 100)
+            .then(res => {
+              setSellOut(sellOut)
+              setSellOutSol(new Big(res).div(10 ** SOL.tokenDecimals).toString())
+              setIsLoading(false)
+              setIsError(false)
+            }).catch(e => {
+              setIsLoading(false)
+              setIsError(false)
+            })
+          
         }
       }
     } else {
@@ -279,10 +336,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
               <div className={styles.paid}>
                 <div>You will paid by</div>
                 <div>
-                  {buyInSol &&
-                    new Big(buyInSol)
-                      .div(10 ** SOL.tokenDecimals)
-                      .toFixed()}{" "}
+                  {buyInSol && buyInSol}{" "}
                   SOL
                 </div>
               </div>
@@ -329,8 +383,8 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
             <div className={styles.receiveAmount}>
               {buyIn
                 ? new Big(buyIn)
-                    .div(10 ** token.tokenDecimals!)
-                    .toFixed(token.tokenDecimals)
+                  .div(10 ** token.tokenDecimals!)
+                  .toFixed(token.tokenDecimals)
                 : ""}{" "}
               {tokenName}
             </div>
@@ -341,31 +395,11 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
             <div className={styles.receiveTitle}>You will get</div>
             <div className={styles.receiveAmount}>
-              {sellOutSol && Number(sellOutSol) > 0
-                ? new Big(sellOutSol)
-                    .div(10 ** SOL.tokenDecimals)
-                    .toFixed(SOL.tokenDecimals)
-                : 0}{" "}
+              {sellOutSol && sellOutSol}{" "}
               SOL
             </div>
           </div>
         )}
-
-        {/* <Button
-          onClick={() => {
-            buy(0.001);
-          }}
-        >
-          buy
-        </Button>
-
-        <Button
-          onClick={() => {
-            sell(10000000);
-          }}
-        >
-          sell
-        </Button> */}
 
         <div style={{ marginTop: 18 }}>
           <MainBtn
@@ -381,15 +415,30 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
                 let hash;
                 if (activeIndex === 0) {
-                  // hash = await trade(buyIn, 'buy')
+                  let showBuyInToken = buyIn
+                  setIsLoading(true);
+                  hash = await buy(Number(buyInSol), slip / 100)
+                  if (hash) {
+                    const _showBuyInToken = await getTransaction(connection, hash, token.address as string, userInfo.address)
+                    if (_showBuyInToken) {
+                      showBuyInToken = _showBuyInToken
+                    }
+                  }
                   setIsLoading(true);
                 } else if (activeIndex === 1) {
-                  // hash = await trade(sellOut, 'sell')
                   setIsLoading(true);
+
+                  console.log('Number(sellOut)', Number(sellOut))
+
+                  hash = await sell(Number(sellOut), slip / 100)
                 }
                 setIsLoading(false);
+                setReFreshBalnace(reFreshBalnace + 1)
 
                 if (hash) {
+                  const volume = activeIndex === 0 ? buyInSol : sellOutSol
+                  const pointByVolume = await getPointByVolume(Big(volume).div(10 ** SOL.tokenDecimals).toFixed(SOL.tokenDecimals), 'pump')
+
                   const modalHandler = Modal.show({
                     content: (
                       <TradeSuccessModal
@@ -400,7 +449,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                         amount={new Big(activeIndex === 0 ? buyIn : sellOut)
                           .div(10 ** token.tokenDecimals!)
                           .toFixed(2)}
-                        point={'0'}
+                        point={pointByVolume}
                         onClose={() => {
                           modalHandler.close();
                         }}
@@ -413,6 +462,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                   setValInput("");
                   onClose();
                 }
+
               } catch (e) {
                 console.log(e);
                 setIsLoading(false);

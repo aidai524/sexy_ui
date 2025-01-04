@@ -1111,34 +1111,6 @@ export function useTokenTrade({
   };
 }
 
-async function wrapToWSol(
-  provider: any,
-  connection: any,
-  user: PublicKey,
-  wsolAccount: PublicKey,
-  amount: any
-) {
-  const latestBlockhash = await connection?.getLatestBlockhash();
-
-  const transaction = new Transaction({
-    recentBlockhash: latestBlockhash!.blockhash,
-    feePayer: provider.publicKey!
-  }).add(
-    SystemProgram.transfer({
-      fromPubkey: user,
-      toPubkey: wsolAccount,
-      lamports: amount
-    }),
-    createSyncNativeInstruction(wsolAccount, TOKEN_PROGRAM_ID)
-  );
-
-  const txid = await provider.signAndSendTransaction(transaction);
-  console.log("wrapToWSol txId:" + txid);
-
-  let balance = await connection.getTokenAccountBalance(wsolAccount);
-  console.log("TokenAccount balance: ", balance.value);
-}
-
 async function _getRate(
   program: Program,
   pool: PublicKey,

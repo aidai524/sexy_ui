@@ -88,12 +88,6 @@ export async function pumpFunBuy(mintStr: string, solIn: number, slippageDecimal
         txBuilder.add(instruction);
 
 
-        const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
-            units: 1000000,
-        });
-      
-        txBuilder.add(modifyComputeUnits)
-
         const hash = await walletProvider.signAndSendTransaction(txBuilder)
 
         console.log('hash', hash)
@@ -143,6 +137,8 @@ export async function pumpFunSell(mintStr: string, tokenBalance: number, slippag
 
         const minSolOutput = Math.floor(tokenBalance! * (1 - slippageDecimal) * coinData["virtual_sol_reserves"] / coinData["virtual_token_reserves"]);
 
+        console.log('minSolOutput:', minSolOutput)
+
         const keys = [
             { pubkey: GLOBAL, isSigner: false, isWritable: false },
             { pubkey: FEE_RECIPIENT, isSigner: false, isWritable: true },
@@ -170,12 +166,6 @@ export async function pumpFunSell(mintStr: string, tokenBalance: number, slippag
             data: data
         });
         txBuilder.add(instruction);
-
-        const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
-            units: 1000000,
-        });
-      
-        txBuilder.add(modifyComputeUnits)
 
         const hash = await walletProvider.signAndSendTransaction(txBuilder)
 

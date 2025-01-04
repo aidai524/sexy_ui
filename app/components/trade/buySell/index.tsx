@@ -133,7 +133,6 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
           getRate({
             solAmount: buyInSol
           }).then((res: any) => {
-            console.log('2222', res)
 
             const buyIn = new Big(res)
               .mul(1 - slip / 100)

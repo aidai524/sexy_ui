@@ -12,29 +12,29 @@ export default function usePump({ tokenAddress }: Props) {
     const { connection } = useConnection()
     const { walletProvider } = useAccount()
 
-    const buy = useCallback(async (amount: number) => {
-        const hash = await pumpFunBuy(tokenAddress, amount, 0.25, connection, walletProvider);
+    const buy = useCallback(async (amount: number, slippageDecimal: number) => {
+        const hash = await pumpFunBuy(tokenAddress, amount, slippageDecimal, connection, walletProvider);
 
         return hash
     }, [connection, walletProvider, tokenAddress])
 
-    const sell = useCallback(async (amount: number) => {
-        const hash = await pumpFunSell(tokenAddress, amount, 0.25, connection, walletProvider);
-
+    const sell = useCallback(async (amount: number, slippageDecimal: number) => {
+        const hash = await pumpFunSell(tokenAddress, amount, slippageDecimal, connection, walletProvider);
         return hash
     }, [connection, walletProvider, tokenAddress])
 
     const estimateToken = useCallback(async (solIn: number, slippageDecimal: number) => {
         const coinData = await getCoinData(tokenAddress)
-        const solInLamports = solIn * LAMPORTS_PER_SOL;
-        const tokenOut = Math.floor(solInLamports * coinData["virtual_token_reserves"] / coinData["virtual_sol_reserves"]);
-
+        const tokenOut = Math.floor(solIn * coinData["virtual_token_reserves"] / coinData["virtual_sol_reserves"]);
         return tokenOut
     }, [tokenAddress])
 
     const estimateSol = useCallback(async (tokenBalance: number, slippageDecimal: number) => {
         const coinData = await getCoinData(tokenAddress)
+        console.log('estimateSol', slippageDecimal, tokenBalance, coinData)
         const minSolOutput = Math.floor(tokenBalance! * (1 - slippageDecimal) * coinData["virtual_sol_reserves"] / coinData["virtual_token_reserves"]);
+
+        console.log('minSolOutput:', minSolOutput)
 
         return minSolOutput
     }, [tokenAddress])

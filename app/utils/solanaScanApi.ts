@@ -19,7 +19,7 @@ export async function getHoldersByToken(address: string, page: number = 1, pageS
 }
 
 export async function getTokenMeta(address: string) {
-    return fetch(`${api_prefix}/token/meta?address=${'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'}`, {
+    return fetch(`${api_prefix}/token/meta?address=${address}`, {
         headers: {
             token: solana_api_key
         }
