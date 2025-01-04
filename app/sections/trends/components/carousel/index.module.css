@@ -33,7 +33,7 @@
   height: 33px;
   display: flex;
   align-items: stretch;
-  animation: slideToRight linear 4s infinite;
+  /*animation: slideToRight linear 4s infinite;*/
   margin-left: -100%;
   will-change: transform;
 }
