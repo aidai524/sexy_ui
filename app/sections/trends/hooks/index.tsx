@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { httpGet, timeAgo } from '@/app/utils';
+import { httpAuthGet, httpGet, timeAgo } from '@/app/utils';
 import { useTrendsStore } from '@/app/store/useTrends';
 import { PublicKey } from '@solana/web3.js';
-import { programId_address } from '@/app/utils/config';
+import { programId_address, total_supply } from '@/app/utils/config';
 import Big from 'big.js';
 import { Program } from '@coral-xyz/anchor';
 import idl from '@/app/hooks/meme_launchpad.json';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { trim } from 'lodash';
 import { useDebounceFn } from 'ahooks';
+import { useConfig } from '@/app/store/useConfig';
 
 export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolean; }) {
   const { isPollingTop1, isListPage = true } = props ?? {};
@@ -22,6 +23,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     setHottestList,
   } = useTrendsStore();
   const { connection } = useConnection();
+  const { config }: any = useConfig();
 
   const [top1Loading, setTop1Loading] = useState<boolean>(false);
   const [tableListLoading, setTableListLoading] = useState<boolean>(false);
@@ -47,12 +49,22 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
       ],
       programId
     );
-    if (!pool?.length) return Big(0);
+    if (!pool?.length) {
+      return {
+        poolAmount: Big(0),
+        solAmount: Big(0),
+      };
+    }
     const program = new Program<any>(idl, programId, {
       connection: connection
     } as any);
     const poolData: any = await program.account.pool.fetch(pool[0]);
-    return Big(poolData!.virtualTokenAmount.toNumber());
+    const poolToken = Big(poolData!.virtualTokenAmount.toNumber());
+    const solToken = Big(poolData!.virtualWsolAmount.toNumber());
+    return {
+      poolAmount: poolToken,
+      solAmount: solToken,
+    };
   };
 
   const formatList = async (_list: Trend[] = []) => {
@@ -60,8 +72,10 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     for (let i = 0; i < _list.length; i++) {
       const it = _list[i];
       it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
-      const poolToken = await getPoolToken(it);
-      it.progress = Big(poolToken).minus(295840542120770).div(Big(1095840542120770).minus(295840542120770)).times(100).toFixed(2);
+      const { poolAmount, solAmount } = await getPoolToken(it);
+      it.progress = Big(poolAmount).minus(295840542120770).div(Big(1095840542120770).minus(295840542120770)).times(100).toFixed(2);
+      it.poolAmount = poolAmount;
+      it.solAmount = solAmount;
     }
     return _list;
   };
@@ -73,23 +87,6 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
         offset: params.offset ?? 0,
         text: params.search,
       });
-      // const _list: Trend[] = res.data.list || [];
-      // let _top1: Trend = _list[0];
-      // let _top1Idx = 0;
-      // for (let i = 0; i < _list.length; i++) {
-      //   const it = _list[i];
-      //   if (it.ranking < _top1?.ranking) {
-      //     _top1 = it;
-      //     _top1Idx = i;
-      //   }
-      //   it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
-      //   const poolToken = await getPoolToken(it);
-      //   it.progress = Big(poolToken).minus(295840542120770).div(Big(1095840542120770).minus(295840542120770)).times(100).toFixed(2);
-      // }
-      // const lastList = _list.filter((_, idx) => idx !== _top1Idx);
-      // setAllList(_list);
-      // setList(lastList);
-      // setTop1(_top1);
       const _list = await formatList(res.data.list);
       return { list: _list, hasMore: res.data.has_next_page };
     } catch (err) {
@@ -101,7 +98,29 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   const getTop1 = async () => {
     setTop1Loading(true);
     const res = await getList({ limit: 1, search: '' });
-    setTop1(res.list[0]);
+    const _top1 = res.list[0];
+    // calc market cap trends
+    if (_top1) {
+      const tokenMintAddress = new PublicKey(_top1.address);
+      const tokenSupplyInfo = await connection.getTokenSupply(tokenMintAddress);
+      const uiAmount = tokenSupplyInfo.value.uiAmount;
+      const prevMarketCap = Big(_top1.solAmount ?? 0)
+        .div(10 ** 9)
+        .mul(10 ** _top1.token_decimals)
+        .mul(config.SolPrice)
+        .div(_top1.poolAmount ?? 0)
+        .mul(uiAmount || total_supply)
+      const diffMarketCap = Big(_top1.market_cap).minus(prevMarketCap);
+      _top1.marketCapTrendsDirection = '+';
+      if (!Big(prevMarketCap).eq(0)) {
+        const _marketCapTrends = Big(diffMarketCap).div(prevMarketCap).times(100);
+        _top1.marketCapTrends = _marketCapTrends.toFixed(2);
+        if (_marketCapTrends.lt(0)) {
+          _top1.marketCapTrendsDirection = '-';
+        }
+      }
+    }
+    setTop1(_top1);
     setTop1Loading(false);
   };
 
@@ -233,4 +252,8 @@ export interface Trend {
   // front-end attributes
   created2Now?: string;
   progress?: string;
+  poolAmount?: Big.Big;
+  solAmount?: Big.Big;
+  marketCapTrends?: string;
+  marketCapTrendsDirection?: '+' | '-';
 }

@@ -23,7 +23,7 @@ const AirdropEntry = () => {
   useEffect(() => {
     if (!airdropData) return;
     const { clime_pump } = airdropData;
-    if (!clime_pump) {
+    if (typeof clime_pump === 'boolean' && !clime_pump) {
       setVisible(true);
     }
   }, [airdropData]);
