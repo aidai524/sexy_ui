@@ -5,9 +5,11 @@ import { useCreator } from '@/app/sections/trends/hooks/creator';
 import Empty from '@/app/components/empty';
 import InfiniteScrollContent from '@/app/components/infinite-scroll-content';
 import { InfiniteScroll } from 'antd-mobile';
+import TrendsLoading from '@/app/sections/trends/components/loading';
 
 const List = (props: any) => {
   const {
+    loading,
     data,
     orderBy,
     onOrderBy,
@@ -124,54 +126,68 @@ const List = (props: any) => {
           }}
         >
           {
-            data.length > 0 ? data.map((item: any, index: number) => (
-              <div className={[styles.TableRow, styles.TableRowBody].join(' ')} key={index}>
-                <div className={styles.TableCol}>
-                  <img src={item.Icon} alt="" className={styles.TokenImg} />
-                  <div>{item.token_symbol}</div>
-                </div>
-                <div
-                  className={styles.TableCol}
-                  style={{ cursor: 'pointer', color: '#55FFF4', fontSize: 16 }}
-                  onClick={() => {
-                    creator.onClick(item.project_creator);
-                  }}
-                >
-                  {item.address ? `${item.project_creator.slice(0, 3)}*${item.address.slice(-4)}` : '-'}
-                </div>
-                <div className={styles.TableCol}>
-                  {numberFormatter(item.market_cap, 2, true, { prefix: '$', isShort: true })}
-                </div>
-                <div className={styles.TableCol}>
-                  {item.progress}%
-                </div>
-                {/*<div className={styles.TableCol} style={{ color: index % 2 === 0 ? '#6FFF00' : '#FF378B' }}>
-                 +{item.market_cap_percentage}%
-                 </div>*/}
-                {/*<div className={styles.TableCol}>
-                 {numberFormatter(item.virtual_volume, 2, true, { prefix: '$', isShort: true })}
-                 </div>*/}
-              </div>
-            )) : (
-              <Empty
-                text="No Data"
-                icon="/img/trends/empty.svg"
-                textStyle={{
-                  fontSize: 12,
-                  fontWeight: 300,
-                  color: '#9290B1',
-                }}
-              />
+            loading ? (
+              <TrendsLoading />
+            ) : (
+              <>
+                {
+                  data.length > 0 ? (
+                    <>
+                      {
+                        data.map((item: any, index: number) => (
+                          <div className={[styles.TableRow, styles.TableRowBody].join(' ')} key={index}>
+                            <div className={styles.TableCol}>
+                              <img src={item.Icon} alt="" className={styles.TokenImg} />
+                              <div>{item.token_symbol}</div>
+                            </div>
+                            <div
+                              className={styles.TableCol}
+                              style={{ cursor: 'pointer', color: '#55FFF4', fontSize: 16 }}
+                              onClick={() => {
+                                creator.onClick(item.project_creator);
+                              }}
+                            >
+                              {item.address ? `${item.project_creator.slice(0, 3)}*${item.address.slice(-4)}` : '-'}
+                            </div>
+                            <div className={styles.TableCol}>
+                              {numberFormatter(item.market_cap, 2, true, { prefix: '$', isShort: true })}
+                            </div>
+                            <div className={styles.TableCol}>
+                              {item.progress}%
+                            </div>
+                            {/*<div className={styles.TableCol} style={{ color: index % 2 === 0 ? '#6FFF00' : '#FF378B' }}>
+                             +{item.market_cap_percentage}%
+                             </div>*/}
+                            {/*<div className={styles.TableCol}>
+                             {numberFormatter(item.virtual_volume, 2, true, { prefix: '$', isShort: true })}
+                             </div>*/}
+                          </div>
+                        ))
+                      }
+                      <InfiniteScroll
+                        loadMore={() => {
+                          return getTableList({ pageIndex: tableListPageIndex });
+                        }}
+                        hasMore={tableListPageMore}
+                      >
+                        <InfiniteScrollContent hasMore={tableListPageMore} text=" " />
+                      </InfiniteScroll>
+                    </>
+                  ) : (
+                    <Empty
+                      text="No Data"
+                      icon="/img/trends/empty.svg"
+                      textStyle={{
+                        fontSize: 12,
+                        fontWeight: 300,
+                        color: '#9290B1',
+                      }}
+                    />
+                  )
+                }
+              </>
             )
           }
-          <InfiniteScroll
-            loadMore={() => {
-              return getTableList({ pageIndex: tableListPageIndex });
-            }}
-            hasMore={tableListPageMore}
-          >
-            <InfiniteScrollContent hasMore={tableListPageMore} text=" " />
-          </InfiniteScroll>
         </div>
       </div>
     </div>

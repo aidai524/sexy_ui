@@ -91,7 +91,12 @@ export default function Top(props: Props) {
         <div className={[styles.Badge, styles.TopBadge].join(' ')}>
           Created in {trend?.created2Now?.replace?.(/ago$/, '')}
         </div>
-        <div className={[styles.Badge, styles.TopBadge].join(' ')}>
+        <div
+          className={[styles.Badge, styles.TopBadge].join(' ')}
+          onClick={() => {
+            creator.onClick(trend?.project_creator);
+          }}
+        >
           <div>Created by</div>
           <div style={{ color: '#FF37A3' }}>{top1CreateBy}</div>
         </div>
@@ -185,8 +190,8 @@ export default function Top(props: Props) {
                   isShort: Big(trend?.market_cap || 0).gt(1e10)
                 })}
               </div>
-              <div className={styles.LaptopTopMarketCapTrend}>
-                +{trend?.market_cap_percentage}%
+              <div className={trend?.marketCapTrendsDirection === '-' ? styles.LaptopTopMarketCapTrendDown : styles.LaptopTopMarketCapTrend}>
+                {trend?.marketCapTrendsDirection}{trend?.marketCapTrends}%
               </div>
             </div>
             <div className={styles.LaptopTopMarketCapLabel}>

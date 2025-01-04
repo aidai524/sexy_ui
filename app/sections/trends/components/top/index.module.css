@@ -280,6 +280,10 @@
   font-weight: 700;
   line-height: normal;
 }
+.LaptopTopMarketCapTrendDown {
+  composes: LaptopTopMarketCapTrend;
+  color: #FF2F74;
+}
 .LaptopTopMarketCapLabel {
   color: rgba(255, 255, 255, 0.63);
   font-size: 16px;

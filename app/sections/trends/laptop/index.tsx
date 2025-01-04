@@ -14,6 +14,9 @@ const Laptop = (props: any) => {
     tableList,
     hottestList,
     top1,
+    top1Loading,
+    tableListLoading,
+    hottestListLoading,
     getHottestList,
     getTableList,
     handleCurrentFilter,
@@ -41,11 +44,12 @@ const Laptop = (props: any) => {
         <GoBack />
       </div>
       <Top onBuy={() => handleBuy(top1)} trend={top1} />
-      <Hottest data={hottestList} onBuy={handleBuy} />
+      <Hottest data={hottestList} onBuy={handleBuy} loading={hottestListLoading} />
       <List
+        loading={top1Loading || tableListLoading || hottestListLoading}
         currentFilter={currentFilter}
         onCurrentFilter={handleCurrentFilter}
-        data={tableList}
+        data={tableList?.filter?.((it) => top1?.address !== it.address && !hottestList?.some((_it) => _it.address === it.address))}
         orderBy={orderBy}
         onOrderBy={handleOrderBy}
         searchText={searchText}
