@@ -1,0 +1,52 @@
+.Container {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  height: 56px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, rgba(240, 35, 255, 0.80) 0%, rgba(118, 134, 255, 0.80) 100%);
+  backdrop-filter: blur(4.5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 4px;
+  padding: 0 12px 0 5px;
+}
+.Left {
+  flex-shrink: 0;
+}
+.Icon {
+  width: 56px;
+  height: 56px;
+}
+.Text {
+  flex: 1;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+.TextPrimary {
+  font-weight: 700;
+}
+.Button {
+  flex-shrink: 0;
+  width: 66px;
+  height: 28px;
+  border-radius: 14px;
+  background: #FF2A84;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+}

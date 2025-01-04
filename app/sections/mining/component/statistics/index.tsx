@@ -11,7 +11,9 @@ export default function Statistics({ itemStyle, style, info }: any) {
         <div className={styles.statisticsTitle}>My Mining</div>
         <div style={{ fontSize: 26 }} className={styles.value}>
           {info?.minted
-            ? numberFormatter(info?.minted, 2, true, { isShort: true })
+            ? numberFormatter(info?.minted, 2, true, {
+                isShort: true
+              })
             : "0"}
         </div>
       </div>

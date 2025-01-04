@@ -37,8 +37,8 @@ export default function useNotice() {
       if (response.data?.list) {
         list = [...list, ...response.data.list];
       }
-      // TODO
-      // onToast(list);
+
+      onToast(list);
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         onQuery();
@@ -47,6 +47,6 @@ export default function useNotice() {
   };
 
   useEffect(() => {
-    if (accountRefresher && process.env.NODE_ENV !== "development") onQuery();
+    if (accountRefresher) onQuery();
   }, [accountRefresher]);
 }

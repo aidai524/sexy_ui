@@ -81,13 +81,19 @@ export default function Top(props: Props) {
           </div>
         </div>
       </div>
-      <div className={styles.TopBadges} ref={topBadgesRef}>
+      <div
+        className={styles.TopBadges}
+        ref={topBadgesRef}
+        style={{
+          justifyContent: topBadgesRef.current?.scrollWidth > topBadgesRef.current?.clientWidth ? 'flex-start' : 'center',
+        }}
+      >
         <div className={[styles.Badge, styles.TopBadge].join(' ')}>
           Created in {trend?.created2Now?.replace?.(/ago$/, '')}
         </div>
         <div className={[styles.Badge, styles.TopBadge].join(' ')}>
           <div>Created by</div>
-          <div style={{ color: '#FF37A3' }}>{top1Ticker}</div>
+          <div style={{ color: '#FF37A3' }}>{top1CreateBy}</div>
         </div>
       </div>
       <div className={styles.TopMarketCap}>

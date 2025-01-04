@@ -50,8 +50,8 @@ export default function Rank({ rank }: any) {
       <div
         className={styles.List}
         style={{
-          height: isMobile ? "calc(100vh - 468px)" : "calc(100vh - 560px)",
-          padding: isMobile ? "0px 0px 20px" : "0px 30px"
+          height: isMobile ? "auto" : "calc(100vh - 510px)",
+          padding: isMobile ? 0 : "0px 30px"
         }}
       >
         {list.map((item: any, index: number) => (

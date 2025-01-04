@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Tab from "@/app/components/tab";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import CircleLoading from "@/app/components/icons/loading";
+import MobileBg from "./mobile-bg";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 export default function Detail({ infoData, getDetailInfo }: any) {
@@ -47,61 +48,61 @@ export default function Detail({ infoData, getDetailInfo }: any) {
       </div>
     );
   }
-
   return (
     <SexPullToRefresh
       onRefresh={async () => {
         await getDetailInfo();
       }}
     >
-      <div
-        className={styles.main}
-        style={{ minHeight: "100vh", background: "rgba(255, 38, 129, 1)" }}
-      >
-        <AvatarBack data={infoData} />
+      <div className={styles.main}>
+        <MobileBg className={styles.Bg} />
+        <div className={styles.Content}>
+          <AvatarBack data={infoData} />
 
-        {infoData.status === 0 ? (
-          <Info
-            data={infoData}
-            mc={mc}
-            onUpdate={() => {
-              getDetailInfo();
-            }}
-          />
-        ) : (
-          <Tab
-            activeNode={activeKey}
-            onTabChange={(nodeName) => {
-              setActiveKey(nodeName);
-            }}
-            nodes={[
-              {
-                name: "Info",
-                content: (
-                  <Info
-                    mc={mc}
-                    data={infoData}
-                    onUpdate={() => {
-                      getDetailInfo();
-                    }}
-                  />
-                )
-              },
-              {
-                name: "Chart",
-                content: <Chart data={infoData} />
-              },
-              {
-                name: "Buy/Sell",
-                content: <Trade mc={mc} from="mobile" data={infoData} />
-              },
-              {
-                name: "Txs",
-                content: <Txs mc={mc} data={infoData} />
-              }
-            ]}
-          />
-        )}
+          {infoData.status === 0 ? (
+            <Info
+              data={infoData}
+              mc={mc}
+              onUpdate={() => {
+                getDetailInfo();
+              }}
+            />
+          ) : (
+            <Tab
+              activeNode={activeKey}
+              onTabChange={(nodeName) => {
+                setActiveKey(nodeName);
+              }}
+              nodes={[
+                {
+                  name: "Info",
+                  content: (
+                    <Info
+                      mc={mc}
+                      data={infoData}
+                      onUpdate={() => {
+                        getDetailInfo();
+                      }}
+                    />
+                  )
+                },
+                {
+                  name: "Chart",
+                  content: <Chart data={infoData} />
+                },
+                {
+                  name: "Buy/Sell",
+                  content: <Trade mc={mc} from="mobile" data={infoData} />
+                },
+                {
+                  name: "Txs",
+                  content: <Txs mc={mc} data={infoData} />
+                }
+              ]}
+            />
+          )}
+        </div>
+        {activeKey === "Info" && <MobileBg className={styles.BottomBg} />}
       </div>
     </SexPullToRefresh>
   );

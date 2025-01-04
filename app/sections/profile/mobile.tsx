@@ -9,6 +9,7 @@ import FollowBtn from "./components/followBtn";
 import PointsLabel from "@/app/components/points-label";
 import { useReferStore } from "@/app/store/useRefer";
 import { useAuth } from "@/app/context/auth";
+import AirdropEntry from '@/app/components/airdrop/entry';
 
 export default function Profile({
   userInfo,
@@ -45,6 +46,7 @@ export default function Profile({
       className={styles.main}
       style={store.entryVisible ? { paddingBottom: 200 } : {}}
     >
+      <AirdropEntry />
       <div style={backgroundImgStyle1} className={styles.avatarBox}>
         <div className={styles.Points}>
           <PointsLabel reverse={true} bg="transparent" />

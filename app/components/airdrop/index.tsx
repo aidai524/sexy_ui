@@ -12,24 +12,36 @@ import InfiniteScrollContent from '@/app/components/infinite-scroll-content';
 const AirdropList = (props: any) => {
   const {} = props;
 
-  const context = useContext(AirdropContext);
+  const {
+    claiming,
+    pointListLoading,
+    getList,
+    handleBind,
+    getAirdropData,
+    pointList,
+    pointListPageMore,
+    handleClaim,
+    airdropDataLoading,
+    airdropData,
+  } = useContext(AirdropContext);
 
   const btnLoading = useMemo(() => {
-    return context.claiming || context.pointListLoading;
-  }, [context.claiming, context.pointListLoading]);
+    return claiming || pointListLoading || airdropDataLoading;
+  }, [claiming, pointListLoading, airdropDataLoading]);
 
   useEffect(() => {
-    context?.getList?.();
-    context?.handleBind?.();
+    getList?.();
+    handleBind?.();
+    getAirdropData?.();
   }, []);
 
   return (
     <AirdropCard title="Congratulations!">
       <div className={styles.Content}>
         {
-          !!context.pointList?.length ? (
+          !!pointList?.length ? (
             <>
-              {context.pointList?.map((it, idx) => (
+              {pointList?.map((it, idx) => (
                 <div key={idx} className={styles.Card}>
                   <div className={styles.CardTitle}>
                     {/*Lv. <span className={styles.CardTitlePrimary}>4</span>*/}
@@ -41,10 +53,10 @@ const AirdropList = (props: any) => {
                 </div>
               ))}
               <InfiniteScroll
-                loadMore={context?.getList as () => Promise<void>}
-                hasMore={context.pointListPageMore as boolean}
+                loadMore={getList as () => Promise<void>}
+                hasMore={pointListPageMore as boolean}
               >
-                <InfiniteScrollContent hasMore={context.pointListPageMore} />
+                <InfiniteScrollContent hasMore={pointListPageMore} />
               </InfiniteScroll>
             </>
           ) : (
@@ -81,7 +93,7 @@ const AirdropList = (props: any) => {
             opacity: btnLoading ? 0.3 : 1,
             cursor: btnLoading ? 'not-allowed' : 'pointer',
           }}
-          onClick={context.handleClaim}
+          onClick={handleClaim}
           disabled={btnLoading}
         >
           {
@@ -89,7 +101,9 @@ const AirdropList = (props: any) => {
               <Loading size={16} />
             )
           }
-          <div>Claim</div>
+          <div>
+            {airdropData?.clime_pump ? 'Earn More' : 'Claim'}
+          </div>
         </button>
       </div>
     </AirdropCard>

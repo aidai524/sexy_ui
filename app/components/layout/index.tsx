@@ -10,6 +10,8 @@ import { AuthProvider } from "@/app/context/auth";
 import AirdropModal from '@/app/components/airdrop/modal';
 import { useSearchParams } from 'next/navigation';
 import { useWallet } from '@solana/wallet-adapter-react';
+import Cookies from 'js-cookie';
+import { useAirdropStore } from '@/app/store/use-airdrop';
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
@@ -17,20 +19,19 @@ export default function Layout(props: any) {
   const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
   const search = useSearchParams();
   const { publicKey } = useWallet();
+  const { setVisible: setAirdropVisible } = useAirdropStore();
 
   const isAirdrop = useMemo(() => {
     if (!publicKey) return false;
     if (!search.get('referral')) return false;
     if (publicKey.toString() === search.get('referral')) return false;
+    if (!Cookies.get('referral')) {
+      console.log('referral saved: %o', search.get('referral'));
+      Cookies.set('referral', search.get('referral') as string, { path: '/' });
+    }
     if (!search.get('airdrop')) return false;
     return true;
   }, [search, publicKey]);
-
-  const [airdropVisible, setAirdropVisible] = useState(false);
-
-  const handleAirdropClose = () => {
-    setAirdropVisible(false);
-  };
 
   const { getConfig } = useTokenTrade({
     tokenName: "",
@@ -59,10 +60,7 @@ export default function Layout(props: any) {
   return (
     <AuthProvider>
       {isMobile ? <Mobile {...props} /> : <Laptop {...props} />}
-      <AirdropModal
-        visible={airdropVisible}
-        onClose={handleAirdropClose}
-      />
+      <AirdropModal />
     </AuthProvider>
   );
 }

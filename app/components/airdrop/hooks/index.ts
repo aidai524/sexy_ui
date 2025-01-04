@@ -1,16 +1,17 @@
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { httpAuthGet, httpAuthPost } from '@/app/utils';
 import { fail, success } from '@/app/utils/toast';
 import { useReferStore } from '@/app/store/useRefer';
+import { useAirdropStore } from '@/app/store/use-airdrop';
 
-export function useAirdrop(props: any): Airdrop {
-  const { onClose } = props;
-
+export function useAirdrop(): Airdrop {
   const search = useSearchParams();
   const referStore = useReferStore();
   const { publicKey } = useWallet();
+  const { visible: airdropVisible, setVisible: setAirdropVisible } = useAirdropStore();
+  const router = useRouter();
 
   const airdrop = useMemo(() => {
     return search.get('airdrop');
@@ -21,6 +22,7 @@ export function useAirdrop(props: any): Airdrop {
 
   const [userData, setUserData] = useState<Record<string, any>>({});
   const [airdropData, setAirdropData] = useState<Record<string, any>>({});
+  const [airdropDataLoading, setAirdropDataLoading] = useState<boolean>(false);
   const [pointList, setPointList] = useState<Record<string, any>[]>([]);
   const [pointListPageIndex, setPointListPageIndex] = useState<number>(0);
   const [pointListPageMore, setPointListPageMore] = useState<boolean>(true);
@@ -33,6 +35,11 @@ export function useAirdrop(props: any): Airdrop {
 
   const { connected } = useWallet();
 
+  const handleClose = () => {
+    setAirdropVisible(false);
+    router.replace(`${window?.location?.origin}${window?.location?.pathname}`);
+  };
+
   const handleClaim = async () => {
     if (!connected) {
       setConnectVisible(true);
@@ -41,14 +48,19 @@ export function useAirdrop(props: any): Airdrop {
     if (claiming) return;
     setClaiming(true);
     setMorePointsVisible(true);
+    if (airdropData?.clime_pump) {
+      handleClose();
+      setClaiming(false);
+      return;
+    }
     const res = await httpAuthPost('/airdrop/account/points');
     if (res.code !== 0) {
       setClaiming(false);
-      fail('Claim points failed');
+      fail(`Claim points failed${res.message ? ': ' + res.message : ''}`);
       return;
     }
     success('Claim points successful');
-    onClose?.();
+    handleClose();
     setClaiming(false);
   };
 
@@ -77,7 +89,7 @@ export function useAirdrop(props: any): Airdrop {
   };
 
   const handleBind = async () => {
-    if (binding) return;
+    if (binding || !airdrop) return;
     setBinding(true);
     const res = await httpAuthPost(`/airdrop/binding/code`, {
       code: airdrop,
@@ -105,11 +117,14 @@ export function useAirdrop(props: any): Airdrop {
   };
 
   const getAirdropData = async () => {
+    setAirdropDataLoading(true);
     const res = await httpAuthGet('/airdrop/data');
     if (res.code !== 0) {
+      setAirdropDataLoading(false);
       return;
     }
     setAirdropData(res.data);
+    setAirdropDataLoading(false);
   };
 
   return {
@@ -131,7 +146,10 @@ export function useAirdrop(props: any): Airdrop {
     airdropData,
     getAirdropData,
     pointListPageMore,
-    onClose,
+    onClose: handleClose,
+    airdropVisible,
+    setAirdropVisible,
+    airdropDataLoading,
   };
 }
 
@@ -146,9 +164,11 @@ export interface Airdrop {
   pointList: Record<string, any>[];
   pointListLoading: boolean;
   morePointsVisible: boolean;
+  airdropDataLoading: boolean;
   setMorePointsVisible: Dispatch<SetStateAction<boolean>>;
   userData: Record<string, any>;
   airdropData: Record<string, any>;
+  airdropVisible: boolean;
 
   handleClaim(): Promise<void>;
   handleBind(): Promise<void>;
@@ -156,4 +176,5 @@ export interface Airdrop {
   getUserData(): Promise<void>;
   getAirdropData(): Promise<void>;
   onClose?(): void;
+  setAirdropVisible(visible: boolean): void;
 }
