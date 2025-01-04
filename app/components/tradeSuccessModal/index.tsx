@@ -5,6 +5,7 @@ import type { Project, UserInfo } from "@/app/type";
 import { httpGet } from "@/app/utils";
 import { useCallback } from "react";
 import { defaultAvatar } from "@/app/utils/config";
+import { numberFormatter } from "@/app/utils/common";
 
 interface Props {
   onClose: () => void;
@@ -19,13 +20,12 @@ interface Props {
 const typeCls = {
   0: style.buy,
   1: style.sell
-} as any
+} as any;
 
 const typeText = {
-  0: 'bought',
-  1: 'sold'
-} as any
-
+  0: "bought",
+  1: "sold"
+} as any;
 
 export default function TradeSuccessModal({
   onClose,
@@ -36,15 +36,15 @@ export default function TradeSuccessModal({
   amount,
   point
 }: Props) {
-  
-
   return (
     <div className={style.main}>
-      <div className={style.content + ' ' + typeCls[type]}>
+      <div className={style.content + " " + typeCls[type]}>
         <div className={style.avatar}>
           <img
             className={style.avatarImg}
-            src={token.tokenIcon || token.tokenImg || '/img/token-placeholder.png'}
+            src={
+              token.tokenIcon || token.tokenImg || "/img/token-placeholder.png"
+            }
           />
         </div>
 
@@ -52,24 +52,32 @@ export default function TradeSuccessModal({
           <div className={style.name}>{token.tokenName}</div>
           <div className={style.ticker}>/ Ticker: {token.ticker}</div>
         </div>
-        <div className={ style.contentBox }>
-          <div className={style.successText}>You’ve { typeText[type] } </div>
-          <div className={style.successNote}>{ amount } { token.tokenSymbol }</div>
+        <div className={style.contentBox}>
+          <div className={style.successText}>You’ve {typeText[type]} </div>
+          <div className={style.successNote}>
+            {amount} {token.tokenSymbol}
+          </div>
           <div className={style.successText}>successfully!</div>
         </div>
 
-        <div className={ style.userIcon }>
-          <img className={ style.userImg } src={ defaultAvatar }/>
+        <div className={style.userIcon}>
+          <img className={style.userImg} src={defaultAvatar} />
         </div>
 
-        <div className={ style.tips }>
+        <div className={style.tips}>
           <span>You are expected to receive</span>
-          <span className={ style.sexFi }> { point } points</span>
+          <span className={style.sexFi}>
+            {" "}
+            {numberFormatter(point, 3, true, {
+              isShort: true
+            })}{" "}
+            points
+          </span>
         </div>
       </div>
 
       <div className={style.close} onClick={onClose}>
-        <img src="/img/home/close.svg"/>
+        <img src="/img/home/close.svg" />
       </div>
     </div>
   );
