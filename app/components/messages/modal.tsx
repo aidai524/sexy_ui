@@ -9,6 +9,8 @@ import { useState, useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useRouter } from "next/navigation";
 import CircleLoading from "../icons/loading";
+import config from "./config";
+import { useAuth } from "@/app/context/auth";
 
 export default function MessagesModal({
   open,
@@ -17,7 +19,8 @@ export default function MessagesModal({
   feeds,
   num,
   hasMore,
-  onNextPage
+  onNextPage,
+  onRead
 }: any) {
   const { isMobile } = useUserAgent();
 
@@ -49,7 +52,12 @@ export default function MessagesModal({
             }}
           >
             {data.map((item: any) => (
-              <Item key={item.id} item={item} isMobile={isMobile} />
+              <Item
+                key={item.id}
+                item={item}
+                isMobile={isMobile}
+                onExpand={onRead}
+              />
             ))}
             <InfiniteScroll loadMore={onNextPage} hasMore={hasMore}>
               {hasMore && <CircleLoading size={20} />}
@@ -67,64 +75,11 @@ export default function MessagesModal({
 const Item = ({ item, isMobile }: any) => {
   const [expand, setExpand] = useState(false);
   const router = useRouter();
-  const [content, linkText, link, pageName] = useMemo(() => {
-    if (item.type === "follower") {
-      return [
-        "You have a new follower.",
-        "Click to view their profile",
-        `/profile?account=${item.msg_id}`,
-        "Profile"
-      ];
-    }
-    if (item.type === "token_create") {
-      return [
-        `Congratulations, you have successfully created ${item.content_2} Token`,
-        "Click to view Token details.",
-        `/detail?id=${item.msg_id}`,
-        "Detail"
-      ];
-    }
-    if (item.type === "token_launching") {
-      return [
-        `Congratulations, the ${item.content_2} Token you Flip has received a lot of user interest and has successfully entered the Launching stage.`,
-        "Click to view Token details.",
-        `/detail?id=${item.msg_id}`,
-        "Detail"
-      ];
-    }
-    if (item.type === "token_launching_owner") {
-      return [
-        "Congratulations, you have successfully purchased a Boost privilege.",
-        "Click to view your profile.",
-        "/profile",
-        "Profile"
-      ];
-    }
-    if (item.type === "token_list") {
-      return [
-        `Congratulations, the ${item.content_2} Token you created has completed the launch and has been listed on [Orca/Raydium] Dex.`,
-        "Click to view Token details.",
-        `/detail?id=${item.msg_id}`,
-        "Detail"
-      ];
-    }
-    if (item.type === "add_vip") {
-      return [
-        "Congratulations, you have become a prestigious FlipN VIP user.",
-        "Click to view your profile.",
-        "/profile",
-        "Profile"
-      ];
-    }
-    if (item.type === "add_boost") {
-      return [
-        "Congratulations, you have successfully purchased a Boost privilege.",
-        "Click to view your profile.",
-        "/profile",
-        "Profile"
-      ];
-    }
-    return ["", "", "", ""];
+  const { userInfo } = useAuth();
+  const [title, content, linkText, link, pageName] = useMemo(() => {
+    const r = config[item.type];
+    if (r) return r(item, userInfo);
+    return ["", "", "", "", ""];
   }, [item]);
   return (
     <motion.div
@@ -152,7 +107,7 @@ const Item = ({ item, isMobile }: any) => {
         {item.read ? <ReadAvatar /> : <Avatar />}
         <div className={styles.ItemContent}>
           <div className={styles.ItemTitle} style={{}}>
-            {item.type}
+            {title}
           </div>
           {expand ? (
             <>
@@ -175,7 +130,9 @@ const Item = ({ item, isMobile }: any) => {
               )}
             </>
           ) : (
-            <Ellipsis direction="end" rows={2} content={item.content} />
+            <div className={`${styles.ItemDesc} ${styles.Ellipsis}`}>
+              {content}
+            </div>
           )}
         </div>
         {!expand && (

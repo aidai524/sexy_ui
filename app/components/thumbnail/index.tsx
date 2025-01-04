@@ -259,7 +259,7 @@ export default function Thumbnail({
 
               {showDropdownIcon && (
                 <div className={styles.detailLink}>
-                  <Link href={"/detail?id=" + data.id}>
+                  <Link href={"/detail?address=" + data.address}>
                     <Arrow />
                   </Link>
                 </div>

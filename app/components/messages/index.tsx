@@ -6,12 +6,14 @@ import useNum from "./use-num";
 import useList from "./use-list";
 import { useEffect, useState } from "react";
 import useRead from "./use-read";
+import { useAuth } from "@/app/context/auth";
 
 export default function MessagesAlarm() {
   const [showPop, setShowPop] = useState<boolean>();
   const [showModal, setShowModal] = useState(false);
   const { list, loading, hasMore, onNextPage, onQuery } = useList();
   const { num, onQuery: onQueryNum } = useNum();
+  const { userInfo } = useAuth();
   const { onRead } = useRead();
   const feeds: any = [];
   useEffect(() => {
@@ -32,7 +34,11 @@ export default function MessagesAlarm() {
           <div
             className="button"
             onClick={() => {
-              console.log("list", list);
+              if (!userInfo) {
+                // @ts-ignore
+                window?.connect();
+                return;
+              }
               if (list?.length) {
                 setShowPop(true);
               }
@@ -69,6 +75,7 @@ export default function MessagesAlarm() {
         }}
         num={num}
         hasMore={hasMore}
+        onRead={onRead}
       />
     </>
   );

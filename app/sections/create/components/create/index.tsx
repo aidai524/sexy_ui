@@ -30,7 +30,7 @@ export default memo(function Create(props: any) {
           );
           if (v.code === 0) {
             setShowSuccessModal(false);
-            router.push("/detail?id=" + v.data[0].id);
+            router.push("/detail?address=" + v.data[0].address);
           }
         }}
       />

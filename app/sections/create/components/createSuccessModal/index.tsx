@@ -47,15 +47,14 @@ function SuccessModal({
 }) {
   const { isMobile } = useUserAgent();
   const { showShare } = useMessage();
-  
+
   const share = useCallback(async () => {
     if (token) {
       const v = await httpGet("/project?token_name=" + token.tokenName);
       if (v.code === 0) {
         const data = v.data[0];
         onClose();
-        showShare(mapDataToProject(data), true)
-        // shareToX(token.tokenName, "https://app.flipn.fun/detail?id=" + data.id);
+        showShare(mapDataToProject(data), true);
       }
     }
   }, [token]);

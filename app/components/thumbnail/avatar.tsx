@@ -26,7 +26,7 @@ export function Avatar({
       {showBackIcon && (
         <div
           onClick={() => {
-            route.push("/detail?id=" + data.id);
+            route.push("/detail?address=" + data.address);
           }}
         >
           <svg

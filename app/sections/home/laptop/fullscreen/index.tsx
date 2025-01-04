@@ -145,7 +145,7 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
           onClick={() => {
             shareToX(
               list[index].tokenName,
-              "https://app.flipn.fun/detail?id=" + list[index].id
+              "https://app.flipn.fun/detail?address=" + list[index].address
             );
           }}
         >
