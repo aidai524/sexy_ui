@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { httpAuthGet, httpGet, timeAgo } from '@/app/utils';
+import { httpGet, timeAgo } from '@/app/utils';
 import { useTrendsStore } from '@/app/store/useTrends';
 import { PublicKey } from '@solana/web3.js';
 import { programId_address, total_supply } from '@/app/utils/config';
@@ -35,36 +35,44 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   const [tableListPageMore, setTableListPageMore] = useState<boolean>(true);
 
   const getPoolToken = async (token: Trend) => {
-    const programId = new PublicKey(programId_address);
-    const state = PublicKey.findProgramAddressSync(
-      [Buffer.from("launchpad")],
-      programId
-    );
-    const pool = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("token_info"),
-        state[0].toBuffer(),
-        Buffer.from(token.token_name),
-        Buffer.from(token.token_symbol)
-      ],
-      programId
-    );
-    if (!pool?.length) {
+    try {
+      const programId = new PublicKey(programId_address);
+      const state = PublicKey.findProgramAddressSync(
+        [Buffer.from("launchpad")],
+        programId
+      );
+      const pool = PublicKey.findProgramAddressSync(
+        [
+          Buffer.from("token_info"),
+          state[0].toBuffer(),
+          Buffer.from(token.token_name),
+          Buffer.from(token.token_symbol)
+        ],
+        programId
+      );
+      if (!pool?.length) {
+        return {
+          poolAmount: Big(0),
+          solAmount: Big(0),
+        };
+      }
+      const program = new Program<any>(idl, programId, {
+        connection: connection
+      } as any);
+      const poolData: any = await program.account.pool.fetch(pool[0]);
+      const poolToken = Big(poolData!.virtualTokenAmount.toNumber());
+      const solToken = Big(poolData!.virtualWsolAmount.toNumber());
+      return {
+        poolAmount: poolToken,
+        solAmount: solToken,
+      };
+    } catch (err) {
+      console.log('get getPoolToken err: %o', err);
       return {
         poolAmount: Big(0),
         solAmount: Big(0),
       };
     }
-    const program = new Program<any>(idl, programId, {
-      connection: connection
-    } as any);
-    const poolData: any = await program.account.pool.fetch(pool[0]);
-    const poolToken = Big(poolData!.virtualTokenAmount.toNumber());
-    const solToken = Big(poolData!.virtualWsolAmount.toNumber());
-    return {
-      poolAmount: poolToken,
-      solAmount: solToken,
-    };
   };
 
   const formatList = async (_list: Trend[] = []) => {
@@ -108,7 +116,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
       const prevMarketCap = Big(_top1.solAmount ?? 0)
         .div(10 ** 9)
         .mul(10 ** _top1.token_decimals)
-        .mul(config.SolPrice)
+        .mul(config.SolPrice ?? 0)
         .div(_top1.poolAmount ?? 0)
         .mul(uiAmount || total_supply)
       const diffMarketCap = Big(_top1.market_cap).minus(prevMarketCap);
