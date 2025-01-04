@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import { useAccount } from "@/app/hooks/useAccount";
 import SexInfiniteScroll from "../sexInfiniteScroll";
 import { getHoldersByToken, getTokenMeta } from "@/app/utils/solanaScanApi";
-import { formatAddress, simplifyNum } from "@/app/utils";
+import { formatAddress, httpGet, simplifyNum } from "@/app/utils";
 import Big from "big.js";
 import { accessSync } from "node:fs";
 
@@ -19,6 +19,18 @@ export default function Holder({ from, address, style = {} }: any) {
   const loadMore = useCallback(async () => {
     if (address) {
       const res = await getHoldersByToken(address, pageIndex, pageSize)
+
+      if (res.items && res.items.length) {
+        const addressList = res.items.map((item: any) => item.address).join(',')
+        const addressObj = await getUserInfoByAddressList(addressList)
+        res.items.forEach((item: any) => {
+          if (addressObj[item.address]) {
+            Object.assign(item, {
+              flipUser: addressObj[item.address]
+            })
+          }
+        })
+      }
 
       const newList = [
         ...list,
@@ -47,6 +59,20 @@ export default function Holder({ from, address, style = {} }: any) {
     }
 
   }, [address])
+
+  const getUserInfoByAddressList = useCallback(async (addressList: string) => {
+    const addressObj: any = {}
+    const res: any = httpGet('/account/address_list?address_List=' + addressList)
+    if (res.code === 0) {
+      const { data } = res
+      data.forEach((item: any) => {
+        addressObj[item.address] = item
+      })
+      return addressObj
+    }
+
+    return addressObj
+  }, [])
 
   useEffect(() => {
     getTokenInfo()
