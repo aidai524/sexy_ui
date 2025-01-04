@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { httpAuthGet, httpGet, timeAgo } from '@/app/utils';
+import { httpGet, timeAgo } from '@/app/utils';
 import { useTrendsStore } from '@/app/store/useTrends';
 import { PublicKey } from '@solana/web3.js';
 import { programId_address, total_supply } from '@/app/utils/config';
@@ -35,36 +35,44 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   const [tableListPageMore, setTableListPageMore] = useState<boolean>(true);
 
   const getPoolToken = async (token: Trend) => {
-    const programId = new PublicKey(programId_address);
-    const state = PublicKey.findProgramAddressSync(
-      [Buffer.from("launchpad")],
-      programId
-    );
-    const pool = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("token_info"),
-        state[0].toBuffer(),
-        Buffer.from(token.token_name),
-        Buffer.from(token.token_symbol)
-      ],
-      programId
-    );
-    if (!pool?.length) {
+    try {
+      const programId = new PublicKey(programId_address);
+      const state = PublicKey.findProgramAddressSync(
+        [Buffer.from("launchpad")],
+        programId
+      );
+      const pool = PublicKey.findProgramAddressSync(
+        [
+          Buffer.from("token_info"),
+          state[0].toBuffer(),
+          Buffer.from(token.token_name),
+          Buffer.from(token.token_symbol)
+        ],
+        programId
+      );
+      if (!pool?.length) {
+        return {
+          poolAmount: Big(0),
+          solAmount: Big(0),
+        };
+      }
+      const program = new Program<any>(idl, programId, {
+        connection: connection
+      } as any);
+      const poolData: any = await program.account.pool.fetch(pool[0]);
+      const poolToken = Big(poolData!.virtualTokenAmount.toNumber());
+      const solToken = Big(poolData!.virtualWsolAmount.toNumber());
+      return {
+        poolAmount: poolToken,
+        solAmount: solToken,
+      };
+    } catch (err) {
+      console.log('get getPoolToken err: %o', err);
       return {
         poolAmount: Big(0),
         solAmount: Big(0),
       };
     }
-    const program = new Program<any>(idl, programId, {
-      connection: connection
-    } as any);
-    const poolData: any = await program.account.pool.fetch(pool[0]);
-    const poolToken = Big(poolData!.virtualTokenAmount.toNumber());
-    const solToken = Big(poolData!.virtualWsolAmount.toNumber());
-    return {
-      poolAmount: poolToken,
-      solAmount: solToken,
-    };
   };
 
   const formatList = async (_list: Trend[] = []) => {
@@ -73,19 +81,27 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
       const it = _list[i];
       it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
       const { poolAmount, solAmount } = await getPoolToken(it);
-      it.progress = Big(poolAmount).minus(295840542120770).div(Big(1095840542120770).minus(295840542120770)).times(100).toFixed(2);
+      let _progress = Big(poolAmount).minus(295840542120770).div(Big(1095840542120770).minus(295840542120770)).times(100);
+      if (Big(_progress).lt(0)) {
+        _progress = Big(0);
+      }
+      if (Big(_progress).gt(100)) {
+        _progress = Big(100);
+      }
+      it.progress = _progress.toFixed(2);
       it.poolAmount = poolAmount;
       it.solAmount = solAmount;
     }
     return _list;
   };
 
-  const getList = async (params: { limit: number; offset?: number; search?: string; }) => {
+  const getList = async (params: { limit: number; offset?: number; search?: string; order?: 'desc' | 'asc' | ''; }) => {
     try {
       const res = await httpGet(`/project/trends/list`, {
         limit: params.limit,
         offset: params.offset ?? 0,
         text: params.search,
+        order: params.order?.toUpperCase?.() ?? '',
       });
       const _list = await formatList(res.data.list);
       return { list: _list, hasMore: res.data.has_next_page };
@@ -100,18 +116,19 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     const res = await getList({ limit: 1, search: '' });
     const _top1 = res.list[0];
     // calc market cap trends
-    if (_top1) {
+    _top1.marketCapTrendsDirection = '+';
+    _top1.marketCapTrends = '0.00';
+    if (_top1 && _top1.poolAmount && Big(_top1.poolAmount).gt(0)) {
       const tokenMintAddress = new PublicKey(_top1.address);
       const tokenSupplyInfo = await connection.getTokenSupply(tokenMintAddress);
       const uiAmount = tokenSupplyInfo.value.uiAmount;
       const prevMarketCap = Big(_top1.solAmount ?? 0)
         .div(10 ** 9)
         .mul(10 ** _top1.token_decimals)
-        .mul(config.SolPrice)
+        .mul(config.SolPrice ?? 0)
         .div(_top1.poolAmount ?? 0)
         .mul(uiAmount || total_supply)
       const diffMarketCap = Big(_top1.market_cap).minus(prevMarketCap);
-      _top1.marketCapTrendsDirection = '+';
       if (!Big(prevMarketCap).eq(0)) {
         const _marketCapTrends = Big(diffMarketCap).div(prevMarketCap).times(100);
         _top1.marketCapTrends = _marketCapTrends.toFixed(2);
@@ -131,10 +148,15 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     setHottestListLoading(false);
   };
 
-  const getTableList = async (params: { pageIndex: number; searchText?: string; }) => {
+  const getTableList = async (params: { pageIndex: number; searchText?: string; orderBy?: 'desc' | 'asc' | '' }) => {
     setTableListLoading(true);
     const { pageIndex } = params;
-    const res = await getList({ limit: 20, offset: pageIndex, search: params.searchText ?? searchText });
+    const res = await getList({
+      limit: 20,
+      offset: pageIndex,
+      search: params.searchText ?? searchText,
+      order: params.orderBy ?? orderBy['market_cap'] ?? '',
+    });
     if (pageIndex === 0) {
       setTableList(res.list);
     } else {
@@ -159,16 +181,16 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     if (tableListLoading) return;
     if (orderBy[key] === 'asc') {
       setOrderBy({ [key]: 'desc' });
-      getTableListDelay({ pageIndex: 0 });
+      getTableListDelay({ pageIndex: 0, orderBy: 'desc' });
       return;
     }
     if (orderBy[key] === 'desc') {
       setOrderBy({ [key]: '' });
-      getTableListDelay({ pageIndex: 0 });
+      getTableListDelay({ pageIndex: 0, orderBy: '' });
       return;
     }
     setOrderBy({ [key]: 'asc' });
-    getTableListDelay({ pageIndex: 0 });
+    getTableListDelay({ pageIndex: 0, orderBy: 'asc' });
   };
 
   const handleSearchText = (e: any) => {
