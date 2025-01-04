@@ -3,6 +3,8 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { SolanaSignAndSendTransaction, SolanaSignMessage, SolanaSignTransaction } from '@solana/wallet-standard-features';
 import * as anchor from "@coral-xyz/anchor";
 import { sleep } from '../utils';
+import { ComputeBudgetProgram, Transaction } from '@solana/web3.js';
+import Big from 'big.js';
 
 export function useAccount() {
   const { connected, connecting, disconnect, publicKey, signTransaction, sendTransaction, signMessage, wallet, connect } = useWallet();
@@ -27,6 +29,17 @@ export function useAccount() {
         transaction.feePayer = publicKey
         transaction.recentBlockhash = latestBlockhash!.blockhash
 
+        const microLamports = await getPriorityFeeEstimate(transaction, connection.rpcEndpoint)
+
+        transaction.add(
+          ComputeBudgetProgram.setComputeUnitLimit({
+            units: 500000,
+          }),
+          ComputeBudgetProgram.setComputeUnitPrice({
+            microLamports: microLamports,
+          }),
+        );
+
         // const signTransition = await signTransaction?.(transaction);
         // console.log('signTransition:', signTransition)
 
@@ -40,22 +53,22 @@ export function useAccount() {
 
         // console.log('x', x)
         
-        console.log(transaction, 'transaction')
+        // console.log(transaction, 'transaction')
 
         const tx = await sendTransaction(transaction, connection, {
           ...confirmationStrategy,
           ...sendOptions,
         });
 
-        // alert(tx)
+        // console.log(tx)
         // const tx = await connection.sendTransaction(transaction, [payer], {
         //   ...confirmationStrategy,
         //   ...sendOptions,
         // });
-        const {
-          context: { slot: minContextSlot },
-          value: { blockhash, lastValidBlockHeight }
-        } = await connection.getLatestBlockhashAndContext();
+        // const {
+        //   context: { slot: minContextSlot },
+        //   value: { blockhash, lastValidBlockHeight }
+        // } = await connection.getLatestBlockhashAndContext();
 
         const startTime = Date.now();
         const timeout = 120000
@@ -66,6 +79,7 @@ export function useAccount() {
           status = await connection.getSignatureStatus(tx, {
             searchTransactionHistory: true,
           });
+
           if (status?.value?.confirmationStatus === 'finalized' || status?.value?.err) {
             done = true;
           } else {
@@ -76,6 +90,8 @@ export function useAccount() {
         if (!status) {
           throw new Error(`Transaction confirmation failed for signature ${tx}`);
         }
+
+        console.log('status:', status)
 
         if (!status.value || status.value?.err) {
           throw new Error(
@@ -89,75 +105,42 @@ export function useAccount() {
           );
         }
 
-        // try {
-        //   const confirmRes = await connection.confirmTransaction({
-        //     blockhash: blockhash,
-        //     lastValidBlockHeight: lastValidBlockHeight,
-        //     signature: tx,
-        //   });
-
-        //   alert(JSON.stringify(confirmRes))
-
-        //   if (confirmRes.value.err) {
-        //     return null
-        //   }
-
-        //   alert(tx)
-  
-        // } catch(e) {
-        //   alert(e)
-        // }
-
         return tx
-
-        // @ts-ignore
-        if (wallet?.adapter && wallet.adapter.wallet) {
-          // @ts-ignore
-          const walletProvider = wallet.adapter.wallet
-          const feature = walletProvider.features[SolanaSignAndSendTransaction];
-          const account = walletProvider.accounts[0];
-
-          console.log(sendOptions, account)
-
-          const [result] = await feature.signAndSendTransaction({
-            account,
-            transaction: transaction.serialize({ verifySignatures: false }),
-            options: {
-              ...sendOptions,
-              // preflightCommitment: getCommitment(sendOptions?.preflightCommitment)
-            },
-            chain: 'solana:mainnet'
-          });
-
-          const tx = bs58.encode(result.signature)
-
-          console.log('tx:', tx)
-
-          const {
-            context: { slot: minContextSlot },
-            value: { blockhash, lastValidBlockHeight }
-          } = await connection.getLatestBlockhashAndContext();
-
-
-          console.log('blockhash:', blockhash)
-
-          const confirmRes = await connection.confirmTransaction({
-            blockhash: blockhash,
-            lastValidBlockHeight: lastValidBlockHeight,
-            signature: tx,
-          });
-
-          console.log('confirmRes:', confirmRes)
-
-          return tx
-
-
-        }
-
-        return null
 
       },
       signMessage
     },
   };
+}
+
+
+async function getPriorityFeeEstimate(transaction: Transaction, rpcEndpoint: string) {
+  const defaultPriorityFee = 300000;
+  const multiplier = 10;
+  try {
+    if (process.env.NEXT_PUBLIC_NETWORK !== 'mainnet') return defaultPriorityFee;
+
+    const res = await fetch(rpcEndpoint, {
+      method: 'POST',
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: '1',
+        method: 'getPriorityFeeEstimate',
+        params: [
+          {
+            transaction: bs58.encode(transaction.serialize({ verifySignatures: false })),
+            options: { recommended: true },
+          },
+        ],
+      }),
+    }).then(res => res.json());
+    const priorityFee = new Big(res?.result?.priorityFeeEstimate || 0)
+      .mul(multiplier)
+      .round(0)
+      .toNumber();
+    return Math.min(priorityFee ?? defaultPriorityFee, defaultPriorityFee);
+  } catch (error) {
+    console.error(error);
+    return defaultPriorityFee;
+  }
 }

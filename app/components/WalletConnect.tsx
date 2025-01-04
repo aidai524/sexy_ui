@@ -40,9 +40,13 @@ const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig["options"] = {
   }
 };
 
+// @ts-ignore
+const netType = WalletAdapterNetwork[process.env.NEXT_PUBLIC_NET || 'Devnet']
+
 function getEndpoint(netType: WalletAdapterNetwork) {
   if (netType === WalletAdapterNetwork.Mainnet) {
-    return "https://swr.xnftdata.com/rpc-proxy/";
+    // return 'https://swr.xnftdata.com/rpc-proxy/'
+    return process.env.NEXT_PUBLIC_ENDPOINT || "https://solana-mainnet.core.chainstack.com/26539386617197b730ed9e3c81b611df"
     // return "https://solana.deltarpc.com";
   }
 
@@ -54,7 +58,7 @@ export default function WalletConnect({
 }: {
   children: React.ReactNode;
 }) {
-  const network = WalletAdapterNetwork.Devnet;
+  const network = netType;
   const endpoint = useMemo(() => getEndpoint(network), [network]);
   const wallets = useMemo(
     () => {

@@ -6,7 +6,7 @@ import { Connection } from "@solana/web3.js";
 import Big from "big.js";
 import { deleteCookie } from "./common";
 
-const BASE_URL = "https://api.dumpdump.fun/api/v1";
+const BASE_URL = process.env.NEXT_PUBLIC_API || "https://api.dumpdump.fun/api/v1";
 const TOKEN_ERROR_CODE = -401;
 // const BASE_URL = '/api/v1'
 
@@ -515,32 +515,38 @@ export async function upload(
   return postUpload(_file, newFileName, file.type);
 }
 
-const s3_dir = process.env.NEXT_PUBLIC_S3_DIR || "flip/dev/";
+const s3_dir = process.env.NEXT_PUBLIC_S3_DIR || "flipn/stg/";
 
 export async function postUpload(
   _file: any,
   newFileName: string,
   type: string
 ) {
-  const val = await httpAuthPost(
-    `/upload/data?dir=${encodeURIComponent(s3_dir)}&file_name=${newFileName}`
-  );
-  if (val?.code === 0) {
-    const res = await fetch(val.data, {
-      method: "PUT",
-      body: _file,
-      headers: {
-        "Content-Type": type
+  try {
+    const val = await httpAuthPost(
+      `/upload/data?dir=${encodeURIComponent(s3_dir)}&file_name=${newFileName}`
+    );
+    if (val?.code === 0) {
+      const res = await fetch(val.data, {
+        method: "PUT",
+        body: _file,
+        headers: {
+          "Content-Type": type
+        }
+      });
+  
+      if (!res.ok) {
+        fail("Upload fail");
+        return null;
       }
-    });
-
-    if (!res.ok) {
-      fail("Upload fail");
-      return null;
+  
+      return `${process.env.NEXT_PUBLIC_S3_URL_PREFIX}/${s3_dir}${newFileName}`;
     }
-
-    return `https://deltabot-1.s3.us-east-1.amazonaws.com/${s3_dir}${newFileName}`;
+  } catch (e) {
+    fail("Upload fail");
+    console.log(e)
   }
+  
 
   return null;
 }

@@ -716,7 +716,7 @@ export function useTokenTrade({
         })
         .instruction();
 
-      let lamports = 20000000;
+      let lamports = 0;
 
       if (amount && Number(amount) > 0) {
         lamports += Number(amount);
@@ -733,16 +733,16 @@ export function useTokenTrade({
       );
 
       transaction
-        .add(
-          ComputeBudgetProgram.setComputeUnitLimit({
-            units: 991600000
-          })
-        )
-        .add(
-          ComputeBudgetProgram.setComputeUnitPrice({
-            microLamports: 20000
-          })
-        )
+        // .add(
+        //   ComputeBudgetProgram.setComputeUnitLimit({
+        //     units: 991600000
+        //   })
+        // )
+        // .add(
+        //   ComputeBudgetProgram.setComputeUnitPrice({
+        //     microLamports: 20000
+        //   })
+        // )
         .add(instruction1)
         .add(instruction2)
         .add(createInfoTransition);
@@ -767,7 +767,6 @@ export function useTokenTrade({
       };
 
       if (amount && Number(amount) > 0) {
-        console.log(11111);
         const prepaidInstructions = await prePaid(amount, true);
         if (prepaidInstructions) {
           console.log("prepaidInstructions:", prepaidInstructions);
@@ -1006,11 +1005,18 @@ export function useTokenTrade({
     const program = new Program<any>(idl, programId, {
       connection: connection
     } as any);
-    const stateData: any = await program.account.launchpad.fetch(state[0]);
+    
+    try {
+        const stateData: any = await program.account.launchpad.fetch(state[0]);
+        console.log('stateData:', stateData)
 
-    const prepaidWithdrawDelayTime =
-      stateData.prepaidWithdrawDelayTime.toNumber();
-    return stateData;
+        return stateData
+    } catch (e) {
+        return {}
+    }
+
+    // const prepaidWithdrawDelayTime =
+    //   stateData.prepaidWithdrawDelayTime.toNumber();
   }, [programId, state, connection]);
 
   const getMC = useCallback(async () => {

@@ -55,7 +55,7 @@ export default function Upload({
     }
 
     return {
-      url: ""
+      url: ''
     };
   }, []);
 
@@ -97,6 +97,8 @@ export default function Upload({
           maxCount={1}
           value={fileList}
           onChange={(files) => {
+            console.log('files:', files)
+
             setDefaultFileList(files);
             setFileList(files);
           }}

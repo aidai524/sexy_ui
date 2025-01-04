@@ -5,6 +5,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import Big from "big.js";
 import { simplifyNum } from "@/app/utils";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
+import Empty from "../empty";
 
 const pageSize = 40
 
@@ -47,6 +48,10 @@ export default function Held({ from }: any) {
   useEffect(() => {
     // loadMore()
   }, [address])
+
+   if (list.length === 0 && !hasMore) {
+      return <Empty msg={"No token yet"} />;
+    }
 
   return (
     <div
