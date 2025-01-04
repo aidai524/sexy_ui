@@ -31,7 +31,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   const [currentFilter, setCurrentFilter] = useState<number>(1);
   const [orderBy, setOrderBy] = useState<Record<string, 'asc' | 'desc' | '' | undefined>>({});
   const [searchText, setSearchText] = useState<string>('');
-  const [tableListPageIndex, setTableListPageIndex] = useState<number>(1);
+  const [tableListPageIndex, setTableListPageIndex] = useState<number>(0);
   const [tableListPageMore, setTableListPageMore] = useState<boolean>(true);
 
   const getPoolToken = async (token: Trend) => {
@@ -131,11 +131,11 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     setHottestListLoading(false);
   };
 
-  const getTableList = async (params: { pageIndex: number; }) => {
+  const getTableList = async (params: { pageIndex: number; searchText?: string; }) => {
     setTableListLoading(true);
     const { pageIndex } = params;
-    const res = await getList({ limit: 8, offset: pageIndex, search: searchText });
-    if (pageIndex === 1) {
+    const res = await getList({ limit: 20, offset: pageIndex, search: params.searchText ?? searchText });
+    if (pageIndex === 0) {
       setTableList(res.list);
     } else {
       setTableList([...tableList, ...res.list]);
@@ -145,34 +145,41 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     setTableListLoading(false);
   };
 
-  const { run: getTableListDelay, cancel: getTableListCancel } = useDebounceFn(getTableList, { wait: 1000 });
+  const { run: getTableListDelay, cancel: getTableListCancel } = useDebounceFn((params) => {
+    getTableList(params);
+  }, { wait: 1000 });
 
   const handleCurrentFilter = (_currentFilter: number) => {
     if (_currentFilter === currentFilter || tableListLoading) return;
     setCurrentFilter(_currentFilter);
-    getTableListDelay({ pageIndex: 1 });
+    getTableListDelay({ pageIndex: 0 });
   };
 
   const handleOrderBy = (key: string) => {
     if (tableListLoading) return;
     if (orderBy[key] === 'asc') {
       setOrderBy({ [key]: 'desc' });
-      getTableListDelay({ pageIndex: 1 });
+      getTableListDelay({ pageIndex: 0 });
       return;
     }
     if (orderBy[key] === 'desc') {
       setOrderBy({ [key]: '' });
-      getTableListDelay({ pageIndex: 1 });
+      getTableListDelay({ pageIndex: 0 });
       return;
     }
     setOrderBy({ [key]: 'asc' });
-    getTableListDelay({ pageIndex: 1 });
+    getTableListDelay({ pageIndex: 0 });
   };
 
   const handleSearchText = (e: any) => {
     let val = e.target.value;
     val = trim(val);
     setSearchText(val);
+    setTableListPageMore(true);
+    getTableListDelay({
+      pageIndex: 0,
+      searchText: val,
+    });
   };
 
   useEffect(() => {
@@ -187,15 +194,6 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
       clearInterval(timer);
     };
   }, [isPollingTop1]);
-
-  useEffect(() => {
-    if (!isListPage) return;
-    getTableListCancel();
-    setTableListPageMore(true);
-    getTableListDelay({
-      pageIndex: 1,
-    });
-  }, [searchText]);
 
   return {
     getTop1,
@@ -218,8 +216,9 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     handleSearchText,
     handleSearchTextClear: () => {
       handleSearchText({ target: { value: '' } });
+      setTableListPageMore(true);
       getTableListDelay({
-        pageIndex: 1,
+        pageIndex: 0,
       });
     },
   };
