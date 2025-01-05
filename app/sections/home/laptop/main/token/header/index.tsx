@@ -32,7 +32,7 @@ export default function Header({
         <div />
       )}
       <div className={styles.Actions}>
-        {tokenInfo?.status === 1 && (
+        {tokenInfo?.status !== 0 && (
           <Tabs currentTab={currentTab} onChangeTab={setCurrentTab} />
         )}
         <div className={styles.Buttons}>
