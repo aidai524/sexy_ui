@@ -4,6 +4,7 @@ import { formatAddress, simplifyNum, timeAgo } from "@/app/utils";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import useMc from "@/app/hooks/useMc";
 
 interface Props {
   data: Project;
@@ -12,6 +13,9 @@ interface Props {
 export default function Tags({ data }: Props) {
   const router = useRouter();
   const [mc, setMc] = useState(0);
+
+  const { mc: pumpMc } = useMc({ tokenAddress: data.address, disable: data.DApp !== 'pump'})
+
   const userName = useMemo(() => {
     if (data.creater) {
       if (data.creater.name) {
@@ -48,11 +52,18 @@ export default function Tags({ data }: Props) {
 
   return (
     <div className={styles.tags}>
-      {mc > 0 && (
+      {data.DApp === "sexy" && mc > 0 && (
         <Tag>
-          <span className={styles.mc}>Market Cap: ${simplifyNum(mc, 2)}</span>
+          <span className={styles.mc}>Market Cap: ${simplifyNum(mc , 2)}</span>
         </Tag>
       )}
+
+        {data.DApp === "pump" && pumpMc > 0 && (
+        <Tag>
+          <span className={styles.mc}>Market Cap: ${simplifyNum(pumpMc , 2)}</span>
+        </Tag>
+      )}
+
       {data.status === 0 && (
         <Tag>Created in {data.time ? timeAgo(data.time) : 0}</Tag>
       )}

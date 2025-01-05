@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useAccount } from "@/app/hooks/useAccount";
+import useMc from "@/app/hooks/useMc";
 
 interface Props {
   showThumbnailHead: boolean;
@@ -38,6 +39,7 @@ export default function InfoPart({
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
+  const { mc: pumpMc } = useMc({ tokenAddress: data.address, disable: data.DApp !== 'pump' })
   const userName = useMemo(() => {
     if (data.creater) {
       if (data.creater.name) {
@@ -135,11 +137,22 @@ export default function InfoPart({
           </div>
           <div className={styles.author}>
             <div className={styles.authorTitle}>Market cap:</div>
-            <div className={styles.authorDesc} style={{ color: "#6fff00" }}>
-              {mc === 0 || mc === "0"
-                ? "-"
-                : `$${simplifyNum(mc as number, 2)}`}
-            </div>
+            {
+              data.DApp === 'sexy' && <div className={styles.authorDesc} style={{ color: "#6fff00" }}>
+                {mc === 0 || mc === "0"
+                  ? "-"
+                  : `$${simplifyNum(mc as number, 2)}`}
+              </div>
+            }
+
+            {
+              data.DApp === 'pump' && <div className={styles.authorDesc} style={{ color: "#6fff00" }}>
+                {pumpMc === 0
+                  ? "-"
+                  : `$${simplifyNum(pumpMc as number, 2)}`}
+              </div>
+            }
+
           </div>
         </Panel>
       </>
