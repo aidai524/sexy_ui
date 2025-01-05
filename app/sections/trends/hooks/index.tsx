@@ -36,7 +36,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
 
   const getPoolToken = async (token: Trend) => {
     try {
-      console.log('getPoolToken programId_address: %o', programId_address);
+      // console.log('getPoolToken programId_address: %o', programId_address);
       const programId = new PublicKey(programId_address);
       const state = PublicKey.findProgramAddressSync(
         [Buffer.from("launchpad")],
@@ -206,7 +206,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   };
 
   useEffect(() => {
-    console.log('isPollingTop1: %o', isPollingTop1);
+    // console.log('isPollingTop1: %o', isPollingTop1);
     if (!isPollingTop1) return;
     const timer = setInterval(() => {
       getTop1();

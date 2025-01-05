@@ -32,6 +32,7 @@ const Laptop = (props: any) => {
 
   useEffect(() => {
     getHottestList();
+    getTableList({ pageIndex: 0 });
   }, []);
 
   return (
