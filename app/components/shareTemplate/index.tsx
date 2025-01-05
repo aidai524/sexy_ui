@@ -252,6 +252,12 @@ export function LaunchTag({ type }: { type: number }) {
       <div className={styles.launchTag + " " + styles.launch2}>Launching</div>
     );
   }
+
+  if (type === 1) {
+    return (
+      <div className={styles.launchTag + " " + styles.launch3}>Launched</div>
+    );
+  }
 }
 
 export default forwardRef(ShareTemplate);

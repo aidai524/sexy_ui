@@ -37,7 +37,7 @@ export function useAirdrop(): Airdrop {
 
   const handleClose = () => {
     setAirdropVisible(false);
-    router.replace(`${window?.location?.origin}${window?.location?.pathname}`);
+    // router.replace(`${window?.location?.origin}${window?.location?.pathname}`);
   };
 
   const handleClaim = async () => {

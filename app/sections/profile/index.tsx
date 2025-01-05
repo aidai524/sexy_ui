@@ -29,11 +29,14 @@ export default memo(function Home(props: any) {
 
   useEffect(() => {
     if (currentUserInfo?.address && params) {
+        console.log(currentUserInfo)
       if (
         params.get("account")?.toString() === currentUserInfo.address &&
         isOther
       ) {
-        router.replace("/profile");
+       console.log(currentUserInfo)
+
+        // router.replace("/profile");
       }
     }
   }, [currentUserInfo, params, isOther]);
@@ -51,6 +54,7 @@ export default memo(function Home(props: any) {
     !isOther,
     accountRefresher
   );
+
   const { userInfo: ownUserInfo, set: setUserInfo }: any = useUser();
 
   const comProps = {
@@ -86,15 +90,12 @@ export default memo(function Home(props: any) {
     }
   }, [address, isOther, refreshNum]);
 
-  const { trade } = useJupiter({
-    tokenAddress: "4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump"
-  });
+//   const { trade } = useJupiter({
+//     tokenAddress: "4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump"
+//   });
 
   return (
     <>
-      {/* <Button onClick={() => {
-                    trade('5000000', 'sell')
-                }}>test juipter</Button> */}
       {isMobile ? (
         <SexPullToRefresh
           onRefresh={async () => {
