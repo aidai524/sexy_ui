@@ -96,16 +96,8 @@ const TrendBanner = (props: any) => {
               </div>
             </div>
             <div className={styles.Summary}>
-              {
-                Big(top1?.progress ?? 0).gte(100) ? (
-                  <div className={styles.SummaryLabel}>[Launched]</div>
-                ) : (
-                  <>
-                    <div className={styles.SummaryLabel}>[Progress]</div>
-                    <div className={styles.SummaryValue}>{isMobile ? numberFormatter(top1?.progress, 0, true) : top1?.progress}%</div>
-                  </>
-                )
-              }
+              <div className={styles.SummaryLabel}>[Progress]</div>
+              <div className={styles.SummaryValue}>{isMobile ? numberFormatter(top1?.progress, 0, true) : top1?.progress}%</div>
             </div>
             {!isMobile && <CreateTime top1={top1} />}
             {!isMobile && (
