@@ -228,7 +228,7 @@ export default function Thumbnail({
               {data.status === 0 ? (
                 <PreUser token={data} />
               ) : (
-                <Holder hideBg={true} address={data.address} />
+                <Holder showAvatar={true} hideBg={true} address={data.address} />
               )}
             </div>
             {showLoadMore && (

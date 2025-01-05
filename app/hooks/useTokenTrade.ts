@@ -965,7 +965,7 @@ export function useTokenTrade({
     if (!pool) {
       return false;
     }
-
+    
     const prePaidRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("prepaid_record"),

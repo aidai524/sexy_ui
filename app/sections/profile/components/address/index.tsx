@@ -3,6 +3,8 @@ import styles from "./index.module.css";
 import { formatAddressLast } from "@/app/utils";
 import { useRouter } from "next/navigation";
 
+const netParam = process.env.NEXT_PUBLIC_NET === 'Mainnet' ? '' : '?cluster=devnet'
+
 export default function Address({
   address,
   color = "rgba(126, 138, 147, 1)",
@@ -20,7 +22,7 @@ export default function Address({
         className={styles.addressContent}
         style={{ color, fontSize }}
         onClick={() => {
-          window.open(`https://solscan.io/account/${address}?cluster=devnet`);
+          window.open(`https://solscan.io/account/${address}${netParam}`);
         }}
       >
         <div>{isFull ? address : formatAddressLast(address)}</div>

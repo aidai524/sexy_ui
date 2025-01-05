@@ -11,6 +11,8 @@ export async function GET(request: Request | NextRequest) {
   const tokenAddress = parsedUrl.searchParams.get("address");
   const referral = parsedUrl.searchParams.get("referral");
 
+const domain = process.env.NEXT_PUBLIC_DOMAIN || 'https://stage.flipn.fun'
+
   const res = new Response(
     `<!DOCTYPE html>
         <html lang="en">
@@ -24,7 +26,7 @@ export async function GET(request: Request | NextRequest) {
             <meta name="twitter:image" content="${imgUrl}"> <!-- Image URL for sharing -->
 
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="refresh" content="1; url=https://test.flipn.fun/detail?address=${tokenAddress}">
+            <meta http-equiv="refresh" content="1; url=${domain}/detail?address=${tokenAddress}">
             <title>${tokenName}</title>
         </head>
         <body>

@@ -34,6 +34,8 @@ interface Props {
   onClose: () => void;
 }
 
+const domain = process.env.NEXT_PUBLIC_DOMAIN || 'https://stage.flipn.fun'
+
 function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
   const containerRef = useRef(null);
   const { isMobile } = useUserAgent();
@@ -208,7 +210,7 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
                 }
                 shareToX(
                   token.tokenName,
-                  `https://test.flipn.fun/api/twitter?tokenName=${encodeURIComponent(
+                  `${domain}/api/twitter?tokenName=${encodeURIComponent(
                     token.tokenName
                   )}&about=${encodeURIComponent(
                     token.about

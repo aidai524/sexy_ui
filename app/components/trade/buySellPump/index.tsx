@@ -428,8 +428,6 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                 } else if (activeIndex === 1) {
                   setIsLoading(true);
 
-                  console.log('Number(sellOut)', Number(sellOut))
-
                   hash = await sell(Number(sellOut), slip / 100)
                 }
                 setIsLoading(false);
@@ -437,7 +435,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
                 if (hash) {
                   const volume = activeIndex === 0 ? buyInSol : sellOutSol
-                  const pointByVolume = await getPointByVolume(Big(volume).div(10 ** SOL.tokenDecimals).toFixed(SOL.tokenDecimals), 'pump')
+                  const pointByVolume = await getPointByVolume(Big(volume).toFixed(SOL.tokenDecimals), 'pump')
 
                   const modalHandler = Modal.show({
                     content: (

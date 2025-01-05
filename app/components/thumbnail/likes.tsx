@@ -3,8 +3,19 @@ import styles from "./likes.module.css";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
 import Share from "../share";
+import { useEffect, useState } from "react";
+import { getHoldersByToken } from "@/app/utils/solanaScanApi";
 
 export default function Likes({ data, showShare = true }: { data: Project, showShare?: boolean }) {
+  const [holders, setHolders] = useState(0)
+
+  useEffect(() => {
+    if (data.status !== 0 && data.address) {
+      getHoldersByToken(data.address, 1, 10).then(res => {
+        setHolders(res.total)
+      })
+    }
+  }, [data])
 
   return (
     <div className={styles.box}>
@@ -45,7 +56,7 @@ export default function Likes({ data, showShare = true }: { data: Project, showS
 
         {data.status !== 0 && (
           <div className={[styles.holder, styles.likeCustom].join(" ")}>
-            <span className={styles.likesNums}>Holders 0</span>
+            <span className={styles.likesNums}>Holders {holders}</span>
           </div>
         )}
       </div>

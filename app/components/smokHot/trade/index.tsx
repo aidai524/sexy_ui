@@ -51,7 +51,7 @@ export default function Trade({
   }, [prepaidDelayTime, token]);
 
   useEffect(() => {
-    if (address === token.account) {
+    if (!address || address === token.account) {
       setIsPrePayd(true);
       return;
     }

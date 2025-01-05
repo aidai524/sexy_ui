@@ -7,10 +7,11 @@ import { getHoldersByToken, getTokenMeta } from "@/app/utils/solanaScanApi";
 import { formatAddress, httpGet, simplifyNum } from "@/app/utils";
 import Big from "big.js";
 import { accessSync } from "node:fs";
+import { defaultAvatar } from "@/app/utils/config";
 
 const pageSize = 40
 
-export default function Holder({ from, address, style = {} }: any) {
+export default function Holder({ from, address, showAvatar, style = {} }: any) {
   const [list, setList] = useState<any[]>([])
   const [hasMore, setHasMore] = useState(true)
   const [pageIndex, setPageIndex] = useState(1)
@@ -21,12 +22,13 @@ export default function Holder({ from, address, style = {} }: any) {
       const res = await getHoldersByToken(address, pageIndex, pageSize)
 
       if (res.items && res.items.length) {
-        const addressList = res.items.map((item: any) => item.address).join(',')
+        const addressList = res.items.map((item: any) => item.owner).join(',')
         const addressObj = await getUserInfoByAddressList(addressList)
+
         res.items.forEach((item: any) => {
-          if (addressObj[item.address]) {
+          if (addressObj[item.owner]) {
             Object.assign(item, {
-              flipUser: addressObj[item.address]
+              flipUser: addressObj[item.owner]
             })
           }
         })
@@ -62,7 +64,9 @@ export default function Holder({ from, address, style = {} }: any) {
 
   const getUserInfoByAddressList = useCallback(async (addressList: string) => {
     const addressObj: any = {}
-    const res: any = httpGet('/account/address_list?address_List=' + addressList)
+    const res: any = await httpGet('/account/address_list?address_List=' + addressList)
+    console.log('res:', res)
+
     if (res.code === 0) {
       const { data } = res
       data.forEach((item: any) => {
@@ -89,13 +93,33 @@ export default function Holder({ from, address, style = {} }: any) {
         {
           list.map(item => {
             return <div key={item.owner} className={styles.item}>
-              <div className={styles.itemContent}>
-                <div style={{ minWidth: 20 }}>{item.rank}.</div>
-                <div className={styles.UserName}>
-                  <span>{formatAddress(item.address)}</span>
-                  <Level level={6} />
-                </div>
-              </div>
+              {
+                showAvatar
+                  ? <div className={styles.avatarContent}>
+                    <div style={{ minWidth: 20 }}>{item.rank}.</div>
+                    <div className={styles.avatar}>
+                      <img className={styles.avatrImg} src={item.flipUser?.icon || defaultAvatar} />
+                    </div>
+                    <div className={styles.nameContent}>
+                      <div className={styles.nameLevel}>
+                        <span>{formatAddress(item.owner)}</span>
+                        {
+                          item.flipUser && <Level level={item.flipUser?.level} />
+                        }
+                      </div>
+                      <div className={styles.followers}>{ item.flipUser?.followers || 0 } followers</div>
+                    </div>
+                  </div>
+                  : <div className={styles.itemContent}>
+                    <div style={{ minWidth: 20 }}>{item.rank}.</div>
+                    <div className={styles.UserName}>
+                      <span>{formatAddress(item.owner)}</span>
+                      {
+                          item.flipUser && <Level level={item.flipUser?.level} />
+                      }
+                    </div>
+                  </div>
+              }
 
               <div className={styles.itemPercent}>{new Big(item.amount).div(supply).mul(100).toFixed(2)}%</div>
             </div>
