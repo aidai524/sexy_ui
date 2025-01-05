@@ -22,7 +22,7 @@ export default memo(function Create(props: any) {
       if (v.code === 0) {
         const data = v.data[0];
         showShare(mapDataToProject(data), true, () => {
-          router.push("/detail?id=" + data.id);
+          router.push("/detail?address=" + data.address);
         })
       }
     }
