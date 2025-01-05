@@ -20,6 +20,7 @@ export default function MessagesModal({
   num,
   hasMore,
   loading,
+  page,
   onNextPage,
   onRead
 }: any) {
@@ -30,7 +31,8 @@ export default function MessagesModal({
     () => (currentTab === "inform" ? list : feeds),
     [currentTab, list]
   );
-
+  const isFirstPage = useMemo(() => page.current === 1, [page.current]);
+  console.log(35, data, isFirstPage);
   return (
     <Modal
       open={open}
@@ -61,11 +63,19 @@ export default function MessagesModal({
                 onClose={onClose}
               />
             ))}
-            <InfiniteScroll loadMore={onNextPage} hasMore={hasMore}>
-              {hasMore && <CircleLoading size={20} />}
-            </InfiniteScroll>
-            {data.length === 0 && !loading && (
+            {data.length > 0 && (
+              <InfiniteScroll loadMore={onNextPage} hasMore={hasMore}>
+                {hasMore && <CircleLoading size={20} />}
+              </InfiniteScroll>
+            )}
+            {data.length === 0 && !loading ? (
               <div className={styles.EmptyText}>No information</div>
+            ) : (
+              isFirstPage && (
+                <div className={styles.LoadingWrapper}>
+                  <CircleLoading size={30} />
+                </div>
+              )
             )}
           </div>
         </AnimatePresence>

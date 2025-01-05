@@ -91,6 +91,25 @@ export default function Tags({ data }: Props) {
               </span>
             )}
           </Tag>
+        {data.account && (
+          <Tag
+            onClick={() => {
+              router.push("/profile/user?account=" + data.account);
+            }}
+          >
+            <span>Created by</span>{" "}
+            <span className={styles.userName}>{userName}</span>
+            {data.time && (
+              <span
+                style={{
+                  marginLeft: 5
+                }}
+              >
+                {" "}
+                {timeAgo(data.time)}
+              </span>
+            )}
+          </Tag>
         )}
       </div>
     </>

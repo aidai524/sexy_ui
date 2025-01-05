@@ -88,7 +88,7 @@ a {
 
 @media (prefers-color-scheme: dark) {
   .adm-tab-bar {
-    background: #1a1a1a;
+    background: transparent;
     border-top-color: #333;
   }
 }
