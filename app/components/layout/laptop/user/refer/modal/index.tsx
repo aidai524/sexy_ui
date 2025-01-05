@@ -14,6 +14,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { httpAuthGet } from "@/app/utils";
 import Loading from "@/app/components/icons/loading";
 import { useAirdrop } from "@/app/components/airdrop/hooks";
+import { useUser } from '@/app/store/useUser';
+import useUserInfo from '@/app/hooks/useUserInfo';
 
 const ReferModal = (props: any) => {
   const { isMobile } = props;
@@ -57,6 +59,9 @@ const ReferModalContent = (props: any) => {
   const { userInfo, isMobile, isInvite } = props;
   const { address } = useAccount();
   const { getAirdropData, airdropData } = useAirdrop();
+  const userStore: any = useUser();
+  const { fecthUserInfo } = useUserInfo(address, true, 0);
+
   const [currentTab, setCurrentTab] = useState(isInvite ? 2 : 1);
   const [loading, setLoading] = useState(false);
 
@@ -94,8 +99,15 @@ const ReferModalContent = (props: any) => {
     setCurrentTab(tab);
   };
 
+  const getUserData = async () => {
+    if (!address) return;
+    const userInfo = await fecthUserInfo(address);
+    userStore.set({ userInfo });
+  };
+
   useEffect(() => {
     getAirdropData();
+    getUserData();
   }, []);
 
   return (
