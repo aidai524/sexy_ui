@@ -1,9 +1,16 @@
+import { useAuth } from "@/app/context/auth";
 import styles from "./index.module.css";
 export default function CreateButton({ id }: any) {
+  const { userInfo } = useAuth();
   return (
     <button
       id={id}
       onClick={() => {
+        if (!userInfo?.address) {
+          // @ts-ignore
+          window?.connect();
+          return;
+        }
         history.pushState({ page: "/create" }, "Create", "/create");
       }}
       className={styles.MiningAndCreateButton}

@@ -1,6 +1,7 @@
 import styles from "./smoke-button.module.css";
 import { useAuth } from "@/app/context/auth";
 import { useMemo } from "react";
+import { Popover } from "antd-mobile";
 
 export default function SmokeButton({
   size,
@@ -13,17 +14,22 @@ export default function SmokeButton({
     if (!token) return false;
     return token.isSuperLike || token.account === userInfo?.address;
   }, [token, userInfo]);
+
   return (
-    <div
+    <button
       style={{
         width: size,
-        height: size
+        height: size,
+        cursor: isDisabled ? "not-allowed" : "pointer"
       }}
-      className={styles.Container}
-      onClick={onClick}
+      className={`${styles.Container} ${!isDisabled && styles.Active}`}
+      disabled={isDisabled}
+      onClick={() => {
+        !isDisabled && onClick();
+      }}
     >
       {isDisabled ? <SmokeIcon isGrey={true} id={id} /> : <SmokeIcon id={id} />}
-    </div>
+    </button>
   );
 }
 

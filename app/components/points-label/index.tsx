@@ -4,11 +4,13 @@ import Icon from "./Reicon";
 import { httpAuthGet } from "@/app/utils";
 import { numberFormatter } from "@/app/utils/common";
 import { useAuth } from "@/app/context/auth";
+import { useRouter } from "next/navigation";
 
 export default function PointsLabel({ id, reverse = false, bg }: any) {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const { accountRefresher } = useAuth();
+  const router = useRouter();
+  const { accountRefresher, userInfo } = useAuth();
   const timer = useRef<any>();
 
   const init = async () => {
@@ -37,19 +39,28 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
 
   return (
     <div
-      className={styles.Container}
+      className={`${styles.Container} button`}
       id={id}
       style={{
         flexDirection: reverse ? "row-reverse" : "row",
         backgroundColor: bg || "#0000004d",
         textAlign: reverse ? "right" : "left"
       }}
+      onClick={() => {
+        if (!userInfo?.address) {
+          //@ts-ignore
+          window?.connect();
+        }
+
+        router.push("/mining");
+      }}
     >
       <Icon size={30} />
       <div>
         <div className={styles.Title}>
           {numberFormatter(amount, 3, true, {
-            isShort: true
+            isShort: true,
+            round: 0
           })}
         </div>
         <div className={styles.Desc}>$FlipN</div>

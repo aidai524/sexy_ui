@@ -50,7 +50,7 @@ export default memo(function Detail(props: any) {
   const comParams = { infoData, getDetailInfo };
 
   return isMobile ? (
-    <Mobile {...props} {...comParams} />
+    <Mobile {...props} {...comParams} isLoading={isLoading} />
   ) : (
     <Laptop {...props} {...comParams} isLoading={isLoading} />
   );

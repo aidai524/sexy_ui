@@ -12,7 +12,8 @@ export default function Statistics({ itemStyle, style, info }: any) {
         <div style={{ fontSize: 26 }} className={styles.value}>
           {info?.minted
             ? numberFormatter(info?.minted, 3, true, {
-                isShort: true
+                isShort: true,
+                round: 0
               })
             : "0"}
         </div>
@@ -36,7 +37,7 @@ export default function Statistics({ itemStyle, style, info }: any) {
             fontSize: isMobile ? 18 : 22
           }}
         >
-          {info?.launching_rate ? info.launching_rate * 100 : "0"}%
+          {info?.launching_rate ? (info.launching_rate * 100).toFixed(2) : "0"}%
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>

@@ -13,12 +13,9 @@ export default {
     `/detail?address=${item.msg_id}`,
     "Detail"
   ],
-  token_launching: (item: any, userInfo: any) => [
+  token_launching: (item: any) => [
     "Token Launching",
-    item.account !== userInfo.address
-      ? `Congratulations, the ${item.content_2} Token you Flipped has received a lot of user interest and has successfully entered the Launching stage.`
-      : `Congratulations, the ${item.content_2} Token you created has received a lot of user interest and has successfully entered the Launching stage.
-Click to view Token details.`,
+    `Congratulations, the ${item.content_2} Token you Flipped has received a lot of user interest and has successfully entered the Launching stage.`,
     "Click to view Token details.",
     `/detail?address=${item.msg_id}`,
     "Detail"
@@ -33,7 +30,7 @@ Click to view Token details.`,
   ],
   token_list: (item: any) => [
     "Token List",
-    `Congratulations, the ${item.content_2} Token you created has completed the launch and has been listed on [Orca] Dex.`,
+    `Congratulations, the ${item.content_2} Token you created has completed the launch and has been listed on Orca Dex.`,
     "Click to view Token details.",
     `/detail?address=${item.id}`,
     "Detail"

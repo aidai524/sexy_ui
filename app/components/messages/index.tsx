@@ -11,12 +11,17 @@ export default function MessagesAlarm() {
   const [showModal, setShowModal] = useState(false);
   const { num, onQuery: onQueryNum } = useNum();
   const { list, loading, hasMore, onNextPage, onInit } = useList({
-    onSuccess: onQueryNum
+    onSuccess: onQueryNum,
+    showModal
   });
 
   const { userInfo } = useAuth();
 
   const feeds: any = [];
+
+  useEffect(() => {
+    if (showModal) onInit();
+  }, [showModal]);
 
   return (
     <>

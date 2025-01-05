@@ -20,6 +20,7 @@ export default function Laptop({
   refreshNum,
   setRefreshNum,
   updateUserInfo,
+  updateCurrentUserInfo,
   profileTabIndex,
   showHot = true,
   isOther,
@@ -67,7 +68,7 @@ export default function Laptop({
                     isFollower={isFollower}
                     onSuccess={async () => {
                       setRefreshNum(refreshNum + 1);
-                      updateUserInfo();
+                      updateCurrentUserInfo();
                     }}
                   />
                 </div>
