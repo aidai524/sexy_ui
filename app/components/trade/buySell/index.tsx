@@ -516,7 +516,7 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
                         userInfo={userInfo}
                         token={token}
                         solAmount={activeIndex === 0 ? buyInSol : sellOutSol}
-                        amount={new Big(activeIndex === 0 ? buyIn : sellOut)
+                        amount={new Big(activeIndex === 0 ? showBuyInToken : sellOut)
                                                   .div(10 ** token.tokenDecimals!)
                                                   .toFixed(2)}
                         point={pointByVolume.data}

@@ -44,7 +44,7 @@ export default function Trade({
         />
       }
       {
-        token.status === 2 && <BuySellLaunched
+        token.status === 3 && <BuySellLaunched
           token={token}
           initType={initType}
           show={show}

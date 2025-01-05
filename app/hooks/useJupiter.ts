@@ -30,7 +30,7 @@ export default function useJupiter({ tokenAddress }: Params) {
         }
     }, [tokenAddress])
 
-    const getQoute = useCallback(async (amount: string = '100000', type: 'buy' | 'sell' = 'buy') => {
+    const getQoute = useCallback(async (amount: string, type: 'buy' | 'sell' = 'buy') => {
         if (tokenAddress) {
             const inputToken = type === 'buy' ? wsol : tokenAddress
             const outToken = type === 'buy' ? tokenAddress : wsol
@@ -44,24 +44,17 @@ export default function useJupiter({ tokenAddress }: Params) {
     }, [tokenAddress])
    
 
-    const trade = useCallback(async (amount: string = '100000', type: 'buy' | 'sell' = 'buy') => {
+    const trade = useCallback(async (amount: string, type: 'buy' | 'sell' = 'buy', slip: number) => {
         if (publicKey && tokenAddress && amount) {
-            const useAccount = await getUserTokenAccount(publicKey, tokenAddress)
-
             const swapInfo = await getQoute(amount, type)
 
-            console.log('useAccount:', useAccount)
-
-            const { swapTransaction, lastValidBlockHeight } = await fetchSwapTransaction(publicKey.toBase58(), useAccount.toBase58(), swapInfo)
-
-            console.log(swapTransaction, swapInfo)
+            const { swapTransaction, lastValidBlockHeight } = await fetchSwapTransaction(publicKey.toBase58(), slip, swapInfo)
 
             const vTransaction: any = VersionedTransaction.deserialize(Buffer.from(swapTransaction, 'base64'));
+
             const hash = await walletProvider.signAndSendTransaction(vTransaction, {
-                maxRetries: 5,
-                skipPreflight: true,
-                preflightCommitment: "finalized",
-            })
+                
+            }, true)
 
             console.log('hash', hash)
 
@@ -105,24 +98,7 @@ async function fetchSwapInfo(inputMint: string, outputMint: string, amount: stri
 }
 
 // Step 2: Fetch the swap transaction
-async function fetchSwapTransaction(userWalletPublicKey: string, userTokenAccount: string, swapInfo: any) {
-    // const requestBody = {
-    //   userPublicKey: userWalletPublicKey,
-    //   wrapAndUnwrapSol: true,
-    //   useSharedAccounts: true,
-    //   prioritizationFeeLamports: {
-    //     global: false,
-    //     maxLamports: 4000000,
-    //     priorityLevel: "veryHigh"
-    //   },  
-    //   asLegacyTransaction: false,
-    //   useTokenLedger: false,
-    //   destinationTokenAccount: userTokenAccount,
-    //   dynamicComputeUnitLimit: true,
-    //   skipUserAccountsRpcCalls: true,
-    //   quoteResponse: swapInfo.quoteResponse
-    // };
-
+async function fetchSwapTransaction(userWalletPublicKey: string, slip: number, swapInfo: any) {
     const requestBody = {
         "userPublicKey": userWalletPublicKey,
         "wrapAndUnwrapSol": true,
@@ -138,7 +114,7 @@ async function fetchSwapTransaction(userWalletPublicKey: string, userTokenAccoun
             }
         },
         "dynamicSlippage": {
-            "maxBps": 300
+            "maxBps": slip || 300
         },
         quoteResponse: swapInfo.quoteResponse
     }

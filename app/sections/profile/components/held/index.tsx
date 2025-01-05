@@ -67,6 +67,9 @@ export default function Held({ from }: any) {
             className={`${styles.heldToken} ${
               from === "page" && styles.PageHeldToken
             }`}
+            onClick={() => {
+              window.open('https://solscan.io/account/' + item.token_account)
+            }}
             key={item.token_address}
           >
             <div className={styles.tokenMsg}>
@@ -97,7 +100,7 @@ export default function Held({ from }: any) {
             </div>
 
             <div className={styles.tokenValue}>
-              <div className={styles.tokenAmount}>{ (new Big(item.amount).div(10 ** item.token_decimals).toNumber()) }</div>
+              <div className={styles.tokenAmount}>{ (simplifyNum(new Big(item.amount).div(10 ** item.token_decimals).toNumber(), 2)) }</div>
               {/* <div className={styles.solPrice}>0.005 SOL</div> */}
             </div>
           </div>

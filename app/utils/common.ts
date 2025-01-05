@@ -203,6 +203,7 @@ export const numberFormatter = (
   if (secondPart) {
     secondPart = "." + secondPart;
   }
+
   if (isSimple) {
     if (isShort) {
       const formatter = (split: number, unit: string): string => {
@@ -240,7 +241,6 @@ export const numberFormatter = (
     decimal: secondPart.replace(/[.]?0*$/, "")
   };
 };
-
 
 export const numberRemoveEndZero = (value: string) => {
   return value.replace(/\.?0+$/, "");

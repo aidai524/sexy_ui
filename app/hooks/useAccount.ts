@@ -19,41 +19,31 @@ export function useAccount() {
     publicKey,
     walletProvider: {
       publicKey,
-      signAndSendTransaction: async (transaction: any, sendOptions: any = {}) => {
-        // const payer = anchor.web3.Keypair.fromSecretKey(new Uint8Array([139,58,49,231,16,74,81,168,165,73,79,141,80,247,219,118,65,238,234,181,151,37,135,189,207,216,14,13,212,240,197,56,147,86,29,15,151,60,160,94,100,213,216,240,153,18,203,243,253,40,8,28,180,193,189,133,138,245,188,35,234,115,22,55]));
-        // const payer = anchor.web3.Keypair.fromSecretKey(bs58.decode('4kRBMPsH3Wk3TWoU8vftTND7qQJDJsJQ9tYYMNu2TEegSngJ29xbx6g6SfgJvoHNLnYJ5S3qhXnVzpJ3cygndQHg'))
-
-
-        const latestBlockhash = await connection?.getLatestBlockhash();
-        // console.log('transaction:', transaction)
-        transaction.feePayer = publicKey
-        transaction.recentBlockhash = latestBlockhash!.blockhash
-
-        const microLamports = await getPriorityFeeEstimate(transaction, connection.rpcEndpoint)
-
-        transaction.add(
-          ComputeBudgetProgram.setComputeUnitLimit({
-            units: 500000,
-          }),
-          ComputeBudgetProgram.setComputeUnitPrice({
-            microLamports: microLamports,
-          }),
-        );
-
-        // const signTransition = await signTransaction?.(transaction);
-        // console.log('signTransition:', signTransition)
-
+      signAndSendTransaction: async (transaction: any, sendOptions: any = {}, isVersionedTransaction: boolean = false) => {
         const confirmationStrategy: any = {
           skipPreflight: true,
           maxRetries: 10,
           preflightCommitment: 'finalized',
         };
 
-        // const x = signTransition.serialize()
-
-        // console.log('x', x)
+        if (!isVersionedTransaction) {
+          const latestBlockhash = await connection?.getLatestBlockhash();
+          // console.log('transaction:', transaction)
+          transaction.feePayer = publicKey
+          transaction.recentBlockhash = latestBlockhash!.blockhash
+  
+          const microLamports = await getPriorityFeeEstimate(transaction, connection.rpcEndpoint)
+  
+          transaction.add(
+            ComputeBudgetProgram.setComputeUnitLimit({
+              units: 500000,
+            }),
+            ComputeBudgetProgram.setComputeUnitPrice({
+              microLamports: microLamports,
+            }),
+          );
+        }
         
-        // console.log(transaction, 'transaction')
 
         const tx = await sendTransaction(transaction, connection, {
           ...confirmationStrategy,
@@ -65,10 +55,7 @@ export function useAccount() {
         //   ...confirmationStrategy,
         //   ...sendOptions,
         // });
-        // const {
-        //   context: { slot: minContextSlot },
-        //   value: { blockhash, lastValidBlockHeight }
-        // } = await connection.getLatestBlockhashAndContext();
+   
 
         const startTime = Date.now();
         const timeout = 120000
@@ -91,7 +78,6 @@ export function useAccount() {
           throw new Error(`Transaction confirmation failed for signature ${tx}`);
         }
 
-        console.log('status:', status)
 
         if (!status.value || status.value?.err) {
           throw new Error(

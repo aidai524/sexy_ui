@@ -29,15 +29,15 @@ export default function useBalance({ reFreshBalnace, mint, tokenDecimals }
         if (connection) {
             const mintAddress = new PublicKey(mint)
 
-            const associatedToken = getAssociatedTokenAddressSync(
-                mintAddress,
-                walletProvider.publicKey!,
-                true,
-                TOKEN_PROGRAM_ID,
-                ASSOCIATED_TOKEN_PROGRAM_ID
-            );
-
             try {
+                const associatedToken = getAssociatedTokenAddressSync(
+                    mintAddress,
+                    walletProvider.publicKey!,
+                    true,
+                    TOKEN_PROGRAM_ID,
+                    ASSOCIATED_TOKEN_PROGRAM_ID
+                );
+
                 getAccount(
                     connection,
                     associatedToken,
@@ -52,6 +52,8 @@ export default function useBalance({ reFreshBalnace, mint, tokenDecimals }
 
                         setTokenBalance(balance)
                     }
+                }).catch(() => {
+                    setTokenBalance('0')
                 })
             } catch (e) {
                 setTokenBalance('0')

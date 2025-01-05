@@ -124,16 +124,20 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
             return;
           }
 
-          if (Number(debounceVal) > Number(solBalance)) {
-            setIsError(true);
-            setErrorMsg("Invalid balance");
-            return;
-          }
+          
 
           estimateToken(new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toNumber(), slip)
             .then(res => {
               setBuyInSol(debounceVal)
               setBuyIn(new Big(res).toFixed(desToken.tokenDecimals))
+
+              if (Number(debounceVal) > Number(solBalance)) {
+                setIsError(true);
+                setIsLoading(false)
+                setErrorMsg("Invalid balance");
+                return;
+              }
+
               setIsLoading(false)
               setIsError(false)
             }).catch(e => {
@@ -148,12 +152,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
             return;
           }
 
-          if (Number(debounceVal) > Number(tokenBalance)) {
-            setIsError(true);
-            setErrorMsg("Invalid balance");
-            return;
-          }
-
+        
           estimateSol(new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(), slip / 100)
             .then(res => {
               console.log('res:', res, debounceVal)
@@ -186,8 +185,16 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
           
             estimateSol(new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(), slip / 100)
             .then(res => {
-              setSellOut(sellOut)
+
               setSellOutSol(new Big(res).div(10 ** SOL.tokenDecimals).toString())
+
+              if (Number(debounceVal) > Number(tokenBalance)) {
+                setIsError(true);
+                setErrorMsg("Invalid balance");
+                setSellOutSol(getFullNum(sellSolOut));
+                return;
+              }
+
               setIsLoading(false)
               setIsError(false)
             }).catch(e => {
@@ -218,6 +225,8 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
           <div
             onClick={() => {
               setActiveIndex(0);
+              setCurrentToken(SOL);
+              setTokenType(1);
               setValInput("");
             }}
             className={[
@@ -247,7 +256,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
         <div className={styles.inputArea}>
           <div className={styles.actionArea}>
-            {activeIndex === 0 ? (
+            {/* {activeIndex === 0 ? (
               <div
                 className={`${styles.switchToken} button`}
                 onClick={() => {
@@ -268,8 +277,9 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
               </div>
             ) : (
               <div></div>
-            )}
+            )} */}
 
+            <div></div>
             <div
               onClick={() => {
                 setShowSlip(true);
@@ -334,7 +344,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
               </div>
             ) : (
               <div className={styles.paid}>
-                <div>You will paid by</div>
+                <div>Maximum Payment</div>
                 <div>
                   {buyInSol && buyInSol}{" "}
                   SOL
@@ -379,7 +389,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
         {activeIndex === 0 && tokenType === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}>You will buy in</div>
+            <div className={styles.receiveTitle}>Minimum Received</div>
             <div className={styles.receiveAmount}>
               {buyIn
                 ? new Big(buyIn)
@@ -414,8 +424,9 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                 }
 
                 let hash;
+                let showBuyInToken = buyIn
                 if (activeIndex === 0) {
-                  let showBuyInToken = buyIn
+                  
                   setIsLoading(true);
                   hash = await buy(Number(buyInSol), slip / 100)
                   if (hash) {
@@ -444,7 +455,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                         userInfo={userInfo}
                         token={token}
                         solAmount={activeIndex === 0 ? buyInSol : sellOutSol}
-                        amount={new Big(activeIndex === 0 ? buyIn : sellOut)
+                        amount={new Big(activeIndex === 0 ? showBuyInToken : sellOut)
                           .div(10 ** token.tokenDecimals!)
                           .toFixed(2)}
                         point={pointByVolume}

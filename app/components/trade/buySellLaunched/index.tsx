@@ -4,7 +4,7 @@ import { BN } from "@coral-xyz/anchor";
 import Big from "big.js";
 import styles from "../trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
-import { getFullNum } from "@/app/utils";
+import { getFullNum, getPointByVolume, getTransaction } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
@@ -14,6 +14,8 @@ import { useUser } from "@/app/store/useUser";
 import useJupiter from "@/app/hooks/useJupiter";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useSlip } from "@/app/store/useSlip";
+import useBalance from "@/app/hooks/useBalance";
+import { useConnection } from "@solana/wallet-adapter-react";
 
 type Token = {
   tokenName: string;
@@ -72,11 +74,16 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
 
   const [sellOut, setSellOut] = useState("0");
   const [sellOutSol, setSellOutSol] = useState("0");
+  const [reFreshBalnace, setReFreshBalnace] = useState(1)
 
   const { userInfo }: any = useUser();
+  const { connection } = useConnection()
 
-  const tokenBalance = 0;
-  const solBalance = 0;
+  const { solBalance, tokenBalance } = useBalance({
+    mint: token.address as string,
+    tokenDecimals: token.tokenDecimals as number,
+    reFreshBalnace: reFreshBalnace,
+  })
 
   useEffect(() => {
     if (initType === "buy") {
@@ -84,14 +91,14 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
       setTokenType(1)
       setCurrentToken(SOL)
     } else {
-      setActiveIndex(1);
+      setTokenType(0)
       setCurrentToken(desToken)
       setActiveIndex(1);
     }
   }, [initType, show]);
 
   const { trade, getQoute, qoute } = useJupiter({
-    tokenAddress: "4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump"
+    tokenAddress: token.address
   });
 
   const TOKEN_PERCENT_LIST = useMemo(() => {
@@ -118,6 +125,8 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
             .mul(10 ** SOL.tokenDecimals)
             .toFixed(0);
 
+          console.log('buyIn:', buyIn)
+
           getQoute(buyIn, "buy")
             .then((res: any) => {
               if (res.quoteResponse) {
@@ -127,6 +136,13 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
                     .toFixed(desToken.tokenDecimals)
                 );
                 setBuyInSol(buyIn);
+
+                if (Number(debounceVal) > Number(solBalance)) {
+                  setIsError(true);
+                  setErrorMsg("Invalid balance");
+                  return;
+                }
+
                 setIsError(false);
               } else {
                 setIsError(true);
@@ -143,6 +159,12 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
             setIsError(true);
 
             setErrorMsg("Invalid value");
+            return;
+          }
+
+          if (Number(debounceVal) > Number(tokenBalance)) {
+            setIsError(true);
+            setErrorMsg("Invalid balance");
             return;
           }
 
@@ -217,6 +239,8 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
           <div
             onClick={() => {
               setActiveIndex(0);
+              setCurrentToken(SOL);
+              setTokenType(1);
               setValInput("");
             }}
             className={[
@@ -244,7 +268,7 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
 
         <div className={styles.inputArea}>
           <div className={styles.actionArea}>
-            {activeIndex === 0 ? (
+            {/* {activeIndex === 0 ? (
               <div
                 className={`${styles.switchToken} button`}
                 onClick={() => {
@@ -265,7 +289,9 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
               </div>
             ) : (
               <div></div>
-            )}
+            )} */}
+
+            <div></div>
 
             <div
               onClick={() => {
@@ -331,7 +357,7 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
               </div>
             ) : (
               <div className={styles.paid}>
-                <div>You will paid by</div>
+                <div>Maximum Payment</div>
                 <div>
                   {buyInSol &&
                     new Big(buyInSol)
@@ -379,13 +405,9 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
 
         {activeIndex === 0 && tokenType === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}>You will buy in</div>
+            <div className={styles.receiveTitle}>Minimum Received</div>
             <div className={styles.receiveAmount}>
-              {buyIn
-                ? new Big(buyIn)
-                    .div(10 ** token.tokenDecimals!)
-                    .toFixed(token.tokenDecimals)
-                : ""}{" "}
+              {buyIn && buyIn}{" "}
               {tokenName}
             </div>
           </div>
@@ -393,13 +415,9 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
 
         {activeIndex === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}>You will get</div>
+            <div className={styles.receiveTitle}>Minimum Received</div>
             <div className={styles.receiveAmount}>
-              {sellOutSol && Number(sellOutSol) > 0
-                ? new Big(sellOutSol)
-                    .div(10 ** SOL.tokenDecimals)
-                    .toFixed(SOL.tokenDecimals)
-                : 0}{" "}
+              {sellOutSol && sellOutSol}{" "}
               SOL
             </div>
           </div>
@@ -410,7 +428,6 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
             isLoading={isLoading}
             isDisabled={isError}
             onClick={async () => {
-              trade();
 
               try {
                 if (isLoading || isError) {
@@ -418,16 +435,29 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
                 }
 
                 let hash;
+                let showBuyInToken = buyIn
+                setIsLoading(true);
                 if (activeIndex === 0) {
-                  hash = await trade(buyIn, "buy");
-                  setIsLoading(true);
+                  hash = await trade(buyInSol, "buy", slip * 100);
+                  if (hash) {
+                    const _showBuyInToken = await getTransaction(connection, hash, token.address as string, userInfo.address)
+                    if (_showBuyInToken) {
+                      showBuyInToken = _showBuyInToken
+                    }
+                  }
                 } else if (activeIndex === 1) {
-                  hash = await trade(sellOut, "sell");
-                  setIsLoading(true);
+                  hash = await trade(sellOut, "sell", slip * 100);
                 }
                 setIsLoading(false);
 
                 if (hash) {
+                  const volume = activeIndex === 0 ? buyInSol : sellOutSol
+
+                  console.log(buyInSol, sellOutSol, volume)
+
+                  const pointByVolume = await getPointByVolume(Big(volume).toString(), 'sexy')
+
+
                   const modalHandler = Modal.show({
                     content: (
                       <TradeSuccessModal
@@ -435,10 +465,10 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
                         userInfo={userInfo}
                         token={token}
                         solAmount={activeIndex === 0 ? buyInSol : sellOutSol}
-                        amount={new Big(activeIndex === 0 ? buyIn : sellOut)
+                        amount={new Big(activeIndex === 0 ? showBuyInToken : sellOut)
                           .div(10 ** token.tokenDecimals!)
                           .toFixed(2)}
-                        point={'0'}
+                        point={pointByVolume}
                         onClose={() => {
                           modalHandler.close();
                         }}

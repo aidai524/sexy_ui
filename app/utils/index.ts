@@ -715,5 +715,5 @@ export async function getTransaction(
 
 export async function getPointByVolume(volume: string, type: 'sexy' | 'pump') {
   const params = type === 'sexy' ? { sexy_volume: volume, pump_volume: 0  } : { pump_volume: volume, sexy_volume: 0 } 
-  return httpGet('/mining/swapEstimate', params)
+  return httpGet('/mining/swapEstimate', params).then(res => res.data)
 }
