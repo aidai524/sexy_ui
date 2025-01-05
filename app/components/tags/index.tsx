@@ -56,7 +56,7 @@ export default function Tags({ data }: Props) {
         </div>
       )}
       {/* {data.DApp === "pump" && pumpMc > 0 && (
-        <div>
+        <div className={styles.Item}>
           <Tag>
             <span className={styles.mc}>
               Market Cap: ${simplifyNum(pumpMc, 2)}
@@ -65,16 +65,25 @@ export default function Tags({ data }: Props) {
         </div>
       )} */}
       <div className={styles.tags}>
-        <Tag
-          onClick={() => {
-            router.push("/profile/user?account=" + data.account);
-          }}
-        >
-          <span>Created by</span>{" "}
-          <span className={styles.userName}>{userName}</span>
-        </Tag>
-        {data.status === 0 && (
-          <Tag>Created in {data.time ? timeAgo(data.time) : 0}</Tag>
+        {data.account && (
+          <Tag
+            onClick={() => {
+              router.push("/profile/user?account=" + data.account);
+            }}
+          >
+            <span>Created by</span>{" "}
+            <span className={styles.userName}>{userName}</span>
+            {data.time && (
+              <span
+                style={{
+                  marginLeft: 5
+                }}
+              >
+                {" "}
+                {timeAgo(data.time)}
+              </span>
+            )}
+          </Tag>
         )}
       </div>
     </>
