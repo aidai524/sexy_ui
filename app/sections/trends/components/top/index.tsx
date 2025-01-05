@@ -15,9 +15,10 @@ export default function Top(props: Props) {
     const _top1Name = trend?.token_symbol;
     const _top1Ticker = trend?.ticker;
     const _top1Icon = trend?.Icon;
-    const _top1Like = numberFormatter(trend?.like, 0, true, { isShort: true });
+    const _top1Like = numberFormatter(trend?.like, 2, true, { isShort: true });
+    const _holder = numberFormatter(trend?.holder, 2, true, { isShort: true });
     const _createBy = formatLongText(trend?.project_creator, 3, 4);
-    return [_top1Name, _top1Ticker, _top1Icon, '', _top1Like, '0', _createBy];
+    return [_top1Name, _top1Ticker, _top1Icon, '', _top1Like, _holder, _createBy];
   }, [trend]);
 
   const topBadgesRef = useRef<any>();
@@ -68,6 +69,14 @@ export default function Top(props: Props) {
           </div>
         </div>
       </div>
+      <div className={styles.TopMarketCap}>
+        <div className={styles.TopMarketCapLabel}>
+          Market Cap:
+        </div>
+        <div className={styles.TopMarketCapValue}>
+          {numberFormatter(trend?.market_cap, 2, true, { prefix: '$', isShort: Big(trend?.market_cap || 0).gt(1e10) })}
+        </div>
+      </div>
       <motion.div
         className={styles.TopBadges}
         ref={topBadgesRef}
@@ -100,14 +109,6 @@ export default function Top(props: Props) {
           </div>
         </motion.div>
       </motion.div>
-      <div className={styles.TopMarketCap}>
-        <div className={styles.TopMarketCapLabel}>
-          Market Cap:
-        </div>
-        <div className={styles.TopMarketCapValue}>
-          {numberFormatter(trend?.market_cap, 2, true, { prefix: '$', isShort: Big(trend?.market_cap || 0).gt(1e10) })}
-        </div>
-      </div>
       <div className={styles.TopBuy}>
         <button
           type="button"

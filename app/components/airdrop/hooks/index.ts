@@ -5,12 +5,20 @@ import { httpAuthGet, httpAuthPost } from '@/app/utils';
 import { fail, success } from '@/app/utils/toast';
 import { useReferStore } from '@/app/store/useRefer';
 import { useAirdropStore } from '@/app/store/use-airdrop';
+import Big from 'big.js';
 
 export function useAirdrop(): Airdrop {
   const search = useSearchParams();
   const referStore = useReferStore();
   const { publicKey } = useWallet();
-  const { visible: airdropVisible, setVisible: setAirdropVisible } = useAirdropStore();
+  const {
+    visible: airdropVisible,
+    setVisible: setAirdropVisible,
+    entryVisible: airdropEntryVisible,
+    setEntryVisible: setAirdropEntryVisible,
+    entryVisibleTimes: airdropEntryVisibleTimes,
+    setEntryVisibleTimes: setAirdropEntryVisibleTimes,
+  } = useAirdropStore();
   const router = useRouter();
 
   const airdrop = useMemo(() => {
@@ -32,6 +40,7 @@ export function useAirdrop(): Airdrop {
   const [binding, setBinding] = useState(false);
   const [connectVisible, setConnectVisible] = useState(false);
   const [morePointsVisible, setMorePointsVisible] = useState(false);
+  const [referVisible, setReferVisible] = useState(false);
 
   const { connected } = useWallet();
 
@@ -47,6 +56,12 @@ export function useAirdrop(): Airdrop {
     }
     if (claiming) return;
     setClaiming(true);
+    if (Big(airdropData?.airdrop_points ?? 0).lte(0)) {
+      handleClose();
+      setClaiming(false);
+      setReferVisible(true);
+      return;
+    }
     setMorePointsVisible(true);
     if (airdropData?.clime_pump) {
       handleClose();
@@ -150,6 +165,12 @@ export function useAirdrop(): Airdrop {
     airdropVisible,
     setAirdropVisible,
     airdropDataLoading,
+    airdropEntryVisible,
+    setAirdropEntryVisible,
+    airdropEntryVisibleTimes,
+    setAirdropEntryVisibleTimes,
+    referVisible,
+    setReferVisible,
   };
 }
 
@@ -169,6 +190,10 @@ export interface Airdrop {
   userData: Record<string, any>;
   airdropData: Record<string, any>;
   airdropVisible: boolean;
+  airdropEntryVisible: boolean;
+  airdropEntryVisibleTimes: number;
+  referVisible: boolean;
+  setReferVisible: Dispatch<SetStateAction<boolean>>;
 
   handleClaim(): Promise<void>;
   handleBind(): Promise<void>;
@@ -177,4 +202,6 @@ export interface Airdrop {
   getAirdropData(): Promise<void>;
   onClose?(): void;
   setAirdropVisible(visible: boolean): void;
+  setAirdropEntryVisible(visible: boolean): void;
+  setAirdropEntryVisibleTimes(times: number): void;
 }

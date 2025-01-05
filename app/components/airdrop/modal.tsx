@@ -4,6 +4,7 @@ import { useAirdrop } from '@/app/components/airdrop/hooks';
 import { AirdropContext } from './context';
 import AirdropConnectModal from '@/app/components/airdrop/connect/modal';
 import AirdropMoreModal from '@/app/components/airdrop/more/modal';
+import AirdropReferModal from '@/app/components/airdrop/refer/modal';
 
 const AirdropModal = (props: any) => {
   const airdrop = useAirdrop();
@@ -33,6 +34,12 @@ const AirdropModal = (props: any) => {
         visible={airdrop.morePointsVisible}
         onClose={() => {
           airdrop.setMorePointsVisible(false);
+        }}
+      />
+      <AirdropReferModal
+        visible={airdrop.referVisible}
+        onClose={() => {
+          airdrop.setReferVisible(false);
         }}
       />
     </AirdropContext.Provider>
