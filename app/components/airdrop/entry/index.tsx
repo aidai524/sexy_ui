@@ -1,37 +1,37 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import styles from './index.module.css';
 import { useAirdrop } from '@/app/components/airdrop/hooks';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
+import Big from 'big.js';
 
 const AirdropEntry = () => {
-  const { getAirdropData, airdropData, setAirdropVisible } = useAirdrop();
-
-  const timer = useRef<any>();
-  const [visible, setVisible] = useState(false);
+  const {
+    getAirdropData,
+    airdropData,
+    setAirdropVisible,
+    setAirdropEntryVisible,
+    airdropEntryVisible,
+    airdropEntryVisibleTimes,
+    setAirdropEntryVisibleTimes,
+  } = useAirdrop();
 
   useEffect(() => {
-    timer.current && clearInterval(timer.current);
     getAirdropData();
-    // 10 minutes 1000*60*10=600000
-    timer.current = setInterval(getAirdropData, 600000);
-
-    return () => {
-      timer.current && clearInterval(timer.current);
-    };
   }, []);
 
   useEffect(() => {
     if (!airdropData) return;
-    const { clime_pump } = airdropData;
-    if (typeof clime_pump === 'boolean' && !clime_pump) {
-      setVisible(true);
+    const { clime_pump, airdrop_points } = airdropData;
+    if (typeof clime_pump === 'boolean' && !clime_pump && Big(airdrop_points || 0).gt(0) && airdropEntryVisibleTimes < 1) {
+      setAirdropEntryVisible(true);
+      setAirdropEntryVisibleTimes(1);
     }
-  }, [airdropData]);
+  }, [airdropData, airdropEntryVisibleTimes]);
 
   return (
     <AnimatePresence mode="wait">
       {
-        visible && (
+        airdropEntryVisible && (
           <motion.div
             className={styles.Container}
             initial={{ y: -70 }}
@@ -54,7 +54,7 @@ const AirdropEntry = () => {
               className={styles.Button}
               onClick={() => {
                 setAirdropVisible(true);
-                setVisible(false);
+                setAirdropEntryVisible(false);
               }}
             >
               claim
