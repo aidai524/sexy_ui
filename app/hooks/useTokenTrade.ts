@@ -1020,6 +1020,7 @@ export function useTokenTrade({
   }, [programId, state, connection]);
 
   const getMC = useCallback(async () => {
+
     if (pool && pool.length) {
       const program = new Program<any>(idl, programId, {
         connection: connection

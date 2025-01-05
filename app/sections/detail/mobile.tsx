@@ -48,11 +48,10 @@ export default function Detail({ token, onBack, onNext }: any) {
   //     infoData?.status === 1
   //   ) {
   //     getMC().then((res) => {
+  //       console.log('mc:', res)
   //       setMC(res as number);
   //     });
   //   }
-
-
   // }, [pool, infoData]);
 
   useEffect(() => {
@@ -64,6 +63,8 @@ export default function Detail({ token, onBack, onNext }: any) {
         `/detail?address=${infoData.address}`
       );
   }, [onBack, infoData]);
+
+  console.log('mc:', mc)
 
   if (isLoading) {
     return (
@@ -86,7 +87,7 @@ export default function Detail({ token, onBack, onNext }: any) {
           {infoData.status === 0 ? (
             <Info
               data={infoData}
-              mc={pumpMc}
+              mc={pumpMc || mc}
               onUpdate={() => {
                 getDetailInfo?.();
                 onNext?.();

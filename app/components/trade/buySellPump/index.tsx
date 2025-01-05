@@ -124,7 +124,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
             return;
           }
 
-          
+
 
           estimateToken(new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toNumber(), slip)
             .then(res => {
@@ -152,7 +152,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
             return;
           }
 
-        
+
           estimateSol(new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(), slip / 100)
             .then(res => {
               console.log('res:', res, debounceVal)
@@ -182,8 +182,8 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
           const sellOut = new Big(debounceVal)
             .mul(10 ** desToken.tokenDecimals)
             .toFixed(0);
-          
-            estimateSol(new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(), slip / 100)
+
+          estimateSol(new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(), slip / 100)
             .then(res => {
 
               setSellOutSol(new Big(res).div(10 ** SOL.tokenDecimals).toString())
@@ -201,7 +201,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
               setIsLoading(false)
               setIsError(false)
             })
-          
+
         }
       }
     } else {
@@ -296,6 +296,25 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                 value={valInput}
                 onChange={(e) => {
                   setValInput(e.target.value);
+                  if (activeIndex === 1) {
+                    setTokenPercent(0)
+                    TOKEN_PERCENT_LIST.forEach(percent => {
+                      const tokenPercentVal = new Big(tokenBalance)
+                        .mul(percent / 100)
+                        .toFixed(percent === 100 ? tokenDecimals : 2, 0)
+
+                      if (Number(tokenPercentVal) === Number(e.target.value)) {
+                        setTokenPercent(percent);
+                      }
+                    })
+                  } else if (activeIndex === 0) {
+                    setSolPercent(0);
+                    SOL_PERCENT_LIST.map((item) => {
+                      if (Number(item) === Number(e.target.value)) {
+                        setTokenPercent(item);
+                      }
+                    })
+                  }
                 }}
                 className={styles.input}
               />
@@ -370,7 +389,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                       setTokenPercent(item);
                       const tokenPercentVal = new Big(tokenBalance)
                         .mul(item / 100)
-                        .toFixed(2);
+                        .toFixed(item === 100 ? tokenDecimals : 2, 0);
                       setValInput(tokenPercentVal);
                     }}
                     key={item}
@@ -426,7 +445,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                 let hash;
                 let showBuyInToken = buyIn
                 if (activeIndex === 0) {
-                  
+
                   setIsLoading(true);
                   hash = await buy(Number(buyInSol), slip / 100)
                   if (hash) {

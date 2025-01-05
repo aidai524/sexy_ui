@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 17px 20px;
+    cursor: pointer;
     .tokenMsg {
       display: flex;
       align-items: center;

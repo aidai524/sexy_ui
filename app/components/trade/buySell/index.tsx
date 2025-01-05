@@ -337,7 +337,6 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
                   setValInput(e.target.value);
                   if (activeIndex === 1) {
                     setTokenPercent(0)
-
                     TOKEN_PERCENT_LIST.forEach(percent => {
                       const tokenPercentVal = new Big(tokenBalance)
                         .mul(percent / 100)
@@ -346,6 +345,13 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
                         if (Number(tokenPercentVal) === Number(e.target.value)) {
                           setTokenPercent(percent);
                         } 
+                    })
+                  } else if (activeIndex === 1) {
+                    setSolPercent(0);
+                    SOL_PERCENT_LIST.map((item) => {
+                      if (Number(item) === Number(e.target.value)) {
+                        setTokenPercent(item);
+                      } 
                     })
                   }
                 }}
