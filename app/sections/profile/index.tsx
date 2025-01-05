@@ -27,12 +27,11 @@ export default memo(function Home(props: any) {
 
   useEffect(() => {
     if (currentUserInfo?.address && params) {
-        // console.log()
       if (
         params.get("account")?.toString() === currentUserInfo.address &&
         isOther
       ) {
-        // router.replace("/profile");
+        router.replace("/profile");
       }
     }
   }, [currentUserInfo, params, isOther]);

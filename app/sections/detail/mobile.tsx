@@ -3,21 +3,29 @@ import Info from "./components/info/detail";
 import Chart from "./components/chart/index";
 import Trade from "./components/trade/index";
 import Txs from "./components/txs/index";
-
 import { AvatarBack } from "@/app/components/thumbnail/avatar";
-
 import styles from "./detail.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Tab from "@/app/components/tab";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import CircleLoading from "@/app/components/icons/loading";
 import MobileBg from "./mobile-bg";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import useTokenDetail from "./use-token-detail";
 
-export default function Detail({ infoData, getDetailInfo }: any) {
+export default function Detail({ token, onBack, onNext }: any) {
   const [activeKey, setActiveKey] = useState("Info");
-
+  const {
+    infoData: queryedInfoData,
+    isLoading,
+    getDetailInfo
+  } = useTokenDetail({ token });
   const [mc, setMC] = useState<string | number>("-");
+
+  const infoData = useMemo(
+    () => token || queryedInfoData,
+    [token, queryedInfoData]
+  );
 
   const { getMC, pool } = useTokenTrade({
     tokenName: infoData?.tokenName as string,
@@ -41,7 +49,17 @@ export default function Detail({ infoData, getDetailInfo }: any) {
     }
   }, [pool, infoData]);
 
-  if (!infoData) {
+  useEffect(() => {
+    onBack &&
+      infoData &&
+      history.pushState(
+        { page: "/detail" },
+        "Detail",
+        `/detail?address=${infoData.address}`
+      );
+  }, [onBack, infoData]);
+
+  if (isLoading) {
     return (
       <div className={styles.loadingBox}>
         <CircleLoading size={60} />
@@ -57,14 +75,15 @@ export default function Detail({ infoData, getDetailInfo }: any) {
       <div className={styles.main}>
         <MobileBg className={styles.Bg} />
         <div className={styles.Content}>
-          <AvatarBack data={infoData} />
+          <AvatarBack data={infoData} onBack={onBack} />
 
           {infoData.status === 0 ? (
             <Info
               data={infoData}
               mc={mc}
               onUpdate={() => {
-                getDetailInfo();
+                getDetailInfo?.();
+                onNext?.();
               }}
             />
           ) : (

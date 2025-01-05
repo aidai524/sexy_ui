@@ -9,7 +9,7 @@
   position: relative;
 }
 
-.Container:active {
+.Active:active {
   background-color: #fff;
   box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 1);
 }

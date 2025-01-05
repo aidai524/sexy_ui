@@ -99,7 +99,8 @@ export default function Rank({ rank }: any) {
             <div className={styles.ItemRight}>
               <span>
                 {numberFormatter(item.minted_amount, 3, true, {
-                  isShort: true
+                  isShort: true,
+                  round: 0
                 })}
               </span>
               <Icon size={20} />

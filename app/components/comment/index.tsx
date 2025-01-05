@@ -6,6 +6,7 @@ import type { Comment, Project } from "@/app/type";
 import { httpGet, httpAuthPost } from "@/app/utils";
 import CommentItem from "./item";
 import SexInfiniteScroll from "../sexInfiniteScroll";
+import Empty from "../empty";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";
 
@@ -28,42 +29,47 @@ export default function CommentComp({
 }: Props) {
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
-  const [reReashNum, setReReashNum] = useState(1);
-  const isInit = useRef(false);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { userInfo } = useAuth();
 
   const loadMore = useCallback(
     ({ newOffset }: any = {}) => {
+      setIsLoading(true);
       if (newOffset !== 0 && !hasMore) {
+        setIsLoading(false);
         return Promise.resolve();
       }
       return httpGet("/project/comment/list", {
         limit: 10,
         project_id: id,
         offset: newOffset === 0 ? newOffset : offset
-      }).then((res) => {
-        if (res?.code === 0) {
-          setHasMore(res.data?.has_next_page || false);
-          if (res.data.list?.length) {
-            const newMapList = res.data.list.map((item: any) => {
-              return mapDataToComment(item);
-            });
+      })
+        .then((res) => {
+          if (res?.code === 0) {
+            setHasMore(res.data?.has_next_page || false);
+            if (res.data.list?.length) {
+              const newMapList = res.data.list.map((item: any) => {
+                return mapDataToComment(item);
+              });
 
-            let newList = [];
-            if (newOffset === 0) {
-              newList = newMapList;
-            } else {
-              newList = [...commentList, ...newMapList];
+              let newList = [];
+              if (newOffset === 0) {
+                newList = newMapList;
+              } else {
+                newList = [...commentList, ...newMapList];
+              }
+
+              setOffset(newList.length);
+              setCommentList(newList);
             }
-
-            setOffset(newList.length);
-            setCommentList(newList);
           }
-        }
-      });
+        })
+        .catch((err) => {
+          setIsLoading(false);
+        });
     },
     [id, offset, hasMore]
   );
@@ -223,6 +229,16 @@ export default function CommentComp({
       )}
 
       {commentList.length > 0 && <div>{CommentList}</div>}
+
+      {commentList.length === 0 && !showEdit && (
+        <div
+          style={{
+            marginTop: 30
+          }}
+        >
+          <Empty text="No comments" />
+        </div>
+      )}
 
       <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} />
     </>

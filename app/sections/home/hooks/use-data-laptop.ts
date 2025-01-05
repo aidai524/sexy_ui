@@ -22,8 +22,6 @@ export default function useData(launchType: string) {
   const [infoData2, setInfoData2] = useState<Project>();
   const [isLoading, setIsLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
-  const [fullList, setFullList] = useState<any>([]);
-  const fullScreenStore: any = useFullScreen();
   const listRef = useRef<Project[]>();
   const { accountRefresher, userInfo } = useAuth();
   const mountedRef = useRef(false);

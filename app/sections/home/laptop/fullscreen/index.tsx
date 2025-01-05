@@ -20,6 +20,7 @@ import {
 } from "@/app/components/timesLike/ActionTrigger";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import CircleLoading from "@/app/components/icons/loading";
+import { useAuth } from "@/app/context/auth";
 
 export default function Fullscreen({
   list = [],
@@ -31,6 +32,7 @@ export default function Fullscreen({
   const swaperRef = useRef<any>();
   const { updateInfo } = useLaptop();
   const [index, setIndex] = useState(0);
+  const { userInfo } = useAuth();
 
   const data = useMemo(() => {
     if (list.length < 5) {
@@ -152,6 +154,10 @@ export default function Fullscreen({
         <button
           className="button"
           onClick={() => {
+            if (!userInfo?.address) {
+              // @ts-ignore
+              window?.connect();
+            }
             shareToX(
               list[index].tokenName,
               "https://app.flipn.fun/detail?address=" + list[index].address
