@@ -129,12 +129,22 @@ export default function InfoPart({
           )}
           <div className={styles.author}>
             <div className={styles.authorTitle}>
-              {data.DApp === "pump" ? "Import time" : "Create time"}:
+              Create time:
+            </div>
+            <div className={styles.authorDesc}>
+              {specialTime ? specialTime : timeAgo(data.DApp === "pump" ? data.createdAt : data.time)}
+            </div>
+          </div>
+          {
+            data.DApp === "pump" && <div className={styles.author}>
+            <div className={styles.authorTitle}>
+              {"Import time"}:
             </div>
             <div className={styles.authorDesc}>
               {specialTime ? specialTime : timeAgo(data.time)}
             </div>
           </div>
+          }
           <div className={styles.author}>
             <div className={styles.authorTitle}>Market cap:</div>
             {

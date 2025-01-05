@@ -9,7 +9,7 @@ export default function TokenCardActions({ token, height }: any) {
   const [currentTab, setCurrentTab] = useState("Img");
   const BUTTONS = useMemo(
     () =>
-      token.status === 1
+      token.status !== 0
         ? ["Img", "Discussion", "Holders"]
         : ["Img", "Discussion", "Founders"],
     [token]
@@ -48,7 +48,7 @@ export default function TokenCardActions({ token, height }: any) {
               />
             )}
             {["Holders", "Founders"].includes(currentTab) &&
-              (token.status === 0 ? <PreUser token={token} /> : <Holder />)}
+              (token.status === 0 ? <PreUser token={token} /> : <Holder showAvatar={true} hideBg={true} address={token.address}/>)}
           </div>
         </div>
       )}

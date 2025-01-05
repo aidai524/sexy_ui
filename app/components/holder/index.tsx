@@ -83,6 +83,8 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
     // loadMore()
   }, [address])
 
+  console.log('address:', address)
+
   return (
     <div
       style={style}

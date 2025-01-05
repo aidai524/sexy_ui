@@ -54,6 +54,8 @@ export default function Thumbnail({
   const descContentRef = useRef<any>();
   const router = useRouter();
 
+  console.log('data:', data)
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setHeight(window.innerHeight - 232 + "px");
