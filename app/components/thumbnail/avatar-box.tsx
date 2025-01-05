@@ -1,4 +1,3 @@
-import { defaultAvatar } from "@/app/utils/config";
 import styles from "./avatar-box.module.css";
 
 export function LaunchTag({ type }: { type: number }) {
@@ -11,6 +10,12 @@ export function LaunchTag({ type }: { type: number }) {
   if (type === 1) {
     return (
       <div className={styles.launchTag + " " + styles.launch2}>Launching</div>
+    );
+  }
+
+  if (type === 3) {
+    return (
+      <div className={styles.launchTag + " " + styles.launch2}>Launched</div>
     );
   }
 }
