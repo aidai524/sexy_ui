@@ -8,6 +8,7 @@ import { formatAddress, httpGet, simplifyNum } from "@/app/utils";
 import Big from "big.js";
 import { accessSync } from "node:fs";
 import { defaultAvatar } from "@/app/utils/config";
+import { numberFormatter } from "@/app/utils/common";
 
 const pageSize = 40
 
@@ -124,7 +125,11 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                   </div>
               }
 
-              <div className={styles.itemPercent}>{new Big(item.amount).div(supply).mul(100).toFixed(2)}%</div>
+              <div className={styles.itemPercent}>
+                {
+                  new Big(item.amount).div(supply).mul(100).toNumber() > 99.99 ? '<100' : numberFormatter(new Big(item.amount).div(supply).mul(100).toNumber(), 2, true, { isShort: true })
+                }%
+                </div>
             </div>
           })
         }
