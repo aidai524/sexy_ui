@@ -17,7 +17,7 @@
   align-items: center;
   .userName {
     color: var(--part-bg);
-    margin-left: 10px;
+    margin-left: 5px;
   }
 }
 
