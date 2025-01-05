@@ -42,7 +42,6 @@ export const AuthProvider: React.FC<{
       // @ts-ignore
       window.sexAddress = address;
 
-      console.log("auth", address, userStore.userInfo?.address);
       if (address === userStore.userInfo?.address) {
         setAccountRefresher(1);
         updateCurrentUserInfo();

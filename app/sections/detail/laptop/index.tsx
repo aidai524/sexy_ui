@@ -2,8 +2,11 @@ import Token from "../../home/laptop/main/token";
 import Back from "@/app/components/back/laptop";
 import { motion } from "framer-motion";
 import styles from "./index.module.css";
+import useTokenDetail from "../use-token-detail";
 
-export default function Laptop({ infoData, isLoading }: any) {
+export default function Laptop() {
+  const { infoData, isLoading } = useTokenDetail({});
+
   return (
     <motion.div
       className={styles.Container}

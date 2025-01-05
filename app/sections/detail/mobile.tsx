@@ -3,27 +3,29 @@ import Info from "./components/info/detail";
 import Chart from "./components/chart/index";
 import Trade from "./components/trade/index";
 import Txs from "./components/txs/index";
-
 import { AvatarBack } from "@/app/components/thumbnail/avatar";
-
 import styles from "./detail.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Tab from "@/app/components/tab";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import CircleLoading from "@/app/components/icons/loading";
 import MobileBg from "./mobile-bg";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import useTokenDetail from "./use-token-detail";
 
-export default function Detail({
-  infoData,
-  isLoading,
-  onBack,
-  onNext,
-  getDetailInfo
-}: any) {
+export default function Detail({ token, onBack, onNext }: any) {
   const [activeKey, setActiveKey] = useState("Info");
-
+  const {
+    infoData: queryedInfoData,
+    isLoading,
+    getDetailInfo
+  } = useTokenDetail({ token });
   const [mc, setMC] = useState<string | number>("-");
+
+  const infoData = useMemo(
+    () => token || queryedInfoData,
+    [token, queryedInfoData]
+  );
 
   const { getMC, pool } = useTokenTrade({
     tokenName: infoData?.tokenName as string,

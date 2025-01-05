@@ -100,7 +100,7 @@ export default function Token({
         />
 
         <div className={styles.Wrapper}>
-          {infoData2 && !isListEmpty && !isLoading && (
+          {infoData2 && (!isListEmpty || from === "detail") && !isLoading && (
             <motion.div
               initial="hidden"
               animate="show"
@@ -165,7 +165,7 @@ export default function Token({
               <Loading size={40} />
             </div>
           )}
-          {isListEmpty && (
+          {isListEmpty && from !== "detail" && (
             <Empty type={type === 0 ? "preLaunch" : "launching"} from={from} />
           )}
         </div>

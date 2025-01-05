@@ -31,7 +31,7 @@ export default function Mobile() {
           className={styles.Container}
         >
           <DetailPage
-            infoData={token}
+            token={token}
             onBack={() => {
               setToken(null);
               history.pushState({ page: "/" }, "Home", `/`);
