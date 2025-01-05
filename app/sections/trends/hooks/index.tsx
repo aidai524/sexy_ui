@@ -37,7 +37,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
 
   const getPoolToken = async (token: Trend) => {
     try {
-      // console.log('getPoolToken programId_address: %o', programId_address);
+      // console.log('%ctrends getPoolToken programId_address: %o', 'background:#FF2681;color:#fff;', programId_address);
       const programId = new PublicKey(programId_address);
       const state = PublicKey.findProgramAddressSync(
         [Buffer.from("launchpad")],
@@ -53,6 +53,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
         programId
       );
       if (!pool?.length) {
+        console.log('%ctrends getPoolToken no pool, will return 0 amount', 'background:#FF2681;color:#fff;');
         return {
           poolAmount: Big(0),
           solAmount: Big(0),
@@ -64,12 +65,22 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
       const poolData: any = await program.account.pool.fetch(pool[0]);
       const poolToken = Big(poolData!.virtualTokenAmount.toNumber());
       const solToken = Big(poolData!.virtualWsolAmount.toNumber());
+      if (token?.ranking === 1) {
+        console.log(
+          '%ctop 1 trends [%s] result: pool data=%o, pool token amount=%o, sol token amount=%o',
+          'background:#FF2681;color:#fff;',
+          token?.token_symbol,
+          poolData,
+          poolToken?.toString?.(),
+          solToken?.toString?.(),
+        );
+      }
       return {
         poolAmount: poolToken,
         solAmount: solToken,
       };
     } catch (err) {
-      console.log('get getPoolToken err: %o', err);
+      console.log('%ctrends getPoolToken failed: %o', 'background:#FF2681;color:#fff;', err);
       return {
         poolAmount: Big(0),
         solAmount: Big(0),
