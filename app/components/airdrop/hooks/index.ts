@@ -91,7 +91,7 @@ export function useAirdrop(): Airdrop {
   const handleBind = async () => {
     if (binding || !airdrop) return;
     setBinding(true);
-    const res = await httpAuthPost(`/airdrop/binding/code`, {
+    const res = await httpAuthPost(`/airdrop/binding/code?code=${airdrop}`, {
       code: airdrop,
     }, true, true);
     if (res.code !== 0) {

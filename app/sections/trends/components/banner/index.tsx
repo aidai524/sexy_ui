@@ -68,12 +68,12 @@ const TrendBanner = (props: any) => {
             className={styles.Crown}
           />
         </div>
-        <div className={styles.Content}>
+        <div className={isMobile ? styles.ContentMobile : styles.Content}>
           <div className={styles.Title}>
-            <div className={styles.Name}>{top1?.token_symbol}</div>
+            <div className={isMobile ? styles.NameMobile : styles.Name}>{top1?.token_symbol}</div>
             {!isMobile && <div className={styles.Rank}>[KING OF THE HILL]</div>}
             {isMobile && (
-              <div className={styles.TitleRight}>
+              <div className={isMobile ? styles.TitleRightMobile : styles.TitleRight}>
                 <BuyButton onBuy={handleBuy} />
                 <button
                   type="button"
@@ -96,7 +96,7 @@ const TrendBanner = (props: any) => {
             </div>
             <div className={styles.Summary}>
               <div className={styles.SummaryLabel}>[Progress]</div>
-              <div className={styles.SummaryValue}>{top1?.progress}%</div>
+              <div className={styles.SummaryValue}>{isMobile ? numberFormatter(top1?.progress, 0, true) : top1?.progress}%</div>
             </div>
             {!isMobile && <CreateTime top1={top1} />}
             {!isMobile && (
