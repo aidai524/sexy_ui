@@ -80,6 +80,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
 
   useEffect(() => {
     getTokenInfo()
+    // loadMore()
   }, [address])
 
   return (

@@ -12,8 +12,6 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import { useUser } from "@/app/store/useUser";
 import { httpAuthGet } from "@/app/utils";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
-import { Button } from "antd-mobile";
-import useJupiter from "@/app/hooks/useJupiter";
 import { useAuth } from "@/app/context/auth";
 
 export default memo(function Home(props: any) {
@@ -87,10 +85,6 @@ export default memo(function Home(props: any) {
       });
     }
   }, [address, isOther, refreshNum]);
-
-//   const { trade } = useJupiter({
-//     tokenAddress: "4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump"
-//   });
 
   return (
     <>

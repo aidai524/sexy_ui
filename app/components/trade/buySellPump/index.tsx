@@ -403,7 +403,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
         {activeIndex === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}>You will get</div>
+            <div className={styles.receiveTitle}>Minimum Received</div>
             <div className={styles.receiveAmount}>
               {sellOutSol && sellOutSol}{" "}
               SOL

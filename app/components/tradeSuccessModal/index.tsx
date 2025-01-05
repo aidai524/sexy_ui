@@ -37,10 +37,6 @@ export default function TradeSuccessModal({
   point
 }: Props) {
 
-  console.log('point:', point, numberFormatter(point, 3, true, {
-    isShort: true
-  }))
-
   return (
     <div className={style.main}>
       <div className={style.content + " " + typeCls[type]}>

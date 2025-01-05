@@ -6,10 +6,12 @@ import Big from "big.js";
 import { simplifyNum } from "@/app/utils";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import Empty from "../empty";
+import { useRouter } from "next/navigation";
 
 const pageSize = 40
 
 export default function Held({ from }: any) {
+  const router = useRouter()
   const { address } = useAccount()
   const [list, setList] = useState<any[]>([])
   const [hasMore, setHasMore] = useState(true)
@@ -68,7 +70,9 @@ export default function Held({ from }: any) {
               from === "page" && styles.PageHeldToken
             }`}
             onClick={() => {
-              window.open('https://solscan.io/account/' + item.token_account)
+              // console.log(item)
+              router.push('/detail?address=' + item.token_address)
+              // window.open('https://solscan.io/account/' + item.token_account)
             }}
             key={item.token_address}
           >
