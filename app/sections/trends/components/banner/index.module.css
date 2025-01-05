@@ -48,6 +48,10 @@
 .Content {
   flex: 1;
 }
+.ContentMobile {
+  composes: Content;
+  width: 0;
+}
 .Title {
   color: #fff;
   font-size: 14px;
@@ -58,12 +62,22 @@
   align-items: center;
   gap: 4px;
 }
+.Name {}
+.NameMobile {
+  composes: Name;
+  flex: 1;
+  width: 0;
+}
 .TitleRight {
   margin-left: auto;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 14px;
+}
+.TitleRightMobile {
+  composes: TitleRight;
+  flex-shrink: 0;
 }
 .CloseBtnMobile {
   width: 14px;

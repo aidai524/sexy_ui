@@ -195,7 +195,7 @@ const ReferModalContent = (props: any) => {
                     icon: "/img/home/refer-modal-progress-node.svg",
                     iconActive:
                       "/img/home/refer-modal-progress-node-active.svg",
-                    label: "Vol.1000k",
+                    label: "Vol.1m",
                     amount: 55,
                     unit: "SOL",
                     perUnit: "Month"

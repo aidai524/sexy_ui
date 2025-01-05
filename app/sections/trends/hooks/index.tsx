@@ -117,8 +117,10 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     const res = await getList({ limit: 1, search: '' });
     const _top1 = res.list[0];
     // calc market cap trends
-    _top1.marketCapTrendsDirection = '+';
-    _top1.marketCapTrends = '0.00';
+    if (_top1) {
+      _top1.marketCapTrendsDirection = '+';
+      _top1.marketCapTrends = '0.00';
+    }
     if (_top1 && _top1.poolAmount && Big(_top1.poolAmount).gt(0)) {
       const tokenMintAddress = new PublicKey(_top1.address);
       const tokenSupplyInfo = await connection.getTokenSupply(tokenMintAddress);
