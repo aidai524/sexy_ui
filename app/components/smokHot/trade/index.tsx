@@ -118,7 +118,7 @@ export default function Trade({
         </div>
         <div style={{ marginTop: 18 }}>
           <MainBtn
-            isDisabled={!inputVal || Number(inputVal) > max || isPrePayd}
+            isDisabled={!inputVal || Number(inputVal) > max || isPrePayd || Number(inputVal) <= 0}
             isLoading={isLoading}
             onClick={async () => {
               try {
