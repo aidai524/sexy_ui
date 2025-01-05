@@ -6,7 +6,8 @@ import { Connection } from "@solana/web3.js";
 import Big from "big.js";
 import { deleteCookie } from "./common";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API || "https://api.dumpdump.fun/api/v1";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API || "https://api.dumpdump.fun/api/v1";
 const TOKEN_ERROR_CODE = -401;
 // const BASE_URL = '/api/v1'
 
@@ -430,7 +431,7 @@ export async function upload(
   file: File,
   isImage: boolean = true,
   percent = 1.5,
-  scala = 2,
+  scala = 2
 ) {
   let _file: any = file;
   if (isImage) {
@@ -535,19 +536,18 @@ export async function postUpload(
           "Content-Type": type
         }
       });
-  
+
       if (!res.ok) {
         fail("Upload fail");
         return null;
       }
-  
+
       return `${process.env.NEXT_PUBLIC_S3_URL_PREFIX}/${s3_dir}${newFileName}`;
     }
   } catch (e) {
     fail("Upload fail");
-    console.log(e)
+    console.log(e);
   }
-  
 
   return null;
 }
@@ -650,12 +650,12 @@ export function formatSortAddress(address: string | undefined) {
   }
 }
 
-export const simplifyNum = (number: number, precision: number = 0 ) => {
+export const simplifyNum = (number: number, precision: number = 0) => {
   if (typeof Number(number) !== "number") return 0;
   if (isNaN(Number(number))) return 0;
 
   if (number === 0) {
-    return '0'
+    return "0";
   }
 
   if (number < 0.01) {
@@ -674,7 +674,6 @@ export const simplifyNum = (number: number, precision: number = 0 ) => {
   }
 };
 
-
 export function isValidURL(url: string) {
   const regex =
     /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/[a-z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/i;
@@ -689,7 +688,7 @@ export async function getTransaction(
 ) {
   const transactionDetails = await connection.getTransaction(hash, {
     commitment: "confirmed",
-    maxSupportedTransactionVersion: 0,
+    maxSupportedTransactionVersion: 0
   });
 
   if (transactionDetails?.meta) {
@@ -715,7 +714,10 @@ export async function getTransaction(
   return null;
 }
 
-export async function getPointByVolume(volume: string, type: 'sexy' | 'pump') {
-  const params = type === 'sexy' ? { sexy_volume: volume, pump_volume: 0  } : { pump_volume: volume, sexy_volume: 0 } 
-  return httpGet('/mining/swapEstimate', params).then(res => res.data)
+export async function getPointByVolume(volume: string, type: "sexy" | "pump") {
+  const params =
+    type === "sexy"
+      ? { sexy_volume: volume, pump_volume: 0 }
+      : { pump_volume: volume, sexy_volume: 0 };
+  return httpGet("/mining/swapEstimate", params).then((res) => res.data);
 }

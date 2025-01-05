@@ -84,7 +84,18 @@ const TrendBanner = (props: any) => {
               </div>
             )}
           </div>
-          {isMobile && <CreateTime top1={top1} />}
+          {isMobile && (
+            <div
+              style={{
+                color: '#6FFF00',
+                fontWeight: 500,
+                fontFamily: 'Unbounded',
+                fontSize: 14,
+              }}
+            >
+              KING OF THE HILL
+            </div>
+          )}
           <div className={styles.Summaries}>
             <div className={styles.Summary}>
               <div className={styles.SummaryLabel}>[Market Cap]</div>
