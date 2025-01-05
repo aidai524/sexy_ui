@@ -3,17 +3,11 @@ import AvatarBox from "./avatar-box";
 import type { Project } from "@/app/type";
 import styles from "./avatar.module.css";
 
-interface AvatarProps {
-  data: Project;
-  showBackIcon?: boolean;
-  showLaunchType?: boolean;
-}
-
 export function Avatar({
   data,
   showBackIcon = false,
   showLaunchType = true
-}: AvatarProps) {
+}: any) {
   const route = useRouter();
 
   if (!data) {
@@ -80,23 +74,24 @@ export function Avatar({
 export function AvatarBack({
   data,
   showBackIcon = true,
-  showLaunchType
-}: AvatarProps) {
+  showLaunchType,
+  onBack
+}: any) {
   return (
     <div className={styles.detailTitle}>
       <Avatar data={data} showLaunchType={showLaunchType} />
-      {showBackIcon && <TopArrow />}
+      {showBackIcon && <TopArrow onBack={onBack} />}
     </div>
   );
 }
 
-function TopArrow() {
+function TopArrow({ onBack }: any) {
   const router = useRouter();
 
   return (
     <div
       onClick={() => {
-        router.back();
+        onBack ? onBack() : router.back();
       }}
     >
       <svg

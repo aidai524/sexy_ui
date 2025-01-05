@@ -18,6 +18,7 @@ export default function useData(launchType: string) {
   const listRef = useRef<Project[]>();
   const renderIndexRef = useRef<number>(0);
   const { userInfo, accountRefresher } = useAuth();
+  const mountedRef = useRef(false);
 
   const onQueryList = async (isInit: boolean) => {
     await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`)
@@ -151,55 +152,67 @@ export default function useData(launchType: string) {
     }
   };
 
-  const { run: initList } = useDebounceFn(
-    async () => {
-      let list = getAll(launchType, userInfo?.address || "");
+  const initList = async () => {
+    let list = getAll(launchType, userInfo?.address || "");
 
-      if (list && list.length > 0) {
-        if (launchType === "preLaunch") {
-          list = list.filter((item: any) => {
-            if (
-              item.status !== 0 ||
-              item.is_like ||
-              item.is_super_like ||
-              item.is_un_like
-            ) {
-              return false;
-            }
-            return true;
-          });
-          list = list || [];
-        }
+    if (list && list.length > 0) {
+      if (launchType === "preLaunch") {
+        list = list.filter((item: any) => {
+          if (
+            item.status !== 0 ||
+            item.is_like ||
+            item.is_super_like ||
+            item.is_un_like
+          ) {
+            return false;
+          }
+          return true;
+        });
+        list = list || [];
       }
+    }
 
-      if (list && list.length > 0) {
+    if (list && list.length > 0) {
+      listRef.current = list;
+      if (list.length === 1) {
+        onQueryList(false).then(() => {
+          if (listRef.current) {
+            renderTwoSimple(listRef.current);
+          }
+        });
+      } else if (list.length <= left_num) {
         listRef.current = list;
-        if (list.length === 1) {
-          onQueryList(false).then(() => {
-            if (listRef.current) {
-              renderTwoSimple(listRef.current);
-            }
-          });
-        } else if (list.length <= left_num) {
-          listRef.current = list;
-          renderTwoSimple(list);
-          onQueryList(false);
-        } else {
-          renderTwoSimple(list);
-        }
-        setisLoading(false);
+        renderTwoSimple(list);
+        onQueryList(false);
       } else {
-        onQueryList(true);
-        setInfoData(undefined);
-        setInfoData2(undefined);
+        renderTwoSimple(list);
       }
+      setisLoading(false);
+    } else {
+      onQueryList(true);
+      setInfoData(undefined);
+      setInfoData2(undefined);
+    }
+  };
+
+  const { run: debounceList } = useDebounceFn(
+    () => {
+      initList();
+      mountedRef.current = true;
     },
-    { wait: 500 }
+    { wait: 1000 }
   );
 
   useEffect(() => {
+    if (!mountedRef.current) return;
+    setInfoData2(undefined);
     initList();
-  }, [launchType, accountRefresher]);
+  }, [launchType]);
+
+  useEffect(() => {
+    setInfoData2(undefined);
+    debounceList();
+  }, [accountRefresher]);
 
   return {
     infoData,

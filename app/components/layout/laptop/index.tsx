@@ -50,8 +50,15 @@ export default function Laptop() {
             {pathname === "/create" && <CreatePage />}
             {pathname === "/trends" && <TrendsPage />}
             {pathname === "/mining" && <MiningPage />}
-            {pathname === "/profile/user" && <ProfileCom isOther={true} />}
-            {pathname === "/profile" && <ProfileCom />}
+            {pathname === "/profile/user" && (
+              <ProfileCom
+                isOther={true}
+                updateCurrentUserInfo={updateCurrentUserInfo}
+              />
+            )}
+            {pathname === "/profile" && (
+              <ProfileCom updateCurrentUserInfo={updateCurrentUserInfo} />
+            )}
             {pathname === "/detail" && <DetailPage />}
           </div>
         </div>

@@ -13,6 +13,7 @@ import { AvatarBack, Avatar } from "./avatar";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Arrow from "../icons/arrow";
 import { useThrottleFn } from "ahooks";
+import { useRouter } from "next/navigation";
 
 interface Props {
   showDesc: boolean;
@@ -26,6 +27,7 @@ interface Props {
   showTags?: boolean;
   showDropdownIcon?: boolean;
   style?: any;
+  onGoDetail?: any;
 }
 
 export default function Thumbnail({
@@ -39,7 +41,8 @@ export default function Thumbnail({
   showTags = true,
   showDropdownIcon = true,
   data,
-  style = {}
+  style = {},
+  onGoDetail
 }: Props) {
   const [progressIndex, setProgressIndex] = useState(0);
   const [loadCommentNum, setLoadCommentNum] = useState(1);
@@ -49,6 +52,7 @@ export default function Thumbnail({
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [stopLoadMore, setStopLoadMore] = useState(false);
   const descContentRef = useRef<any>();
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -258,11 +262,16 @@ export default function Thumbnail({
               <div className={styles.desc}>{data.about}</div>
 
               {showDropdownIcon && (
-                <div className={styles.detailLink}>
-                  <Link href={"/detail?address=" + data.address}>
-                    <Arrow />
-                  </Link>
-                </div>
+                <button
+                  className={styles.detailLink}
+                  onClick={() => {
+                    onGoDetail
+                      ? onGoDetail()
+                      : router.push(`/detail?address=${data.address}`);
+                  }}
+                >
+                  <Arrow />
+                </button>
               )}
             </div>
             {showTags && <Tags data={data} />}

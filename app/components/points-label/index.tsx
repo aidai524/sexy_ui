@@ -49,7 +49,8 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
       <div>
         <div className={styles.Title}>
           {numberFormatter(amount, 3, true, {
-            isShort: true
+            isShort: true,
+            round: 0
           })}
         </div>
         <div className={styles.Desc}>$FlipN</div>

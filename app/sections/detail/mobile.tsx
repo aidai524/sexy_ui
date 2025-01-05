@@ -14,7 +14,12 @@ import CircleLoading from "@/app/components/icons/loading";
 import MobileBg from "./mobile-bg";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
-export default function Detail({ infoData, getDetailInfo }: any) {
+export default function Detail({
+  infoData,
+  onBack,
+  onNext,
+  getDetailInfo
+}: any) {
   const [activeKey, setActiveKey] = useState("Info");
 
   const [mc, setMC] = useState<string | number>("-");
@@ -41,6 +46,16 @@ export default function Detail({ infoData, getDetailInfo }: any) {
     }
   }, [pool, infoData]);
 
+  useEffect(() => {
+    onBack &&
+      infoData &&
+      history.pushState(
+        { page: "/detail" },
+        "Detail",
+        `/detail?address=${infoData.address}`
+      );
+  }, [onBack, infoData]);
+
   if (!infoData) {
     return (
       <div className={styles.loadingBox}>
@@ -57,14 +72,15 @@ export default function Detail({ infoData, getDetailInfo }: any) {
       <div className={styles.main}>
         <MobileBg className={styles.Bg} />
         <div className={styles.Content}>
-          <AvatarBack data={infoData} />
+          <AvatarBack data={infoData} onBack={onBack} />
 
           {infoData.status === 0 ? (
             <Info
               data={infoData}
               mc={mc}
               onUpdate={() => {
-                getDetailInfo();
+                getDetailInfo?.();
+                onNext?.();
               }}
             />
           ) : (

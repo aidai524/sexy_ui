@@ -5,7 +5,7 @@ import useRead from "./use-read";
 
 const PAGE_SIZE = 10;
 
-export default function useList({ onSuccess }: any) {
+export default function useList({ onSuccess, showModal }: any) {
   const { accountRefresher } = useAuth();
   const [list, setList] = useState<any>([]);
   const [loading, setLoading] = useState(true);
@@ -24,8 +24,14 @@ export default function useList({ onSuccess }: any) {
       pageRef.current === 1
         ? setList(response.data.list || [])
         : setList([...list, ...(response.data.list || [])]);
-      const ids = response.data.list.map((item: any) => item.id);
-      onRead({ ids, onSuccess });
+
+      if (showModal) {
+        const ids = response.data.list
+          .filter((item: any) => !item.read)
+          .map((item: any) => item.id);
+        onRead({ ids, onSuccess });
+      }
+
       setHasMore(response.data.has_next_page);
     } catch (err) {
       setList([]);
@@ -33,7 +39,7 @@ export default function useList({ onSuccess }: any) {
     } finally {
       setLoading(false);
     }
-  }, [list]);
+  }, [list, showModal]);
 
   const onNextPage = () => {
     if (loading || !hasMore) return;
@@ -47,12 +53,12 @@ export default function useList({ onSuccess }: any) {
   };
 
   useEffect(() => {
-    if (accountRefresher) {
+    if (accountRefresher && showModal) {
       onInit();
     } else {
       setList([]);
     }
-  }, [accountRefresher]);
+  }, [accountRefresher, showModal]);
 
   return {
     list,

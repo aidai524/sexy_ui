@@ -21,7 +21,7 @@ import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 interface Props {
   data: Project;
   mc?: string | number;
-  onUpdate: () => void;
+  onUpdate: (type?: string) => void;
 }
 
 export default function Info({ data, mc, onUpdate }: Props) {
@@ -61,11 +61,11 @@ export default function Info({ data, mc, onUpdate }: Props) {
             canFlip={canFlip}
             onLike={async () => {
               await actionLikeTrigger(data);
-              onUpdate();
+              onUpdate("like");
             }}
             onHate={async () => {
               await actionHateTrigger(data);
-              onUpdate();
+              onUpdate("hate");
             }}
             onSuperLike={() => {
               onUpdate();
