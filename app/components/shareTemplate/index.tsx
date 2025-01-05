@@ -214,7 +214,7 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
                     token.tokenName
                   )}&about=${encodeURIComponent(
                     token.about
-                  )}&imgUrl=${encodeURIComponent(img)}&tokenAddress=${
+                  )}&imgUrl=${encodeURIComponent(img)}&address=${
                     token.address
                   }&referral=${userInfo.address}`
                 );
