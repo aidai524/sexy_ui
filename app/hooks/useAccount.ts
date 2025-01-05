@@ -43,6 +43,10 @@ export function useAccount() {
             }),
           );
         }
+
+        console.log('isVersionedTransaction:', isVersionedTransaction)
+
+        
         
 
         const tx = await sendTransaction(transaction, connection, {
@@ -55,40 +59,60 @@ export function useAccount() {
         //   ...confirmationStrategy,
         //   ...sendOptions,
         // });
-   
+
 
         const startTime = Date.now();
         const timeout = 120000
         let done = false;
         let status
 
-        while(!done && Date.now() - startTime < timeout) {
-          status = await connection.getSignatureStatus(tx, {
-            searchTransactionHistory: true,
-          });
 
-          if (status?.value?.confirmationStatus === 'finalized' || status?.value?.err) {
-            done = true;
-          } else {
-            await sleep(1000);
+        if (isVersionedTransaction) {
+          while(!done && Date.now() - startTime < timeout) {
+            const transactionDetails = await connection.getTransaction(tx, {
+              maxSupportedTransactionVersion: 0,
+            });
+
+            if (transactionDetails) {
+              done = true;
+            } else {
+              await sleep(1000);
+            }
           }
-        }
 
-        if (!status) {
-          throw new Error(`Transaction confirmation failed for signature ${tx}`);
-        }
+          if (!done) {
+            throw new Error(`send transaction failed, please try again later`)
+          }
 
-
-        if (!status.value || status.value?.err) {
-          throw new Error(
-            status.value?.err
-              ? `send transaction failed: ${
-                  typeof status.value.err === 'string'
-                    ? status.value.err
-                    : JSON.stringify(status.value.err)
-                }`
-              : `send transaction failed, please try again later`,
-          );
+        } else {
+          while(!done && Date.now() - startTime < timeout) {
+            status = await connection.getSignatureStatus(tx, {
+              searchTransactionHistory: true,
+            });
+  
+            if (status?.value?.confirmationStatus === 'finalized' || status?.value?.err) {
+              done = true;
+            } else {
+              await sleep(1000);
+            }
+          }
+  
+          if (!status) {
+            throw new Error(`Transaction confirmation failed for signature ${tx}`);
+          }
+  
+  
+          if (!status.value || status.value?.err) {
+            throw new Error(
+              status.value?.err
+                ? `send transaction failed: ${
+                    typeof status.value.err === 'string'
+                      ? status.value.err
+                      : JSON.stringify(status.value.err)
+                  }`
+                : `send transaction failed, please try again later`,
+            );
+          }
         }
 
         return tx

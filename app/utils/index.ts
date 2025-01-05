@@ -687,7 +687,8 @@ export async function getTransaction(
   userAddress: string
 ) {
   const transactionDetails = await connection.getTransaction(hash, {
-    commitment: "confirmed"
+    commitment: "confirmed",
+    maxSupportedTransactionVersion: 0,
   });
 
   if (transactionDetails?.meta) {
