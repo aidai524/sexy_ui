@@ -525,7 +525,7 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
                         amount={new Big(activeIndex === 0 ? showBuyInToken : sellOut)
                                                   .div(10 ** token.tokenDecimals!)
                                                   .toFixed(2)}
-                        point={pointByVolume.data}
+                        point={pointByVolume}
                         onClose={() => {
                           modalHandler.close();
                         }}

@@ -33,26 +33,26 @@ export default function Detail({ token, onBack, onNext }: any) {
     disable: infoData?.status < 1
  })
 
-  // const { getMC, pool } = useTokenTrade({
-  //   tokenName: infoData?.tokenName as string,
-  //   tokenSymbol: infoData?.tokenSymbol as string,
-  //   tokenDecimals: infoData?.tokenDecimals as number,
-  //   loadData: false
-  // });
+  const { getMC, pool } = useTokenTrade({
+    tokenName: infoData?.tokenName as string,
+    tokenSymbol: infoData?.tokenSymbol as string,
+    tokenDecimals: infoData?.tokenDecimals as number,
+    loadData: false
+  });
 
-  // useEffect(() => {
-  //   if (
-  //     pool &&
-  //     pool.length > 0 &&
-  //     infoData?.DApp === "sexy" &&
-  //     infoData?.status === 1
-  //   ) {
-  //     getMC().then((res) => {
-  //       console.log('mc:', res)
-  //       setMC(res as number);
-  //     });
-  //   }
-  // }, [pool, infoData]);
+  useEffect(() => {
+    if (
+      pool &&
+      pool.length > 0 &&
+      infoData?.DApp === "sexy" &&
+      infoData?.status >= 1
+    ) {
+      getMC().then((res) => {
+        console.log('mc:', res)
+        setMC(res as number);
+      });
+    }
+  }, [pool, infoData]);
 
   useEffect(() => {
     onBack &&
