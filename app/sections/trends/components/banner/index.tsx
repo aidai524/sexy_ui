@@ -6,6 +6,7 @@ import { numberFormatter } from "@/app/utils/common";
 // import BuyModal from "@/app/sections/trends/components/buy";
 import TradeModal from "@/app/components/trade-modal";
 import { useTrade } from "@/app/sections/trends/hooks/trade";
+import Big from 'big.js';
 
 const TrendBanner = (props: any) => {
   const { isMobile, onClose } = props;
@@ -95,8 +96,16 @@ const TrendBanner = (props: any) => {
               </div>
             </div>
             <div className={styles.Summary}>
-              <div className={styles.SummaryLabel}>[Progress]</div>
-              <div className={styles.SummaryValue}>{isMobile ? numberFormatter(top1?.progress, 0, true) : top1?.progress}%</div>
+              {
+                Big(top1?.progress ?? 0).gte(100) ? (
+                  <div className={styles.SummaryLabel}>[Launched]</div>
+                ) : (
+                  <>
+                    <div className={styles.SummaryLabel}>[Progress]</div>
+                    <div className={styles.SummaryValue}>{isMobile ? numberFormatter(top1?.progress, 0, true) : top1?.progress}%</div>
+                  </>
+                )
+              }
             </div>
             {!isMobile && <CreateTime top1={top1} />}
             {!isMobile && (

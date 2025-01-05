@@ -10,6 +10,7 @@ import { useConnection } from '@solana/wallet-adapter-react';
 import { trim } from 'lodash';
 import { useDebounceFn } from 'ahooks';
 import { useConfig } from '@/app/store/useConfig';
+import { getTokenMeta } from '@/app/utils/solanaScanApi';
 
 export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolean; }) {
   const { isPollingTop1, isListPage = true } = props ?? {};
@@ -120,6 +121,11 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     if (_top1) {
       _top1.marketCapTrendsDirection = '+';
       _top1.marketCapTrends = '0.00';
+      _top1.holder = 0;
+      const _top1Meta = await getTokenMeta(_top1.address);
+      if (_top1Meta.success && _top1Meta.data?.holder) {
+        _top1.holder = _top1Meta.data?.holder;
+      }
     }
     if (_top1 && _top1.poolAmount && Big(_top1.poolAmount).gt(0)) {
       const tokenMintAddress = new PublicKey(_top1.address);
@@ -147,7 +153,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   const getHottestList = async () => {
     setHottestListLoading(true);
     const res = await getList({ limit: 7, search: '' });
-    setHottestList(res.list.slice(1));
+    setHottestList(res.list.slice(1, 7));
     setHottestListLoading(false);
   };
 
@@ -280,4 +286,5 @@ export interface Trend {
   solAmount?: Big.Big;
   marketCapTrends?: string;
   marketCapTrendsDirection?: '+' | '-';
+  holder?: number;
 }
