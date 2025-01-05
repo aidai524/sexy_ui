@@ -6,7 +6,7 @@ export default function CreateButton({ id }: any) {
     <button
       id={id}
       onClick={() => {
-        if (userInfo?.address) {
+        if (!userInfo?.address) {
           // @ts-ignore
           window?.connect();
           return;

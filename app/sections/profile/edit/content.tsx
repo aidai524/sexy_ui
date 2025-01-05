@@ -22,7 +22,7 @@ export default function EditContent({
   const [education, setEducation] = useState<string>("");
   const [avatar, setAvatar] = useState<ImageUploadItem[]>([]);
   const [banner, setBanner] = useState<ImageUploadItem[]>([]);
-  const { userInfo } = useAuth();
+  const { userInfo, updateCurrentUserInfo } = useAuth();
   const { saveUserInfo } = useUserInfo(userInfo?.address, true);
 
   const iaInValid = useMemo(() => {
@@ -163,6 +163,7 @@ export default function EditContent({
               if (isSuccess) {
                 success("Edit profile success");
                 onSuccess();
+                updateCurrentUserInfo();
               } else {
                 fail("Edit profile fail");
               }

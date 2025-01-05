@@ -16,6 +16,7 @@ import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 export default function Detail({
   infoData,
+  isLoading,
   onBack,
   onNext,
   getDetailInfo
@@ -56,7 +57,7 @@ export default function Detail({
       );
   }, [onBack, infoData]);
 
-  if (!infoData) {
+  if (isLoading) {
     return (
       <div className={styles.loadingBox}>
         <CircleLoading size={60} />

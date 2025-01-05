@@ -29,14 +29,14 @@ export default memo(function Home(props: any) {
 
   useEffect(() => {
     if (currentUserInfo?.address && params) {
-        console.log(currentUserInfo)
+      console.log(currentUserInfo);
       if (
         params.get("account")?.toString() === currentUserInfo.address &&
         isOther
       ) {
-       console.log(currentUserInfo)
+        console.log(currentUserInfo);
 
-        // router.replace("/profile");
+        router.replace("/profile");
       }
     }
   }, [currentUserInfo, params, isOther]);
@@ -90,9 +90,9 @@ export default memo(function Home(props: any) {
     }
   }, [address, isOther, refreshNum]);
 
-//   const { trade } = useJupiter({
-//     tokenAddress: "4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump"
-//   });
+  //   const { trade } = useJupiter({
+  //     tokenAddress: "4MvdsczbZ7PpZPdjcw793sRqGeH9RsxqtrQvxniLpump"
+  //   });
 
   return (
     <>

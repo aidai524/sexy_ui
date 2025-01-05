@@ -19,6 +19,7 @@ export default function MessagesModal({
   feeds,
   num,
   hasMore,
+  loading,
   onNextPage,
   onRead
 }: any) {
@@ -63,7 +64,7 @@ export default function MessagesModal({
             <InfiniteScroll loadMore={onNextPage} hasMore={hasMore}>
               {hasMore && <CircleLoading size={20} />}
             </InfiniteScroll>
-            {data.length === 0 && (
+            {data.length === 0 && !loading && (
               <div className={styles.EmptyText}>No information</div>
             )}
           </div>

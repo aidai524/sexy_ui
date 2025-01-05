@@ -53,12 +53,12 @@ export default function useList({ onSuccess, showModal }: any) {
   };
 
   useEffect(() => {
-    if (accountRefresher && showModal) {
+    if (accountRefresher) {
       onInit();
     } else {
       setList([]);
     }
-  }, [accountRefresher, showModal]);
+  }, [accountRefresher]);
 
   return {
     list,

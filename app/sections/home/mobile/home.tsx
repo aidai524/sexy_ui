@@ -43,7 +43,7 @@ export default forwardRef(function Home(props, ref) {
   const { visible: trendsVisible, handleClose: handleTrendsClose } =
     useTrends();
   const { hasShownTour } = useGuidingTour();
-  const { setToken: setDetailToken } = useHome();
+  const { goDetail } = useHome();
   const homepageStore: any = useHomePageM();
   const { homeTabIndex, set: setHomeTabIndex }: any = useHomeTab();
 
@@ -408,7 +408,8 @@ export default forwardRef(function Home(props, ref) {
                       // homepageStore.set({
                       //   token: infoDataLaunching
                       // });
-                      setDetailToken(infoDataLaunching);
+                      goDetail(infoDataLaunching);
+
                       // router.push(
                       //   `/detail?address=${infoDataLaunching.address}`
                       // );
@@ -432,7 +433,7 @@ export default forwardRef(function Home(props, ref) {
                     data={infoDataLaunching2}
                     onGoDetail={() => {
                       // homepageStore.set({ token: infoDataLaunching2 });
-                      setDetailToken(infoDataLaunching2);
+                      goDetail(infoDataLaunching2);
                       // router.push(
                       //   `/detail?address=${infoDataLaunching2.address}`
                       // );
@@ -526,7 +527,7 @@ export default forwardRef(function Home(props, ref) {
                       // homepageStore.set({
                       //   token: infoDataLaunched
                       // });
-                      setDetailToken(infoDataLaunched);
+                      goDetail(infoDataLaunched);
                       // router.push(
                       //   `/detail?address=${infoDataLaunched.address}`
                       // );
@@ -552,7 +553,7 @@ export default forwardRef(function Home(props, ref) {
                       // homepageStore.set({
                       //   token: infoDataLaunched2
                       // });
-                      setDetailToken(infoDataLaunched2);
+                      goDetail(infoDataLaunched2);
                       // router.push(
                       //   `/detail?address=${infoDataLaunched2.address}`
                       // );
