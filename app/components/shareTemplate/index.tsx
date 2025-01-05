@@ -253,7 +253,7 @@ export function LaunchTag({ type }: { type: number }) {
     );
   }
 
-  if (type === 1) {
+  if (type === 3) {
     return (
       <div className={styles.launchTag + " " + styles.launch3}>Launched</div>
     );

@@ -91,7 +91,10 @@ export default function SmokeBtn({
           {actionChildren}
         </div>
       ) : (
-        <SmokeButton {...{ size, id, address }} onClick={onButtonClick} />
+        <SmokeButton
+          {...{ size, id, address, token }}
+          onClick={onButtonClick}
+        />
       )}
 
       <Modal
