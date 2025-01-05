@@ -10,6 +10,7 @@ import { Avatar } from "@/app/components/thumbnail/avatar";
 import { Checkbox } from "antd-mobile";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
+import { useUserAgent } from "@/app/context/user-agent";
 
 type Token = {
   tokenName: string;
@@ -35,7 +36,8 @@ export default function Create({
   setShowSuccessModal
 }: any) {
   const { tokenName, tokenSymbol, tokenUri } = token;
-  const { updateInfo } = useLaptop();
+  const { updateInfo} = useLaptop();
+  const { isMobile } = useUserAgent();
   const [infoData, setInfoData] = useState<Project>({
     tokenName: tokenName,
     ticker: data.ticker,
@@ -187,7 +189,10 @@ export default function Create({
                 if (isSuccess) {
                   onHide();
                   setShowSuccessModal(true);
-                  updateInfo?.("create");
+                  if (!isMobile) {
+                    updateInfo?.("create");
+                  }
+                  
                 }
 
                 setIsLoading(false);
