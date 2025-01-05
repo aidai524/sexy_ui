@@ -36,7 +36,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
 
   const getPoolToken = async (token: Trend) => {
     try {
-      console.log('getPoolToken programId_address: %o', programId_address);
+      // console.log('getPoolToken programId_address: %o', programId_address);
       const programId = new PublicKey(programId_address);
       const state = PublicKey.findProgramAddressSync(
         [Buffer.from("launchpad")],
@@ -117,8 +117,10 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     const res = await getList({ limit: 1, search: '' });
     const _top1 = res.list[0];
     // calc market cap trends
-    _top1.marketCapTrendsDirection = '+';
-    _top1.marketCapTrends = '0.00';
+    if (_top1) {
+      _top1.marketCapTrendsDirection = '+';
+      _top1.marketCapTrends = '0.00';
+    }
     if (_top1 && _top1.poolAmount && Big(_top1.poolAmount).gt(0)) {
       const tokenMintAddress = new PublicKey(_top1.address);
       const tokenSupplyInfo = await connection.getTokenSupply(tokenMintAddress);
@@ -206,7 +208,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   };
 
   useEffect(() => {
-    console.log('isPollingTop1: %o', isPollingTop1);
+    // console.log('isPollingTop1: %o', isPollingTop1);
     if (!isPollingTop1) return;
     const timer = setInterval(() => {
       getTop1();

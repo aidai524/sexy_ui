@@ -64,9 +64,9 @@ export default function Profile({
                 onSuccess={async () => {
                   setRefreshNum(refreshNum + 1);
                   await onQueryInfo();
-                  setUserInfo({
-                    userInfo: userInfo
-                  });
+                  // setUserInfo({
+                  //   userInfo: userInfo
+                  // });
                 }}
               />
             </div>
