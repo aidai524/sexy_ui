@@ -12,6 +12,7 @@ import CircleLoading from "@/app/components/icons/loading";
 import MobileBg from "./mobile-bg";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import useTokenDetail from "./use-token-detail";
+import useMc from "@/app/hooks/useMc";
 
 export default function Detail({ token, onBack, onNext }: any) {
   const [activeKey, setActiveKey] = useState("Info");
@@ -27,27 +28,32 @@ export default function Detail({ token, onBack, onNext }: any) {
     [token, queryedInfoData]
   );
 
-  const { getMC, pool } = useTokenTrade({
-    tokenName: infoData?.tokenName as string,
-    tokenSymbol: infoData?.tokenSymbol as string,
-    tokenDecimals: infoData?.tokenDecimals as number,
-    loadData: false
-  });
+  const { mc: pumpMc } = useMc({ 
+    tokenAddress: infoData?.address,
+    disable: infoData?.status < 1
+ })
 
-  useEffect(() => {
-    if (
-      pool &&
-      pool.length > 0 &&
-      infoData?.DApp === "sexy" &&
-      infoData?.status === 1
-    ) {
-      getMC().then((res) => {
-        console.log("mc:", mc);
+  // const { getMC, pool } = useTokenTrade({
+  //   tokenName: infoData?.tokenName as string,
+  //   tokenSymbol: infoData?.tokenSymbol as string,
+  //   tokenDecimals: infoData?.tokenDecimals as number,
+  //   loadData: false
+  // });
 
-        setMC(res as number);
-      });
-    }
-  }, [pool, infoData]);
+  // useEffect(() => {
+  //   if (
+  //     pool &&
+  //     pool.length > 0 &&
+  //     infoData?.DApp === "sexy" &&
+  //     infoData?.status === 1
+  //   ) {
+  //     getMC().then((res) => {
+  //       setMC(res as number);
+  //     });
+  //   }
+
+
+  // }, [pool, infoData]);
 
   useEffect(() => {
     onBack &&
@@ -80,7 +86,7 @@ export default function Detail({ token, onBack, onNext }: any) {
           {infoData.status === 0 ? (
             <Info
               data={infoData}
-              mc={mc}
+              mc={pumpMc}
               onUpdate={() => {
                 getDetailInfo?.();
                 onNext?.();
@@ -97,7 +103,7 @@ export default function Detail({ token, onBack, onNext }: any) {
                   name: "Info",
                   content: (
                     <Info
-                      mc={mc}
+                      mc={pumpMc}
                       data={infoData}
                       onUpdate={() => {
                         getDetailInfo();
@@ -111,11 +117,11 @@ export default function Detail({ token, onBack, onNext }: any) {
                 },
                 {
                   name: "Buy/Sell",
-                  content: <Trade mc={mc} from="mobile" data={infoData} />
+                  content: <Trade mc={pumpMc} from="mobile" data={infoData} />
                 },
                 {
                   name: "Txs",
-                  content: <Txs mc={mc} data={infoData} />
+                  content: <Txs mc={pumpMc} data={infoData} />
                 }
               ]}
             />

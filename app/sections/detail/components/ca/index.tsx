@@ -24,7 +24,7 @@ export default function CA({
     >
       <div className={styles.marketCap}>
         <div className={styles.mcTitle}>Market cap:</div>
-        {data?.status === 1 && data.DApp === "sexy" ? (
+        {Number(data?.status) > 0 ? (
           <div className={styles.mcAmount}>
             {mc && `$${simplifyNum(Number(mc), 2)}`}
           </div>

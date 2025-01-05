@@ -10,9 +10,11 @@ export default function useMc({ tokenAddress, disable = true }: Props) {
     const [mc, setMc] = useState(0)
 
     useEffect(() => {
-        console.log('disable:', disable, tokenAddress)
         if (tokenAddress && !disable) {
+            console.log(tokenAddress)
+
             getTokenMeta(tokenAddress).then(res => {
+                console.log('res:', res)
                 setMc(res.data.market_cap)
             })
         }
