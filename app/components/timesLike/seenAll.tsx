@@ -36,7 +36,7 @@ export default function SeenAll({ show, onClose }: Props) {
                 setHomeTabIndex({
                   homeTabIndex: 1
                 });
-                // router.push('/?launchType=1')
+                router.push("/?launchType=1");
               }}
               style={{ backgroundColor: "rgba(109, 181, 0, 1)", marginTop: 30 }}
             >
