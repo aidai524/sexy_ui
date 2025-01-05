@@ -10,7 +10,7 @@ import { useAuth } from "@/app/context/auth";
 export default function MessagesAlarm() {
   const [showModal, setShowModal] = useState(false);
   const { num, onQuery: onQueryNum } = useNum();
-  const { list, loading, hasMore, onNextPage, onInit } = useList({
+  const { list, loading, hasMore, page, onNextPage, onInit } = useList({
     onSuccess: onQueryNum,
     showModal
   });
@@ -18,10 +18,6 @@ export default function MessagesAlarm() {
   const { userInfo } = useAuth();
 
   const feeds: any = [];
-
-  useEffect(() => {
-    if (showModal) onInit();
-  }, [showModal]);
 
   return (
     <>
@@ -39,9 +35,7 @@ export default function MessagesAlarm() {
                 window?.connect();
                 return;
               }
-              if (list?.length) {
-                setShowModal(true);
-              }
+              setShowModal(true);
             }}
           >
             <AlarmIcon />
@@ -69,6 +63,7 @@ export default function MessagesAlarm() {
         list={list}
         feeds={feeds}
         loading={loading}
+        page={page}
         onNextPage={onNextPage}
         onClose={() => {
           setShowModal(false);

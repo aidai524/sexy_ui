@@ -29,7 +29,7 @@ export default function useList({ onSuccess, showModal }: any) {
         const ids = response.data.list
           .filter((item: any) => !item.read)
           .map((item: any) => item.id);
-        onRead({ ids, onSuccess });
+        ids.length && onRead({ ids, onSuccess });
       }
 
       setHasMore(response.data.has_next_page);
@@ -53,17 +53,19 @@ export default function useList({ onSuccess, showModal }: any) {
   };
 
   useEffect(() => {
+    if (!showModal) return;
     if (accountRefresher) {
       onInit();
     } else {
       setList([]);
     }
-  }, [accountRefresher]);
+  }, [accountRefresher, showModal]);
 
   return {
     list,
     loading,
     hasMore,
+    page: pageRef,
     onQuery,
     onNextPage,
     onInit

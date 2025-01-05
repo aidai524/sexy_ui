@@ -12,6 +12,7 @@ import Refer, {
   ReferContentCard
 } from "@/app/components/layout/laptop/user/refer";
 import { FlipProvider } from "@/app/context/flip";
+import TabBg from "./tab-bg";
 
 function CustomIcon({
   url,
@@ -137,7 +138,7 @@ export default function Component({ children }: any) {
         trade()
       }}>juipter</Button> */}
         <main className="pb-16">{children}</main>
-
+        <TabBg className={styles.TabBg} />
         {showTabs && (
           <TabBar
             className={styles.tabBar}
