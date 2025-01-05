@@ -138,43 +138,46 @@ export default function Component({ children }: any) {
         trade()
       }}>juipter</Button> */}
         <main className="pb-16">{children}</main>
-        <TabBg className={styles.TabBg} />
+
         {showTabs && (
-          <TabBar
-            className={styles.tabBar}
-            activeKey={pathname}
-            safeArea={true}
-            onChange={(key) => {
-              if (key !== "/") {
-                if (!address) {
-                  // @ts-ignore
-                  window.connect();
-                  return;
+          <>
+            <TabBg className={styles.TabBg} />
+            <TabBar
+              className={styles.tabBar}
+              activeKey={pathname}
+              safeArea={true}
+              onChange={(key) => {
+                if (key !== "/") {
+                  if (!address) {
+                    // @ts-ignore
+                    window.connect();
+                    return;
+                  }
                 }
-              }
-            }}
-          >
-            {Tabs(pathname).map((item) => {
-              if (item.title === "CREATE") {
+              }}
+            >
+              {Tabs(pathname).map((item) => {
+                if (item.title === "CREATE") {
+                  return (
+                    <TabBar.Item
+                      key={item.key}
+                      icon={item.icon}
+                      className={styles.activeTab}
+                      title={""}
+                    />
+                  );
+                }
                 return (
                   <TabBar.Item
                     key={item.key}
-                    icon={item.icon}
+                    icon={pathname === item.key ? item.iconActive : item.icon}
                     className={styles.activeTab}
-                    title={""}
+                    title={item.title}
                   />
                 );
-              }
-              return (
-                <TabBar.Item
-                  key={item.key}
-                  icon={pathname === item.key ? item.iconActive : item.icon}
-                  className={styles.activeTab}
-                  title={item.title}
-                />
-              );
-            })}
-          </TabBar>
+              })}
+            </TabBar>
+          </>
         )}
         {isRefer && <ReferContentCard />}
       </div>

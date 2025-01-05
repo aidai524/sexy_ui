@@ -34,7 +34,7 @@
   position: fixed;
   left: 3px;
   bottom: 0;
-  z-index: 99;
+  z-index: 90;
   background: url("/img/home/refer-entry-bg-mobile.svg") no-repeat top / cover;
   display: flex;
   padding: 25px 20px 0 15px;
