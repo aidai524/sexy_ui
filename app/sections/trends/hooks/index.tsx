@@ -153,7 +153,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   const getHottestList = async () => {
     setHottestListLoading(true);
     const res = await getList({ limit: 7, search: '' });
-    setHottestList(res.list.slice(1));
+    setHottestList(res.list.slice(1, 7));
     setHottestListLoading(false);
   };
 
