@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 
 const pageSize = 40
 
-export default function Held({ from }: any) {
+export default function Held({ from, address }: any) {
   const router = useRouter()
-  const { address } = useAccount()
+  // const { address } = useAccount()
   const [list, setList] = useState<any[]>([])
   const [hasMore, setHasMore] = useState(true)
   const [pageIndex, setPageIndex] = useState(1)

@@ -30,7 +30,7 @@ export default function Tabs({
   const tabs = [
     {
       name: "Held",
-      content: <Held from={from} />
+      content: <Held from={from} address={address}/>
     },
     {
       name: "Created",
