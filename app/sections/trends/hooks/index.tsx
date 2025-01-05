@@ -83,7 +83,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
       const it = _list[i];
       it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
       const { poolAmount, solAmount } = await getPoolToken(it);
-      let _progress = Big(poolAmount).minus(295840542120770).div(Big(1095840542120770).minus(295840542120770)).times(100);
+      let _progress = Big(1095840542120770).minus(poolAmount).div(Big(1095840542120770).minus(295840542120770)).times(100);
       if (Big(_progress).lt(0)) {
         _progress = Big(0);
       }
