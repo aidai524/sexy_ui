@@ -6,12 +6,22 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { formatAddress } from "@/app/utils";
 import useUserInfo from "../../../hooks/useUserInfo";
+import { useAuth } from "@/app/context/auth";
 
 export default function Follower() {
   const params = useSearchParams();
   const [account] = useState(params.get("account")?.toString());
   const [action] = useState(params.get("action")?.toString());
-  const { userInfo, onQueryInfo } = useUserInfo(account);
+  const { userInfo: currentUser, accountRefresher } = useAuth();
+  const isOther = useMemo(
+    () => account !== currentUser.address,
+    [currentUser, account]
+  );
+  const { userInfo, onQueryInfo } = useUserInfo(
+    account,
+    !isOther,
+    accountRefresher
+  );
   const [activeNode, setActiveNode] = useState("");
 
   const [refeashFollowers, setRefeashFollowers] = useState(0);
@@ -26,11 +36,6 @@ export default function Follower() {
       }
     }
   }, [userInfo, action]);
-
-  const isOther = useMemo(
-    () => account === userInfo?.address,
-    [account, userInfo]
-  );
 
   return (
     <div className={styles.main}>

@@ -2,11 +2,13 @@ import { useEffect, useRef } from "react";
 import { useAuth } from "@/app/context/auth";
 import { httpAuthGet } from "@/app/utils";
 import { Toast } from "antd-mobile";
+import useRead from "../components/messages/use-read";
 
 export default function useNotice() {
   const { accountRefresher } = useAuth();
   const noticesRef = useRef<any>([]);
   const timerRef = useRef<any>();
+  const { onRead } = useRead();
 
   const onToast = (list: any) => {
     const notice = list.shift();
@@ -19,6 +21,7 @@ export default function useNotice() {
       position: "top",
       duration: 5000,
       afterClose() {
+        onRead({ ids: [notice.id] });
         noticesRef.current = list;
         if (list.length) {
           onToast(list);

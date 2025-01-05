@@ -4,11 +4,14 @@
   background-color: #fff3f8;
   border-radius: 20px;
   box-shadow: 0px 0px 12px 10px rgba(0, 0, 0, 0.09);
+  padding-bottom: 10px;
 }
 
 .Content {
-  max-height: 50vh;
+  max-height: 60vh;
   overflow-y: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .EmptyText {
@@ -45,7 +48,17 @@
   color: #000;
   font-weight: 300;
   margin-top: 4px;
+  width: 100%;
+}
+
+.Ellipsis {
+  height: 30px;
   word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .ItemLink {
@@ -53,6 +66,7 @@
   color: #ff008d;
   font-size: 14px;
   font-weight: 400;
+  font-family: Unbounded;
 }
 
 .ItemBottom {
@@ -66,6 +80,7 @@
   color: #8d8bb8;
   font-size: 12px;
   font-weight: 300;
+  text-align: right;
 }
 
 .ItemLeft {

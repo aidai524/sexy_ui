@@ -119,9 +119,6 @@ export default function InfoPart({
             <div className={styles.author}>
               <div className={styles.authorTitle}>Education:</div>
               <div
-                onClick={() => {
-                  router.push("/profile/user?account=" + data.account);
-                }}
                 className={[styles.authorDesc, styles.authorDescEs].join(" ")}
               >
                 {data.creater && data.creater.education}
@@ -146,15 +143,17 @@ export default function InfoPart({
           </div>
         </Panel>
       </>
-      <>
-        <Sep size={sepSize} />
-        <Panel theme={theme}>
-          <div className={styles.aboutUs}>
-            <div className={styles.aboutHeader}>About Us</div>
-            <div className={styles.abountDetail}>{data.about}</div>
-          </div>
-        </Panel>
-      </>
+      {!!data.about && (
+        <>
+          <Sep size={sepSize} />
+          <Panel theme={theme}>
+            <div className={styles.aboutUs}>
+              <div className={styles.aboutHeader}>About Us</div>
+              <div className={styles.abountDetail}>{data.about}</div>
+            </div>
+          </Panel>
+        </>
+      )}
 
       {data.website && (
         <>

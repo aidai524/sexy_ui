@@ -19,8 +19,15 @@ import {
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
 import { mapDataToProject } from "@/app/utils/mapTo";
+import CircleLoading from "@/app/components/icons/loading";
 
-export default function Fullscreen({ list = [], onExit, type }: any) {
+export default function Fullscreen({
+  list = [],
+  onExit,
+  type,
+  isLoading,
+  getnext
+}: any) {
   const swaperRef = useRef<any>();
   const { updateInfo } = useLaptop();
   const [index, setIndex] = useState(0);
@@ -46,6 +53,8 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
     }
 
     setIndex((prev) => prev + 1);
+
+    getnext();
   };
 
   useEffect(() => {
@@ -145,7 +154,7 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
           onClick={() => {
             shareToX(
               list[index].tokenName,
-              "https://app.flipn.fun/detail?id=" + list[index].id
+              "https://app.flipn.fun/detail?address=" + list[index].address
             );
           }}
         >
@@ -172,10 +181,16 @@ export default function Fullscreen({ list = [], onExit, type }: any) {
       >
         Click the blank area means ‘unlike’ it, and check the next one.
       </div>
-      {(!list.length || index === list.length) && (
+      {isLoading ? (
         <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
-          <Empty type={type} />
+          <CircleLoading size={40} />
         </div>
+      ) : (
+        (!list.length || index === list.length) && (
+          <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
+            <Empty type={type} />
+          </div>
+        )
       )}
     </motion.div>
   );

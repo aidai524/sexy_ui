@@ -5,6 +5,7 @@ import { getAll, setAll } from "@/app/utils/listStore";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";
+import { useFullScreen } from "@/app/store/use-full-screen";
 
 const limit = 10;
 const left_num = 5;
@@ -21,6 +22,8 @@ export default function useData(launchType: string) {
   const [infoData2, setInfoData2] = useState<Project>();
   const [isLoading, setIsLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
+  const [fullList, setFullList] = useState<any>([]);
+  const fullScreenStore: any = useFullScreen();
   const listRef = useRef<Project[]>();
   const { accountRefresher, userInfo } = useAuth();
   const mountedRef = useRef(false);
@@ -99,26 +102,6 @@ export default function useData(launchType: string) {
     [launchType, userInfo]
   );
 
-  const onUpdateAfterExitingFull = (index: number) => {
-    try {
-      if (!listRef.current?.length) {
-        throw new Error();
-      }
-      listRef.current = listRef.current?.slice(index, listRef.current.length);
-      if (!listRef.current?.length) {
-        throw new Error();
-      }
-      setInfoData2(mapDataToProject(listRef.current[0]));
-      if (listRef.current.length <= left_num) {
-        if (hasNext) {
-          handleList(true);
-        }
-      }
-    } catch (err) {
-      setInfoData2(undefined);
-    }
-  };
-
   const initList = () => {
     let list = getAll(launchType, userInfo?.address) || [];
     if (list.length === 0) {
@@ -170,7 +153,6 @@ export default function useData(launchType: string) {
     hasNext,
     isLoading,
     list: listRef,
-    onUpdateAfterExitingFull,
     getnext
   };
 }

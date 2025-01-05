@@ -6,14 +6,14 @@ import { DotLoading } from "antd-mobile";
 export default function Claim({
   isPrepaid,
   isOther,
+  isClaimed,
+  setIsClaimed,
   prepaidTokenWithdraw
 }: any) {
   const [isLoading, setIsLoading] = useState(false);
-  const [isClaimed, setIsClaimed] = useState(false);
 
   return (
-    isPrepaid &&
-    !isOther &&
+    !!(isPrepaid && !isOther) &&
     (isClaimed ? (
       <button className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>
         Claimed

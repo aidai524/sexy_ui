@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 import styles from "./index.module.css";
 import Icon from "./Reicon";
 import { httpAuthGet } from "@/app/utils";
@@ -11,30 +11,28 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
   const { accountRefresher } = useAuth();
   const timer = useRef<any>();
 
+  const init = async () => {
+    timer.current && clearTimeout(timer.current);
+    try {
+      setLoading(true);
+      const response = await httpAuthGet("/account/mining/user");
+      setAmount(response.data.minted_amount);
+      timer.current = setTimeout(() => {
+        init();
+      }, 60000);
+    } catch (err) {
+      setAmount(0);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    timer.current && clearInterval(timer.current);
-    const init = async () => {
-      try {
-        setLoading(true);
-        const response = await httpAuthGet("/account/mining/user");
-        setAmount(response.data.minted_amount);
-      } catch (err) {
-        setAmount(0);
-      } finally {
-        setLoading(false);
-      }
-    };
     if (accountRefresher) {
       init();
-      // fix#REF-8995
-      timer.current = setInterval(init, 60000);
     } else {
       setAmount(0);
     }
-
-    return () => {
-      timer.current && clearInterval(timer.current);
-    };
   }, [accountRefresher]);
 
   return (
@@ -50,7 +48,7 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
       <Icon size={30} />
       <div>
         <div className={styles.Title}>
-          {numberFormatter(amount, 2, true, {
+          {numberFormatter(amount, 3, true, {
             isShort: true
           })}
         </div>

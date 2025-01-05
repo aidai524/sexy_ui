@@ -19,11 +19,11 @@ export default memo(function Detail(props: any) {
   const [isLoading, setIsLoading] = useState(true);
 
   const getDetailInfo = useCallback(() => {
-    const id = params.get("id");
+    const address = params.get("address");
 
-    if (id) {
+    if (address) {
       setIsLoading(true);
-      return httpGet("/project", { id })
+      return httpGet("/project", { address })
         .then((res) => {
           if (res.code === 0 && res.data && res.data.length) {
             const infoData = mapDataToProject(res.data[0]);

@@ -8,6 +8,9 @@ export default function Header({ currentTab, onChangeTab, onClose, num }: any) {
       <Tabs currentTab={currentTab} onChangeTab={onChangeTab} num={num} />
       <button
         className="button"
+        style={{
+          color: "#000"
+        }}
         onClick={(ev) => {
           ev.stopPropagation();
           onClose();

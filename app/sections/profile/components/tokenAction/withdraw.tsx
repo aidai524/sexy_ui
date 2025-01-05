@@ -26,7 +26,7 @@ export default function Withdraw({
   );
 
   return (
-    showWithdraw &&
+    !!showWithdraw &&
     //
     (isWithdrawed ? (
       <button className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>

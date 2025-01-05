@@ -17,7 +17,7 @@ export default function Header({
   from
 }: any) {
   const router = useRouter();
-  const { showShare } = useMessage()
+  const { showShare } = useMessage();
 
   return (
     <div className={styles.Container}>
@@ -45,11 +45,7 @@ export default function Header({
                 window.connect();
                 return;
               }
-              showShare(tokenInfo)
-              // shareToX(
-              //   tokenInfo.tokenName,
-              //   "https://app.flipn.fun/detail?id=" + tokenInfo.id
-              // );
+              showShare(tokenInfo);
             }}
           >
             <ShareIcon />

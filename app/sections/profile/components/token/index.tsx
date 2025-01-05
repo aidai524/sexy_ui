@@ -63,7 +63,7 @@ export default function Token({
         <div
           className={`${styles.tokenImgContent} button`}
           onClick={() => {
-            router.push("/detail?id=" + data.id);
+            router.push("/detail?address=" + data.address);
           }}
         >
           <img

@@ -7,7 +7,7 @@ export default function useRead() {
     try {
       const response = await httpAuthPost("/inform/list", { ids });
       if (response.code === 0) {
-        onSuccess();
+        onSuccess?.();
         if (!ids) success("Read all successfully");
       }
     } catch (err) {}

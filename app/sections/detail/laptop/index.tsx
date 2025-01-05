@@ -12,7 +12,7 @@ export default function Laptop({ infoData, isLoading }: any) {
     >
       <Token infoData2={infoData} from="detail" isLoading={isLoading} />
       <div className={styles.BackWrapper}>
-        <Back />
+        <Back from="detail" />
       </div>
     </motion.div>
   );

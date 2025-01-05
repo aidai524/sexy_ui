@@ -1,7 +1,7 @@
 import styles from "./laptop.module.css";
 import { useFullScreen } from "@/app/store/use-full-screen";
 
-export default function GoBack(props: { onBack?(): void; from?: string; }) {
+export default function GoBack(props: { onBack?(): void; from?: string }) {
   const { from, onBack } = props;
 
   const fullScreenStore: any = useFullScreen();
@@ -9,7 +9,7 @@ export default function GoBack(props: { onBack?(): void; from?: string; }) {
     <button
       className={`${styles.Container} button`}
       onClick={() => {
-        if (typeof onBack === 'function') {
+        if (typeof onBack === "function") {
           onBack();
           return;
         }

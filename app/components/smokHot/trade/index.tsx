@@ -109,7 +109,7 @@ export default function Trade({
             </div>
           ) : (
             <div className={styles.receiveTitle}>
-              You will auto-buy in when this meme launched.{" "}
+              You will auto-buy in when this meme launching.{" "}
               {delayTime
                 ? `You can withdraw after ${delayTime}.`
                 : "You can withdraw anytime before launching."}
@@ -139,7 +139,7 @@ export default function Trade({
             }}
             style={{ backgroundColor: "#9514FF" }}
           >
-            Pre-Buy
+            Flip
           </MainBtn>
 
           <div

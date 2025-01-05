@@ -60,7 +60,7 @@ export default function useUserInfo(
     if (isSelf && accountRefresher) {
       onQueryInfo();
     }
-  }, [address, accountRefresher]);
+  }, [address, accountRefresher, isSelf]);
 
   async function saveUserInfo(
     banner: string,

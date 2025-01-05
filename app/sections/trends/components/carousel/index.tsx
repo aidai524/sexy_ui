@@ -8,7 +8,7 @@ export default function Carousel() {
         <motion.div
           className={styles.CarouselInner}
           animate={{
-            x: ['25%', 0],
+            x: [0, '25%'],
           }}
           transition={{
             repeat: Infinity,
