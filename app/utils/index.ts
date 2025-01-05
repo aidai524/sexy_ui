@@ -429,7 +429,8 @@ export async function upload(
   fileName: string,
   file: File,
   isImage: boolean = true,
-  percent = 1.5
+  percent = 1.5,
+  scala = 2,
 ) {
   let _file: any = file;
   if (isImage) {
@@ -455,7 +456,7 @@ export async function upload(
     );
 
     if (percent === 0) {
-      const canvasWidth = 128 * 2;
+      const canvasWidth = 128 * scala;
       const canvasHeight = canvasWidth * 1.5;
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
@@ -488,7 +489,7 @@ export async function upload(
       const cropX = (naturalWidth - cropWidth) / 2;
       const cropY = (naturalHeight - cropHeight) / 2;
 
-      const canvasWidth = 128 * 2;
+      const canvasWidth = 128 * scala;
       const canvasHeight = canvasWidth * percent;
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;

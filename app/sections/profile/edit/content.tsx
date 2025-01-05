@@ -121,6 +121,7 @@ export default function EditContent({
         >
           <Upload
             percent={0.5}
+            scala={10}
             fileList={banner}
             setFileList={setBanner}
             type="banner"

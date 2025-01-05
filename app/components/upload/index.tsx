@@ -12,6 +12,7 @@ interface Props {
   accept?: string;
   type: "avatar" | "banner" | "others" | "token";
   percent?: number;
+  scala?: number;
 }
 
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
@@ -30,7 +31,8 @@ export default function Upload({
   setFileList: setDefaultFileList,
   accept = "image/*",
   type,
-  percent = 1.5
+  percent = 1.5,
+  scala = 2
 }: Props) {
   const [isUplaod, setIsUpload] = useState(false);
   const [fileList, setFileList] = useState<any>(defaultFileList || []);
@@ -42,7 +44,8 @@ export default function Upload({
       file.name,
       file,
       imgReg.test(file.name) && !svgReg.test(file.name) && !gifReg.test(file.name),
-      percent
+      percent,
+      scala
     );
     setTimeout(() => {
       setIsUpload(false);
