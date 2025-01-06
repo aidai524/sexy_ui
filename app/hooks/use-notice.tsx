@@ -25,6 +25,11 @@ export default function useNotice() {
         noticesRef.current = list;
         if (list.length) {
           onToast(list);
+        } else {
+          clearTimeout(timerRef.current);
+          timerRef.current = setTimeout(() => {
+            onQuery();
+          }, 10000);
         }
       }
     });
@@ -40,12 +45,14 @@ export default function useNotice() {
       if (response.data?.list) {
         list = [...list, ...response.data.list];
       }
-
-      onToast(list);
-      clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => {
-        onQuery();
-      }, 10000);
+      if (list.length) {
+        onToast(list);
+      } else {
+        clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => {
+          onQuery();
+        }, 10000);
+      }
     } catch (err) {}
   };
 
