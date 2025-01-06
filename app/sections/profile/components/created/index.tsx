@@ -63,16 +63,19 @@ export default function Created({
         if (!res) throw new Error();
         setHasMore(res.data?.has_next_page || false);
         let _list: any = [];
-        if (res.code === 0 && res.data?.list?.length > 0) {
-          const newMapList = res.data?.list.map(mapDataToProject);
-
-          _list = isInit ? newMapList : [...list, ...newMapList];
-
-          setOffset(_list.length);
-          setList(_list);
-        } else {
-          setList([]);
+        if (res.code !== 0 || !res.data?.list?.length) {
+          throw new Error();
         }
+
+        if (isOther) {
+          const tokens = res.data.list.map((token: any) => token.address);
+        }
+        const newMapList = res.data?.list.map(mapDataToProject);
+
+        _list = isInit ? newMapList : [...list, ...newMapList];
+
+        setOffset(_list.length);
+        setList(_list);
         clearTimeout(timerRef.current);
         if (isCurrent) {
           timerRef.current = setTimeout(() => {

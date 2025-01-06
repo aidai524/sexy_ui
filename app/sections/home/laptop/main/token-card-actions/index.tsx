@@ -48,7 +48,15 @@ export default function TokenCardActions({ token, height }: any) {
               />
             )}
             {["Holders", "Founders"].includes(currentTab) &&
-              (token.status === 0 ? <PreUser token={token} /> : <Holder showAvatar={true} hideBg={true} address={token.address}/>)}
+              (token.status === 0 ? (
+                <PreUser token={token} />
+              ) : (
+                <Holder
+                  showAvatar={true}
+                  hideBg={true}
+                  address={token.address}
+                />
+              ))}
           </div>
         </div>
       )}

@@ -16,7 +16,6 @@ interface Props {
   usePanel?: boolean;
   titleStyle?: any;
   theme?: string;
-  loadMoreData?: number;
 }
 
 export default function CommentComp({
@@ -24,8 +23,7 @@ export default function CommentComp({
   showEdit = true,
   usePanel = true,
   titleStyle,
-  theme = "dark",
-  loadMoreData
+  theme = "dark"
 }: Props) {
   const [commentList, setCommentList] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
@@ -36,47 +34,57 @@ export default function CommentComp({
   const { userInfo } = useAuth();
 
   const loadMore = useCallback(
-    ({ newOffset }: any = {}) => {
-      setIsLoading(true);
-      if (newOffset !== 0 && !hasMore) {
+    (newOffset?: number) => {
+      if (!id) return;
+      const _offset = newOffset || offset;
+      if (_offset === 0) setIsLoading(true);
+      if (_offset !== 0 && !hasMore) {
         setIsLoading(false);
         return Promise.resolve();
       }
       return httpGet("/project/comment/list", {
         limit: 10,
         project_id: id,
-        offset: newOffset === 0 ? newOffset : offset
+        offset: _offset
       })
         .then((res) => {
-          if (res?.code === 0) {
-            setHasMore(res.data?.has_next_page || false);
-            if (res.data.list?.length) {
-              const newMapList = res.data.list.map((item: any) => {
-                return mapDataToComment(item);
-              });
+          if (_offset === 0) setIsLoading(false);
+          if (res?.code !== 0) return;
+          setHasMore(res.data?.has_next_page || false);
+          if (res.data.list?.length) {
+            const newMapList = res.data.list.map((item: any) => {
+              return mapDataToComment(item);
+            });
 
-              let newList = [];
-              if (newOffset === 0) {
-                newList = newMapList;
-              } else {
-                newList = [...commentList, ...newMapList];
-              }
-
-              setOffset(newList.length);
-              setCommentList(newList);
+            let newList = [];
+            if (_offset === 0) {
+              newList = newMapList;
+            } else {
+              newList = [...commentList, ...newMapList];
             }
+
+            setOffset(newList.length);
+            setCommentList(newList);
           }
         })
         .catch((err) => {
-          setIsLoading(false);
+          if (_offset === 0) {
+            setIsLoading(false);
+            setCommentList([]);
+          }
         });
     },
     [id, offset, hasMore]
   );
 
   const { run: loadData } = useDebounceFn(
-    async (args: any = {}) => {
-      await loadMore(args);
+    (args: any = {}) => {
+      setOffset(0);
+      if (!id) {
+        setCommentList([]);
+      } else {
+        loadMore(0);
+      }
     },
     { wait: 500 }
   );
@@ -97,19 +105,8 @@ export default function CommentComp({
   });
 
   useEffect(() => {
-    if (id) {
-      loadData();
-    } else {
-      setCommentList([]);
-      setOffset(0);
-    }
+    loadData();
   }, [id]);
-
-  useEffect(() => {
-    if (loadMoreData && loadMoreData > 1) {
-      loadData();
-    }
-  }, [loadMoreData]);
 
   const Content = (
     <>
@@ -230,7 +227,7 @@ export default function CommentComp({
 
       {commentList.length > 0 && <div>{CommentList}</div>}
 
-      {commentList.length === 0 && !showEdit && (
+      {commentList.length === 0 && !showEdit && !isLoading && (
         <div
           style={{
             marginTop: 30

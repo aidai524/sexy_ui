@@ -32,7 +32,7 @@ export default function MessagesModal({
     [currentTab, list]
   );
   const isFirstPage = useMemo(() => page.current === 1, [page.current]);
-  console.log(35, data, isFirstPage);
+
   return (
     <Modal
       open={open}
