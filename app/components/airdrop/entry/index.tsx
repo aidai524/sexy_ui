@@ -6,8 +6,8 @@ import Big from 'big.js';
 
 const AirdropEntry = () => {
   const {
-    getAirdropData,
-    airdropData,
+    userData,
+    getUserData,
     setAirdropVisible,
     setAirdropEntryVisible,
     airdropEntryVisible,
@@ -16,17 +16,17 @@ const AirdropEntry = () => {
   } = useAirdrop();
 
   useEffect(() => {
-    getAirdropData();
+    getUserData();
   }, []);
 
   useEffect(() => {
-    if (!airdropData) return;
-    const { clime_pump, airdrop_points } = airdropData;
-    if (typeof clime_pump === 'boolean' && !clime_pump && Big(airdrop_points || 0).gt(0) && airdropEntryVisibleTimes < 1) {
+    if (!userData) return;
+    const { points } = userData;
+    if (Big(points || 0).gt(0) && airdropEntryVisibleTimes < 1) {
       setAirdropEntryVisible(true);
       setAirdropEntryVisibleTimes(1);
     }
-  }, [airdropData, airdropEntryVisibleTimes]);
+  }, [userData, airdropEntryVisibleTimes]);
 
   return (
     <AnimatePresence mode="wait">

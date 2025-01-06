@@ -19,7 +19,7 @@ export const useAirdropStore = create(persist<AirdropState>((set) => ({
   setEntryVisibleTimes: (times) => set((state) => ({ ...state, entryVisibleTimes: times })),
 }), {
   name: '_airdrop',
-  version: 0.1,
+  version: 0.2,
   storage: createJSONStorage(() => localStorage),
   partialize: (state) => ({ entryVisible: state.entryVisible, entryVisibleTimes: state.entryVisibleTimes } as any)
 }));

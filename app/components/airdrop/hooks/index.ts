@@ -29,6 +29,7 @@ export function useAirdrop(): Airdrop {
   }, [search]);
 
   const [userData, setUserData] = useState<Record<string, any>>({});
+  const [userDataLoading, setUserDataLoading] = useState<boolean>(false);
   const [airdropData, setAirdropData] = useState<Record<string, any>>({});
   const [airdropDataLoading, setAirdropDataLoading] = useState<boolean>(false);
   const [pointList, setPointList] = useState<Record<string, any>[]>([]);
@@ -56,7 +57,7 @@ export function useAirdrop(): Airdrop {
     }
     if (claiming) return;
     setClaiming(true);
-    if (Big(airdropData?.airdrop_points ?? 0).lte(0)) {
+    if (Big(userData?.points ?? 0).lte(0)) {
       handleClose();
       setClaiming(false);
       setReferVisible(true);
@@ -104,10 +105,10 @@ export function useAirdrop(): Airdrop {
   };
 
   const handleBind = async () => {
-    if (binding || !airdrop) return;
+    if (binding || !inviter) return;
     setBinding(true);
-    const res = await httpAuthPost(`/airdrop/binding/code?code=${airdrop}`, {
-      code: airdrop,
+    const res = await httpAuthPost(`/airdrop/binding?account=${inviter}`, {
+      account: inviter,
     }, true, true);
     if (res.code !== 0) {
       if (!referStore.bind) {
@@ -122,13 +123,16 @@ export function useAirdrop(): Airdrop {
   };
 
   const getUserData = async () => {
+    setUserDataLoading(true);
     const res = await httpAuthGet('/airdrop/account/level_points', {
       account: publicKey?.toString(),
     });
     if (res.code !== 0) {
+      setUserDataLoading(false);
       return;
     }
     setUserData(res.data);
+    setUserDataLoading(false);
   };
 
   const getAirdropData = async () => {
@@ -171,6 +175,7 @@ export function useAirdrop(): Airdrop {
     setAirdropEntryVisibleTimes,
     referVisible,
     setReferVisible,
+    userDataLoading,
   };
 }
 
@@ -186,6 +191,7 @@ export interface Airdrop {
   pointListLoading: boolean;
   morePointsVisible: boolean;
   airdropDataLoading: boolean;
+  userDataLoading: boolean;
   setMorePointsVisible: Dispatch<SetStateAction<boolean>>;
   userData: Record<string, any>;
   airdropData: Record<string, any>;
