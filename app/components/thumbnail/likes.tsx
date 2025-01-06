@@ -6,7 +6,7 @@ import Share from "../share";
 import { useEffect, useState } from "react";
 import { getHoldersByToken } from "@/app/utils/solanaScanApi";
 
-export default function Likes({ data, showShare = true }: { data: Project, showShare?: boolean }) {
+export default function Likes({ data, showShare = true, likeNumsStyle }: { data: Project, showShare?: boolean; likeNumsStyle?: React.CSSProperties; }) {
   const [holders, setHolders] = useState(0)
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function Likes({ data, showShare = true }: { data: Project, showS
 
   return (
     <div className={styles.box}>
-      <div className={styles.likeNums}>
+      <div className={styles.likeNums} style={likeNumsStyle}>
         {data.DApp === "pump" && (
           <div className={[styles.pump, styles.likeCustom].join(" ")}>
             <PumpIcon />

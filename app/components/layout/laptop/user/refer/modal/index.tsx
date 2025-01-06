@@ -107,9 +107,10 @@ const ReferModalContent = (props: any) => {
   };
 
   useEffect(() => {
+    if (!address) return;
     getAirdropData();
     getUserData();
-  }, []);
+  }, [address]);
 
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
