@@ -27,12 +27,10 @@ export default function Token({
   const router = useRouter();
   const [mc, setMC] = useState<string | number>(0);
 
-    console.log(data)
-
-  const { mc: pumpMc } = useMc({ 
-      tokenAddress: data?.address,
-      disable: data?.status! < 1
-   })
+  const { mc: pumpMc } = useMc({
+    tokenAddress: data?.address,
+    disable: data?.status! < 1
+  });
 
   const { getMC, pool, checkPrePayed } = useTokenTrade({
     tokenName: data?.tokenName as string,
@@ -65,7 +63,6 @@ export default function Token({
     }
   }, [pool, data]);
 
-
   return (
     <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
       <div className={styles.tokenMag}>
@@ -90,7 +87,8 @@ export default function Token({
             <div className={styles.tickerName}>Ticker: {data.ticker}</div>
           </div>
           <div className={styles.MarketCap}>
-            Mc: {pumpMc || mc ? `$${simplifyNum(Number(pumpMc || mc), 2)}` : "-"}
+            Mc:{" "}
+            {pumpMc || mc ? `$${simplifyNum(Number(pumpMc || mc), 2)}` : "-"}
           </div>
           <div className={styles.createTime}>{timeAgo(data.time)}</div>
         </div>
