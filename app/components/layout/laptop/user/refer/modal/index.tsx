@@ -16,6 +16,9 @@ import Loading from "@/app/components/icons/loading";
 import { useAirdrop } from "@/app/components/airdrop/hooks";
 import { useUser } from '@/app/store/useUser';
 import useUserInfo from '@/app/hooks/useUserInfo';
+import Big from 'big.js';
+import { SOL } from '@/app/components/trade/buySellPump';
+import { numberFormatter } from '@/app/utils/common';
 
 const ReferModal = (props: any) => {
   const { isMobile } = props;
@@ -135,7 +138,7 @@ const ReferModalContent = (props: any) => {
             <TabTitle
               {...props}
               label="EARNED"
-              value={userInfo?.referralFee || 0}
+              value={numberFormatter(Big(userInfo?.referralFee || 0).div(10 ** SOL.tokenDecimals), 2, true, { isShort: true })}
               unit="SOL"
               tab={1}
               current={currentTab}
@@ -144,7 +147,7 @@ const ReferModalContent = (props: any) => {
             <TabTitle
               {...props}
               label="EARNED"
-              value={airdropData?.referral_points || 0}
+              value={numberFormatter(airdropData?.referral_points, 2, true, { isShort: true })}
               unit="Points"
               tab={2}
               current={currentTab}
