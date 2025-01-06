@@ -8,6 +8,7 @@ import { formatAddress, httpGet, simplifyNum } from "@/app/utils";
 import Big from "big.js";
 import { defaultAvatar } from "@/app/utils/config";
 import { numberFormatter } from "@/app/utils/common";
+import { useDebounceFn } from "ahooks";
 
 const pageSize = 40;
 
@@ -17,42 +18,51 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
   const [pageIndex, setPageIndex] = useState(1);
   const [supply, setSupply] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const loadMore = useCallback(async () => {
-    if (!address) return;
-    if (pageIndex === 1) setIsLoading(true);
-    try {
-      const res = await getHoldersByToken(address, pageIndex, pageSize);
 
-      if (res.items && res.items.length) {
-        const addressList = res.items.map((item: any) => item.owner).join(",");
-        const addressObj = await getUserInfoByAddressList(addressList);
+  const loadMore = useCallback(
+    async (page?: any) => {
+      if (!address) return;
+      const _page = typeof page === "number" ? page : pageIndex;
 
-        res.items.forEach((item: any) => {
-          if (addressObj[item.owner]) {
-            Object.assign(item, {
-              flipUser: addressObj[item.owner]
-            });
-          }
-        });
-      }
+      if (_page === 1) setIsLoading(true);
+      try {
+        const res = await getHoldersByToken(address, _page, pageSize);
 
-      const newList = [...list, ...(res.items || [])];
+        if (res.items && res.items.length) {
+          const addressList = res.items
+            .map((item: any) => item.owner)
+            .join(",");
+          const addressObj = await getUserInfoByAddressList(addressList);
 
-      setList(newList);
-
-      if (res.items) {
-        if (res.items.length < pageSize) {
-          setHasMore(false);
-        } else {
-          setPageIndex(pageIndex + 1);
-          setHasMore(true);
+          res.items.forEach((item: any) => {
+            if (addressObj[item.owner]) {
+              Object.assign(item, {
+                flipUser: addressObj[item.owner]
+              });
+            }
+          });
         }
+
+        const newList =
+          _page === 1 ? res.items || [] : [...list, ...(res.items || [])];
+        setList(newList);
+
+        if (res.items) {
+          if (res.items.length < pageSize) {
+            setHasMore(false);
+          } else {
+            setPageIndex(_page + 1);
+            setHasMore(true);
+          }
+        }
+      } catch (err) {
+        if (_page === 1) setList([]);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-    } finally {
-      setIsLoading(false);
-    }
-  }, [address, list, pageIndex]);
+    },
+    [address, list, pageIndex]
+  );
 
   const getTokenInfo = useCallback(async () => {
     if (address) {
@@ -66,7 +76,6 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
     const res: any = await httpGet(
       "/account/address_list?address_List=" + addressList
     );
-    console.log("res:", res);
 
     if (res.code === 0) {
       const { data } = res;
@@ -79,12 +88,22 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
     return addressObj;
   }, []);
 
-  useEffect(() => {
-    getTokenInfo();
-    // loadMore()
-  }, [address]);
+  const { run: loadData } = useDebounceFn(
+    (args: any = {}) => {
+      if (!address) {
+        setList([]);
+      } else {
+        setPageIndex(1);
+        getTokenInfo();
+        loadMore(1);
+      }
+    },
+    { wait: 500 }
+  );
 
-  console.log("address:", address);
+  useEffect(() => {
+    loadData();
+  }, [address]);
 
   return (
     <div
