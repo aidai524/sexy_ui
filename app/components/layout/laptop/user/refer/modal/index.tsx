@@ -71,15 +71,16 @@ const ReferModalContent = (props: any) => {
     const shareLink = new URL(window?.location?.origin);
     shareLink.searchParams.set("referral", address ?? "");
     if (currentTab === 2) {
-      const res = await httpAuthGet("/airdrop/referral/code", {
-        find: false
-      });
-      if (res.code !== 0) {
-        fail("Failed to obtain the invitation code");
-        setLoading(false);
-        return;
-      }
-      shareLink.searchParams.set("airdrop", res.data);
+      // this api had been deleted
+      // const res = await httpAuthGet("/airdrop/referral/code", {
+      //   find: false
+      // });
+      // if (res.code !== 0) {
+      //   fail("Failed to obtain the invitation code");
+      //   setLoading(false);
+      //   return;
+      // }
+      shareLink.searchParams.set("airdrop", "1");
     }
     navigator.clipboard
       .writeText(shareLink.toString())
