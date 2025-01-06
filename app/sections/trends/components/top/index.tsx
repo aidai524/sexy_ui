@@ -18,7 +18,7 @@ export default function Top(props: Props) {
     const _top1Icon = trend?.Icon;
     const _top1Like = numberFormatter(trend?.like, 2, true, { isShort: true });
     const _holder = numberFormatter(trend?.holder, 2, true, { isShort: true });
-    const _createBy = formatLongText(trend?.project_creator, 3, 4);
+    const _createBy = formatLongText(trend?.creator_name || trend?.project_creator, 3, 4);
     return [_top1Name, _top1Ticker, _top1Icon, '', _top1Like, _holder, _createBy];
   }, [trend]);
 
@@ -37,7 +37,7 @@ export default function Top(props: Props) {
     <div className={styles.Top}>
       <div className={styles.TopAvatar} style={{ backgroundImage: `url("${top1Icon}")` }}>
         <div className={styles.TopSummary}>
-          <div className={[styles.Badge, styles.TopSummaryLike].join(' ')}>
+          {/*<div className={[styles.Badge, styles.TopSummaryLike].join(' ')}>
             <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M3.3 6.10352e-05C1.47746 6.10352e-05 0 1.4348 0 3.20461C0 6.40916 3.9 9.32239 6 10.0001C8.1 9.32239 12 6.40916 12 3.20461C12 1.4348 10.5225 6.10352e-05 8.7 6.10352e-05C7.58391 6.10352e-05 6.59721 0.538105 6 1.36165C5.40279 0.538105 4.41609 6.10352e-05 3.3 6.10352e-05Z"
@@ -48,7 +48,25 @@ export default function Top(props: Props) {
           </div>
           <div className={styles.Badge}>
             Holder {top1Holders}
-          </div>
+          </div>*/}
+          <Likes
+            data={{
+              ...trend,
+              DApp: 'sexy',
+              status: 1
+            } as any}
+            showShare={false}
+            likeNumsStyle={{
+              padding: 0,
+            }}
+            style={{
+              padding: 0,
+            }}
+            likesNumsStyle={{
+              flexShrink: 0,
+              whiteSpace: 'nowrap',
+            }}
+          />
         </div>
         <img src="/img/trends/crown.svg" alt="" className={styles.TopCrown} />
       </div>

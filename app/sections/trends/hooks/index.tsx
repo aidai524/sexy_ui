@@ -287,6 +287,7 @@ export interface Trend {
   sol_reserve: string;
   market_cap: string;
   project_creator: string;
+  creator_name: string;
 
   // front-end attributes
   created2Now?: string;

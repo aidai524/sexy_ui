@@ -1,6 +1,6 @@
 import styles from "./index.module.css";
 import SortDirection from "@/app/sections/trends/components/sort";
-import { numberFormatter } from "@/app/utils/common";
+import { formatLongText, numberFormatter } from "@/app/utils/common";
 import { useCreator } from "@/app/sections/trends/hooks/creator";
 import Empty from "@/app/components/empty";
 import InfiniteScrollContent from "@/app/components/infinite-scroll-content";
@@ -168,12 +168,7 @@ const List = (props: any) => {
                           creator.onClick(item.project_creator);
                         }}
                       >
-                        {item.address
-                          ? `${item.project_creator.slice(
-                              0,
-                              3
-                            )}*${item.address.slice(-4)}`
-                          : "-"}
+                        {formatLongText(item.creator_name || item.project_creator, 3, 4)}
                       </div>
                       <div className={styles.TableCol}>
                         {numberFormatter(item.market_cap, 2, true, {
