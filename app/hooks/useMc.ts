@@ -23,6 +23,8 @@ export default function useMc({ tokenAddress, disable = true }: Props) {
                 fetch(`https://api.jup.ag/price/v2?ids=${tokenAddress},${wsol}`)
                 .then(res => res.json())
             ]).then(([mintInfo, priceInfo]) => {
+                console.log(mintInfo, priceInfo)
+
                 const mc = Number(mintInfo.supply) * Number(priceInfo.data[tokenAddress].price) / (10 ** mintInfo.decimals)
                 setMc(mc)
             }).catch(e => {

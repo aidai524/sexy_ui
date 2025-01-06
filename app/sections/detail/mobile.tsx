@@ -33,6 +33,8 @@ export default function Detail({ token, onBack, onNext }: any) {
       disable: infoData?.status < 1
   })
 
+  console.log('pumpMc:', pumpMc)
+
   const { getMC, pool } = useTokenTrade({
     tokenName: infoData?.tokenName as string,
     tokenSymbol: infoData?.tokenSymbol as string,
@@ -101,7 +103,7 @@ export default function Detail({ token, onBack, onNext }: any) {
                   name: "Info",
                   content: (
                     <Info
-                      mc={pumpMc}
+                      mc={pumpMc || mc}
                       data={infoData}
                       onUpdate={() => {
                         getDetailInfo();
@@ -115,11 +117,11 @@ export default function Detail({ token, onBack, onNext }: any) {
                 },
                 {
                   name: "Buy/Sell",
-                  content: <Trade mc={pumpMc} from="mobile" data={infoData} />
+                  content: <Trade mc={pumpMc || mc} from="mobile" data={infoData} />
                 },
                 {
                   name: "Txs",
-                  content: <Txs mc={pumpMc} data={infoData} />
+                  content: <Txs mc={pumpMc || mc} data={infoData} />
                 }
               ]}
             />
