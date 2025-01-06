@@ -53,7 +53,7 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
         programId
       );
       if (!pool?.length) {
-        console.log('%ctrends getPoolToken no pool, will return 0 amount', 'background:#FF2681;color:#fff;');
+        // console.log('%ctrends getPoolToken no pool, will return 0 amount', 'background:#FF2681;color:#fff;');
         return {
           poolAmount: Big(0),
           solAmount: Big(0),
@@ -65,14 +65,14 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
       const poolData: any = await program.account.pool.fetch(pool[0]);
       const poolToken = Big(poolData!.virtualTokenAmount.toNumber());
       const solToken = Big(poolData!.virtualWsolAmount.toNumber());
-      console.log(
-        '%ctrends [%s] result: pool data=%o, pool token amount=%o, sol token amount=%o',
-        'background:#FF2681;color:#fff;',
-        token?.token_symbol,
-        poolData,
-        poolToken?.toString?.(),
-        solToken?.toString?.(),
-      );
+      // console.log(
+      //   '%ctrends [%s] result: pool data=%o, pool token amount=%o, sol token amount=%o',
+      //   'background:#FF2681;color:#fff;',
+      //   token?.token_symbol,
+      //   poolData,
+      //   poolToken?.toString?.(),
+      //   solToken?.toString?.(),
+      // );
       return {
         poolAmount: poolToken,
         solAmount: solToken,

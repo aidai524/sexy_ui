@@ -5,6 +5,7 @@ import { Trend } from '@/app/sections/trends/hooks';
 import Big from 'big.js';
 import { useCreator } from '@/app/sections/trends/hooks/creator';
 import { motion } from "framer-motion";
+import Likes from '@/app/components/thumbnail/likes';
 
 export default function Top(props: Props) {
   const { onBuy, trend, isMobile } = props;
@@ -199,7 +200,7 @@ export default function Top(props: Props) {
             </div>
           </div>
           <div className={styles.LaptopTopSummaries}>
-            <div className={styles.LaptopTopBadge}>
+            {/*<div className={styles.LaptopTopBadge}>
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="0 0 12 10" fill="none">
                 <path
                   d="M3.3 0C1.47746 0 0 1.43474 0 3.20455C0 6.4091 3.9 9.32233 6 10C8.1 9.32233 12 6.4091 12 3.20455C12 1.43474 10.5225 0 8.7 0C7.58391 0 6.59721 0.538044 6 1.36158C5.40279 0.538044 4.41609 0 3.3 0Z"
@@ -210,7 +211,18 @@ export default function Top(props: Props) {
             </div>
             <div className={[styles.LaptopTopBadge, styles.LaptopTopBadgeGreen].join(' ')}>
               Holder {top1Holders}
-            </div>
+            </div>*/}
+            <Likes
+              data={{
+                ...trend,
+                DApp: 'sexy',
+                status: 1
+              } as any}
+              showShare={false}
+              likeNumsStyle={{
+                paddingLeft: 0,
+              }}
+            />
           </div>
         </div>
         <div className={styles.LaptopTopContentBuy}>

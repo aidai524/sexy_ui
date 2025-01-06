@@ -1,36 +1,46 @@
 import styles from "./index.module.css";
 import AirdropCard from './components/card';
-import AirdropConnectModal from '@/app/components/airdrop/connect/modal';
 import { AirdropContext } from '@/app/components/airdrop/context';
-import { useAirdrop } from '@/app/components/airdrop/hooks';
-import AirdropMoreModal from '@/app/components/airdrop/more/modal';
 import { useContext, useEffect, useMemo } from 'react';
 import Loading from '@/app/components/icons/loading';
-import { InfiniteScroll } from "antd-mobile";
-import InfiniteScrollContent from '@/app/components/infinite-scroll-content';
+import { numberFormatter } from '@/app/utils/common';
+import Big from 'big.js';
 
 const AirdropList = (props: any) => {
   const {} = props;
 
   const {
     claiming,
-    pointListLoading,
-    getList,
+    userData,
+    getUserData,
+    userDataLoading,
     handleBind,
     getAirdropData,
-    pointList,
-    pointListPageMore,
     handleClaim,
     airdropDataLoading,
     airdropData,
   } = useContext(AirdropContext);
 
+  const pointList = useMemo(() => {
+    if (!userData || !Object.keys(userData).length) return [];
+    return [
+      {
+        type: 'Level',
+        total: userData.level,
+      },
+      {
+        type: 'Points',
+        total: `+${numberFormatter(userData.points, 0, true)}`,
+      },
+    ];
+  }, [userData]);
+
   const btnLoading = useMemo(() => {
-    return claiming || pointListLoading || airdropDataLoading;
-  }, [claiming, pointListLoading, airdropDataLoading]);
+    return claiming || airdropDataLoading || userDataLoading;
+  }, [claiming, airdropDataLoading, userDataLoading]);
 
   useEffect(() => {
-    getList?.();
+    getUserData?.();
     handleBind?.();
     getAirdropData?.();
   }, []);
@@ -39,28 +49,31 @@ const AirdropList = (props: any) => {
     <AirdropCard title="Congratulations!">
       <div className={styles.Content}>
         {
-          !!pointList?.length ? (
+          !userDataLoading ? (
             <>
               {pointList?.map((it, idx) => (
                 <div key={idx} className={styles.Card}>
                   <div className={styles.CardTitle}>
-                    {/*Lv. <span className={styles.CardTitlePrimary}>4</span>*/}
-                    {it.type} <span className={styles.CardTitlePrimary}>+{it.total}</span>
+                    {
+                      it.type === 'Level' ? (
+                        <div>
+                          Lv. <span className={styles.CardTitlePrimary}>{it.total}</span>
+                        </div>
+                      ) : (
+                        <div>
+                          {it.type} <span className={styles.CardTitlePrimary}>{it.total}</span>
+                        </div>
+                      )
+                    }
                   </div>
                   <div className={styles.CardContent}>
                     Description Contains the user level and the purpose of the level
                   </div>
                 </div>
               ))}
-              <InfiniteScroll
-                loadMore={getList as () => Promise<void>}
-                hasMore={pointListPageMore as boolean}
-              >
-                <InfiniteScrollContent hasMore={pointListPageMore} />
-              </InfiniteScroll>
             </>
           ) : (
-            <div style={{ marginTop: 60 }}>No data</div>
+            <div style={{ marginTop: 60 }}>Loading...</div>
           )
         }
       </div>
@@ -102,7 +115,7 @@ const AirdropList = (props: any) => {
             )
           }
           <div>
-            {airdropData?.clime_pump ? 'Earn More' : 'Claim'}
+            {airdropData?.clime_pump || Big(userData?.points ?? 0).lte(0) ? 'Earn More' : 'Claim'}
           </div>
         </button>
       </div>

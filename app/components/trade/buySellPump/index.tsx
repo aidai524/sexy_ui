@@ -48,8 +48,6 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
   const { isMobile } = useUserAgent();
   const tokenUri = token.tokenIcon || token.tokenImg;
 
-  console.log("token:", token);
-
   const desToken: Token = {
     tokenName,
     tokenSymbol: tokenSymbol as string,
@@ -125,9 +123,9 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
           }
 
 
-
-          estimateToken(new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toNumber(), slip)
+          estimateToken(new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toNumber(), slip / 100)
             .then(res => {
+
               setBuyInSol(debounceVal)
               setBuyIn(new Big(res).toFixed(desToken.tokenDecimals))
 
@@ -190,11 +188,13 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
               if (Number(debounceVal) > Number(tokenBalance)) {
                 setIsError(true);
+                setIsLoading(false)
                 setErrorMsg("Invalid balance");
-                setSellOutSol(getFullNum(sellSolOut));
+                // setSellOutSol(getFullNum(sellSolOut));
                 return;
               }
 
+              setSellOut(sellOut);
               setIsLoading(false)
               setIsError(false)
             }).catch(e => {
@@ -208,6 +208,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
       setBuyIn("");
       setBuyInSol("");
       setSellOut("");
+      setSellOutSol('')
       setIsError(true);
       setErrorMsg("Enter a amount");
     }
@@ -457,6 +458,8 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                   setIsLoading(true);
                 } else if (activeIndex === 1) {
                   setIsLoading(true);
+
+                  console.log('sellOut:', sellOut)
 
                   hash = await sell(Number(sellOut), slip / 100)
                 }
