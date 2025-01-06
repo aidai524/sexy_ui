@@ -125,8 +125,6 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
             .mul(10 ** SOL.tokenDecimals)
             .toFixed(0);
 
-          console.log('buyIn:', buyIn)
-
           getQoute(buyIn, "buy", slip * 100)
             .then((res: any) => {
               if (res.quoteResponse) {
@@ -221,6 +219,7 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
       setBuyIn("");
       setBuyInSol("");
       setSellOut("");
+      setSellOutSol('')
       setIsError(true);
       setErrorMsg("Enter a amount");
     }

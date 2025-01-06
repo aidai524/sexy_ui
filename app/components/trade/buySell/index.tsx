@@ -248,6 +248,7 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
       setBuyIn("");
       setBuyInSol("");
       setSellOut("");
+      setSellOutSol('')
       setIsError(true);
       setErrorMsg("Enter a amount");
     }

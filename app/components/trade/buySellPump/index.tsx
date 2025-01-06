@@ -48,8 +48,6 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
   const { isMobile } = useUserAgent();
   const tokenUri = token.tokenIcon || token.tokenImg;
 
-  console.log("token:", token);
-
   const desToken: Token = {
     tokenName,
     tokenSymbol: tokenSymbol as string,
@@ -190,8 +188,9 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
               if (Number(debounceVal) > Number(tokenBalance)) {
                 setIsError(true);
+                setIsLoading(false)
                 setErrorMsg("Invalid balance");
-                setSellOutSol(getFullNum(sellSolOut));
+                // setSellOutSol(getFullNum(sellSolOut));
                 return;
               }
 
@@ -208,6 +207,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
       setBuyIn("");
       setBuyInSol("");
       setSellOut("");
+      setSellOutSol('')
       setIsError(true);
       setErrorMsg("Enter a amount");
     }
