@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Token from "../token";
 import { http } from "@/app/utils";
-import Empty from "../empty";
+import Empty from "@/app/components/empty";
 import type { Project } from "@/app/type";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
@@ -104,7 +104,11 @@ export default function Created({
   }, [isCurrent]);
 
   if (list.length === 0) {
-    return <Empty msg={"No FlipN coins " + type + " yet"} />;
+    return (
+      <div style={{ paddingTop: 60 }}>
+        <Empty text={"No FlipN coins " + type + " yet"} />
+      </div>
+    );
   }
 
   return (
