@@ -30,11 +30,11 @@ export default function useJupiter({ tokenAddress }: Params) {
         }
     }, [tokenAddress])
 
-    const getQoute = useCallback(async (amount: string, type: 'buy' | 'sell' = 'buy') => {
+    const getQoute = useCallback(async (amount: string, type: 'buy' | 'sell' = 'buy', slip: number) => {
         if (tokenAddress) {
             const inputToken = type === 'buy' ? wsol : tokenAddress
             const outToken = type === 'buy' ? tokenAddress : wsol
-            const swapInfo = await fetchSwapInfo(inputToken, outToken, amount)
+            const swapInfo = await fetchSwapInfo(inputToken, outToken, amount, slip)
 
             console.log('swapInfo:', swapInfo)
 
@@ -46,15 +46,13 @@ export default function useJupiter({ tokenAddress }: Params) {
 
     const trade = useCallback(async (amount: string, type: 'buy' | 'sell' = 'buy', slip: number) => {
         if (publicKey && tokenAddress && amount) {
-            const swapInfo = await getQoute(amount, type)
+            const swapInfo = await getQoute(amount, type, slip)
 
             const { swapTransaction, lastValidBlockHeight } = await fetchSwapTransaction(publicKey.toBase58(), slip, swapInfo)
 
             const vTransaction: any = VersionedTransaction.deserialize(Buffer.from(swapTransaction, 'base64'));
 
-            const hash = await walletProvider.signAndSendTransaction(vTransaction, {
-                
-            }, true)
+            const hash = await walletProvider.signAndSendTransaction(vTransaction, {}, true)
 
             console.log('hash', hash)
 
@@ -72,23 +70,9 @@ export default function useJupiter({ tokenAddress }: Params) {
 }
 
 
-
-async function getUserTokenAccount(userWalletPublicKey: PublicKey, tokenAddress: string) {
-    const token_mint = new PublicKey(tokenAddress);
-    const tokenAccount = await getAssociatedTokenAddress(
-        token_mint,
-        userWalletPublicKey,
-        true,
-        TOKEN_PROGRAM_ID,
-        ASSOCIATED_TOKEN_PROGRAM_ID
-    );
-    return tokenAccount;
-}
-
-
 // Step 1: Fetch swap info
-async function fetchSwapInfo(inputMint: string, outputMint: string, amount: string) {
-    const response = await fetch(`${API_PREFIX}/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&dynamicSlippage=true&swapMode=ExactIn&onlyDirectRoutes=false&asLegacyTransaction=false&maxAccounts=64&minimizeSlippage=false&tokenCategoryBasedIntermediateTokens=true`);
+async function fetchSwapInfo(inputMint: string, outputMint: string, amount: string, slip: number) {
+    const response = await fetch(`${API_PREFIX}/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=${slip}&swapMode=ExactIn&onlyDirectRoutes=false&asLegacyTransaction=false&maxAccounts=64&minimizeSlippage=false&tokenCategoryBasedIntermediateTokens=true`);
     const data = await response.json();
     return {
         inAmount: data.inAmount,

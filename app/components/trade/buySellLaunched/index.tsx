@@ -127,11 +127,11 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
 
           console.log('buyIn:', buyIn)
 
-          getQoute(buyIn, "buy")
+          getQoute(buyIn, "buy", slip * 100)
             .then((res: any) => {
               if (res.quoteResponse) {
                 setBuyIn(
-                  new Big(res.quoteResponse?.outAmount)
+                  new Big(res.quoteResponse?.otherAmountThreshold)
                     .div(10 ** desToken.tokenDecimals)
                     .toFixed(desToken.tokenDecimals)
                 );
@@ -195,11 +195,11 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
             .mul(10 ** desToken.tokenDecimals)
             .toFixed(0);
 
-          getQoute(sellOut, "sell")
+          getQoute(sellOut, "sell", slip * 100)
             .then((res: any) => {
               if (res.quoteResponse) {
                 setSellOutSol(
-                  new Big(res.quoteResponse?.outAmount)
+                  new Big(res.quoteResponse?.otherAmountThreshold)
                     .div(10 ** SOL.tokenDecimals)
                     .toFixed(SOL.tokenDecimals)
                 );
