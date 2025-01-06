@@ -14,7 +14,7 @@ export function mapDataToProject(currentToken: any): Project {
     tokenDecimals: currentToken.token_decimals,
     isLike: currentToken.is_like,
     isUnLike: currentToken.is_un_like,
-    isSuperLike: currentToken.is_super_like,
+    isSuperLike: currentToken.is_pre_paid,
     like: currentToken.like,
     unLike: currentToken.un_like,
     superLike: currentToken.super_like,

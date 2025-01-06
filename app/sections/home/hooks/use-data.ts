@@ -161,7 +161,7 @@ export default function useData(launchType: string) {
           if (
             item.status !== 0 ||
             item.is_like ||
-            item.is_super_like ||
+            item.is_pre_paid ||
             item.is_un_like
           ) {
             return false;
