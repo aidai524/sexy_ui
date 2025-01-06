@@ -18,7 +18,7 @@ export default function Top(props: Props) {
     const _top1Icon = trend?.Icon;
     const _top1Like = numberFormatter(trend?.like, 2, true, { isShort: true });
     const _holder = numberFormatter(trend?.holder, 2, true, { isShort: true });
-    const _createBy = formatLongText(trend?.project_creator, 3, 4);
+    const _createBy = formatLongText(trend?.creator_name || trend?.project_creator, 3, 4);
     return [_top1Name, _top1Ticker, _top1Icon, '', _top1Like, _holder, _createBy];
   }, [trend]);
 
