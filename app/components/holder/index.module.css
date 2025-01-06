@@ -37,3 +37,30 @@
   align-items: center;
   gap: 4px;
 }
+
+.avatarContent {
+  display: flex;
+  align-items: center;
+  .avatar {
+    width: 36px;
+    height: 36px;
+    .avatrImg {
+      width: 36px;
+      height: 36px;
+      border-radius: 36px;
+    }
+  }
+
+  .nameContent {
+    text-align: left;
+  }
+
+  .nameLevel {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+  }
+  .followers {
+    color: #9290b1;
+  }
+}
