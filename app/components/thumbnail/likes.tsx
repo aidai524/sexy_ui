@@ -6,7 +6,15 @@ import Share from "../share";
 import { useEffect, useState } from "react";
 import { getHoldersByToken } from "@/app/utils/solanaScanApi";
 
-export default function Likes({ data, showShare = true, likeNumsStyle }: { data: Project, showShare?: boolean; likeNumsStyle?: React.CSSProperties; }) {
+interface Props {
+  data: Project;
+  showShare?: boolean;
+  likeNumsStyle?: React.CSSProperties;
+  style?: React.CSSProperties;
+  likesNumsStyle?: React.CSSProperties;
+}
+
+export default function Likes({ data, showShare = true, likeNumsStyle, style, likesNumsStyle }: Props) {
   const [holders, setHolders] = useState(0)
 
   useEffect(() => {
@@ -18,12 +26,12 @@ export default function Likes({ data, showShare = true, likeNumsStyle }: { data:
   }, [data])
 
   return (
-    <div className={styles.box}>
+    <div className={styles.box} style={style}>
       <div className={styles.likeNums} style={likeNumsStyle}>
         {data.DApp === "pump" && (
           <div className={[styles.pump, styles.likeCustom].join(" ")}>
             <PumpIcon />
-            <span className={styles.likesNums}>Imported</span>
+            <span className={styles.likesNums} style={likesNumsStyle}>Imported</span>
           </div>
         )}
 
@@ -33,14 +41,14 @@ export default function Likes({ data, showShare = true, likeNumsStyle }: { data:
               {
                 data.status !== 0 ? <>
                   <LikeFullIcon />
-                  <span className={styles.likesNums}>100</span></> : <>
+                  <span className={styles.likesNums} style={likesNumsStyle}>100</span></> : <>
                   {data.like === 0 ? <LikeIconEmpty /> : <LikeIcon />}
-                  <span className={styles.likesNums}>{data.like}</span>/
-                  <span className={styles.likesNums}>100</span>
+                  <span className={styles.likesNums} style={likesNumsStyle}>{data.like}</span>/
+                  <span className={styles.likesNums} style={likesNumsStyle}>100</span>
                 </>
               }
             </div>
-            <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
+            <div className={[styles.superLikes, styles.likeCustom].join(" ")} style={likesNumsStyle}>
               <SuperLikeIcon />
               <span className={styles.tips}>Flipped</span>
               <span className={styles.likesNums}>{data.prePaid}</span>
@@ -55,7 +63,7 @@ export default function Likes({ data, showShare = true, likeNumsStyle }: { data:
         }
 
         {data.status !== 0 && (
-          <div className={[styles.holder, styles.likeCustom].join(" ")}>
+          <div className={[styles.holder, styles.likeCustom].join(" ")} style={likesNumsStyle}>
             <span className={styles.likesNums}>Holders {holders}</span>
           </div>
         )}
@@ -109,7 +117,7 @@ function LikeIconEmpty() {
 }
 
 function LikeFullIcon() {
-  return <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  return <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
     <path d="M3.01613 0.998764C1.20448 1.19765 -0.10759 2.78505 0.0855464 4.5443C0.435253 7.72971 4.62988 10.1999 6.79129 10.6444C8.80479 9.7416 12.3636 6.42017 12.0139 3.23476C11.8207 1.47552 10.1955 0.210582 8.38388 0.409472C7.27446 0.531269 6.35237 1.17378 5.84859 2.05757C5.16508 1.30412 4.12556 0.876967 3.01613 0.998764Z" fill="white" />
   </svg>
 

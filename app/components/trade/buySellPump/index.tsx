@@ -32,7 +32,7 @@ interface Props {
   onClose: () => void;
 }
 
-const SOL: Token = {
+export const SOL: Token = {
   tokenName: "SOL",
   tokenSymbol: "SOL",
   tokenUri: "/img/home/solana.png",
