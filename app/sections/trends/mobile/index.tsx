@@ -7,9 +7,6 @@ import Header from '@/app/sections/trends/components/header';
 import Item from '@/app/sections/trends/components/item';
 import { useTrends } from '@/app/sections/trends/hooks';
 import { useEffect } from 'react';
-import { uniqBy } from 'lodash';
-import InfiniteScrollContent from '@/app/components/infinite-scroll-content';
-import { InfiniteScroll } from 'antd-mobile';
 import TrendsLoading from '@/app/sections/trends/components/loading';
 
 export default function Mobile(props: any) {
@@ -19,21 +16,12 @@ export default function Mobile(props: any) {
     hottestList,
     tableList,
     top1,
-    getTop1,
-    getHottestList,
-    getTableList,
-    tableListPageMore,
-    tableListPageIndex,
-    top1Loading,
-    hottestListLoading,
-    tableListLoading,
+    getAllList,
+    allListLoading,
   } = useTrends();
 
-  const isLoading = top1Loading || hottestListLoading || tableListLoading;
-
   useEffect(() => {
-    getTop1();
-    getHottestList();
+    getAllList();
   }, []);
 
   return (
@@ -43,29 +31,19 @@ export default function Mobile(props: any) {
       <Top onBuy={() => handleBuy(top1)} trend={top1} isMobile />
       <div className={styles.List}>
         {
-          isLoading ? (
+          allListLoading ? (
             <TrendsLoading />
           ) : (
             <>
               {
-                uniqBy([...hottestList, ...tableList], 'address')
-                  .filter((it) => it.address !== top1?.address)
-                  .map((item) => (
-                    <Item
-                      key={item.id}
-                      onBuy={() => handleBuy(item)}
-                      trend={item}
-                    />
-                  ))
+                [...hottestList, ...tableList].map((item) => (
+                  <Item
+                    key={item.id}
+                    onBuy={() => handleBuy(item)}
+                    trend={item}
+                  />
+                ))
               }
-              <InfiniteScroll
-                loadMore={() => {
-                  return getTableList({ pageIndex: tableListPageIndex });
-                }}
-                hasMore={tableListPageMore}
-              >
-                <InfiniteScrollContent hasMore={tableListPageMore} />
-              </InfiniteScroll>
             </>
           )
         }

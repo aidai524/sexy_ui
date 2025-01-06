@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { httpGet, timeAgo } from '@/app/utils';
 import { useTrendsStore } from '@/app/store/useTrends';
 import { PublicKey } from '@solana/web3.js';
@@ -12,10 +12,12 @@ import { useDebounceFn } from 'ahooks';
 import { useConfig } from '@/app/store/useConfig';
 import { getTokenMeta } from '@/app/utils/solanaScanApi';
 
-export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolean; }) {
-  const { isPollingTop1, isListPage = true } = props ?? {};
+export function useTrends(props?: { isPolling?: boolean; }) {
+  const { isPolling } = props ?? {};
 
   const {
+    allList,
+    setAllList,
     top1,
     tableList,
     hottestList,
@@ -26,14 +28,29 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
   const { connection } = useConnection();
   const { config }: any = useConfig();
 
-  const [top1Loading, setTop1Loading] = useState<boolean>(false);
-  const [tableListLoading, setTableListLoading] = useState<boolean>(false);
-  const [hottestListLoading, setHottestListLoading] = useState<boolean>(false);
+  const [allListLoading, setAllListLoading] = useState<boolean>(false);
   const [currentFilter, setCurrentFilter] = useState<number>(1);
   const [orderBy, setOrderBy] = useState<Record<string, 'asc' | 'desc' | '' | undefined>>({});
   const [searchText, setSearchText] = useState<string>('');
-  const [tableListPageIndex, setTableListPageIndex] = useState<number>(0);
-  const [tableListPageMore, setTableListPageMore] = useState<boolean>(true);
+
+  const currentTableList = useMemo(() => {
+    let _tableList = tableList;
+    if (searchText) {
+      _tableList = tableList.filter((it) => {
+        if (it.token_name.toLowerCase().indexOf(searchText.toLowerCase()) > -1) return true;
+        if (it.token_symbol.toLowerCase().indexOf(searchText.toLowerCase()) > -1) return true;
+        return false;
+      });
+    }
+    return _tableList.sort((a, b) => {
+      if (orderBy.market_cap) {
+        const isAsc = orderBy.market_cap === 'asc';
+        if (Big(a.market_cap || 0).gt(Big(b.market_cap || 0))) return isAsc ? 1 : -1;
+        return isAsc ? -1 : 1;
+      }
+      return a.ranking - b.ranking;
+    });
+  }, [searchText, tableList, orderBy]);
 
   const getPoolToken = async (token: Trend) => {
     try {
@@ -106,147 +123,103 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     return _list;
   };
 
-  const getList = async (params: { limit: number; offset?: number; search?: string; order?: 'desc' | 'asc' | ''; }) => {
+  const getAllList = async () => {
+    setAllListLoading(true);
     try {
       const res = await httpGet(`/project/trends/list`, {
-        limit: params.limit,
-        offset: params.offset ?? 0,
-        text: params.search,
-        order: params.order?.toUpperCase?.() ?? '',
+        // ⚠️ Trends page is no longer paginated, all data is returned at once
+        // https://s3.cn-north-1.amazonaws.com.cn/lcpublic/185dc2d5-3cd5-40b5-9957-f1f95e47ca08_1200_8000?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAR4LOV33FDQFAFDV4%2F20250106%2Fcn-north-1%2Fs3%2Faws4_request&X-Amz-Date=20250106T130658Z&X-Amz-Expires=10800&X-Amz-Signature=18fe496af343275074fcf0925e3f38102e99a5685e1be029f77b837a17a7490e&X-Amz-SignedHeaders=host&x-id=GetObject
+        limit: 100,
+        offset: 0,
+        text: '',
+        order: '',
       });
-      const _list = await formatList(res.data.list);
-      return { list: _list, hasMore: res.data.has_next_page };
-    } catch (err) {
-      console.log('get trends list err: %o', err);
-      return { list: [], hasMore: false };
-    }
-  };
-
-  const getTop1 = async () => {
-    setTop1Loading(true);
-    const res = await getList({ limit: 1, search: '' });
-    const _top1 = res.list[0];
-    // calc market cap trends
-    if (_top1) {
-      _top1.marketCapTrendsDirection = '+';
-      _top1.marketCapTrends = '0.00';
-      _top1.holder = 0;
-      const _top1Meta = await getTokenMeta(_top1.address);
-      if (_top1Meta.success && _top1Meta.data?.holder) {
-        _top1.holder = _top1Meta.data?.holder;
-      }
-    }
-    if (_top1 && _top1.poolAmount && Big(_top1.poolAmount).gt(0)) {
-      const tokenMintAddress = new PublicKey(_top1.address);
-      const tokenSupplyInfo = await connection.getTokenSupply(tokenMintAddress);
-      const uiAmount = tokenSupplyInfo.value.uiAmount;
-      const prevMarketCap = Big(_top1.solAmount ?? 0)
-        .div(10 ** 9)
-        .mul(10 ** _top1.token_decimals)
-        .mul(config.SolPrice ?? 0)
-        .div(_top1.poolAmount ?? 0)
-        .mul(uiAmount || total_supply)
-      const diffMarketCap = Big(_top1.market_cap).minus(prevMarketCap);
-      if (!Big(prevMarketCap).eq(0)) {
-        const _marketCapTrends = Big(diffMarketCap).div(prevMarketCap).times(100);
-        _top1.marketCapTrends = _marketCapTrends.toFixed(2);
-        if (_marketCapTrends.lt(0)) {
-          _top1.marketCapTrendsDirection = '-';
+      const _all_list = await formatList(res.data.list);
+      const _top1 = _all_list[0];
+      const _hottestList = _all_list.slice(1, 7);
+      const _tableList = _all_list.slice(7);
+      if (_top1) {
+        _top1.marketCapTrendsDirection = '+';
+        _top1.marketCapTrends = '0.00';
+        _top1.holder = 0;
+        const _top1Meta = await getTokenMeta(_top1.address);
+        if (_top1Meta.success && _top1Meta.data?.holder) {
+          _top1.holder = _top1Meta.data?.holder;
+        }
+        if (_top1.poolAmount && Big(_top1.poolAmount).gt(0)) {
+          const tokenMintAddress = new PublicKey(_top1.address);
+          const tokenSupplyInfo = await connection.getTokenSupply(tokenMintAddress);
+          const uiAmount = tokenSupplyInfo.value.uiAmount;
+          const prevMarketCap = Big(_top1.solAmount ?? 0)
+            .div(10 ** 9)
+            .mul(10 ** _top1.token_decimals)
+            .mul(config.SolPrice ?? 0)
+            .div(_top1.poolAmount ?? 0)
+            .mul(uiAmount || total_supply)
+          const diffMarketCap = Big(_top1.market_cap).minus(prevMarketCap);
+          if (!Big(prevMarketCap).eq(0)) {
+            const _marketCapTrends = Big(diffMarketCap).div(prevMarketCap).times(100);
+            _top1.marketCapTrends = _marketCapTrends.toFixed(2);
+            if (_marketCapTrends.lt(0)) {
+              _top1.marketCapTrendsDirection = '-';
+            }
+          }
         }
       }
+      setTop1(_top1);
+      setHottestList(_hottestList);
+      setTableList(_tableList);
+      setAllList(_all_list);
+    } catch (err) {
+      console.log('get trends list err: %o', err);
     }
-    setTop1(_top1);
-    setTop1Loading(false);
+    setAllListLoading(false);
   };
-
-  const getHottestList = async () => {
-    setHottestListLoading(true);
-    const res = await getList({ limit: 7, search: '' });
-    setHottestList(res.list.slice(1, 7));
-    setHottestListLoading(false);
-  };
-
-  const getTableList = async (params: { pageIndex: number; searchText?: string; orderBy?: 'desc' | 'asc' | '' }) => {
-    setTableListLoading(true);
-    const { pageIndex } = params;
-    const res = await getList({
-      limit: 20,
-      offset: pageIndex,
-      search: params.searchText ?? searchText,
-      order: params.orderBy ?? orderBy['market_cap'] ?? '',
-    });
-    if (pageIndex === 0) {
-      setTableList(res.list);
-    } else {
-      setTableList([...tableList, ...res.list]);
-    }
-    setTableListPageMore(res.hasMore);
-    setTableListPageIndex(pageIndex + 1);
-    setTableListLoading(false);
-  };
-
-  const { run: getTableListDelay, cancel: getTableListCancel } = useDebounceFn((params) => {
-    getTableList(params);
-  }, { wait: 1000 });
 
   const handleCurrentFilter = (_currentFilter: number) => {
-    if (_currentFilter === currentFilter || tableListLoading) return;
+    if (_currentFilter === currentFilter) return;
     setCurrentFilter(_currentFilter);
-    getTableListDelay({ pageIndex: 0 });
   };
 
   const handleOrderBy = (key: string) => {
-    if (tableListLoading) return;
     if (orderBy[key] === 'asc') {
       setOrderBy({ [key]: 'desc' });
-      getTableListDelay({ pageIndex: 0, orderBy: 'desc' });
       return;
     }
     if (orderBy[key] === 'desc') {
       setOrderBy({ [key]: '' });
-      getTableListDelay({ pageIndex: 0, orderBy: '' });
       return;
     }
     setOrderBy({ [key]: 'asc' });
-    getTableListDelay({ pageIndex: 0, orderBy: 'asc' });
   };
 
   const handleSearchText = (e: any) => {
     let val = e.target.value;
     val = trim(val);
     setSearchText(val);
-    setTableListPageMore(true);
-    getTableListDelay({
-      pageIndex: 0,
-      searchText: val,
-    });
   };
 
   useEffect(() => {
     // console.log('isPollingTop1: %o', isPollingTop1);
-    if (!isPollingTop1) return;
+    if (!isPolling) return;
     const timer = setInterval(() => {
-      getTop1();
+      getAllList();
     }, 60000);
-    getTop1();
+    getAllList();
 
     return () => {
       clearInterval(timer);
     };
-  }, [isPollingTop1]);
+  }, [isPolling]);
 
   return {
-    getTop1,
-    getTableList,
-    getHottestList,
+    allList,
+    currentTableList,
+    getAllList,
     top1,
     tableList,
     hottestList,
-    top1Loading,
-    hottestListLoading,
-    tableListLoading,
-    tableListPageIndex,
-    tableListPageMore,
+    allListLoading,
 
     currentFilter,
     handleCurrentFilter,
@@ -256,10 +229,6 @@ export function useTrends(props?: { isPollingTop1?: boolean; isListPage?: boolea
     handleSearchText,
     handleSearchTextClear: () => {
       handleSearchText({ target: { value: '' } });
-      setTableListPageMore(true);
-      getTableListDelay({
-        pageIndex: 0,
-      });
     },
   };
 }
