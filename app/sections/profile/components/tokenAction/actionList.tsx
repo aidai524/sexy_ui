@@ -81,7 +81,7 @@ export default function ActionList({
         </>
       )}
 
-      {[1, 2, 3].includes(Number(token.status)) && (
+      {[1, 2, 3].includes(Number(token.status)) && !isOther && (
         <Claim
           {...{
             isPrepaid,
