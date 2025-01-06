@@ -231,7 +231,7 @@ export default function CommentComp({
             marginTop: 30
           }}
         >
-          <Empty text="No comments" />
+          <Empty text="No discussion" />
         </div>
       )}
 

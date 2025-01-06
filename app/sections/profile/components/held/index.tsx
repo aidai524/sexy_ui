@@ -5,55 +5,54 @@ import { useAccount } from "@/app/hooks/useAccount";
 import Big from "big.js";
 import { simplifyNum } from "@/app/utils";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
-import Empty from "../empty";
+import Empty from "@/app/components/empty";
 import { useRouter } from "next/navigation";
 
-const pageSize = 40
+const pageSize = 40;
 
 export default function Held({ from, address }: any) {
-  const router = useRouter()
+  const router = useRouter();
   // const { address } = useAccount()
-  const [list, setList] = useState<any[]>([])
-  const [hasMore, setHasMore] = useState(true)
-  const [pageIndex, setPageIndex] = useState(1)
-  const [tokenInfo, setTokenInfo] = useState<any>({})
+  const [list, setList] = useState<any[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [tokenInfo, setTokenInfo] = useState<any>({});
 
   const loadMore = useCallback(async () => {
     if (address) {
-      return getTokenByHolder(address, pageIndex, pageSize).then(res => {
-        const newList = [
-          ...list,
-          ...(res.data || [])
-        ]
+      return getTokenByHolder(address, pageIndex, pageSize).then((res) => {
+        const newList = [...list, ...(res.data || [])];
 
-        setList(newList)
+        setList(newList);
         const newTokenInfo = {
           ...res.metadata.tokens,
-          ...tokenInfo,
-        }
-        setTokenInfo(newTokenInfo)
+          ...tokenInfo
+        };
+        setTokenInfo(newTokenInfo);
 
         if (res.data) {
           if (res.data.length < pageSize) {
-            setHasMore(false)
+            setHasMore(false);
           } else {
-            setPageIndex(pageIndex + 1)
-            setHasMore(true)
+            setPageIndex(pageIndex + 1);
+            setHasMore(true);
           }
         }
-        
-      })
+      });
     }
-    
-  }, [address, list, tokenInfo, pageIndex])
+  }, [address, list, tokenInfo, pageIndex]);
 
   useEffect(() => {
     // loadMore()
-  }, [address])
+  }, [address]);
 
-   if (list.length === 0 && !hasMore) {
-      return <Empty msg={"No token yet"} />;
-    }
+  if (list.length === 0 && !hasMore) {
+    return (
+      <div style={{ paddingTop: 60 }}>
+        <Empty text={"No token yet"} />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -71,7 +70,7 @@ export default function Held({ from, address }: any) {
             }`}
             onClick={() => {
               // console.log(item)
-              router.push('/detail?address=' + item.token_address)
+              router.push("/detail?address=" + item.token_address);
               // window.open('https://solscan.io/account/' + item.token_account)
             }}
             key={item.token_address}
@@ -82,10 +81,17 @@ export default function Held({ from, address }: any) {
                 src={tokenInfo[item.token_address].token_icon}
               />
               <div className={styles.tokenNames}>
-                <div className={styles.name}>{ tokenInfo[item.token_address].token_name }</div>
-                <div className={styles.viewCoin} onClick={() => {
-                  window.open('https://solscan.io/account/' + item.token_account)
-                }}>
+                <div className={styles.name}>
+                  {tokenInfo[item.token_address].token_name}
+                </div>
+                <div
+                  className={styles.viewCoin}
+                  onClick={() => {
+                    window.open(
+                      "https://solscan.io/account/" + item.token_account
+                    );
+                  }}
+                >
                   <span className={styles.viewCoinText}>View Coin</span>
                   <svg
                     width="8"
@@ -104,7 +110,14 @@ export default function Held({ from, address }: any) {
             </div>
 
             <div className={styles.tokenValue}>
-              <div className={styles.tokenAmount}>{ (simplifyNum(new Big(item.amount).div(10 ** item.token_decimals).toNumber(), 2)) }</div>
+              <div className={styles.tokenAmount}>
+                {simplifyNum(
+                  new Big(item.amount)
+                    .div(10 ** item.token_decimals)
+                    .toNumber(),
+                  2
+                )}
+              </div>
               {/* <div className={styles.solPrice}>0.005 SOL</div> */}
             </div>
           </div>
