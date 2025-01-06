@@ -24,8 +24,6 @@ export async function pumpFunBuy(mintStr: string, solIn: number, slippageDecimal
             false
         );
 
-        console.log('tokenAccountAddress:', tokenAccountAddress)
-
         let tokenAccountInfo
         try {
             tokenAccountInfo = await connection.getAccountInfo(tokenAccountAddress);
@@ -50,8 +48,8 @@ export async function pumpFunBuy(mintStr: string, solIn: number, slippageDecimal
         const solInLamports = solIn * LAMPORTS_PER_SOL;
         const tokenOut = Math.floor(solInLamports * coinData["virtual_token_reserves"] / coinData["virtual_sol_reserves"]);
 
-        const solInWithSlippage = solIn * (1 + slippageDecimal);
-        const maxSolCost = Math.floor(solInWithSlippage * LAMPORTS_PER_SOL);
+        const _tokenOut = Math.floor(tokenOut * (1 - slippageDecimal));
+        const maxSolCost = Math.floor(solIn * LAMPORTS_PER_SOL);
         const ASSOCIATED_USER = tokenAccount;
         const USER = owner;
         const BONDING_CURVE = new PublicKey(coinData['bonding_curve']);
@@ -72,11 +70,9 @@ export async function pumpFunBuy(mintStr: string, solIn: number, slippageDecimal
             { pubkey: PUMP_FUN_PROGRAM, isSigner: false, isWritable: false },
         ];
 
-        console.log('keys:', keys)
-
         const data = Buffer.concat([
             bufferFromUInt64("16927863322537952870"),
-            bufferFromUInt64(tokenOut),
+            bufferFromUInt64(_tokenOut),
             bufferFromUInt64(maxSolCost)
         ]);
 
@@ -137,7 +133,7 @@ export async function pumpFunSell(mintStr: string, tokenBalance: number, slippag
 
         const minSolOutput = Math.floor(tokenBalance! * (1 - slippageDecimal) * coinData["virtual_sol_reserves"] / coinData["virtual_token_reserves"]);
 
-        console.log('minSolOutput:', minSolOutput)
+        console.log('minSolOutput:', tokenBalance, slippageDecimal, minSolOutput)
 
         const keys = [
             { pubkey: GLOBAL, isSigner: false, isWritable: false },

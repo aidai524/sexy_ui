@@ -123,9 +123,9 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
           }
 
 
-
-          estimateToken(new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toNumber(), slip)
+          estimateToken(new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toNumber(), slip / 100)
             .then(res => {
+
               setBuyInSol(debounceVal)
               setBuyIn(new Big(res).toFixed(desToken.tokenDecimals))
 
@@ -194,6 +194,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                 return;
               }
 
+              setSellOut(sellOut);
               setIsLoading(false)
               setIsError(false)
             }).catch(e => {
@@ -457,6 +458,8 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                   setIsLoading(true);
                 } else if (activeIndex === 1) {
                   setIsLoading(true);
+
+                  console.log('sellOut:', sellOut)
 
                   hash = await sell(Number(sellOut), slip / 100)
                 }

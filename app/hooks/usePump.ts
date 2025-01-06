@@ -25,7 +25,7 @@ export default function usePump({ tokenAddress }: Props) {
 
     const estimateToken = useCallback(async (solIn: number, slippageDecimal: number) => {
         const coinData = await getCoinData(tokenAddress)
-        const tokenOut = Math.floor(solIn * coinData["virtual_token_reserves"] / coinData["virtual_sol_reserves"]);
+        const tokenOut = Math.floor(solIn * (1 - slippageDecimal) * coinData["virtual_token_reserves"] / coinData["virtual_sol_reserves"]);
         return tokenOut
     }, [tokenAddress])
 
