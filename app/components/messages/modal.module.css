@@ -92,3 +92,10 @@
 .ItemContent {
   flex-grow: 1;
 }
+
+.LoadingWrapper {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

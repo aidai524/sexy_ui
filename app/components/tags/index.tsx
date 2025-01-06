@@ -14,7 +14,10 @@ export default function Tags({ data }: Props) {
   const router = useRouter();
   const [mc, setMc] = useState(0);
 
-  const { mc: pumpMc } = useMc({ tokenAddress: data.address, disable: data.DApp !== 'pump'})
+  const { mc: pumpMc } = useMc({
+    tokenAddress: data.address,
+    disable: data.DApp !== "pump"
+  });
 
   const userName = useMemo(() => {
     if (data.creater) {
@@ -51,31 +54,46 @@ export default function Tags({ data }: Props) {
   }, [data]);
 
   return (
-    <div className={styles.tags}>
+    <>
       {data.DApp === "sexy" && mc > 0 && (
-        <Tag>
-          <span className={styles.mc}>Market Cap: ${simplifyNum(mc , 2)}</span>
-        </Tag>
+        <div className={styles.Item}>
+          <Tag>
+            <span className={styles.mc}>Market Cap: ${simplifyNum(mc, 2)}</span>
+          </Tag>
+        </div>
       )}
-
-        {data.DApp === "pump" && pumpMc > 0 && (
-        <Tag>
-          <span className={styles.mc}>Market Cap: ${simplifyNum(pumpMc , 2)}</span>
-        </Tag>
+      {data.DApp === "pump" && pumpMc > 0 && (
+        <div className={styles.Item}>
+          <Tag>
+            <span className={styles.mc}>
+              Market Cap: ${simplifyNum(pumpMc, 2)}
+            </span>
+          </Tag>
+        </div>
       )}
-
-      {data.status === 0 && (
-        <Tag>Created in {data.time ? timeAgo(data.time) : 0}</Tag>
-      )}
-      <Tag
-        onClick={() => {
-          router.push("/profile/user?account=" + data.account);
-        }}
-      >
-        <span>Created by</span>{" "}
-        <span className={styles.userName}>{userName}</span>
-      </Tag>
-    </div>
+      <div className={styles.tags}>
+        {data.account && (
+          <Tag
+            onClick={() => {
+              router.push("/profile/user?account=" + data.account);
+            }}
+          >
+            <span>Created by</span>{" "}
+            <span className={styles.userName}>{userName}</span>
+            {data.time && (
+              <span
+                style={{
+                  marginLeft: 5
+                }}
+              >
+                {" "}
+                {timeAgo(data.time)}
+              </span>
+            )}
+          </Tag>
+        )}
+      </div>
+    </>
   );
 }
 
