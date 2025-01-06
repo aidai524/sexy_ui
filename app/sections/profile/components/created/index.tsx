@@ -9,7 +9,7 @@ import { useAuth } from "@/app/context/auth";
 
 const urls: Record<string, string> = {
   created: "/project/account/list",
-  flipped: "/project/super_like/list",
+  flipped: "/project/pre_paid/list",
   liked: "/project/like/list"
 };
 
