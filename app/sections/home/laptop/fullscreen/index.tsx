@@ -21,6 +21,7 @@ import {
 import { mapDataToProject } from "@/app/utils/mapTo";
 import CircleLoading from "@/app/components/icons/loading";
 import { useAuth } from "@/app/context/auth";
+import { useRouter } from "next/navigation";
 
 export default function Fullscreen({
   list = [],
@@ -33,6 +34,7 @@ export default function Fullscreen({
   const { updateInfo } = useLaptop();
   const [index, setIndex] = useState(0);
   const { userInfo } = useAuth();
+  const router = useRouter();
 
   const data = useMemo(() => {
     if (list.length < 5) {
@@ -187,6 +189,7 @@ export default function Fullscreen({
       >
         Click the blank area means ‘unlike’ it, and check the next one.
       </div>
+
       {isLoading ? (
         <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
           <CircleLoading size={40} />
@@ -194,7 +197,12 @@ export default function Fullscreen({
       ) : (
         (!list.length || index === list.length) && (
           <div className={styles.Layer} style={{ width: "100%", zIndex: 55 }}>
-            <Empty type={type} />
+            <Empty
+              type={type}
+              onTextClick={() => {
+                router.push(`/?launchType=${type === "preLaunch" ? 1 : 0}`);
+              }}
+            />
           </div>
         )
       )}

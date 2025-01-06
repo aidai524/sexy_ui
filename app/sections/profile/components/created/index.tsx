@@ -6,6 +6,7 @@ import type { Project } from "@/app/type";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { useAuth } from "@/app/context/auth";
+import useCheckFliped from "../../hooks/use-check-fliped";
 
 const urls: Record<string, string> = {
   created: "/project/account/list",
@@ -31,6 +32,7 @@ export default function Created({
   const [offset, setOffset] = useState(0);
   const { updateCurrentUserInfo, accountRefresher, userInfo } = useAuth();
   const timerRef = useRef<any>();
+  const { unfliped } = useCheckFliped(list, isOther);
 
   useEffect(() => {
     if (address && userInfo?.address !== address) {
@@ -67,9 +69,6 @@ export default function Created({
           throw new Error();
         }
 
-        if (isOther) {
-          const tokens = res.data.list.map((token: any) => token.address);
-        }
         const newMapList = res.data?.list.map(mapDataToProject);
 
         _list = isInit ? newMapList : [...list, ...newMapList];
@@ -114,10 +113,14 @@ export default function Created({
   return (
     <div>
       {list.map((item) => {
+        const isSuperLike = !isOther
+          ? item.isSuperLike
+          : !unfliped?.includes(item.address);
+
         return (
           <Token
             from={from}
-            data={item}
+            data={{ ...item, isSuperLike }}
             isOther={isOther}
             key={item.id}
             hideHot={hideHot}
