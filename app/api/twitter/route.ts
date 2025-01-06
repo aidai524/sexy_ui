@@ -3,6 +3,8 @@ import fetch from "node-fetch";
 import { URL } from "url";
 import { NextRequest } from "next/server";
 
+
+
 export async function GET(request: Request | NextRequest) {
     const parsedUrl = new URL(request.url as string);
     const imgUrl = parsedUrl.searchParams.get("imgUrl");
@@ -11,6 +13,8 @@ export async function GET(request: Request | NextRequest) {
     const tokenAddress = parsedUrl.searchParams.get("address");
     const referral = parsedUrl.searchParams.get("referral");
     const domain = process.env.NEXT_PUBLIC_DOMAIN || 'https://stage.flipn.fun'
+    const s3Domain = process.env.NEXT_PUBLIC_S3_URL_PREFIX || 'https://flipn.s3.us-east-1.amazonaws.com'
+    const s3Dir = process.env.NEXT_PUBLIC_S3_DIR || 'flipn/stg/'
 
     const res = new Response(
         `<!DOCTYPE html>
@@ -22,7 +26,7 @@ export async function GET(request: Request | NextRequest) {
             <meta name="twitter:card" content="summary_large_image"> <!-- Use 'summary_large_image' for large image cards -->
             <meta name="twitter:title" content="${tokenName}">
             <meta name="twitter:description" content="${about}">
-            <meta name="twitter:image" content="${imgUrl}"> <!-- Image URL for sharing -->
+            <meta name="twitter:image" content="${s3Domain}/${s3Dir}${imgUrl}"> <!-- Image URL for sharing -->
 
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="refresh" content="1; url=${domain}/detail?address=${tokenAddress}">

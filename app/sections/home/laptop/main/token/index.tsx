@@ -19,6 +19,7 @@ import Loading from "@/app/components/icons/loading";
 import NextButton from "../../fullscreen/next-button";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useAuth } from "@/app/context/auth";
+import useMc from "@/app/hooks/useMc";
 
 export default function Token({
   infoData2,
@@ -34,6 +35,13 @@ export default function Token({
   const { updateInfo } = useLaptop();
   const { userInfo } = useAuth();
   const [mc, setMC] = useState<string | number>("-");
+
+    const { mc: pumpMc } = useMc({ 
+      tokenAddress: infoData2?.address,
+      disable: infoData2?.status < 1
+   })
+  
+   console.log('pumpMc---:', pumpMc)
 
   const { getMC, pool } = useTokenTrade({
     tokenName: infoData2?.tokenName as string,
@@ -133,7 +141,7 @@ export default function Token({
                     showTop={false}
                     theme="light"
                     sepSize={2}
-                    mc={mc}
+                    mc={pumpMc || mc}
                   />
                   <div style={{ height: 2 }} />
                   <CommentComp id={infoData2.id} theme="light" />
@@ -155,7 +163,7 @@ export default function Token({
               )}
               {currentTab === "txs" && (
                 <PanelWrapper>
-                  <Txs from="laptop-home" data={infoData2} mc={mc} />
+                  <Txs from="laptop-home" data={infoData2} mc={pumpMc || mc} />
                 </PanelWrapper>
               )}
             </motion.div>

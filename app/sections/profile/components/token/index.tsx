@@ -5,6 +5,7 @@ import { simplifyNum, timeAgo } from "@/app/utils";
 import { useRouter } from "next/navigation";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import TokenAction from "../tokenAction";
+import useMc from "@/app/hooks/useMc";
 
 interface Props {
   data: Project;
@@ -24,7 +25,14 @@ export default function Token({
   isOther
 }: Props) {
   const router = useRouter();
-  const [mc, setMC] = useState<string | number>("-");
+  const [mc, setMC] = useState<string | number>(0);
+
+    console.log(data)
+
+  const { mc: pumpMc } = useMc({ 
+      tokenAddress: data?.address,
+      disable: data?.status! < 1
+   })
 
   const { getMC, pool, checkPrePayed } = useTokenTrade({
     tokenName: data?.tokenName as string,
@@ -49,13 +57,16 @@ export default function Token({
       pool &&
       pool.length > 0 &&
       data?.DApp === "sexy" &&
-      data?.status === 1
+      data?.status !== 0
     ) {
       getMC().then((res) => {
+        // console.log('res:', data.tokenName, res)
         setMC(res as number);
       });
     }
   }, [pool, data]);
+
+//   console.log('mc:', data.tokenName, pumpMc)
 
   return (
     <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
@@ -81,7 +92,7 @@ export default function Token({
             <div className={styles.tickerName}>Ticker: {data.ticker}</div>
           </div>
           <div className={styles.MarketCap}>
-            Mc: {mc && mc !== "-" ? `$${simplifyNum(Number(mc), 2)}` : "-"}
+            Mc: {pumpMc || mc ? `$${simplifyNum(Number(pumpMc || mc), 2)}` : "-"}
           </div>
           <div className={styles.createTime}>{timeAgo(data.time)}</div>
         </div>

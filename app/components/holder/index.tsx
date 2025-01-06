@@ -127,7 +127,8 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
 
               <div className={styles.itemPercent}>
                 {
-                  new Big(item.amount).div(supply).mul(100).toNumber() > 99.99 ? '<100' : numberFormatter(new Big(item.amount).div(supply).mul(100).toNumber(), 2, true, { isShort: true })
+                  new Big(item.amount).div(supply).mul(100).toNumber() > 99.99 
+                  && new Big(item.amount).div(supply).mul(100).toNumber() !== 100 ? '<100' : numberFormatter(new Big(item.amount).div(supply).mul(100).toNumber(), 2, true, { isShort: true })
                 }%
                 </div>
             </div>

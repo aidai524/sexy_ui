@@ -59,7 +59,7 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
 
       console.log("url:", url);
 
-      return url;
+      return newFileName;
     }
   }, [token]);
 

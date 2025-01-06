@@ -48,7 +48,6 @@ export default function Detail({ token, onBack, onNext }: any) {
       infoData?.status >= 1
     ) {
       getMC().then((res) => {
-        console.log('mc:', res)
         setMC(res as number);
       });
     }
@@ -64,7 +63,7 @@ export default function Detail({ token, onBack, onNext }: any) {
       );
   }, [onBack, infoData]);
 
-  console.log('mc:', mc)
+  console.log('mc:', mc, pumpMc)
 
   if (isLoading) {
     return (
