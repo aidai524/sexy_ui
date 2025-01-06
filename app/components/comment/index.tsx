@@ -36,7 +36,7 @@ export default function CommentComp({
   const loadMore = useCallback(
     (newOffset?: number) => {
       if (!id) return;
-      const _offset = newOffset || offset;
+      const _offset = typeof newOffset === "number" ? newOffset : offset;
       if (_offset === 0) setIsLoading(true);
       if (_offset !== 0 && !hasMore) {
         setIsLoading(false);
@@ -49,23 +49,22 @@ export default function CommentComp({
       })
         .then((res) => {
           if (_offset === 0) setIsLoading(false);
-          if (res?.code !== 0) return;
+          if (res?.code !== 0) throw new Error();
           setHasMore(res.data?.has_next_page || false);
+          let newList = [];
           if (res.data.list?.length) {
             const newMapList = res.data.list.map((item: any) => {
               return mapDataToComment(item);
             });
 
-            let newList = [];
             if (_offset === 0) {
               newList = newMapList;
             } else {
               newList = [...commentList, ...newMapList];
             }
-
-            setOffset(newList.length);
-            setCommentList(newList);
           }
+          setOffset(newList.length);
+          setCommentList(newList);
         })
         .catch((err) => {
           if (_offset === 0) {
@@ -79,7 +78,6 @@ export default function CommentComp({
 
   const { run: loadData } = useDebounceFn(
     (args: any = {}) => {
-      setOffset(0);
       if (!id) {
         setCommentList([]);
       } else {

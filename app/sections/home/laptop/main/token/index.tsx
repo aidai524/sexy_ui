@@ -20,6 +20,7 @@ import NextButton from "../../fullscreen/next-button";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useAuth } from "@/app/context/auth";
 import useMc from "@/app/hooks/useMc";
+import { useRouter } from "next/navigation";
 
 export default function Token({
   infoData2,
@@ -35,12 +36,12 @@ export default function Token({
   const { updateInfo } = useLaptop();
   const { userInfo } = useAuth();
   const [mc, setMC] = useState<string | number>("-");
+  const router = useRouter();
 
-    const { mc: pumpMc } = useMc({ 
-      tokenAddress: infoData2?.address,
-      disable: infoData2?.status < 1
-   })
-  
+  const { mc: pumpMc } = useMc({
+    tokenAddress: infoData2?.address,
+    disable: infoData2?.status < 1
+  });
 
   const { getMC, pool } = useTokenTrade({
     tokenName: infoData2?.tokenName as string,
@@ -107,6 +108,7 @@ export default function Token({
         />
 
         <div className={styles.Wrapper}>
+          {/*  */}
           {infoData2 && (!isListEmpty || from === "detail") && !isLoading && (
             <motion.div
               initial="hidden"
@@ -167,13 +169,21 @@ export default function Token({
               )}
             </motion.div>
           )}
+          {/*  */}
           {isLoading && (
             <div className={styles.EmptyWrapper}>
               <Loading size={40} />
             </div>
           )}
+          {/*  */}
           {isListEmpty && from !== "detail" && (
-            <Empty type={type === 0 ? "preLaunch" : "launching"} from={from} />
+            <Empty
+              type={type === 0 ? "preLaunch" : "launching"}
+              from={from}
+              onTextClick={() => {
+                router.push(`/?launchType=${type === 0 ? 1 : 0}`);
+              }}
+            />
           )}
         </div>
       </div>

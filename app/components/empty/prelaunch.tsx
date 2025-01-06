@@ -1,5 +1,5 @@
 import styles from "./index.module.css";
-export default function Prelanuch({ type, from }: any) {
+export default function Prelanuch({ type, from, onTextClick }: any) {
   return (
     <div
       className={styles.Container}
@@ -222,7 +222,11 @@ export default function Prelanuch({ type, from }: any) {
             }}
           >
             You can go to{" "}
-            <span style={{ color: "#fff" }}>
+            <span
+              style={{ color: "#fff" }}
+              className="button"
+              onClick={onTextClick}
+            >
               {type === "preLaunch" ? "Launching/ed." : "PreLaunch"}
             </span>
           </div>
