@@ -57,16 +57,14 @@ export default function Token({
       pool &&
       pool.length > 0 &&
       data?.DApp === "sexy" &&
-      data?.status !== 0
+      data?.status === 1
     ) {
       getMC().then((res) => {
-        // console.log('res:', data.tokenName, res)
         setMC(res as number);
       });
     }
   }, [pool, data]);
 
-//   console.log('mc:', data.tokenName, pumpMc)
 
   return (
     <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>

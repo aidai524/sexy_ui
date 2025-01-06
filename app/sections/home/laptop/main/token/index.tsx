@@ -41,7 +41,6 @@ export default function Token({
       disable: infoData2?.status < 1
    })
   
-   console.log('pumpMc---:', pumpMc)
 
   const { getMC, pool } = useTokenTrade({
     tokenName: infoData2?.tokenName as string,

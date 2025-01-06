@@ -31,11 +31,7 @@ export default function usePump({ tokenAddress }: Props) {
 
     const estimateSol = useCallback(async (tokenBalance: number, slippageDecimal: number) => {
         const coinData = await getCoinData(tokenAddress)
-        console.log('estimateSol', slippageDecimal, tokenBalance, coinData)
         const minSolOutput = Math.floor(tokenBalance! * (1 - slippageDecimal) * coinData["virtual_sol_reserves"] / coinData["virtual_token_reserves"]);
-
-        console.log('minSolOutput:', minSolOutput)
-
         return minSolOutput
     }, [tokenAddress])
 

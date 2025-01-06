@@ -16,7 +16,7 @@ export default function Tags({ data }: Props) {
 
   const { mc: pumpMc } = useMc({
     tokenAddress: data.address,
-    disable: data.DApp !== "pump"
+    disable: data.status! < 1
   });
 
   const userName = useMemo(() => {

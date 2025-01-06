@@ -26,6 +26,7 @@ import { shareToX } from "@/app/utils/share";
 import { DotLoading, Modal } from "antd-mobile";
 import Likes from "../thumbnail/likes";
 import { useAuth } from "@/app/context/auth";
+import useMc from "@/app/hooks/useMc";
 
 interface Props {
   token: Project | undefined;
@@ -52,11 +53,8 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
 
       const base64Url = canvas.toDataURL("image/webp");
       const bloBData = base64ToBlob(base64Url);
-      console.log("bloBData:", bloBData);
-
       const newFileName = generateRandomString(10);
       const url = await postUpload(bloBData[0], newFileName, bloBData[1]);
-
       console.log("url:", url);
 
       return newFileName;
@@ -86,6 +84,12 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
 
   const [mc, setMC] = useState<string | number>("-");
 
+  const { mc: pumpMc } = useMc({
+      tokenAddress: token?.address,
+      disable: token?.status! < 1
+    });
+  
+
   const { getMC, pool } = useTokenTrade({
     tokenName: token?.tokenName as string,
     tokenSymbol: token?.tokenSymbol as string,
@@ -101,7 +105,7 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
       token?.status === 1
     ) {
       getMC().then((res) => {
-        setMC(simplifyNum(res as number));
+        setMC(res as number);
       });
     }
   }, [pool, token]);
@@ -175,7 +179,11 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
           </div>
           <div className={styles.detailsItem}>
             <div className={styles.detailTitle}>Market cap:</div>
-            <div className={styles.detailContent}>${mc}</div>
+            <div className={styles.detailContent}>${simplifyNum(Number(pumpMc || mc), 2)}</div>
+          </div>
+          <div className={styles.detailsItem}>
+            <div className={styles.detailTitle}>Address:</div>
+            <div className={styles.detailContent}>{formatAddress(token.address as string)}</div>
           </div>
         </div>
       </div>

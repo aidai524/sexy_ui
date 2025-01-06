@@ -29,9 +29,9 @@ export default function Detail({ token, onBack, onNext }: any) {
   );
 
   const { mc: pumpMc } = useMc({ 
-    tokenAddress: infoData?.address,
-    disable: infoData?.status < 1
- })
+      tokenAddress: infoData?.address,
+      disable: infoData?.status < 1
+  })
 
   const { getMC, pool } = useTokenTrade({
     tokenName: infoData?.tokenName as string,
@@ -45,7 +45,7 @@ export default function Detail({ token, onBack, onNext }: any) {
       pool &&
       pool.length > 0 &&
       infoData?.DApp === "sexy" &&
-      infoData?.status >= 1
+      infoData?.status === 1
     ) {
       getMC().then((res) => {
         setMC(res as number);
@@ -62,8 +62,6 @@ export default function Detail({ token, onBack, onNext }: any) {
         `/detail?address=${infoData.address}`
       );
   }, [onBack, infoData]);
-
-  console.log('mc:', mc, pumpMc)
 
   if (isLoading) {
     return (
