@@ -465,7 +465,7 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
 
         {activeIndex === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}>You will get</div>
+            <div className={styles.receiveTitle}>Minimum Received</div>
             <div className={styles.receiveAmount}>
               {sellOutSol && Number(sellOutSol) > 0
                 ? new Big(sellOutSol)
