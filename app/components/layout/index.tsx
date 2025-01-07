@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Cookies from "js-cookie";
 import { useAirdropStore } from "@/app/store/use-airdrop";
+import { useReferralStore } from "@/app/store/useReferral";
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
@@ -21,6 +22,7 @@ export default function Layout(props: any) {
   const search = useSearchParams();
   const { publicKey } = useWallet();
   const { setVisible: setAirdropVisible } = useAirdropStore();
+  const { setReferral} = useReferralStore()
 
   const isAirdrop = useMemo(() => {
     if (!publicKey) return false;
@@ -29,6 +31,7 @@ export default function Layout(props: any) {
     if (!Cookies.get("referral")) {
       console.log("referral saved: %o", search.get("referral"));
       Cookies.set("referral", search.get("referral") as string, { path: "/" });
+      setReferral(search.get("referral") as string)
     }
     if (!search.get("airdrop")) return false;
     return true;
@@ -37,7 +40,8 @@ export default function Layout(props: any) {
   const { getConfig } = useTokenTrade({
     tokenName: "",
     tokenSymbol: "",
-    tokenDecimals: 6
+    tokenDecimals: 6,
+    loadData: false
   });
 
   useEffect(() => {

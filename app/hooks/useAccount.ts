@@ -28,7 +28,6 @@ export function useAccount() {
 
         if (!isVersionedTransaction) {
           const latestBlockhash = await connection?.getLatestBlockhash();
-          // console.log('transaction:', transaction)
           transaction.feePayer = publicKey
           transaction.recentBlockhash = latestBlockhash!.blockhash
   
@@ -44,10 +43,6 @@ export function useAccount() {
           );
         }
 
-        console.log('isVersionedTransaction:', isVersionedTransaction)
-
-        
-        
 
         const tx = await sendTransaction(transaction, connection, {
           ...confirmationStrategy,
