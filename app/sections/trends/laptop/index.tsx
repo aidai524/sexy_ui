@@ -11,14 +11,10 @@ const Laptop = (props: any) => {
   const { handleBuy } = props;
 
   const {
-    tableList,
+    currentTableList,
     hottestList,
     top1,
-    top1Loading,
-    tableListLoading,
-    hottestListLoading,
-    getHottestList,
-    getTableList,
+    allListLoading,
     handleCurrentFilter,
     currentFilter,
     handleOrderBy,
@@ -26,13 +22,9 @@ const Laptop = (props: any) => {
     searchText,
     handleSearchText,
     handleSearchTextClear,
-    tableListPageMore,
-    tableListPageIndex,
   } = useTrends();
 
   useEffect(() => {
-    getHottestList();
-    getTableList({ pageIndex: 0 });
   }, []);
 
   return (
@@ -45,20 +37,17 @@ const Laptop = (props: any) => {
         <GoBack />
       </div>
       <Top onBuy={() => handleBuy(top1)} trend={top1} />
-      <Hottest data={hottestList} onBuy={handleBuy} loading={hottestListLoading} />
+      <Hottest data={hottestList} onBuy={handleBuy} loading={allListLoading} />
       <List
-        loading={top1Loading || tableListLoading || hottestListLoading}
+        loading={allListLoading}
         currentFilter={currentFilter}
         onCurrentFilter={handleCurrentFilter}
-        data={tableList?.filter?.((it) => top1?.address !== it.address && !hottestList?.some((_it) => _it.address === it.address))}
+        data={currentTableList}
         orderBy={orderBy}
         onOrderBy={handleOrderBy}
         searchText={searchText}
         onSearchText={handleSearchText}
         onSearchTextClear={handleSearchTextClear}
-        getTableList={getTableList}
-        tableListPageMore={tableListPageMore}
-        tableListPageIndex={tableListPageIndex}
       />
     </motion.div>
   );

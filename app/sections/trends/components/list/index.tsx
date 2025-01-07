@@ -3,8 +3,6 @@ import SortDirection from "@/app/sections/trends/components/sort";
 import { formatLongText, numberFormatter } from "@/app/utils/common";
 import { useCreator } from "@/app/sections/trends/hooks/creator";
 import Empty from "@/app/components/empty";
-import InfiniteScrollContent from "@/app/components/infinite-scroll-content";
-import { InfiniteScroll } from "antd-mobile";
 import TrendsLoading from "@/app/sections/trends/components/loading";
 
 const List = (props: any) => {
@@ -16,9 +14,6 @@ const List = (props: any) => {
     onSearchText,
     onSearchTextClear,
     searchText,
-    getTableList,
-    tableListPageMore,
-    tableListPageIndex
   } = props;
 
   const creator = useCreator();
@@ -185,17 +180,6 @@ const List = (props: any) => {
                              </div>*/}
                     </div>
                   ))}
-                  <InfiniteScroll
-                    loadMore={() => {
-                      return getTableList({ pageIndex: tableListPageIndex });
-                    }}
-                    hasMore={tableListPageMore}
-                  >
-                    <InfiniteScrollContent
-                      hasMore={tableListPageMore}
-                      text=" "
-                    />
-                  </InfiniteScroll>
                 </>
               ) : (
                 <Empty

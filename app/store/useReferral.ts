@@ -23,6 +23,8 @@ export const useReferraltore = create<ReferralState>((set) => {
         }
     }
 
+    console.log('_referral_address:', _referral_address)
+
     return {
         referral: _referral_address,
         setReferral: (referral: string) => set((state) => ({ ...state, referral })),

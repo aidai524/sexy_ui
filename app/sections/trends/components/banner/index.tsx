@@ -11,7 +11,7 @@ import Big from 'big.js';
 const TrendBanner = (props: any) => {
   const { isMobile, onClose } = props;
 
-  const { top1 } = useTrends({ isPollingTop1: true, isListPage: false });
+  const { top1 } = useTrends({ isPolling: true });
   const { tradeToken, onTrade, setTradeToken } = useTrade();
 
   const [currentBg, setCurrentBg] = useState(
