@@ -8,11 +8,13 @@ interface ReferralState {
     setReferral: (referral: string) => void;
 }
 
-export const useReferraltore = create<ReferralState>((set) => {
+export const useReferralStore = create<ReferralState>((set) => {
     let _referral_address = referral_address
     
     if (typeof(window) !== 'undefined') {
         const cookieReferral = getCookie('referral')
+
+
         if (cookieReferral) {
             try {
                 const publicKey = new PublicKey(cookieReferral);

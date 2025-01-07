@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import styles from "./index.module.css";
 import useTokenDetail from "../use-token-detail";
 
-export default function Laptop() {
+export default function Laptop(props: any) {
+  const { from } = props ?? {};
   const { infoData, isLoading } = useTokenDetail({});
 
   return (
@@ -15,7 +16,7 @@ export default function Laptop() {
     >
       <Token infoData2={infoData} from="detail" isLoading={isLoading} />
       <div className={styles.BackWrapper}>
-        <Back from="detail" />
+        <Back from={from || "detail"} />
       </div>
     </motion.div>
   );

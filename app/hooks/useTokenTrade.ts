@@ -31,7 +31,7 @@ import {
   total_supply
 } from "../utils/config";
 import { useSolPriceStore } from "../store/useSolPrice";
-import { useReferraltore } from "../store/useReferral";
+import { useReferralStore } from "../store/useReferral";
 import { useConfig } from "../store/useConfig";
 
 interface Props {
@@ -55,7 +55,7 @@ export function useTokenTrade({
   const [solBalance, setSolBalance] = useState("0");
   const [reFreshBalnace, setReFreshBalnace] = useState(0);
   const { config }: any = useConfig()
-  const { referral: referral_address } = useReferraltore()
+  const { referral: referral_address } = useReferralStore()
 
   const programId = useMemo(() => {
     return new PublicKey(programId_address);

@@ -1,9 +1,12 @@
 import styles from "./index.module.css";
 import { formatLongText, numberFormatter } from '@/app/utils/common';
 import { Trend } from '@/app/sections/trends/hooks';
+import { useCreator } from '@/app/sections/trends/hooks/creator';
 
 export default function Item(props: Props) {
   const { onBuy, trend } = props;
+
+  const creator = useCreator();
 
   const name = trend?.token_symbol;
   const ticker = trend?.ticker;
@@ -16,11 +19,16 @@ export default function Item(props: Props) {
       <div
         className={styles.ItemAvatar}
         style={{ backgroundImage: `url("${icon}")` }}
+        onClick={() => creator.onDetail(trend?.address)}
       />
       <div className={styles.ItemContent}>
         <div className={styles.ItemHead}>
           <div className={styles.ItemHeadInfo}>
-            <div className={styles.ItemHeadName} title={name}>
+            <div
+              className={styles.ItemHeadName}
+              title={name}
+              onClick={() => creator.onDetail(trend?.address)}
+            >
               {formatLongText(name, 8, 4)}
             </div>
             <div className={styles.ItemHeadTicker}>

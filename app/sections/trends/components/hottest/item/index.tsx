@@ -1,13 +1,19 @@
 import styles from "./index.module.css";
 import { Trend } from '@/app/sections/trends/hooks';
 import { numberFormatter } from '@/app/utils/common';
+import { useCreator } from '@/app/sections/trends/hooks/creator';
 
 const HottestItem = (props: { trend: Trend; index: number; onBuy(trend: Trend): Promise<void>; }) => {
   const { trend, index, onBuy } = props;
 
+  const creator = useCreator();
+
   return (
     <div className={styles.Container}>
-      <div className={styles.Card}>
+      <div
+        className={styles.Card}
+        onClick={() => creator.onDetail(trend?.address)}
+      >
         <div
           className={styles.Avatar}
           style={{ backgroundImage: `url("${trend.Icon}")` }}

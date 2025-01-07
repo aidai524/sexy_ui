@@ -143,6 +143,7 @@ const List = (props: any) => {
                         " "
                       )}
                       key={index}
+                      onClick={() => creator.onDetail(item.address)}
                     >
                       <div className={styles.TableCol}>
                         <img

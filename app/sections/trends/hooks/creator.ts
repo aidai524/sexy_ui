@@ -12,7 +12,13 @@ export function useCreator() {
     }
   };
 
+  const onDetail = (address?: string) => {
+    if (!address) return;
+    router.push(`/detail?address=${address}&from=trends`);
+  };
+
   return {
     onClick,
+    onDetail,
   };
 }
