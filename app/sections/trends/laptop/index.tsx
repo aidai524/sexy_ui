@@ -36,7 +36,7 @@ const Laptop = (props: any) => {
       <div className={styles.Back}>
         <GoBack />
       </div>
-      <Top onBuy={() => handleBuy(top1)} trend={top1} />
+      <Top onBuy={() => handleBuy(top1)} trend={top1} loading={allListLoading} />
       <Hottest data={hottestList} onBuy={handleBuy} loading={allListLoading} />
       <List
         loading={allListLoading}

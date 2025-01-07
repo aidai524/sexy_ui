@@ -28,7 +28,7 @@ export default function Mobile(props: any) {
     <div className={styles.Container}>
       <Header />
       <Carousel />
-      <Top onBuy={() => handleBuy(top1)} trend={top1} isMobile />
+      <Top onBuy={() => handleBuy(top1)} trend={top1} isMobile loading={allListLoading} />
       <div className={styles.List}>
         {
           allListLoading ? (

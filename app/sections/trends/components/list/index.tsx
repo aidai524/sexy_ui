@@ -143,9 +143,14 @@ const List = (props: any) => {
                         " "
                       )}
                       key={index}
-                      onClick={() => creator.onDetail(item.address)}
                     >
-                      <div className={styles.TableCol}>
+                      <div
+                        className={styles.TableCol}
+                        style={{
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => creator.onDetail(item.address)}
+                      >
                         <img
                           src={item.Icon}
                           alt=""
@@ -160,7 +165,8 @@ const List = (props: any) => {
                           color: "#55FFF4",
                           fontSize: 16
                         }}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           creator.onClick(item.project_creator);
                         }}
                       >

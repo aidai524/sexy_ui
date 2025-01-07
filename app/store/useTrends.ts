@@ -3,6 +3,7 @@ import { Trend } from "@/app/sections/trends/hooks";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 interface TrendsState {
+  allListLoading: boolean;
   allList: Trend[];
   tableList: Trend[];
   hottestList: Trend[];
@@ -11,9 +12,11 @@ interface TrendsState {
   setHottestList: (list: Trend[]) => void;
   setTableList: (list: Trend[]) => void;
   setTop1: (top1: Trend) => void;
+  setAllListLoading: (loading: boolean) => void;
 }
 
 export const useTrendsStore = create<TrendsState>((set) => ({
+  allListLoading: false,
   allList: [],
   hottestList: [],
   tableList: [],
@@ -21,7 +24,8 @@ export const useTrendsStore = create<TrendsState>((set) => ({
   setAllList: (list: Trend[]) => set((state) => ({ ...state, allList: list })),
   setHottestList: (list: Trend[]) => set((state) => ({ ...state, hottestList: list })),
   setTableList: (list: Trend[]) => set((state) => ({ ...state, tableList: list })),
-  setTop1: (top1: Trend) => set((state) => ({ ...state, top1 }))
+  setTop1: (top1: Trend) => set((state) => ({ ...state, top1 })),
+  setAllListLoading: (loading) => set((state) => ({ ...state, allListLoading: loading }))
 }));
 
 export const useTrendsBannerStore = create(

@@ -15,7 +15,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { success, fail } from "@/app/utils/toast";
 import ErrMsg from "./components/errMsg";
 import type { Project } from "@/app/type";
-import { isValidURL } from "@/app/utils";
+import { httpGet, isValidURL } from "@/app/utils";
 
 interface Props {
   onAddDataFill: (value: Project) => void;
@@ -43,12 +43,20 @@ export default forwardRef(function CreateNode(
   const [canValid, setCanValid] = useState(false);
   const [inValidVals, setInvaldVasl] = useState<any>({});
 
-  const onPreview = useCallback(() => {
+  const onPreview = useCallback(async () => {
     let isValid = false;
     const inValidVals: any = {};
     if (!name_reg.test(tokenName)) {
       inValidVals["tokenName"] =
         "Only uppercase and lowercase letters and numbers are supported and the length is less than 16";
+      isValid = true;
+    }
+
+    const tokenInUse = await httpGet(`/project?token_name=${tokenName}&token_symbol=${tokenName.toUpperCase()}`)
+    
+    if (tokenInUse.code === 0 && tokenInUse.data?.length > 0) {
+      inValidVals["tokenName"] =
+      "Token name already in use";
       isValid = true;
     }
 

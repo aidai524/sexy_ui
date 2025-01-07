@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import Likes from '@/app/components/thumbnail/likes';
 
 export default function Top(props: Props) {
-  const { onBuy, trend, isMobile } = props;
+  const { onBuy, trend, isMobile, loading } = props;
 
   const creator = useCreator();
 
@@ -53,24 +53,29 @@ export default function Top(props: Props) {
           <div className={styles.Badge}>
             Holder {top1Holders}
           </div>*/}
-          <Likes
-            data={{
-              ...trend,
-              DApp: 'sexy',
-              status: 1
-            } as any}
-            showShare={false}
-            likeNumsStyle={{
-              padding: 0,
-            }}
-            style={{
-              padding: 0,
-            }}
-            likesNumsStyle={{
-              flexShrink: 0,
-              whiteSpace: 'nowrap',
-            }}
-          />
+          {
+            !loading && (
+              <Likes
+                data={{
+                  ...trend,
+                  initiativeLaunching: trend?.initiative_launching,
+                  DApp: 'sexy',
+                  status: 1
+                } as any}
+                showShare={false}
+                likeNumsStyle={{
+                  padding: 0,
+                }}
+                style={{
+                  padding: 0,
+                }}
+                likesNumsStyle={{
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
+                }}
+              />
+            )
+          }
         </div>
         <img src="/img/trends/crown.svg" alt="" className={styles.TopCrown} />
       </div>
@@ -235,17 +240,22 @@ export default function Top(props: Props) {
             <div className={[styles.LaptopTopBadge, styles.LaptopTopBadgeGreen].join(' ')}>
               Holder {top1Holders}
             </div>*/}
-            <Likes
-              data={{
-                ...trend,
-                DApp: 'sexy',
-                status: 1
-              } as any}
-              showShare={false}
-              likeNumsStyle={{
-                paddingLeft: 0,
-              }}
-            />
+            {
+              !loading && (
+                <Likes
+                  data={{
+                    ...trend,
+                    initiativeLaunching: trend?.initiative_launching,
+                    DApp: 'sexy',
+                    status: 1
+                  } as any}
+                  showShare={false}
+                  likeNumsStyle={{
+                    paddingLeft: 0,
+                  }}
+                />
+              )
+            }
           </div>
         </div>
         <div className={styles.LaptopTopContentBuy}>
@@ -266,6 +276,7 @@ export default function Top(props: Props) {
 interface Props {
   trend?: Trend;
   isMobile?: boolean;
+  loading?: boolean;
 
   onBuy?(): void;
 }
