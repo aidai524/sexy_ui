@@ -92,7 +92,7 @@ export default function Token({
     actionHateTrigger(infoData2);
   };
 
-  const isListEmpty = useMemo(() => !list?.length, [list]);
+  const isListEmpty = useMemo(() => !list?.length, [list?.length]);
 
   return (
     <div>

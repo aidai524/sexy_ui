@@ -54,8 +54,6 @@ export default function Thumbnail({
   const descContentRef = useRef<any>();
   const router = useRouter();
 
-  console.log('data:', data)
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       setHeight(window.innerHeight - 232 + "px");
@@ -234,7 +232,11 @@ export default function Thumbnail({
               {data.status === 0 ? (
                 <PreUser token={data} />
               ) : (
-                <Holder showAvatar={true} hideBg={true} address={data.address} />
+                <Holder
+                  showAvatar={true}
+                  hideBg={true}
+                  address={data.address}
+                />
               )}
             </div>
             {showLoadMore && (
