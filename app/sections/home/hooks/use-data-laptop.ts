@@ -5,7 +5,6 @@ import { getAll, setAll } from "@/app/utils/listStore";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";
-import { useFullScreen } from "@/app/store/use-full-screen";
 
 const limit = 10;
 const left_num = 5;
