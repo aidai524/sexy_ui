@@ -652,7 +652,7 @@ export default forwardRef(function Home(props, ref) {
               <>
                 <span style={{ fontWeight: "bold" }}>Like</span>
                 {"the projects you love, participate in FlipN's points"}{" "}
-                <span style={{ fontWeight: "bold" }}>mining</span> campaign.
+                <span style={{ fontWeight: "bold" }}>reward</span> campaign.
               </>
             ),
             placement: MaskPlacement.Top

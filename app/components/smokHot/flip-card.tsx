@@ -1,10 +1,8 @@
 import styles from "./flip-card.module.css";
 import Filp from "@/app/components/icons/flip";
-import { useLaptop } from "@/app/context/laptop";
 import Trade from "./trade";
 
 export default function FlipCard({ data, show, onHide, onSuccess }: any) {
-  const { updateInfo } = useLaptop();
   return (
     <div className={`${styles.Container}`}>
       <img

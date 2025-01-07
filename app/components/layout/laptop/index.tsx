@@ -14,7 +14,7 @@ const CreatePage = dynamic(() => import("@/app/sections/create/laptop"), {
 const TrendsPage = dynamic(() => import("@/app/sections/trends"), {
   ssr: false
 });
-const MiningPage = dynamic(() => import("@/app/sections/mining"), {
+const RewardPage = dynamic(() => import("@/app/sections/mining"), {
   ssr: false
 });
 
@@ -49,7 +49,7 @@ export default function Laptop() {
             {pathname === "/" && <Main address={address} userInfo={userInfo} />}
             {pathname === "/create" && <CreatePage />}
             {pathname === "/trends" && <TrendsPage />}
-            {pathname === "/mining" && <MiningPage />}
+            {pathname === "/reward" && <RewardPage />}
             {pathname === "/profile/user" && (
               <ProfileCom
                 isOther={true}

@@ -14,7 +14,7 @@ export default function TokenCard({ token }: any) {
         showTags={false}
         showDropdownIcon={false}
         style={{
-          height: 542,
+          height: "100%",
           margin: 0
         }}
       />

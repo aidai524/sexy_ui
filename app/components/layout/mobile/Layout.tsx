@@ -92,17 +92,17 @@ const Tabs = (pathname: string) => [
     iconActive: <CustomIcon url="/img/tabs/tab3-active.svg" link="/create" />
   },
   {
-    key: "/mining",
-    title: "MINING",
+    key: "/reward",
+    title: "REWARD",
     icon: (
       <CustomIcon
         id="guid-home-mining-mobile"
         showPlus={true}
         url="/img/tabs/tab2.svg"
-        link="/mining"
+        link="/reward"
       />
     ),
-    iconActive: <CustomIcon url="/img/tabs/tab2-active.svg" link="/mining" />
+    iconActive: <CustomIcon url="/img/tabs/tab2-active.svg" link="/reward" />
   },
   {
     key: "/profile",

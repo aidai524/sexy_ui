@@ -12,7 +12,6 @@ interface Props {
 export const SECOND_LIKE_TIMES = 30;
 
 export default function SecondTimeLike({ data, onClose }: Props) {
-
   const { set: setHomeTabIndex }: any = useHomeTab();
 
   return (
@@ -22,7 +21,7 @@ export default function SecondTimeLike({ data, onClose }: Props) {
         <div className={styles.text}>
           Buy or sell FlipN or Pump platform tokens on FlipN and earn up to
           <br />
-          <strong>300% mining bonus</strong>.
+          <strong>300% reward bonus</strong>.
         </div>
 
         <MainBtn
@@ -30,8 +29,8 @@ export default function SecondTimeLike({ data, onClose }: Props) {
             setHomeTabIndex({
               homeTabIndex: 1
             });
-            if (window.location.pathname !== '/') {
-                window.location.href = '/'
+            if (window.location.pathname !== "/") {
+              window.location.href = "/";
             }
           }}
           style={{ backgroundColor: "rgba(109, 181, 0, 1)", marginTop: 30 }}

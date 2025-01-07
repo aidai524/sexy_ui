@@ -5,7 +5,6 @@ import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useRouter } from "next/navigation";
 
-
 interface Props {
   modalShow: boolean;
   onHide?: () => void;
@@ -13,7 +12,7 @@ interface Props {
 
 export default function LoginModal({ modalShow, onHide }: Props) {
   const { address } = useAccount();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     if (address) {
@@ -25,10 +24,14 @@ export default function LoginModal({ modalShow, onHide }: Props) {
     <>
       <Modal
         visible={modalShow}
-        content={<LoginBox onHide={() => {
-          onHide && onHide()
-          // router.replace('/')
-        }} />}
+        content={
+          <LoginBox
+            onHide={() => {
+              onHide && onHide();
+              // router.replace('/')
+            }}
+          />
+        }
         closeOnMaskClick
         closeOnAction
         onClose={() => {
@@ -41,8 +44,6 @@ export default function LoginModal({ modalShow, onHide }: Props) {
 }
 
 function LoginBox({ onHide }: any) {
-  
-
   return (
     <div className={styles.main}>
       <div className={styles.tipBox}>
@@ -77,7 +78,7 @@ function LoginBox({ onHide }: any) {
 
         <div className={styles.tipText}>
           Many functions need to be connected to the wallet before they can be
-          used and can participate in our mining activities
+          used and can participate in our activities
         </div>
       </div>
       <WalletModalButton style={{ marginTop: 20 }}>

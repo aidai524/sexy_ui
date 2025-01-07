@@ -8,7 +8,7 @@ export default function Statistics({ itemStyle, style, info }: any) {
   return (
     <div className={styles.statistics} style={style}>
       <div className={styles.statisticsItem} style={itemStyle}>
-        <div className={styles.statisticsTitle}>My Mining</div>
+        <div className={styles.statisticsTitle}>My reward</div>
         <div style={{ fontSize: 26 }} className={styles.value}>
           {info?.minted
             ? numberFormatter(info?.minted, 3, true, {
@@ -19,7 +19,7 @@ export default function Statistics({ itemStyle, style, info }: any) {
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
-        <div className={styles.statisticsTitle}>You Liked</div>
+        <div className={styles.statisticsTitle}>My Likes</div>
         <div
           style={{
             fontSize: isMobile ? 18 : 22

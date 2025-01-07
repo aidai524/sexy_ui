@@ -13,7 +13,7 @@ export default function Header({ tab, userInfo, logout }: any) {
         <ConnectButton userInfo={userInfo} logout={logout} />
         <button
           onClick={() => {
-            history.pushState({ page: "/mining" }, "Mining", "/mining");
+            history.pushState({ page: "/reward" }, "Reward", "/reward");
           }}
           className="button"
           id="layout-mining"

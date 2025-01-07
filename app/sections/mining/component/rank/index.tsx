@@ -28,7 +28,7 @@ export default function Rank({ rank }: any) {
           borderBottom: isMobile ? "none" : "1px solid #FFFFFF33"
         }}
       >
-        <div className={styles.Title}>Mining Rank</div>
+        <div className={styles.Title}>Reward Rank</div>
         <div className={styles.YourRank}>
           <span
             style={{

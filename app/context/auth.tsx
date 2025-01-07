@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{
       await updateCurrentUserInfo();
       setAccountRefresher(accountRefresher + 1);
     },
-    { wait: 500 }
+    { wait: 800 }
   );
 
   useEffect(() => {
