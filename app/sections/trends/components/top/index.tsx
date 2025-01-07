@@ -35,7 +35,11 @@ export default function Top(props: Props) {
 
   return isMobile ? (
     <div className={styles.Top}>
-      <div className={styles.TopAvatar} style={{ backgroundImage: `url("${top1Icon}")` }}>
+      <div
+        className={styles.TopAvatar}
+        style={{ backgroundImage: `url("${top1Icon}")` }}
+        onClick={() => creator.onDetail(trend?.address)}
+      >
         <div className={styles.TopSummary}>
           {/*<div className={[styles.Badge, styles.TopSummaryLike].join(' ')}>
             <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -145,6 +149,7 @@ export default function Top(props: Props) {
         <div
           className={styles.LaptopTopAvatar}
           style={{ backgroundImage: `url("${top1Icon}")` }}
+          onClick={() => creator.onDetail(trend?.address)}
         >
           <img src="/img/trends/crown-normal.svg" alt="" className={styles.LaptopTopAvatarCrown} />
         </div>
