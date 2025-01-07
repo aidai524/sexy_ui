@@ -143,12 +143,14 @@ const List = (props: any) => {
                         " "
                       )}
                       key={index}
-                      style={{
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => creator.onDetail(item.address)}
                     >
-                      <div className={styles.TableCol}>
+                      <div
+                        className={styles.TableCol}
+                        style={{
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => creator.onDetail(item.address)}
+                      >
                         <img
                           src={item.Icon}
                           alt=""
