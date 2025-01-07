@@ -143,6 +143,9 @@ const List = (props: any) => {
                         " "
                       )}
                       key={index}
+                      style={{
+                        cursor: 'pointer',
+                      }}
                       onClick={() => creator.onDetail(item.address)}
                     >
                       <div className={styles.TableCol}>
@@ -160,7 +163,8 @@ const List = (props: any) => {
                           color: "#55FFF4",
                           fontSize: 16
                         }}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           creator.onClick(item.project_creator);
                         }}
                       >

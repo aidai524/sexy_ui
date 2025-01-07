@@ -17,6 +17,7 @@ export function useTrends(props?: { isPolling?: boolean; }) {
 
   const {
     allList,
+    allListLoading,
     setAllList,
     top1,
     tableList,
@@ -24,11 +25,11 @@ export function useTrends(props?: { isPolling?: boolean; }) {
     setTop1,
     setTableList,
     setHottestList,
+    setAllListLoading,
   } = useTrendsStore();
   const { connection } = useConnection();
   const { config }: any = useConfig();
 
-  const [allListLoading, setAllListLoading] = useState<boolean>(false);
   const [currentFilter, setCurrentFilter] = useState<number>(1);
   const [orderBy, setOrderBy] = useState<Record<string, 'asc' | 'desc' | '' | undefined>>({});
   const [searchText, setSearchText] = useState<string>('');
@@ -170,10 +171,11 @@ export function useTrends(props?: { isPolling?: boolean; }) {
       setHottestList(_hottestList);
       setTableList(_tableList);
       setAllList(_all_list);
+      setAllListLoading(false);
     } catch (err) {
       console.log('get trends list err: %o', err);
+      setAllListLoading(false);
     }
-    setAllListLoading(false);
   };
 
   const handleCurrentFilter = (_currentFilter: number) => {
@@ -257,6 +259,7 @@ export interface Trend {
   market_cap: string;
   project_creator: string;
   creator_name: string;
+  initiative_launching: boolean;
 
   // front-end attributes
   created2Now?: string;
