@@ -23,10 +23,11 @@ export function LaunchTag({ type }: { type: number }) {
 export default function AvatarBox({ data, showLaunchType }: any) {
   return (
     <div className={styles.avatarBox}>
-      <div className={styles.tokenImgBox}>
+      <div className={styles.tokenImgBox} >
         <img
+          style={{ opacity: data.tokenIcon ? 0.3 : 1 }}
           className={styles.tokenImg}
-          src={data.tokenIcon || "/img/token-icon-placeholder.png"}
+          src={data.tokenIcon || "/img/token-icon-placeholder.svg"}
         />
       </div>
       <div className={styles.InfoWrapper}>
