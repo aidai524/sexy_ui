@@ -26,7 +26,7 @@ export default function AvatarBox({ data, showLaunchType }: any) {
       <div className={styles.tokenImgBox}>
         <img
           className={styles.tokenImg}
-          src={data.tokenIcon || "/img/token-placeholder.png"}
+          src={data.tokenIcon || "/img/token-icon-placeholder.png"}
         />
       </div>
       <div className={styles.InfoWrapper}>

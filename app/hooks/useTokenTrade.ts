@@ -17,7 +17,10 @@ import {
   createAssociatedTokenAccountInstruction,
   TokenAccountNotFoundError,
   TokenInvalidAccountOwnerError,
-  createSyncNativeInstruction
+  createSyncNativeInstruction,
+  transfer,
+  createTransferInstruction,
+  createCloseAccountInstruction
 } from "@solana/spl-token";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import idl from "./meme_launchpad.json";
@@ -439,16 +442,10 @@ export function useTokenTrade({
 
       transaction.add(instruction1).add(instruction2).add(buyInstruction);
 
-      const confirmationStrategy: any = {
-        skipPreflight: true
-        // preflightCommitment: 'processed',
-      };
-
       console.log("transaction:", transaction);
 
       const hash = await walletProvider.signAndSendTransaction(
-        transaction,
-        confirmationStrategy
+        transaction
       );
 
       console.log("hash:", hash);
@@ -502,16 +499,10 @@ export function useTokenTrade({
 
       transaction.add(instruction1).add(instruction2).add(buyInstruction);
 
-      const confirmationStrategy: any = {
-        skipPreflight: true
-        // preflightCommitment: 'processed',
-      };
-
       console.log("transaction:", transaction);
 
       const hash = await walletProvider.signAndSendTransaction(
-        transaction,
-        confirmationStrategy
+        transaction
       );
 
       console.log("hash:", hash);
@@ -555,14 +546,12 @@ export function useTokenTrade({
 
       transaction.add(sellInstruction);
 
-      const confirmationStrategy: any = {
-        skipPreflight: true,
-        preflightCommitment: "processed"
-      };
+      const closeUseSolIns = createCloseAccountInstruction(keys.userWsolAccount, walletProvider.publicKey!, walletProvider.publicKey!)
+
+      transaction.add(closeUseSolIns)
 
       const hash = await walletProvider.signAndSendTransaction(
         transaction,
-        confirmationStrategy
       );
       console.log("hash:", hash);
       return hash;
@@ -883,6 +872,10 @@ export function useTokenTrade({
         .instruction();
 
       transaction.add(prepaidSolWithdrawInstruction);
+
+      const closeUseSolIns = createCloseAccountInstruction(keys.userWsolAccount, walletProvider.publicKey!, walletProvider.publicKey!)
+
+      transaction.add(closeUseSolIns)
 
       const hash = await walletProvider.signAndSendTransaction(transaction);
 
