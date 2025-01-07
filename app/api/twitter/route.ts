@@ -33,7 +33,7 @@ export async function GET(request: Request | NextRequest) {
             <title>${tokenName}</title>
         </head>
         <body>
-        <img src="${imgUrl}" style="width: 100%" />
+        <img src="${s3Domain}/${s3Dir}${imgUrl}" style="width: 100%" />
         </body>
         </html>`,
         {

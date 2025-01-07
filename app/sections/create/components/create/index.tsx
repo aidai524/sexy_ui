@@ -10,25 +10,33 @@ import { useRouter } from "next/navigation";
 import { httpGet } from "@/app/utils";
 import { useMessage } from "@/app/context/messageContext";
 import { mapDataToProject } from "@/app/utils/mapTo";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 export default memo(function Create(props: any) {
   const router = useRouter();
   const { isMobile } = useUserAgent();
   const { showShare } = useMessage();
 
+  const { tokenInfo } = useTokenTrade({
+    tokenName: props.token.tokenName,
+    tokenSymbol: props.token.tokenSymbol,
+    tokenDecimals: props.token.tokenDecimals,
+    loadData: false
+  })
+
   const share = useCallback(async () => {
     if (props) {
-      const v = await httpGet("/project?token_name=" + props.token.tokenName);
+      const tokenAddress = tokenInfo![0].toBase58()
+      const v = await httpGet("/project?address=" + tokenAddress);
       if (v.code === 0) {
         const data = v.data[0];
         showShare(mapDataToProject(data), true, () => {
-          router.push("/detail?address=" + data.address);
+          router.push("/detail?address=" + tokenAddress);
         })
       }
     }
   }, [props]);
 
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   return (
     <>
       {isMobile ? (
@@ -36,19 +44,6 @@ export default memo(function Create(props: any) {
       ) : (
         <Laptop {...props} setShowSuccessModal={share} />
       )}
-      {/* <CreateSuccessModal
-        token={props.data}
-        show={showSuccessModal}
-        onHide={async () => {
-          const v = await httpGet(
-            "/project?token_name=" + props.token.tokenName
-          );
-          if (v.code === 0) {
-            setShowSuccessModal(false);
-            router.push("/detail?address=" + v.data[0].address);
-          }
-        }}
-      /> */}
     </>
   );
 });

@@ -186,8 +186,6 @@ export function useTokenTrade({
     }
     instructions.push(userSolAccount.instruction);
 
-    console.log("userSolAccount: ", userSolAccount);
-
     const poolSolAccount = await _getOrCreateAssociatedTokenAccount(
       wsol,
       pool[0]
@@ -238,18 +236,14 @@ export function useTokenTrade({
         const referralAccount: any = await program.account.referralRecord.fetch(
           referralRecord[0]
         );
-        console.log(
-          "referralRecord:",
-          referralRecord,
-          referralAccount,
-          walletProvider.publicKey
-        );
         referral = referralAccount.user;
       } else {
       }
     } catch (e) {
       console.log(e);
     }
+
+    console.log('referral:', referral.toBase58())
 
     const referralFeeRateRecord = PublicKey.findProgramAddressSync(
       [
@@ -1108,7 +1102,8 @@ export function useTokenTrade({
     checkPrePayed,
     getConfig,
     getMC,
-    pool
+    pool,
+    tokenInfo,
   };
 }
 
