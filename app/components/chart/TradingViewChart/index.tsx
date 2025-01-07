@@ -79,7 +79,6 @@ function TradingViewChart(
   );
 
   useEffect(() => {
-    console.log(81111);
     run();
   }, [symbol]);
 

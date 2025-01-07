@@ -5,7 +5,11 @@ import {
   type LibrarySymbolInfo
 } from "@/public/libs/charting_library";
 import dayjs from "@/app/utils/dayjs";
-import { fetchData, fetchLastData } from "../fetch-data";
+import {
+  fetchData,
+  fetchLastData,
+  getGranularityByResolution
+} from "../fetch-data";
 
 let page = 0;
 let hasNext = true;
@@ -19,13 +23,17 @@ interface SymbolInfo extends LibrarySymbolInfo {
 
 const supported_resolutions = [
   "1",
-  "5"
-  // "15",
-  // "30",
-  // "1H",
-  // "1D",
-  // "1W",
-  // "1M"
+  "5",
+  "15",
+  "30",
+  "45",
+  "1H",
+  "2H",
+  "3H",
+  "4H",
+  "1D",
+  "1W",
+  "1M"
 ] as ResolutionString[];
 
 const configurationData: DatafeedConfiguration = {
@@ -72,8 +80,7 @@ const datafeed: (
       volume_precision: 4,
       data_status: "streaming",
       full_name: symbolName,
-      format: "price",
-      has_empty_bars: true
+      format: "price"
     };
     setTimeout(() => onSymbolResolvedCallback(symbolInfo), 0);
   },
@@ -91,7 +98,12 @@ const datafeed: (
         return;
       }
       page++;
-      const { data, hasNextPage } = await fetchData(address, resolution, page);
+
+      const { data, hasNextPage } = await fetchData(
+        address,
+        getGranularityByResolution(resolution),
+        page
+      );
       hasNext = hasNextPage;
       const bars = data.map((item: any) => ({
         time: item[6],
@@ -130,7 +142,7 @@ const datafeed: (
       const item = await fetchLastData(address, resolution);
       if (!item) return;
       const bar = {
-        time: item[0],
+        time: Date.now(),
         low: item[3],
         high: item[2],
         open: item[1],
@@ -139,10 +151,10 @@ const datafeed: (
       };
 
       onRealtimeCallback(bar);
-      pullingQueryPriceTimer = setTimeout(fetchPrice, 3000);
+      pullingQueryPriceTimer = setTimeout(fetchPrice, 5000);
     };
     clearTimeout(pullingQueryPriceTimer);
-    pullingQueryPriceTimer = setTimeout(fetchPrice, 3000);
+    pullingQueryPriceTimer = setTimeout(fetchPrice, 5000);
   },
 
   unsubscribeBars: (id) => {
