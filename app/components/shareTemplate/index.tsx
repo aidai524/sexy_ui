@@ -27,6 +27,7 @@ import { DotLoading, Modal } from "antd-mobile";
 import Likes from "../thumbnail/likes";
 import { useAuth } from "@/app/context/auth";
 import useMc from "@/app/hooks/useMc";
+import QRCodeCom from "../qrcode";
 
 interface Props {
   token: Project | undefined;
@@ -35,7 +36,7 @@ interface Props {
   onClose: () => void;
 }
 
-const domain = process.env.NEXT_PUBLIC_DOMAIN || 'https://stage.flipn.fun'
+const domain = process.env.NEXT_PUBLIC_DOMAIN || "https://stage.flipn.fun";
 
 function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
   const containerRef = useRef(null);
@@ -85,10 +86,9 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
   const [mc, setMC] = useState<string | number>("-");
 
   const { mc: pumpMc } = useMc({
-      tokenAddress: token?.address,
-      disable: token?.status! < 1
-    });
-  
+    tokenAddress: token?.address,
+    disable: token?.status! < 1
+  });
 
   const { getMC, pool } = useTokenTrade({
     tokenName: token?.tokenName as string,
@@ -179,11 +179,15 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
           </div>
           <div className={styles.detailsItem}>
             <div className={styles.detailTitle}>Market cap:</div>
-            <div className={styles.detailContent}>${simplifyNum(Number(pumpMc || mc), 2)}</div>
+            <div className={styles.detailContent}>
+              ${simplifyNum(Number(pumpMc || mc), 2)}
+            </div>
           </div>
           <div className={styles.detailsItem}>
             <div className={styles.detailTitle}>Address:</div>
-            <div className={styles.detailContent}>{formatAddress(token.address as string)}</div>
+            <div className={styles.detailContent}>
+              {formatAddress(token.address as string)}
+            </div>
           </div>
         </div>
       </div>

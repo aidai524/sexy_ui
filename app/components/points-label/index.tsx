@@ -52,7 +52,7 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
           window?.connect();
         }
 
-        router.push("/mining");
+        router.push("/reward");
       }}
     >
       <Icon size={30} />

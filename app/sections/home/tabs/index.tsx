@@ -7,7 +7,7 @@ const TABS = [
     key: 0
   },
   {
-    label: "Launching/ed",
+    label: "Launches",
     key: 1
   }
 ];

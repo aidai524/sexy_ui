@@ -227,7 +227,7 @@ export default function Prelanuch({ type, from, onTextClick }: any) {
               className="button"
               onClick={onTextClick}
             >
-              {type === "preLaunch" ? "Launching/ed." : "PreLaunch"}
+              {type === "preLaunch" ? "Launches" : "PreLaunch"}
             </span>
           </div>
         </>

@@ -28,7 +28,7 @@ export default function SeenAll({ show, onClose }: Props) {
             <div className={styles.text}>
               Buy or sell FlipN or Pump platform tokens on FlipN and earn up to
               <br />
-              <strong>300% mining bonus</strong>.
+              <strong>300% reward bonus</strong>.
             </div>
 
             <MainBtn

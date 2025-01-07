@@ -84,7 +84,7 @@ export default function Main({ userInfo }: any) {
               <>
                 <span style={{ fontWeight: "bold" }}>Like</span>
                 {"the projects you love, participate in FlipN's points"}{" "}
-                <span style={{ fontWeight: "bold" }}>mining</span> campaign.
+                <span style={{ fontWeight: "bold" }}>reward</span> campaign.
               </>
             ),
             placement: MaskPlacement.BottomRight
