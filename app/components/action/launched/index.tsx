@@ -103,7 +103,7 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
             <div>Buy</div>
           </div>
 
-          <Boost token={data} isBigIcon={true} onClick={() => {}}/>
+          {/* <Boost token={data} isBigIcon={true} onClick={() => {}}/> */}
 
           <div
             className={`${styles.actionBtn} ${
@@ -119,7 +119,6 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
 
               setInitType("sell");
               setTradeShow(true);
-              
             }}
           >
             {from === "laptop" ? <LaptopSellIcon /> : <MobileSellIcon />}

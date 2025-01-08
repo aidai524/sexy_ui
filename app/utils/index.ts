@@ -19,6 +19,7 @@ export function http(
   params?: any,
   headers?: any
 ) {
+
   if (!path) return;
   let _path = path,
     postBody = {};
@@ -87,6 +88,12 @@ export async function httpAuthGet(
   isRepeat: boolean = true
 ) {
   const authorization = await getAuthorization();
+  if (!authorization) {
+    return {
+      code: -1,
+      data: null
+    }
+  }
   const header = {
     authorization
   };
@@ -115,8 +122,6 @@ export async function httpAuthPost(
   isJson?: boolean
 ) {
   const authorization = await getAuthorization();
-
-  console.log("authorization:", authorization);
 
   const header = isJson
     ? {
@@ -214,10 +219,16 @@ let isInitingAuthorization = false,
   authorization: string | undefined;
 const watingQuene: any[] = [];
 
+
+const rejectDuration = 1000 * 30
+let rejectTime = Date.now() - rejectDuration - 1
+
 export async function getAuthorization() {
   authorization = getAuthorizationByLocal();
+
   if (!authorization) {
     if (isInitingAuthorization) {
+      
       return new Promise((resolve, reject) => {
         watingQuene.push(resolve);
       });
@@ -255,6 +266,9 @@ export async function initAuthorization() {
   // if (getAuthorizationByLocal()) {
   //   return
   // }
+  if (Date.now() - rejectTime < rejectDuration) {
+    return
+  }
 
   if (isInitingAuthorization) {
     return;
@@ -263,23 +277,20 @@ export async function initAuthorization() {
   const { walletProvider, sexAddress, connect } = window;
 
   if (!walletProvider || !sexAddress) {
-    // console.log("connect", connect);
     // await connect();
     return;
   }
 
   isInitingAuthorization = true;
+
   const now = Date.now();
   const text = `login FlipN,time:${now}`;
   const encodedMessage = new TextEncoder().encode(text);
   try {
     const signMessage = await walletProvider!.signMessage(encodedMessage);
-    // console.log('signMessage:', signMessage)
-
     const b64encoded = await bufferToBase64(signMessage);
-    console.log("b64encoded", b64encoded);
 
-    const v = await httpGet("/account/token", {
+    const v = await httpGet("/account/token", { 
       address: sexAddress,
       signature: b64encoded,
       time: now
@@ -298,7 +309,13 @@ export async function initAuthorization() {
       _reslove(v.data);
     }
   } catch (e) {
+    console.log('e:', e)
+    while (watingQuene.length) {
+      const _reslove = watingQuene.shift();
+      _reslove(null);
+    }
     watingQuene.length = 0;
+    rejectTime = Date.now()
   }
 
   isInitingAuthorization = false;
@@ -311,6 +328,8 @@ export function logOut() {
   window.sexAddress = null;
   window.localStorage.removeItem(AUTH_KEY);
   deleteCookie("referral");
+  authorization = undefined
+  watingQuene.length = 0
 }
 
 export function getFullNum(value: any) {
@@ -686,10 +705,14 @@ export async function getTransaction(
   tokenAddress: string,
   userAddress: string
 ) {
+  console.log('hash:', hash)
+
   const transactionDetails = await connection.getTransaction(hash, {
-    commitment: "confirmed",
+    commitment: "finalized",
     maxSupportedTransactionVersion: 0
   });
+
+  console.log('transactionDetails:', transactionDetails)
 
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta;

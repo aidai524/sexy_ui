@@ -125,6 +125,7 @@ export async function pumpFunSell(mintStr: string, tokenBalance: number, slippag
                     owner,
                     mint
                 )
+
             );
             tokenAccount = tokenAccountAddress;
         } else {
@@ -132,8 +133,6 @@ export async function pumpFunSell(mintStr: string, tokenBalance: number, slippag
         }
 
         const minSolOutput = Math.floor(tokenBalance! * (1 - slippageDecimal) * coinData["virtual_sol_reserves"] / coinData["virtual_token_reserves"]);
-
-        console.log('minSolOutput:', tokenBalance, slippageDecimal, minSolOutput)
 
         const keys = [
             { pubkey: GLOBAL, isSigner: false, isWritable: false },

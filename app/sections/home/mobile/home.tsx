@@ -12,7 +12,8 @@ import {
   useEffect,
   useRef,
   useState,
-  forwardRef
+  forwardRef,
+  useMemo
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useHomePageM } from "@/app/store/use-homepage-m";
@@ -27,7 +28,6 @@ import {
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
 import { useHomeTab } from "@/app/store/useHomeTab";
-import { Modal } from "antd-mobile";
 import SeenAll from "./seenAll";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import TrendBanner from "@/app/sections/trends/components/banner";
@@ -35,16 +35,14 @@ import { useTrends } from "@/app/sections/home/mobile/hooks/useTrends";
 import { AnimatePresence, motion } from "framer-motion";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
 import { useHome } from "./context";
+import useCommentList from "@/app/hooks/use-comment-list";
 
 export default forwardRef(function Home(props, ref) {
   const router = useRouter();
-  const { address } = useAccount();
-  const params = useSearchParams();
   const { visible: trendsVisible, handleClose: handleTrendsClose } =
     useTrends();
   const { hasShownTour } = useGuidingTour();
   const { goDetail } = useHome();
-  const homepageStore: any = useHomePageM();
   const { homeTabIndex, set: setHomeTabIndex }: any = useHomeTab();
 
   const [actionStyle, setActionStyle] = useState<any>("");
@@ -218,7 +216,6 @@ export default forwardRef(function Home(props, ref) {
         return;
       }
 
-      console.log("nexting", percent);
       const style = {
         opacity: 1 - percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${
@@ -332,6 +329,25 @@ export default forwardRef(function Home(props, ref) {
     }
   }
 
+  const currentToken = useMemo(() => {
+    if (homeTabIndex === 0) {
+      return renderLaunchingIndex === 0
+        ? infoDataLaunching2
+        : infoDataLaunching;
+    }
+    return renderLaunchedIndex === 0 ? infoDataLaunched2 : infoDataLaunched;
+  }, [
+    homeTabIndex,
+    renderLaunchingIndex,
+    renderLaunchedIndex,
+    infoDataLaunched2,
+    infoDataLaunched,
+    infoDataLaunching2,
+    infoDataLaunching
+  ]);
+
+  const comments = useCommentList({ id: currentToken?.id });
+
   useImperativeHandle(
     ref,
     () => ({
@@ -405,15 +421,9 @@ export default forwardRef(function Home(props, ref) {
                     showDesc={true}
                     data={infoDataLaunching}
                     onGoDetail={() => {
-                      // homepageStore.set({
-                      //   token: infoDataLaunching
-                      // });
                       goDetail(infoDataLaunching);
-
-                      // router.push(
-                      //   `/detail?address=${infoDataLaunching.address}`
-                      // );
                     }}
+                    {...comments}
                   />
                 </div>
               )}
@@ -432,12 +442,9 @@ export default forwardRef(function Home(props, ref) {
                     showDesc={true}
                     data={infoDataLaunching2}
                     onGoDetail={() => {
-                      // homepageStore.set({ token: infoDataLaunching2 });
                       goDetail(infoDataLaunching2);
-                      // router.push(
-                      //   `/detail?address=${infoDataLaunching2.address}`
-                      // );
                     }}
+                    {...comments}
                   />
                 </div>
               )}
@@ -453,11 +460,7 @@ export default forwardRef(function Home(props, ref) {
             </div>
 
             <LaunchingAction
-              token={
-                renderLaunchingIndex === 0
-                  ? infoDataLaunching2
-                  : infoDataLaunching
-              }
+              token={currentToken}
               canFlip={true}
               ids={{
                 dislike: "guid-home-dislike",
@@ -493,11 +496,9 @@ export default forwardRef(function Home(props, ref) {
                 // }
               }}
               onBoost={async () => {
-                const token =
-                  renderLaunchingIndex === 0
-                    ? infoDataLaunching2
-                    : infoDataLaunching;
-                const val = await httpAuthGet("/project/?id=" + token?.id);
+                const val = await httpAuthGet(
+                  "/project/?id=" + currentToken?.id
+                );
                 if (val.code === 0) {
                   const newTokenInfo = mapDataToProject(val.data[0]);
                   updateLaunchingToken(newTokenInfo);
@@ -524,14 +525,9 @@ export default forwardRef(function Home(props, ref) {
                     showDesc={true}
                     data={infoDataLaunched}
                     onGoDetail={() => {
-                      // homepageStore.set({
-                      //   token: infoDataLaunched
-                      // });
                       goDetail(infoDataLaunched);
-                      // router.push(
-                      //   `/detail?address=${infoDataLaunched.address}`
-                      // );
                     }}
+                    {...comments}
                   />
                 </div>
               )}
@@ -550,27 +546,16 @@ export default forwardRef(function Home(props, ref) {
                     showDesc={true}
                     data={infoDataLaunched2}
                     onGoDetail={() => {
-                      // homepageStore.set({
-                      //   token: infoDataLaunched2
-                      // });
                       goDetail(infoDataLaunched2);
-                      // router.push(
-                      //   `/detail?address=${infoDataLaunched2.address}`
-                      // );
                     }}
+                    {...comments}
                   />
                 </div>
               )}
             </div>
 
             {(!!infoDataLaunched2 || !!infoDataLaunched) && (
-              <LaunchedAction
-                data={
-                  renderLaunchedIndex === 0
-                    ? infoDataLaunched2
-                    : infoDataLaunched
-                }
-              />
+              <LaunchedAction data={currentToken} />
             )}
           </>
         )}

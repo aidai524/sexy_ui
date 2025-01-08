@@ -21,6 +21,7 @@ import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useAuth } from "@/app/context/auth";
 import useMc from "@/app/hooks/useMc";
 import { useRouter } from "next/navigation";
+import useCommentList from "@/app/hooks/use-comment-list";
 
 export default function Token({
   infoData2,
@@ -37,7 +38,7 @@ export default function Token({
   const { userInfo } = useAuth();
   const [mc, setMC] = useState<string | number>("-");
   const router = useRouter();
-
+  const comments = useCommentList({ id: infoData2?.id });
   const { mc: pumpMc } = useMc({
     tokenAddress: infoData2?.address,
     disable: infoData2?.status < 1
@@ -127,7 +128,7 @@ export default function Token({
               }}
               className={styles.Content}
             >
-              <TokenCard token={infoData2} />
+              <TokenCard token={infoData2} {...comments} />
               {currentTab === "info" && (
                 <PanelWrapper
                   style={{
@@ -145,7 +146,7 @@ export default function Token({
                     mc={pumpMc || mc}
                   />
                   <div style={{ height: 2 }} />
-                  <CommentComp id={infoData2.id} theme="light" />
+                  <CommentComp id={infoData2.id} theme="light" {...comments} />
                 </PanelWrapper>
               )}
               {currentTab === "chart" && (

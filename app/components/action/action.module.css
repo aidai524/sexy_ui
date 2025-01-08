@@ -2,11 +2,11 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 85px;
+  bottom: 75px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 6vw;
+  padding: 0 20px;
   z-index: 12;
 }
 
@@ -78,16 +78,4 @@
   .name {
     font-weight: 700;
   }
-}
-
-.actionEmptyBox {
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 85px;
-  display: flex;
-  align-items: center;
-  z-index: 12;
 }

@@ -3,8 +3,7 @@
 import styles from "../action.module.css";
 import MainAction from "@/app/components/MainAction";
 import Boost from "@/app/components/boost";
-import SmokeBtn from "../../smokHot";
-import SmokeButtonWithFlip from "../../smokHot/smoke-button-flip";
+import { useUserAgent } from "@/app/context/user-agent";
 import type { Project } from "@/app/type";
 
 interface Props {
@@ -28,18 +27,17 @@ export default function Action({
   onHate,
   onBoost
 }: Props) {
+  const { isMobile } = useUserAgent();
   if (!token) {
-    return (
-      <div className={styles.actionEmptyBox}>
-        {/* <img src="/img/home/emptyAction.png" /> */}
-        <img src="/img/home/empty-action.png" />
-      </div>
-    );
+    return <div />;
   }
 
   return (
-    <div className={styles.action} style={style}>
-      <div>
+    <div
+      className={styles.action}
+      style={{ ...style, width: isMobile ? "100%" : 300 }}
+    >
+      {/* <div>
         <Boost
           isBigIcon={true}
           token={token}
@@ -48,7 +46,7 @@ export default function Action({
           }}
           id={ids?.boost}
         />
-      </div>
+      </div> */}
       <MainAction
         onLike={() => {
           onLike && onLike();
@@ -57,28 +55,10 @@ export default function Action({
           onHate && onHate();
         }}
         ids={ids}
+        token={token}
+        canFlip={canFlip}
+        onSuperLike={onSuperLike}
       />
-      <div>
-        {canFlip ? (
-          <SmokeButtonWithFlip
-            size={48}
-            onClick={() => {
-              onSuperLike && onSuperLike();
-            }}
-            token={token}
-            id={ids?.smoke}
-          />
-        ) : (
-          <SmokeBtn
-            isBigIcon={true}
-            token={token}
-            onClick={() => {
-              onSuperLike && onSuperLike();
-            }}
-            id={ids?.smoke}
-          />
-        )}
-      </div>
     </div>
   );
 }
