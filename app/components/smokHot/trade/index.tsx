@@ -20,7 +20,7 @@ interface Props {
   onClose?: () => void;
 }
 
-const max = 0.05;
+const max = 1;
 
 export default function Trade({
   token,
