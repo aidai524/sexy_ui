@@ -216,7 +216,6 @@ export default forwardRef(function Home(props, ref) {
         return;
       }
 
-      console.log("nexting", percent);
       const style = {
         opacity: 1 - percent,
         transform: `rotate(${40 * percent}deg) translate(0, ${
