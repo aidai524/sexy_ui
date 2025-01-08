@@ -105,7 +105,7 @@ export default function Thumbnail({
   }
 
   return (
-    <div>
+    <div className={styles.Container}>
       {topDesc && (
         <AvatarBack
           data={data}
