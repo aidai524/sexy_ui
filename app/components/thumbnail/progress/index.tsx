@@ -7,7 +7,8 @@ import Arrow from "../../icons/arrow";
 import { Avatar } from "../avatar";
 import Likes from "../likes";
 import styles from "./index.module.css";
-import { useState, useEffect, useRef } from "react";
+import Tab from "./tab";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useDebounceFn } from "ahooks";
 
@@ -22,10 +23,17 @@ export default function Progress({
 }: any) {
   const [progressIndex, setProgressIndex] = useState(0);
   const router = useRouter();
-  const [loadCommentNum, setLoadCommentNum] = useState(1);
   const commentRef = useRef<any>();
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [stopLoadMore, setStopLoadMore] = useState(false);
+
+  const progresses = useMemo(
+    () =>
+      data.status !== 0
+        ? ["Img", "Discussion", "Holders"]
+        : ["Img", "Discussion", "Founders"],
+    [data]
+  );
 
   useEffect(() => {
     const inter = setInterval(() => {
@@ -68,37 +76,20 @@ export default function Progress({
       {showProgress && (
         <>
           <div className={styles.picProgress}>
-            <div
-              onClick={() => {
-                setProgressIndex(0);
-              }}
-              className={[
-                styles.progressItem,
-                progressIndex === 0 ? styles.progressItemActive : ""
-              ].join(" ")}
-            ></div>
-            <div
-              onClick={() => {
-                setStopLoadMore(false);
-                setShowLoadMore(false);
-                setProgressIndex(1);
-              }}
-              className={[
-                styles.progressItem,
-                progressIndex === 1 ? styles.progressItemActive : ""
-              ].join(" ")}
-            ></div>
-            <div
-              onClick={() => {
-                setStopLoadMore(false);
-                setShowLoadMore(false);
-                setProgressIndex(2);
-              }}
-              className={[
-                styles.progressItem,
-                progressIndex === 2 ? styles.progressItemActive : ""
-              ].join(" ")}
-            ></div>
+            {progresses.map((progress, index) => (
+              <Tab
+                key={index}
+                onClick={() => {
+                  setProgressIndex(index);
+                  if (index !== 0) {
+                    setStopLoadMore(false);
+                    setShowLoadMore(false);
+                  }
+                }}
+                isActive={progressIndex === index}
+                text={progress}
+              />
+            ))}
           </div>
 
           {progressIndex === 1 && (

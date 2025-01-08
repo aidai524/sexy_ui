@@ -4,7 +4,6 @@ import ShareIcon from "@/app/components/icons/share";
 import ZoomInIcon from "@/app/components/icons/zoom-in";
 import Thumbnail from "@/app/components/thumbnail";
 import NextButton from "./next-button";
-import TokenCardActions from "../main/token-card-actions";
 import CreateButton from "../main/actions-bar/create-button";
 import LaunchingActions from "@/app/components/action/launching";
 import LaunchedActions from "@/app/components/action/launched";
@@ -91,7 +90,7 @@ export default function Fullscreen({
           return i <= index && token ? (
             <div className={`${styles.Item} ${styles.CurrentItem}`} key={i}>
               <Thumbnail
-                showProgress={false}
+                showProgress={true}
                 showDesc={true}
                 data={token}
                 autoHeight={true}
@@ -101,7 +100,6 @@ export default function Fullscreen({
                   margin: 0
                 }}
               />
-              <TokenCardActions token={token} height={620} />
               {token &&
                 (token.status === 0 ? (
                   <LaunchingActions

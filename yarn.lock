@@ -4124,6 +4124,11 @@ damerau-levenshtein@^1.0.8:
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz#b43d286ccbd36bc5b2f7ed41caf2d0aba1f8a6e7"
   integrity sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==
 
+danmaku@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.npmjs.org/danmaku/-/danmaku-2.0.7.tgz#122746f3178696e9e66b61e37566a90a3f4970ea"
+  integrity sha512-etJEa9tdfW6cp5pn5qLCr1oE9v+uSE7bZxeQUMFKjHNV0Z7JCIVO126NZ5KyKgeOZx3jXAXLkS4UH/CgIx4BPQ==
+
 data-uri-to-buffer@^4.0.0:
   version "4.0.1"
   resolved "https://registry.npmjs.org/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz#d8feb2b2881e6a4f58c2e08acfd0e2834e26222e"
