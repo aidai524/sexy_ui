@@ -1,85 +1,86 @@
 .mainAction {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    .actionIcon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(0, 0, 0, 0.4);
-        border-radius: 100px;
-        padding: 5px;
-        height: 60px;
-        width: 99px;
-        transition: all .3s;
-        position: relative;
-        backdrop-filter: blur(10px);
-        &.tick {
-            background-color: rgba(255, 255, 255, 1);
-            box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 1);
-        }
-        &.hate {
-            background-color: rgba(255, 255, 255, 1);
-        }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+}
 
-        .bolloon {
-            position: absolute;
-            /* display: none; */
-            /* animation: float 5s ease-in-out infinite; */
-            animation-duration: 1s;
-            animation-timing-function: ease-in;
-            animation-iteration-count: 1;
-            animation-fill-mode: forwards;
-            left: 25%;
-            bottom: 100%;
-            opacity: 0;
-            pointer-events: none;
+.actionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 100px;
+  padding: 5px;
+  height: 60px;
+  flex-grow: 1;
+  transition: all 0.3s;
+  position: relative;
+  backdrop-filter: blur(10px);
+  &.tick {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 1);
+  }
+  &.hate {
+    background-color: rgba(255, 255, 255, 1);
+  }
 
-        }
-    }
+  .bolloon {
+    position: absolute;
+    /* display: none; */
+    /* animation: float 5s ease-in-out infinite; */
+    animation-duration: 1s;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    left: 25%;
+    bottom: 100%;
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 @keyframes float1 {
-    0% {
-        transform: translate(0, 0);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(10px, -200px); 
-        opacity: 0;
-    }
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(10px, -200px);
+    opacity: 0;
+  }
 }
 
 @keyframes float2 {
-    0% {
-        transform: translate(0, 0);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(-10px, -200px); 
-        opacity: 0;
-    }
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-10px, -200px);
+    opacity: 0;
+  }
 }
 
 @keyframes float3 {
-    0% {
-        transform: translate(0, 0);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(20px, -200px); 
-        opacity: 0;
-    }
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(20px, -200px);
+    opacity: 0;
+  }
 }
 
 @keyframes float4 {
-    0% {
-        transform: translate(0, 0);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(-20px, -200px); 
-        opacity: 0;
-    }
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-20px, -200px);
+    opacity: 0;
+  }
 }
