@@ -147,7 +147,7 @@ const ReferModalContent = (props: any) => {
             <TabTitle
               {...props}
               label="EARNED"
-              value={numberFormatter(airdropData?.referral_points, 2, true, { isShort: true })}
+              value={numberFormatter(airdropData?.airdrop_points, 2, true, { isShort: true })}
               unit="Points"
               tab={2}
               current={currentTab}

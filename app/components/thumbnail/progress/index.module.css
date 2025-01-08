@@ -1,0 +1,80 @@
+.picProgress {
+  display: flex;
+  margin: 10px 10px;
+  gap: 8px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  justify-content: center;
+}
+
+.commentList {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 30px 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.commentBox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 90px;
+  bottom: 0;
+  padding: 0 10px 30px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: none;
+}
+
+.descContent {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 30.43%);
+}
+
+.bottomLike {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.teleGram {
+  position: absolute;
+  top: 14px;
+  right: 12px;
+}
+
+.tokenMsg {
+  padding: 0 25px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  .desc {
+    font-size: 13px;
+    font-weight: 300;
+    margin-top: 10px;
+    color: #979abe;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+  }
+
+  .detailLink {
+    position: absolute;
+    right: 20px;
+    top: 50px;
+  }
+}

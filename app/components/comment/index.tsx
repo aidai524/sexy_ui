@@ -1,99 +1,35 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Panel from "../panel";
 import styles from "./comment.module.css";
-
-import type { Comment, Project } from "@/app/type";
-import { httpGet, httpAuthPost } from "@/app/utils";
+import type { Comment } from "@/app/type";
+import { httpAuthPost } from "@/app/utils";
 import CommentItem from "./item";
 import SexInfiniteScroll from "../sexInfiniteScroll";
 import Empty from "../empty";
 import { useAuth } from "@/app/context/auth";
-import { useDebounceFn } from "ahooks";
-
-interface Props {
-  id: number | undefined;
-  showEdit?: boolean;
-  usePanel?: boolean;
-  titleStyle?: any;
-  theme?: string;
-}
 
 export default function CommentComp({
   id,
   showEdit = true,
   usePanel = true,
   titleStyle,
-  theme = "dark"
-}: Props) {
-  const [commentList, setCommentList] = useState<Comment[]>([]);
+  theme = "dark",
+  isCommentLoading,
+  commentHasMore,
+  loadMoreComment,
+  commentList
+}: any) {
   const [commentText, setCommentText] = useState("");
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
   const [isSubmiting, setIsSubmiting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const { userInfo } = useAuth();
 
-  const loadMore = useCallback(
-    (newOffset?: number) => {
-      if (!id) return;
-      const _offset = typeof newOffset === "number" ? newOffset : offset;
-      if (_offset === 0) setIsLoading(true);
-      if (_offset !== 0 && !hasMore) {
-        setIsLoading(false);
-        return Promise.resolve();
-      }
-      return httpGet("/project/comment/list", {
-        limit: 10,
-        project_id: id,
-        offset: _offset
-      })
-        .then((res) => {
-          if (_offset === 0) setIsLoading(false);
-          if (res?.code !== 0) throw new Error();
-          setHasMore(res.data?.has_next_page || false);
-          let newList = [];
-          if (res.data.list?.length) {
-            const newMapList = res.data.list.map((item: any) => {
-              return mapDataToComment(item);
-            });
-
-            if (_offset === 0) {
-              newList = newMapList;
-            } else {
-              newList = [...commentList, ...newMapList];
-            }
-          }
-          setOffset(newList.length);
-          setCommentList(newList);
-        })
-        .catch((err) => {
-          if (_offset === 0) {
-            setIsLoading(false);
-            setCommentList([]);
-          }
-        });
-    },
-    [id, offset, hasMore]
-  );
-
-  const { run: loadData } = useDebounceFn(
-    (args: any = {}) => {
-      if (!id) {
-        setCommentList([]);
-      } else {
-        loadMore(0);
-      }
-    },
-    { wait: 500 }
-  );
-
-  const CommentList = commentList.map((item) => {
+  const CommentList = commentList.map((item: any) => {
     return (
       <CommentItem
         key={item.id}
         item={item}
         onSuccessNow={(item: Comment) => {
-          setCommentList([...commentList]);
+          // setCommentList([...commentList]);
         }}
         onSuccess={(item: Comment) => {
           // setReReashNum(reReashNum + 1);
@@ -101,10 +37,6 @@ export default function CommentComp({
       />
     );
   });
-
-  useEffect(() => {
-    loadData();
-  }, [id]);
 
   const Content = (
     <>
@@ -140,8 +72,7 @@ export default function CommentComp({
                 const val = await httpAuthPost("/project/comment?" + queryStr);
 
                 if (val.code === 0) {
-                  loadData({ newOffset: 0 });
-                  // setReReashNum(reReashNum + 1);
+                  loadMoreComment({ newOffset: 0 });
                   setCommentText("");
                 }
 
@@ -225,7 +156,7 @@ export default function CommentComp({
 
       {commentList.length > 0 && <div>{CommentList}</div>}
 
-      {commentList.length === 0 && !showEdit && !isLoading && (
+      {commentList.length === 0 && !showEdit && !isCommentLoading && (
         <div
           style={{
             marginTop: 30
@@ -235,7 +166,7 @@ export default function CommentComp({
         </div>
       )}
 
-      <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+      <SexInfiniteScroll loadMore={loadMoreComment} hasMore={commentHasMore} />
     </>
   );
 
@@ -244,19 +175,4 @@ export default function CommentComp({
       {usePanel ? <Panel theme={theme}>{Content}</Panel> : <>{Content}</>}
     </div>
   );
-}
-
-function mapDataToComment(data: any): Comment {
-  return {
-    address: data.address,
-    projectId: data.project_id,
-    text: data.text,
-    id: data.id,
-    isLike: data.is_like,
-    isUnlike: data.is_unlike,
-    like: data.like,
-    unLike: data.un_like,
-    time: data.time,
-    creater: data.account_data
-  };
 }

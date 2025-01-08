@@ -4,12 +4,9 @@ import { useState } from "react";
 import styles from "./action.module.css";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
-
-interface Props {
-  onLike: () => void;
-  onHate: () => void;
-  ids?: any;
-}
+import { useUserAgent } from "@/app/context/user-agent";
+import SmokeBtn from "../smokHot";
+import SmokeButtonWithFlip from "../smokHot/smoke-button-flip";
 
 const likeAnis = [
   "/img/home/likeAni1.svg",
@@ -18,10 +15,18 @@ const likeAnis = [
   "/img/home/likeAni4.svg"
 ];
 
-export default function MainAction({ onLike, onHate, ids }: Props) {
+export default function MainAction({
+  onLike,
+  onHate,
+  ids,
+  canFlip,
+  onSuperLike,
+  token
+}: any) {
   const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } =
     useMessage();
   const { address } = useAccount();
+  const { isMobile } = useUserAgent();
 
   return (
     <div className={styles.mainAction}>
@@ -44,12 +49,33 @@ export default function MainAction({ onLike, onHate, ids }: Props) {
           hateTrigger ? styles.hate : "",
           "button"
         ].join(" ")}
+        style={{}}
       >
         <DisLike fill={hateTrigger ? "#000000" : "#C7DDEE"} id={ids?.dislike} />
 
         {/* <DisLike fill="#000000" /> */}
       </div>
-
+      <div style={{ marginTop: isMobile ? "-30px" : 0 }}>
+        {canFlip ? (
+          <SmokeButtonWithFlip
+            size={48}
+            onClick={() => {
+              onSuperLike && onSuperLike();
+            }}
+            token={token}
+            id={ids?.smoke}
+          />
+        ) : (
+          <SmokeBtn
+            isBigIcon={true}
+            token={token}
+            onClick={() => {
+              onSuperLike && onSuperLike();
+            }}
+            id={ids?.smoke}
+          />
+        )}
+      </div>
       <div
         onClick={() => {
           if (!address) {
