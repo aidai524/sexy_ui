@@ -1,7 +1,7 @@
 import Thumbnail from "@/app/components/thumbnail";
 import styles from "./index.module.css";
 
-export default function TokenCard({ token }: any) {
+export default function TokenCard({ token, ...rest }: any) {
   return token ? (
     <div className={styles.Container}>
       <Thumbnail
@@ -15,6 +15,7 @@ export default function TokenCard({ token }: any) {
           height: "100%",
           margin: 0
         }}
+        {...rest}
       />
     </div>
   ) : null;

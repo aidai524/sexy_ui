@@ -28,12 +28,12 @@ export default function Detail({ token, onBack, onNext }: any) {
     [token, queryedInfoData]
   );
 
-  const { mc: pumpMc } = useMc({ 
-      tokenAddress: infoData?.address,
-      disable: infoData?.status < 1
-  })
+  const { mc: pumpMc } = useMc({
+    tokenAddress: infoData?.address,
+    disable: infoData?.status < 1
+  });
 
-  console.log('pumpMc:', pumpMc)
+  console.log("pumpMc:", pumpMc);
 
   const { getMC, pool } = useTokenTrade({
     tokenName: infoData?.tokenName as string,
@@ -117,7 +117,9 @@ export default function Detail({ token, onBack, onNext }: any) {
                 },
                 {
                   name: "Buy/Sell",
-                  content: <Trade mc={pumpMc || mc} from="mobile" data={infoData} />
+                  content: (
+                    <Trade mc={pumpMc || mc} from="mobile" data={infoData} />
+                  )
                 },
                 {
                   name: "Txs",
