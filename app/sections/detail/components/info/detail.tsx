@@ -16,7 +16,7 @@ import {
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
 import { useUserAgent } from "@/app/context/user-agent";
-import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
+import useCommentList from "@/app/hooks/use-comment-list";
 
 interface Props {
   data: Project;
@@ -26,6 +26,7 @@ interface Props {
 
 export default function Info({ data, mc, onUpdate }: Props) {
   const { isMobile } = useUserAgent();
+  const comments = useCommentList({ id: data?.id });
   const [canFlip, setCanFlip] = useState(false);
   const { run: scroll } = useDebounceFn(
     (ev: any = {}) => {
@@ -51,7 +52,7 @@ export default function Info({ data, mc, onUpdate }: Props) {
         data={data}
         showThumbnailHead={false}
       />
-      <CommentComp id={data.id} />
+      <CommentComp id={data.id} {...comments} />
 
       <div className={styles.action}>
         {data.status === 0 ? (

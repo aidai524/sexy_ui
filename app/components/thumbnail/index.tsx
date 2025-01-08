@@ -6,21 +6,6 @@ import { AvatarBack } from "./avatar";
 import Media from "./media";
 import Progress from "./progress";
 
-interface Props {
-  showDesc: boolean;
-  topDesc?: boolean;
-  showProgress?: boolean;
-  data: Project;
-  autoHeight?: boolean;
-  showBackIcon?: boolean;
-  showLaunchType?: boolean;
-  showLikes?: boolean;
-  showTags?: boolean;
-  showDropdownIcon?: boolean;
-  style?: any;
-  onGoDetail?: any;
-}
-
 export default function Thumbnail({
   showDesc = true,
   topDesc = false,
@@ -33,8 +18,12 @@ export default function Thumbnail({
   showDropdownIcon = true,
   data,
   style = {},
-  onGoDetail
-}: Props) {
+  onGoDetail,
+  isCommentLoading,
+  commentHasMore,
+  loadMoreComment,
+  commentList
+}: any) {
   const [height, setHeight] = useState("calc(100vh - 232px)");
   const [imgHeight, setImgHeight] = useState("80%");
 
@@ -86,7 +75,11 @@ export default function Thumbnail({
             showProgress,
             descContentRef,
             onGoDetail,
-            showDropdownIcon
+            showDropdownIcon,
+            isCommentLoading,
+            commentHasMore,
+            loadMoreComment,
+            commentList
           }}
         />
       </div>

@@ -11,6 +11,7 @@ import Tab from "./tab";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useDebounceFn } from "ahooks";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Progress({
   data,
@@ -19,13 +20,18 @@ export default function Progress({
   descContentRef,
   onGoDetail,
   showDropdownIcon,
-  showProgress
+  showProgress,
+  isCommentLoading,
+  commentHasMore,
+  loadMoreComment,
+  commentList
 }: any) {
   const [progressIndex, setProgressIndex] = useState(0);
   const router = useRouter();
   const commentRef = useRef<any>();
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [stopLoadMore, setStopLoadMore] = useState(false);
+  const { isMobile } = useUserAgent();
 
   const progresses = useMemo(
     () =>
@@ -93,8 +99,11 @@ export default function Progress({
           </div>
 
           {progressIndex === 1 && (
-            <div className={styles.commentList}>
-              <Avatar data={data} showBackIcon={true} />
+            <div
+              className={styles.commentList}
+              style={{ paddingTop: isMobile ? 30 : 40 }}
+            >
+              <Avatar data={data} showBackIcon={isMobile} />
               <div
                 className={styles.commentBox}
                 ref={commentRef}
@@ -107,6 +116,12 @@ export default function Progress({
                   id={data.id}
                   showEdit={false}
                   usePanel={false}
+                  {...{
+                    isCommentLoading,
+                    commentHasMore,
+                    loadMoreComment,
+                    commentList
+                  }}
                 />
               </div>
               {showLoadMore && (
@@ -127,8 +142,11 @@ export default function Progress({
           )}
 
           {progressIndex === 2 && (
-            <div className={styles.commentList}>
-              <Avatar data={data} showBackIcon={true} />
+            <div
+              className={styles.commentList}
+              style={{ paddingTop: isMobile ? 30 : 40 }}
+            >
+              <Avatar data={data} showBackIcon={isMobile} />
               <div style={{ height: 10 }}></div>
               <div
                 className={styles.commentBox}
