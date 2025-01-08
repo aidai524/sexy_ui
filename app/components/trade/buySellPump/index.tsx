@@ -409,7 +409,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
         {activeIndex === 0 && tokenType === 1 && (
           <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}>Minimum Received</div>
+            <div className={styles.receiveTitle}></div>
             <div className={styles.receiveAmount}>
               {buyIn
                 ? new Big(buyIn)
@@ -450,6 +450,7 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
                   setIsLoading(true);
                   hash = await buy(Number(buyInSol), slip / 100)
                   if (hash) {
+                    // hash = '4XBoqSoGTcz7LbAJcfEWZf2wNhXjtbrNu27uDpaFC6pdnGMybyw1zs9m982RgQBKhEQYbABZKbDyLj5NPkFvtvDE'
                     const _showBuyInToken = await getTransaction(connection, hash, token.address as string, userInfo.address)
                     if (_showBuyInToken) {
                       showBuyInToken = _showBuyInToken
