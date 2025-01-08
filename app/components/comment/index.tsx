@@ -24,18 +24,7 @@ export default function CommentComp({
   const { userInfo } = useAuth();
 
   const CommentList = commentList.map((item: any) => {
-    return (
-      <CommentItem
-        key={item.id}
-        item={item}
-        onSuccessNow={(item: Comment) => {
-          // setCommentList([...commentList]);
-        }}
-        onSuccess={(item: Comment) => {
-          // setReReashNum(reReashNum + 1);
-        }}
-      />
-    );
+    return <CommentItem key={item.id} item={item} />;
   });
 
   const Content = (
@@ -72,7 +61,7 @@ export default function CommentComp({
                 const val = await httpAuthPost("/project/comment?" + queryStr);
 
                 if (val.code === 0) {
-                  loadMoreComment({ newOffset: 0 });
+                  loadMoreComment(0);
                   setCommentText("");
                 }
 

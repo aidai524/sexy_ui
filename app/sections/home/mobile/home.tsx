@@ -420,6 +420,7 @@ export default forwardRef(function Home(props, ref) {
                     showProgress={true}
                     showDesc={true}
                     data={infoDataLaunching}
+                    showDanmaku={infoDataLaunching.id === currentToken?.id}
                     onGoDetail={() => {
                       goDetail(infoDataLaunching);
                     }}
@@ -444,6 +445,7 @@ export default forwardRef(function Home(props, ref) {
                     onGoDetail={() => {
                       goDetail(infoDataLaunching2);
                     }}
+                    showDanmaku={infoDataLaunching2.id === currentToken?.id}
                     {...comments}
                   />
                 </div>
@@ -527,6 +529,7 @@ export default forwardRef(function Home(props, ref) {
                     onGoDetail={() => {
                       goDetail(infoDataLaunched);
                     }}
+                    showDanmaku={infoDataLaunched.id === currentToken?.id}
                     {...comments}
                   />
                 </div>
@@ -548,6 +551,7 @@ export default forwardRef(function Home(props, ref) {
                     onGoDetail={() => {
                       goDetail(infoDataLaunched2);
                     }}
+                    showDanmaku={infoDataLaunched2.id === currentToken?.id}
                     {...comments}
                   />
                 </div>
