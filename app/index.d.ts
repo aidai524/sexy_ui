@@ -1,3 +1,5 @@
+declare module "danmaku/dist/esm/danmaku.canvas.js";
+
 interface Window {
   opera: any;
   Telegram: {
