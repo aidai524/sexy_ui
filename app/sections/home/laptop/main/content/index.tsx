@@ -1,10 +1,12 @@
-import Token from "../token";
 import Fullscreen from "../../fullscreen";
 import useData from "../../../hooks/use-data-laptop";
 import { useEffect, useMemo, useState } from "react";
 import { useFullScreen } from "@/app/store/use-full-screen";
 import { useSearchParams } from "next/navigation";
 import styles from "./index.module.css";
+import dynamic from "next/dynamic";
+
+const Token = dynamic(() => import("../token"));
 
 export default function Content() {
   const fullScreenStore: any = useFullScreen();
@@ -37,29 +39,30 @@ export default function Content() {
 
   return (
     <div className={styles.Container}>
-      <Token
-        {...{
-          infoData2,
-          getnext,
-          type: tab,
-          isLoading,
-          isFull: fullScreenStore.isFull,
-          onOpenFull() {
-            fullScreenStore.set({ isFull: true });
-          },
-          list: list.current
-        }}
-      />
-      {fullScreenStore?.isFull && (
+      {fullScreenStore?.isFull ? (
         <Fullscreen
           {...{
             list: fullList,
             isLoading,
             getnext,
-            type,
+            type: tab,
             onExit(index: number) {
               fullScreenStore.set({ isFull: false });
             }
+          }}
+        />
+      ) : (
+        <Token
+          {...{
+            infoData2,
+            getnext,
+            type: tab,
+            isLoading,
+            isFull: fullScreenStore.isFull,
+            onOpenFull() {
+              fullScreenStore.set({ isFull: true });
+            },
+            list: list.current
           }}
         />
       )}

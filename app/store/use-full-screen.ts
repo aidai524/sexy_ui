@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 export const useFullScreen = create(
   persist(
     (set, get: any) => ({
-      isFull: false,
+      isFull: true,
       launchType: 0,
       set: (params: any) => set(() => ({ ...params }))
     }),
