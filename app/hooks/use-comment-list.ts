@@ -12,6 +12,7 @@ export default function useCommentList({ id, limit = 10 }: any) {
     (newOffset?: number) => {
       if (!id) return;
       const _offset = typeof newOffset === "number" ? newOffset : offset;
+
       if (_offset === 0) setIsCommentLoading(true);
       if (_offset !== 0 && !commentHasMore) {
         setIsCommentLoading(false);

@@ -22,7 +22,7 @@ import { defaultAvatar } from "@/app/utils/config";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useUserAgent } from "@/app/context/user-agent";
 import { fail } from "@/app/utils/toast";
-import { shareToX } from "@/app/utils/share";
+import { getShortUrl, shareToX } from "@/app/utils/share";
 import { DotLoading, Modal } from "antd-mobile";
 import Likes from "../thumbnail/likes";
 import { useAuth } from "@/app/context/auth";
@@ -220,16 +220,28 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
                   setIsSharing(false);
                   return;
                 }
-                shareToX(
-                  token.tokenName,
-                  `${domain}/api/twitter?tokenName=${encodeURIComponent(
-                    token.tokenName
-                  )}&about=${encodeURIComponent(
-                    token.about
-                  )}&imgUrl=${encodeURIComponent(img)}&address=${
-                    token.address
+
+                const longUrl = `${domain}/api/twitter?tokenName=${encodeURIComponent(
+                  token.tokenName
+                )}&about=${encodeURIComponent(
+                  token.about
+                )}&imgUrl=${encodeURIComponent(img)}&address=${token.address
                   }&referral=${userInfo.address}`
-                );
+                  
+                try {
+                  const shreUrl = await getShortUrl(longUrl)
+                  console.log('shreUrl:', shreUrl)
+
+                  shareToX(
+                    token.tokenName,
+                    shreUrl
+                  );
+                } catch(e) {
+                  fail("Share fail");
+                  setIsSharing(false);
+                  return;
+                }
+                
                 setIsSharing(false);
               }}
             >
