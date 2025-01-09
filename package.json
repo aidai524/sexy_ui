@@ -21,6 +21,7 @@
     "@solana/buffer-layout-utils": "^0.2.0",
     "@solana/spl-token": "^0.4.9",
     "@solana/wallet-adapter-base": "0.9.23",
+    "@solana/wallet-adapter-base-ui": "^0.1.2",
     "@solana/wallet-adapter-react": "0.15.35",
     "@solana/wallet-adapter-react-ui": "0.9.35",
     "@solana/wallet-adapter-wallets": "0.19.32",
@@ -38,6 +39,7 @@
     "html2canvas": "^1.4.1",
     "https-proxy-agent": "^7.0.6",
     "js-cookie": "^3.0.5",
+    "lodash-es": "^4.17.21",
     "next": "14.1.0",
     "node-fetch": "^3.3.2",
     "qrcode": "^1.5.4",
@@ -48,6 +50,7 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18",
