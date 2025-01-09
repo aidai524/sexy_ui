@@ -1,10 +1,9 @@
 import Badge from "@/app/components/badge";
 import AlarmIcon from "@/app/components/icons/alarm";
-import MessagesPop from "@/app/components/messages/popover";
 import MessagesModal from "./modal";
 import useNum from "./use-num";
 import useList from "./use-list";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/app/context/auth";
 
 export default function MessagesAlarm() {

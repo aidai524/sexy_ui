@@ -11,7 +11,6 @@ import Link from "next/link";
 import Refer, {
   ReferContentCard
 } from "@/app/components/layout/laptop/user/refer";
-import { FlipProvider } from "@/app/context/flip";
 import TabBg from "./tab-bg";
 
 function CustomIcon({
@@ -132,14 +131,13 @@ export default function Component({ children }: any) {
   useNotice();
 
   return (
-    <FlipProvider>
-      <div className={styles.Main}>
-        {/* <Button onClick={() => {
+    <div className={styles.Main}>
+      {/* <Button onClick={() => {
         trade()
       }}>juipter</Button> */}
-        <main className="pb-16">{children}</main>
+      {children}
 
-        {showTabs && (
+      {/* {showTabs && (
           <>
             <TabBg className={styles.TabBg} />
             <TabBar
@@ -179,8 +177,7 @@ export default function Component({ children }: any) {
             </TabBar>
           </>
         )}
-        {isRefer && <ReferContentCard />}
-      </div>
-    </FlipProvider>
+        {isRefer && <ReferContentCard />} */}
+    </div>
   );
 }

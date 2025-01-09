@@ -1,0 +1,20 @@
+.Header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.Actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: absolute;
+  top: 11px;
+  right: 11px;
+}
+
+.King {
+  position: absolute;
+  top: 8px;
+  left: 14px;
+}

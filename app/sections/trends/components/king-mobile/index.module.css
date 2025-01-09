@@ -1,0 +1,17 @@
+.Avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  flex-shrink: 0;
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 21px;
+}
+.Crown {
+  width: 36px;
+  height: 22px;
+  position: absolute;
+  left: -16px;
+  top: -7px;
+}
