@@ -8,25 +8,43 @@ export default function Statistics({ itemStyle, style, info }: any) {
   return (
     <div className={styles.statistics} style={style}>
       <div className={styles.statisticsItem} style={itemStyle}>
-        <div className={styles.statisticsTitle}>My reward</div>
-        <div style={{ fontSize: 26 }} className={styles.value}>
-          {info?.minted
-            ? numberFormatter(info?.minted, 3, true, {
-                isShort: true,
-                round: 0
-              })
-            : "0"}
+        <div className={styles.statisticsTitle}>My likes</div>
+        <div style={{ fontSize: isMobile ? 18 : 22 }} className={styles.value}>
+          {info?.liked ? addThousandSeparator(info?.liked) : "0"}
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
-        <div className={styles.statisticsTitle}>My Likes</div>
+        <div className={styles.statisticsTitle}>My volume</div>
         <div
           style={{
             fontSize: isMobile ? 18 : 22
           }}
           className={styles.value}
         >
-          {info?.liked ? addThousandSeparator(info?.liked) : "0"}
+          {info?.volume
+            ? numberFormatter(info?.liked, 2, true, {
+                isShort: true,
+                round: 0,
+                prefix: "$"
+              })
+            : "$0"}
+        </div>
+      </div>
+      <div className={styles.statisticsItem} style={itemStyle}>
+        <div className={styles.statisticsTitle}>My refferrals</div>
+        <div style={{ fontSize: isMobile ? 18 : 22 }} className={styles.value}>
+          {info?.refferrals ? addThousandSeparator(info?.liked) : "0"}
+        </div>
+      </div>
+      <div className={styles.statisticsItem} style={itemStyle}>
+        <div className={styles.statisticsTitle}>My kickback</div>
+        <div
+          style={{
+            fontSize: isMobile ? 18 : 22
+          }}
+          className={styles.value}
+        >
+          {info?.kickback ? addThousandSeparator(info?.liked) : "0"}
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>

@@ -11,7 +11,7 @@ export default function useMiningList() {
     try {
       setLoading(true);
       const response = await httpAuthGet("/mining/user/list", {
-        limit: 100,
+        limit: 9,
         offset: 0
       });
       setList(response.data.list);

@@ -1,20 +1,33 @@
 .Container {
   width: calc(100vw - 20px);
   border-radius: 12px;
-  background: linear-gradient(to bottom, #ff2681, #ff91bf);
-  margin: 10px auto;
+  margin: 10px auto 0px;
   padding: 2px;
+  position: relative;
+}
+
+.Bg {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 80px;
+}
+
+.RewardIcon {
+  position: absolute;
+  z-index: 2;
 }
 
 .Wrapper {
-  height: 80px;
-  background: url(/img/mining/like-bg-m.png) center no-repeat;
-  background-size: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   gap: 5px;
+  position: absolute;
+  z-index: 5;
+  top: 0px;
+  width: 100%;
+  height: 100%;
 }
 
 .Num {
@@ -33,6 +46,16 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+}
+
+.Reward {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-align: center;
 }
 
 .Desc {
