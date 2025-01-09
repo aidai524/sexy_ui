@@ -4,16 +4,11 @@ import Icon from "@/app/components/points-label/Reicon";
 import { useUserAgent } from "@/app/context/user-agent";
 import { numberFormatter } from "@/app/utils/common";
 import { formatAddress } from "@/app/utils";
-import { useAuth } from "@/app/context/auth";
-import { useRouter } from "next/navigation";
-import useMiningList from "../../use-mining-list";
 import CircleLoading from "@/app/components/icons/loading";
 
-export default function Rank({ rank }: any) {
+export default function Rank({ rank, list = [], loading }: any) {
   const { isMobile } = useUserAgent();
-  const { userInfo } = useAuth();
-  const router = useRouter();
-  const { list, loading } = useMiningList();
+
   return (
     <div
       className={styles.Container}
@@ -65,22 +60,15 @@ export default function Rank({ rank }: any) {
               <Avatar rank={index + 1} src={item.account_data?.icon} />
               <div style={{ width: isMobile ? "auto" : 120 }}>
                 <button
-                  className={`${styles.ItemTitle} ${
-                    item.address !== userInfo?.address && "button"
-                  }`}
+                  className={`${styles.ItemTitle}`}
                   style={{
                     cursor: item.account_data ? "pointer" : "inherit"
-                  }}
-                  onClick={() => {
-                    if (!item.account_data) return;
-                    if (item.address !== userInfo?.address)
-                      router.push(`/profile/user?account=${item.address}`);
                   }}
                 >
                   {item.account_data?.name
                     ? item.account_data.name
                     : item.address
-                    ? formatAddress(item.address)
+                    ? formatAddress(item.address, 4)
                     : ""}
                 </button>
                 {isMobile && (

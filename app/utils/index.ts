@@ -19,7 +19,6 @@ export function http(
   params?: any,
   headers?: any
 ) {
-
   if (!path) return;
   let _path = path,
     postBody = {};
@@ -92,7 +91,7 @@ export async function httpAuthGet(
     return {
       code: -1,
       data: null
-    }
+    };
   }
   const header = {
     authorization
@@ -219,16 +218,14 @@ let isInitingAuthorization = false,
   authorization: string | undefined;
 const watingQuene: any[] = [];
 
-
-const rejectDuration = 1000 * 30
-let rejectTime = Date.now() - rejectDuration - 1
+const rejectDuration = 1000 * 30;
+let rejectTime = Date.now() - rejectDuration - 1;
 
 export async function getAuthorization() {
   authorization = getAuthorizationByLocal();
 
   if (!authorization) {
     if (isInitingAuthorization) {
-      
       return new Promise((resolve, reject) => {
         watingQuene.push(resolve);
       });
@@ -267,7 +264,7 @@ export async function initAuthorization() {
   //   return
   // }
   if (Date.now() - rejectTime < rejectDuration) {
-    return
+    return;
   }
 
   if (isInitingAuthorization) {
@@ -290,7 +287,7 @@ export async function initAuthorization() {
     const signMessage = await walletProvider!.signMessage(encodedMessage);
     const b64encoded = await bufferToBase64(signMessage);
 
-    const v = await httpGet("/account/token", { 
+    const v = await httpGet("/account/token", {
       address: sexAddress,
       signature: b64encoded,
       time: now
@@ -309,13 +306,13 @@ export async function initAuthorization() {
       _reslove(v.data);
     }
   } catch (e) {
-    console.log('e:', e)
+    console.log("e:", e);
     while (watingQuene.length) {
       const _reslove = watingQuene.shift();
       _reslove(null);
     }
     watingQuene.length = 0;
-    rejectTime = Date.now()
+    rejectTime = Date.now();
   }
 
   isInitingAuthorization = false;
@@ -328,8 +325,8 @@ export function logOut() {
   window.sexAddress = null;
   window.localStorage.removeItem(AUTH_KEY);
   deleteCookie("referral");
-  authorization = undefined
-  watingQuene.length = 0
+  authorization = undefined;
+  watingQuene.length = 0;
 }
 
 export function getFullNum(value: any) {
@@ -361,17 +358,16 @@ export function sleep(time: number) {
   });
 }
 
-const addressReg = /(\w{5}).+(\w{5})/;
-export function formatAddress(address: string) {
+export function formatAddress(address: string, len?: number) {
   if (!address) {
     return "";
   }
-
-  if (address.length > 12) {
-    return address.replace(addressReg, ($1, $2, $3) => {
-      return $2 + "...." + $3;
-    });
-  }
+  const _len = len || 5;
+  return (
+    address.slice(0, _len) +
+    "...." +
+    address.slice(address.length - _len, address.length)
+  );
 }
 
 const addressLastReg = /(\w{35}).+(\w{1})/;
@@ -705,14 +701,14 @@ export async function getTransaction(
   tokenAddress: string,
   userAddress: string
 ) {
-  console.log('hash:', hash)
+  console.log("hash:", hash);
 
   const transactionDetails = await connection.getTransaction(hash, {
     commitment: "finalized",
     maxSupportedTransactionVersion: 0
   });
 
-  console.log('transactionDetails:', transactionDetails)
+  console.log("transactionDetails:", transactionDetails);
 
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta;

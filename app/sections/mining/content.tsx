@@ -2,13 +2,13 @@ import Multiple from "./component/multiple";
 import Statistics from "./component/statistics";
 import Rank from "./component/rank";
 
-export default function Mining({ styles, isMobile, info }: any) {
+export default function Mining({ styles, isMobile, info, infoLoading }: any) {
   return (
     <div className={styles.main}>
       <div className={styles.Content}>
         <div className={styles.Bg} />
         <div className={styles.zBox}>
-          <Multiple num={info?.once_like_amount || 0} />
+          <Multiple num={info?.once_like_amount || 0} rewards={info?.minted} />
           <Statistics
             style={{
               justifyContent: "center"
@@ -19,7 +19,11 @@ export default function Mining({ styles, isMobile, info }: any) {
             info={info}
           />
         </div>
-        <Rank rank={info?.your_rank} />
+        <Rank
+          rank={info?.your_rank}
+          list={info?.mining_rank}
+          loading={infoLoading}
+        />
       </div>
       {/* <div className={styles.AniBg} /> */}
       {/* <div className={styles.bottomAni}>
