@@ -9,18 +9,22 @@ export default function Header({ tab, userInfo, logout }: any) {
     <div className={styles.Container}>
       <TrendBanner />
       <div className={styles.Actions}>
-        <PointsLabel id="layout-points-label" />
+        {userInfo?.address && <PointsLabel id="layout-points-label" />}
         <ConnectButton userInfo={userInfo} logout={logout} />
-        <button
-          onClick={() => {
-            history.pushState({ page: "/reward" }, "Reward", "/reward");
-          }}
-          className="button"
-          id="layout-mining"
-        >
-          <img src="/img/tabs/tab2-active.svg" />
-        </button>
-        <Messages />
+        {userInfo?.address && (
+          <>
+            <button
+              onClick={() => {
+                history.pushState({ page: "/reward" }, "Reward", "/reward");
+              }}
+              className="button"
+              id="layout-mining"
+            >
+              <img src="/img/tabs/tab2-active.svg" />
+            </button>
+            <Messages />
+          </>
+        )}
       </div>
     </div>
   );
