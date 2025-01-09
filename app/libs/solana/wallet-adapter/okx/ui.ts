@@ -70,7 +70,7 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
   icon = 'https://static.okx.com/cdn/assets/imgs/247/58E63FEA47A2B7D7.png';
   url = 'https://www.okx.com/web3';
 
-  supportedTransactionVersions: ReadonlySet<TransactionVersion> = new Set(['legacy', 0]);
+  supportedTransactionVersions = new Set(['legacy', 0]) as ReadonlySet<TransactionVersion>;
 
   private _connecting: boolean;
   private _wallet: OkxWallet | null;
@@ -126,6 +126,7 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
           theme: 'SYSTEM',
         },
       });
+      if (!this._universalUi) throw new WalletNotReadyError();
 
       this._provider = new OKXSolanaProvider(this._universalUi);
 
@@ -288,7 +289,8 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
       if (!wallet) throw new WalletNotConnectedError();
 
       try {
-        const { signature } = await wallet.signMessage(message, this.getChain());
+        const messageString = new TextDecoder().decode(message);
+        const { signature } = await wallet.signMessage(messageString, this.getChain());
         return signature;
       } catch (error: any) {
         throw new WalletSignMessageError(error?.message, error);
