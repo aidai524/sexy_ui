@@ -21,8 +21,8 @@ export default function Statistics({ itemStyle, style, info }: any) {
           }}
           className={styles.value}
         >
-          {info?.volume
-            ? numberFormatter(info?.liked, 2, true, {
+          {info?.my_volume
+            ? numberFormatter(info?.my_volume, 2, true, {
                 isShort: true,
                 round: 0,
                 prefix: "$"
@@ -33,7 +33,7 @@ export default function Statistics({ itemStyle, style, info }: any) {
       <div className={styles.statisticsItem} style={itemStyle}>
         <div className={styles.statisticsTitle}>My refferrals</div>
         <div style={{ fontSize: isMobile ? 18 : 22 }} className={styles.value}>
-          {info?.refferrals ? addThousandSeparator(info?.liked) : "0"}
+          {info?.my_referrals ? addThousandSeparator(info.my_referrals) : "0"}
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>
@@ -44,7 +44,7 @@ export default function Statistics({ itemStyle, style, info }: any) {
           }}
           className={styles.value}
         >
-          {info?.kickback ? addThousandSeparator(info?.liked) : "0"}
+          {info?.my_kickback ? addThousandSeparator(info?.my_kickback) : "0"}
         </div>
       </div>
       <div className={styles.statisticsItem} style={itemStyle}>

@@ -14,7 +14,7 @@ export default function Mining({ styles, isMobile, info, infoLoading }: any) {
               justifyContent: "center"
             }}
             itemStyle={{
-              width: isMobile ? "50%" : "20%"
+              width: isMobile ? "50%" : "30%"
             }}
             info={info}
           />

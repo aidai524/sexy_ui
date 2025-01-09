@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import TrendBanner from "@/app/sections/trends/components/banner";
 import PointsLabel from "@/app/components/points-label";
 
-export default function Header({ tab, userInfo, logout }: any) {
+export default function Header({ userInfo, logout }: any) {
   return (
     <div className={styles.Container}>
       <TrendBanner />

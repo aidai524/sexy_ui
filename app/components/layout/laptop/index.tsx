@@ -49,7 +49,7 @@ export default function Laptop() {
             logout={logout}
           />
           <div className={styles.Content}>
-            <Header logout={logout} />
+            <Header logout={logout} userInfo={userInfo} />
             <div className={styles.ContentInner}>
               {pathname === "/" && (
                 <Main address={address} userInfo={userInfo} />
