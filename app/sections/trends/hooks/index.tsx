@@ -7,7 +7,7 @@ import Big from 'big.js';
 import { Program } from '@coral-xyz/anchor';
 import idl from '@/app/hooks/meme_launchpad.json';
 import { useConnection } from '@solana/wallet-adapter-react';
-import { trim } from 'lodash';
+import { trim } from 'lodash-es';
 import { useDebounceFn } from 'ahooks';
 import { useConfig } from '@/app/store/useConfig';
 import { getTokenMeta } from '@/app/utils/solanaScanApi';

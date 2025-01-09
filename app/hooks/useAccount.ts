@@ -1,7 +1,5 @@
 import bs58 from 'bs58';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { SolanaSignAndSendTransaction, SolanaSignMessage, SolanaSignTransaction } from '@solana/wallet-standard-features';
-import * as anchor from "@coral-xyz/anchor";
 import { sleep } from '../utils';
 import { ComputeBudgetProgram, Transaction } from '@solana/web3.js';
 import Big from 'big.js';
