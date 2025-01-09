@@ -288,7 +288,8 @@ export class OkxWalletUIAdapter extends BaseMessageSignerWalletAdapter {
       if (!wallet) throw new WalletNotConnectedError();
 
       try {
-        const { signature } = await wallet.signMessage(message, this.getChain());
+        const messageString = new TextDecoder().decode(message);
+        const { signature } = await wallet.signMessage(messageString, this.getChain());
         return signature;
       } catch (error: any) {
         throw new WalletSignMessageError(error?.message, error);
