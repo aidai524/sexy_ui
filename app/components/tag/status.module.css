@@ -8,13 +8,14 @@
   font-size: 10px;
   display: flex;
   align-items: center;
-  &.launch1 {
-    background-color: #7e8a93;
-  }
-  &.launch2 {
-    background-color: #93b351;
-  }
-  &.launch3 {
-    background-color: #b59100;
-  }
+}
+
+.launch1 {
+  background-color: #7e8a93;
+}
+.launch2 {
+  background-color: #93b351;
+}
+.launch3 {
+  background-color: #b59100;
 }
