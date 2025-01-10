@@ -1,0 +1,17 @@
+.Tag {
+  display: inline-block;
+  height: 20px;
+  padding: 0 10px;
+  white-space: nowrap;
+  border-radius: 32px;
+  color: #fff;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background-color: #487c60;
+}
+
+.punmIcon {
+  width: 12px;
+}
