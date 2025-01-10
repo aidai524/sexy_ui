@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { Project } from "@/app/type";
 import { useAccount } from "@/app/hooks/useAccount";
 import Boost from "../../boost";
+import { useMessage } from "@/app/context/messageContext";
 
 interface Props {
   data?: Project;
@@ -18,6 +19,7 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
   const [tradeShow, setTradeShow] = useState(false);
   const [initType, setInitType] = useState("buy");
   const { address } = useAccount();
+  const { showShare } = useMessage();
 
   const usedStyle = justPlus
     ? styles.justPlus
@@ -84,10 +86,9 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
       ) : (
         <>
           <div
-            className={`${styles.actionBtn} ${
-              from === "laptop" &&
+            className={`${styles.actionBtn} ${from === "laptop" &&
               styles.LaptopActionButton + " " + styles.LaptopBuyButton
-            } button`}
+              } button`}
             onClick={() => {
               if (!address) {
                 //@ts-ignore
@@ -99,13 +100,36 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
               setInitType("buy");
             }}
           >
-            {from === "laptop" ? <LaptopBuyIcon /> : <MobileBuyIcon />}
-            <div>Buy</div>
+            {/* {from === "laptop" ? <LaptopBuyIcon /> : <MobileBuyIcon />} */}
+            <div>Place Trade</div>
+          </div>
+
+          <div className={styles.share} onClick={() => {
+            showShare(data)
+          }}>
+            <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g filter="url(#filter0_b_6130_118)">
+                <circle cx="25" cy="25" r="25" fill="#9290B1" fill-opacity="0.3" />
+              </g>
+              <circle cx="29.7046" cy="19.5455" r="2.54547" stroke="white" stroke-width="2" />
+              <circle cx="29.7046" cy="30.4549" r="2.54547" stroke="white" stroke-width="2" />
+              <circle cx="18.4318" cy="25.0004" r="3.63638" fill="white" />
+              <path d="M27.5229 20.6362L19.1592 24.9999L27.5229 29.3635" stroke="white" stroke-width="2" />
+              <defs>
+                <filter id="filter0_b_6130_118" x="-10" y="-10" width="70" height="70" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
+                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6130_118" />
+                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_6130_118" result="shape" />
+                </filter>
+              </defs>
+            </svg>
+
           </div>
 
           {/* <Boost token={data} isBigIcon={true} onClick={() => {}}/> */}
 
-          <div
+          {/* <div
             className={`${styles.actionBtn} ${
               from === "laptop" &&
               styles.LaptopActionButton + " " + styles.LaptopSellButton
@@ -123,7 +147,7 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
           >
             {from === "laptop" ? <LaptopSellIcon /> : <MobileSellIcon />}
             <div>Sell</div>
-          </div>
+          </div> */}
         </>
       )}
       <TradeModal

@@ -14,16 +14,27 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 38px;
-        border-radius: 8px;
-
+        height: 82px;
+        text-indent: -1000px;
+        
         &.active:first-child {
-          background-color: rgba(109, 181, 0, 1);
+          background: url('/img/trade/buy.png') no-repeat 0 0;
+          background-size: contain;
+          /* background-color: rgba(109, 181, 0, 1); */
         }
 
         &.active:last-child {
-          background-color: rgba(255, 47, 116, 1);
+          background: url('/img/trade/sell.png') no-repeat 0 0;
+          background-size: contain;
         }
+      }
+      .tab:first-child {
+        background: url('/img/trade/buy-grey.png') no-repeat 0 0;
+          background-size: contain;
+      }
+      .tab:last-child {
+        background: url('/img/trade/sell-grey.png') no-repeat 0 0;
+        background-size: contain;
       }
     }
   }

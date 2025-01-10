@@ -2,7 +2,7 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 75px;
+  bottom: 25px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,24 +18,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 60px;
-  background-color: rgba(0, 0, 0, 0.4);
+  height: 50px;
+  background-color: #FBCA04;
+  color: #000;
   border-radius: 30px;
   flex: 1;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
   gap: 2vw;
   backdrop-filter: blur(10px);
   cursor: pointer;
 }
 
-.actionBtn:first-of-type {
+/* .actionBtn:first-of-type {
   color: rgba(201, 255, 93, 1);
 }
 
 .actionBtn:last-of-type {
   color: rgba(255, 201, 241, 1);
-}
+} */
 
 .LaptopContainer {
   position: inherit;
@@ -54,6 +55,10 @@
 
 .LaptopSellButton {
   background-color: #ffc9f1;
+}
+
+.share {
+  cursor: pointer;
 }
 
 .avatar {
