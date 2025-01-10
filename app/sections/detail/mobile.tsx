@@ -81,50 +81,48 @@ export default function Detail({ token, onBack, onNext }: any) {
     >
       <div className={styles.main}>
         <div className={styles.Content}>
-          <div className={ styles.header }>
-            <div className={ styles.backWrapper }>
+          <div className={styles.header}>
+            <div className={styles.backWrapper}>
               <Back />
-              <AvatarDetail token={infoData} mc={pumpMc || mc}/>
+              <AvatarDetail token={infoData} mc={pumpMc || mc} />
             </div>
-            <div className={ styles.menuWrapper }>
+            <div className={styles.menuWrapper}>
               <Menu />
             </div>
           </div>
 
-          <Chart token={infoData}/>
+          <Chart token={infoData} />
 
           <Tab
-              activeNode={activeKey}
-              onTabChange={(nodeName) => {
-                setActiveKey(nodeName);
-              }}
-              nodes={[
-                {
-                  name: "Info",
-                  content: (
-                    <Info
-                      mc={pumpMc || mc}
-                      data={infoData}
-                      onUpdate={() => {
-                        getDetailInfo();
-                      }}
-                    />
-                  )
-                },
-                {
-                  name: "Comments",
-                  content: (
-                    <CommnentList token={infoData}/>
-                  )
-                },
-                {
-                  name: "Trade",
-                  content: <Txs mc={pumpMc || mc} data={infoData} />
-                }
-              ]}
-            />
-          
-          
+            activeNode={activeKey}
+            onTabChange={(nodeName) => {
+              setActiveKey(nodeName);
+            }}
+            nodes={[
+              {
+                name: "Info",
+                content: (
+                  <Info
+                    mc={pumpMc || mc}
+                    data={infoData}
+                    onUpdate={() => {
+                      getDetailInfo();
+                    }}
+                  />
+                )
+              },
+              {
+                name: "Comments",
+                content: (
+                  <CommnentList token={infoData} />
+                )
+              },
+              {
+                name: "Trade",
+                content: <Txs mc={pumpMc || mc} data={infoData} />
+              }
+            ]}
+          />
 
           {/* {infoData.status === 0 ? (
             <Info
