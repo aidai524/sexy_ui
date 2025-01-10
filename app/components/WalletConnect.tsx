@@ -65,8 +65,8 @@ export default function WalletConnect({
       if (typeof window === "undefined") return [];
       return getDeviceType().mobile
         ? [
-            new PhantomWalletAdapter(),
-            new SolflareWalletAdapter(),
+            // new PhantomWalletAdapter(),
+            // new SolflareWalletAdapter(),
             new OkxWalletUIAdapter(),
             new WalletConnectWalletAdapter({
               network,
