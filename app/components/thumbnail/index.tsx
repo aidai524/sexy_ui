@@ -4,7 +4,7 @@ import Likes from "./likes";
 import { AvatarBack } from "./avatar";
 import Media from "./media";
 import Progress from "./progress";
-import Danmaku from "./danmaku";
+import Danmaku from "../danmaku";
 
 export default function Thumbnail({
   showDesc = true,
@@ -61,7 +61,7 @@ export default function Thumbnail({
         }}
       >
         <Media imgHeight={imgHeight} data={data} />
-        {showDanmaku && <Danmaku data={data} />}
+        {showDanmaku && <Danmaku token={data} />}
         {showLikes && (
           <div className={styles.bottomLike} ref={descContentRef}>
             <Likes data={data} />{" "}

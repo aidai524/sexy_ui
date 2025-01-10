@@ -1,9 +1,12 @@
 import { useState } from "react";
 import Header from "./header";
-import styles from "./index.module.css";
+import List from "./list";
+
+import styles from "./home-new.module.css";
 
 export default function HomeMobile() {
   const [currentTab, setCurrentTab] = useState(0);
+
   return (
     <div className={styles.Container}>
       <Header
@@ -12,6 +15,15 @@ export default function HomeMobile() {
           setCurrentTab(tab);
         }}
       />
+      <div
+        className={styles.ListWrapper}
+        style={{
+          transform: `translateX(${-currentTab * 100}vw)`
+        }}
+      >
+        <List type="preLaunch" onChangeTab={setCurrentTab} />
+        <List type="launching" onChangeTab={setCurrentTab} />
+      </div>
     </div>
   );
 }

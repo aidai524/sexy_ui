@@ -1,0 +1,52 @@
+.Container {
+  position: relative;
+  width: 247px;
+  height: 68px;
+}
+
+.Bg {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.Content {
+  position: relative;
+  z-index: 1;
+  padding: 12px;
+  height: 44px;
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  top: 17px;
+  left: 5px;
+}
+
+.Avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 60px;
+  border: 3px solid #000;
+}
+
+.Title {
+  color: #000;
+  font-family: Unbounded;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.Desc {
+  color: #000;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 3px;
+}

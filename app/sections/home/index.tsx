@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import Mobile from "./mobile/index-1";
+import Mobile from "./mobile/home-new";
 import Laptop from "./laptop/main";
 import { useUserAgent } from "@/app/context/user-agent";
 

@@ -1,5 +1,7 @@
 const TYPES: Record<string, string> = {
-  primary: "#FBCA04"
+  primary: "#FBCA04",
+  normal: "#fff",
+  black: "#000000"
 };
 
 export default function HomeIcon({ size = 30, type = "primary" }: any) {
