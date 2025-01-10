@@ -1,25 +1,32 @@
 import { useEffect, useMemo, useRef } from "react";
 import { TradingViewChart } from "@/app/components/chart";
 import TradingViewWidget from "./tradingViewWidget";
+import type { Project } from "@/app/type";
 
-export default function Chart({ data, style = {} }: any) {
+interface Props {
+  token: Project;
+  style?: any;
+}
+
+export default function Chart({ token, style = {} }: Props) {
   const tvRef = useRef<any>();
 
   const type = useMemo(() => {
-    if (data.status === 1 && data.DApp === "sexy") {
+    if (token.status === 1 && token.DApp === "sexy") {
       return 1;
     }
 
-    if (data.status >= 1) {
+    if (token.status && token.status >= 1) {
       return 2;
     }
 
     return 3;
-  }, [data]);
-  console.log("data", data);
-  if (!data) return <div />;
+  }, [token]);
+  console.log("data", token);
+  if (!token) return <div />;
+  
   return (
-    <div style={{ paddingTop: 10, height: "calc(100vh - 130px)", ...style }}>
+    <div style={{ paddingTop: 10, height: "400px", ...style }}>
       {/* {type === 2 && (
         // <iframe
         //   style={{ height: "100%" }}
@@ -37,8 +44,8 @@ export default function Chart({ data, style = {} }: any) {
       {type === 1 && (
         <TradingViewChart
           style={{ height: "100%" }}
-          symbol={data.tokenName}
-          address={data.address}
+          symbol={token.tokenName}
+          address={token.address as string}
           onLoaded={() => {}}
           forwardedRef={tvRef}
         />

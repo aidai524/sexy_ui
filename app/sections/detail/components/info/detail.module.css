@@ -1,5 +1,7 @@
 .main {
-  padding-bottom: 150px;
+  background-color: #252328;
+  border: 1px solid #3B3B3B;
+  border-radius: 15px 15px 0 0;
 }
 
 .titles {
@@ -11,6 +13,21 @@
     color: #fff;
     font-size: 26px;
     font-weight: 700;
+  }
+}
+
+.detailAvatar {
+  display: flex;
+  align-items: flex-start;
+  padding: 15px;
+  gap: 10px;
+}
+
+.tokenImgWrapper {
+  width: 100px;
+  .tokenImg {
+    width: 100%;
+    border-radius: 10px;
   }
 }
 
@@ -76,11 +93,4 @@
   }
 }
 
-.action {
-  margin: 50px auto 50px;
-  position: fixed;
-  z-index: 20;
-  left: 0;
-  right: 0;
-  bottom: 50px;
-}
+

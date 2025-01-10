@@ -64,42 +64,20 @@ export default function InfoPart({
 
   return (
     <div>
-      {showTop && (
-        <>
-          {!isMobile || withoutFlip ? (
-            <Thumbnail
-              showLikes={showLikes}
-              showLaunchType={false}
-              autoHeight={true}
-              showBackIcon={showBackIcon}
-              data={data}
-              showDesc={false}
-              topDesc={showThumbnailHead}
-              showProgress={showThumbnailProgress}
-            />
-          ) : (
-            <>
-              <ThumbnailWithFlip
-                showLikes={showLikes}
-                showLaunchType={false}
-                style={{
-                  height: 500
-                }}
-                autoHeight={false}
-                showBackIcon={showBackIcon}
-                data={data}
-                showDesc={false}
-                topDesc={showThumbnailHead}
-                showProgress={showThumbnailProgress}
-              />
-              <Sep size={sepSize} />
-            </>
-          )}
-        </>
-      )}
-      <>
-        <Sep size={sepSize} />
-        <Panel theme={theme}>
+      <div className={styles.detailAvatar}>
+        <div className={styles.tokenImgWrapper}>
+          <img className={styles.tokenImg} src={data.tokenImg || '/img/token-placeholder.png'} />
+        </div>
+
+        <div className={ styles.detailInfo }>
+          <div className={ styles.nameWrapper }>
+            <div className={ styles.name }>{ data.tokenName }</div>
+            <div className={ styles.tickerWrapper }>
+              <div className={ styles.ticker }>Ticker:<span>{ data.ticker }</span></div>
+              
+            </div>
+          </div>
+
           <div className={styles.author}>
             <div className={styles.authorTitle}>Created by:</div>
             <div
@@ -137,13 +115,13 @@ export default function InfoPart({
           </div>
           {
             data.DApp === "pump" && <div className={styles.author}>
-            <div className={styles.authorTitle}>
-              {"Import time"}:
+              <div className={styles.authorTitle}>
+                {"Import time"}:
+              </div>
+              <div className={styles.authorDesc}>
+                {specialTime ? specialTime : timeAgo(data.time)}
+              </div>
             </div>
-            <div className={styles.authorDesc}>
-              {specialTime ? specialTime : timeAgo(data.time)}
-            </div>
-          </div>
           }
           <div className={styles.author}>
             <div className={styles.authorTitle}>Market cap:</div>
@@ -164,14 +142,14 @@ export default function InfoPart({
             }
 
           </div>
-        </Panel>
-      </>
+        </div>
+      </div>
+
       {!!data.about && (
         <>
           <Sep size={sepSize} />
           <Panel theme={theme}>
             <div className={styles.aboutUs}>
-              <div className={styles.aboutHeader}>About Us</div>
               <div className={styles.abountDetail}>{data.about}</div>
             </div>
           </Panel>

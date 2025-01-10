@@ -89,6 +89,40 @@ export default function Detail({ token, onBack, onNext }: any) {
               <Menu />
             </div>
           </div>
+
+          <Chart token={infoData}/>
+
+          <Tab
+              activeNode={activeKey}
+              onTabChange={(nodeName) => {
+                setActiveKey(nodeName);
+              }}
+              nodes={[
+                {
+                  name: "Info",
+                  content: (
+                    <Info
+                      mc={pumpMc || mc}
+                      data={infoData}
+                      onUpdate={() => {
+                        getDetailInfo();
+                      }}
+                    />
+                  )
+                },
+                {
+                  name: "Buy/Sell",
+                  content: (
+                    <Trade mc={pumpMc || mc} from="mobile" data={infoData} />
+                  )
+                },
+                {
+                  name: "Txs",
+                  content: <Txs mc={pumpMc || mc} data={infoData} />
+                }
+              ]}
+            />
+          
           
 
           {/* {infoData.status === 0 ? (
