@@ -2,17 +2,27 @@
   padding-top: 10px;
 
   .title {
-    font-weight: 600;
-    font-size: 18px;
-    color: rgba(146, 144, 177, 1);
-
-    /* padding: 0 15px; */
+    font-size: 15px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .postBtn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 84px;
+      height: 30px;
+      background-color: #9AB3EF;
+      border-radius: 15px;
+      color: #000;
+      font-size: 14px;
+      cursor: pointer;
+    }
   }
   .inputWrapper {
-    border: 1px solid rgba(146, 144, 177, 0.6);
-    border-radius: 8px;
-    padding: 0 10px;
     margin: 10px 0;
+    width: 94vw;
     background-color: #000;
     position: relative;
     .inputClear {
@@ -22,12 +32,20 @@
       transform: translateY(-50%);
     }
   }
+  .inputTitle {
+    color: #fff;
+    font-size: 16px;
+    padding-left: 10px;
+  }
   .input {
-    height: 37px;
+    margin-top: 15px;
+    border: 1px solid rgba(146, 144, 177, 0.6);
+    border-radius: 8px;
+    height: 162px;
+    padding: 10px;
     width: 100%;
     color: rgba(255, 255, 255, 0.6);
     font-size: 16px;
-    padding: 0 5px;
     font-family: "Unbounded";
   }
   .input:focus {

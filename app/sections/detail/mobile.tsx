@@ -15,8 +15,14 @@ import useMc from "@/app/hooks/useMc";
 import AvatarDetail from "@/app/components/avatarDetail";
 import Back from "@/app/components/backNew";
 import Menu from "@/app/components/menu";
+import CommnentList from "./components/comment/commnet";
+import PreLaunchAction from '@/app/components/action/launching'
+import LaunchedAction from '@/app/components/action/launched'
+import { useUserAgent } from "@/app/context/user-agent";
+import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
+import { useMessage } from "@/app/context/messageContext";
 
-export default function Detail({ token, onBack, onNext }: any) {
+export default function Detail({ token, onBack, onNext, onUpdate }: any) {
   const [activeKey, setActiveKey] = useState("Info");
   const {
     infoData: queryedInfoData,
@@ -24,6 +30,9 @@ export default function Detail({ token, onBack, onNext }: any) {
     getDetailInfo
   } = useTokenDetail({ token });
   const [mc, setMC] = useState<string | number>("-");
+  const { isMobile } = useUserAgent();
+  
+
 
   const infoData = useMemo(
     () => token || queryedInfoData,
@@ -80,62 +89,77 @@ export default function Detail({ token, onBack, onNext }: any) {
     >
       <div className={styles.main}>
         <div className={styles.Content}>
-          <div className={ styles.header }>
-            <div className={ styles.backWrapper }>
+          <div className={styles.header}>
+            <div className={styles.backWrapper}>
               <Back />
-              <AvatarDetail token={infoData} mc={pumpMc || mc}/>
+              <AvatarDetail token={infoData} mc={pumpMc || mc} />
             </div>
-            <div className={ styles.menuWrapper }>
+            <div className={styles.menuWrapper}>
               <Menu />
             </div>
           </div>
-          
 
-          {/* {infoData.status === 0 ? (
-            <Info
-              data={infoData}
-              mc={pumpMc || mc}
-              onUpdate={() => {
-                getDetailInfo?.();
-                onNext?.();
-              }}
-            />
-          ) : (
-            <Tab
-              activeNode={activeKey}
-              onTabChange={(nodeName) => {
-                setActiveKey(nodeName);
-              }}
-              nodes={[
-                {
-                  name: "Info",
-                  content: (
-                    <Info
-                      mc={pumpMc || mc}
-                      data={infoData}
-                      onUpdate={() => {
-                        getDetailInfo();
-                      }}
-                    />
-                  )
-                },
-                {
-                  name: "Chart",
-                  content: <Chart data={infoData} />
-                },
-                {
-                  name: "Buy/Sell",
-                  content: (
-                    <Trade mc={pumpMc || mc} from="mobile" data={infoData} />
-                  )
-                },
-                {
-                  name: "Txs",
-                  content: <Txs mc={pumpMc || mc} data={infoData} />
-                }
-              ]}
-            />
-          )} */}
+          {
+            token?.status !== 0 && <Chart token={infoData} />
+          }
+
+          <Tab
+            activeNode={activeKey}
+            onTabChange={(nodeName) => {
+              setActiveKey(nodeName);
+            }}
+            nodes={[
+              {
+                name: "Info",
+                content: (
+                  <Info
+                    mc={pumpMc || mc}
+                    data={infoData}
+                    onUpdate={() => {
+                      getDetailInfo();
+                    }}
+                  />
+                )
+              },
+              {
+                name: "Comments",
+                content: (
+                  <CommnentList token={infoData} />
+                )
+              },
+              {
+                name: "Trade",
+                content: <Txs mc={pumpMc || mc} data={infoData} />
+              }
+            ]}
+          />
+
+          <div className={styles.action}>
+            {infoData?.status === 0 ? (
+              <PreLaunchAction
+                token={infoData}
+                style={{ position: isMobile ? "fixed" : "static", bottom: 20 }}
+                canFlip={true}
+                onLike={async () => {
+                  await actionLikeTrigger(infoData);
+                  onUpdate("like");
+                }}
+                onHate={async () => {
+                  await actionHateTrigger(infoData);
+                  onUpdate("hate");
+                }}
+                onSuperLike={() => {
+                  onUpdate();
+                }}
+                onBoost={() => {
+                  onUpdate();
+                }}
+              />
+            ) : (
+              <LaunchedAction data={infoData} />
+            )}
+          </div>
+
         </div>
       </div>
     </SexPullToRefresh>

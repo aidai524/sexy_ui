@@ -4,6 +4,7 @@
   border: 1px solid #3b3b3b;
   background: #252328;
   position: fixed;
+  z-index: 100;
   right: 0px;
   top: 0px;
   box-sizing: border-box;

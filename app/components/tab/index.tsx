@@ -34,6 +34,16 @@ export default function Tab({
     }, [activeNode, onTabChange, nodes])
 
     return <div className={styles.tabs}>
+        <div className={styles.tabHeaders}>
+            {
+                nodes.map((node, index) => {
+                    return <div key={index} onClick={() => {
+                        setTabIndex(index)
+                        onTabChange && onTabChange(node.name)
+                    }} className={(tabIndex === index ? [styles.tab, styles.active] : [styles.tab]).join(' ')}>{node.name}</div>
+                })
+            }
+        </div>
 
         {
             nodes.map((node, index) => {
@@ -45,16 +55,5 @@ export default function Tab({
                 </div>
             })
         }
-
-        <div className={styles.tabHeaders}>
-            {
-                nodes.map((node, index) => {
-                    return <div key={index} onClick={() => {
-                        setTabIndex(index)
-                        onTabChange && onTabChange(node.name)
-                    }} className={(tabIndex === index ? [styles.tab, styles.active] : [styles.tab]).join(' ')}>{node.name}</div>
-                })
-            }
-        </div>
     </div>
 }

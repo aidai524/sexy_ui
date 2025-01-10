@@ -504,13 +504,14 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
               }
             }}
             style={{
+              color: '#000',
               background:
                 activeIndex === 0
-                  ? "rgba(109, 181, 0, 1)"
-                  : "rgba(255, 47, 116, 1)"
+                  ? "#C9FF5D"
+                  : "#FFC9F1"
             }}
           >
-            Place Trade
+            { activeIndex === 0 ? 'Buy' : 'Sell' }
           </MainBtn>
         </div>
       </div>

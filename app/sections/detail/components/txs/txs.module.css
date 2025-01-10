@@ -1,12 +1,30 @@
 .main {
+  background-color: #252328;
+  border: 1px solid #3B3B3B;
+  border-radius: 15px 15px 0 0;
+  padding: 15px;
+}
+
+.filter {
+  margin-bottom: 10px;
+}
+
+.filterItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.filterText {
+  font-size: 12px;
+  color: #9290B1;
 }
 
 .txContent {
   background-color: #121719;
   border-radius: 10px;
-  padding: 5px 12px;
-  margin-left: 5px;
-  margin-right: 5px;
+  padding: 5px 0;
 }
 
 .LaptopContent {

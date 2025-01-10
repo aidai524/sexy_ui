@@ -27,22 +27,6 @@ interface Props {
 export default function Info({ data, mc, onUpdate }: Props) {
   const { isMobile } = useUserAgent();
   const comments = useCommentList({ id: data?.id });
-  const [canFlip, setCanFlip] = useState(false);
-  const { run: scroll } = useDebounceFn(
-    (ev: any = {}) => {
-      setCanFlip(ev.srcElement.scrollingElement.scrollTop <= 75);
-    },
-    { wait: 200 }
-  );
-  useEffect(() => {
-    if (!isMobile) return;
-    setCanFlip(true);
-    document?.addEventListener("scroll", scroll);
-
-    return () => {
-      document?.removeEventListener("scroll", scroll);
-    };
-  }, []);
 
   return (
     <div className={styles.main}>
@@ -51,34 +35,11 @@ export default function Info({ data, mc, onUpdate }: Props) {
         mc={mc}
         data={data}
         showThumbnailHead={false}
+        theme="light"
       />
-      <CommentComp id={data.id} {...comments} />
+      {/* <CommentComp id={data.id} {...comments} /> */}
 
-      <div className={styles.action}>
-        {data.status === 0 ? (
-          <LaunchingAction
-            token={data}
-            style={{ position: isMobile ? "fixed" : "static", bottom: 20 }}
-            canFlip={canFlip}
-            onLike={async () => {
-              await actionLikeTrigger(data);
-              onUpdate("like");
-            }}
-            onHate={async () => {
-              await actionHateTrigger(data);
-              onUpdate("hate");
-            }}
-            onSuperLike={() => {
-              onUpdate();
-            }}
-            onBoost={() => {
-              onUpdate();
-            }}
-          />
-        ) : (
-          <LaunchedAction data={data} />
-        )}
-      </div>
+   
     </div>
   );
 }
