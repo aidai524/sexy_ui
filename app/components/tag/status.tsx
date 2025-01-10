@@ -1,4 +1,4 @@
-import styles from "./launch-tag.module.css";
+import styles from "./status.module.css";
 
 export default function LaunchTag({ type }: { type: number }) {
   if (type === 0) {
