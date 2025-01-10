@@ -1,0 +1,20 @@
+.launchTag {
+  display: inline-block;
+  height: 20px;
+  padding: 0 10px;
+  white-space: nowrap;
+  border-radius: 32px;
+  color: #fff;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  &.launch1 {
+    background-color: #7e8a93;
+  }
+  &.launch2 {
+    background-color: #93b351;
+  }
+  &.launch3 {
+    background-color: #b59100;
+  }
+}

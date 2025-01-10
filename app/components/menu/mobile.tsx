@@ -60,7 +60,7 @@ export default function Mobile() {
 
         <div className={styles.Links}>
           {Links.map((link: any) => (
-            <a className="button" href={link.href}>
+            <a className="button" href={link.href} key={link.icon}>
               <img src={link.icon} />
             </a>
           ))}
