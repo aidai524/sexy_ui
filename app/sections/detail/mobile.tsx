@@ -15,6 +15,7 @@ import useMc from "@/app/hooks/useMc";
 import AvatarDetail from "@/app/components/avatarDetail";
 import Back from "@/app/components/backNew";
 import Menu from "@/app/components/menu";
+import CommnentList from "./components/comment/commnet";
 
 export default function Detail({ token, onBack, onNext }: any) {
   const [activeKey, setActiveKey] = useState("Info");
@@ -111,13 +112,13 @@ export default function Detail({ token, onBack, onNext }: any) {
                   )
                 },
                 {
-                  name: "Buy/Sell",
+                  name: "Comments",
                   content: (
-                    <Trade mc={pumpMc || mc} from="mobile" data={infoData} />
+                    <CommnentList token={infoData}/>
                   )
                 },
                 {
-                  name: "Txs",
+                  name: "Trade",
                   content: <Txs mc={pumpMc || mc} data={infoData} />
                 }
               ]}

@@ -55,8 +55,8 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
             </span>
             <Level level={item.level} />
           </div>
-          <div className={styles.time}>{formatDateTimeAndAgo(item.time)}</div>
         </div>
+        <div className={styles.time}>{formatDateTimeAndAgo(item.time)}</div>
       </div>
       <div className={styles.relayText}>{item.text}</div>
 

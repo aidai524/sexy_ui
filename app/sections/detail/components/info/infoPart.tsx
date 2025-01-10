@@ -1,6 +1,4 @@
-import Thumbnail from "@/app/components/thumbnail";
-import ThumbnailWithFlip from "@/app/components/thumbnail/with-flip";
-import Panel from "../../../../components/panel";
+
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
 import { formatAddress, simplifyNum, timeAgo } from "@/app/utils";
@@ -9,6 +7,10 @@ import { useMemo, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useAccount } from "@/app/hooks/useAccount";
 import useMc from "@/app/hooks/useMc";
+import LaunchTag from "@/app/components/tag/status";
+import Copyed from "@/app/components/copyed";
+import Holder from "@/app/components/holder";
+import { ProgressBar } from "antd-mobile";
 
 interface Props {
   showThumbnailHead: boolean;
@@ -69,12 +71,12 @@ export default function InfoPart({
           <img className={styles.tokenImg} src={data.tokenImg || '/img/token-placeholder.png'} />
         </div>
 
-        <div className={ styles.detailInfo }>
-          <div className={ styles.nameWrapper }>
-            <div className={ styles.name }>{ data.tokenName }</div>
-            <div className={ styles.tickerWrapper }>
-              <div className={ styles.ticker }>Ticker:<span>{ data.ticker }</span></div>
-              
+        <div className={styles.detailInfo}>
+          <div className={styles.nameWrapper}>
+            <div className={styles.name}>{data.tokenName}</div>
+            <div className={styles.tickerWrapper}>
+              <div className={styles.ticker}>Ticker:<span className={styles.des}>{data.ticker}</span></div>
+              <LaunchTag type={data.status as number} />
             </div>
           </div>
 
@@ -146,74 +148,96 @@ export default function InfoPart({
       </div>
 
       {!!data.about && (
-        <>
-          <Sep size={sepSize} />
-          <Panel theme={theme}>
-            <div className={styles.aboutUs}>
-              <div className={styles.abountDetail}>{data.about}</div>
-            </div>
-          </Panel>
-        </>
+        <div className={styles.aboutUs}>
+          <div className={styles.abountDetail}>{data.about}</div>
+        </div>
       )}
 
-      {data.website && (
-        <>
-          <Sep size={sepSize} />
-          <Panel theme={theme}>
-            <div className={styles.aboutUs}>
-              <div className={styles.aboutHeader}>Website</div>
-              <div className={styles.linkDetail}>
-                <a className={styles.link} target="_blank" href={data.website}>
-                  {data.website}
-                </a>
-              </div>
-            </div>
-          </Panel>
-        </>
-      )}
+      <div className={ styles.panel }>
+        <div className={ styles.singleProgress }>
+          <div className={ styles.progressTitleWrapper }>
+            <div className={ styles.progressTitle }>Bonding curve progress</div>
+            <div className={ styles.progressPercent }>80%</div>
+          </div>
 
-      {(data.x || data.tg || data.discord) && (
-        <>
-          <Sep size={sepSize} />
-          <Panel theme={theme}>
-            <div className={styles.aboutUs}>
-              <div className={styles.aboutHeader}>Community</div>
-              <div
-                className={styles.communityIcons}
-                style={{
-                  gap: isMobile ? "15vw" : "60px"
-                }}
+          <ProgressBar percent={80} style={{
+              '--track-width': '14px',
+              '--fill-color': '#FBCA04',
+              '--track-color': '#29242B'
+            }}/>
+
+          <div className={ styles.progressDesc }>Graduate this coin to Orca at $50,403 market cap.
+            There is 43.46 SOL in the bonding curve.</div>
+        </div>
+
+        <div className={ styles.singleProgress } style={{ marginTop: 15 }}>
+          <div className={ styles.progressTitleWrapper }>
+            <div className={ styles.progressTitle }>King of the hill progress</div>
+            <div className={ styles.progressPercent }>80%</div>
+          </div>
+
+          <ProgressBar percent={80} style={{
+              '--track-width': '14px',
+              '--fill-color': '#BF66FF',
+              '--track-color': '#29242B'
+            }}/>
+
+          <div className={ styles.progressDesc } style={{ color: '#BF66FF' }}>Crowned king of the hill on 1/6/2025, 8:50:03 PM</div>
+        </div>
+      </div>
+
+      <div className={styles.panel}>
+        <div className={ styles.tokenAddressWrapper }>
+          <div className={ styles.tokenAddressTitle }>Contract address:</div>
+          <div className={ styles.tokenAddressContent }>
+            <div className={ styles.tokenAddress }>{ formatAddress(data.address as string) }</div>
+            <Copyed value={data.address as string}/>
+          </div>
+        </div>
+      </div>
+
+      {(data.x || data.tg || data.discord || data.website) && (
+        <div className={styles.panel}>
+          <div
+            className={styles.communityIcons}
+            style={{
+              gap: isMobile ? "15vw" : "60px"
+            }}
+          >
+            {data.website && (
+              <a className={styles.link} target="_blank" href={data.website}>
+                <img src="/img/community/website.svg" />
+              </a>
+            )}
+
+            {data.x && (
+              <a className={styles.link} target="_blank" href={data.x}>
+                <img src="/img/community/x.svg" />
+              </a>
+            )}
+
+            {data.tg && (
+              <a className={styles.link} target="_blank" href={data.tg}>
+                <img src="/img/community/telegram.svg" />
+              </a>
+            )}
+
+            {data.discord && (
+              <a
+                className={styles.link}
+                target="_blank"
+                href={data.discord}
               >
-                {data.x && (
-                  <a className={styles.link} target="_blank" href={data.x}>
-                    <img src="/img/community/x.svg" />
-                  </a>
-                )}
-
-                {data.tg && (
-                  <a className={styles.link} target="_blank" href={data.tg}>
-                    <img src="/img/community/telegram.svg" />
-                  </a>
-                )}
-
-                {data.discord && (
-                  <a
-                    className={styles.link}
-                    target="_blank"
-                    href={data.discord}
-                  >
-                    <img src="/img/community/discard.svg" />
-                  </a>
-                )}
-              </div>
-            </div>
-          </Panel>
-        </>
+                <img src="/img/community/discard.svg" />
+              </a>
+            )}
+          </div>
+        </div>
       )}
+
+      <div className={styles.panel}>
+        <Holder address={data.address}/>
+      </div>  
     </div>
   );
-}
-
-function Sep({ size }: any) {
-  return <div style={{ height: size }} />;
 }

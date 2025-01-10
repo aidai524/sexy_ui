@@ -7,6 +7,7 @@ import Empty from "@/app/components/empty";
 import { defaultAvatar } from "@/app/utils/config";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
+import { Switch } from "antd-mobile";
 
 const addressReg = /(\w{2}).+(\w{2})/;
 
@@ -22,7 +23,13 @@ export function formatAddress(address: string) {
   }
 }
 
-export default function Txs({ from, data, mc }: any) {
+const switchStyle = {
+  '--checked-color': '#90CD15',
+  '--width': '37px',
+  '--height': '16px'
+}
+
+export default function Txs({ from, data }: any) {
   const [list, setList] = useState([]);
   const router = useRouter();
   const { userInfo } = useAuth();
@@ -41,7 +48,24 @@ export default function Txs({ from, data, mc }: any) {
 
   return (
     <div className={styles.main}>
-      <CA from={from} data={data} mc={mc} />
+      <div className={ styles.filter }>
+        <div className={ styles.filterItem }>
+          <div className={ styles.filterText }>Filter by size 0.05 (1243 trades)</div>
+          <Switch style={switchStyle} />
+        </div>
+
+        <div className={ styles.filterItem }>
+          <div className={ styles.filterText }>Filter by my following (12 trades)</div>
+          <Switch style={switchStyle} />
+        </div>
+
+        <div className={ styles.filterItem }>
+          <div className={ styles.filterText }>Filter by own trades (0 trades)</div>
+          <Switch style={switchStyle} />
+        </div>
+      </div>
+      
+
 
       {data && (
         <div
