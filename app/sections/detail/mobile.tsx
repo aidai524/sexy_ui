@@ -9,10 +9,12 @@ import { useEffect, useMemo, useState } from "react";
 import Tab from "@/app/components/tab";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import CircleLoading from "@/app/components/icons/loading";
-import MobileBg from "./mobile-bg";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import useTokenDetail from "./use-token-detail";
 import useMc from "@/app/hooks/useMc";
+import AvatarDetail from "@/app/components/avatarDetail";
+import Back from "@/app/components/backNew";
+import Menu from "@/app/components/menu";
 
 export default function Detail({ token, onBack, onNext }: any) {
   const [activeKey, setActiveKey] = useState("Info");
@@ -32,8 +34,6 @@ export default function Detail({ token, onBack, onNext }: any) {
     tokenAddress: infoData?.address,
     disable: infoData?.status < 1
   });
-
-  console.log("pumpMc:", pumpMc);
 
   const { getMC, pool } = useTokenTrade({
     tokenName: infoData?.tokenName as string,
@@ -79,11 +79,19 @@ export default function Detail({ token, onBack, onNext }: any) {
       }}
     >
       <div className={styles.main}>
-        <MobileBg className={styles.Bg} />
         <div className={styles.Content}>
-          <AvatarBack data={infoData} onBack={onBack} />
+          <div className={ styles.header }>
+            <div className={ styles.backWrapper }>
+              <Back />
+              <AvatarDetail token={infoData} mc={pumpMc || mc}/>
+            </div>
+            <div className={ styles.menuWrapper }>
+              <Menu />
+            </div>
+          </div>
+          
 
-          {infoData.status === 0 ? (
+          {/* {infoData.status === 0 ? (
             <Info
               data={infoData}
               mc={pumpMc || mc}
@@ -127,9 +135,8 @@ export default function Detail({ token, onBack, onNext }: any) {
                 }
               ]}
             />
-          )}
+          )} */}
         </div>
-        {activeKey === "Info" && <MobileBg className={styles.BottomBg} />}
       </div>
     </SexPullToRefresh>
   );
