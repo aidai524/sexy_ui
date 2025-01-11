@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import styles from "./index.module.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import useDanmaku from "@/app/hooks/use-danmaku";
 
 export default function DanmakuComp({ token }: any) {
@@ -21,6 +21,24 @@ export default function DanmakuComp({ token }: any) {
       clearTimeout(timeRef.current);
     };
   }, []);
+
+  const data = useMemo(() => {
+    if (list.length === 0) return [];
+    if (list.length >= 4) return [...list, ...list];
+    if (list.length === 3) return [...list, ...list, ...list];
+    if (list.length === 2) return [...list, ...list, ...list, ...list];
+    if (list.length === 1)
+      return [
+        ...list,
+        ...list,
+        ...list,
+        ...list,
+        ...list,
+        ...list,
+        ...list,
+        ...list
+      ];
+  }, [list]);
 
   return (
     <div className={styles.Container}>
@@ -48,7 +66,7 @@ export default function DanmakuComp({ token }: any) {
             delay: 10
           }}
         >
-          {[...list, ...list]?.map((item: any, i: number) => (
+          {data?.map((item: any, i: number) => (
             <div key={item.id + Math.random() + Date.now()}>
               <div className={styles.Comment}>
                 {item.account_data?.icon && (
