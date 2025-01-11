@@ -8,16 +8,18 @@ import Trade from "../trade";
 import SmokePanel from "@/app/components/smokHot/smoke-panel";
 import Danmaku from "@/app/components/danmaku";
 import TradeModal from "@/app/components/trade-modal";
+import CommentsModal from "../comments";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "../hooks/use-holders";
 
-export default function Token({ token, onUpdate }: any) {
+export default function Token({ isCurrent, token, onUpdate }: any) {
   const [imgHeight, setImgHeight] = useState("80%");
 
   const descContentRef = useRef<any>();
   const [showFlipModal, setShowFlipModal] = useState(false);
   const [showTradeModal, setShowTradeModal] = useState(false);
+  const [showCommentsModal, setShowCommentsModal] = useState(false);
 
   const { total: totalHolders } = useHolders(token);
 
@@ -54,7 +56,8 @@ export default function Token({ token, onUpdate }: any) {
               )}
             </div>
             <div className={styles.Bottom}>
-              <Danmaku token={token} />
+              {isCurrent && <Danmaku token={token} />}
+
               {token.status === 0 ? (
                 !token.isSuperLike ? (
                   <Flip
@@ -89,6 +92,9 @@ export default function Token({ token, onUpdate }: any) {
                 if (type === "flip") {
                   setShowFlipModal(true);
                 }
+                if (type === "comments") {
+                  setShowCommentsModal(true);
+                }
               }}
               totalHolders={totalHolders}
               onSuccess={(type: string) => {
@@ -103,28 +109,43 @@ export default function Token({ token, onUpdate }: any) {
           </>
         )}
       </div>
-      {token?.id && (
-        <>
-          <SmokePanel
-            token={token}
-            show={showFlipModal}
-            onSuccess={() => {
-              token.prePaid = token.prePaid + 1;
-              onUpdate(token);
-              setShowFlipModal(false);
-            }}
-            onHide={() => {
-              setShowFlipModal(false);
-            }}
-          />
-          <TradeModal
-            show={showTradeModal}
-            onClose={() => {
-              setShowTradeModal(false);
-            }}
-            data={token}
-          />
-        </>
+      {showFlipModal && (
+        <SmokePanel
+          token={token}
+          show={showFlipModal}
+          onSuccess={() => {
+            token.prePaid = token.prePaid + 1;
+            onUpdate(token);
+            setShowFlipModal(false);
+          }}
+          onHide={() => {
+            setShowFlipModal(false);
+          }}
+        />
+      )}
+      {showTradeModal && (
+        <TradeModal
+          show={showTradeModal}
+          onClose={() => {
+            setShowTradeModal(false);
+          }}
+          data={token}
+        />
+      )}
+      {showCommentsModal && (
+        <CommentsModal
+          show={showCommentsModal}
+          onClose={() => {
+            setShowCommentsModal(false);
+          }}
+          id={token.id}
+          onSuccess={() => {
+            // TODO:
+            // token.isLike = true;
+            //       token.like = token.like + 1;
+            //       onUpdate(token);
+          }}
+        />
       )}
     </>
   );

@@ -21,8 +21,16 @@ export default function HomeMobile() {
           transform: `translateX(${-currentTab * 100}vw)`
         }}
       >
-        <List type="preLaunch" onChangeTab={setCurrentTab} />
-        <List type="launching" onChangeTab={setCurrentTab} />
+        <List
+          type="preLaunch"
+          onChangeTab={setCurrentTab}
+          isCurrentTab={currentTab === 0}
+        />
+        <List
+          type="launching"
+          onChangeTab={setCurrentTab}
+          isCurrentTab={currentTab === 1}
+        />
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import styles from "./index.module.css";
 let startY = 0;
 let startX = 0;
 let started = false;
-export default function List({ type, onChangeTab }: any) {
+export default function List({ type, isCurrentTab, onChangeTab }: any) {
   const {
     getIndex,
     hasNext,
@@ -83,6 +83,7 @@ export default function List({ type, onChangeTab }: any) {
             <Token
               key={item}
               token={token}
+              isCurrent={index === i && isCurrentTab}
               onUpdate={(token: any) => {
                 updateProject(type, token);
               }}

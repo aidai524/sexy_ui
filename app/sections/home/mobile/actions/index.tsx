@@ -48,7 +48,12 @@ export default function Actions({
           </button>
         </>
       )}
-      <button className={`${styles.Item} button`}>
+      <button
+        className={`${styles.Item} button`}
+        onClick={() => {
+          onClick("comments");
+        }}
+      >
         <CommentIcon />
         <span>{token.prePaid}</span>
       </button>

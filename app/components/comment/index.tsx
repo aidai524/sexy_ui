@@ -33,11 +33,15 @@ export default function CommentComp({
     <>
       <div className={styles.title} style={titleStyle}>
         <div>Commnet</div>
-        <div className={styles.postBtn} onClick={() => {
-          setShowEdit(true)
-        }}>Post</div>
+        <div
+          className={styles.postBtn}
+          onClick={() => {
+            setShowEdit(true);
+          }}
+        >
+          Post
+        </div>
       </div>
-
 
       {commentList.length > 0 && <div>{CommentList}</div>}
 
@@ -53,20 +57,64 @@ export default function CommentComp({
 
       <Modal
         visible={showEdit}
-        content={<div
-          className={styles.inputWrapper}
-          style={{ backgroundColor: theme === "dark" ? "#000" : "transparent" }}
-        >
-          <div className={styles.inputTitle}>Comments</div>
-          <textarea
-            value={commentText}
-            onKeyUp={async (e) => {
-              if (!userInfo?.address) {
-                // @ts-ignore
-                window?.connect();
-                return;
-              }
-              if (e.keyCode === 13 && commentText) {
+        content={
+          <div
+            className={styles.inputWrapper}
+            style={{
+              backgroundColor: theme === "dark" ? "#000" : "transparent"
+            }}
+          >
+            <div className={styles.inputTitle}>Comments</div>
+            <textarea
+              value={commentText}
+              onKeyUp={async (e) => {
+                if (!userInfo?.address) {
+                  // @ts-ignore
+                  window?.connect();
+                  return;
+                }
+                if (e.keyCode === 13 && commentText) {
+                  if (isSubmiting) {
+                    return;
+                  }
+                  setIsSubmiting(true);
+
+                  const query: any = {
+                    project_id: id,
+                    text: commentText
+                  };
+                  const queryStr = Object.keys(query)
+                    .map((key) => `${key}=${encodeURIComponent(query[key])}`)
+                    .join("&");
+                  const val = await httpAuthPost(
+                    "/project/comment?" + queryStr
+                  );
+
+                  if (val.code === 0) {
+                    loadMoreComment(0);
+                    setCommentText("");
+                  }
+
+                  setIsSubmiting(false);
+                }
+              }}
+              onChange={(e) => {
+                setCommentText(e.target.value);
+              }}
+              className={`${styles.input} ${
+                theme === "light" ? styles.LightInput : styles.DarkInput
+              }`}
+              placeholder="Say something..."
+            />
+
+            <MainBtn
+              onClick={async () => {
+                if (!userInfo?.address) {
+                  // @ts-ignore
+                  window?.connect();
+                  return;
+                }
+
                 if (isSubmiting) {
                   return;
                 }
@@ -84,49 +132,21 @@ export default function CommentComp({
                 if (val.code === 0) {
                   loadMoreComment(0);
                   setCommentText("");
+                  setShowEdit(false);
                 }
 
                 setIsSubmiting(false);
-              }
-            }}
-            onChange={(e) => {
-              setCommentText(e.target.value);
-            }}
-            className={`${styles.input} ${theme === "light" ? styles.LightInput : styles.DarkInput
-              }`}
-            placeholder="Say something..."
-          />
-
-          <MainBtn onClick={async () => {
-            if (!userInfo?.address) {
-              // @ts-ignore
-              window?.connect();
-              return;
-            }
-
-            if (isSubmiting) {
-              return;
-            }
-            setIsSubmiting(true);
-
-            const query: any = {
-              project_id: id,
-              text: commentText
-            };
-            const queryStr = Object.keys(query)
-              .map((key) => `${key}=${encodeURIComponent(query[key])}`)
-              .join("&");
-            const val = await httpAuthPost("/project/comment?" + queryStr);
-
-            if (val.code === 0) {
-              loadMoreComment(0);
-              setCommentText("");
-              setShowEdit(false)
-            }
-
-            setIsSubmiting(false);
-          }} style={{ backgroundColor: '#9AB3EF', color: '#000', marginTop: 15 }}>Post</MainBtn>
-        </div>}
+              }}
+              style={{
+                backgroundColor: "#9AB3EF",
+                color: "#000",
+                marginTop: 15
+              }}
+            >
+              Post
+            </MainBtn>
+          </div>
+        }
         closeOnAction
         closeOnMaskClick
         onClose={() => {
