@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 
-
 const UserAgentContext = React.createContext<any | null>(null);
 
 export const UserAgentProvider: React.FC<{
@@ -11,7 +10,9 @@ export const UserAgentProvider: React.FC<{
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.navigator.userAgent.includes("Mobile"));
+      setIsMobile(
+        window.navigator.userAgent.includes("Mobile") || window.innerWidth < 450
+      );
       // setIsMobile(false);
     };
 

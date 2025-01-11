@@ -21,7 +21,16 @@ export default function List({ type, onChangeTab }: any) {
   const [y, setY] = useState(0);
 
   useEffect(() => {
-    if (index) setY(-index * window.innerHeight);
+    if (index) {
+      setY(-index * window.innerHeight);
+    }
+    const prevent = function (e: any) {
+      e.preventDefault();
+    };
+    document.body.addEventListener("touchmove", prevent, { passive: false });
+    return () => {
+      document.body.removeEventListener("touchmove", prevent);
+    };
   }, []);
 
   return (
@@ -35,8 +44,10 @@ export default function List({ type, onChangeTab }: any) {
           startY = ev.touches[0].clientY;
           startX = ev.touches[0].clientX;
           started = true;
+          ev.preventDefault();
         }}
         onTouchMove={(ev) => {
+          ev.preventDefault();
           if (!started) return;
           let diffY = ev.touches[0].clientY - startY;
           let diffX = ev.touches[0].clientX - startX;

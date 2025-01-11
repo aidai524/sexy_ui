@@ -9,11 +9,12 @@ import SmokePanel from "@/app/components/smokHot/smoke-panel";
 import Danmaku from "@/app/components/danmaku";
 import TradeModal from "@/app/components/trade-modal";
 import { motion } from "framer-motion";
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect } from "react";
 import useHolders from "../hooks/use-holders";
 
 export default function Token({ token, onUpdate }: any) {
   const [imgHeight, setImgHeight] = useState("80%");
+
   const descContentRef = useRef<any>();
   const [showFlipModal, setShowFlipModal] = useState(false);
   const [showTradeModal, setShowTradeModal] = useState(false);
@@ -22,12 +23,15 @@ export default function Token({ token, onUpdate }: any) {
 
   useEffect(() => {
     if (descContentRef.current) {
-      setImgHeight(`calc(100% - ${descContentRef.current.clientHeight}px)`);
+      setImgHeight(
+        `${window.innerHeight - descContentRef.current.clientHeight}px`
+      );
     }
   }, []);
+
   return (
     <>
-      <div className={styles.Container}>
+      <div className={styles.Container} style={{ height: window.innerHeight }}>
         {token?.id && (
           <>
             <Media imgHeight={imgHeight} data={token} />
