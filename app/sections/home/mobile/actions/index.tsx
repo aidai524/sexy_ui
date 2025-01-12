@@ -22,8 +22,8 @@ export default function Actions({
             like={token.like}
             onClick={async () => {
               if (token.isLike) return;
-              await actionLikeTrigger(token);
-              onSuccess("like");
+              const result = await actionLikeTrigger(token);
+              if (result) onSuccess("like");
             }}
           />
           <button

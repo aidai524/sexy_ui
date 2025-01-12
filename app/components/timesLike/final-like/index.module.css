@@ -1,0 +1,38 @@
+.Container {
+  width: calc(100vw - 50px);
+  height: 150px;
+  background: url(/img/home/final-like-bg.png) center;
+  background-size: cover;
+  border-radius: 20px;
+  padding: 16px 0px 0px 24px;
+}
+
+.Title {
+  color: #000;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.Desc {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-top: 18px;
+}
+
+.Avatar {
+  width: 68px;
+  height: 68px;
+  flex-shrink: 0;
+  border-radius: 60px;
+  border: 4px solid #000;
+}

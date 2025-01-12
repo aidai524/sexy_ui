@@ -1,7 +1,7 @@
 :root {
   --background: #0d1012;
   --foreground: #fff;
-  --part-bg: #FBCA04;
+  --part-bg: #fbca04;
 }
 
 :root body {
@@ -247,4 +247,8 @@ div.adm-tab-bar-wrap {
 .adm-checkbox.adm-checkbox-checked div.adm-checkbox-icon {
   border-color: rgba(146, 144, 177, 0.6);
   background-color: var(--part-bg);
+}
+
+.final-like-modal .adm-center-popup-wrap {
+  top: calc(100% - 120px) !important;
 }
