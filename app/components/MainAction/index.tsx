@@ -23,59 +23,14 @@ export default function MainAction({
   onSuperLike,
   token
 }: any) {
-  const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } =
+
+  const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger, showShare } =
     useMessage();
   const { address } = useAccount();
   const { isMobile } = useUserAgent();
 
   return (
     <div className={styles.mainAction}>
-      <div
-        onClick={() => {
-          if (!address) {
-            //@ts-ignore
-            window.connect();
-            return;
-          }
-
-          setHateTrigger(true);
-          onHate();
-          setTimeout(() => {
-            setHateTrigger(false);
-          }, 1600);
-        }}
-        className={[
-          styles.actionIcon,
-          hateTrigger ? styles.hate : "",
-          "button"
-        ].join(" ")}
-        style={{}}
-      >
-        <DisLike fill={hateTrigger ? "#000000" : "#C7DDEE"} id={ids?.dislike} />
-
-        {/* <DisLike fill="#000000" /> */}
-      </div>
-      <div style={{ marginTop: isMobile ? "-30px" : 0 }}>
-        {canFlip ? (
-          <SmokeButtonWithFlip
-            size={48}
-            onClick={() => {
-              onSuperLike && onSuperLike();
-            }}
-            token={token}
-            id={ids?.smoke}
-          />
-        ) : (
-          <SmokeBtn
-            isBigIcon={true}
-            token={token}
-            onClick={() => {
-              onSuperLike && onSuperLike();
-            }}
-            id={ids?.smoke}
-          />
-        )}
-      </div>
       <div
         onClick={() => {
           if (!address) {
@@ -96,25 +51,35 @@ export default function MainAction({
         }}
         className={[
           styles.actionIcon,
-          likeTrigger ? styles.tick : "",
+          styles.likeIcon,
           "button"
         ].join(" ")}
+        style={{ backgroundColor: token.isLike ? '#000' : '#FF045C', border: token.isLike ? '1px solid #FF045C': 'none'}}
       >
-        <Like id={ids?.like} />
-        {likeAnis.map((item, index) => {
-          return (
-            <div
-              key={item}
-              style={{
-                animationDelay: `${index / 4}s`,
-                animationName: likeTrigger ? styles["float" + (index + 1)] : ""
-              }}
-              className={styles.bolloon}
-            >
-              <img src={item} key={item} />
-            </div>
-          );
-        })}
+        <Like id={ids?.like} liked={token.isLike} />
+      </div>
+
+      <div className={styles.actionIcon + ' ' + styles.smokeIcon}>
+        <SmokeBtn
+          isBigIcon={true}
+          token={token}
+          onClick={() => {
+            onSuperLike && onSuperLike();
+          }}
+          id={ids?.smoke}
+        />
+      </div>
+
+      <div onClick={() => {
+          if (!address) {
+            //@ts-ignore
+            window.connect();
+            return;
+          }
+
+
+      }}>
+        <Share />
       </div>
     </div>
   );
@@ -140,35 +105,35 @@ function DisLike({ fill = "#C7DDEE", id }: { fill?: string; id?: string }) {
   );
 }
 
-function Like({ id }: any) {
+function Like({ id, liked }: any) {
   return (
     <div className={styles.likeSvg}>
-      <svg
-        width="30"
-        height="26"
-        viewBox="0 0 30 26"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        id={id}
-      >
-        <path
-          d="M8.25 0C3.69365 0 0 3.69368 0 8.25C0 16.5 9.75 24 15 25.7446C20.25 24 30 16.5 30 8.25C30 3.69368 26.3063 0 21.75 0C18.9598 0 16.493 1.38518 15 3.50535C13.507 1.38518 11.0402 0 8.25 0Z"
-          fill="url(#paint0_linear_60_3189)"
-        />
-        <defs>
-          <linearGradient
-            id="paint0_linear_60_3189"
-            x1="15"
-            y1="0"
-            x2="15"
-            y2="25.7446"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#FF8ABB" />
-            <stop offset="1" stopColor="#FF2681" />
-          </linearGradient>
-        </defs>
+      <svg width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.188688 4.05842C-1.39401 10.3649 7.41097 16.9674 10.5062 18C15.665 15.9347 22.1558 9.36409 20.8238 4.05832C19.2567 -2.18416 12.8277 -0.0727158 10.5062 2.76718C8.9586 0.185311 1.75531 -2.18404 0.188688 4.05842Z" fill={liked ? "#FF045C" : '#fff'} />
       </svg>
+      <span style={{ color: liked ? '#FF045C': '#fff' }}>{liked ? 'Liked' : 'Like'}</span>
     </div>
   );
+}
+
+
+function Share() {
+  return <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g filter="url(#filter0_b_6153_1611)">
+      <circle cx="25" cy="25" r="25" fill="#9290B1" fill-opacity="0.3" />
+    </g>
+    <circle cx="29.7049" cy="19.5455" r="2.54547" stroke="white" stroke-width="2" />
+    <circle cx="29.7049" cy="30.4549" r="2.54547" stroke="white" stroke-width="2" />
+    <circle cx="18.4318" cy="25.0004" r="3.63638" fill="white" />
+    <path d="M27.5231 20.6362L19.1594 24.9999L27.5231 29.3635" stroke="white" stroke-width="2" />
+    <defs>
+      <filter id="filter0_b_6153_1611" x="-10" y="-10" width="70" height="70" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feGaussianBlur in="BackgroundImageFix" stdDeviation="5" />
+        <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6153_1611" />
+        <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_6153_1611" result="shape" />
+      </filter>
+    </defs>
+  </svg>
+
 }

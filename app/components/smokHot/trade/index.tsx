@@ -137,7 +137,7 @@ export default function Trade({
                 setIsLoading(false);
               }
             }}
-            style={{ backgroundColor: "#9514FF" }}
+            style={{ backgroundColor: "#FBCA04", color: '#000' }}
           >
             Flip
           </MainBtn>

@@ -140,8 +140,8 @@
 }
 
 .launchTip {
-    background-color: rgba(255, 67, 146, 0.17);
+    background-color: #FBCA041A;
     padding: 15px;
-    color: rgba(255, 72, 149, 1);
+    color: var(--part-bg);
     text-align: center;
 }
