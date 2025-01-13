@@ -6,6 +6,7 @@ import PreviewNode from "./PreviewNode";
 
 import { useState } from "react";
 import type { Project } from "@/app/type";
+import PageHeader from "@/app/components/page-header/mobile";
 
 export default function Create() {
   const [renderType, setRenderType] = useState(0);
@@ -14,7 +15,7 @@ export default function Create() {
   return (
     <div className={styles.main}>
       <div className={styles.title}>
-        <div className={styles.titleText}>Create Token</div>
+        <PageHeader title="Create Token"/>
         <div className={styles.editProgress}>
           <div
             className={[

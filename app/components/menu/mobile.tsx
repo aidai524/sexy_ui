@@ -6,9 +6,11 @@ import config, { Links } from "./config";
 import styles from "./mobile.module.css";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Mobile({ theme }: any) {
   const [show, setShow] = useState(false);
+  const router = useRouter()
 
   useEffect(() => {
     const close = () => {
@@ -53,12 +55,19 @@ export default function Mobile({ theme }: any) {
         </div>
         <div className={styles.List}>
           {config.map((item: any) => (
-            <Link key={item.key} href={item.path}>
-              <button className={`button ${styles.Item}`}>
-                {item.icon}{" "}
-                <span className={styles.ItemText}>{item.label}</span>
-              </button>
-            </Link>
+            <button key={item.key} onClick={() => {
+              //@ts-ignore
+              if (!window.sexAddress) {
+                //@ts-ignore
+                window.connect();
+                return;
+              }
+
+              router.push(item.path)
+            }} className={`button ${styles.Item}`}>
+              {item.icon}{" "}
+              <span className={styles.ItemText}>{item.label}</span>
+            </button>
           ))}
         </div>
 
