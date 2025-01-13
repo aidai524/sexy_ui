@@ -1,7 +1,8 @@
+"use client";
+
 import { useState } from "react";
 import Header from "./header";
 import List from "./list";
-import TourGuid from "./tour-guid";
 import styles from "./home-new.module.css";
 
 export default function HomeMobile() {
@@ -34,7 +35,6 @@ export default function HomeMobile() {
           />
         </div>
       </div>
-      <TourGuid />
     </>
   );
 }

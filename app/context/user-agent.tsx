@@ -7,17 +7,17 @@ export const UserAgentProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const [isMobile, setIsMobile] = useState<boolean>();
+  const [innerHeight, setInnerHeight] = useState<number>(0);
 
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(
         window.navigator.userAgent.includes("Mobile") || window.innerWidth < 450
       );
-      // setIsMobile(false);
     };
 
     checkIsMobile();
-
+    setInnerHeight(window.innerHeight);
     window.addEventListener("resize", checkIsMobile);
     return () => {
       window.removeEventListener("resize", checkIsMobile);
@@ -25,7 +25,7 @@ export const UserAgentProvider: React.FC<{
   }, []);
 
   return (
-    <UserAgentContext.Provider value={{ isMobile }}>
+    <UserAgentContext.Provider value={{ isMobile, innerHeight }}>
       {isMobile !== undefined && children}
     </UserAgentContext.Provider>
   );

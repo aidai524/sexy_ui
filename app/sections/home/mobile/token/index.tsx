@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "./index.module.css";
 import Media from "@/app/components/thumbnail/media";
 import Desc from "./desc";
@@ -12,10 +14,11 @@ import CommentsModal from "../comments";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "../hooks/use-holders";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Token({ isCurrent, token, onUpdate }: any) {
   const [imgHeight, setImgHeight] = useState("80%");
-
+  const { innerHeight } = useUserAgent();
   const descContentRef = useRef<any>();
   const [showFlipModal, setShowFlipModal] = useState(false);
   const [showTradeModal, setShowTradeModal] = useState(false);
@@ -25,15 +28,13 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
 
   useEffect(() => {
     if (descContentRef.current) {
-      setImgHeight(
-        `${window.innerHeight - descContentRef.current.clientHeight}px`
-      );
+      setImgHeight(`${innerHeight - descContentRef.current.clientHeight}px`);
     }
   }, []);
 
   return (
     <>
-      <div className={styles.Container} style={{ height: window.innerHeight }}>
+      <div className={styles.Container} style={{ height: innerHeight }}>
         {token?.id && (
           <>
             <Media imgHeight={imgHeight} data={token} />

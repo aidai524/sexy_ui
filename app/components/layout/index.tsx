@@ -22,7 +22,7 @@ export default function Layout(props: any) {
   const search = useSearchParams();
   const { publicKey } = useWallet();
   const { setVisible: setAirdropVisible } = useAirdropStore();
-  const { setReferral} = useReferralStore()
+  const { setReferral } = useReferralStore();
 
   const isAirdrop = useMemo(() => {
     if (!publicKey) return false;
@@ -31,7 +31,7 @@ export default function Layout(props: any) {
     if (!Cookies.get("referral")) {
       console.log("referral saved: %o", search.get("referral"));
       Cookies.set("referral", search.get("referral") as string, { path: "/" });
-      setReferral(search.get("referral") as string)
+      setReferral(search.get("referral") as string);
     }
     if (!search.get("airdrop")) return false;
     return true;
@@ -54,7 +54,9 @@ export default function Layout(props: any) {
     });
 
     getConfig().then((stateData) => {
-      setPrepaidDelayTime(stateData.prepaidWithdrawDelayTime.toNumber() * 1000);
+      setPrepaidDelayTime(
+        stateData.prepaidWithdrawDelayTime?.toNumber() * 1000
+      );
     });
   }, []);
 

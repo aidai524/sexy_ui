@@ -1,6 +1,5 @@
 import { httpGet } from "@/app/utils";
 import { useEffect, useState, useRef, useCallback } from "react";
-import type { Project } from "@/app/type";
 import { useProjects, type Type } from "@/app/store/use-projects";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";

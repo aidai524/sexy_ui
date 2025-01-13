@@ -1,8 +1,11 @@
 import Token from "../token";
 import Empty from "@/app/components/empty";
+import TourGuid from "../tour-guid";
 import useData from "@/app/sections/home/hooks/use-data-mobile";
 import { useEffect, useState } from "react";
+import CircleLoading from "@/app/components/icons/loading";
 import styles from "./index.module.css";
+import { useUserAgent } from "@/app/context/user-agent";
 
 let startY = 0;
 let startX = 0;
@@ -19,10 +22,11 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   } = useData(type);
   const index = getIndex(type);
   const [y, setY] = useState(0);
+  const { innerHeight } = useUserAgent();
 
   useEffect(() => {
     if (index) {
-      setY(-index * window.innerHeight);
+      setY(-index * innerHeight);
     }
     const prevent = function (e: any) {
       e.preventDefault();
@@ -34,67 +38,75 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   }, []);
 
   return (
-    <div className={styles.Container}>
-      <div
-        className={styles.List}
-        style={{
-          transform: `translateY(${y}px)`
-        }}
-        onTouchStart={(ev: any) => {
-          startY = ev.touches[0].clientY;
-          startX = ev.touches[0].clientX;
-          started = true;
-          ev.preventDefault();
-        }}
-        onTouchMove={(ev) => {
-          ev.preventDefault();
-          if (!started) return;
-          let diffY = ev.touches[0].clientY - startY;
-          let diffX = ev.touches[0].clientX - startX;
-          if (Math.abs(diffX) > 100) {
-            onChangeTab(diffX < 0 ? 1 : 0);
-            return;
-          }
-          if (!list.length) return;
-          let currentIndex = index;
-          if (Math.abs(diffY) > 100) {
-            if (diffY < 0) {
-              if (currentIndex < list.length) currentIndex++;
-            } else {
-              if (currentIndex > 0) currentIndex--;
+    <>
+      <div className={styles.Container}>
+        <div
+          className={styles.List}
+          style={{
+            transform: `translateY(${y}px)`
+          }}
+          onTouchStart={(ev: any) => {
+            startY = ev.touches[0].clientY;
+            startX = ev.touches[0].clientX;
+            started = true;
+            ev.preventDefault();
+          }}
+          onTouchMove={(ev) => {
+            ev.preventDefault();
+            if (!started) return;
+            let diffY = ev.touches[0].clientY - startY;
+            let diffX = ev.touches[0].clientX - startX;
+            if (Math.abs(diffX) > 100) {
+              onChangeTab(diffX < 0 ? 1 : 0);
+              return;
             }
-            diffY = -window.innerHeight * currentIndex;
-            onChangeIndex(currentIndex);
-            setY(diffY);
+            if (!list.length) return;
+            let currentIndex = index;
+            if (Math.abs(diffY) > 100) {
+              if (diffY < 0) {
+                if (currentIndex < list.length) currentIndex++;
+              } else {
+                if (currentIndex > 0) currentIndex--;
+              }
+              diffY = -innerHeight * currentIndex;
+              onChangeIndex(currentIndex);
+              setY(diffY);
+              started = false;
+            }
+          }}
+          onTouchEnd={() => {
             started = false;
-          }
-        }}
-        onTouchEnd={() => {
-          started = false;
-        }}
-      >
-        {list?.map((item: number, i: number) => {
-          let token = null;
+          }}
+        >
+          {list?.map((item: number, i: number) => {
+            let token = null;
 
-          if (Math.abs(i - index) < 2 && item) {
-            token = getProjectById(type, item);
-          }
-          return (
-            <Token
-              key={item}
-              token={token}
-              isCurrent={index === i && isCurrentTab}
-              onUpdate={(token: any) => {
-                updateProject(type, token);
-              }}
-            />
-          );
-        })}
+            if (Math.abs(i - index) < 2 && item) {
+              token = getProjectById(type, item);
+            }
+            return (
+              <Token
+                key={item}
+                token={token}
+                isCurrent={index === i && isCurrentTab}
+                onUpdate={(token: any) => {
+                  updateProject(type, token);
+                }}
+              />
+            );
+          })}
 
-        {!list?.length && !isLoading && (
-          <Empty height="100%" text="No more projects" />
-        )}
+          {!list?.length && !isLoading && (
+            <Empty height="100%" text="No more projects" />
+          )}
+          {isLoading && (
+            <div>
+              <CircleLoading size={40} />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+      {type === "preLaunch" && !!list?.length && <TourGuid />}{" "}
+    </>
   );
 }

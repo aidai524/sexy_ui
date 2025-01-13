@@ -19,20 +19,27 @@ export default function Like(props: any) {
         />
         <Heart {...props} />
       </div>
-      <div className={styles.LikeNum}>{like}</div>
+      <div className={styles.LikeNum} id={props.id}>
+        {like}
+      </div>
     </div>
   );
 }
 
-const Heart = ({ isLiked, like, id, onClick }: any) => {
+export const Heart = ({
+  isLiked,
+  like,
+  onClick = () => {},
+  style = {}
+}: any) => {
   return (
     <div
       className={`${styles.Heart} button`}
       style={{
-        bottom: (like / 100) * 180 - 10
+        bottom: (like / 100) * 180 - 10,
+        ...style
       }}
       onClick={onClick}
-      id={id}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

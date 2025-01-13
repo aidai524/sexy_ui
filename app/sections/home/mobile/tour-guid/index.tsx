@@ -2,18 +2,21 @@ import { useEffect } from "react";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { Heart } from "../actions/like";
 import { useState } from "react";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
+import { useUserAgent } from "@/app/context/user-agent";
+
 export default function TourGuid() {
   const [step2Info, setStep2Info] = useState<any>({});
   const [step3Info, setStep3Info] = useState<any>({});
   const [step, setStep] = useState(0);
   const guidingTourStore = useGuidingTour();
+  const { innerHeight } = useUserAgent();
 
   useEffect(() => {
     if (guidingTourStore.hasShownTour) return;
     setTimeout(() => {
-      setStep(1);
       const flipElement = document.getElementById("guid-tour-flip");
       if (flipElement) {
         const flipElementRect = flipElement.getClientRects()?.[0];
@@ -33,10 +36,14 @@ export default function TourGuid() {
         setStep3Info({
           content: likeElement.outerHTML,
           contentStyle: {
-            left: likeElementRect.left + 22,
-            top: likeElementRect.top + likeElementRect.height - 8
+            left: likeElementRect.left,
+            top: likeElementRect.top
           }
         });
+      }
+
+      if (flipElement && likeElement) {
+        setStep(1);
       }
     }, 2000);
   }, []);
@@ -53,7 +60,7 @@ export default function TourGuid() {
           setStep(step + 1);
         }}
         style={{
-          height: window.innerHeight
+          height: innerHeight
         }}
       >
         {/* step 1 */}
@@ -112,11 +119,16 @@ export default function TourGuid() {
         )}
         {step === 3 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div
-              className={styles.Flip}
-              style={step3Info?.contentStyle}
-              dangerouslySetInnerHTML={{ __html: step3Info?.content }}
-            />
+            <div className={styles.Flip} style={step3Info?.contentStyle}>
+              <Heart
+                isLiked={false}
+                like={0}
+                style={{
+                  bottom: 10
+                }}
+              />
+              <div className={styles.FlipNum}>0</div>
+            </div>
             <Image
               src="/img/home/guid-step-3.png"
               width={316}
