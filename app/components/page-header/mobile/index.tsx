@@ -1,6 +1,6 @@
 import styles from "./index.module.css";
 import Menu from "../../menu";
-export default function PageHeader({ title, theme, className }: any) {
+export default function PageHeader({ title, theme = "light", className }: any) {
   return (
     <div className={`${styles.Container} ${className}`}>
       <button className="button">
@@ -27,7 +27,7 @@ export default function PageHeader({ title, theme, className }: any) {
       >
         {title}
       </div>
-      <Menu theme="dark"/>
+      <Menu theme={theme} />
     </div>
   );
 }

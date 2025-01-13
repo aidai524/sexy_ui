@@ -6,7 +6,6 @@ import Rank from "./rank";
 import styles from "./index.module.css";
 
 export default function Mining({ info, infoLoading }: any) {
-  console.log(infoLoading, info);
   return (
     <div className={styles.Container}>
       <PageHeader title="Reward" />
@@ -16,10 +15,6 @@ export default function Mining({ info, infoLoading }: any) {
         <Others info={info} />
         <Rank info={info} infoLoading={infoLoading} />
       </div>
-      {/* <Content styles={styles} isMobile={true} {...props} /> */}
-      {/* <a className={`button ${styles.Gitbook}`}>
-        <Gitbook />
-      </a> */}
     </div>
   );
 }
