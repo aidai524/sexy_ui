@@ -29,3 +29,10 @@
   background-color: #fff;
   box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 1);
 }
+
+.innerFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  gap: 5px;
+}

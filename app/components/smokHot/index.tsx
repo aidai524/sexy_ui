@@ -49,19 +49,19 @@ export default function SmokeBtn({
   }, [isDelay, token, address]);
 
   const disabledText = useMemo(() => {
-    // if (isDelay) {
-    //   return 'IsDelay'
-    // }
+    if (isDelay) {
+      return 'IsDelay'
+    }
 
-    // if (token.account === address) {
-    //   return 'IsSelf'
-    // }
+    if (token.account === address) {
+      return 'IsSelf'
+    }
 
-    // if (token.prePaidAmount && Number(token.prePaidAmount) > 0) {
-    //   return 'Fliped ' + token.prePaidAmount + 'SOL'
-    // }
+    if (token.prePaidAmount && Number(token.prePaidAmount) > 0) {
+      return 'Fliped ' + token.prePaidAmount + 'SOL'
+    }
 
-    return 'Flipped 0.001 SOL'
+    return 'Flipped'
   }, [isDelay, token, address])
 
   const VipModal = (
@@ -97,9 +97,9 @@ export default function SmokeBtn({
     }
 
 
-    // if (isDisabled) {
-    //   return;
-    // }
+    if (isDisabled) {
+      return;
+    }
     setPanelShow(true);
   };
 

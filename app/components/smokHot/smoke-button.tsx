@@ -22,13 +22,13 @@ export default function SmokeButton({
         cursor: isDisabled ? "not-allowed" : "pointer"
       }}
       className={`${styles.Container} ${isDisabled ? styles.disabled : ''} ${!isDisabled && styles.Active}`}
-      // disabled={isDisabled}
+      disabled={isDisabled}
       onClick={() => {
         onClick()
         // !isDisabled && onClick();
       }}
     >
-      {isDisabled ? <>{ disabledText }</> : <><SmokeIcon isGrey={true} id={id} /> Flip</>}
+      {isDisabled ? <>{ disabledText }</> : <div className={ styles.innerFlex }><SmokeIcon isGrey={true} id={id} /> Flip</div>}
     </button>
   );
 }
