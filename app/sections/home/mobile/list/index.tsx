@@ -99,11 +99,11 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           {!list?.length && !isLoading && (
             <Empty height={innerHeight} text="No more projects" />
           )}
-          {isLoading && (
+          {/* {isLoading && (
             <div>
               <CircleLoading size={40} />
             </div>
-          )}
+          )} */}
         </div>
       </div>
       {type === "preLaunch" && !!list?.length && <TourGuid />}{" "}
