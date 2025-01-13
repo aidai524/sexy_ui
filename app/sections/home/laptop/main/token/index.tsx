@@ -152,7 +152,7 @@ export default function Token({
               {currentTab === "chart" && (
                 <PanelWrapper>
                   <Chart
-                    data={infoData2}
+                    token={infoData2}
                     style={{
                       padding: "10px",
                       marginRight: "10px",
