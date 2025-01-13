@@ -170,7 +170,7 @@ export default function EditContent({
               }
             }
           }}
-          style={{ flex: 1 }}
+          style={{ flex: 1, color: "#000" }}
         >
           Save
         </MainBtn>
