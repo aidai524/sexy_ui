@@ -1,17 +1,18 @@
 .Container {
-  width: 62px;
-  height: 22px;
+  width: 55px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
   flex-shrink: 0;
-  background-color: #f2fff833;
-  border-radius: 16px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  gap: 4px;
   color: #fff;
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  padding-right: 8px;
 }

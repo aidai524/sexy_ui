@@ -1,5 +1,6 @@
 import styles from "./index.module.css";
 import Menu from "../../menu";
+import { useRouter } from 'next/navigation';
 export default function PageHeader({
   onBack,
   title,
@@ -8,6 +9,12 @@ export default function PageHeader({
   from,
   style
 }: any) {
+  const router = useRouter();
+
+  const handleSetting = () => {
+    router.push("/setting");
+  };
+
   return (
     <div className={`${styles.Container} ${className}`} style={style}>
       <button
@@ -47,7 +54,18 @@ export default function PageHeader({
       >
         {title}
       </div>
-      <Menu theme={theme} />
+      <div className={styles.Right}>
+        {
+          from === "profile" && (
+            <button
+              type="button"
+              className={styles.SettingButton}
+              onClick={handleSetting}
+            />
+          )
+        }
+        <Menu theme={theme} />
+      </div>
     </div>
   );
 }

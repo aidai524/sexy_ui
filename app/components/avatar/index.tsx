@@ -5,8 +5,9 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { formatAddress } from "@/app/utils";
 import { defaultAvatar } from "@/app/utils/config";
 import { useUserAgent } from "@/app/context/user-agent";
+import FollowBtn from '@/app/sections/profile/components/followBtn';
 
-export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
+export default function Avatar({ userInfo, onEdit, onVipShow, isOther, isFollower, onFollowSuccess }: any) {
   const { address } = useAccount();
   const { isMobile } = useUserAgent();
   if (!userInfo?.address) {
@@ -20,13 +21,24 @@ export default function Avatar({ userInfo, onEdit, onVipShow }: any) {
           className={styles.avatarImg}
           src={userInfo?.icon || defaultAvatar}
         />
-        <div className={`${styles.pencil} button`}>
+        {/*<div className={`${styles.pencil} button`}>
           <Pencil />
-        </div>
+        </div>*/}
       </div>
       <div className={styles.userName}>
         <div>{userInfo?.name || formatAddress(userInfo.address)}</div>
-        <Level level={userInfo.level} />
+        <Level level={userInfo.level} vipType={userInfo.vipType} />
+        {isOther && (
+          <div className={styles.isOther}>
+            <div className={styles.FollowBtnBox}>
+              <FollowBtn
+                address={address}
+                isFollower={isFollower}
+                onSuccess={onFollowSuccess}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

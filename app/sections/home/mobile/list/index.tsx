@@ -95,16 +95,24 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
               />
             );
           })}
-
-          {!list?.length && !isLoading && (
-            <Empty height="100%" text="No more projects" />
-          )}
-          {isLoading && (
-            <div>
-              <CircleLoading size={40} />
-            </div>
-          )}
         </div>
+
+        {!list?.length && !isLoading && (
+          <Empty height={innerHeight} text="No more projects" />
+        )}
+        {isLoading && (
+          <div
+            style={{
+              height: innerHeight,
+              width: "100vw",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <CircleLoading size={40} />
+          </div>
+        )}
       </div>
       {type === "preLaunch" && !!list?.length && <TourGuid />}{" "}
     </>
