@@ -90,7 +90,7 @@ export default function useData(launchType: Type) {
     () => {
       initList();
       mountedRef.current = true;
-      if (window?.sexAddress !== userInfo.address) {
+      if (!userInfo?.address || window?.sexAddress !== userInfo?.address) {
         projectsStore.clear(launchType);
       }
     },

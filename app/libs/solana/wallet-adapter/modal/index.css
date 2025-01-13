@@ -16,13 +16,20 @@
 }
 
 .wallet-adapter-button-trigger {
-  background-color: transparent;
-  border-radius: 30px;
-  border: 1px solid #fff;
   width: 100%;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  border: 2px solid #000;
+  background: #fbca04;
+  color: #000;
   display: flex;
-  align-items: center;
   justify-content: center;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .wallet-adapter-button:not([disabled]):focus-visible {
