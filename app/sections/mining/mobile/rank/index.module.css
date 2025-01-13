@@ -1,0 +1,49 @@
+.ConnectContainer {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 72px;
+  border: 1px solid #3b3b3b;
+  border-radius: 24px 24px 0px 0px;
+  background-color: #252328;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.ConnectWallet {
+  width: 157px;
+  height: 39px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  border: 1px solid #fbca04;
+  color: #fbca04;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 0px !important;
+}
+
+.ConnectIcon {
+  position: absolute;
+  left: 0px;
+  top: -20px;
+}
+
+.RankWrapper {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100vw;
+  padding: 10px 16px;
+}

@@ -1,7 +1,7 @@
 import styles from "./limitProject.module.css";
 
 export default function LimitProject({ list = [] }: any) {
-  return (
+  return !!list.length ? (
     <div className={styles.main}>
       {list?.slice(0, 5).map((item: any) => {
         return <img className={styles.img} key={item.id} src={item.icon} />;
@@ -11,5 +11,7 @@ export default function LimitProject({ list = [] }: any) {
         <div className={styles.more}>{list.length - 5}+</div>
       )}
     </div>
+  ) : (
+    "-"
   );
 }

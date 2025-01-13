@@ -1,0 +1,9 @@
+.Container {
+  padding-top: 46px;
+  height: 100%;
+}
+
+.Content {
+  height: 100%;
+  overflow-y: auto;
+}
