@@ -84,7 +84,7 @@ export default function Profile({
         />
       </div>
 
-      <Summaries />
+      {/*<Summaries />*/}
 
       <Tabs
         address={address}

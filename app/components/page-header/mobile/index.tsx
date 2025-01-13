@@ -64,7 +64,11 @@ export default function PageHeader({
             />
           )
         }
-        <Menu theme={theme} />
+        {
+          !['setting'].includes(from) && (
+            <Menu theme={theme} />
+          )
+        }
       </div>
     </div>
   );
