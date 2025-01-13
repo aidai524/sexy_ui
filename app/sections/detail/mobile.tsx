@@ -142,17 +142,17 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
                 canFlip={true}
                 onLike={async () => {
                   await actionLikeTrigger(infoData);
-                  onUpdate("like");
+                  getDetailInfo()
                 }}
                 onHate={async () => {
                   await actionHateTrigger(infoData);
-                  onUpdate("hate");
+                  getDetailInfo()
                 }}
                 onSuperLike={() => {
-                  onUpdate();
+                  getDetailInfo()
                 }}
                 onBoost={() => {
-                  onUpdate();
+                  getDetailInfo()
                 }}
               />
             ) : (
