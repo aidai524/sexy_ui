@@ -1,9 +1,28 @@
 import styles from "./index.module.css";
 import Menu from "../../menu";
-export default function PageHeader({ title, theme = "light", className }: any) {
+export default function PageHeader({
+  onBack,
+  title,
+  theme = "light",
+  className,
+  from
+}: any) {
   return (
     <div className={`${styles.Container} ${className}`}>
-      <button className="button">
+      <button
+        className="button"
+        onClick={() => {
+          if (typeof onBack === "function") {
+            onBack();
+            return;
+          }
+          if (from === "detail") {
+            history.pushState({ page: "/" }, "Home", `/`);
+            return;
+          }
+          history.back();
+        }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="9"
