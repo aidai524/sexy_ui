@@ -34,10 +34,10 @@ export default function Tabs({
   );
 
   const tabs = [
-    {
-      name: "Coppied",
-      content: <Coppied from={from} address={address} />
-    },
+    // {
+    //   name: "Coppied",
+    //   content: <Coppied from={from} address={address} />
+    // },
     {
       name: "Held",
       content: <Held from={from} address={address}/>
