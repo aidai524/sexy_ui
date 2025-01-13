@@ -50,9 +50,11 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
             startX = ev.touches[0].clientX;
             started = true;
             ev.preventDefault();
+            ev.stopPropagation();
           }}
           onTouchMove={(ev) => {
             ev.preventDefault();
+            ev.stopPropagation();
             if (!started) return;
             let diffY = ev.touches[0].clientY - startY;
             let diffX = ev.touches[0].clientX - startX;
@@ -64,10 +66,11 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
             let currentIndex = index;
             if (Math.abs(diffY) > 100) {
               if (diffY < 0) {
-                if (currentIndex < list.length) currentIndex++;
+                if (currentIndex < list.length - 1) currentIndex++;
               } else {
                 if (currentIndex > 0) currentIndex--;
               }
+
               diffY = -innerHeight * currentIndex;
               onChangeIndex(currentIndex);
               setY(diffY);

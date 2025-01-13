@@ -22,7 +22,8 @@ export default function HomeMobile() {
         <div
           className={styles.ListWrapper}
           style={{
-            transform: `translateX(${-currentTab * 100}vw)`
+            transform: `translateX(${-currentTab * 100}vw)`,
+            height: innerHeight
           }}
         >
           <List

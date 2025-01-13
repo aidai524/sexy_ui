@@ -11,7 +11,7 @@ export default function Mining({ info, infoLoading }: any) {
       <PageHeader title="Reward" />
       <div className={styles.Content}>
         <TotalPanel info={info} />
-        <EarnAndInvite />
+        <EarnAndInvite info={info} />
         <Others info={info} />
         <Rank info={info} infoLoading={infoLoading} />
       </div>
