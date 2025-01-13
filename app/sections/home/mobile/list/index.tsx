@@ -40,7 +40,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   return (
     <>
       <div className={styles.Container} style={{ height: innerHeight }}>
-        <div
+        {/* <div
           style={{
             position: "fixed",
             left: 0,
@@ -50,7 +50,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           }}
         >
           {type} Y: {y}
-        </div>
+        </div> */}
         <div
           className={styles.List}
           style={{
