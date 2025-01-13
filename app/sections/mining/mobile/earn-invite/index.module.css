@@ -1,0 +1,97 @@
+.Container {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 15px;
+}
+
+.Item {
+  width: calc(50vw - 21px);
+  height: 142px;
+  border-radius: 16px;
+  position: relative;
+  border: 1px solid #ffa8e8;
+  overflow: hidden;
+}
+
+.ItemBg {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.ItemContent {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Title {
+  margin-top: 10px;
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.Desc {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 9px;
+}
+
+.Num {
+  color: #fff;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-top: 9px;
+}
+
+.Button {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 129px;
+  height: 36px;
+  border-radius: 100px;
+  background: #fff;
+  color: #000;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.Link {
+  width: 159px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  line-height: 24px;
+  text-align: center;
+  padding: 0px 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-top: 6px;
+  color: #fff;
+}

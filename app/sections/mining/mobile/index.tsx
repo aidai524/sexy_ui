@@ -1,15 +1,20 @@
-import Content from "../content";
 import PageHeader from "@/app/components/page-header/mobile";
+import TotalPanel from "./total-panel";
+import EarnAndInvite from "./earn-invite";
+import Others from "./others";
+import Rank from "./rank";
 import styles from "./index.module.css";
 
-export default function Mining(props: any) {
+export default function Mining({ info, infoLoading }: any) {
   return (
-    <div>
+    <div className={styles.Container}>
       <PageHeader title="Reward" />
-      {/* <Content styles={styles} isMobile={true} {...props} /> */}
-      {/* <a className={`button ${styles.Gitbook}`}>
-        <Gitbook />
-      </a> */}
+      <div className={styles.Content}>
+        <TotalPanel info={info} />
+        <EarnAndInvite />
+        <Others info={info} />
+        <Rank info={info} infoLoading={infoLoading} />
+      </div>
     </div>
   );
 }

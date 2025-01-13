@@ -139,10 +139,8 @@ export default function Token({
                   <InfoPart
                     showLikes={false}
                     data={infoData2}
-                    showThumbnailHead={false}
-                    showTop={false}
+                    showProgress={false}
                     theme="light"
-                    sepSize={2}
                     mc={pumpMc || mc}
                   />
                   <div style={{ height: 2 }} />
