@@ -10,7 +10,8 @@ export default function Actions({
   token,
   totalHolders,
   onClick,
-  onSuccess
+  onSuccess,
+  isCurrent
 }: any) {
   const { showShare } = useMessage();
   return (
@@ -25,6 +26,7 @@ export default function Actions({
               const result = await actionLikeTrigger(token);
               if (result) onSuccess("like");
             }}
+            id={isCurrent ? "guid-tour-like" : ""}
           />
           <button
             className={`${styles.Item} button`}

@@ -1,0 +1,20 @@
+.Container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Flip {
+  position: absolute;
+  z-index: 20;
+}
+
+.FlipImage {
+  position: absolute;
+  z-index: 30;
+}

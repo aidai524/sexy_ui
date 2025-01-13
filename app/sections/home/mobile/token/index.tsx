@@ -69,6 +69,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                     onClick={() => {
                       setShowFlipModal(true);
                     }}
+                    id={isCurrent ? "guid-tour-flip" : token.id}
                   />
                 ) : (
                   <Flipped token={token} />
@@ -105,6 +106,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                 // token.prePaid = (token.prePaid || 0) + 1;
                 onUpdate(token);
               }}
+              isCurrent={isCurrent}
             />
           </>
         )}

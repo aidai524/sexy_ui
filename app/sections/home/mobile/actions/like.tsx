@@ -24,7 +24,7 @@ export default function Like(props: any) {
   );
 }
 
-const Heart = ({ isLiked, like, onClick }: any) => {
+const Heart = ({ isLiked, like, id, onClick }: any) => {
   return (
     <div
       className={`${styles.Heart} button`}
@@ -32,6 +32,7 @@ const Heart = ({ isLiked, like, onClick }: any) => {
         bottom: (like / 100) * 180 - 10
       }}
       onClick={onClick}
+      id={id}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

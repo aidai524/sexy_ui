@@ -5,7 +5,7 @@ import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useDebounceFn } from "ahooks";
 
 let startX = 0;
-export default function Flip({ token, onSuccess, onClick }: any) {
+export default function Flip({ token, onSuccess, id, onClick }: any) {
   const [x, setX] = useState(0);
   const [loading, setLoading] = useState(false);
   const { prePaid } = useTokenTrade({
@@ -20,6 +20,7 @@ export default function Flip({ token, onSuccess, onClick }: any) {
       try {
         setLoading(true);
         await prePaid(0.1 * 1e8);
+        onSuccess();
       } catch (err) {
       } finally {
         setLoading(false);
@@ -31,7 +32,7 @@ export default function Flip({ token, onSuccess, onClick }: any) {
 
   return (
     <>
-      <div className={styles.Container}>
+      <div className={styles.Container} id={id}>
         <button
           className={`button ${styles.FlipButton}`}
           onClick={onClick}
