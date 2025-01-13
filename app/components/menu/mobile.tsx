@@ -5,6 +5,7 @@ import Bar from "../icons/bar";
 import config, { Links } from "./config";
 import styles from "./mobile.module.css";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Mobile() {
   const [show, setShow] = useState(false);
@@ -52,9 +53,11 @@ export default function Mobile() {
         </div>
         <div className={styles.List}>
           {config.map((item: any) => (
-            <button key={item.key} className={`button ${styles.Item}`}>
-              {item.icon} <span className={styles.ItemText}>{item.label}</span>
-            </button>
+            <Link key={item.key} href={item.path}>
+              <button className={`button ${styles.Item}`}>
+                {item.icon} <span className={styles.ItemText}>{item.label}</span>
+              </button>
+            </Link>
           ))}
         </div>
 
