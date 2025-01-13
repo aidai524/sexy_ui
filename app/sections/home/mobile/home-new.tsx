@@ -11,33 +11,31 @@ export default function HomeMobile() {
   const { innerHeight } = useUserAgent();
 
   return (
-    <>
-      <div className={styles.Container} style={{ height: innerHeight }}>
-        <Header
-          currentTab={currentTab}
-          onChangeTab={(tab: number) => {
-            setCurrentTab(tab);
-          }}
+    <div className={styles.Container} style={{ height: innerHeight }}>
+      <Header
+        currentTab={currentTab}
+        onChangeTab={(tab: number) => {
+          setCurrentTab(tab);
+        }}
+      />
+      <div
+        className={styles.ListWrapper}
+        style={{
+          transform: `translateX(${-currentTab * 100}vw)`,
+          height: innerHeight
+        }}
+      >
+        <List
+          type="preLaunch"
+          onChangeTab={setCurrentTab}
+          isCurrentTab={currentTab === 0}
         />
-        <div
-          className={styles.ListWrapper}
-          style={{
-            transform: `translateX(${-currentTab * 100}vw)`,
-            height: innerHeight
-          }}
-        >
-          <List
-            type="preLaunch"
-            onChangeTab={setCurrentTab}
-            isCurrentTab={currentTab === 0}
-          />
-          <List
-            type="launching"
-            onChangeTab={setCurrentTab}
-            isCurrentTab={currentTab === 1}
-          />
-        </div>
+        <List
+          type="launching"
+          onChangeTab={setCurrentTab}
+          isCurrentTab={currentTab === 1}
+        />
       </div>
-    </>
+    </div>
   );
 }

@@ -39,7 +39,18 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
 
   return (
     <>
-      <div className={styles.Container}>
+      <div className={styles.Container} style={{ height: innerHeight }}>
+        <div
+          style={{
+            position: "fixed",
+            left: 0,
+            top: type === "preLaunch" ? 200 : 300,
+            color: "red",
+            zIndex: 100
+          }}
+        >
+          {type} Y: {y}
+        </div>
         <div
           className={styles.List}
           style={{
