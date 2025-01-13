@@ -97,7 +97,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           })}
 
           {!list?.length && !isLoading && (
-            <Empty height="100%" text="No more projects" />
+            <Empty height={innerHeight} text="No more projects" />
           )}
           {isLoading && (
             <div>
