@@ -5,10 +5,11 @@ export default function PageHeader({
   title,
   theme = "light",
   className,
-  from
+  from,
+  style
 }: any) {
   return (
-    <div className={`${styles.Container} ${className}`}>
+    <div className={`${styles.Container} ${className}`} style={style}>
       <button
         className="button"
         onClick={() => {
