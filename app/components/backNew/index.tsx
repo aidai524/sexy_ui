@@ -1,8 +1,11 @@
+import { useRouter } from "next/navigation";
 import styles from "./index.module.css";
 
 export default function Back() {
+  const router =useRouter()
+
   return (
-    <div className={styles.main}>
+    <div className={styles.main} onClick={() => router.back()}>
       <svg
         width="9"
         height="16"
