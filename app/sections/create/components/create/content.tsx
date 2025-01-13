@@ -203,7 +203,7 @@ export default function Create({
                 fail("Create token error");
               }
             }}
-            style={{ background: "rgba(255, 47, 116, 1)" }}
+            style={{ background: "#FBCA04", color: '#000' }}
           >
             Create Coin
           </MainBtn>

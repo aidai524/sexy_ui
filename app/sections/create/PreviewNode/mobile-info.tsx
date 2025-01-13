@@ -4,11 +4,10 @@ export default function Mobile({ newData }: any) {
     <InfoPart
       showLikes={false}
       specialTime={"just now"}
-      showBackIcon={false}
-      showThumbnailHead={true}
-      showThumbnailProgress={false}
       data={newData}
       theme="light"
+      showHolders={false}
+      showProgress={false}
       withoutFlip={true}
     />
   );

@@ -15,7 +15,9 @@ export default function Create() {
   return (
     <div className={styles.main}>
       <div className={styles.title}>
-        <PageHeader title="Create Token"/>
+        <div className={ styles.header }>
+          <PageHeader title="Create Token" theme="dark"/>
+        </div>
         <div className={styles.editProgress}>
           <div
             className={[
@@ -74,7 +76,7 @@ function MiniCircle() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="4" cy="4" r="4" fill="white" />
+      <circle cx="4" cy="4" r="4" fill="#000" />
     </svg>
   );
 }

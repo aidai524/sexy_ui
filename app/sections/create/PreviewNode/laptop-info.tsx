@@ -26,13 +26,8 @@ export default function LaptopInfo({ newData }: any) {
           <InfoPart
             showLikes={false}
             specialTime={"just now"}
-            showBackIcon={false}
-            showThumbnailProgress={false}
             data={newData}
             theme="light"
-            sepSize={2}
-            showThumbnailHead={false}
-            showTop={false}
           />
           <div style={{ height: 2 }} />
         </PanelWrapper>

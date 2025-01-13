@@ -45,7 +45,7 @@ export default function Link({ type, img, value, onChange }: Props) {
           className="button"
           style={{
             fontSize: 12,
-            color: isMobile ? "#FF67A7" : "#C9FF5D",
+            color: isMobile ? "#FBCA04" : "#C9FF5D",
             textDecoration: isMobile ? "none" : "underline"
           }}
         >

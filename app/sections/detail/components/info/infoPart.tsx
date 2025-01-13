@@ -13,29 +13,23 @@ import Holder from "@/app/components/holder";
 import { ProgressBar } from "antd-mobile";
 
 interface Props {
-  showThumbnailHead: boolean;
-  showThumbnailProgress?: boolean;
-  showBackIcon?: boolean;
   data: Project;
   specialTime?: string;
   showLikes?: boolean;
-  showTop?: boolean;
+  showProgress?: boolean;
+  showHolders?: boolean;
   theme?: string;
-  sepSize?: number;
   mc?: string | number;
   withoutFlip?: boolean;
 }
 
 export default function InfoPart({
-  showThumbnailHead = false,
-  showThumbnailProgress = false,
-  showBackIcon = true,
   data,
   specialTime,
   showLikes = true,
-  showTop = true,
   theme = "dark",
-  sepSize = 10,
+  showProgress = true,
+  showHolders = true,
   mc,
   withoutFlip
 }: Props) {
@@ -153,45 +147,48 @@ export default function InfoPart({
         </div>
       )}
 
-      <div className={ styles.panel }>
-        <div className={ styles.singleProgress }>
-          <div className={ styles.progressTitleWrapper }>
-            <div className={ styles.progressTitle }>Bonding curve progress</div>
-            <div className={ styles.progressPercent }>80%</div>
-          </div>
+      {
+        showProgress && <div className={styles.panel}>
+          <div className={styles.singleProgress}>
+            <div className={styles.progressTitleWrapper}>
+              <div className={styles.progressTitle}>Bonding curve progress</div>
+              <div className={styles.progressPercent}>80%</div>
+            </div>
 
-          <ProgressBar percent={80} style={{
+            <ProgressBar percent={80} style={{
               '--track-width': '14px',
               '--fill-color': '#FBCA04',
               '--track-color': '#29242B'
-            }}/>
+            }} />
 
-          <div className={ styles.progressDesc }>Graduate this coin to Orca at $50,403 market cap.
-            There is 43.46 SOL in the bonding curve.</div>
-        </div>
-
-        <div className={ styles.singleProgress } style={{ marginTop: 15 }}>
-          <div className={ styles.progressTitleWrapper }>
-            <div className={ styles.progressTitle }>King of the hill progress</div>
-            <div className={ styles.progressPercent }>80%</div>
+            <div className={styles.progressDesc}>Graduate this coin to Orca at $50,403 market cap.
+              There is 43.46 SOL in the bonding curve.</div>
           </div>
 
-          <ProgressBar percent={80} style={{
+          <div className={styles.singleProgress} style={{ marginTop: 15 }}>
+            <div className={styles.progressTitleWrapper}>
+              <div className={styles.progressTitle}>King of the hill progress</div>
+              <div className={styles.progressPercent}>80%</div>
+            </div>
+
+            <ProgressBar percent={80} style={{
               '--track-width': '14px',
               '--fill-color': '#BF66FF',
               '--track-color': '#29242B'
-            }}/>
+            }} />
 
-          <div className={ styles.progressDesc } style={{ color: '#BF66FF' }}>Crowned king of the hill on 1/6/2025, 8:50:03 PM</div>
+            <div className={styles.progressDesc} style={{ color: '#BF66FF' }}>Crowned king of the hill on 1/6/2025, 8:50:03 PM</div>
+          </div>
         </div>
-      </div>
+      }
+
 
       <div className={styles.panel}>
-        <div className={ styles.tokenAddressWrapper }>
-          <div className={ styles.tokenAddressTitle }>Contract address:</div>
-          <div className={ styles.tokenAddressContent }>
-            <div className={ styles.tokenAddress }>{ formatAddress(data.address as string) }</div>
-            <Copyed value={data.address as string}/>
+        <div className={styles.tokenAddressWrapper}>
+          <div className={styles.tokenAddressTitle}>Contract address:</div>
+          <div className={styles.tokenAddressContent}>
+            <div className={styles.tokenAddress}>{formatAddress(data.address as string)}</div>
+            <Copyed value={data.address as string} />
           </div>
         </div>
       </div>
@@ -235,9 +232,12 @@ export default function InfoPart({
         </div>
       )}
 
-      <div className={styles.panel}>
-        <Holder address={data.address}/>
-      </div>  
+      {
+        showHolders && <div className={styles.panel}>
+          <Holder address={data.address} />
+        </div>
+      }
+
     </div>
   );
 }

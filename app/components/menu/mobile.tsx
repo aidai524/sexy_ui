@@ -23,6 +23,7 @@ export default function Mobile({ theme }: any) {
       document.removeEventListener("click", close);
     };
   }, []);
+
   return (
     <>
       <button
@@ -46,7 +47,7 @@ export default function Mobile({ theme }: any) {
       >
         <div className={styles.Top}>
           <div className={styles.Title}>
-            <TitleIcon />
+            <TitleIcon/>
           </div>
           <div className={styles.Desc}>
             <span>Flip🫰, Like🩷, and Ear</span>

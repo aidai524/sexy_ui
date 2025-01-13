@@ -34,7 +34,6 @@ export default function Info({ data, mc, onUpdate }: Props) {
         showLikes={true}
         mc={mc}
         data={data}
-        showThumbnailHead={false}
         theme="light"
       />
       {/* <CommentComp id={data.id} {...comments} /> */}
