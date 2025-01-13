@@ -4,7 +4,7 @@ import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useAuth } from "@/app/context/auth";
 import { fail, success } from "@/app/utils/toast";
 
-export default function EarnAndInvite() {
+export default function EarnAndInvite({ info }: any) {
   const { userInfo } = useAuth();
   return (
     <div className={styles.Container}>
@@ -24,7 +24,9 @@ export default function EarnAndInvite() {
         <div className={styles.ItemContent}>
           <div className={styles.Title}>Like to Earn</div>
           <div className={styles.Desc}>100 likes per day</div>
-          <div className={styles.Num}>100 left</div>
+          <div className={styles.Num}>
+            {info?.remaining_like_num || 100} left
+          </div>
           <Link className={styles.Button} href="/">
             View Memes
           </Link>

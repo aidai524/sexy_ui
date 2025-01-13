@@ -67,7 +67,7 @@ export default function Desc({ token }: any) {
           <span className={styles.Ticker}>{token.ticker}</span>
         </div>
         <StatusTag type={token.status} />
-        {true && <ImportTag />}
+        {token.DApp === "pump" && <ImportTag />}
       </div>
       {token.DApp === "sexy" && mc > 0 && (
         <div className={styles.MC}>Market Cap: ${simplifyNum(mc, 2)}</div>
