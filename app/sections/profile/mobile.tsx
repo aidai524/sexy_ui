@@ -1,15 +1,13 @@
 import styles from "./profile.module.css";
-import Back from "@/app/components/back";
 import Tabs from "./components/tabs";
 import Avatar from "@/app/components/avatar";
 import FollowerActions from "./components/follower-actions";
-import Address from "./components/address";
-import HotBoost from "./components/hot-boost";
-import FollowBtn from "./components/followBtn";
 import PointsLabel from "@/app/components/points-label";
 import { useReferStore } from "@/app/store/useRefer";
 import { useAuth } from "@/app/context/auth";
 import AirdropEntry from '@/app/components/airdrop/entry';
+import PageHeader from '@/app/components/page-header/mobile';
+import Summaries from '@/app/sections/profile/components/summaries';
 
 export default function Profile({
   userInfo,
@@ -18,7 +16,6 @@ export default function Profile({
   refreshNum,
   setRefreshNum,
   onQueryInfo,
-  setUserInfo,
   setShowVip,
   router,
   profileTabIndex,
@@ -27,16 +24,17 @@ export default function Profile({
 }: any) {
   const store = useReferStore();
   const { logout } = useAuth();
-  const backgroundImgStyle = userInfo?.banner
+  const userInfoBanner = userInfo?.banner;
+  const backgroundImgStyle = userInfoBanner
     ? {
-        backgroundImage: `linear-gradient(360deg, #000 41.35%, rgba(0, 0, 0, 0) 100%)`,
+        backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.90) 41.35%, rgba(0, 0, 0, 0.30) 100%)`,
         backgroundSize: "100% auto"
       }
     : {};
 
-  const backgroundImgStyle1 = userInfo?.banner
+  const backgroundImgStyle1 = userInfoBanner
     ? {
-        backgroundImage: `url(${userInfo?.banner})`,
+        backgroundImage: `url(${userInfoBanner})`,
         backgroundSize: "100% auto"
       }
     : {};
@@ -46,32 +44,16 @@ export default function Profile({
       className={styles.main}
       style={store.entryVisible ? { paddingBottom: 200 } : {}}
     >
+      <PageHeader
+        title=""
+        theme="light"
+        from="profile"
+      />
       <AirdropEntry />
       <div style={backgroundImgStyle1} className={styles.avatarBox}>
-        <div className={styles.Points}>
+        {/*<div className={styles.Points}>
           <PointsLabel reverse={true} bg="transparent" />
-        </div>
-        {isOther ? (
-          <div className={styles.isOther}>
-            <div>
-              <Back style={{ left: 0, top: 0 }} />
-            </div>
-
-            <div className={styles.FollowBtnBox}>
-              <FollowBtn
-                address={address}
-                isFollower={isFollower}
-                onSuccess={async () => {
-                  setRefreshNum(refreshNum + 1);
-                  await onQueryInfo();
-                  // setUserInfo({
-                  //   userInfo: userInfo
-                  // });
-                }}
-              />
-            </div>
-          </div>
-        ) : null}
+        </div>*/}
         <div className={styles.avatarContent} style={backgroundImgStyle}>
           <Avatar
             userInfo={userInfo}
@@ -81,35 +63,46 @@ export default function Profile({
             onEdit={() => {
               router.push("/profile/edit");
             }}
+            isOther={isOther}
+            isFollower={isFollower}
+            onFollowSuccess={async () => {
+              setRefreshNum(refreshNum + 1);
+              await onQueryInfo();
+              // setUserInfo({
+              //   userInfo: userInfo
+              // });
+            }}
           />
         </div>
+        <FollowerActions
+          userInfo={userInfo}
+          onItemClick={(action: string) => {
+            router.push(
+              '/profile/follower?account=' + address + '&action=' + action
+            );
+          }}
+        />
       </div>
 
-      <FollowerActions
-        userInfo={userInfo}
-        onItemClick={(action: string) => {
-          router.push(
-            "/profile/follower?account=" + address + "&action=" + action
-          );
-        }}
-      />
-
-      <Address address={address} logout={logout} />
-      {/* {
-                !isOther && <HotBoost
-                    user={ownUserInfo}
-                    onMoreClick={() => {
-                        setShowVip(true);
-                    }}
-                    style={{ margin: "20px 10px" }}
-                />
-            } */}
+      <Summaries />
 
       <Tabs
         address={address}
         defaultIndex={profileTabIndex}
         showHot={showHot}
         isOther={isOther}
+        tabHeaderStyle={{
+          flexShrink: 0,
+          padding: '10px 15px',
+          fontSize: '14px',
+          marginTop: 20,
+        }}
+        tabHeadersClassName={styles.Tabs}
+        tabHeadersStyle={{
+          height: 'unset',
+        }}
+        cursorClassName={styles.TabsCursorClassName}
+        tabContentClassName={styles.TabsContentClassName}
       />
     </div>
   );

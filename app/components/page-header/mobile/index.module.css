@@ -19,3 +19,16 @@
   font-weight: 700;
   line-height: normal;
 }
+
+.Right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+}
+
+.SettingButton {
+  width: 30px;
+  height: 30px;
+  background: url("/img/profile/icon-setting.svg") no-repeat center / contain;
+}

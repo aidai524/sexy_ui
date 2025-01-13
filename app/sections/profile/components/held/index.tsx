@@ -48,8 +48,8 @@ export default function Held({ from, address }: any) {
 
   if (list.length === 0 && !hasMore) {
     return (
-      <div style={{ paddingTop: 60 }}>
-        <Empty text={"No token yet"} />
+      <div style={{ paddingTop: 116 }}>
+        <Empty text="No meme held yet" iconSize={0} />
       </div>
     );
   }

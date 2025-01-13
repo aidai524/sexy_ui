@@ -1,0 +1,53 @@
+.Container {
+  width: 100%;
+  padding: 0 10px;
+}
+.Inner {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #9290B1;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 20px 11px 12px;
+}
+.Summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+}
+.SummaryValue {
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.SummaryLabel {}
+.SummaryValueBuy {
+  color: #C9FF5D;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.SummaryValueSell {
+  color: #FF2681;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}

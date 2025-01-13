@@ -6,6 +6,8 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useLaptop } from "@/app/context/laptop";
+import Coppied from '@/app/sections/profile/components/coppied';
+
 export default function Tabs({
   showHot,
   address,
@@ -14,7 +16,11 @@ export default function Tabs({
   tabHeaderStyle,
   from,
   isOther,
-  onTabChange
+  onTabChange,
+  tabHeadersClassName,
+  tabHeadersStyle,
+  cursorClassName,
+  tabContentClassName,
 }: any) {
   const { set: setProfileTabIndex }: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
@@ -28,6 +34,10 @@ export default function Tabs({
   );
 
   const tabs = [
+    {
+      name: "Coppied",
+      content: <Coppied from={from} address={address} />
+    },
     {
       name: "Held",
       content: <Held from={from} address={address}/>
@@ -97,6 +107,10 @@ export default function Tabs({
       activeNode={activeNode}
       tabContentStyle={tabContentStyle}
       tabHeaderStyle={tabHeaderStyle}
+      tabHeadersClassName={tabHeadersClassName}
+      tabHeadersStyle={tabHeadersStyle}
+      cursorClassName={cursorClassName}
+      tabContentClassName={tabContentClassName}
     />
   );
 }
