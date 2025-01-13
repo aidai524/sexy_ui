@@ -4,13 +4,15 @@ import { useState } from "react";
 import Header from "./header";
 import List from "./list";
 import styles from "./home-new.module.css";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function HomeMobile() {
   const [currentTab, setCurrentTab] = useState(0);
+  const { innerHeight } = useUserAgent();
 
   return (
     <>
-      <div className={styles.Container}>
+      <div className={styles.Container} style={{ height: innerHeight }}>
         <Header
           currentTab={currentTab}
           onChangeTab={(tab: number) => {
