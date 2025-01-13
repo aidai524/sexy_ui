@@ -133,7 +133,7 @@ export default function Top(props: Props) {
             }}
           >
             <div>Created by</div>
-            <div style={{ color: '#FF37A3' }}>{top1CreateBy}</div>
+            <div style={{ color: '#FBCA04' }}>{top1CreateBy}</div>
           </div>
         </motion.div>
       </motion.div>
@@ -142,10 +142,7 @@ export default function Top(props: Props) {
           type="button"
           className={styles.TopBuyBtn}
           onClick={onBuy}
-        >
-          <img src="/img/trends/buy.svg" alt="" className={styles.TopBuyBtnIcon} />
-          <div>BUY</div>
-        </button>
+        />
       </div>
     </div>
   ) : (
