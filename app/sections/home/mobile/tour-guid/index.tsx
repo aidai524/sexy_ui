@@ -66,11 +66,21 @@ export default function TourGuid() {
         {/* step 1 */}
         {step === 1 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Image
+            <img
               src="/img/home/guid-step-1.png"
               width={177}
-              height={194}
+              height={192}
               alt="Guid step one"
+            />
+            <Image
+              src="/img/home/guid-step-1-1.gif"
+              width={116}
+              height={116}
+              alt="Guid step one"
+              style={{
+                position: "absolute",
+                left: "calc(50vw - 20px)"
+              }}
             />
           </motion.div>
         )}

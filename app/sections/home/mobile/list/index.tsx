@@ -1,9 +1,9 @@
 import Token from "../token";
 import Empty from "@/app/components/empty";
+import Loading from "../loading";
 import TourGuid from "../tour-guid";
 import useData from "@/app/sections/home/hooks/use-data-mobile";
 import { useEffect, useState } from "react";
-import CircleLoading from "@/app/components/icons/loading";
 import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
 
@@ -26,8 +26,14 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
 
   useEffect(() => {
     if (index) {
-      setY(-index * innerHeight);
+      if (index > list.length - 1) {
+        onChangeIndex(0);
+        setY(0);
+      } else {
+        setY(-index * innerHeight);
+      }
     }
+
     const prevent = function (e: any) {
       e.preventDefault();
     };
@@ -40,17 +46,22 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   return (
     <>
       <div className={styles.Container} style={{ height: innerHeight }}>
-        {/* <div
+        <div
           style={{
             position: "fixed",
-            left: 0,
-            top: type === "preLaunch" ? 200 : 300,
+            left: type === "preLaunch" ? 0 : "100vw",
+            top: 200,
             color: "red",
             zIndex: 100
           }}
         >
-          {type} Y: {y}
-        </div> */}
+          <div>
+            {type} Y: {y}
+          </div>
+          <div>
+            {type} Len: {list.length}
+          </div>
+        </div>
         <div
           className={styles.List}
           style={{
@@ -112,19 +123,13 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
         </div>
 
         {!list?.length && !isLoading && (
-          <Empty height={innerHeight} text="No more projects" />
+          <div className={styles.Wrapper}>
+            <Empty height={innerHeight} text="No more projects" />
+          </div>
         )}
         {isLoading && (
-          <div
-            style={{
-              height: innerHeight,
-              width: "100vw",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <CircleLoading size={40} />
+          <div className={styles.Wrapper} style={{ height: innerHeight }}>
+            <Loading />
           </div>
         )}
       </div>

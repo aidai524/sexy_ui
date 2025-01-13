@@ -106,7 +106,7 @@ export const useProjects = create(
     }),
     {
       name: "_projects",
-      version: 0.1,
+      version: 0.12,
       storage: createJSONStorage(() => localStorage)
     }
   )
