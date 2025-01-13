@@ -6,6 +6,7 @@ import PreviewNode from "./PreviewNode";
 
 import { useState } from "react";
 import type { Project } from "@/app/type";
+import PageHeader from "@/app/components/page-header/mobile";
 
 export default function Create() {
   const [renderType, setRenderType] = useState(0);
@@ -14,7 +15,9 @@ export default function Create() {
   return (
     <div className={styles.main}>
       <div className={styles.title}>
-        <div className={styles.titleText}>Create Token</div>
+        <div className={ styles.header }>
+          <PageHeader title="Create Token" theme="dark"/>
+        </div>
         <div className={styles.editProgress}>
           <div
             className={[
@@ -73,7 +76,7 @@ function MiniCircle() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="4" cy="4" r="4" fill="white" />
+      <circle cx="4" cy="4" r="4" fill="#000" />
     </svg>
   );
 }

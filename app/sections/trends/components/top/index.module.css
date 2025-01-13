@@ -18,7 +18,7 @@
 
 /*#region Top first*/
 .Top {
-  margin-top: 10px;
+  margin-top: 60px;
 }
 .TopAvatar {
   width: 210px;
@@ -136,7 +136,7 @@
   margin-top: 7px;
 }
 .TopMarketCapLabel {
-  color: #9290B1;
+  color: #6FFF00;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -157,17 +157,10 @@
   margin-top: 16px;
 }
 .TopBuyBtn {
-  height: 52px;
+  width: 174px;
+  height: 69px;
   flex-shrink: 0;
-  border-radius: 30px;
-  background: #C9FF5D;
-  color: #000;
-  font-family: Unbounded;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  padding: 0 34px 0 28px;
+  background: url('/img/trends/buy-btn.svg') no-repeat center / contain;
   display: flex;
   justify-content: center;
   align-items: center;

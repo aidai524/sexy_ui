@@ -27,7 +27,7 @@ export default function PageHeader({ title, theme, className }: any) {
       >
         {title}
       </div>
-      <Menu />
+      <Menu theme="dark"/>
     </div>
   );
 }
