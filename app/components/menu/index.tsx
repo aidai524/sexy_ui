@@ -1,5 +1,5 @@
 import Mobile from "./mobile";
 
-export default function Menu() {
-  return <Mobile />;
+export default function Menu(props: any) {
+  return <Mobile {...props} />;
 }

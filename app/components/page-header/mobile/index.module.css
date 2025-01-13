@@ -1,0 +1,21 @@
+.Container {
+  width: 100vw;
+  height: 46px;
+  padding: 0px 14px 0px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  z-index: 20;
+  top: 0px;
+  left: 0px;
+}
+
+.Title {
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}

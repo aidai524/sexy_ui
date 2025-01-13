@@ -1,4 +1,4 @@
-export default function MenuIcon() {
+export default function MenuIcon({ theme = "light" }: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,9 +8,27 @@ export default function MenuIcon() {
       fill="none"
     >
       <g filter="url(#filter0_d_6033_281)">
-        <rect x="4" y="4" width="22" height="3" fill="white" />
-        <rect x="4" y="13" width="22" height="3" fill="white" />
-        <rect x="4" y="22" width="22" height="3" fill="white" />
+        <rect
+          x="4"
+          y="4"
+          width="22"
+          height="3"
+          fill={theme === "dark" ? "#000" : "#fff"}
+        />
+        <rect
+          x="4"
+          y="13"
+          width="22"
+          height="3"
+          fill={theme === "dark" ? "#000" : "#fff"}
+        />
+        <rect
+          x="4"
+          y="22"
+          width="22"
+          height="3"
+          fill={theme === "dark" ? "#000" : "#fff"}
+        />
       </g>
       <defs>
         <filter

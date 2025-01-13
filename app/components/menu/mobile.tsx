@@ -7,7 +7,7 @@ import styles from "./mobile.module.css";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-export default function Mobile() {
+export default function Mobile({ theme }: any) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function Mobile() {
           setShow(true);
         }}
       >
-        <MenuIcon />
+        <MenuIcon theme={theme} />
       </button>
       <div
         className={styles.Panel}
@@ -55,7 +55,8 @@ export default function Mobile() {
           {config.map((item: any) => (
             <Link key={item.key} href={item.path}>
               <button className={`button ${styles.Item}`}>
-                {item.icon} <span className={styles.ItemText}>{item.label}</span>
+                {item.icon}{" "}
+                <span className={styles.ItemText}>{item.label}</span>
               </button>
             </Link>
           ))}
