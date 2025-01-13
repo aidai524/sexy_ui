@@ -14,22 +14,22 @@
   position: absolute;
   z-index: 1;
   left: 0;
-  top: 20px;
+  top: 0;
 }
 .Carousel {
   font-size: 20px;
-  color: #6FFF00;
+  color: #000;
   font-family: Unbounded;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   width: 100%;
-  transform: rotate(-12deg);
+  transform: rotate(-7deg);
   transform-origin: right;
 }
 .CarouselInner {
   width: 300%;
-  background: #FF2681;
+  background: #FBCA04;
   height: 33px;
   display: flex;
   align-items: stretch;
