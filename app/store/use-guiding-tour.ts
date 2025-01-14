@@ -14,7 +14,7 @@ export const useGuidingTour = create(
     }),
     {
       name: "_guidingTour",
-      version: 0.12,
+      version: 0.11,
       storage: createJSONStorage(() => localStorage)
     }
   )

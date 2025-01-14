@@ -1,7 +1,6 @@
 import type { Project } from "@/app/type";
 import styles from "./index.module.css";
 import MainBtn from "@/app/components/mainBtn";
-import { useRouter } from "next/navigation";
 import { useHomeTab } from "@/app/store/useHomeTab";
 
 interface Props {

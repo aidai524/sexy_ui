@@ -68,6 +68,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                       onUpdate(token);
                     }}
                     onClick={() => {
+                      if (!window.sexAddress) {
+                        window.connect();
+                        return;
+                      }
                       setShowFlipModal(true);
                     }}
                     id={isCurrent ? "guid-tour-flip" : token.id}
@@ -80,6 +84,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                   token={token}
                   totalHolders={totalHolders}
                   onClick={() => {
+                    if (!window.sexAddress) {
+                      window.connect();
+                      return;
+                    }
                     setShowTradeModal(true);
                   }}
                 />
@@ -91,6 +99,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
             <Actions
               token={token}
               onClick={(type: any) => {
+                if (!window.sexAddress) {
+                  window.connect();
+                  return;
+                }
                 if (type === "flip") {
                   setShowFlipModal(true);
                 }
@@ -145,6 +157,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
             token.comment = token.comment + 1;
             onUpdate(token);
           }}
+          total={token.comment}
         />
       )}
     </>

@@ -1,39 +1,43 @@
 "use client";
 
-import { useState } from "react";
 import Header from "./header";
 import List from "./list";
 import styles from "./home-new.module.css";
+import { useHomeTab } from "@/app/store/useHomeTab";
 import { useUserAgent } from "@/app/context/user-agent";
 
 export default function HomeMobile() {
-  const [currentTab, setCurrentTab] = useState(0);
+  const homeTabStore: any = useHomeTab();
   const { innerHeight } = useUserAgent();
 
   return (
     <div className={styles.Container} style={{ height: innerHeight }}>
       <Header
-        currentTab={currentTab}
+        currentTab={homeTabStore.homeTabIndex}
         onChangeTab={(tab: number) => {
-          setCurrentTab(tab);
+          homeTabStore.set({ homeTabIndex: tab });
         }}
       />
       <div
         className={styles.ListWrapper}
         style={{
-          transform: `translateX(${-currentTab * 100}vw)`,
+          transform: `translateX(-${homeTabStore.homeTabIndex * 100}vw)`,
           height: innerHeight
         }}
       >
         <List
           type="preLaunch"
-          onChangeTab={setCurrentTab}
-          isCurrentTab={currentTab === 0}
+          onChangeTab={(tab: number) => {
+            homeTabStore.set({ homeTabIndex: tab });
+          }}
+          isCurrentTab={homeTabStore.homeTabIndex === 0}
         />
         <List
           type="launching"
-          onChangeTab={setCurrentTab}
-          isCurrentTab={currentTab === 1}
+          onChangeTab={(tab: number) => {
+            homeTabStore.set({ homeTabIndex: tab });
+          }}
+          isCurrentTab={homeTabStore.homeTabIndex === 1}
         />
       </div>
     </div>

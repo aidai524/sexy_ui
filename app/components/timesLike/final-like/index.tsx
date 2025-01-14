@@ -1,6 +1,7 @@
 import styles from "./index.module.css";
+import ModalClose from "../../icons/modal-close";
 
-export default function FinalLike({ token }: any) {
+export default function FinalLike({ token, onClose }: any) {
   return (
     <>
       <div className={styles.Container}>
@@ -16,6 +17,9 @@ export default function FinalLike({ token }: any) {
         height={500}
         className={styles.Launching}
       />
+      <div className={`${styles.CloseBtn} button`} onClick={onClose}>
+        <ModalClose />
+      </div>
     </>
   );
 }

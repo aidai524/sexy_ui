@@ -45,3 +45,10 @@
   left: -120px;
   z-index: 1;
 }
+
+.CloseBtn {
+  position: absolute;
+  z-index: 10;
+  bottom: 120px;
+  right: -20px;
+}

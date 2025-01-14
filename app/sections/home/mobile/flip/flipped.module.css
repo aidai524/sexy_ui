@@ -8,7 +8,7 @@
   box-sizing: border-box;
   padding: 0px 0px 5px 24px;
   display: flex;
-  gap: 26px;
+  gap: 12px;
   align-items: center;
   margin-left: 10px;
 }
@@ -24,11 +24,14 @@
 
 .Desc {
   color: #fff;
-  text-align: right;
   font-family: Unbounded;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   margin-top: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 220px;
 }

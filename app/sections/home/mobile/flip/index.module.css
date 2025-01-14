@@ -61,5 +61,18 @@
 }
 
 .Right {
-  margin-left: 10px;
+  margin-left: 0px;
+}
+
+.Hints {
+  color: rgba(255, 255, 255, 0.3);
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  position: absolute;
+  left: 18px;
+  top: 24px;
 }

@@ -38,15 +38,18 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100vw;
 }
 
 .Input {
   height: 40px;
-  flex-grow: 1;
   border-radius: 8px;
   border: 1px solid rgba(146, 144, 177, 0.6);
   background: rgba(146, 144, 177, 0.1);
   padding: 0px 12px;
+  color: #fff;
+  width: calc(100vw - 76px);
+  font-size: 16px;
 }
 
 .Button {
