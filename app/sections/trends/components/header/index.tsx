@@ -1,4 +1,4 @@
-import PageHeader from '@/app/components/page-header/mobile';
+import PageHeader from "@/app/components/page-header/mobile";
 
 export default function Header() {
   return (
@@ -6,8 +6,9 @@ export default function Header() {
       <PageHeader
         title="Trends"
         theme="light"
+        from="trends"
         style={{
-          background: '#000',
+          background: "#000"
         }}
       />
     </div>

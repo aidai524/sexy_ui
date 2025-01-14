@@ -15,8 +15,8 @@ export default function Create() {
   return (
     <div className={styles.main}>
       <div className={styles.title}>
-        <div className={ styles.header }>
-          <PageHeader title="Create Token" theme="dark"/>
+        <div className={styles.header}>
+          <PageHeader title="Create Token" theme="dark" from="create" />
         </div>
         <div className={styles.editProgress}>
           <div

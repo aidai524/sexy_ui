@@ -42,7 +42,7 @@ export default function Mobile({ theme }: any) {
       {show && (
         <motion.div
           initial={{
-            x: "100vw",
+            x: -290,
             opacity: 0
           }}
           animate={{
