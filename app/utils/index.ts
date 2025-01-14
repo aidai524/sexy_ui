@@ -218,8 +218,8 @@ let isInitingAuthorization = false,
   authorization: string | undefined;
 const watingQuene: any[] = [];
 
-const rejectDuration = 1000 * 30;
-let rejectTime = Date.now() - rejectDuration - 1;
+// const rejectDuration = 1000 * 30;
+// let rejectTime = Date.now() - rejectDuration - 1;
 
 export async function getAuthorization() {
   authorization = getAuthorizationByLocal();
@@ -263,9 +263,9 @@ export async function initAuthorization() {
   // if (getAuthorizationByLocal()) {
   //   return
   // }
-  if (Date.now() - rejectTime < rejectDuration) {
-    return;
-  }
+  // if (Date.now() - rejectTime < rejectDuration) {
+  //   return;
+  // }
 
   if (isInitingAuthorization) {
     return;
@@ -306,23 +306,21 @@ export async function initAuthorization() {
       _reslove(v.data);
     }
   } catch (e) {
-    console.log("e:", e);
     while (watingQuene.length) {
       const _reslove = watingQuene.shift();
       _reslove(null);
     }
     watingQuene.length = 0;
-    rejectTime = Date.now();
+    window.disconnect?.();
+    logOut();
   }
 
   isInitingAuthorization = false;
 }
 
 export function logOut() {
-  // @ts-ignore
   window.walletProvider = null;
-  // @ts-ignore
-  window.sexAddress = null;
+  window.sexAddress = undefined;
   window.localStorage.removeItem(AUTH_KEY);
   deleteCookie("referral");
   authorization = undefined;
