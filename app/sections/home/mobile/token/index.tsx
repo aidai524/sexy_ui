@@ -99,15 +99,15 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
             <Actions
               token={token}
               onClick={(type: any) => {
+                if (type === "comments") {
+                  setShowCommentsModal(true);
+                }
                 if (!window.sexAddress) {
                   window.connect();
                   return;
                 }
                 if (type === "flip") {
                   setShowFlipModal(true);
-                }
-                if (type === "comments") {
-                  setShowCommentsModal(true);
                 }
               }}
               totalHolders={totalHolders}

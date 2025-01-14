@@ -10,7 +10,8 @@ interface ProjectsState {
   launchProjects: {};
   preIndex: number;
   launchIndex: number;
-  setProjects: (projects: any, type: Type) => void;
+  address: string;
+  setProjects: (projects: any, type: Type, address?: string) => void;
   getProjectsByType: (type: Type) => any[];
   updateProject: (type: Type, item: any) => void;
   clear: (type: Type) => void;
@@ -26,21 +27,21 @@ export const useProjects = create(
       launchProjects: {},
       preIndex: 0,
       launchIndex: 0,
+      address: "",
       clear: (type: Type) => {
         if (type === "preLaunch") {
-          set({ preProjects: {} });
+          set({ preProjects: {}, preIndex: 0 });
         } else {
-          set({ launchProjects: {} });
+          set({ launchProjects: {}, launchIndex: 0 });
         }
       },
-      setProjects: (_projects: any, type: Type) => {
+      setProjects: (_projects: any, type: Type, address?: string) => {
         const currentProjects =
           type === "preLaunch" ? get().preProjects : get().launchProjects;
         const currentProjectsList = Object.values(
           type === "preLaunch" ? get().preProjects : get().launchProjects
         );
         let prev: any = {};
-        console.log(43, currentProjectsList.length, _projects.length);
         if (currentProjectsList.length + _projects.length > 100) {
           const start = currentProjectsList.length + _projects.length - 100;
           prev = currentProjectsList
@@ -59,9 +60,9 @@ export const useProjects = create(
         };
 
         if (type === "preLaunch") {
-          set({ preProjects: list });
+          set({ preProjects: list, address: address || "" });
         } else {
-          set({ launchProjects: list });
+          set({ launchProjects: list, address: address || "" });
         }
       },
       getProjectsByType: (type: Type) => {

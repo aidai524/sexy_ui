@@ -41,7 +41,7 @@ export default function useData(launchType: Type) {
         fetched_time: Date.now()
       }));
 
-      projectsStore.setProjects(projects, launchType);
+      projectsStore.setProjects(projects, launchType, userInfo?.address);
     } catch (err) {}
   };
 
@@ -87,11 +87,14 @@ export default function useData(launchType: Type) {
 
   const { run: debounceList } = useDebounceFn(
     () => {
+      if (projectsStore.address !== (userInfo?.address || "")) {
+        projectsStore.clear(launchType);
+        projectsStore.setIndex(launchType, 0);
+        setList([]);
+      }
+
       initList();
       mountedRef.current = true;
-      if (!userInfo?.address || window?.sexAddress !== userInfo?.address) {
-        projectsStore.clear(launchType);
-      }
     },
     { wait: 1000 }
   );
