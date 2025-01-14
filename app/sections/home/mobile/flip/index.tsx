@@ -26,8 +26,17 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
       try {
         setLoading(true);
         await prePaid(0.1 * 1e8);
-        await actionLikeTrigger(token);
-        onSuccess();
+        const likeRes = await actionLikeTrigger(token);
+        const params: any = {
+          isSuperLike: true,
+          total_amount: 0.1,
+          prePaid: token.prePaid + 1
+        };
+        if (likeRes) {
+          params.isLike = true;
+          params.like = token.like + 1;
+        }
+        onSuccess(params);
       } catch (err) {
       } finally {
         setLoading(false);

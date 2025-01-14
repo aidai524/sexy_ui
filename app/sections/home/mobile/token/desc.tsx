@@ -6,10 +6,12 @@ import { useMemo, useState, useEffect } from "react";
 import useMc from "@/app/hooks/useMc";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useRouter } from "next/navigation";
+import { useHome } from "../context";
 
 export default function Desc({ token }: any) {
   const [mc, setMc] = useState(0);
   const router = useRouter();
+  const { goDetail } = useHome();
   const { mc: pumpMc } = useMc({
     tokenAddress: token.address,
     disable: token.status! < 1
@@ -52,7 +54,8 @@ export default function Desc({ token }: any) {
     <div
       className={`button ${styles.Container}`}
       onClick={() => {
-        router.push(`/detail?address=${token.address}`);
+        // router.push(`/detail?address=${token.address}`);
+        goDetail(token);
       }}
     >
       <div className={styles.Title}>{token.tokenName}</div>
@@ -69,11 +72,15 @@ export default function Desc({ token }: any) {
         <StatusTag type={token.status} />
         {token.DApp === "pump" && <ImportTag />}
       </div>
-      {token.DApp === "sexy" && mc > 0 && (
-        <div className={styles.MC}>Market Cap: ${simplifyNum(mc, 2)}</div>
+      {token.DApp === "sexy" && (
+        <div className={styles.MC}>
+          Market Cap: ${mc > 0 ? simplifyNum(mc, 2) : "-"}
+        </div>
       )}
-      {token.DApp === "pump" && pumpMc > 0 && (
-        <div className={styles.MC}>Market Cap: ${simplifyNum(pumpMc, 2)}</div>
+      {token.DApp === "pump" && (
+        <div className={styles.MC}>
+          Market Cap: ${pumpMc > 0 ? simplifyNum(pumpMc, 2) : "-"}
+        </div>
       )}
       <div className={styles.Create}>
         <span>Created by</span>

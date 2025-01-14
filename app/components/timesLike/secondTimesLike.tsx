@@ -25,6 +25,7 @@ export default function SecondTimeLike({ data, onClose }: Props) {
 
         <MainBtn
           onClick={() => {
+            onClose?.();
             setHomeTabIndex({
               homeTabIndex: 1
             });

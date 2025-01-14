@@ -21,6 +21,7 @@ export default function CommentComp({
   commentList,
   update,
   token,
+  onSuccess
 }: any) {
   const [commentText, setCommentText] = useState("");
   const [showEdit, setShowEdit] = useState(false);
@@ -28,12 +29,19 @@ export default function CommentComp({
   const { userInfo } = useAuth();
 
   const CommentList = commentList.map((item: any) => {
-    return <CommentItem key={item.id} item={item} onSuccess={() => {
-      // loadMoreComment(0);
-    }}  onSuccessNow={(item: any) => {
-      console.log('onSuccessNow', item)
-      update && update()
-    }}/>;
+    return (
+      <CommentItem
+        key={item.id}
+        item={item}
+        onSuccess={() => {
+          // loadMoreComment(0);
+        }}
+        onSuccessNow={(item: any) => {
+          console.log("onSuccessNow", item);
+          update && update();
+        }}
+      />
+    );
   });
 
   const Content = (
@@ -101,6 +109,7 @@ export default function CommentComp({
                   if (val.code === 0) {
                     loadMoreComment(0);
                     setCommentText("");
+                    onSuccess?.();
                   }
 
                   setIsSubmiting(false);
@@ -141,6 +150,7 @@ export default function CommentComp({
                   loadMoreComment(0);
                   setCommentText("");
                   setShowEdit(false);
+                  onSuccess?.();
                 }
 
                 setIsSubmiting(false);

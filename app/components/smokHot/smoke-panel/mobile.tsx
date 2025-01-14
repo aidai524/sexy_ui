@@ -6,7 +6,7 @@ import type { Project } from "@/app/type";
 interface Props {
   show: boolean;
   token: Project;
-  onSuccess: () => void;
+  onSuccess: (amount?: string) => void;
   onHide?: () => void;
 }
 
@@ -36,9 +36,7 @@ export default function SmokPanel({ show, token, onSuccess, onHide }: Props) {
           onClose={() => {
             onHide && onHide();
           }}
-          onSuccess={() => {
-            onSuccess && onSuccess();
-          }}
+          onSuccess={onSuccess}
           panelStyle={{
             padding: "0px 14px 20px"
           }}

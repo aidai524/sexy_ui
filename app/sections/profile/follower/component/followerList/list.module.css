@@ -49,9 +49,13 @@
   }
 
   .me {
-    color: #fff;
-    width: 90px;
+    color: #FFF;
     text-align: center;
+    font-family: Unbounded;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 }
 

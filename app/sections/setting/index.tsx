@@ -55,7 +55,7 @@ export default function Settings() {
         <div
           className={styles.menuItem}
           onClick={() => {
-            logout();
+            logout(true);
           }}
         >
           <div className={styles.textWrapper}>

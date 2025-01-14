@@ -5,9 +5,9 @@ import FollowerActions from "./components/follower-actions";
 import PointsLabel from "@/app/components/points-label";
 import { useReferStore } from "@/app/store/useRefer";
 import { useAuth } from "@/app/context/auth";
-import AirdropEntry from '@/app/components/airdrop/entry';
-import PageHeader from '@/app/components/page-header/mobile';
-import Summaries from '@/app/sections/profile/components/summaries';
+import AirdropEntry from "@/app/components/airdrop/entry";
+import PageHeader from "@/app/components/page-header/mobile";
+import Summaries from "@/app/sections/profile/components/summaries";
 
 export default function Profile({
   userInfo,
@@ -18,7 +18,6 @@ export default function Profile({
   onQueryInfo,
   setShowVip,
   router,
-  profileTabIndex,
   showHot = true,
   isOther = false
 }: any) {
@@ -28,14 +27,14 @@ export default function Profile({
   const backgroundImgStyle = userInfoBanner
     ? {
         backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.90) 41.35%, rgba(0, 0, 0, 0.30) 100%)`,
-        backgroundSize: "100% auto"
+        backgroundSize: "cover"
       }
     : {};
 
   const backgroundImgStyle1 = userInfoBanner
     ? {
         backgroundImage: `url(${userInfoBanner})`,
-        backgroundSize: "100% auto"
+        backgroundSize: "cover"
       }
     : {};
 
@@ -44,11 +43,7 @@ export default function Profile({
       className={styles.main}
       style={store.entryVisible ? { paddingBottom: 200 } : {}}
     >
-      <PageHeader
-        title=""
-        theme="light"
-        from="profile"
-      />
+      <PageHeader title="" theme="light" from="profile" />
       <AirdropEntry />
       <div style={backgroundImgStyle1} className={styles.avatarBox}>
         {/*<div className={styles.Points}>
@@ -61,7 +56,7 @@ export default function Profile({
               setShowVip(true);
             }}
             onEdit={() => {
-              router.push("/profile/setting");
+              router.push("/profile/edit");
             }}
             isOther={isOther}
             isFollower={isFollower}
@@ -73,33 +68,36 @@ export default function Profile({
               // });
             }}
           />
+          <FollowerActions
+            userInfo={userInfo}
+            onItemClick={(action: string) => {
+              if (!address) return;
+              router.push(
+                "/profile/follower?account=" + address + "&action=" + action
+              );
+            }}
+            style={{
+              width: "100%"
+            }}
+          />
         </div>
-        <FollowerActions
-          userInfo={userInfo}
-          onItemClick={(action: string) => {
-            router.push(
-              '/profile/follower?account=' + address + '&action=' + action
-            );
-          }}
-        />
       </div>
 
       {/*<Summaries />*/}
 
       <Tabs
         address={address}
-        defaultIndex={profileTabIndex}
         showHot={showHot}
         isOther={isOther}
         tabHeaderStyle={{
           flexShrink: 0,
-          padding: '10px 15px',
-          fontSize: '14px',
-          marginTop: 20,
+          padding: "10px 15px",
+          fontSize: "14px",
+          marginTop: 20
         }}
         tabHeadersClassName={styles.Tabs}
         tabHeadersStyle={{
-          height: 'unset',
+          height: "unset"
         }}
         cursorClassName={styles.TabsCursorClassName}
         tabContentClassName={styles.TabsContentClassName}

@@ -2,8 +2,12 @@ import styles from "./index.module.css";
 import Bg from "./bg";
 import Image from "next/image";
 import { numberFormatter, addThousandSeparator } from "@/app/utils/common";
+import { useHomeTab } from "@/app/store/useHomeTab";
+import { useRouter } from "next/navigation";
 
 export default function TotalPanel({ info }: any) {
+  const { set }: any = useHomeTab();
+  const router = useRouter();
   return (
     <div className={styles.Container}>
       <div className={styles.FunPanel}>
@@ -32,7 +36,13 @@ export default function TotalPanel({ info }: any) {
           <div
             className={styles.StatisticsValue}
             style={{
-              borderBottom: info?.liked ? "1px dashed #fff" : "none"
+              borderBottom: info?.liked ? "1px dashed #fff" : "none",
+              cursor: info?.liked ? "pointer" : ""
+            }}
+            onClick={() => {
+              if (!info?.liked) return;
+              set({ profileTabIndex: 3 });
+              router.push("/profile");
             }}
           >
             {info?.liked ? addThousandSeparator(info?.liked) : "-"}

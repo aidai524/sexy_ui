@@ -8,7 +8,7 @@ import styles from "./index.module.css";
 export default function Mining({ info, infoLoading }: any) {
   return (
     <div className={styles.Container}>
-      <PageHeader title="Reward" />
+      <PageHeader title="Reward" from="reward" />
       <div className={styles.Content}>
         <TotalPanel info={info} />
         <EarnAndInvite info={info} />

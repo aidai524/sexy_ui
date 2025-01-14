@@ -6,32 +6,24 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useLaptop } from "@/app/context/laptop";
-import Coppied from '@/app/sections/profile/components/coppied';
+import Coppied from "@/app/sections/profile/components/coppied";
 
 export default function Tabs({
-  showHot,
   address,
-  defaultIndex,
   tabContentStyle,
   tabHeaderStyle,
   from,
   isOther,
-  onTabChange,
   tabHeadersClassName,
   tabHeadersStyle,
   cursorClassName,
-  tabContentClassName,
+  tabContentClassName
 }: any) {
-  const { set: setProfileTabIndex }: any = useHomeTab();
+  const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
   const { isMobile } = useUserAgent();
-  const [tabIndex, setTabIndex] = useState(0);
-  const { likedListKey, flipListKey, createListKey } = useLaptop();
 
-  const activeIndex = useMemo(
-    () => (isMobile ? defaultIndex || 0 : tabIndex),
-    [defaultIndex, tabIndex]
-  );
+  const { likedListKey, flipListKey, createListKey } = useLaptop();
 
   const tabs = [
     // {
@@ -40,7 +32,7 @@ export default function Tabs({
     // },
     {
       name: "Held",
-      content: <Held from={from} address={address}/>
+      content: <Held from={from} address={address} />
     },
     {
       name: "Created",
@@ -53,7 +45,7 @@ export default function Tabs({
           prepaidWithdrawDelayTime={prepaidDelayTime}
           from={from}
           refresher={createListKey}
-          isCurrent={activeIndex === 1}
+          isCurrent={homeTabStore.profileTabIndex === 1}
         />
       )
     },
@@ -66,7 +58,7 @@ export default function Tabs({
           isOther={isOther}
           prepaidWithdrawDelayTime={prepaidDelayTime}
           refresher={flipListKey}
-          isCurrent={activeIndex === 2}
+          isCurrent={homeTabStore.profileTabIndex === 2}
           from={from}
         />
       )
@@ -80,14 +72,17 @@ export default function Tabs({
           isOther={isOther}
           prepaidWithdrawDelayTime={prepaidDelayTime}
           refresher={likedListKey}
-          isCurrent={activeIndex === 3}
+          isCurrent={homeTabStore.profileTabIndex === 3}
           from={from}
         />
       )
     }
   ];
 
-  const activeNode = useMemo(() => tabs[activeIndex].name, [activeIndex, tabs]);
+  const activeNode = useMemo(
+    () => tabs[homeTabStore.profileTabIndex].name,
+    [homeTabStore.profileTabIndex]
+  );
 
   return (
     <Tab
@@ -98,11 +93,9 @@ export default function Tabs({
           defaultIndex = index;
           return tab.name === nodeName;
         });
-        isMobile
-          ? setProfileTabIndex({
-              profileTabIndex: defaultIndex
-            })
-          : setTabIndex(defaultIndex);
+        homeTabStore.set({
+          profileTabIndex: defaultIndex
+        });
       }}
       activeNode={activeNode}
       tabContentStyle={tabContentStyle}

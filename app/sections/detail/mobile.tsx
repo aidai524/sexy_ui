@@ -16,13 +16,16 @@ import AvatarDetail from "@/app/components/avatarDetail";
 import Back from "@/app/components/backNew";
 import Menu from "@/app/components/menu";
 import CommnentList from "./components/comment/commnet";
-import PreLaunchAction from '@/app/components/action/launching'
-import LaunchedAction from '@/app/components/action/launched'
+import PreLaunchAction from "@/app/components/action/launching";
+import LaunchedAction from "@/app/components/action/launched";
 import { useUserAgent } from "@/app/context/user-agent";
-import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
+import {
+  actionHateTrigger,
+  actionLikeTrigger
+} from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 
-export default function Detail({ token, onBack, onNext, onUpdate }: any) {
+export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   const [activeKey, setActiveKey] = useState("Info");
   const {
     infoData: queryedInfoData,
@@ -64,15 +67,13 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
 
   useEffect(() => {
     onBack &&
-      infoData &&
+      token &&
       history.pushState(
         { page: "/detail" },
         "Detail",
-        `/detail?address=${infoData.address}`
+        `/detail?address=${token.address}`
       );
-  }, [onBack, infoData]);
-
-  console.log('infoData', infoData)
+  }, [onBack, token]);
 
   if (isLoading) {
     return (
@@ -91,7 +92,9 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
         <div className={styles.Content}>
           <div className={styles.header}>
             <div className={styles.backWrapper}>
-              <div style={{ marginTop: 8 }}><Back /></div>
+              <div style={{ marginTop: 8 }}>
+                <Back onBack={onBack} />
+              </div>
               <AvatarDetail token={infoData} mc={pumpMc || mc} />
             </div>
             <div className={styles.menuWrapper}>
@@ -99,86 +102,73 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
             </div>
           </div>
 
-          {
-            infoData?.status === 0 && <>
-              <Info
-                mc={pumpMc || mc}
-                data={infoData}
-                showHodler={false}
-                onUpdate={() => {
-                  getDetailInfo();
-                }}
-              />
+          {token?.status !== 0 && <Chart token={infoData} />}
 
-              <CommnentList token={infoData} />
-            </>
-          }
-
-          {
-            infoData?.status !== 0 && <Chart token={infoData} />
-          }
-
-          {
-            infoData?.status !== 0 && <Tab
-              activeNode={activeKey}
-              onTabChange={(nodeName) => {
-                setActiveKey(nodeName);
-              }}
-              nodes={[
-                {
-                  name: "Info",
-                  content: (
-                    <Info
-                      mc={pumpMc || mc}
-                      data={infoData}
-                      onUpdate={() => {
-                        getDetailInfo();
-                      }}
-                    />
-                  )
-                },
-                {
-                  name: "Comments",
-                  content: (
-                    <CommnentList token={infoData} />
-                  )
-                },
-                {
-                  name: "Trade",
-                  content: <Txs mc={pumpMc || mc} data={infoData} />
-                }
-              ]}
-            />
-          }
-
-
+          <Tab
+            activeNode={activeKey}
+            onTabChange={(nodeName) => {
+              setActiveKey(nodeName);
+            }}
+            nodes={[
+              {
+                name: "Info",
+                content: (
+                  <Info
+                    mc={pumpMc || mc}
+                    data={infoData}
+                    onUpdate={() => {
+                      getDetailInfo();
+                    }}
+                  />
+                )
+              },
+              {
+                name: "Comments",
+                content: <CommnentList token={infoData} />
+              },
+              {
+                name: "Trade",
+                content: <Txs mc={pumpMc || mc} data={infoData} />
+              }
+            ]}
+          />
 
           <div className={styles.action}>
             {infoData?.status === 0 ? (
               <PreLaunchAction
                 token={infoData}
                 style={{ position: isMobile ? "fixed" : "static", bottom: 20 }}
-                canFlip={true}
+                canFlip={false}
                 onLike={async () => {
-                  await actionLikeTrigger(infoData);
-                  getDetailInfo()
+                  const res = await actionLikeTrigger(infoData);
+                  if (res) {
+                    getDetailInfo();
+                    onSuccess?.({
+                      isLike: true,
+                      like: token.like + 1
+                    });
+                  }
                 }}
                 onHate={async () => {
                   await actionHateTrigger(infoData);
-                  getDetailInfo()
+                  getDetailInfo();
                 }}
-                onSuperLike={() => {
-                  getDetailInfo()
+                onSuperLike={(amount: any) => {
+                  getDetailInfo();
+                  onSuccess?.({
+                    isSuperLike: true,
+                    prePaid: token.prePaid + 1,
+                    total_amount: amount
+                  });
                 }}
                 onBoost={() => {
-                  getDetailInfo()
+                  getDetailInfo();
                 }}
               />
             ) : (
               <LaunchedAction data={infoData} />
             )}
           </div>
-
         </div>
       </div>
     </SexPullToRefresh>

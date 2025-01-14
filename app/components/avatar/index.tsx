@@ -10,9 +10,9 @@ import FollowBtn from '@/app/sections/profile/components/followBtn';
 export default function Avatar({ userInfo, onEdit, onVipShow, isOther, isFollower, onFollowSuccess }: any) {
   const { address } = useAccount();
   const { isMobile } = useUserAgent();
-  if (!userInfo?.address) {
-    return null;
-  }
+  // if (!userInfo?.address) {
+  //   return null;
+  // }
 
   return (
     <>
@@ -26,8 +26,8 @@ export default function Avatar({ userInfo, onEdit, onVipShow, isOther, isFollowe
         </div>*/}
       </div>
       <div className={styles.userName}>
-        <div>{userInfo?.name || formatAddress(userInfo.address)}</div>
-        <Level level={userInfo.level} vipType={userInfo.vipType} />
+        <div>{userInfo?.name || formatAddress(userInfo?.address) || 'FlipN'}</div>
+        <Level level={userInfo?.level} vipType={userInfo?.vipType} />
         {isOther && (
           <div className={styles.isOther}>
             <div className={styles.FollowBtnBox}>

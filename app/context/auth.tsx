@@ -3,7 +3,7 @@ import { useDebounceFn } from "ahooks";
 import { useUser } from "@/app/store/useUser";
 import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCodeStore, CODE } from "@/app/store/use-code";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { redirect } from "next/navigation";
@@ -24,6 +24,7 @@ export const AuthProvider: React.FC<{
   const [showLoginModal, setShowLoginModal] = useState(false);
   const { address, walletProvider } = useAccount();
   const userStore: any = useUser();
+  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const codeStore: any = useCodeStore();
@@ -36,13 +37,15 @@ export const AuthProvider: React.FC<{
 
   const { run: updateAccount } = useDebounceFn(
     async () => {
-      if (address === window.sexAddress) {
+      window.walletProvider = walletProvider;
+      window.sexAddress = address;
+
+      if (address === userStore.userInfo?.address) {
         setAccountRefresher(1);
         updateCurrentUserInfo();
         return;
       }
-      window.walletProvider = walletProvider;
-      window.sexAddress = address;
+
       await initAuthorization();
       await updateCurrentUserInfo();
       setAccountRefresher(accountRefresher + 1);
@@ -57,16 +60,18 @@ export const AuthProvider: React.FC<{
     window.connect = () => {
       setShowLoginModal(true);
     };
-    window.disconnect = disconnect();
+    window.disconnect = disconnect;
   }, []);
 
-  const logout = useCallback(async () => {
+  const logout = useCallback(async (isRedirect?: boolean) => {
     await disconnect?.();
     setUserInfo(undefined);
     userStore.set({
       userInfo: null
     });
     logOut();
+    // fix#REF-9292
+    isRedirect && router.replace('/');
   }, [address]);
 
   const updateCurrentUserInfo = useCallback(async () => {
@@ -79,11 +84,10 @@ export const AuthProvider: React.FC<{
     if (!address) {
       setAccountRefresher(0);
       setTimeout(() => {
-        // @ts-ignore
-        if (!window.sexAddress) {
+        if (!userStore.userInfo?.address) {
           logout();
         }
-      }, 3000);
+      }, 5000);
       return;
     }
 
