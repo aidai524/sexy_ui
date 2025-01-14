@@ -19,9 +19,9 @@ export default function useDanmaku({ id, limit = 10 }: any) {
         setList(JSON.parse(JSON.stringify([...list, ...list].slice(0, 4))));
         return Promise.resolve();
       }
-      return httpGet("/project/comment/list", {
+      return httpGet("/project/dan_mu/list", {
         limit: 10,
-        project_id: id,
+        id,
         offset: _offset
       })
         .then((res) => {
@@ -31,7 +31,29 @@ export default function useDanmaku({ id, limit = 10 }: any) {
           let newList = [];
           if (res.data.list?.length) {
             const newMapList = res.data.list.map((item: any) => {
-              return item;
+              let text = "";
+              if (["discussion"].includes(item.type)) {
+                text = item.content_1;
+              }
+              if (item.type === "buy") {
+                text = `bought ${item.content_1}`;
+              }
+              if (item.type === "sell") {
+                text = `sold ${item.content_1}`;
+              }
+              if (item.type === "share") {
+                text = "shared";
+              }
+              if (item.type === "flip") {
+                text =
+                  "flipped" + item.content_1 ? `${item.content_1} SOL` : "";
+              }
+              return {
+                text,
+                icon: item.account_icon,
+                type: item.type,
+                id: item.id
+              };
             });
 
             if (_offset === 0) {

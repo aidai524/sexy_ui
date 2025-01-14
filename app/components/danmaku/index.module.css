@@ -48,3 +48,14 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.Like {
+  display: flex;
+  gap: 8px;
+  color: #ff61a4;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
