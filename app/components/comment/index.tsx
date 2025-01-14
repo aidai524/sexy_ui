@@ -18,7 +18,8 @@ export default function CommentComp({
   isCommentLoading,
   commentHasMore,
   loadMoreComment,
-  commentList
+  commentList,
+  update
 }: any) {
   const [commentText, setCommentText] = useState("");
   const [showEdit, setShowEdit] = useState(false);
@@ -26,7 +27,12 @@ export default function CommentComp({
   const { userInfo } = useAuth();
 
   const CommentList = commentList.map((item: any) => {
-    return <CommentItem key={item.id} item={item} />;
+    return <CommentItem key={item.id} item={item} onSuccess={() => {
+      // loadMoreComment(0);
+    }}  onSuccessNow={(item: any) => {
+      console.log('onSuccessNow', item)
+      update && update()
+    }}/>;
   });
 
   const Content = (
@@ -66,6 +72,7 @@ export default function CommentComp({
           >
             <div className={styles.inputTitle}>Comments</div>
             <textarea
+              maxLength={200}
               value={commentText}
               onKeyUp={async (e) => {
                 if (!userInfo?.address) {
@@ -149,6 +156,7 @@ export default function CommentComp({
         }
         closeOnAction
         closeOnMaskClick
+        className="no-bg"
         onClose={() => {
           setShowEdit(false);
         }}

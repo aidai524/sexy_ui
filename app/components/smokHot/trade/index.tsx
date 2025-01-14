@@ -139,17 +139,17 @@ export default function Trade({
             }}
             style={{ backgroundColor: "#FBCA04", color: '#000' }}
           >
-            Flip
+            Pre-Buy
           </MainBtn>
 
-          <div
+          {/* <div
             onClick={() => {
               onClose && onClose();
             }}
             className={`${styles.cancel} button`}
           >
             Cancel
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

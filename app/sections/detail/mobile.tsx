@@ -91,7 +91,7 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
         <div className={styles.Content}>
           <div className={styles.header}>
             <div className={styles.backWrapper}>
-              <Back />
+              <div style={{ marginTop: 8 }}><Back /></div>
               <AvatarDetail token={infoData} mc={pumpMc || mc} />
             </div>
             <div className={styles.menuWrapper}>

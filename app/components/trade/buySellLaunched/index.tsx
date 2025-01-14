@@ -470,7 +470,6 @@ export default function BuySellLaunched({ token, initType, onClose, show }: Prop
 
                 if (hash) {
                   const volume = activeIndex === 0 ? new Big(buyInSol).div(10 ** SOL.tokenDecimals).toFixed(SOL.tokenDecimals) : sellOutSol
-                  console.log(buyInSol, sellOutSol, volume)
 
                   const pointByVolume = await getPointByVolume(Big(volume).toString(), 'sexy')
 

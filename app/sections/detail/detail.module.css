@@ -97,7 +97,7 @@ div.tabBar {
 
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between ;
   padding: 10px 16px 10px 20px;
 }
@@ -111,5 +111,5 @@ div.tabBar {
 .backWrapper {
   display: flex;
   gap: 10px;
-  align-items: center;
+  align-items: flex-start;
 }
