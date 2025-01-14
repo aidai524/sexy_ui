@@ -31,7 +31,7 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
   } = useTokenDetail({ token });
   const [mc, setMC] = useState<string | number>("-");
   const { isMobile } = useUserAgent();
-  
+
 
 
   const infoData = useMemo(
@@ -74,6 +74,8 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
       );
   }, [onBack, infoData]);
 
+  console.log('infoData', infoData)
+
   if (isLoading) {
     return (
       <div className={styles.loadingBox}>
@@ -100,39 +102,58 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
           </div>
 
           {
-            token?.status !== 0 && <Chart token={infoData} />
+            infoData?.status === 0 && <>
+              <Info
+                mc={pumpMc || mc}
+                data={infoData}
+                showHodler={false}
+                onUpdate={() => {
+                  getDetailInfo();
+                }}
+              />
+
+              <CommnentList token={infoData} />
+            </>
           }
 
-          <Tab
-            activeNode={activeKey}
-            onTabChange={(nodeName) => {
-              setActiveKey(nodeName);
-            }}
-            nodes={[
-              {
-                name: "Info",
-                content: (
-                  <Info
-                    mc={pumpMc || mc}
-                    data={infoData}
-                    onUpdate={() => {
-                      getDetailInfo();
-                    }}
-                  />
-                )
-              },
-              {
-                name: "Comments",
-                content: (
-                  <CommnentList token={infoData} />
-                )
-              },
-              {
-                name: "Trade",
-                content: <Txs mc={pumpMc || mc} data={infoData} />
-              }
-            ]}
-          />
+          {
+            infoData?.status !== 0 && <Chart token={infoData} />
+          }
+
+          {
+            infoData?.status !== 0 && <Tab
+              activeNode={activeKey}
+              onTabChange={(nodeName) => {
+                setActiveKey(nodeName);
+              }}
+              nodes={[
+                {
+                  name: "Info",
+                  content: (
+                    <Info
+                      mc={pumpMc || mc}
+                      data={infoData}
+                      onUpdate={() => {
+                        getDetailInfo();
+                      }}
+                    />
+                  )
+                },
+                {
+                  name: "Comments",
+                  content: (
+                    <CommnentList token={infoData} />
+                  )
+                },
+                {
+                  name: "Trade",
+                  content: <Txs mc={pumpMc || mc} data={infoData} />
+                }
+              ]}
+            />
+          }
+
+
 
           <div className={styles.action}>
             {infoData?.status === 0 ? (

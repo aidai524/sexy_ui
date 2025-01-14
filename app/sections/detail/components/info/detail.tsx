@@ -21,10 +21,11 @@ import useCommentList from "@/app/hooks/use-comment-list";
 interface Props {
   data: Project;
   mc?: string | number;
+  showHodler?: boolean;
   onUpdate: (type?: string) => void;
 }
 
-export default function Info({ data, mc, onUpdate }: Props) {
+export default function Info({ data, mc, onUpdate, showHodler = true }: Props) {
   const { isMobile } = useUserAgent();
   const comments = useCommentList({ id: data?.id });
 
@@ -35,6 +36,7 @@ export default function Info({ data, mc, onUpdate }: Props) {
         mc={mc}
         data={data}
         theme="light"
+        showHolders={showHodler}
       />
       {/* <CommentComp id={data.id} {...comments} /> */}
 

@@ -29,6 +29,7 @@ export interface Project {
     initiativeLaunching?: boolean;
     prePaidAmount?: string;
     prePaid?: string;
+    comment?: number;
 }
 
 export interface Comment {

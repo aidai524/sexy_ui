@@ -10,6 +10,6 @@ interface Props {
 export default function CommnentList({ token }: Props) {
     const comments = useCommentList({ id: token?.id });  
     return <div className={ styles.main }>
-        <CommentComp usePanel={false}  id={token.id} {...comments} />
+        <CommentComp usePanel={false}  id={token.id} {...comments} token={token} />
     </div>
 }

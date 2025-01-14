@@ -31,6 +31,7 @@ export function mapDataToProject(currentToken: any): Project {
     x: currentToken.x,
     tg: currentToken.tg,
     discord: currentToken.discord,
+    comment: currentToken.comment,
     ...currentToken
   };
 }

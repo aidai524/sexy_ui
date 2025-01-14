@@ -19,7 +19,8 @@ export default function CommentComp({
   commentHasMore,
   loadMoreComment,
   commentList,
-  update
+  update,
+  token,
 }: any) {
   const [commentText, setCommentText] = useState("");
   const [showEdit, setShowEdit] = useState(false);
@@ -38,7 +39,7 @@ export default function CommentComp({
   const Content = (
     <>
       <div className={styles.title} style={titleStyle}>
-        <div>Commnet</div>
+        <div>Commnet({token.comment})</div>
         <div
           className={styles.postBtn}
           onClick={() => {
