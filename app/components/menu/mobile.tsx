@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 export default function Mobile({ theme }: any) {
   const [show, setShow] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const close = () => {
@@ -47,7 +47,7 @@ export default function Mobile({ theme }: any) {
       >
         <div className={styles.Top}>
           <div className={styles.Title}>
-            <TitleIcon/>
+            <TitleIcon />
           </div>
           <div className={styles.Desc}>
             <span>Flip🫰, Like🩷, and Ear</span>
@@ -56,18 +56,19 @@ export default function Mobile({ theme }: any) {
         </div>
         <div className={styles.List}>
           {config.map((item: any) => (
-            <button key={item.key} onClick={() => {
-              //@ts-ignore
-              if (!window.sexAddress) {
-                //@ts-ignore
-                window.connect();
-                return;
-              }
+            <button
+              key={item.key}
+              onClick={() => {
+                if (!window.sexAddress && !["/reward"].includes(item.key)) {
+                  window.connect();
+                  return;
+                }
 
-              router.push(item.path)
-            }} className={`button ${styles.Item}`}>
-              {item.icon}{" "}
-              <span className={styles.ItemText}>{item.label}</span>
+                router.push(item.path);
+              }}
+              className={`button ${styles.Item}`}
+            >
+              {item.icon} <span className={styles.ItemText}>{item.label}</span>
             </button>
           ))}
         </div>

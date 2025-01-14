@@ -57,7 +57,7 @@ export default function Actions({
         }}
       >
         <CommentIcon />
-        <span>{token.prePaid}</span>
+        <span>{token.comment}</span>
       </button>
       <button
         className={`${styles.Item} button`}
@@ -71,7 +71,7 @@ export default function Actions({
         }}
       >
         <ShareIcon />
-        <span>{token.prePaid}</span>
+        <span>{token.share_num}</span>
       </button>
     </div>
   );

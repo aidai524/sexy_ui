@@ -104,7 +104,6 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                   token.isLike = true;
                   token.like = token.like + 1;
                 }
-                // token.prePaid = (token.prePaid || 0) + 1;
                 onUpdate(token);
               }}
               isCurrent={isCurrent}
@@ -143,10 +142,8 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
           }}
           id={token.id}
           onSuccess={() => {
-            // TODO:
-            // token.isLike = true;
-            //       token.like = token.like + 1;
-            //       onUpdate(token);
+            token.comment = token.comment + 1;
+            onUpdate(token);
           }}
         />
       )}

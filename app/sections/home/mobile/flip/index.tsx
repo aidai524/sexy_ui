@@ -3,6 +3,7 @@ import styles from "./index.module.css";
 import HomeIcon from "@/app/components/icons/home";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useDebounceFn } from "ahooks";
+import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 
 let startX = 0;
 export default function Flip({ token, onSuccess, id, onClick }: any) {
@@ -20,6 +21,7 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
       try {
         setLoading(true);
         await prePaid(0.1 * 1e8);
+        await actionLikeTrigger(token);
         onSuccess();
       } catch (err) {
       } finally {
@@ -48,7 +50,7 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
             if (diff < 0) {
               diff = 0;
             }
-            if (diff > 160) {
+            if (diff > 90) {
               diff = 170;
               run();
             }

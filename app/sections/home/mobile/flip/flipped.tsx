@@ -56,7 +56,9 @@ export default function Flipped({ token }: any) {
       </svg>
       <div>
         <div className={styles.Label}>You’ve Flipped </div>
-        <div className={styles.Desc}>0.1 SOL of ${token?.tokenName}</div>
+        <div className={styles.Desc}>
+          {token?.total_amount} SOL of ${token?.tokenName}
+        </div>
       </div>
     </div>
   );

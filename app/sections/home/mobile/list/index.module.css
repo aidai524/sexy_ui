@@ -5,6 +5,7 @@
 
 .List {
   transition: 0.5s;
+  touch-action: none;
 }
 
 .Wrapper {
