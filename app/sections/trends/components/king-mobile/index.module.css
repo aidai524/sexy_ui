@@ -1,3 +1,49 @@
+.Container {
+  position: fixed;
+  right: 0px;
+  top: 52px;
+  width: 137px;
+  height: 40px;
+  border-radius: 18px 0px 0px 18px;
+  padding: 2px;
+  background: linear-gradient(to right, #fcd65e, #b2d5f8, #f6c5d3);
+  cursor: pointer;
+  z-index: 50;
+}
+
+.Inner {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #000;
+  border-radius: 18px 0px 0px 18px;
+  padding-left: 2px;
+}
+
+.Label {
+  color: #9290b1;
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.Value {
+  color: #fff;
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 2px;
+  width: 96px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .Avatar {
   width: 32px;
   height: 32px;

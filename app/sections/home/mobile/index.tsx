@@ -1,4 +1,4 @@
-import Home from "./home-new";
+import Home from "./home";
 import dynamic from "next/dynamic";
 import { HomeContext } from "./context";
 import styles from "./index.module.css";
