@@ -23,11 +23,12 @@ import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useUserAgent } from "@/app/context/user-agent";
 import { fail } from "@/app/utils/toast";
 import { getShortUrl, shareToX } from "@/app/utils/share";
-import { DotLoading, Modal } from "antd-mobile";
+import { DotLoading } from "antd-mobile";
 import Likes from "../thumbnail/likes";
 import { useAuth } from "@/app/context/auth";
 import useMc from "@/app/hooks/useMc";
 import QRCodeCom from "../qrcode";
+import Modal from "../modal";
 
 interface Props {
   token: Project | undefined;
@@ -200,69 +201,61 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
 
   return (
     <Modal
-      className="no-bg"
-      visible={show}
-      content={
-        <div className={styles.main + " " + (isMobile ? styles.mobileBox : "")}>
-          <div className={styles.box + " " + (isMobile ? styles.isMobile : "")}>
-            {CanvasDom}
-            <div
-              className={styles.shareBtn}
-              onClick={async () => {
-                if (isSharing) {
-                  return;
-                }
-
-                setIsSharing(true);
-                const img = await getShareImg();
-                if (!img) {
-                  fail("Share fail");
-                  setIsSharing(false);
-                  return;
-                }
-
-                const longUrl = `${domain}/api/twitter?tokenName=${encodeURIComponent(
-                  token.tokenName
-                )}&about=${encodeURIComponent(
-                  token.about
-                )}&imgUrl=${encodeURIComponent(img)}&address=${token.address
-                  }&referral=${userInfo.address}`
-                  
-                try {
-                  const shreUrl = await getShortUrl(longUrl)
-                  console.log('shreUrl:', shreUrl)
-
-                  shareToX(
-                    token.tokenName,
-                    shreUrl
-                  );
-                } catch(e) {
-                  fail("Share fail");
-                  setIsSharing(false);
-                  return;
-                }
-                
-                setIsSharing(false);
-              }}
-            >
-              {isSharing ? <DotLoading color="white" /> : "Share"}
-            </div>
-          </div>
-
-          <div
-            ref={containerRef}
-            className={styles.box + " " + styles.realyDom}
-          >
-            {CanvasDom}
-          </div>
-        </div>
-      }
-      closeOnMaskClick
-      closeOnAction
+      open={show}
+      closeStyle={{ display: "none" }}
       onClose={() => {
         onClose();
       }}
-    />
+    >
+      <div className={styles.main + " " + (isMobile ? styles.mobileBox : "")}>
+        <div className={styles.box + " " + (isMobile ? styles.isMobile : "")}>
+          {CanvasDom}
+          <div
+            className={styles.shareBtn}
+            onClick={async () => {
+              if (isSharing) {
+                return;
+              }
+
+              setIsSharing(true);
+              const img = await getShareImg();
+              if (!img) {
+                fail("Share fail");
+                setIsSharing(false);
+                return;
+              }
+
+              const longUrl = `${domain}/api/twitter?tokenName=${encodeURIComponent(
+                token.tokenName
+              )}&about=${encodeURIComponent(
+                token.about
+              )}&imgUrl=${encodeURIComponent(img)}&address=${
+                token.address
+              }&referral=${userInfo.address}`;
+
+              try {
+                const shreUrl = await getShortUrl(longUrl);
+                console.log("shreUrl:", shreUrl);
+
+                shareToX(token.tokenName, shreUrl);
+              } catch (e) {
+                fail("Share fail");
+                setIsSharing(false);
+                return;
+              }
+
+              setIsSharing(false);
+            }}
+          >
+            {isSharing ? <DotLoading color="white" /> : "Share"}
+          </div>
+        </div>
+
+        <div ref={containerRef} className={styles.box + " " + styles.realyDom}>
+          {CanvasDom}
+        </div>
+      </div>
+    </Modal>
   );
 }
 

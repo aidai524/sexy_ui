@@ -63,13 +63,13 @@
 
 .Bar1 {
   position: absolute;
-  right: -30px;
+  left: -20px;
   bottom: -40px;
 }
 
 .Bar2 {
   position: absolute;
-  right: -30px;
+  left: -20px;
   bottom: -50px;
   transform: rotate(45deg);
 }
@@ -78,8 +78,9 @@
   position: absolute;
   bottom: 14px;
   width: 100%;
+  padding-right: 14px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   gap: 30px;
   z-index: 50;
