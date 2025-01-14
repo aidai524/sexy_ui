@@ -79,6 +79,7 @@ export const useProjects = create(
       updateProject: (type: Type, item: any) => {
         const currentProjects =
           type === "preLaunch" ? get().preProjects : get().launchProjects;
+        if (!currentProjects[item.id]) return;
         currentProjects[item.id] = item;
         if (type === "preLaunch") {
           set({ preProjects: currentProjects });

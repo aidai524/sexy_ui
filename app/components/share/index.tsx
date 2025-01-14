@@ -13,9 +13,7 @@ export default function Share({ token }: Props) {
     <div
       className={`${styles.share} button`}
       onClick={() => {
-        //@ts-ignore
         if (!window.sexAddress) {
-          //@ts-ignore
           window.connect();
           return;
         }

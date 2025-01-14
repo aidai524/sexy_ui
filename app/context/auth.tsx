@@ -36,13 +36,15 @@ export const AuthProvider: React.FC<{
 
   const { run: updateAccount } = useDebounceFn(
     async () => {
-      if (address === window.sexAddress) {
+      window.walletProvider = walletProvider;
+      window.sexAddress = address;
+
+      if (address === userStore.userInfo?.address) {
         setAccountRefresher(1);
         updateCurrentUserInfo();
         return;
       }
-      window.walletProvider = walletProvider;
-      window.sexAddress = address;
+
       await initAuthorization();
       await updateCurrentUserInfo();
       setAccountRefresher(accountRefresher + 1);
@@ -57,7 +59,7 @@ export const AuthProvider: React.FC<{
     window.connect = () => {
       setShowLoginModal(true);
     };
-    window.disconnect = disconnect();
+    window.disconnect = disconnect;
   }, []);
 
   const logout = useCallback(async () => {
@@ -79,11 +81,16 @@ export const AuthProvider: React.FC<{
     if (!address) {
       setAccountRefresher(0);
       setTimeout(() => {
-        // @ts-ignore
-        if (!window.sexAddress) {
+        console.log(
+          82,
+          window.sexAddress,
+          address,
+          userStore.userInfo?.address
+        );
+        if (!userStore.userInfo?.address) {
           logout();
         }
-      }, 3000);
+      }, 5000);
       return;
     }
 

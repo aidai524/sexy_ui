@@ -27,15 +27,6 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   const guidingTourStore = useGuidingTour();
 
   useEffect(() => {
-    if (index) {
-      if (list.length && index > list.length - 1) {
-        onChangeIndex(0);
-        setY(0);
-      } else {
-        setY(-index * innerHeight);
-      }
-    }
-
     const prevent = function (e: any) {
       e.preventDefault();
     };
@@ -44,6 +35,15 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
       document.body.removeEventListener("touchmove", prevent);
     };
   }, []);
+
+  useEffect(() => {
+    if (list.length && index > list.length) {
+      onChangeIndex(0);
+      setY(0);
+    } else {
+      setY(-index * innerHeight);
+    }
+  }, [index, list]);
 
   return (
     <>
@@ -89,7 +89,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
             let currentIndex = index;
             if (Math.abs(diffY) > 100) {
               if (diffY < 0) {
-                if (currentIndex < list.length - 1) currentIndex++;
+                if (currentIndex < list.length) currentIndex++;
               } else {
                 if (currentIndex > 0) currentIndex--;
               }
@@ -122,13 +122,9 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
               />
             );
           })}
+          {!isLoading && <Empty height={innerHeight} text="No more projects" />}
         </div>
 
-        {!list?.length && !isLoading && (
-          <div className={styles.Wrapper}>
-            <Empty height={innerHeight} text="No more projects" />
-          </div>
-        )}
         {isLoading && (
           <div className={styles.Wrapper} style={{ height: innerHeight }}>
             <Loading />

@@ -41,7 +41,12 @@ export default function Comments({ show, id, total, onClose, onSuccess }: any) {
           />
           <div className={styles.Nums}>{total || 0} comments</div>
         </div>
-        <div className={styles.Content}>
+        <div
+          className={styles.Content}
+          onTouchStart={(ev) => {
+            ev.stopPropagation();
+          }}
+        >
           {commentList.map((comment: any) => (
             <CommentItem key={comment.id} item={comment} />
           ))}
@@ -70,6 +75,10 @@ export default function Comments({ show, id, total, onClose, onSuccess }: any) {
           <input
             value={commentText}
             onChange={(e) => {
+              if (!window.sexAddress) {
+                window.connect();
+                return;
+              }
               setCommentText(e.target.value);
             }}
             onKeyUp={(e) => {
