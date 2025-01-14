@@ -83,94 +83,113 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     );
   }
   return (
-    <SexPullToRefresh
-      onRefresh={async () => {
-        await getDetailInfo();
-      }}
-    >
-      <div className={styles.main}>
-        <div className={styles.Content}>
-          <div className={styles.header}>
-            <div className={styles.backWrapper}>
-              <div style={{ marginTop: 8 }}>
-                <Back onBack={onBack} />
+    <div style={{ overflow: 'auto', height: '100vh' }}>
+      <SexPullToRefresh
+        onRefresh={async () => {
+          await getDetailInfo();
+        }}
+      >
+
+        <div className={styles.main}>
+          <div className={styles.Content}>
+            <div className={styles.header}>
+              <div className={styles.backWrapper}>
+                <div style={{ marginTop: 8 }}>
+                  <Back onBack={onBack} />
+                </div>
+                <AvatarDetail token={infoData} mc={pumpMc || mc} />
               </div>
-              <AvatarDetail token={infoData} mc={pumpMc || mc} />
+              {/* <div className={styles.menuWrapper}>
+                <Menu />
+              </div> */}
             </div>
-            <div className={styles.menuWrapper}>
-              <Menu />
-            </div>
-          </div>
 
-          {token?.status !== 0 && <Chart token={infoData} />}
+            {
+              infoData?.status === 0 && <>
+                <Info
+                  mc={pumpMc || mc}
+                  data={infoData}
+                  showHodler={false}
+                  onUpdate={() => {
+                    getDetailInfo();
+                  }}
+                />
+                <CommnentList token={infoData} />
+              </>
+            }
 
-          <Tab
-            activeNode={activeKey}
-            onTabChange={(nodeName) => {
-              setActiveKey(nodeName);
-            }}
-            nodes={[
-              {
-                name: "Info",
-                content: (
-                  <Info
-                    mc={pumpMc || mc}
-                    data={infoData}
-                    onUpdate={() => {
+            {infoData?.status !== 0 && <Chart token={infoData} />}
+
+            {
+              infoData?.status !== 0 && <Tab
+                activeNode={activeKey}
+                onTabChange={(nodeName) => {
+                  setActiveKey(nodeName);
+                }}
+                nodes={[
+                  {
+                    name: "Info",
+                    content: (
+                      <Info
+                        mc={pumpMc || mc}
+                        data={infoData}
+                        onUpdate={() => {
+                          getDetailInfo();
+                        }}
+                      />
+                    )
+                  },
+                  {
+                    name: "Comments",
+                    content: <CommnentList token={infoData} />
+                  },
+                  {
+                    name: "Trade",
+                    content: <Txs mc={pumpMc || mc} data={infoData} />
+                  }
+                ]}
+              />
+            }
+
+            <div className={styles.action}>
+              {infoData?.status === 0 ? (
+                <PreLaunchAction
+                  token={infoData}
+                  style={{ position: isMobile ? "fixed" : "static", bottom: 20 }}
+                  canFlip={false}
+                  onLike={async () => {
+                    const res = await actionLikeTrigger(infoData);
+                    if (res) {
                       getDetailInfo();
-                    }}
-                  />
-                )
-              },
-              {
-                name: "Comments",
-                content: <CommnentList token={infoData} />
-              },
-              {
-                name: "Trade",
-                content: <Txs mc={pumpMc || mc} data={infoData} />
-              }
-            ]}
-          />
-
-          <div className={styles.action}>
-            {infoData?.status === 0 ? (
-              <PreLaunchAction
-                token={infoData}
-                style={{ position: isMobile ? "fixed" : "static", bottom: 20 }}
-                canFlip={false}
-                onLike={async () => {
-                  const res = await actionLikeTrigger(infoData);
-                  if (res) {
+                      onSuccess?.({
+                        isLike: true,
+                        like: token.like + 1
+                      });
+                    }
+                  }}
+                  onHate={async () => {
+                    await actionHateTrigger(infoData);
+                    getDetailInfo();
+                  }}
+                  onSuperLike={(amount: any) => {
                     getDetailInfo();
                     onSuccess?.({
-                      isLike: true,
-                      like: token.like + 1
+                      isSuperLike: true,
+                      prePaid: token.prePaid + 1,
+                      total_amount: amount
                     });
-                  }
-                }}
-                onHate={async () => {
-                  await actionHateTrigger(infoData);
-                  getDetailInfo();
-                }}
-                onSuperLike={(amount: any) => {
-                  getDetailInfo();
-                  onSuccess?.({
-                    isSuperLike: true,
-                    prePaid: token.prePaid + 1,
-                    total_amount: amount
-                  });
-                }}
-                onBoost={() => {
-                  getDetailInfo();
-                }}
-              />
-            ) : (
-              <LaunchedAction data={infoData} />
-            )}
+                  }}
+                  onBoost={() => {
+                    getDetailInfo();
+                  }}
+                />
+              ) : (
+                <LaunchedAction data={infoData} />
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </SexPullToRefresh>
+      </SexPullToRefresh>
+    </div>
   );
 }

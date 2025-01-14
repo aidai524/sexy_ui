@@ -38,9 +38,6 @@ export default function Info({ data, mc, onUpdate, showHodler = true }: Props) {
         theme="light"
         showHolders={showHodler}
       />
-      {/* <CommentComp id={data.id} {...comments} /> */}
-
-   
     </div>
   );
 }

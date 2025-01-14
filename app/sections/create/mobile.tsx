@@ -17,7 +17,7 @@ export default function Create() {
     <div className={styles.main}>
       <div className={styles.title}>
         <div className={ styles.header }>
-          <PageHeader style={{ position: 'static' }} title="Create Token" theme="dark"/>
+          <PageHeader from="create" style={{ position: 'static' }} title="Create Token" theme="dark"/>
         </div>
         <div className={styles.editProgress}>
           <div
