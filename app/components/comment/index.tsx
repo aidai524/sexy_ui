@@ -47,7 +47,7 @@ export default function CommentComp({
   const Content = (
     <>
       <div className={styles.title} style={titleStyle}>
-        <div>Commnet({token.comment})</div>
+        <div>Comments({token.comment})</div>
         <div
           className={styles.postBtn}
           onClick={() => {
