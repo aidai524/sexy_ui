@@ -1,9 +1,10 @@
 .main {
-  min-height: 100vh;
+  height: 100dvh;
   background-color: #000;
 
   /* background: #fff; */
   padding: 0;
+  overflow-y: auto;
 
   .avatarBox {
     position: relative;

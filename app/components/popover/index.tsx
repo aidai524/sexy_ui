@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useDebounceFn } from "ahooks";
 import styles from './index.module.css';
 
@@ -12,7 +12,7 @@ import styles from './index.module.css';
 //            |                                  |
 // LeftBottom ------------------------------------ RightBottom
 //            BottomLeft     Bottom    BottomRight
-const Popover = (props: Props) => {
+const Popover = (props: Props, ref: any) => {
   const {
     children,
     content,
@@ -39,6 +39,12 @@ const Popover = (props: Props) => {
     },
     { wait: 300 }
   );
+
+  const refs = {
+    onClose: closeDelay,
+    onCloseCancel: closeCancel,
+  };
+  useImperativeHandle(ref, () => refs);
 
   return (
     <>
@@ -173,7 +179,7 @@ const Popover = (props: Props) => {
   );
 };
 
-export default Popover;
+export default React.forwardRef(Popover);
 
 export enum PopoverPlacement {
   Top,
