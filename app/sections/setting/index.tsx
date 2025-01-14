@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import styles from "./setting.module.css";
-import Image from "next/image";
 import BackNew from "@/app/components/backNew";
+import { useAuth } from "@/app/context/auth";
 
 export default function Settings() {
+  const { logout } = useAuth();
+  
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -30,7 +32,9 @@ export default function Settings() {
           </svg>
         </Link>
 
-        <div className={styles.menuItem}>
+        <div className={styles.menuItem} onClick={() => {
+          logOut()
+        }}>
           <div className={styles.textWrapper}>
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="30" height="30" rx="10" fill="#FF008A" />

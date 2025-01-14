@@ -61,7 +61,7 @@ export default function Profile({
               setShowVip(true);
             }}
             onEdit={() => {
-              router.push("/profile/edit");
+              router.push("/profile/setting");
             }}
             isOther={isOther}
             isFollower={isFollower}
