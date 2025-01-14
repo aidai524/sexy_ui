@@ -6,6 +6,7 @@ import useData from "@/app/sections/home/hooks/use-data-mobile";
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useGuidingTour } from "@/app/store/use-guiding-tour";
 
 let startY = 0;
 let startX = 0;
@@ -23,6 +24,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   const index = getIndex(type);
   const [y, setY] = useState(0);
   const { innerHeight } = useUserAgent();
+  const guidingTourStore = useGuidingTour();
 
   useEffect(() => {
     if (index) {
@@ -68,6 +70,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
             transform: `translateY(${y}px)`
           }}
           onTouchStart={(ev: any) => {
+            if (!guidingTourStore.hasShownTour) return;
             startY = ev.touches[0].clientY;
             startX = ev.touches[0].clientX;
             started = true;
@@ -107,9 +110,10 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
             if (Math.abs(i - index) < 2 && item) {
               token = getProjectById(type, item);
             }
+
             return (
               <Token
-                key={item}
+                key={token?.address || item}
                 token={token}
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any) => {
@@ -131,7 +135,9 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           </div>
         )}
       </div>
-      {type === "preLaunch" && !!list?.length && <TourGuid />}{" "}
+      {type === "preLaunch" &&
+        !!list?.length &&
+        !guidingTourStore.hasShownTour && <TourGuid />}
     </>
   );
 }

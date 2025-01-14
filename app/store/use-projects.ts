@@ -40,6 +40,7 @@ export const useProjects = create(
           type === "preLaunch" ? get().preProjects : get().launchProjects
         );
         let prev: any = {};
+        console.log(43, currentProjectsList.length, _projects.length);
         if (currentProjectsList.length + _projects.length > 100) {
           const start = currentProjectsList.length + _projects.length - 100;
           prev = currentProjectsList
@@ -56,6 +57,7 @@ export const useProjects = create(
             {}
           )
         };
+
         if (type === "preLaunch") {
           set({ preProjects: list });
         } else {

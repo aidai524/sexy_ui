@@ -1,6 +1,7 @@
 .main {
-  min-height: 100vh;
+  height: 100dvh;
   background-color: #000;
+  overflow-y: auto;
 
   /* background: #fff; */
   padding: 0;

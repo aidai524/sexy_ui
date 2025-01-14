@@ -2,7 +2,7 @@ import styles from "./index.module.css";
 import Like from "./like";
 import HomeIcon from "@/app/components/icons/home";
 import CommentIcon from "@/app/components/icons/comment";
-import ShareIcon from "@/app/components/icons/share";
+import ShareIcon from "./share-icon";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 
@@ -23,6 +23,10 @@ export default function Actions({
             like={token.like}
             onClick={async () => {
               if (token.isLike) return;
+              if (!window.sexAddress) {
+                window.connect();
+                return;
+              }
               const result = await actionLikeTrigger(token);
               if (result) onSuccess("like");
             }}
@@ -57,7 +61,7 @@ export default function Actions({
         }}
       >
         <CommentIcon />
-        <span>{token.comment}</span>
+        <span>{token.comment || 0}</span>
       </button>
       <button
         className={`${styles.Item} button`}
@@ -71,7 +75,7 @@ export default function Actions({
         }}
       >
         <ShareIcon />
-        <span>{token.share_num}</span>
+        <span>{token.share_num || 0}</span>
       </button>
     </div>
   );

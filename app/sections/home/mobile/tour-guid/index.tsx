@@ -15,7 +15,6 @@ export default function TourGuid() {
   const { innerHeight } = useUserAgent();
 
   useEffect(() => {
-    if (guidingTourStore.hasShownTour) return;
     setTimeout(() => {
       const flipElement = document.getElementById("guid-tour-flip");
       if (flipElement) {
@@ -48,7 +47,6 @@ export default function TourGuid() {
     }, 2000);
   }, []);
   return (
-    !guidingTourStore.hasShownTour &&
     step > 0 && (
       <div
         className={styles.Container}

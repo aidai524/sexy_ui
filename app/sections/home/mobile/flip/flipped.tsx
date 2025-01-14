@@ -1,4 +1,5 @@
 import styles from "./flipped.module.css";
+import { numberFormatter } from "@/app/utils/common";
 
 export default function Flipped({ token }: any) {
   return (
@@ -57,7 +58,10 @@ export default function Flipped({ token }: any) {
       <div>
         <div className={styles.Label}>You’ve Flipped </div>
         <div className={styles.Desc}>
-          {token?.total_amount} SOL of ${token?.tokenName}
+          {token?.total_amount
+            ? numberFormatter(token.total_amount, 3, true, { isShort: true })
+            : "0"}{" "}
+          SOL of ${token?.tokenName}
         </div>
       </div>
     </div>

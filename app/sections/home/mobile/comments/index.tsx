@@ -8,7 +8,7 @@ import CircleLoading from "@/app/components/icons/loading";
 import useComment from "@/app/hooks/use-comment";
 import useCommentList from "@/app/hooks/use-comment-list";
 
-export default function Comments({ show, id, onClose, onSuccess }: any) {
+export default function Comments({ show, id, total, onClose, onSuccess }: any) {
   const { isCommentLoading, commentHasMore, loadMoreComment, commentList } =
     useCommentList({ id });
   const { isLoading, commentText, setCommentText, onPostComment } = useComment(
@@ -39,7 +39,7 @@ export default function Comments({ show, id, onClose, onSuccess }: any) {
             height={95}
             alt="Comments"
           />
-          {/* <div className={styles.Nums}>123 comments</div> */}
+          <div className={styles.Nums}>{total || 0} comments</div>
         </div>
         <div className={styles.Content}>
           {commentList.map((comment: any) => (
@@ -73,6 +73,10 @@ export default function Comments({ show, id, onClose, onSuccess }: any) {
               setCommentText(e.target.value);
             }}
             onKeyUp={(e) => {
+              if (!window.sexAddress) {
+                window.connect();
+                return;
+              }
               if (e.keyCode === 13) {
                 onPostComment();
               }
