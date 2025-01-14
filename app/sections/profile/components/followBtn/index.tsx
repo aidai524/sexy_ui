@@ -46,7 +46,7 @@ export default function FollowBtn({ address, isFollower, onSuccess }: Props) {
             }, 1200);
           }}
           className={
-            followingLoading ? styles.isFollowLoading : styles.isFollowing
+            followingLoading ? styles.isFollowingLoading : styles.isFollowing
           }
         >
           Following
