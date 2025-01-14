@@ -18,6 +18,7 @@ interface Props {
   showLikes?: boolean;
   showProgress?: boolean;
   showHolders?: boolean;
+  showAddress?: boolean;
   theme?: string;
   mc?: string | number;
   withoutFlip?: boolean;
@@ -30,6 +31,7 @@ export default function InfoPart({
   theme = "dark",
   showProgress = true,
   showHolders = true,
+  showAddress = true,
   mc,
   withoutFlip
 }: Props) {
@@ -122,18 +124,18 @@ export default function InfoPart({
           <div className={styles.author}>
             <div className={styles.authorTitle}>Market cap:</div>
             {
-              data.DApp === 'sexy' && <div className={styles.authorDesc} style={{ color: "#6fff00" }}>
-                {mc === 0 || mc === "0"
-                  ? "-"
-                  : `$${simplifyNum(mc as number, 2)}`}
+              data.DApp === 'sexy' && <div className={styles.authorDesc} >
+                {mc === 0 || mc === "0" || mc === '-'
+                  ? <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
+                  : <div style={{ color: "#6fff00" }} >${simplifyNum(mc as number, 2)}</div> }
               </div>
             }
 
             {
               data.DApp === 'pump' && <div className={styles.authorDesc} style={{ color: "#6fff00" }}>
                 {pumpMc === 0
-                  ? "-"
-                  : `$${simplifyNum(pumpMc as number, 2)}`}
+                  ? <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
+                  : <div style={{ color: "#6fff00" }} >${simplifyNum(pumpMc as number, 2)}</div> }
               </div>
             }
 
@@ -182,8 +184,8 @@ export default function InfoPart({
         </div>
       }
 
-
-      <div className={styles.panel}>
+      {
+        showAddress && <div className={styles.panel}>
         <div className={styles.tokenAddressWrapper}>
           <div className={styles.tokenAddressTitle}>Contract address:</div>
           <div className={styles.tokenAddressContent}>
@@ -192,6 +194,7 @@ export default function InfoPart({
           </div>
         </div>
       </div>
+      }
 
       {(data.x || data.tg || data.discord || data.website) && (
         <div className={styles.panel}>

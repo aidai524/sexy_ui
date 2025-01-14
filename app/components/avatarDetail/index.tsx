@@ -20,12 +20,14 @@ export default function AvatarDetail({ token, mc }: Props) {
             <div className={styles.nameWrapper}>
                 <div className={styles.name}>{token.tokenName}</div>
                 <LaunchTag type={token.status as number} />
-                
+
             </div>
-            <div className={styles.ticker}>Ticker: <span className={ styles.dec }>{token.ticker}</span></div>
-            <div className={styles.mc}>Market cap:  {mc === 0 || mc === "0"
-                ? "-"
-                : `$${simplifyNum(mc as number, 2)}`}</div>
+            <div className={styles.ticker}>Ticker: <span className={styles.dec}>{token.ticker}</span></div>
+            {
+                token.status !== 0 && <div className={styles.mc}>Market cap:  {mc === 0 || mc === "0"
+                    ? "-"
+                    : `$${simplifyNum(mc as number, 2)}`}</div>
+            }
         </div>
     </div>
 }

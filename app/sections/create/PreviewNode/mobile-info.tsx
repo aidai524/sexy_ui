@@ -9,6 +9,7 @@ export default function Mobile({ newData }: any) {
       showHolders={false}
       showProgress={false}
       withoutFlip={true}
+      showAddress={false}
     />
   );
 }
