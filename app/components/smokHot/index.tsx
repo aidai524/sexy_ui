@@ -49,10 +49,6 @@ export default function SmokeBtn({
   }, [isDelay, token, address]);
 
   const disabledText = useMemo(() => {
-    if (isDelay) {
-      return 'IsDelay'
-    }
-
     if (token.account === address) {
       return 'IsSelf'
     }

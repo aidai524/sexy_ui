@@ -7,6 +7,7 @@ import PreviewNode from "./PreviewNode";
 import { useState } from "react";
 import type { Project } from "@/app/type";
 import PageHeader from "@/app/components/page-header/mobile";
+import { position } from "html2canvas/dist/types/css/property-descriptors/position";
 
 export default function Create() {
   const [renderType, setRenderType] = useState(0);
@@ -16,7 +17,7 @@ export default function Create() {
     <div className={styles.main}>
       <div className={styles.title}>
         <div className={ styles.header }>
-          <PageHeader title="Create Token" theme="dark"/>
+          <PageHeader style={{ position: 'static' }} title="Create Token" theme="dark"/>
         </div>
         <div className={styles.editProgress}>
           <div

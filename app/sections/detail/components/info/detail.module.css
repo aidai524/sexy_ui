@@ -16,6 +16,10 @@
   }
 }
 
+.detailInfo {
+  flex: 1;
+}
+
 .detailAvatar {
   display: flex;
   align-items: flex-start;
@@ -65,7 +69,7 @@
     color: #ffffff;
     white-space: nowrap;
     &.authorDescEs {
-      color: var(--part-bg);
+      color: #FF37A3;
     }
   }
 
@@ -95,14 +99,14 @@
       border-bottom: 1px solid var(--part-bg);
     }
   }
+}
 
-  .communityIcons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15vw;
-    padding: 35px 0;
-  }
+.communityIcons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15vw;
+  padding: 0 35px;
 }
 
 .panel {

@@ -32,8 +32,6 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
   const [mc, setMC] = useState<string | number>("-");
   const { isMobile } = useUserAgent();
 
-
-
   const infoData = useMemo(
     () => token || queryedInfoData,
     [token, queryedInfoData]
