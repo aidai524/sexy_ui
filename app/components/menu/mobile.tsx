@@ -78,7 +78,7 @@ export default function Mobile({ theme }: any) {
                 onClick={() => {
                   if (
                     !window.sexAddress &&
-                    !["/reward", "/", "/trends"].includes(item.path)
+                    !["/reward", "/", "/trends", "/profile"].includes(item.path)
                   ) {
                     window.connect();
                     return;
