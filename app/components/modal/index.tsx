@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import CloseIcon from "../icons/close";
 import { AnimatePresence, motion } from "framer-motion";
+import { useUserAgent } from "@/app/context/user-agent";
 import styles from "./index.module.css";
 
 interface ModalProps {
@@ -25,6 +26,7 @@ const Modal: React.FC<ModalProps> = ({
   closeStyle,
   maskClose = true
 }) => {
+  const { innerHeight } = useUserAgent();
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -48,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({
       <AnimatePresence mode="wait">
         <div
           className={styles.Container}
-          style={style}
+          style={{ ...style, height: innerHeight }}
           onClick={handleBackdropClick}
         >
           <div className={styles.Main} style={mainStyle}>
