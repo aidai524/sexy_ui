@@ -109,6 +109,9 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                 if (type === "flip") {
                   setShowFlipModal(true);
                 }
+                if (type === "trade") {
+                  setShowTradeModal(true);
+                }
               }}
               totalHolders={totalHolders}
               onSuccess={(type: string) => {

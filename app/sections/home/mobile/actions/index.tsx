@@ -48,7 +48,12 @@ export default function Actions({
         </>
       ) : (
         <>
-          <button className={`${styles.Item} button`}>
+          <button
+            className={`${styles.Item} button`}
+            onClick={() => {
+              onClick("trade");
+            }}
+          >
             <img src="/img/home/holder-icon.png" style={{ width: 34 }} />
             <span>{totalHolders}</span>
           </button>
