@@ -7,11 +7,13 @@ import { motion } from "framer-motion";
 import styles from "./mobile.module.css";
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Mobile({ theme }: any) {
   const [show, setShow] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { innerHeight } = useUserAgent();
 
   useEffect(() => {
     const close = () => {
@@ -30,7 +32,6 @@ export default function Mobile({ theme }: any) {
       <button
         className="button"
         onClick={(ev) => {
-          console.log(33);
           setShow(true);
           ev.stopPropagation();
           ev.nativeEvent.stopImmediatePropagation();
@@ -41,7 +42,7 @@ export default function Mobile({ theme }: any) {
       {show && (
         <motion.div
           initial={{
-            x: "100%",
+            x: "100vw",
             opacity: 0
           }}
           animate={{
@@ -54,6 +55,9 @@ export default function Mobile({ theme }: any) {
             }
           }}
           className={styles.Panel}
+          style={{
+            height: innerHeight
+          }}
           onClick={(ev) => {
             ev.stopPropagation();
           }}

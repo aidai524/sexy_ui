@@ -18,7 +18,7 @@ export const UserAgentProvider: React.FC<{
 
     checkIsMobile();
     setInnerHeight(window.innerHeight);
-    console.log("innerHeight", window.innerHeight, window.screen);
+
     window.addEventListener("resize", checkIsMobile);
     return () => {
       window.removeEventListener("resize", checkIsMobile);
