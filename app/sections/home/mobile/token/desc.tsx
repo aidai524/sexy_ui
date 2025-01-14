@@ -72,11 +72,15 @@ export default function Desc({ token }: any) {
         <StatusTag type={token.status} />
         {token.DApp === "pump" && <ImportTag />}
       </div>
-      {token.DApp === "sexy" && mc > 0 && (
-        <div className={styles.MC}>Market Cap: ${simplifyNum(mc, 2)}</div>
+      {token.DApp === "sexy" && (
+        <div className={styles.MC}>
+          Market Cap: ${mc > 0 ? simplifyNum(mc, 2) : "-"}
+        </div>
       )}
-      {token.DApp === "pump" && pumpMc > 0 && (
-        <div className={styles.MC}>Market Cap: ${simplifyNum(pumpMc, 2)}</div>
+      {token.DApp === "pump" && (
+        <div className={styles.MC}>
+          Market Cap: ${pumpMc > 0 ? simplifyNum(pumpMc, 2) : "-"}
+        </div>
       )}
       <div className={styles.Create}>
         <span>Created by</span>

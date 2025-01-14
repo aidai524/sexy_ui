@@ -91,6 +91,7 @@ export default function Comments({ show, id, total, onClose, onSuccess }: any) {
               }
             }}
             placeholder="say something..."
+            maxLength={200}
             className={styles.Input}
           />
           <button

@@ -23,7 +23,6 @@ export default memo(function Home(props: any) {
   const [isFollower, setIsFollower] = useState(false);
   const [refreshNum, setRefreshNum] = useState(0);
   const [showVip, setShowVip] = useState(false);
-  const { profileTabIndex, set: setProfileTabIndex }: any = useHomeTab();
 
   useEffect(() => {
     if (currentUserInfo?.address && params) {
@@ -62,7 +61,6 @@ export default memo(function Home(props: any) {
     setUserInfo,
     setShowVip,
     router,
-    profileTabIndex,
     isOther,
     isLoading
   };

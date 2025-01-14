@@ -81,12 +81,6 @@ export const AuthProvider: React.FC<{
     if (!address) {
       setAccountRefresher(0);
       setTimeout(() => {
-        console.log(
-          82,
-          window.sexAddress,
-          address,
-          userStore.userInfo?.address
-        );
         if (!userStore.userInfo?.address) {
           logout();
         }
