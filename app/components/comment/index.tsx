@@ -18,7 +18,8 @@ export default function CommentComp({
   isCommentLoading,
   commentHasMore,
   loadMoreComment,
-  commentList
+  commentList,
+  onSuccess
 }: any) {
   const [commentText, setCommentText] = useState("");
   const [showEdit, setShowEdit] = useState(false);
@@ -93,6 +94,7 @@ export default function CommentComp({
                   if (val.code === 0) {
                     loadMoreComment(0);
                     setCommentText("");
+                    onSuccess();
                   }
 
                   setIsSubmiting(false);
@@ -133,6 +135,7 @@ export default function CommentComp({
                   loadMoreComment(0);
                   setCommentText("");
                   setShowEdit(false);
+                  onSuccess();
                 }
 
                 setIsSubmiting(false);

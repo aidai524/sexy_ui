@@ -16,13 +16,16 @@ import AvatarDetail from "@/app/components/avatarDetail";
 import Back from "@/app/components/backNew";
 import Menu from "@/app/components/menu";
 import CommnentList from "./components/comment/commnet";
-import PreLaunchAction from '@/app/components/action/launching'
-import LaunchedAction from '@/app/components/action/launched'
+import PreLaunchAction from "@/app/components/action/launching";
+import LaunchedAction from "@/app/components/action/launched";
 import { useUserAgent } from "@/app/context/user-agent";
-import { actionHateTrigger, actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
+import {
+  actionHateTrigger,
+  actionLikeTrigger
+} from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 
-export default function Detail({ token, onBack, onNext, onUpdate }: any) {
+export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   const [activeKey, setActiveKey] = useState("Info");
   const {
     infoData: queryedInfoData,
@@ -31,8 +34,6 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
   } = useTokenDetail({ token });
   const [mc, setMC] = useState<string | number>("-");
   const { isMobile } = useUserAgent();
-  
-
 
   const infoData = useMemo(
     () => token || queryedInfoData,
@@ -66,13 +67,13 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
 
   useEffect(() => {
     onBack &&
-      infoData &&
+      token &&
       history.pushState(
         { page: "/detail" },
         "Detail",
-        `/detail?address=${infoData.address}`
+        `/detail?address=${token.address}`
       );
-  }, [onBack, infoData]);
+  }, [onBack, token]);
 
   if (isLoading) {
     return (
@@ -91,7 +92,7 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
         <div className={styles.Content}>
           <div className={styles.header}>
             <div className={styles.backWrapper}>
-              <Back />
+              <Back onBack={onBack} />
               <AvatarDetail token={infoData} mc={pumpMc || mc} />
             </div>
             <div className={styles.menuWrapper}>
@@ -99,9 +100,7 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
             </div>
           </div>
 
-          {
-            token?.status !== 0 && <Chart token={infoData} />
-          }
+          {token?.status !== 0 && <Chart token={infoData} />}
 
           <Tab
             activeNode={activeKey}
@@ -124,7 +123,14 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
               {
                 name: "Comments",
                 content: (
-                  <CommnentList token={infoData} />
+                  <CommnentList
+                    token={infoData}
+                    onSuccess={() => {
+                      onSuccess?.({
+                        comment: token.comment + 1
+                      });
+                    }}
+                  />
                 )
               },
               {
@@ -139,27 +145,37 @@ export default function Detail({ token, onBack, onNext, onUpdate }: any) {
               <PreLaunchAction
                 token={infoData}
                 style={{ position: isMobile ? "fixed" : "static", bottom: 20 }}
-                canFlip={true}
+                canFlip={false}
                 onLike={async () => {
-                  await actionLikeTrigger(infoData);
-                  getDetailInfo()
+                  const res = await actionLikeTrigger(infoData);
+                  if (res) {
+                    getDetailInfo();
+                    onSuccess?.({
+                      isLike: true,
+                      like: token.like + 1
+                    });
+                  }
                 }}
                 onHate={async () => {
                   await actionHateTrigger(infoData);
-                  getDetailInfo()
+                  getDetailInfo();
                 }}
-                onSuperLike={() => {
-                  getDetailInfo()
+                onSuperLike={(amount: any) => {
+                  getDetailInfo();
+                  onSuccess?.({
+                    isSuperLike: true,
+                    prePaid: token.prePaid + 1,
+                    total_amount: amount
+                  });
                 }}
                 onBoost={() => {
-                  getDetailInfo()
+                  getDetailInfo();
                 }}
               />
             ) : (
               <LaunchedAction data={infoData} />
             )}
           </div>
-
         </div>
       </div>
     </SexPullToRefresh>

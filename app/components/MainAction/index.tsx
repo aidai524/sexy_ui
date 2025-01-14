@@ -24,9 +24,13 @@ export default function MainAction({
   onSuperLike,
   token
 }: any) {
-
-  const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger, showShare } =
-    useMessage();
+  const {
+    likeTrigger,
+    setLikeTrigger,
+    hateTrigger,
+    setHateTrigger,
+    showShare
+  } = useMessage();
   const { address } = useAccount();
   const { isMobile } = useUserAgent();
 
@@ -50,36 +54,37 @@ export default function MainAction({
             setLikeTrigger(false);
           }, 1600);
         }}
-        className={[
-          styles.actionIcon,
-          styles.likeIcon,
-          "button"
-        ].join(" ")}
-        style={{ backgroundColor: token.isLike ? '#000' : '#FF045C', border: token.isLike ? '1px solid #FF045C': 'none'}}
+        className={[styles.actionIcon, styles.likeIcon, "button"].join(" ")}
+        style={{
+          backgroundColor: token.isLike ? "#000" : "#FF045C",
+          border: token.isLike ? "1px solid #FF045C" : "none"
+        }}
       >
         <Like id={ids?.like} liked={token.isLike} />
       </div>
 
-      <div className={styles.actionIcon + ' ' + styles.smokeIcon}>
+      <div className={styles.actionIcon + " " + styles.smokeIcon}>
         <SmokeBtn
           isBigIcon={true}
           token={token}
-          onClick={() => {
-            onSuperLike && onSuperLike();
+          onClick={(amount?: any) => {
+            onSuperLike?.(amount);
           }}
           id={ids?.smoke}
         />
       </div>
 
-      <div onClick={() => {
+      <div
+        onClick={() => {
           if (!address) {
             //@ts-ignore
             window.connect();
             return;
           }
 
-          showShare(token)
-      }}>
+          showShare(token);
+        }}
+      >
         <Share />
       </div>
     </div>
@@ -109,13 +114,21 @@ function DisLike({ fill = "#C7DDEE", id }: { fill?: string; id?: string }) {
 function Like({ id, liked }: any) {
   return (
     <div className={styles.likeSvg}>
-      <svg width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0.188688 4.05842C-1.39401 10.3649 7.41097 16.9674 10.5062 18C15.665 15.9347 22.1558 9.36409 20.8238 4.05832C19.2567 -2.18416 12.8277 -0.0727158 10.5062 2.76718C8.9586 0.185311 1.75531 -2.18404 0.188688 4.05842Z" fill={liked ? "#FF045C" : '#fff'} />
+      <svg
+        width="21"
+        height="18"
+        viewBox="0 0 21 18"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M0.188688 4.05842C-1.39401 10.3649 7.41097 16.9674 10.5062 18C15.665 15.9347 22.1558 9.36409 20.8238 4.05832C19.2567 -2.18416 12.8277 -0.0727158 10.5062 2.76718C8.9586 0.185311 1.75531 -2.18404 0.188688 4.05842Z"
+          fill={liked ? "#FF045C" : "#fff"}
+        />
       </svg>
-      <span style={{ color: liked ? '#FF045C': '#fff' }}>{liked ? 'Liked' : 'Like'}</span>
+      <span style={{ color: liked ? "#FF045C" : "#fff" }}>
+        {liked ? "Liked" : "Like"}
+      </span>
     </div>
   );
 }
-
-
-

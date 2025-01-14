@@ -13,7 +13,7 @@ interface Props {
   token: Project;
   isBigIcon?: boolean;
   id?: string;
-  onClick: () => void;
+  onClick: (amount?: any) => void;
   actionChildren?: React.ReactNode;
   content?: React.ReactNode;
 }
@@ -50,19 +50,19 @@ export default function SmokeBtn({
 
   const disabledText = useMemo(() => {
     if (isDelay) {
-      return 'IsDelay'
+      return "IsDelay";
     }
 
     if (token.account === address) {
-      return 'IsSelf'
+      return "IsSelf";
     }
 
     if (token.prePaidAmount && Number(token.prePaidAmount) > 0) {
-      return 'Fliped ' + token.prePaidAmount + 'SOL'
+      return "Fliped " + token.prePaidAmount + "SOL";
     }
 
-    return 'Flipped'
-  }, [isDelay, token, address])
+    return "Flipped";
+  }, [isDelay, token, address]);
 
   const VipModal = (
     <BoostVip
@@ -96,7 +96,6 @@ export default function SmokeBtn({
       return;
     }
 
-
     if (isDisabled) {
       return;
     }
@@ -129,8 +128,8 @@ export default function SmokeBtn({
       <SmokPanel
         token={token}
         show={panelShow}
-        onSuccess={() => {
-          onClick && onClick();
+        onSuccess={(amount: any) => {
+          onClick?.(amount);
           setPanelShow(false);
         }}
         onHide={() => {

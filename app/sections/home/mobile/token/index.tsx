@@ -63,9 +63,8 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                 !token.isSuperLike ? (
                   <Flip
                     token={token}
-                    onSuccess={() => {
-                      token.prePaid = (token.prePaid || 0) + 1;
-                      onUpdate(token);
+                    onSuccess={(params: any) => {
+                      onUpdate({ ...token, ...params });
                     }}
                     onClick={() => {
                       if (!window.sexAddress) {
@@ -127,8 +126,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
         <SmokePanel
           token={token}
           show={showFlipModal}
-          onSuccess={() => {
+          onSuccess={(amount: string) => {
+            token.isSuperLike = true;
             token.prePaid = token.prePaid + 1;
+            token.total_amount = amount;
             onUpdate(token);
             setShowFlipModal(false);
           }}

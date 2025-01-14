@@ -14,7 +14,7 @@ import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 
 interface Props {
   token: Project;
-  onSuccess?: () => void;
+  onSuccess?: (amount: any) => void;
   panelStyle?: any;
   modalShow: boolean;
   onClose?: () => void;
@@ -118,7 +118,12 @@ export default function Trade({
         </div>
         <div style={{ marginTop: 18 }}>
           <MainBtn
-            isDisabled={!inputVal || Number(inputVal) > max || isPrePayd || Number(inputVal) <= 0}
+            isDisabled={
+              !inputVal ||
+              Number(inputVal) > max ||
+              isPrePayd ||
+              Number(inputVal) <= 0
+            }
             isLoading={isLoading}
             onClick={async () => {
               try {
@@ -129,7 +134,7 @@ export default function Trade({
                   setIsLoading(false);
                   success("Flip success");
                   await actionLikeTrigger(token);
-                  onSuccess && onSuccess();
+                  onSuccess?.(inputVal);
                 }
               } catch (e: any) {
                 console.log(e);
@@ -137,7 +142,7 @@ export default function Trade({
                 setIsLoading(false);
               }
             }}
-            style={{ backgroundColor: "#FBCA04", color: '#000' }}
+            style={{ backgroundColor: "#FBCA04", color: "#000" }}
           >
             Flip
           </MainBtn>

@@ -6,10 +6,12 @@ import { useMemo, useState, useEffect } from "react";
 import useMc from "@/app/hooks/useMc";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useRouter } from "next/navigation";
+import { useHome } from "../context";
 
 export default function Desc({ token }: any) {
   const [mc, setMc] = useState(0);
   const router = useRouter();
+  const { goDetail } = useHome();
   const { mc: pumpMc } = useMc({
     tokenAddress: token.address,
     disable: token.status! < 1
@@ -52,7 +54,8 @@ export default function Desc({ token }: any) {
     <div
       className={`button ${styles.Container}`}
       onClick={() => {
-        router.push(`/detail?address=${token.address}`);
+        // router.push(`/detail?address=${token.address}`);
+        goDetail(token);
       }}
     >
       <div className={styles.Title}>{token.tokenName}</div>
