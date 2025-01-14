@@ -68,6 +68,8 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
             }
             setisLoading(true);
 
+            console.log('item', item)
+
             const method = item.isLike ? httpAuthDelete : httpAuthPost;
             if (item.isUnlike && !item.isLike) {
               item.isUnlike = false;
@@ -92,9 +94,7 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
               onSuccess();
             }
 
-            setTimeout(() => {
-              setisLoading(false);
-            }, 1500);
+            setisLoading(false);
           }}
           className={styles.zan}
         >
@@ -111,7 +111,7 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
                   fillRule="evenodd"
                   clipRule="evenodd"
                   d="M10.1655 6.40869H14.4261C14.4261 6.40869 15.4967 6.31979 15.4967 7.43242C15.4967 7.43242 15.4967 9.03475 13.9129 14.42C13.9129 14.42 13.4223 16 12.8199 16H6.41836C5.97214 16 4.83464 15.6994 4.83464 14.8647V6.40869C4.83464 6.40869 8.00179 4.07215 8.00179 1.09031C8.02017 1.05827 8.02441 0.9933 8.02982 0.910295C8.05074 0.589675 8.08921 0 9.02801 0C9.02801 0 11.8164 0.311415 10.1655 6.40869ZM0.534994 6.4115H3.08621C3.08621 6.4115 3.73464 6.40322 3.73464 7.05821V15.6409C3.73464 15.6409 3.73871 16 3.2787 16H1.07061C1.07061 16 0.526875 16 0.526875 15.4572L0 6.929C0 6.929 0.0081184 6.4115 0.534994 6.4115Z"
-                  fill="#FF2681"
+                  fill="#FBCA04"
                 />
               </svg>
             ) : (
@@ -164,9 +164,7 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
               onSuccess();
             }
 
-            setTimeout(() => {
-              setisLoading(false);
-            }, 1500);
+            setisLoading(false);
           }}
           className={styles.zan}
         >

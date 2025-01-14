@@ -28,14 +28,14 @@ export default function Profile({
   const backgroundImgStyle = userInfoBanner
     ? {
         backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.90) 41.35%, rgba(0, 0, 0, 0.30) 100%)`,
-        backgroundSize: "100% auto"
+        backgroundSize: "cover"
       }
     : {};
 
   const backgroundImgStyle1 = userInfoBanner
     ? {
         backgroundImage: `url(${userInfoBanner})`,
-        backgroundSize: "100% auto"
+        backgroundSize: "cover"
       }
     : {};
 
@@ -61,7 +61,7 @@ export default function Profile({
               setShowVip(true);
             }}
             onEdit={() => {
-              router.push("/profile/setting");
+              router.push("/profile/edit");
             }}
             isOther={isOther}
             isFollower={isFollower}
@@ -73,15 +73,17 @@ export default function Profile({
               // });
             }}
           />
+          <FollowerActions
+            userInfo={userInfo}
+            onItemClick={(action: string) => {
+              if (!address) return;
+              router.push('/profile/follower?account=' + address + '&action=' + action);
+            }}
+            style={{
+              width: '100%',
+            }}
+          />
         </div>
-        <FollowerActions
-          userInfo={userInfo}
-          onItemClick={(action: string) => {
-            router.push(
-              '/profile/follower?account=' + address + '&action=' + action
-            );
-          }}
-        />
       </div>
 
       {/*<Summaries />*/}

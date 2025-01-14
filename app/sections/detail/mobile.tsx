@@ -92,7 +92,9 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
         <div className={styles.Content}>
           <div className={styles.header}>
             <div className={styles.backWrapper}>
-              <Back onBack={onBack} />
+              <div style={{ marginTop: 8 }}>
+                <Back onBack={onBack} />
+              </div>
               <AvatarDetail token={infoData} mc={pumpMc || mc} />
             </div>
             <div className={styles.menuWrapper}>
@@ -122,16 +124,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
               },
               {
                 name: "Comments",
-                content: (
-                  <CommnentList
-                    token={infoData}
-                    onSuccess={() => {
-                      onSuccess?.({
-                        comment: token.comment + 1
-                      });
-                    }}
-                  />
-                )
+                content: <CommnentList token={infoData} />
               },
               {
                 name: "Trade",

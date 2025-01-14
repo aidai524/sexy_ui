@@ -19,6 +19,8 @@ export default function CommentComp({
   commentHasMore,
   loadMoreComment,
   commentList,
+  update,
+  token,
   onSuccess
 }: any) {
   const [commentText, setCommentText] = useState("");
@@ -27,13 +29,25 @@ export default function CommentComp({
   const { userInfo } = useAuth();
 
   const CommentList = commentList.map((item: any) => {
-    return <CommentItem key={item.id} item={item} />;
+    return (
+      <CommentItem
+        key={item.id}
+        item={item}
+        onSuccess={() => {
+          // loadMoreComment(0);
+        }}
+        onSuccessNow={(item: any) => {
+          console.log("onSuccessNow", item);
+          update && update();
+        }}
+      />
+    );
   });
 
   const Content = (
     <>
       <div className={styles.title} style={titleStyle}>
-        <div>Commnet</div>
+        <div>Commnet({token.comment})</div>
         <div
           className={styles.postBtn}
           onClick={() => {
@@ -67,6 +81,7 @@ export default function CommentComp({
           >
             <div className={styles.inputTitle}>Comments</div>
             <textarea
+              maxLength={200}
               value={commentText}
               onKeyUp={async (e) => {
                 if (!userInfo?.address) {
@@ -94,7 +109,7 @@ export default function CommentComp({
                   if (val.code === 0) {
                     loadMoreComment(0);
                     setCommentText("");
-                    onSuccess();
+                    onSuccess?.();
                   }
 
                   setIsSubmiting(false);
@@ -135,7 +150,7 @@ export default function CommentComp({
                   loadMoreComment(0);
                   setCommentText("");
                   setShowEdit(false);
-                  onSuccess();
+                  onSuccess?.();
                 }
 
                 setIsSubmiting(false);
@@ -152,6 +167,7 @@ export default function CommentComp({
         }
         closeOnAction
         closeOnMaskClick
+        className="no-bg"
         onClose={() => {
           setShowEdit(false);
         }}

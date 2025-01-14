@@ -11,6 +11,7 @@ export default function CommnentList({ token, onSuccess }: any) {
         usePanel={false}
         id={token.id}
         {...comments}
+        token={token}
         onSuccess={onSuccess}
       />
     </div>

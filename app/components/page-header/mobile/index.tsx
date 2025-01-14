@@ -12,7 +12,7 @@ export default function PageHeader({
   const router = useRouter();
 
   const handleSetting = () => {
-    router.push("/setting");
+    router.push("/profile/setting");
   };
 
   return (

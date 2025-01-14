@@ -71,7 +71,10 @@ export default function useCommentList({ id, limit = 10 }: any) {
     isCommentLoading,
     commentHasMore,
     loadMoreComment,
-    commentList
+    commentList,
+    update: () => {
+      setCommentList(commentList)
+    }
   };
 }
 

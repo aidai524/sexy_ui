@@ -1,6 +1,7 @@
 import type { Project } from '@/app/type'
 import styles from './index.module.css'
 import { simplifyNum } from '@/app/utils';
+import LaunchTag from '../tag/status';
 
 interface Props {
     token: Project;
@@ -16,6 +17,11 @@ export default function AvatarDetail({ token, mc }: Props) {
             />
         </div>
         <div className={styles.InfoWrapper}>
+            <div className={styles.nameWrapper}>
+                <div className={styles.name}>{token.tokenName}</div>
+                <LaunchTag type={token.status as number} />
+                
+            </div>
             <div className={styles.ticker}>Ticker: <span className={ styles.dec }>{token.ticker}</span></div>
             <div className={styles.mc}>Market cap:  {mc === 0 || mc === "0"
                 ? "-"

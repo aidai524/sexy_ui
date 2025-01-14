@@ -40,6 +40,7 @@ export default function Held({ from, address }: any) {
         }
       });
     }
+    setHasMore(false);
   }, [address, list, tokenInfo, pageIndex]);
 
   useEffect(() => {

@@ -699,14 +699,10 @@ export async function getTransaction(
   tokenAddress: string,
   userAddress: string
 ) {
-  console.log("hash:", hash);
-
   const transactionDetails = await connection.getTransaction(hash, {
     commitment: "finalized",
     maxSupportedTransactionVersion: 0
   });
-
-  console.log("transactionDetails:", transactionDetails);
 
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta;
