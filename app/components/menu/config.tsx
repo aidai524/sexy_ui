@@ -8,31 +8,31 @@ export default [
   {
     icon: <HomeIcon />,
     label: "Home",
-    key: "/",
+    key: ["/", "/detail"],
     path: "/"
   },
   {
     icon: <Trends />,
     label: "Trends",
-    key: "/trends",
+    key: ["/trends"],
     path: "/trends"
   },
   {
     icon: <Create />,
     label: "Create",
-    key: "/create",
+    key: ["/create"],
     path: "/create"
   },
   {
     icon: <Reward />,
     label: "Reward",
-    key: "/reward",
+    key: ["/reward"],
     path: "/reward"
   },
   {
     icon: <Profile />,
     label: "Profile",
-    key: "/profile",
+    key: ["/profile"],
     path: "/profile"
   }
 ];

@@ -70,9 +70,12 @@ export default function Mobile({ theme }: any) {
           <div className={styles.List}>
             {config.map((item: any) => (
               <button
-                key={item.key}
+                key={item.path}
                 onClick={() => {
-                  if (!window.sexAddress && !["/reward"].includes(item.key)) {
+                  if (
+                    !window.sexAddress &&
+                    !["/reward", "/", "/trends"].includes(item.path)
+                  ) {
                     window.connect();
                     return;
                   }
@@ -81,8 +84,9 @@ export default function Mobile({ theme }: any) {
                 }}
                 className={`button ${styles.Item}`}
                 style={{
-                  backgroundColor:
-                    pathname === item.path ? "#302F33" : "#252328"
+                  backgroundColor: item.key.includes(pathname)
+                    ? "#302F33"
+                    : "#252328"
                 }}
               >
                 {item.icon}{" "}

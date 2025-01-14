@@ -19,6 +19,10 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
 
   const { run } = useDebounceFn(
     async () => {
+      if (!window.sexAddress) {
+        window.connect();
+        return;
+      }
       try {
         setLoading(true);
         await prePaid(0.1 * 1e8);
