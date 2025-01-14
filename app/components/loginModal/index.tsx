@@ -1,4 +1,4 @@
-import { Modal } from "antd-mobile";
+import Modal from "../modal";
 import { useEffect } from "react";
 import styles from "./login.module.css";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
@@ -22,29 +22,24 @@ export default function LoginModal({ modalShow, onHide }: Props) {
   }, [address]);
 
   return (
-    <>
-      <Modal
-        visible={modalShow}
-        content={
-          <LoginBox
-            onHide={() => {
-              onHide && onHide();
-              // router.replace('/')
-            }}
-          />
-        }
-        closeOnMaskClick
-        closeOnAction
-        onClose={() => {
+    <Modal
+      open={modalShow}
+      onClose={() => {
+        onHide && onHide();
+        // router.replace('/')
+      }}
+      closeStyle={{
+        display: "none"
+      }}
+    >
+      {" "}
+      <LoginBox
+        onHide={() => {
           onHide && onHide();
           // router.replace('/')
         }}
-        className="no-bg"
-        bodyStyle={{
-          backgroundColor: "#A890FF"
-        }}
       />
-    </>
+    </Modal>
   );
 }
 

@@ -100,6 +100,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
               onClick={(type: any) => {
                 if (type === "comments") {
                   setShowCommentsModal(true);
+                  return;
                 }
                 if (!window.sexAddress) {
                   window.connect();

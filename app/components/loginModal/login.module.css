@@ -2,6 +2,9 @@
   width: 350px;
   max-width: 90vw;
   padding: 20px 15px 30px;
+  background: #a890ff;
+  border: 1px solid #000;
+  border-radius: 20px;
   .tipBox {
     display: flex;
     flex-direction: column;
