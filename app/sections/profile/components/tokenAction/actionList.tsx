@@ -69,8 +69,8 @@ export default function ActionList({
           {smookeable && (
             <SmokeHot
               actionChildren={
-                <button className={`${styles.ActionBtn} ${styles.Flip} button`}>
-                  <FlipIcon />
+                <button className={`${styles.ActionBtn} ${styles.ProfileFlip} button`}>
+                  <img src="/img/profile/icon-flip.svg" alt="" width="17px" height="21px" />
                   <span>Flip</span>
                 </button>
               }

@@ -32,6 +32,42 @@
   color: #ffffff;
 }
 
+.ProfileFlip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: #FBCA04;
+  width: 68px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.BuySell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 68px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
 .DisabledBtn {
   border-radius: 22px;
   border: 1px solid rgba(127, 112, 138, 0.5);
@@ -46,4 +82,52 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.ClaimContainer {
+  padding: 12px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ClaimBg1 {
+  position: absolute;
+  z-index: 1;
+  width: 68px;
+  height: 28px;
+  background: rgba(201, 255, 93, 0.30);
+  border-radius: 30px;
+}
+.ClaimBg1 {
+  composes: ClaimBg1;
+  z-index: 2;
+}
+
+.Claim {
+  position: relative;
+  z-index: 3;
+  border-radius: 22px;
+  background: #C9FF5D;
+  width: 68px;
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #000;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.ClaimDisabled {
+  width: 74px;
+  composes: Claim;
+  cursor: not-allowed;
+  opacity: 0.3;
 }
