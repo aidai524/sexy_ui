@@ -150,14 +150,14 @@ export default function InfoPart({
       )}
 
       {
-        showProgress && <div className={styles.panel}>
+        data.status !== 0 && <div className={styles.panel}>
           <div className={styles.singleProgress}>
             <div className={styles.progressTitleWrapper}>
               <div className={styles.progressTitle}>Bonding curve progress</div>
-              <div className={styles.progressPercent}>80%</div>
+              <div className={styles.progressPercent}>{data.bondingProgress}%</div>
             </div>
 
-            <ProgressBar percent={80} style={{
+            <ProgressBar percent={data.bondingProgress} style={{
               '--track-width': '14px',
               '--fill-color': '#FBCA04',
               '--track-color': '#29242B'
@@ -170,10 +170,10 @@ export default function InfoPart({
           <div className={styles.singleProgress} style={{ marginTop: 15 }}>
             <div className={styles.progressTitleWrapper}>
               <div className={styles.progressTitle}>King of the hill progress</div>
-              <div className={styles.progressPercent}>80%</div>
+              <div className={styles.progressPercent}>{data.kingProgress}%</div>
             </div>
 
-            <ProgressBar percent={80} style={{
+            <ProgressBar percent={data.kingProgress} style={{
               '--track-width': '14px',
               '--fill-color': '#BF66FF',
               '--track-color': '#29242B'

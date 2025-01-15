@@ -32,6 +32,8 @@ export function mapDataToProject(currentToken: any): Project {
     tg: currentToken.tg,
     discord: currentToken.discord,
     comment: currentToken.comment,
+    bondingProgress: currentToken.bonding_progress,
+    kingProgress: currentToken.king_progress,
     ...currentToken
   };
 }
