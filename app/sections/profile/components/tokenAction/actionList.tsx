@@ -49,7 +49,11 @@ export default function ActionList({
   }, [updateNum, isOther, token]);
 
   const smookeable = useMemo(() => {
-    return !token.isSuperLike && token.account !== userInfo?.address;
+    if (token.account === userInfo?.address) return false;
+    if (token.isSuperLike) {
+      return 1;
+    }
+    return 2;
   }, [token, userInfo]);
 
   return (
@@ -66,7 +70,11 @@ export default function ActionList({
             }}
           />
 
-          {smookeable && (
+          {!!smookeable && (smookeable === 1 ? (
+            <button className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}>
+              <span>Flipped</span>
+            </button>
+          ) : (
             <SmokeHot
               actionChildren={
                 <button className={`${styles.ActionBtn} ${styles.ProfileFlip} button`}>
@@ -77,7 +85,7 @@ export default function ActionList({
               token={token}
               onClick={() => {}}
             />
-          )}
+          ))}
         </>
       )}
 

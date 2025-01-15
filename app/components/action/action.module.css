@@ -8,6 +8,7 @@
   justify-content: space-between;
   padding: 0 20px;
   z-index: 12;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
 }
 
 .launched {

@@ -50,6 +50,12 @@
   line-height: normal;
 }
 
+.ProfileFlipDisabled {
+  composes: ProfileFlip;
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 .BuySell {
   display: flex;
   align-items: center;

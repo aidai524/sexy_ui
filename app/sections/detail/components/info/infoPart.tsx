@@ -11,6 +11,7 @@ import LaunchTag from "@/app/components/tag/status";
 import Copyed from "@/app/components/copyed";
 import Holder from "@/app/components/holder";
 import { ProgressBar } from "antd-mobile";
+import Big from "big.js";
 
 interface Props {
   data: Project;
@@ -127,7 +128,7 @@ export default function InfoPart({
               data.DApp === 'sexy' && <div className={styles.authorDesc} >
                 {mc === 0 || mc === "0" || mc === '-'
                   ? <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
-                  : <div style={{ color: "#6fff00" }} >${simplifyNum(mc as number, 2)}</div> }
+                  : <div style={{ color: "#6fff00" }} >${simplifyNum(mc as number, 2)}</div>}
               </div>
             }
 
@@ -135,7 +136,7 @@ export default function InfoPart({
               data.DApp === 'pump' && <div className={styles.authorDesc} style={{ color: "#6fff00" }}>
                 {pumpMc === 0
                   ? <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
-                  : <div style={{ color: "#6fff00" }} >${simplifyNum(pumpMc as number, 2)}</div> }
+                  : <div style={{ color: "#6fff00" }} >${simplifyNum(pumpMc as number, 2)}</div>}
               </div>
             }
 
@@ -148,6 +149,34 @@ export default function InfoPart({
           <div className={styles.abountDetail}>{data.about}</div>
         </div>
       )}
+
+      {
+        data.status === 0 && <div className={styles.panel}>
+        <div className={styles.singleProgress}>
+          <div className={styles.progressTitleWrapper}>
+            <div className={styles.progressTitle}>Pre-launch progress (Likes)</div>
+            <div className={styles.progressPercent}>{data.like}/100</div>
+          </div>
+
+          <ProgressBar percent={data.like} style={{
+            '--track-width': '14px',
+            '--fill-color': '#FFA8E8',
+            '--track-color': '#29242B'
+          }} />
+
+          <div className={styles.progressDesc}>It takes 100 likes to get into launching phase.</div>
+        </div>
+
+        <div className={styles.singleProgress} style={{ marginTop: 15 }}>
+          <div className={styles.progressTitleWrapper}>
+            <div className={styles.progressTitle}>{data.prePaid} Flipped</div>
+            <div className={styles.progressPercent}>{data.prePaidAmount ? new Big(data.prePaidAmount).div(10 ** 9).toString() : 0}SOL</div>
+          </div>
+
+          <div className={styles.progressDesc} style={{ color: '#D9D9D9' }}>{"‘Flip’ means ‘pre-buy’, users will auto-buy in when this meme launched."}</div>
+        </div>
+      </div>
+      }
 
       {
         data.status !== 0 && <div className={styles.panel}>
@@ -186,14 +215,14 @@ export default function InfoPart({
 
       {
         showAddress && <div className={styles.panel}>
-        <div className={styles.tokenAddressWrapper}>
-          <div className={styles.tokenAddressTitle}>Contract address:</div>
-          <div className={styles.tokenAddressContent}>
-            <div className={styles.tokenAddress}>{formatAddress(data.address as string)}</div>
-            <Copyed value={data.address as string} />
+          <div className={styles.tokenAddressWrapper}>
+            <div className={styles.tokenAddressTitle}>Contract address:</div>
+            <div className={styles.tokenAddressContent}>
+              <div className={styles.tokenAddress}>{formatAddress(data.address as string)}</div>
+              <Copyed value={data.address as string} />
+            </div>
           </div>
         </div>
-      </div>
       }
 
       {(data.x || data.tg || data.discord || data.website) && (
