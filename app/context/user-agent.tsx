@@ -14,14 +14,15 @@ export const UserAgentProvider: React.FC<{
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(
-        window.navigator.userAgent.includes("Mobile") || window.innerWidth < 450
-      );
+      const _isMobile =
+        window.navigator.userAgent.includes("Mobile") ||
+        window.innerWidth < 450;
+      setIsMobile(_isMobile);
+      setInnerHeight(_isMobile ? window.innerHeight : 800);
+      setInnerWidth(_isMobile ? window.innerWidth : 400);
     };
 
     checkIsMobile();
-    setInnerHeight(window.innerHeight);
-    setInnerWidth(window.innerWidth);
 
     window.addEventListener("resize", checkIsMobile);
     return () => {
