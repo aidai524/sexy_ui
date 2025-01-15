@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import CloseIcon from "../icons/close";
+import CloseIcon from "../icons/modal-close";
 import { AnimatePresence, motion } from "framer-motion";
 import { useUserAgent } from "@/app/context/user-agent";
 import styles from "./index.module.css";
