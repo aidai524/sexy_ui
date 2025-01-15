@@ -74,7 +74,7 @@ export default function List({
       })}
 
       {(!list || list.length === 0) && !isLoading && (
-        <Empty height={300} text="No Data" />
+        <Empty height={300} text="No Data" id={followerType} />
       )}
       {isLoading && (
         <div className={styles.LoadingWrapper}>

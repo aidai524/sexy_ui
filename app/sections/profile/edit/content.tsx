@@ -69,7 +69,7 @@ export default function EditContent({
         <div className={styles.groupTitle}>
           <span className={styles.require}>*</span>Username
         </div>
-        <div className={styles.groupContent}>
+        <div className={styles.groupContent} style={{ marginTop: 12 }}>
           <input
             disabled={disableNameEdit}
             value={name}
@@ -84,14 +84,7 @@ export default function EditContent({
         <div className={styles.tip}>*It can be modified only once</div>
       </div>
 
-      <div className={styles.group}>
-        <div className={styles.groupTitle}>Highest education</div>
-        <div className={styles.groupContent}>
-          <Education {...{ inputStyle, setEducation, education }} />
-        </div>
-      </div>
-
-      <div className={styles.group}>
+      <div className={styles.group} style={{ paddingTop: 8 }}>
         <div className={styles.groupTitle}>
           <span className={styles.require}>*</span>Profile Photo
         </div>
@@ -105,6 +98,13 @@ export default function EditContent({
             setFileList={setAvatar}
             type="avatar"
           />
+        </div>
+      </div>
+
+      <div className={styles.group}>
+        <div className={styles.groupTitle}>Highest education</div>
+        <div className={styles.groupContent}>
+          <Education {...{ inputStyle, setEducation, education }} />
         </div>
       </div>
 

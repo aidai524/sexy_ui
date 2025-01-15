@@ -45,13 +45,15 @@
 
 .BannerDefault {
   background-image: url(/img/upload-banner.png);
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .BannerButton {
   width: 108px;
   height: 36px;
-  /* border-radius: 18px; */
+  border-radius: 18px;
   border: 3px solid rgba(126, 138, 147, 0.3);
   background: rgba(33, 37, 46, 0.6);
   backdrop-filter: blur(5px);

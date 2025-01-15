@@ -19,8 +19,8 @@
 }
 
 .Withdraw {
-  border: 1px solid #c9ff5d;
-  color: #c9ff5d;
+  border: 1px solid var(--part-bg);
+  color: var(--part-bg);
 }
 
 .Flip {

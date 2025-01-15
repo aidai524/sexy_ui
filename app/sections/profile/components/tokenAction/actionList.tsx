@@ -14,12 +14,14 @@ interface Props {
   token: Project;
   isOther: boolean;
   prepaidWithdrawDelayTime: number;
+  onWithdrawSuccess?(): void;
 }
 
 export default function ActionList({
   token,
   isOther,
-  prepaidWithdrawDelayTime
+  prepaidWithdrawDelayTime,
+  onWithdrawSuccess
 }: Props) {
   const [isPrepaid, setIsPrepaid] = useState(false);
 
@@ -56,36 +58,53 @@ export default function ActionList({
     return 2;
   }, [token, userInfo]);
 
+  const isDelay = useMemo(() => {
+    return (
+      prepaidWithdrawDelayTime &&
+      token.createdAt &&
+      Date.now() - token.createdAt > prepaidWithdrawDelayTime
+    );
+  }, [prepaidWithdrawDelayTime, token]);
+
+  const showWithdraw = useMemo(
+    () => isDelay && !isOther && isPrepaid,
+    [isDelay, isOther, isPrepaid]
+  );
+
   return (
     <div className={styles.Btns}>
       {token.status === 0 && (
         <>
-          <Withdraw
-            {...{
-              prepaidSolWithdraw,
-              prepaidWithdrawDelayTime,
-              token,
-              isPrepaid,
-              isOther
-            }}
-          />
-
-          {!!smookeable && (smookeable === 1 ? (
-            <button className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}>
-              <span>Flipped</span>
-            </button>
-          ) : (
-            <SmokeHot
-              actionChildren={
-                <button className={`${styles.ActionBtn} ${styles.ProfileFlip} button`}>
-                  <img src="/img/profile/icon-flip.svg" alt="" width="17px" height="21px" />
-                  <span>Flip</span>
-                </button>
-              }
-              token={token}
-              onClick={() => {}}
-            />
-          ))}
+          {
+            // fix#REF-9370
+            showWithdraw ? (
+              <Withdraw
+                {...{
+                  prepaidSolWithdraw,
+                  onSuccess: onWithdrawSuccess,
+                }}
+              />
+            ) : (
+              <>
+                {!!smookeable && (smookeable === 1 ? (
+                  <button className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}>
+                    <span>Flipped</span>
+                  </button>
+                ) : (
+                  <SmokeHot
+                    actionChildren={
+                      <button className={`${styles.ActionBtn} ${styles.ProfileFlip} button`}>
+                        <img src="/img/profile/icon-flip.svg" alt="" width="17px" height="21px" />
+                        <span>Flip</span>
+                      </button>
+                    }
+                    token={token}
+                    onClick={() => {}}
+                  />
+                ))}
+              </>
+            )
+          }
         </>
       )}
 

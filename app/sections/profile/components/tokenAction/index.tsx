@@ -9,12 +9,14 @@ interface Props {
   isDelay: boolean;
   isOther: boolean;
   prepaidWithdrawDelayTime: number;
+  onWithdrawSuccess?(): void;
 }
 
 export default function TokenAction({
   token,
   isOther,
-  prepaidWithdrawDelayTime
+  prepaidWithdrawDelayTime,
+  onWithdrawSuccess
 }: Props) {
   const [modalShow, setModalShow] = useState(false);
 
@@ -69,7 +71,8 @@ export default function TokenAction({
         {...{
           token,
           isOther,
-          prepaidWithdrawDelayTime
+          prepaidWithdrawDelayTime,
+          onWithdrawSuccess
         }}
       />
       {/* <Actions

@@ -129,6 +129,9 @@ export default function Created({
               setRefresh(refresh + 1);
               updateCurrentUserInfo();
             }}
+            onWithdrawSuccess={() => {
+              loadMore(true, list.length);
+            }}
           />
         );
       })}

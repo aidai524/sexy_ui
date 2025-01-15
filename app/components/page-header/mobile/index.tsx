@@ -8,11 +8,12 @@ export default function PageHeader({
   className,
   from,
   style,
-  rightActions
+  rightActions,
+  isOther
 }: any) {
   return (
     <div className={`${styles.Container} ${className}`} style={style}>
-      {["setting", "create"].includes(from) && (
+      {(isOther || ["setting", "create"].includes(from)) && (
         <button
           className="button"
           onClick={() => {
@@ -43,7 +44,7 @@ export default function PageHeader({
           </svg>
         </button>
       )}
-      {["trends", "reward", "profile", "messages"].includes(from) && (
+      {(!isOther && ["trends", "reward", "profile", "messages"].includes(from)) && (
         <Menu theme={theme} />
       )}
       <div

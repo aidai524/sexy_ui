@@ -13,6 +13,7 @@ interface Props {
   tabHeaderStyle?: React.CSSProperties;
   activeNode?: string;
   tabHeadersStyle?: React.CSSProperties;
+  cursorStyle?: React.CSSProperties;
   tabHeadersClassName?: any;
   cursorClassName?: any;
   tabContentClassName?: any;
@@ -29,6 +30,7 @@ export default function Tab({
   tabHeadersClassName,
   cursorClassName,
   tabContentClassName,
+  cursorStyle,
 }: Props) {
   const [tabIndex, setTabIndex] = useState(0);
   const prevI = useRef<number[]>([0]);
@@ -83,6 +85,7 @@ export default function Tab({
                     }
                   }}
                   className={[styles.Line, cursorClassName].join(' ')}
+                  style={cursorStyle}
                 />
               )}
             </div>
