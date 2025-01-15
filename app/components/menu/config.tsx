@@ -8,7 +8,7 @@ export default [
   {
     icon: <HomeIcon />,
     label: "Home",
-    key: ["/", "/detail"],
+    key: ["/", "/detail", "/messages"],
     path: "/"
   },
   {
