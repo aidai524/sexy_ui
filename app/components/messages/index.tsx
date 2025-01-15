@@ -1,13 +1,11 @@
 import Badge from "@/app/components/badge";
 import AlarmIcon from "@/app/components/icons/alarm";
-import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
 import { useMessages } from "@/app/context/messages";
 
 export default function MessagesAlarm() {
   const { num } = useMessages();
   const router = useRouter();
-  const { userInfo } = useAuth();
 
   return (
     <>
@@ -20,7 +18,7 @@ export default function MessagesAlarm() {
           <div
             className="button"
             onClick={() => {
-              if (!userInfo?.address) {
+              if (!window.sexAddress) {
                 window.connect();
                 return;
               }

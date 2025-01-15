@@ -17,7 +17,7 @@ export default function Messages() {
   const { innerHeight } = useUserAgent();
   const { num, onQuery } = useMessages();
   const [informNum, setInforNum] = useState(num);
-  const { list, loading, hasMore, page, onNextPage } = useList();
+  const { list, loading, hasMore, page, onInit, onNextPage } = useList();
   const { onRead } = useRead();
   const [currentTab, setCurrentTab] = useState("inform");
 
@@ -38,7 +38,10 @@ export default function Messages() {
             onClick={() => {
               onRead({
                 ids: [],
-                onSuccess: onQuery
+                onSuccess: () => {
+                  onInit();
+                  onQuery();
+                }
               });
             }}
           >
