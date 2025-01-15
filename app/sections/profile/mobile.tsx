@@ -43,7 +43,20 @@ export default function Profile({
       className={styles.main}
       style={store.entryVisible ? { paddingBottom: 200 } : {}}
     >
-      <PageHeader title="" theme="light" from="profile" />
+      <PageHeader
+        title=""
+        theme="light"
+        from="profile"
+        rightActions={
+          <button
+            type="button"
+            className={styles.SettingButton}
+            onClick={() => {
+              router.push("/profile/setting");
+            }}
+          />
+        }
+      />
       <AirdropEntry />
       <div style={backgroundImgStyle1} className={styles.avatarBox}>
         {/*<div className={styles.Points}>

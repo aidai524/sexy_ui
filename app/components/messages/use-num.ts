@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { httpAuthGet } from "@/app/utils";
 import { useAuth } from "@/app/context/auth";
+import { useDebounceFn } from "ahooks";
 
 export default function useNum() {
   const [num, setNum] = useState(0);
@@ -9,10 +10,10 @@ export default function useNum() {
 
   const onQuery = useCallback(async () => {
     try {
-      clearTimeout(timerRef.current);
       const response = await httpAuthGet("/inform/un_read_num");
       setNum(response.data);
 
+      clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         onQuery();
       }, 10000);
@@ -21,12 +22,19 @@ export default function useNum() {
     }
   }, []);
 
+  const { run } = useDebounceFn(
+    () => {
+      if (accountRefresher) {
+        onQuery();
+      } else {
+        setNum(0);
+      }
+    },
+    { wait: 1000 }
+  );
+
   useEffect(() => {
-    if (accountRefresher) {
-      onQuery();
-    } else {
-      setNum(0);
-    }
+    run();
   }, [accountRefresher]);
 
   return {

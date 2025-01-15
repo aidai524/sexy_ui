@@ -3,15 +3,11 @@ import { useDebounceFn } from "ahooks";
 import { useUser } from "@/app/store/useUser";
 import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCodeStore, CODE } from "@/app/store/use-code";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { redirect } from "next/navigation";
-import {
-  getAuthorizationByLocalAndServer,
-  initAuthorization,
-  logOut
-} from "@/app/utils";
+import { initAuthorization, logOut } from "@/app/utils";
 import LoginModal from "@/app/components/loginModal";
 import type { ReactNode } from "react";
 
@@ -63,16 +59,19 @@ export const AuthProvider: React.FC<{
     window.disconnect = disconnect;
   }, []);
 
-  const logout = useCallback(async (isRedirect?: boolean) => {
-    await disconnect?.();
-    setUserInfo(undefined);
-    userStore.set({
-      userInfo: null
-    });
-    logOut();
-    // fix#REF-9292
-    isRedirect && router.replace('/');
-  }, [address]);
+  const logout = useCallback(
+    async (isRedirect?: boolean) => {
+      await disconnect?.();
+      setUserInfo(undefined);
+      userStore.set({
+        userInfo: null
+      });
+      logOut();
+      // fix#REF-9292
+      isRedirect && router.replace("/");
+    },
+    [address]
+  );
 
   const updateCurrentUserInfo = useCallback(async () => {
     if (!address) return;

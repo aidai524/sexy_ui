@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { httpAuthGet } from "@/app/utils";
 import { useAuth } from "@/app/context/auth";
@@ -5,7 +7,7 @@ import useRead from "./use-read";
 
 const PAGE_SIZE = 10;
 
-export default function useList({ onSuccess, showModal }: any) {
+export default function useList({ onSuccess }: any) {
   const { accountRefresher } = useAuth();
   const [list, setList] = useState<any>([]);
   const [loading, setLoading] = useState(true);
@@ -25,12 +27,10 @@ export default function useList({ onSuccess, showModal }: any) {
         ? setList(response.data.list || [])
         : setList([...list, ...(response.data.list || [])]);
 
-      if (showModal) {
-        const ids = response.data.list
-          .filter((item: any) => !item.read)
-          .map((item: any) => item.id);
-        ids.length && onRead({ ids, onSuccess });
-      }
+      const ids = response.data.list
+        .filter((item: any) => !item.read)
+        .map((item: any) => item.id);
+      ids.length && onRead({ ids, onSuccess });
 
       setHasMore(response.data.has_next_page);
     } catch (err) {
@@ -39,7 +39,7 @@ export default function useList({ onSuccess, showModal }: any) {
     } finally {
       setLoading(false);
     }
-  }, [list, showModal]);
+  }, [list]);
 
   const onNextPage = () => {
     if (loading || !hasMore) return;
@@ -53,13 +53,12 @@ export default function useList({ onSuccess, showModal }: any) {
   };
 
   useEffect(() => {
-    if (!showModal) return;
     if (accountRefresher) {
       onInit();
     } else {
       setList([]);
     }
-  }, [accountRefresher, showModal]);
+  }, [accountRefresher]);
 
   return {
     list,

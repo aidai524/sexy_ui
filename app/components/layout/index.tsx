@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { AuthProvider } from "@/app/context/auth";
+import { MessageProvider } from "@/app/context/messages";
 import { MessageContextProvider } from "@/app/context/messageContext";
 import AirdropModal from "@/app/components/airdrop/modal";
 import { useSearchParams } from "next/navigation";
@@ -66,10 +67,12 @@ export default function Layout(props: any) {
 
   return (
     <AuthProvider>
-      <MessageContextProvider>
-        {isMobile ? <Mobile {...props} /> : <Laptop {...props} />}
-        <AirdropModal />
-      </MessageContextProvider>
+      <MessageProvider>
+        <MessageContextProvider>
+          {isMobile ? <Mobile {...props} /> : <Laptop {...props} />}
+          <AirdropModal />
+        </MessageContextProvider>
+      </MessageProvider>
     </AuthProvider>
   );
 }

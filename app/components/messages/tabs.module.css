@@ -5,7 +5,7 @@
 }
 
 .Tab {
-  color: #00000066;
+  color: #ffffff66;
   font-size: 14px;
   font-family: Unbounded;
   position: relative;
@@ -15,13 +15,13 @@
   line-height: 42px;
 }
 .Tab.active {
-  color: #000;
+  color: #fff;
 }
 
 .Line {
   position: absolute;
   height: 3px;
   width: 36px;
-  background-color: #000;
+  background-color: #fbca04;
   left: calc(50% - 18px);
 }

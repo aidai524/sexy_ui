@@ -1,20 +1,15 @@
 import styles from "./index.module.css";
 import Menu from "../../menu";
-import { useRouter } from "next/navigation";
+
 export default function PageHeader({
   onBack,
   title,
   theme = "light",
   className,
   from,
-  style
+  style,
+  rightActions
 }: any) {
-  const router = useRouter();
-
-  const handleSetting = () => {
-    router.push("/profile/setting");
-  };
-
   return (
     <div className={`${styles.Container} ${className}`} style={style}>
       {["setting", "create"].includes(from) && (
@@ -48,7 +43,9 @@ export default function PageHeader({
           </svg>
         </button>
       )}
-      {["trends", "reward", "profile"].includes(from) && <Menu theme={theme} />}
+      {["trends", "reward", "profile", "messages"].includes(from) && (
+        <Menu theme={theme} />
+      )}
       <div
         className={styles.Title}
         style={{
@@ -57,15 +54,7 @@ export default function PageHeader({
       >
         {title}
       </div>
-      <div className={styles.Right}>
-        {from === "profile" && (
-          <button
-            type="button"
-            className={styles.SettingButton}
-            onClick={handleSetting}
-          />
-        )}
-      </div>
+      <div className={styles.Right}>{rightActions}</div>
     </div>
   );
 }

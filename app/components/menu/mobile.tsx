@@ -1,3 +1,5 @@
+"use client";
+
 import MenuIcon from "../icons/menu";
 import TitleIcon from "../icons/title";
 import NIcon from "./n-icon";

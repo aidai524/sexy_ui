@@ -1,0 +1,30 @@
+.Container {
+  overflow: hidden;
+  padding-top: 46px;
+}
+
+.Content {
+  overflow-y: auto;
+}
+
+.ReadAll {
+  width: 82px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 38px;
+  border: 1px solid rgba(171, 174, 189, 0.3);
+  color: #abaebd;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.LoadingWrapper {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

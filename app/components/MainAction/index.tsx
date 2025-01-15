@@ -1,20 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import styles from "./action.module.css";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useUserAgent } from "@/app/context/user-agent";
 import SmokeBtn from "../smokHot";
-import SmokeButtonWithFlip from "../smokHot/smoke-button-flip";
 import Share from "../icons/share";
-
-const likeAnis = [
-  "/img/home/likeAni1.svg",
-  "/img/home/likeAni2.svg",
-  "/img/home/likeAni3.svg",
-  "/img/home/likeAni4.svg"
-];
 
 export default function MainAction({
   onLike,
