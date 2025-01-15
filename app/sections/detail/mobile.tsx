@@ -33,7 +33,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     getDetailInfo
   } = useTokenDetail({ token });
   const [mc, setMC] = useState<string | number>("-");
-  const { isMobile } = useUserAgent();
+  const { isMobile, innerHeight, innerWidth } = useUserAgent();
 
   const infoData = useMemo(
     () => token || queryedInfoData,
@@ -82,14 +82,16 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
       </div>
     );
   }
+
+  console.log('infoData', infoData)
+
   return (
-    <div style={{ overflow: 'auto', height: '100vh' }}>
+    <div style={{ }}>
       <SexPullToRefresh
         onRefresh={async () => {
           await getDetailInfo();
         }}
       >
-
         <div className={styles.main}>
           <div className={styles.Content}>
             <div className={styles.header}>
@@ -103,6 +105,8 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                 <Menu />
               </div> */}
             </div>
+
+            <div style={{ height: innerHeight - 60, overflow: 'auto', paddingBottom: 100 }}>
 
             {
               infoData?.status === 0 && <>
@@ -120,42 +124,45 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
 
             {infoData?.status !== 0 && <Chart token={infoData} />}
 
-            {
-              infoData?.status !== 0 && <Tab
-                activeNode={activeKey}
-                onTabChange={(nodeName) => {
-                  setActiveKey(nodeName);
-                }}
-                nodes={[
-                  {
-                    name: "Info",
-                    content: (
-                      <Info
-                        mc={pumpMc || mc}
-                        data={infoData}
-                        onUpdate={() => {
-                          getDetailInfo();
-                        }}
-                      />
-                    )
-                  },
-                  {
-                    name: "Comments",
-                    content: <CommnentList token={infoData} />
-                  },
-                  {
-                    name: "Trade",
-                    content: <Txs mc={pumpMc || mc} data={infoData} />
-                  }
-                ]}
-              />
-            }
+              {
+                infoData?.status !== 0 && <Tab
+                  activeNode={activeKey}
+                  onTabChange={(nodeName) => {
+                    setActiveKey(nodeName);
+                  }}
+                  nodes={[
+                    {
+                      name: "Info",
+                      content: (
+                        <Info
+                          mc={pumpMc || mc}
+                          data={infoData}
+                          onUpdate={() => {
+                            getDetailInfo();
+                          }}
+                        />
+                      )
+                    },
+                    {
+                      name: "Comments",
+                      content: <CommnentList token={infoData} />
+                    },
+                    {
+                      name: "Trade",
+                      content: <Txs mc={pumpMc || mc} data={infoData} />
+                    }
+                  ]}
+                />
+              }
+            </div>
+
+            
 
             <div className={styles.action}>
               {infoData?.status === 0 ? (
                 <PreLaunchAction
                   token={infoData}
-                  style={{ position: isMobile ? "fixed" : "static", bottom: 20 }}
+                  // style={{  }}
                   canFlip={false}
                   onLike={async () => {
                     const res = await actionLikeTrigger(infoData);

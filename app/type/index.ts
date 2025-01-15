@@ -30,6 +30,8 @@ export interface Project {
     prePaidAmount?: string;
     prePaid?: string;
     comment?: number;
+    bondingProgress?: number;
+    kingProgress?: number;
 }
 
 export interface Comment {

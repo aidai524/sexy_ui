@@ -11,6 +11,5 @@ export default memo(function Detail(props: any) {
   const search = useSearchParams();
   const from = search.get('from');
 
-
   return isMobile ? <Mobile {...props} from={from} /> : <Laptop {...props} from={from} />;
 });
