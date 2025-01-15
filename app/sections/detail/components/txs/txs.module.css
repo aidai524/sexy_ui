@@ -1,6 +1,5 @@
 .main {
   background-color: #252328;
-  border: 1px solid #3B3B3B;
   border-radius: 15px 15px 0 0;
   padding: 15px;
 }
@@ -17,6 +16,9 @@
 }
 
 .filterText {
+  display: flex;
+  align-items: center;
+  gap: 5px; 
   font-size: 12px;
   color: #9290B1;
 }

@@ -68,7 +68,6 @@ export default function MainAction({
       <div
         onClick={() => {
           if (!address) {
-            //@ts-ignore
             window.connect();
             return;
           }
