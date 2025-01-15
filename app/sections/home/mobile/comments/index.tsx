@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./index.module.css";
-import { Popup } from "antd-mobile";
+import Modal from "@/app/components/modal";
 import CommentItem from "@/app/components/comment/item";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import Empty from "@/app/components/empty";
@@ -20,16 +20,11 @@ export default function Comments({ show, id, total, onClose, onSuccess }: any) {
   );
 
   return (
-    <Popup
-      visible={show}
-      onMaskClick={onClose}
+    <Modal
+      open={show}
       onClose={onClose}
-      bodyStyle={{
-        borderTopLeftRadius: "20px",
-        borderTopRightRadius: "20px",
-        border: "1px solid #3B3B3B",
-        backgroundColor: "#252328"
-      }}
+      animation="popup"
+      closeStyle={{ display: "none" }}
     >
       <div className={styles.Container}>
         <div className={styles.Header}>
@@ -118,6 +113,6 @@ export default function Comments({ show, id, total, onClose, onSuccess }: any) {
           </button>
         </div>
       </div>
-    </Popup>
+    </Modal>
   );
 }

@@ -41,7 +41,8 @@ export default function Item({
         transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
         className={styles.Item}
         style={{
-          marginBottom: isMobile ? "8px" : "16px"
+          marginBottom: isMobile ? "8px" : "16px",
+          backgroundColor: expand ? "rgba(255, 255, 255, 0.08)" : "transparent"
         }}
       >
         <div
@@ -83,12 +84,14 @@ export default function Item({
                 {content}
               </div>
             )}
-          </div>
-          {!expand && (
-            <div className={styles.ItemLeft} style={{ flexShrink: 0 }}>
+            {!expand && (
               <div className={styles.ItemTime}>
                 {dayjs(item.time).fromNow()}
               </div>
+            )}
+          </div>
+          {!expand && (
+            <div className={styles.ItemLeft} style={{ flexShrink: 0 }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="13"
@@ -110,7 +113,7 @@ export default function Item({
               >
                 <path
                   d="M1.00037 0.656854L6.65723 6.31371L12.3141 0.656854"
-                  stroke="#80787B"
+                  stroke="#fff"
                   strokeWidth="1.5"
                 />
               </svg>
@@ -121,7 +124,7 @@ export default function Item({
           <div
             className={styles.ItemBottom}
             style={{
-              padding: isMobile ? "8px" : "8px 20px 16px 70px"
+              padding: isMobile ? "8px 8px 8px 38px" : "8px 20px 16px 70px"
             }}
           >
             <div className={styles.ItemTime}>{dayjs(item.time).fromNow()}</div>
@@ -138,7 +141,7 @@ export default function Item({
             >
               <path
                 d="M1.00037 7.34315L6.65723 1.68629L12.3141 7.34315"
-                stroke="#80787B"
+                stroke="#fff"
                 strokeWidth="1.5"
               />
             </svg>

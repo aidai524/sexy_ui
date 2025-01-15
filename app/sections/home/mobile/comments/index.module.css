@@ -1,6 +1,10 @@
 .Container {
   height: 80vh;
   position: relative;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border: 1px solid #3b3b3b;
+  background-color: #252328;
 }
 
 .Header {
