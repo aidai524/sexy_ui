@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import TokenAction from "../tokenAction";
 import useMc from "@/app/hooks/useMc";
+import { numberFormatter } from '@/app/utils/common';
 
 interface Props {
   data: Project;
@@ -86,11 +87,28 @@ export default function Token({
           <div className={styles.trikerContent}>
             <div className={styles.tickerName}>Ticker: {data.ticker}</div>
           </div>
-          <div className={styles.MarketCap}>
-            Mc:{" "}
-            {pumpMc || mc ? `$${simplifyNum(Number(pumpMc || mc), 2)}` : "-"}
-          </div>
-          <div className={styles.createTime}>{timeAgo(data.time)}</div>
+          {
+            data?.status === 0 ? (
+              <>
+                <div className={styles.trikerContent}>
+                  <div className={styles.Likes}>
+                    <div>Likes: <span style={{ color: 'white' }}>{data?.like}</span>/100</div>
+                    <img src="/img/profile/icon-like.svg" alt="" width={13} height={11} />
+                  </div>
+                </div>
+                <div className={styles.trikerContent}>
+                  <div className={styles.tickerName}>
+                    Flipped: {numberFormatter(data?.prePaid, 2, true)} SOL
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className={styles.MarketCap}>
+              MarketCap:{' '}
+                {pumpMc || mc ? `$${simplifyNum(Number(pumpMc || mc), 2)}` : '-'}
+              </div>
+            )
+          }
         </div>
       </div>
 

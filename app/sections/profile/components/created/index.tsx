@@ -105,7 +105,7 @@ export default function Created({
   if (list.length === 0) {
     return (
       <div style={{ paddingTop: 116 }}>
-        <Empty text={"No FlipN coins " + type + " yet"} iconSize={0} />
+        <Empty text={"No FlipN coins " + type + " yet"} id={type} />
       </div>
     );
   }
