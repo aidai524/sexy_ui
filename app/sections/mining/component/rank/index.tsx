@@ -15,15 +15,14 @@ export default function Rank({ rank, list = [], loading }: any) {
     <div
       className={styles.Container}
       style={{
-        padding: isMobile ? "20px 12px" : "10px 0px 0px 0px"
+        padding: isMobile ? "20px 12px" : "0px"
       }}
     >
       <Header isMobile={isMobile} rank={rank} />
       <div
         className={styles.List}
         style={{
-          height: isMobile ? "auto" : "calc(100vh - 510px)",
-          padding: isMobile ? 0 : "0px 30px"
+          height: isMobile ? "auto" : "calc(100% - 50px)"
         }}
       >
         {list.map((item: any, index: number) => (
@@ -54,18 +53,10 @@ export default function Rank({ rank, list = [], loading }: any) {
                   )}
                 </div>
 
-                {isMobile && (
-                  <div className={styles.ItemDesc}>
-                    {item.account_data?.followers || 0} followers
-                  </div>
-                )}
-              </div>
-              {!isMobile && (
-                <div className={styles.ItemTitle} style={{ marginLeft: 60 }}>
-                  {item.account_data?.followers || 0}{" "}
-                  <span style={{ color: "#FFFFFFB5" }}>followers</span>
+                <div className={styles.ItemDesc}>
+                  {item.account_data?.followers || 0} followers
                 </div>
-              )}
+              </div>
             </div>
             <div className={styles.ItemRight}>
               <span>

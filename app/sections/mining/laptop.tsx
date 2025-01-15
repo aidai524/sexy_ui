@@ -1,20 +1,33 @@
-import Back from "@/app/components/back/laptop";
-import Content from "./content";
 import { motion } from "framer-motion";
 import styles from "./laptop.module.css";
+import TotalPanel from "./mobile/total-panel";
+import EarnAndInvite from "./mobile/earn-invite";
+import Others from "./mobile/others";
+import RankPanel from "./component/rank";
 
-export default function Laptop(props: any) {
+export default function Laptop({ info, infoLoading }: any) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className={styles.Wrapper}
     >
+      <div className={styles.TitleWrapper}>Reward</div>
       <div className={styles.Container}>
-        <div className={styles.BackWrapper}>
-          <Back />
+        <div className={styles.Content}>
+          <TotalPanel info={info} />
+          <div style={{ height: 20 }} />
+          <EarnAndInvite info={info} />
+          <div style={{ height: 36 }} />
+          <Others info={info} />
         </div>
-        <Content styles={styles} isMobile={false} {...props} />
+      </div>
+      <div className={styles.RankWrapper}>
+        <RankPanel
+          rank={info?.your_rank}
+          list={info?.mining_rank}
+          loading={infoLoading}
+        />
       </div>
     </motion.div>
   );

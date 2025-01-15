@@ -1,85 +1,37 @@
 .Wrapper {
   padding: 0 30px;
+  position: relative;
+  height: 100vh;
 }
 
 .Container {
-  background: linear-gradient(
-    to top,
-    rgba(13, 16, 18, 0) 0%,
-    rgba(13, 16, 18, 0.8) 100%
-  );
-  border-radius: 20px;
-  height: calc(100vh - 110px);
-  position: relative;
-  overflow: hidden;
+  padding-left: 30px;
+  padding-top: calc(50vh - 360px);
 }
 
-.BackWrapper {
+.Content {
+  width: 664px;
+}
+
+.TitleWrapper {
   position: absolute;
   left: 30px;
-  top: 30px;
+  top: 20px;
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
-.main {
-  background: url(/img/mining/top-bg.png) center 10px no-repeat;
-  background-size: 476px 92px;
-}
-
-.zBox {
-  position: relative;
-  z-index: 11;
-  padding-top: 90px;
-}
-
-.group {
-  margin: 30px 10px 0;
-  .groupTitle {
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .groupContent {
-    color: rgba(146, 144, 177, 1);
-    font-size: 14px;
-    font-weight: 300;
-    margin-top: 10px;
-  }
-  .gitbook {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-}
-
-.bottomAni {
+.RankWrapper {
+  width: 396px;
+  max-height: calc(100vh - 70px);
   position: absolute;
-  z-index: 1;
-  left: 0;
-  right: 0;
-  bottom: -46px;
-  pointer-events: none;
-  width: 100%;
-  overflow-x: hidden;
-  /* height: 26vh; */
-  .boxAni {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: scroll 30s linear infinite;
-    .boxImg {
-      width: 100vw;
-    }
-  }
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  right: 0px;
+  bottom: 0px;
+  background-color: #252328;
+  border: 1px solid #3b3b3b;
+  border-radius: 16px 16px 0px 0px;
 }

@@ -1,9 +1,6 @@
 .Container {
-  margin: 10px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(5px);
-  padding: 10px;
 }
 
 .FunPanel {
@@ -17,10 +14,10 @@
 .FunPanelContent {
   position: relative;
   z-index: 5;
-  height: 76px;
   display: flex;
   align-items: center;
   padding-left: 14px;
+  height: 100%;
 }
 
 .FunPanelBg {
@@ -54,25 +51,39 @@
 .PabelLabel {
   color: #fff;
   font-family: Unbounded;
-  font-size: 12px;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
-}
-
-.FunPanelItem {
-  width: 48%;
 }
 
 .Statistics {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 26px;
 }
 
 .StatisticsItem {
   width: 33.333333%;
+}
+
+.StatisticsItemPc {
+  width: 33.333333%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.StatisticsItemPc:not(:last-child):after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 18px;
+  opacity: 0.5;
+  background: #fff;
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }
 
 .StatisticsLabel {
@@ -82,12 +93,12 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  position: relative;
 }
 
 .StatisticsValue {
   color: #fff;
   font-family: Unbounded;
-  font-size: 18px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

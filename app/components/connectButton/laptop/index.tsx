@@ -17,8 +17,8 @@ export default function ConnectButton({ logout }: any) {
           style={{
             background: "transparent",
             borderRadius: 48,
-            border: "2px solid #AF0",
-            color: "#AAFF00",
+            border: "1px solid #FBCA04",
+            color: "#FBCA04",
             height: 36,
             fontSize: 14
           }}

@@ -1,9 +1,9 @@
 import styles from "./index.module.css";
 import User from "./user";
-import Header from "./header";
+import RightActions from "./right-actions";
 import useUpdateInfo from "./use-update-info";
 import dynamic from "next/dynamic";
-import Main from "@/app/sections/home/laptop/main";
+import Main from "@/app/sections/home/laptop";
 import Menu from "./menu";
 import { LaptopContext } from "@/app/context/laptop";
 import { useAuth } from "@/app/context/auth";
@@ -28,24 +28,10 @@ const ProfileCom = dynamic(() => import("@/app/sections/profile"), {
 const DetailPage = dynamic(() => import("@/app/sections/detail"));
 
 export default function Laptop({ children }: any) {
-  const { innerHeight, innerWidth } = useUserAgent();
   const updateInfo = useUpdateInfo();
-  const fullScreenStore: any = useFullScreen();
   const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
     useAuth();
   useNotice();
-  console.log(123);
-  return (
-    <LaptopContext.Provider
-      value={{
-        ...updateInfo
-      }}
-    >
-      <div className={styles.Container}>
-        <Menu />
-      </div>
-    </LaptopContext.Provider>
-  );
 
   return (
     <LaptopContext.Provider
@@ -53,39 +39,26 @@ export default function Laptop({ children }: any) {
         ...updateInfo
       }}
     >
-      {fullScreenStore?.isFull ? (
-        <Main address={address} userInfo={userInfo} />
-      ) : (
-        <div className={styles.Container}>
-          <User
-            userInfo={userInfo}
-            address={address}
-            onQueryInfo={updateCurrentUserInfo}
-            logout={logout}
-          />
-          <div className={styles.Content}>
-            <Header logout={logout} userInfo={userInfo} />
-            <div className={styles.ContentInner}>
-              {pathname === "/" && (
-                <Main address={address} userInfo={userInfo} />
-              )}
-              {pathname === "/create" && <CreatePage />}
-              {pathname === "/trends" && <TrendsPage />}
-              {pathname === "/reward" && <RewardPage />}
-              {pathname === "/profile/user" && (
-                <ProfileCom
-                  isOther={true}
-                  updateCurrentUserInfo={updateCurrentUserInfo}
-                />
-              )}
-              {pathname === "/profile" && (
-                <ProfileCom updateCurrentUserInfo={updateCurrentUserInfo} />
-              )}
-              {pathname === "/detail" && <DetailPage />}
-            </div>
-          </div>
+      <div className={styles.Container}>
+        <RightActions logout={logout} userInfo={userInfo} />
+        <Menu />
+        <div className={styles.Content}>
+          {pathname === "/" && <Main />}{" "}
+          {pathname === "/reward" && <RewardPage />}
+          {pathname === "/create" && <CreatePage />}
+          {pathname === "/trends" && <TrendsPage />}
+          {pathname === "/profile/user" && (
+            <ProfileCom
+              isOther={true}
+              updateCurrentUserInfo={updateCurrentUserInfo}
+            />
+          )}
+          {pathname === "/profile" && (
+            <ProfileCom updateCurrentUserInfo={updateCurrentUserInfo} />
+          )}
+          {pathname === "/detail" && <DetailPage />}
         </div>
-      )}
+      </div>
     </LaptopContext.Provider>
   );
 }
