@@ -5,6 +5,7 @@ import styles from "./index.module.css";
 import { useState } from "react";
 import { useProjects } from "@/app/store/use-projects";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { useUserAgent } from "@/app/context/user-agent";
 
 const DetailPage = dynamic(() => import("@/app/sections/detail/mobile"), {
   ssr: false
@@ -14,6 +15,7 @@ export default function Mobile() {
   const [token, setToken] = useState<any>();
   const homeTabStore: any = useHomeTab();
   const projectsStore = useProjects();
+  const { innerHeight, innerWidth } = useUserAgent();
 
   return (
     <HomeContext.Provider
@@ -28,7 +30,9 @@ export default function Mobile() {
         <div
           style={{
             zIndex: token ? 10 : 0,
-            opacity: token ? 1 : 0
+            opacity: token ? 1 : 0,
+            width: innerWidth,
+            height: innerHeight
           }}
           className={styles.Container}
         >
@@ -50,7 +54,9 @@ export default function Mobile() {
       <div
         style={{
           zIndex: token ? 0 : 10,
-          opacity: token ? 0 : 1
+          opacity: token ? 0 : 1,
+          width: innerWidth,
+          height: innerHeight
         }}
         className={styles.Container}
       >

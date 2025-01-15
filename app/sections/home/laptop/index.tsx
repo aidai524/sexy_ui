@@ -1,5 +1,5 @@
-import Main from "./main";
+import Mobile from "../mobile";
 
-export default function Laptop({ address, userInfo }: any) {
-  return <Main address={address} userInfo={userInfo} />;
+export default function Laptop() {
+  return <Mobile />;
 }

@@ -131,7 +131,7 @@ export default function Component({ children }: any) {
   useNotice();
 
   return (
-    <div className={styles.Main}>
+    <div className={styles.Main} id="main-content">
       {/* <Button onClick={() => {
         trade()
       }}>juipter</Button> */}

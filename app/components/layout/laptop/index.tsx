@@ -8,6 +8,7 @@ import { LaptopContext } from "@/app/context/laptop";
 import { useAuth } from "@/app/context/auth";
 import useNotice from "../../../hooks/use-notice";
 import { useFullScreen } from "@/app/store/use-full-screen";
+import { useUserAgent } from "@/app/context/user-agent";
 
 const CreatePage = dynamic(() => import("@/app/sections/create/laptop"), {
   ssr: false
@@ -25,12 +26,28 @@ const ProfileCom = dynamic(() => import("@/app/sections/profile"), {
 
 const DetailPage = dynamic(() => import("@/app/sections/detail"));
 
-export default function Laptop() {
+export default function Laptop({ children }: any) {
+  const { innerHeight, innerWidth } = useUserAgent();
   const updateInfo = useUpdateInfo();
   const fullScreenStore: any = useFullScreen();
   const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
     useAuth();
   useNotice();
+
+  return (
+    <div className={styles.Container}>
+      <div
+        id="main-content"
+        style={{
+          width: innerWidth,
+          height: innerHeight
+        }}
+        className={styles.Content}
+      >
+        {children}
+      </div>
+    </div>
+  );
 
   return (
     <LaptopContext.Provider
