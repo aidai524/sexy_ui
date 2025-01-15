@@ -1,12 +1,12 @@
 const AirdropCard = (props: any) => {
-  const { title, children } = props;
+  const { title, children, bg, height = 436, bgHeight = 502 } = props;
 
   return (
     <div
       style={{
-        width: '355px',
+        width: '323px',
+        height: height,
         flexShrink: 0,
-        border: '1px solid #B68DFF',
         borderRadius: 30,
         fontFamily: 'Unbounded',
         overflow: 'hidden',
@@ -16,9 +16,9 @@ const AirdropCard = (props: any) => {
       <div
         style={{
           width: '100%',
-          background: 'url("/img/airdrop/bg.svg") no-repeat top / 355px',
-          padding: '155px 10px 0',
-          marginTop: -20,
+          height: '100%',
+          background: `url("${bg || '/img/airdrop/bg.svg'}") no-repeat bottom / 323px ${bgHeight}px`,
+          padding: '125px 10px 0',
           borderRadius: '30px',
           display: 'flex',
           flexDirection: 'column',

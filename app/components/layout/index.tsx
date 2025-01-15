@@ -3,40 +3,18 @@ import Mobile from "./mobile/Layout";
 import Laptop from "./laptop";
 import { useConfig } from "@/app/store/useConfig";
 import { httpGet } from "@/app/utils";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { AuthProvider } from "@/app/context/auth";
 import { MessageProvider } from "@/app/context/messages";
 import { MessageContextProvider } from "@/app/context/messageContext";
-import AirdropModal from "@/app/components/airdrop/modal";
-import { useSearchParams } from "next/navigation";
-import { useWallet } from "@solana/wallet-adapter-react";
-import Cookies from "js-cookie";
-import { useAirdropStore } from "@/app/store/use-airdrop";
-import { useReferralStore } from "@/app/store/useReferral";
+import AirdropEntry from '@/app/components/airdrop/entry';
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
   const configStore: any = useConfig();
   const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
-  const search = useSearchParams();
-  const { publicKey } = useWallet();
-  const { setVisible: setAirdropVisible } = useAirdropStore();
-  const { setReferral } = useReferralStore();
-
-  const isAirdrop = useMemo(() => {
-    if (!publicKey) return false;
-    if (!search.get("referral")) return false;
-    if (publicKey.toString() === search.get("referral")) return false;
-    if (!Cookies.get("referral")) {
-      console.log("referral saved: %o", search.get("referral"));
-      Cookies.set("referral", search.get("referral") as string, { path: "/" });
-      setReferral(search.get("referral") as string);
-    }
-    if (!search.get("airdrop")) return false;
-    return true;
-  }, [search, publicKey]);
 
   const { getConfig } = useTokenTrade({
     tokenName: "",
@@ -61,16 +39,12 @@ export default function Layout(props: any) {
     });
   }, []);
 
-  useEffect(() => {
-    setAirdropVisible(isAirdrop);
-  }, [isAirdrop]);
-
   return (
     <AuthProvider>
       <MessageProvider>
         <MessageContextProvider>
           {isMobile ? <Mobile {...props} /> : <Laptop {...props} />}
-          <AirdropModal />
+          <AirdropEntry />
         </MessageContextProvider>
       </MessageProvider>
     </AuthProvider>

@@ -80,18 +80,19 @@ const AirdropList = (props: any) => {
       <div
         style={{
           width: "100%",
-          marginTop: "26px",
-          paddingBottom: "36px",
+          marginTop: "15px",
+          paddingBottom: "15px",
         }}
       >
         <button
           type="button"
           style={{
             width: "100%",
-            height: "60px",
-            borderRadius: "30px",
-            background: "#FF2681",
-            color: "#FFF",
+            height: "54px",
+            border: "2px solid #000",
+            borderRadius: "27px",
+            background: "#FBCA04",
+            color: "#000",
             textAlign: "center",
             fontFamily: "Unbounded",
             fontSize: "16px",
