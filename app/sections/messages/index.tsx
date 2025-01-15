@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import PageHeader from "@/app/components/page-header/mobile";
 import useList from "@/app/components/messages/use-list";
 import Header from "@/app/components/messages/header";
-import { AnimatePresence } from "framer-motion";
+import Empty from "@/app/components/empty";
 import CircleLoading from "@/app/components/icons/loading";
 import { InfiniteScroll } from "antd-mobile";
 import Item from "./item";
@@ -69,7 +69,7 @@ export default function Messages() {
             </InfiniteScroll>
           )}
           {list.length === 0 && !loading ? (
-            <div className={styles.EmptyText}>No information</div>
+            <Empty height={300} text="No new informations" />
           ) : (
             isFirstPage && (
               <div className={styles.LoadingWrapper}>
