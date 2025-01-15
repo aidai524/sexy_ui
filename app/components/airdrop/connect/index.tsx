@@ -15,11 +15,11 @@ const AirdropConnect = (props: any) => {
   return (
     <div
       style={{
-        background: "#18131C",
-        backdropFilter: "blur(5px)",
+        background: "#C9FF5D",
+        border: "1px solid black",
         borderRadius: "20px",
-        padding: "10px 10px 0",
-        width: "355px",
+        padding: "10px 17px 0",
+        width: "323px",
       }}
     >
       <div
@@ -28,7 +28,7 @@ const AirdropConnect = (props: any) => {
           width: '100%',
           height: '264px',
           background: 'url("/img/airdrop/banner.svg") no-repeat center / cover',
-          color: '#FFF',
+          color: '#000',
           textAlign: 'center',
           fontFamily: 'Unbounded',
           fontSize: '14px',
@@ -41,10 +41,10 @@ const AirdropConnect = (props: any) => {
       >
         <div
           style={{
-            width: 'calc(100% - 42px)',
+            width: 'calc(100% - 30px)',
             textAlign: 'center',
             position: 'absolute',
-            bottom: '48px',
+            bottom: '30px',
             left: '21px',
           }}
         >
@@ -64,18 +64,20 @@ const AirdropConnect = (props: any) => {
           style={{
             width: '100%',
             height: '60px',
-            color: '#FFF',
+            color: '#000',
             textAlign: 'center',
             fontFamily: 'Unbounded',
             fontSize: '16px',
             fontStyle: 'normal',
-            fontWeight: 400,
+            fontWeight: 500,
             lineHeight: 'normal',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: '30px',
-            border: '1px solid #FFF',
+            border: '2px solid #000',
+            background: '#FBCA04',
+            marginBottom: 0,
           }}
         >
           Connect Wallet
@@ -95,8 +97,8 @@ const AirdropConnect = (props: any) => {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: '30px',
-            border: '1px solid #18131C',
-            color: '#7E8A93',
+            border: '1px solid rgba(0, 0, 0, 0)',
+            color: '#000',
           }}
           onClick={handleClose}
         >

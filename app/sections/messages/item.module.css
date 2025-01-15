@@ -1,7 +1,11 @@
 .Item {
   border-radius: 14px;
-  background: #ffffff14;
   font-family: Unbounded;
+  padding-bottom: 10px;
+}
+
+.Item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .ItemTop {
@@ -44,7 +48,6 @@
   color: #8d8bb8;
   font-size: 12px;
   font-weight: 300;
-  text-align: right;
 }
 
 .ItemBottom {
@@ -54,11 +57,11 @@
 }
 
 .Ellipsis {
-  height: 30px;
+  height: 18px;
   word-break: break-all;
-  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
+  text-overflow: ellipsis;
   overflow: hidden;
 }

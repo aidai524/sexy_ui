@@ -1,8 +1,7 @@
 .Container {
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
-  width: 100vw;
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
@@ -18,8 +17,8 @@
 
 .CloseButton {
   position: absolute;
-  top: 30px;
-  right: 30px;
+  top: -20px;
+  right: -20px;
   cursor: pointer;
   z-index: 101;
   color: #716c7c;
