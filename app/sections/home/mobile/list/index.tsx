@@ -152,7 +152,10 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
         </div>
 
         {isLoading && (
-          <div className={styles.Wrapper} style={{ height: innerHeight }}>
+          <div
+            className={styles.Wrapper}
+            style={{ height: innerHeight, width: innerWidth }}
+          >
             <Loading />
           </div>
         )}

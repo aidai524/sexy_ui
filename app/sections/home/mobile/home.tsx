@@ -12,7 +12,10 @@ export default function HomeMobile() {
   const { innerHeight, innerWidth } = useUserAgent();
 
   return (
-    <div className={styles.Container} style={{ height: innerHeight }}>
+    <div
+      className={styles.Container}
+      style={{ height: innerHeight, width: innerWidth }}
+    >
       <Header
         currentTab={homeTabStore.homeTabIndex}
         onChangeTab={(tab: number) => {
@@ -24,7 +27,8 @@ export default function HomeMobile() {
         className={styles.ListWrapper}
         style={{
           transform: `translateX(-${homeTabStore.homeTabIndex * innerWidth}px)`,
-          height: innerHeight
+          height: innerHeight,
+          width: innerWidth
         }}
       >
         <List
