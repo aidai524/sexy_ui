@@ -86,7 +86,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   console.log('infoData', infoData)
 
   return (
-    <div style={{ overflow: 'auto', height: innerHeight, width: innerWidth, position: 'relative' }}>
+    <div style={{ }}>
       <SexPullToRefresh
         onRefresh={async () => {
           await getDetailInfo();
@@ -106,6 +106,8 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
               </div> */}
             </div>
 
+            <div style={{ height: innerHeight - 60, overflow: 'auto', paddingBottom: 100 }}>
+
             {
               infoData?.status === 0 && <>
                 <Info
@@ -122,36 +124,39 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
 
             {infoData?.status !== 0 && <Chart token={infoData} />}
 
-            {
-              infoData?.status !== 0 && <Tab
-                activeNode={activeKey}
-                onTabChange={(nodeName) => {
-                  setActiveKey(nodeName);
-                }}
-                nodes={[
-                  {
-                    name: "Info",
-                    content: (
-                      <Info
-                        mc={pumpMc || mc}
-                        data={infoData}
-                        onUpdate={() => {
-                          getDetailInfo();
-                        }}
-                      />
-                    )
-                  },
-                  {
-                    name: "Comments",
-                    content: <CommnentList token={infoData} />
-                  },
-                  {
-                    name: "Trade",
-                    content: <Txs mc={pumpMc || mc} data={infoData} />
-                  }
-                ]}
-              />
-            }
+              {
+                infoData?.status !== 0 && <Tab
+                  activeNode={activeKey}
+                  onTabChange={(nodeName) => {
+                    setActiveKey(nodeName);
+                  }}
+                  nodes={[
+                    {
+                      name: "Info",
+                      content: (
+                        <Info
+                          mc={pumpMc || mc}
+                          data={infoData}
+                          onUpdate={() => {
+                            getDetailInfo();
+                          }}
+                        />
+                      )
+                    },
+                    {
+                      name: "Comments",
+                      content: <CommnentList token={infoData} />
+                    },
+                    {
+                      name: "Trade",
+                      content: <Txs mc={pumpMc || mc} data={infoData} />
+                    }
+                  ]}
+                />
+              }
+            </div>
+
+            
 
             <div className={styles.action}>
               {infoData?.status === 0 ? (
