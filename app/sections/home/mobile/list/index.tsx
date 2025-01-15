@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
+import { useHomeTab } from "@/app/store/useHomeTab";
 
 let startY = 0;
 let startX = 0;
@@ -23,6 +24,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   } = useData(type);
   const index = getIndex(type);
   const [y, setY] = useState(0);
+  const homeTabStore: any = useHomeTab();
   const { innerHeight } = useUserAgent();
   const guidingTourStore = useGuidingTour();
 
@@ -122,7 +124,24 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
               />
             );
           })}
-          {!isLoading && <Empty height={innerHeight} text="No more projects" />}
+          {!isLoading && (
+            <div
+              className={styles.EmptyWrapper}
+              style={{ height: innerHeight }}
+            >
+              <Empty height={300} text="No more projects" />
+              <button
+                className={styles.Button}
+                onClick={() => {
+                  homeTabStore.set({
+                    homeTabIndex: type === "preLaunch" ? 1 : 0
+                  });
+                }}
+              >
+                {type === "preLaunch" ? "View Launches" : "View Pre-Launch"}
+              </button>
+            </div>
+          )}
         </div>
 
         {isLoading && (
