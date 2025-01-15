@@ -1,10 +1,11 @@
 .main {
   .cationArea {
     .tradeTabs {
-      padding: 20px 0;
+      padding: 0 0 20px;
       display: flex;
       align-items: center;
       gap: 10px;
+      margin-top: -40px;
 
       .tab {
         flex: 1;
@@ -19,13 +20,12 @@
         
         &.active:first-child {
           background: url('/img/trade/buy.png') no-repeat 0 0;
-          background-size: contain;
-          /* background-color: rgba(109, 181, 0, 1); */
+          background-size: 100% auto;
         }
 
         &.active:last-child {
           background: url('/img/trade/sell.png') no-repeat 0 0;
-          background-size: contain;
+          background-size: 100% auto;
         }
       }
       .tab:first-child {
