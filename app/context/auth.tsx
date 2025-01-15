@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import { initAuthorization, logOut } from "@/app/utils";
 import LoginModal from "@/app/components/loginModal";
 import type { ReactNode } from "react";
+import { useShare } from "../hooks/use-share";
 
 const AuthContext = React.createContext<any | null>(null);
 
@@ -24,6 +25,7 @@ export const AuthProvider: React.FC<{
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const codeStore: any = useCodeStore();
+  useShare();
   const [accountRefresher, setAccountRefresher] = useState(0);
   const { onQueryInfo, setUserInfo, fecthUserInfo } = useUserInfo(
     address,
@@ -91,6 +93,8 @@ export const AuthProvider: React.FC<{
     }
 
     updateAccount();
+
+
   }, [address]);
 
   if (codeStore.a !== CODE && pathname !== "/") {

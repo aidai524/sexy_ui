@@ -24,8 +24,7 @@ export default function SmokeButton({
       className={`${styles.Container} ${isDisabled ? styles.disabled : ''} ${!isDisabled && styles.Active}`}
       disabled={isDisabled}
       onClick={() => {
-        onClick()
-        // !isDisabled && onClick();
+        !isDisabled && onClick();
       }}
     >
       {isDisabled ? <>{ disabledText }</> : <div className={ styles.innerFlex }><SmokeIcon isGrey={true} id={id} /> Flip</div>}

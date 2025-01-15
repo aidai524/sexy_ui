@@ -75,6 +75,8 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
       );
   }, [onBack, token]);
 
+  console.log(isLoading)
+
   if (isLoading) {
     return (
       <div className={styles.loadingBox}>
@@ -83,10 +85,8 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     );
   }
 
-  console.log('infoData', infoData)
-
   return (
-    <div style={{ }}>
+    <div style={{}}>
       <SexPullToRefresh
         onRefresh={async () => {
           await getDetailInfo();
@@ -108,21 +108,21 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
 
             <div style={{ height: innerHeight - 60, overflow: 'auto', paddingBottom: 100 }}>
 
-            {
-              infoData?.status === 0 && <>
-                <Info
-                  mc={pumpMc || mc}
-                  data={infoData}
-                  showHodler={false}
-                  onUpdate={() => {
-                    getDetailInfo();
-                  }}
-                />
-                <CommnentList token={infoData} />
-              </>
-            }
+              {
+                infoData?.status === 0 && <>
+                  <Info
+                    mc={pumpMc || mc}
+                    data={infoData}
+                    showHodler={false}
+                    onUpdate={() => {
+                      getDetailInfo();
+                    }}
+                  />
+                  <CommnentList token={infoData} />
+                </>
+              }
 
-            {infoData?.status !== 0 && <Chart token={infoData} />}
+              {infoData?.status !== 0 && <Chart token={infoData} style={{ position: 'relative' }}/>}
 
               {
                 infoData?.status !== 0 && <Tab
@@ -156,10 +156,10 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
               }
             </div>
 
-            
+
 
             <div className={styles.action}>
-              {infoData?.status === 0 ? (
+              {infoData?.status === 0 && (
                 <PreLaunchAction
                   token={infoData}
                   // style={{  }}
@@ -190,9 +190,11 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                     getDetailInfo();
                   }}
                 />
-              ) : (
-                <LaunchedAction data={infoData} />
               )}
+
+              {
+                (infoData?.status === 1 || infoData?.status === 3) && <LaunchedAction data={infoData} />
+              }
             </div>
           </div>
         </div>

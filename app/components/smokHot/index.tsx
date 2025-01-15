@@ -8,6 +8,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import BoostSuperNoTimes from "../boost/boostSuperNoTimes";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import SmokeButton from "./smoke-button";
+import Big from "big.js";
 
 interface Props {
   token: Project;
@@ -49,12 +50,12 @@ export default function SmokeBtn({
   }, [isDelay, token, address]);
 
   const disabledText = useMemo(() => {
-    if (token.account === address) {
-      return 'IsSelf'
+    if (token.prePaidAmount && Number(token.prePaidAmount) > 0) {
+      return 'Fliped ' + new Big(token.prePaidAmount).div(10 ** 9).toFixed(4, 0) + 'SOL'
     }
 
-    if (token.prePaidAmount && Number(token.prePaidAmount) > 0) {
-      return 'Fliped ' + token.prePaidAmount + 'SOL'
+    if (token.account === address) {
+      return 'Flipped'
     }
 
     return 'Flipped'

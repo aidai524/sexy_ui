@@ -233,6 +233,8 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
                 token.address
               }&referral=${userInfo.address}`;
 
+              console.log('longUrl', longUrl)
+
               try {
                 const shreUrl = await getShortUrl(longUrl);
                 console.log("shreUrl:", shreUrl);
