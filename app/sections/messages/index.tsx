@@ -10,26 +10,22 @@ import { InfiniteScroll } from "antd-mobile";
 import Item from "./item";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useMessages } from "@/app/context/messages";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import useRead from "@/app/components/messages/use-read";
 
 export default function Messages() {
   const { innerHeight } = useUserAgent();
-  const { onQuery } = useMessages();
-  const {
-    list,
-    loading,
-    hasMore,
-    page,
-    onQuery: onQueryList,
-    onNextPage
-  } = useList({
-    onSuccess: onQuery
-  });
+  const { num, onQuery } = useMessages();
+  const [informNum, setInforNum] = useState(num);
+  const { list, loading, hasMore, page, onNextPage } = useList();
   const { onRead } = useRead();
   const [currentTab, setCurrentTab] = useState("inform");
 
   const isFirstPage = useMemo(() => page.current === 1, [page.current]);
+
+  useEffect(() => {
+    setInforNum(num);
+  }, [num]);
 
   return (
     <div className={styles.Container} style={{ height: innerHeight }}>
@@ -51,7 +47,11 @@ export default function Messages() {
         }
       />
       <div className={styles.Content} style={{ height: innerHeight - 46 }}>
-        {/* <Header currentTab={currentTab} onChangeTab={setCurrentTab} num={num} /> */}
+        <Header
+          currentTab={currentTab}
+          onChangeTab={setCurrentTab}
+          num={informNum}
+        />
 
         <div
           className={styles.Content}
@@ -60,7 +60,17 @@ export default function Messages() {
           }}
         >
           {list.map((item: any) => (
-            <Item key={item.id} item={item} isMobile={true} onRead={onRead} />
+            <Item
+              key={item.id}
+              item={item}
+              isMobile={true}
+              onRead={onRead}
+              onSuccess={() => {
+                if (informNum > 0) {
+                  setInforNum(informNum - 1);
+                }
+              }}
+            />
           ))}
           {list.length > 0 && (
             // @ts-ignore

@@ -6,10 +6,17 @@ import config from "./config";
 import dayjs from "dayjs";
 import styles from "./item.module.css";
 import { Avatar, ReadAvatar } from "./avatar";
-export default function Item({ item, isMobile, onRead, onClose }: any) {
+export default function Item({
+  item,
+  isMobile,
+  onRead,
+  onClose,
+  onSuccess
+}: any) {
   const [expand, setExpand] = useState(false);
   const router = useRouter();
   const { userInfo } = useAuth();
+  const [isRead, setIsRead] = useState(item.read);
   const [title, content, linkText, link, pageName] = useMemo(() => {
     const r = config[item.type];
     if (r) return r(item, userInfo);
@@ -40,7 +47,7 @@ export default function Item({ item, isMobile, onRead, onClose }: any) {
           }}
         >
           <div style={{ flexShrink: 0 }}>
-            {item.read ? <ReadAvatar /> : <Avatar />}
+            {isRead ? <ReadAvatar /> : <Avatar />}
           </div>
           <div className={styles.ItemContent}>
             <div className={styles.ItemTitle} style={{}}>
@@ -87,6 +94,14 @@ export default function Item({ item, isMobile, onRead, onClose }: any) {
                 className="button"
                 onClick={() => {
                   setExpand(true);
+                  if (isRead) return;
+                  onRead({
+                    ids: [item.id],
+                    onSuccess() {
+                      setIsRead(true);
+                      onSuccess?.();
+                    }
+                  });
                 }}
               >
                 <path

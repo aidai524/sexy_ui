@@ -7,7 +7,7 @@ import useRead from "./use-read";
 
 const PAGE_SIZE = 10;
 
-export default function useList({ onSuccess }: any) {
+export default function useList() {
   const { accountRefresher } = useAuth();
   const [list, setList] = useState<any>([]);
   const [loading, setLoading] = useState(true);
@@ -23,14 +23,10 @@ export default function useList({ onSuccess }: any) {
           (pageRef.current - 1) * PAGE_SIZE
         }`
       );
+
       pageRef.current === 1
         ? setList(response.data.list || [])
         : setList([...list, ...(response.data.list || [])]);
-
-      const ids = response.data.list
-        .filter((item: any) => !item.read)
-        .map((item: any) => item.id);
-      ids.length && onRead({ ids, onSuccess });
 
       setHasMore(response.data.has_next_page);
     } catch (err) {
