@@ -36,7 +36,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
 
   const infoData = useMemo(
-    () => token || queryedInfoData,
+    () => queryedInfoData || token,
     [token, queryedInfoData]
   );
 
@@ -118,7 +118,9 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                       getDetailInfo();
                     }}
                   />
-                  <CommnentList token={infoData} />
+                  <CommnentList token={infoData} onSuccess={() => {
+                    getDetailInfo();
+                  }}/>
                 </>
               }
 
@@ -145,7 +147,9 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                     },
                     {
                       name: "Comments",
-                      content: <CommnentList token={infoData} />
+                      content: <CommnentList token={infoData} onSuccess={() => {
+                        getDetailInfo();
+                      }}/>
                     },
                     {
                       name: "Trade",

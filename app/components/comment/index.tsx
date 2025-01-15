@@ -125,9 +125,9 @@ export default function CommentComp({
             />
 
             <MainBtn
+              isLoading={isSubmiting}
               onClick={async () => {
                 if (!userInfo?.address) {
-                  // @ts-ignore
                   window?.connect();
                   return;
                 }
