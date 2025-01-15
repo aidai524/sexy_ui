@@ -27,12 +27,12 @@ const AirdropRefer = (props: any) => {
     <AirdropCard title="">
       <div
         style={{
-          color: '#FF2681',
+          color: '#FBCA04',
           textAlign: 'center',
           fontFamily: 'Unbounded',
           fontSize: '14px',
           fontWeight: 300,
-          marginTop: 60,
+          marginTop: 10,
           padding: '0 16px',
         }}
       >
@@ -60,9 +60,9 @@ const AirdropRefer = (props: any) => {
           marginTop: 10,
         }}
       >
-        Invite Friends and Earn Points Get up to <strong
+        Invite Friends and Earn Points Get <br /> up to <strong
         style={{
-          color: '#C926FF',
+          color: '#FBCA04',
           fontSize: 14,
           fontWeight: 600
         }}
@@ -72,9 +72,9 @@ const AirdropRefer = (props: any) => {
         type="button"
         style={{
           width: '100%',
-          marginTop: 30,
-          height: 60,
-          color: "#FFF",
+          marginTop: 27,
+          height: 54,
+          color: "#000",
           textAlign: "center",
           fontFamily: "Unbounded",
           fontSize: "16px",
@@ -83,7 +83,8 @@ const AirdropRefer = (props: any) => {
           lineHeight: "normal",
           padding: "0 65px",
           borderRadius: "30px",
-          background: "#C926FF",
+          background: "#FBCA04",
+          border: '2px solid #000',
         }}
         onClick={handleRefer}
       >
@@ -94,8 +95,8 @@ const AirdropRefer = (props: any) => {
         style={{
           width: '100%',
           marginTop: 0,
-          height: 60,
-          color: "#898989",
+          height: 54,
+          color: "#000",
           textAlign: "center",
           fontFamily: "Unbounded",
           fontSize: "16px",

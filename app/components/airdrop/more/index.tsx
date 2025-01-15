@@ -28,7 +28,12 @@ const AirdropMore = (props: any) => {
   }, []);
 
   return (
-    <AirdropCard title="Want to earn more points?">
+    <AirdropCard
+      title="Want to earn more points?"
+      bg="/img/airdrop/more-bg.svg"
+      height={476}
+      bgHeight={542}
+    >
       <div
         style={{
           display: 'flex',
@@ -60,7 +65,7 @@ const AirdropMore = (props: any) => {
           btn="Create"
           onClick={handleCreate}
         >
-          <span style={{ color: "#B31DFF", fontWeight: 600 }}>30%</span> integral amplification
+          <span style={{ color: "#000", fontWeight: 600 }}>30%</span> integral amplification
         </Card>
         <Card
           title="Refer to Earn"
@@ -68,7 +73,7 @@ const AirdropMore = (props: any) => {
           btnPrimary
           onClick={handleRefer}
         >
-          Invite Friends and Earn Points Get up to <span style={{ color: "#B31DFF", fontWeight: 600 }}>1M</span>
+          Invite Friends and Earn Points Get up to <span style={{ color: "#000", fontWeight: 600 }}>1M</span>
         </Card>
       </div>
     </AirdropCard>
@@ -87,7 +92,7 @@ const Card = (props: any) => {
         borderRadius: '10px',
         border: '1px solid rgba(161, 161, 161, 0.20)',
         background: '#FAFAFA',
-        padding: '20px 15px 16px',
+        padding: '12px 25px 14px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -98,7 +103,7 @@ const Card = (props: any) => {
           color: "#000",
           textAlign: "center",
           fontFamily: "Unbounded",
-          fontSize: "16px",
+          fontSize: "14px",
           fontStyle: "normal",
           fontWeight: 400,
           lineHeight: "normal",
@@ -108,14 +113,14 @@ const Card = (props: any) => {
       </div>
       <div
         style={{
-          marginTop: "10px",
+          marginTop: "8px",
           color: "#9290B1",
           fontFamily: "Unbounded",
           fontSize: "12px",
           fontStyle: "normal",
           fontWeight: 300,
           lineHeight: "normal",
-          whiteSpace: 'nowrap',
+          textAlign: "center",
         }}
       >
         {children}
@@ -123,9 +128,9 @@ const Card = (props: any) => {
       <button
         type="button"
         style={{
-          marginTop: "12px",
+          marginTop: "16px",
           height: "50px",
-          color: "#FFF",
+          color: "#000",
           textAlign: "center",
           fontFamily: "Unbounded",
           fontSize: "16px",
@@ -134,7 +139,8 @@ const Card = (props: any) => {
           lineHeight: "normal",
           padding: "0 65px",
           borderRadius: "30px",
-          background: btnPrimary ? "#C926FF" : "#FF2681",
+          background: "#FBCA04",
+          border: "2px solid #000",
         }}
         onClick={onClick}
       >

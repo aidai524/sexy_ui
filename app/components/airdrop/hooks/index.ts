@@ -18,6 +18,8 @@ export function useAirdrop(): Airdrop {
     setEntryVisible: setAirdropEntryVisible,
     entryVisibleTimes: airdropEntryVisibleTimes,
     setEntryVisibleTimes: setAirdropEntryVisibleTimes,
+    connectVisible,
+    setConnectVisible,
   } = useAirdropStore();
   const router = useRouter();
 
@@ -39,11 +41,11 @@ export function useAirdrop(): Airdrop {
 
   const [claiming, setClaiming] = useState(false);
   const [binding, setBinding] = useState(false);
-  const [connectVisible, setConnectVisible] = useState(false);
   const [morePointsVisible, setMorePointsVisible] = useState(false);
   const [referVisible, setReferVisible] = useState(false);
 
-  const { connected } = useWallet();
+  // const { connected } = useWallet();
+  const connected = !!window.sexAddress;
 
   const handleClose = () => {
     setAirdropVisible(false);
@@ -186,7 +188,6 @@ export interface Airdrop {
   connected?: boolean;
   claiming: boolean;
   pointListPageMore: boolean;
-  setConnectVisible: Dispatch<SetStateAction<boolean>>;
   pointList: Record<string, any>[];
   pointListLoading: boolean;
   morePointsVisible: boolean;
@@ -210,4 +211,5 @@ export interface Airdrop {
   setAirdropVisible(visible: boolean): void;
   setAirdropEntryVisible(visible: boolean): void;
   setAirdropEntryVisibleTimes(times: number): void;
+  setConnectVisible(visible: boolean): void;
 }
