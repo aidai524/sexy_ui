@@ -59,8 +59,8 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
       >
         <div
           style={{
-            position: "fixed",
-            left: type === "preLaunch" ? 0 : "100vw",
+            position: "absolute",
+            left: 0,
             top: 200,
             color: "red",
             zIndex: 100
