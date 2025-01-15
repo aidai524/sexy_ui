@@ -1,16 +1,16 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-export const useHomePageM = create(
+export const useSetting = create(
   persist(
     (set, get: any) => ({
-      token: null,
+      menuExpand: true,
       set: (params: any) => set(() => ({ ...params }))
     }),
     {
-      name: "_homepage",
+      name: "_user_setting",
       version: 0.1,
-      storage: createJSONStorage(() => sessionStorage)
+      storage: createJSONStorage(() => localStorage)
     }
   )
 );

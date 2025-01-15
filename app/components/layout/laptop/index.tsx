@@ -4,6 +4,7 @@ import Header from "./header";
 import useUpdateInfo from "./use-update-info";
 import dynamic from "next/dynamic";
 import Main from "@/app/sections/home/laptop/main";
+import Menu from "./menu";
 import { LaptopContext } from "@/app/context/laptop";
 import { useAuth } from "@/app/context/auth";
 import useNotice from "../../../hooks/use-notice";
@@ -33,20 +34,17 @@ export default function Laptop({ children }: any) {
   const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
     useAuth();
   useNotice();
-
+  console.log(123);
   return (
-    <div className={styles.Container}>
-      <div
-        id="main-content"
-        style={{
-          width: innerWidth,
-          height: innerHeight
-        }}
-        className={styles.Content}
-      >
-        {children}
+    <LaptopContext.Provider
+      value={{
+        ...updateInfo
+      }}
+    >
+      <div className={styles.Container}>
+        <Menu />
       </div>
-    </div>
+    </LaptopContext.Provider>
   );
 
   return (

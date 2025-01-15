@@ -1,0 +1,80 @@
+.Container {
+  padding-left: 16px;
+  width: 140px;
+  height: calc(100vh - 44px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.List {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 20px;
+}
+
+.Item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 138px;
+  height: 38px;
+  border-radius: 19px;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+  padding-left: 12px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  transition: 0.3s;
+}
+
+.ItemActive {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.Item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ItemIcon {
+  transform: scale(0.74);
+}
+
+.Bottom {
+  padding-left: 10px;
+  padding-bottom: 20px;
+}
+
+.Links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.LinkIcon {
+  transform: scale(0.66);
+}
+
+.Desc {
+  color: rgba(255, 255, 255, 0.4);
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  position: relative;
+  padding-top: 22px;
+}
+
+.BarIcon {
+  position: absolute;
+  right: -10px;
+}
