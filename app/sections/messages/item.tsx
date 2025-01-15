@@ -1,6 +1,6 @@
 import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import config from "./config";
 import dayjs from "dayjs";
@@ -22,6 +22,10 @@ export default function Item({
     if (r) return r(item, userInfo);
     return ["", "", "", "", ""];
   }, [item]);
+
+  useEffect(() => {
+    setIsRead(item.read);
+  }, [item.read]);
   return (
     <AnimatePresence mode="wait">
       <motion.div

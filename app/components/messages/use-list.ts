@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { httpAuthGet } from "@/app/utils";
 import { useAuth } from "@/app/context/auth";
-import useRead from "./use-read";
 
 const PAGE_SIZE = 10;
 
@@ -13,7 +12,6 @@ export default function useList() {
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
   const pageRef = useRef(1);
-  const { onRead } = useRead();
 
   const onQuery = useCallback(async () => {
     try {
