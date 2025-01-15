@@ -1,6 +1,8 @@
 .Container {
-  width: 100vw;
   overflow: hidden;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 
 .List {
@@ -17,7 +19,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100vw;
 }
 
 .EmptyWrapper {

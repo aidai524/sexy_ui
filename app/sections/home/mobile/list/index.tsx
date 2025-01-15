@@ -25,7 +25,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   const index = getIndex(type);
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
-  const { innerHeight } = useUserAgent();
+  const { innerHeight, innerWidth } = useUserAgent();
   const guidingTourStore = useGuidingTour();
 
   useEffect(() => {
@@ -49,7 +49,14 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
 
   return (
     <>
-      <div className={styles.Container} style={{ height: innerHeight }}>
+      <div
+        className={styles.Container}
+        style={{
+          height: innerHeight,
+          width: innerWidth,
+          left: type === "preLaunch" ? 0 : innerWidth
+        }}
+      >
         <div
           style={{
             position: "fixed",

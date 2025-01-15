@@ -9,7 +9,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 
 export default function HomeMobile() {
   const homeTabStore: any = useHomeTab();
-  const { innerHeight } = useUserAgent();
+  const { innerHeight, innerWidth } = useUserAgent();
 
   return (
     <div className={styles.Container} style={{ height: innerHeight }}>
@@ -23,7 +23,7 @@ export default function HomeMobile() {
       <div
         className={styles.ListWrapper}
         style={{
-          transform: `translateX(-${homeTabStore.homeTabIndex * 100}vw)`,
+          transform: `translateX(-${homeTabStore.homeTabIndex * innerWidth}px)`,
           height: innerHeight
         }}
       >
