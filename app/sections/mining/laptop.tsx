@@ -22,13 +22,19 @@ export default function Laptop({ info, infoLoading }: any) {
           <Others info={info} />
         </div>
       </div>
-      <div className={styles.RankWrapper}>
-        <RankPanel
-          rank={info?.your_rank}
-          list={info?.mining_rank}
-          loading={infoLoading}
-        />
-      </div>
+      {info?.mining_rank && (
+        <motion.div
+          initial={{ y: "100%" }}
+          animate={{ y: 0 }}
+          className={styles.RankWrapper}
+        >
+          <RankPanel
+            rank={info?.your_rank}
+            list={info?.mining_rank}
+            loading={infoLoading}
+          />
+        </motion.div>
+      )}
     </motion.div>
   );
 }

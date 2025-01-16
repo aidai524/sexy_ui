@@ -1,4 +1,3 @@
-import Tab from "@/app/components/tab";
 import styles from "./create.module.css";
 
 import CreateNode from "./CreateNode";
@@ -7,7 +6,6 @@ import PreviewNode from "./PreviewNode";
 import { useState } from "react";
 import type { Project } from "@/app/type";
 import PageHeader from "@/app/components/page-header/mobile";
-import { position } from "html2canvas/dist/types/css/property-descriptors/position";
 
 export default function Create() {
   const [renderType, setRenderType] = useState(0);
@@ -16,8 +14,13 @@ export default function Create() {
   return (
     <div className={styles.main}>
       <div className={styles.title}>
-        <div className={ styles.header }>
-          <PageHeader from="create" style={{ position: 'static' }} title="Create Token" theme="dark"/>
+        <div className={styles.header}>
+          <PageHeader
+            from="create"
+            style={{ position: "static" }}
+            title="Create Token"
+            theme="dark"
+          />
         </div>
         <div className={styles.editProgress}>
           <div

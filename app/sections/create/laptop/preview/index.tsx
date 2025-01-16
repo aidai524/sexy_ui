@@ -3,6 +3,8 @@ import Media from "@/app/components/thumbnail/media";
 import Desc from "@/app/sections/home/mobile/token/desc";
 import Actions from "@/app/sections/home/mobile/actions";
 import ArrowIcon from "../arrow-icon";
+import DetailPanel from "@/app/sections/home/laptop/panels/detail";
+import { motion, AnimatePresence } from "framer-motion";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useAuth } from "@/app/context/auth";
 import { useState, useRef, useEffect, useMemo } from "react";
@@ -10,7 +12,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 export default function Preview({ token }: any) {
   const { innerHeight, innerWidth } = useUserAgent();
   const [imgHeight, setImgHeight] = useState("80%");
-  const [showDetail, setShowDetail] = useState(true);
+  const [showDetail, setShowDetail] = useState(false);
   const descContentRef = useRef<any>();
   const { userInfo } = useAuth();
 
@@ -36,7 +38,8 @@ export default function Preview({ token }: any) {
       <div
         style={{
           height: innerHeight,
-          width: innerWidth
+          width: innerWidth,
+          transform: `translateX(${showDetail ? 0 : "calc(100% - 200px)"})`
         }}
         className={styles.Token}
       >
@@ -59,6 +62,26 @@ export default function Preview({ token }: any) {
           <Actions token={info} disabled={true} isCurrent={true} />
         </div>
       </div>
+      <AnimatePresence mode="wait">
+        {showDetail && (
+          <motion.div
+            initial={{ x: "100%" }}
+            exit={{ x: "100%" }}
+            animate={{ x: 0 }}
+            transition={{
+              ease: "linear",
+              duration: 0.3
+            }}
+          >
+            <DetailPanel
+              token={info}
+              onClose={() => {
+                setShowDetail(false);
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
