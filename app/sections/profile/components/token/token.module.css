@@ -47,6 +47,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 160px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tickerNameAvatar {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .Likes {

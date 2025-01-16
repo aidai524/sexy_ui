@@ -87,9 +87,10 @@ export default function ActionList({
             ) : (
               <>
                 {!!smookeable && (smookeable === 1 ? (
-                  <button className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}>
+                  /*<button className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}>
                     <span>Flipped</span>
-                  </button>
+                  </button>*/
+                  <></>
                 ) : (
                   <SmokeHot
                     actionChildren={

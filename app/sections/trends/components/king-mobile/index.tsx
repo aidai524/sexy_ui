@@ -7,41 +7,49 @@ import { useEffect, useState } from "react";
 export default function King() {
   const { top1 } = useTrends({ isPolling: true });
   const router = useRouter();
-  const [show, setShow] = useState(false);
+  const [top1Shown, setTop1Shown] = useState<any>();
 
   useEffect(() => {
-    if (!top1) return;
-    setShow(true);
-    setTimeout(() => {
-      setShow(false);
-    }, 2000);
+    setTop1Shown(void 0);
+    if (!top1) {
+      return;
+    }
+    let timer1: any;
+    timer1 = setTimeout(() => {
+      clearTimeout(timer1);
+      setTop1Shown(top1);
+    }, 300);
+
+    return () => {
+      clearTimeout(timer1);
+    };
   }, [top1]);
 
   return (
-    top1 && (
+    top1Shown && (
       <motion.div
         initial={{
-          x: show ? 98 : 2
+          x: 98
         }}
         animate={{
-          x: show ? 2 : 98
+          x: 10
         }}
         className={styles.Container}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 20,
+          duration: 1
+        }}
       >
         <div
           className={styles.Inner}
-          onMouseEnter={() => {
-            setShow(true);
-          }}
-          onMouseLeave={() => {
-            setShow(false);
-          }}
         >
           <div
             className={`${styles.Avatar} button`}
-            style={{ backgroundImage: `url("${top1.Icon}")` }}
+            style={{ backgroundImage: `url("${top1Shown.Icon}")` }}
             onClick={() => {
-              router.push(`/detail?address=${top1.address}`);
+              router.push(`/detail?address=${top1Shown.address}`);
             }}
           >
             <img
@@ -52,7 +60,7 @@ export default function King() {
           </div>
           <div>
             <div className={styles.Label}>King of hill</div>
-            <div className={styles.Value}>{top1.token_name}</div>
+            <div className={styles.Value}>{top1Shown.token_name}</div>
           </div>
         </div>
       </motion.div>
