@@ -1,11 +1,13 @@
 import TypesTabs from "@/app/sections/home/tabs";
 import List from "./list";
 import TrendBanner from "../../trends/components/banner";
+import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import styles from "./index.module.css";
 
 export default function Laptop() {
   const homeTabStore: any = useHomeTab();
+  const { innerWidth } = useUserAgent();
   return (
     <div className={styles.Container}>
       <div className={styles.TabsWrapper}>
@@ -20,13 +22,13 @@ export default function Laptop() {
         <TrendBanner />
       </div>
       <div className={styles.Content}>
-        {/* <List
+        <List
           type="preLaunch"
           onChangeTab={(tab: number) => {
             homeTabStore.set({ homeTabIndex: tab });
           }}
           isCurrentTab={homeTabStore.homeTabIndex === 0}
-        /> */}
+        />
       </div>
     </div>
   );

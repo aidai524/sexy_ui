@@ -1,0 +1,90 @@
+import { useUserAgent } from "@/app/context/user-agent";
+
+let entered = false;
+let isDrag = false;
+export default function Button(props: any) {
+  const { isMobile } = useUserAgent();
+  return isMobile ? <MobileButton {...props} /> : <LaptopButton {...props} />;
+}
+
+const LaptopButton = ({
+  children,
+  className,
+  onClick,
+  x,
+  startX,
+  run,
+  setX
+}: any) => {
+  return (
+    <button
+      className={`button ${className}`}
+      style={{
+        transform: `translateX(${x}px)`
+      }}
+      onMouseDown={(ev: any) => {
+        ev.stopPropagation();
+        startX = ev.clientX;
+        entered = true;
+        isDrag = false;
+      }}
+      onMouseMove={(ev) => {
+        if (!entered) return;
+        let diff = ev.clientX - startX;
+        if (diff < 0) {
+          diff = 0;
+        }
+        if (diff > 90) {
+          diff = 170;
+          run();
+          entered = false;
+          isDrag = true;
+        }
+        setX(diff);
+      }}
+      onMouseUp={() => {
+        if (isDrag) return;
+        onClick();
+      }}
+    >
+      {children}
+    </button>
+  );
+};
+
+const MobileButton = ({
+  children,
+  className,
+  onClick,
+  x,
+  startX,
+  run,
+  setX
+}: any) => {
+  return (
+    <button
+      className={`button ${className}`}
+      onClick={onClick}
+      style={{
+        transform: `translateX(${x}px)`
+      }}
+      onTouchStart={(ev: any) => {
+        ev.stopPropagation();
+        startX = ev.touches[0].clientX;
+      }}
+      onTouchMove={(ev) => {
+        let diff = ev.touches[0].clientX - startX;
+        if (diff < 0) {
+          diff = 0;
+        }
+        if (diff > 90) {
+          diff = 170;
+          run();
+        }
+        setX(diff);
+      }}
+    >
+      {children}
+    </button>
+  );
+};

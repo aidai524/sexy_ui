@@ -1,22 +1,21 @@
 .Container {
-  height: 80vh;
   position: relative;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
   border: 1px solid #3b3b3b;
   background-color: #252328;
 }
 
 .Header {
-  height: 46px;
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 15px;
+  padding-right: 12px;
 }
 
 .Title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .Nums {
@@ -30,7 +29,7 @@
 }
 
 .Content {
-  height: calc(80vh - 108px);
+  height: calc(100% - 108px);
   overflow: hidden;
   overflow-y: auto;
   padding: 0px 15px;
@@ -42,7 +41,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 100vw;
+  width: 100%;
 }
 
 .Input {
@@ -52,7 +51,6 @@
   background: rgba(146, 144, 177, 0.1);
   padding: 0px 12px;
   color: #fff;
-  width: calc(100vw - 76px);
   font-size: 16px;
 }
 

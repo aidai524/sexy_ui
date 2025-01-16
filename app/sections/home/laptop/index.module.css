@@ -16,4 +16,8 @@
 }
 
 .Content {
+  height: calc(100vh - 126px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }

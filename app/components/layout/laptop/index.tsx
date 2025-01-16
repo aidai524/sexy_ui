@@ -1,5 +1,4 @@
 import styles from "./index.module.css";
-import User from "./user";
 import RightActions from "./right-actions";
 import useUpdateInfo from "./use-update-info";
 import dynamic from "next/dynamic";

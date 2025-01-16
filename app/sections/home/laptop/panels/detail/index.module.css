@@ -3,6 +3,10 @@
   border-radius: 30px;
   background-color: #252328;
   border: 1px solid #3b3b3b;
+  flex-shrink: 0;
+  position: absolute;
+  right: 100px;
+  top: 0px;
 }
 
 .Header {

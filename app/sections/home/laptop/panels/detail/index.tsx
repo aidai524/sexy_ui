@@ -1,14 +1,23 @@
-import { useUserAgent } from "@/app/context/user-agent";
 import ModalClose from "@/app/components/icons/modal-close";
 import Info from "@/app/sections/detail/components/info/detail";
 import Image from "next/image";
 import styles from "./index.module.css";
+import { motion } from "framer-motion";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
+import { useUserAgent } from "@/app/context/user-agent";
+
 export default function DetailPanel({ token, onClose }: any) {
   const { innerHeight } = useUserAgent();
   const mc = useMcWithPump(token);
   return (
-    <div
+    <motion.div
+      initial={{ x: 375 }}
+      exit={{ x: 375 }}
+      animate={{ x: 0 }}
+      transition={{
+        ease: "linear",
+        duration: 0.3
+      }}
       className={styles.Container}
       style={{
         height: innerHeight
@@ -28,6 +37,6 @@ export default function DetailPanel({ token, onClose }: any) {
       <div className={styles.Content}>
         <Info mc={mc} data={token} showHodler={false} onUpdate={() => {}} />
       </div>
-    </div>
+    </motion.div>
   );
 }

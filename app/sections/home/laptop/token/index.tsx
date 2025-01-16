@@ -11,18 +11,21 @@ import SmokePanel from "@/app/components/smokHot/smoke-panel";
 import Danmaku from "@/app/components/danmaku";
 import TradeModal from "@/app/components/trade-modal";
 import CommentsModal from "@/app/sections/home/mobile/comments";
+import DetailButton from "./detail-button";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 
 export default function Token({ isCurrent, token, onUpdate }: any) {
   const [imgHeight, setImgHeight] = useState("80%");
-  const { innerHeight } = useUserAgent();
+  const { innerHeight, innerWidth } = useUserAgent();
   const descContentRef = useRef<any>();
   const [showFlipModal, setShowFlipModal] = useState(false);
   const [showTradeModal, setShowTradeModal] = useState(false);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
+  const tokenPanelStatusStore: any = useTokenPanelStatus();
 
   const { total: totalHolders } = useHolders(token);
 
@@ -34,9 +37,12 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
 
   return (
     <>
-      <div className={styles.Container} style={{ height: innerHeight }}>
-        {token?.id && (
-          <>
+      {token?.id && (
+        <div className={styles.Box}>
+          <div
+            className={styles.Container}
+            style={{ height: innerHeight, width: innerWidth }}
+          >
             <Media imgHeight={imgHeight} data={token} />
             <div className={styles.Labels}>
               {token.isSuperLike && (
@@ -47,6 +53,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                   src="/img/home/flipped.png"
                 />
               )}
+
               {token.isLike && (
                 <motion.img
                   initial={{ opacity: 0 }}
@@ -95,37 +102,51 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                 <Desc token={token} />
               </div>
             </div>
-            <Actions
-              token={token}
-              onClick={(type: any) => {
-                if (type === "comments") {
-                  setShowCommentsModal(true);
-                  return;
-                }
-                if (!window.sexAddress) {
-                  window.connect();
-                  return;
-                }
-                if (type === "flip") {
-                  setShowFlipModal(true);
-                }
-                if (type === "trade") {
-                  setShowTradeModal(true);
-                }
-              }}
-              totalHolders={totalHolders}
-              onSuccess={(type: string) => {
-                if (type === "like") {
-                  token.isLike = true;
-                  token.like = token.like + 1;
-                }
-                onUpdate(token);
-              }}
-              isCurrent={isCurrent}
-            />
-          </>
-        )}
-      </div>
+            <div className={styles.Actions}>
+              <DetailButton
+                onClick={() => {
+                  tokenPanelStatusStore.setShow(
+                    "showDetail",
+                    !tokenPanelStatusStore.showDetail
+                  );
+                }}
+              />
+              <Actions
+                token={token}
+                onClick={(type: any) => {
+                  if (type === "comments") {
+                    tokenPanelStatusStore.setShow(
+                      "showComments",
+                      !tokenPanelStatusStore.showComments
+                    );
+                    return;
+                  }
+                  if (!window.sexAddress) {
+                    window.connect();
+                    return;
+                  }
+                  if (type === "flip") {
+                    setShowFlipModal(true);
+                  }
+                  if (type === "trade") {
+                    setShowTradeModal(true);
+                  }
+                }}
+                totalHolders={totalHolders}
+                onSuccess={(type: string) => {
+                  if (type === "like") {
+                    token.isLike = true;
+                    token.like = token.like + 1;
+                  }
+                  onUpdate(token);
+                }}
+                isCurrent={isCurrent}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       {showFlipModal && (
         <SmokePanel
           token={token}

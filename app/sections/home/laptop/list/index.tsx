@@ -1,11 +1,29 @@
 import Token from "../token";
 import Empty from "@/app/components/empty";
 import Loading from "@/app/sections/home/mobile/loading";
-import useData from "@/app/sections/home/hooks/use-data-mobile";
-import { useEffect, useState } from "react";
+import ArrowIcon from "./arrow-icon";
 import styles from "./index.module.css";
+import dynamic from "next/dynamic";
+import { AnimatePresence } from "framer-motion";
+import useData from "@/app/sections/home/hooks/use-data-mobile";
+import { useEffect, useState, useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { useTokenPanelStatus } from "@/app/store/use-token-panel";
+
+const DetailPanel = dynamic(
+  () => import("@/app/sections/home/laptop/panels/detail"),
+  {
+    ssr: false
+  }
+);
+
+const CommentsPanel = dynamic(
+  () => import("@/app/sections/home/laptop/panels/comments"),
+  {
+    ssr: false
+  }
+);
 
 export default function List({ type, isCurrentTab }: any) {
   const {
@@ -20,6 +38,7 @@ export default function List({ type, isCurrentTab }: any) {
   const index = getIndex(type);
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
+  const tokenPanelStatusStore: any = useTokenPanelStatus();
   const { innerHeight, innerWidth } = useUserAgent();
 
   useEffect(() => {
@@ -41,20 +60,29 @@ export default function List({ type, isCurrentTab }: any) {
     }
   }, [index, list]);
 
+  const currentToken = useMemo(() => {
+    const id = list[index];
+    if (!id) return null;
+    return getProjectById(type, id);
+  }, [index, list]);
+
   return (
     <>
       <div
         className={styles.Container}
         style={{
-          height: innerHeight,
-          width: innerWidth,
-          left: type === "preLaunch" ? 0 : innerWidth
+          height: innerHeight
         }}
       >
         <div
           className={styles.List}
           style={{
-            transform: `translateY(${y}px)`
+            transform: `translate(${
+              tokenPanelStatusStore.hasShow()
+                ? "calc(50vw - 600px)"
+                : "calc(50vw - 300px)"
+            }, ${y}px)`,
+            width: innerWidth
           }}
         >
           {list?.map((item: number, i: number) => {
@@ -75,10 +103,11 @@ export default function List({ type, isCurrentTab }: any) {
               />
             );
           })}
+
           {!isLoading && (
             <div
               className={styles.EmptyWrapper}
-              style={{ height: innerHeight }}
+              style={{ height: innerHeight, width: innerWidth }}
             >
               <Empty height={300} text="No more projects" />
               <button
@@ -93,15 +122,45 @@ export default function List({ type, isCurrentTab }: any) {
               </button>
             </div>
           )}
-        </div>
 
-        {isLoading && (
-          <div
-            className={styles.Wrapper}
-            style={{ height: innerHeight, width: innerWidth }}
-          >
-            <Loading />
+          {isLoading && (
+            <div
+              className={styles.Wrapper}
+              style={{ height: innerHeight, width: innerWidth }}
+            >
+              <Loading />
+            </div>
+          )}
+        </div>
+        {!!list?.length && (
+          <div className={styles.ArrowButtons}>
+            <ArrowIcon />
+            <ArrowIcon isDown={true} />
           </div>
+        )}
+        {currentToken && (
+          <AnimatePresence mode="wait">
+            {tokenPanelStatusStore.showDetail && (
+              <DetailPanel
+                token={currentToken}
+                onClose={() => {
+                  tokenPanelStatusStore.setShow("showDetail", false);
+                }}
+              />
+            )}
+            {tokenPanelStatusStore.showComments && (
+              <CommentsPanel
+                token={currentToken}
+                onClose={() => {
+                  tokenPanelStatusStore.setShow("showComments", false);
+                }}
+                onSuccess={() => {
+                  currentToken.comment = currentToken.comment + 1;
+                  updateProject(type, currentToken);
+                }}
+              />
+            )}
+          </AnimatePresence>
         )}
       </div>
     </>
