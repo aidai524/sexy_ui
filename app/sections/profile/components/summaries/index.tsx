@@ -1,8 +1,9 @@
 import styles from './index.module.css';
 import { numberFormatter } from '@/app/utils/common';
+import FollowBtn from '../followBtn';
 
 const Summaries = (props: any) => {
-  const {} = props;
+  const { address, isFollower,setRefreshNum,refreshNum } = props;
 
   return (
     <div className={styles.Container}>
@@ -39,6 +40,14 @@ const Summaries = (props: any) => {
             </div>
           </div>
         </div>
+      </div>
+      <div className={styles.BtnGroup}>
+        {/* <button className={styles.FollowBtn}>Follow</button> */}
+        <FollowBtn useAnotherClassName={true} address={address} isFollower={isFollower} onSuccess={() => {
+          setRefreshNum(refreshNum + 1);
+        }} />
+        
+        <button className={styles.CopyBtn}>Copy Trade</button>
       </div>
     </div>
   );

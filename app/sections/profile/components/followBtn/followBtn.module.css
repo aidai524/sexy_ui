@@ -44,3 +44,25 @@
   composes: isFollowing;
   opacity: 0.3;
 }
+
+
+.FollowBtnOnSum {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  color: #fff;
+  height: 34px;
+  border-radius: 30px;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border: 2px solid #FBCA04;
+}
+
+.isFollowBtnOnSumLoading {
+  composes: FollowBtnOnSum;
+  opacity: 0.3;
+}
