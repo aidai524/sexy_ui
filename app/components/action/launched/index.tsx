@@ -34,7 +34,6 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
     <div
       key={data.id}
       className={`${usedStyle} ${from === "laptop" && styles.LaptopContainer}`}
-      style={style}
     >
       {justPlus ? (
         <>
