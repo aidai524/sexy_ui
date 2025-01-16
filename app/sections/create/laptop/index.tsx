@@ -1,6 +1,6 @@
-import Back from "@/app/components/back/laptop";
 import CreateNode from "../CreateNode";
-import PreviewNode from "../PreviewNode";
+import PreviewNode from "./preview";
+import Actions from "./actions";
 import { motion } from "framer-motion";
 import { useState, useRef } from "react";
 import { useUser } from "@/app/store/useUser";
@@ -8,7 +8,7 @@ import type { Project } from "@/app/type";
 import styles from "./index.module.css";
 
 export default function Laptop() {
-  const [renderType, setRenderType] = useState(0);
+  const [step, setStep] = useState("edit");
   const [dataAdd, setDataAdd] = useState<Project>();
   const { userInfo }: any = useUser();
   const createRef = useRef<any>();
@@ -20,107 +20,51 @@ export default function Laptop() {
       animate={{ opacity: 1 }}
       className={styles.Wrapper}
     >
+      <div className={styles.TitleWrapper}>Create token</div>
       <div className={styles.Container}>
-        <div className={styles.Header}>
-          <div className={styles.BackWrapper}>
-            <Back />
-          </div>
-          <div>
-            <div className={styles.Title}>Create Token</div>
-            {userInfo?.name && (
-              <div className={styles.Create}>
-                <span>Created by:</span>
-                <span
-                  style={{
-                    color: "#55FFF4"
-                  }}
-                >
-                  {userInfo?.name}
-                </span>
-              </div>
-            )}
-          </div>
-          <div className={styles.Buttons}>
-            {renderType === 1 ? (
-              <></>
-            ) : (
-              <button
-                onClick={() => {
-                  createRef.current?.onPreview();
-                }}
-                className={styles.Button}
-              >
-                Preview
-              </button>
-            )}
-          </div>
-        </div>
-        <div
-          className={styles.Content}
-          style={{
-            height:
-              renderType === 0 ? "calc(100vh - 180px)" : "calc(100vh - 260px)"
-          }}
-        >
-          <CreateNode
-            show={renderType === 0}
-            onAddDataFill={(value: any) => {
-              setDataAdd(value);
-              setRenderType(1);
-              window.scrollTo(0, 0);
-            }}
-            ref={createRef}
-          />
-          {renderType === 1 && (
-            <PreviewNode
-              show={true}
-              data={dataAdd!}
-              onAddDataCancel={() => {
-                setRenderType(0);
+        {step === "edit" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={styles.EditWrapper}
+          >
+            <CreateNode
+              ref={createRef}
+              show={step === "edit"}
+              onAddDataFill={(value: any) => {
+                setDataAdd(value);
+                setStep("preview");
+                window.scrollTo(0, 0);
+                console.log("value", value);
               }}
-              ref={previewRef}
             />
-          )}
-        </div>
+          </motion.div>
+        )}
+        {step === "preview" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={styles.PreviewWrapper}
+          >
+            <PreviewNode token={dataAdd} />
+          </motion.div>
+        )}
       </div>
-      {renderType === 1 && (
-        <div
-          style={{
-            display: "flex",
-            gap: 10,
-            marginTop: 16,
-            justifyContent: "center"
-          }}
-        >
-          <button
-            onClick={() => {
-              previewRef.current?.onEdit();
-            }}
-            className={styles.Button}
-            style={{
-              width: 174,
-              height: 60
-            }}
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => {
-              previewRef.current?.onCreate();
-            }}
-            className={styles.Button}
-            style={{
-              background: "#C9FF5D",
-              borderColor: "#C9FF5D",
-              color: "#000",
-              width: 174,
-              height: 60
-            }}
-          >
-            Create
-          </button>
-        </div>
-      )}
+      <Actions
+        step={step}
+        onClick={(type: string) => {
+          if (type === "preview") {
+            createRef.current.onPreview();
+            return;
+          }
+          if (type === "edit") {
+            return;
+          }
+          if (type === "create") {
+            return;
+          }
+        }}
+      />
     </motion.div>
   );
 }

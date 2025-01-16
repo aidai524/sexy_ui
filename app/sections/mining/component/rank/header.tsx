@@ -17,7 +17,7 @@ export default function Header({
       <div className={styles.YourRank}>
         <span
           style={{
-            fontSize: isMobile ? 10 : 12
+            fontSize: 12
           }}
         >
           Your Rank:
@@ -25,7 +25,7 @@ export default function Header({
         <div
           className={styles.YourRankTag}
           style={{
-            fontSize: isMobile ? 10 : 14
+            fontSize: isMobile ? 12 : 14
           }}
         >
           {rank || "-"}

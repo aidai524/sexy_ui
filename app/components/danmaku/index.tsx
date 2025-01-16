@@ -1,76 +1,30 @@
 import { motion } from "framer-motion";
 import styles from "./index.module.css";
-import { useEffect, useMemo, useRef } from "react";
+import { ReadAvatar } from "@/app/sections/messages/avatar";
 import useDanmaku from "@/app/hooks/use-danmaku";
 
 export default function DanmakuComp({ token }: any) {
-  const timeRef = useRef<any>();
-  const { loadMore, list } = useDanmaku({ id: token?.id });
-
-  useEffect(() => {
-    const loop = () => {
-      clearTimeout(timeRef.current);
-      timeRef.current = setTimeout(async () => {
-        await loadMore(0);
-        loop();
-      }, 10000);
-    };
-    loop();
-
-    return () => {
-      clearTimeout(timeRef.current);
-    };
-  }, []);
-
-  const data = useMemo(() => {
-    if (list.length === 0) return [];
-    if (list.length >= 4) return [...list, ...list];
-    if (list.length === 3) return [...list, ...list, ...list];
-    if (list.length === 2) return [...list, ...list, ...list, ...list];
-    if (list.length === 1)
-      return [
-        ...list,
-        ...list,
-        ...list,
-        ...list,
-        ...list,
-        ...list,
-        ...list,
-        ...list
-      ];
-  }, [list]);
-
+  const { list, show } = useDanmaku({ id: token?.id });
+  console.log("show", show);
   return (
     <div className={styles.Container}>
-      <motion.div
-        initial={{
-          y: 144
-        }}
-        animate={{
-          y: 0
-        }}
-        transition={{
-          duration: 8,
-          ease: "linear",
-          delay: 2
-        }}
-      >
+      {show && !!list.length && (
         <motion.div
           className={styles.List}
-          initial={{ y: 0 }}
-          animate={{ y: "-50%" }}
+          initial={{ y: 144 }}
+          animate={{ y: "-100%" }}
           transition={{
-            duration: 4,
-            ease: "linear",
-            repeat: Infinity,
-            delay: 10
+            duration: list.length * 1 + 5,
+            ease: "linear"
           }}
         >
-          {data?.map((item: any, i: number) => (
+          {list.map((item: any, i: number) => (
             <div key={item.id + Math.random() + Date.now()}>
               <div className={styles.Comment}>
-                {item?.icon && (
+                {item?.icon ? (
                   <img src={item.icon} className={styles.CommentIcon} />
+                ) : (
+                  <ReadAvatar size={20} />
                 )}
                 {item.type !== "like" ? (
                   <div className={styles.CommentText}>{item.text}</div>
@@ -108,7 +62,7 @@ export default function DanmakuComp({ token }: any) {
             </div>
           ))}
         </motion.div>
-      </motion.div>
+      )}
     </div>
   );
 }

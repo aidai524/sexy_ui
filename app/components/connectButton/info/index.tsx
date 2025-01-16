@@ -17,7 +17,7 @@ export default function Info({ logout }: any) {
   const [showHowItWork, setShowHowItWork] = useState(false);
   const { userInfo } = useAuth();
   const { connection } = useConnection();
-  console.log("userInfo", wallet);
+
   useEffect(() => {
     if (!publicKey || !connection) return;
     connection.getBalance(publicKey!).then((res) => {

@@ -1,4 +1,5 @@
 import TypesTabs from "@/app/sections/home/tabs";
+import List from "./list";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import styles from "./index.module.css";
 
@@ -12,6 +13,15 @@ export default function Laptop() {
           setLaunchIndex={(tab: number) => {
             homeTabStore.set({ homeTabIndex: tab });
           }}
+        />
+      </div>
+      <div className={styles.Content}>
+        <List
+          type="preLaunch"
+          onChangeTab={(tab: number) => {
+            homeTabStore.set({ homeTabIndex: tab });
+          }}
+          isCurrentTab={homeTabStore.homeTabIndex === 0}
         />
       </div>
     </div>

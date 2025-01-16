@@ -2,6 +2,7 @@
   --background: #000000;
   --foreground: #fff;
   --part-bg: #fbca04;
+  --error-color: #ff7587;
 }
 
 :root body {
