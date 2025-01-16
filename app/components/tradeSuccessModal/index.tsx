@@ -68,7 +68,7 @@ export default function TradeSuccessModal({
             {numberFormatter(point, 3, true, {
               isShort: true
             })}{" "}
-            $FlipN
+            $Fun
           </span>
         </div>
       </div>

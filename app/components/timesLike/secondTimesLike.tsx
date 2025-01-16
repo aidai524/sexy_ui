@@ -25,7 +25,7 @@ export default function SecondTimeLike({ data, onClose, onShare }: Props) {
 
         <div className={styles.text} style={{ marginTop: 30 }}>
           Now try to <strong>Buy</strong> a meme<br/> token, and mining<br/> 
-          <strong>30 $FlipN</strong>
+          <strong>30 $Fun</strong>
         </div>
 
         <MainBtn

@@ -10,6 +10,7 @@ import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import SmokeButton from "./smoke-button";
 import Big from "big.js";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import { numberFormatter } from "@/app/utils/common";
 
 interface Props {
   token: Project;
@@ -66,7 +67,8 @@ export default function SmokeBtn({
 
   const disabledText = useMemo(() => {
     if (flipNum && Number(flipNum) > 0) {
-      return 'Fliped ' + new Big(flipNum).div(10 ** 9).div(1 - 0.015).toFixed(4, 0) + 'SOL'
+      const flipNumFormatted = numberFormatter(new Big(flipNum).div(10 ** 9).div(1 - 0.015).toString(), 2, true, { isShort: true })
+      return 'Fliped <br/>' + flipNumFormatted + 'SOL'
     }
 
     if (token.account === address) {

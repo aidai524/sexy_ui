@@ -101,7 +101,8 @@ export default function Txs({ from, data }: any) {
                 onChange={() => {
                   setFilter({
                     ...filter,
-                    2: !filter[2]
+                    2: !filter[2],
+                    3: false
                   });
                 }}
               />
@@ -116,7 +117,8 @@ export default function Txs({ from, data }: any) {
                 onChange={() => {
                   setFilter({
                     ...filter,
-                    3: !filter[3]
+                    3: !filter[3],
+                    2: false
                   });
                 }}
               />

@@ -70,7 +70,7 @@ export default function Main({ userInfo }: any) {
               <>
                 Set up your{" "}
                 <span style={{ fontWeight: "bold" }}>Token project</span> on
-                FlipN and promote it to achieve bonding curve graduation.
+                Fun and promote it to achieve bonding curve graduation.
               </>
             ),
             placement: MaskPlacement.TopLeft,
@@ -83,7 +83,7 @@ export default function Main({ userInfo }: any) {
             content: (
               <>
                 <span style={{ fontWeight: "bold" }}>Like</span>
-                {"the projects you love, participate in FlipN's points"}{" "}
+                {"the projects you love, participate in Fun's points"}{" "}
                 <span style={{ fontWeight: "bold" }}>reward</span> campaign.
               </>
             ),

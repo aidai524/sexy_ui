@@ -4,10 +4,13 @@ import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useAuth } from "@/app/context/auth";
 import { fail, success } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useReferStore } from '@/app/store/useRefer';
 
 export default function EarnAndInvite({ info }: any) {
   const { userInfo } = useAuth();
   const { isMobile } = useUserAgent();
+  const { setVisible: setReferVisible } = useReferStore();
+
   return (
     <div
       className={styles.Container}
@@ -70,25 +73,34 @@ export default function EarnAndInvite({ info }: any) {
               width: isMobile ? 159 : 272,
               height: isMobile ? 24 : 27
             }}
+            onClick={() => {
+              navigator.clipboard
+                .writeText(
+                  `${window?.location?.origin}?referral=${userInfo.address}`
+                )
+                .then(() => {
+                  success("Copied my invite link!");
+                })
+                .catch((err) => {
+                  fail("Copy failed!");
+                });
+            }}
           >
             {userInfo?.address
-              ? `${window?.location?.origin}?referral=${userInfo.address}`
+              ? (
+                <div className={styles.LinkAddress}>
+                  <div className={styles.LinkAddressValue}>{window?.location?.origin}?referral=${userInfo.address}</div>
+                  <img className={styles.LinkAddressIcon} src="/img/mining/icon-copy.svg" alt="" width={16} height={16} />
+                </div>
+              )
               : "-"}
           </div>
           {userInfo?.address ? (
             <button
+              type="button"
               className={styles.Button}
               onClick={() => {
-                navigator.clipboard
-                  .writeText(
-                    `${window?.location?.origin}?referral=${userInfo.address}`
-                  )
-                  .then(() => {
-                    success("Copied my invite link!");
-                  })
-                  .catch((err) => {
-                    fail("Copy failed!");
-                  });
+                setReferVisible(true);
               }}
             >
               Invite

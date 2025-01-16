@@ -3,7 +3,7 @@ import Info from "./components/info/detail";
 import Chart from "./components/chart/index";
 import Txs from "./components/txs/index";
 import styles from "./detail.module.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Tab from "@/app/components/tab";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import CircleLoading from "@/app/components/icons/loading";
@@ -20,6 +20,7 @@ import {
 } from "@/app/components/timesLike/ActionTrigger";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { useMessage } from "@/app/context/messageContext";
+import { useDebounceFn } from "ahooks";
 
 export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   const [activeKey, setActiveKey] = useState("Info");
@@ -30,13 +31,23 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   } = useTokenDetail({ token });
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
   const { showShare } = useMessage()
+  const headerRef = useRef<HTMLDivElement>(null)
+  const [headerHeight, setHeaderHeight] = useState(60);
 
   const infoData = useMemo(
     () => queryedInfoData || token,
     [queryedInfoData, token]
   );
 
+  const { run } = useDebounceFn(() => {
+    setHeaderHeight(headerRef.current?.clientHeight || 60)
+  }, { wait: 100 })
+
   const mc = useMcWithPump(infoData);
+
+  useEffect(() => {
+    run();
+  }, []);
 
   useEffect(() => {
     onBack &&
@@ -57,7 +68,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   }
 
   return (
-    <div style={{}}>
+    <div>
       <SexPullToRefresh
         onRefresh={async () => {
           await getDetailInfo();
@@ -65,7 +76,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
       >
         <div className={styles.main}>
           <div className={styles.Content}>
-            <div className={styles.header}>
+            <div className={styles.header} ref={headerRef}>
               <div className={styles.backWrapper}>
                 <div style={{ marginTop: 8 }}>
                   <Back onBack={onBack} />
@@ -76,7 +87,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
 
             <div
               style={{
-                height: innerHeight - 60,
+                height: innerHeight - headerHeight,
                 overflow: "auto",
                 paddingBottom: 100
               }}
