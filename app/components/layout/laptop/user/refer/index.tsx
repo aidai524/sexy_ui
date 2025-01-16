@@ -37,7 +37,7 @@ const Refer = (props: any) => {
 
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
-      {isMobile && store.entryVisible ? null : (
+      {(isMobile && store.entryVisible) ? null : (
         isMobile ? isProfile && (
           <div
             className={isMobile ? styles.EntryMobile : styles.Entry}
@@ -83,7 +83,7 @@ const Refer = (props: any) => {
           handleEntryClose={handleEntryClose}
         />
       </motion.div>
-      <ReferModal {...props} isInvite={store.isInvite} />
+      <ReferModal {...props} />
     </div>
   );
 };

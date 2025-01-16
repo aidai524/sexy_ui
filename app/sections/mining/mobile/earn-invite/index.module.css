@@ -86,9 +86,25 @@
   line-height: 24px;
   text-align: center;
   padding: 0px 10px;
+  margin-top: 6px;
+  color: #fff;
+}
+
+.LinkAddress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.LinkAddressValue {
+  flex: 1;
+  width: 0;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  margin-top: 6px;
-  color: #fff;
+}
+
+.LinkAddressIcon {
+  flex-shrink: 0;
 }
