@@ -19,6 +19,7 @@ import {
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
+import { useMessage } from "@/app/context/messageContext";
 
 export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   const [activeKey, setActiveKey] = useState("Info");

@@ -35,7 +35,7 @@ export default function Actions({
                 window.connect();
                 return;
               }
-              const result = await actionLikeTrigger(token);
+              const result = await actionLikeTrigger(token, showShare);
               if (result) onSuccess("like");
             }}
             id={isCurrent ? "guid-tour-like" : ""}
