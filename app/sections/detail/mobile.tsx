@@ -101,9 +101,6 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                 </div>
                 <AvatarDetail token={infoData} mc={pumpMc || mc} />
               </div>
-              {/* <div className={styles.menuWrapper}>
-                <Menu />
-              </div> */}
             </div>
 
             <div style={{ height: innerHeight - 60, overflow: 'auto', paddingBottom: 100 }}>

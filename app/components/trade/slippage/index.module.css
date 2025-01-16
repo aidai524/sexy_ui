@@ -2,10 +2,13 @@
   background-color: rgba(18, 23, 25, 1);
   padding: 30px;
   .title {
-    color: rgba(146, 144, 177, 1);
+    color: #fff;
     font-size: 16px;
     font-weight: 600;
     padding-left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
   .list {
     margin-top: 10px;
@@ -60,7 +63,7 @@
       flex: 1;
       height: 47px;
       color: #fff;
-      font-size: 14px;
+      font-size: 16px;
     }
   }
 }
