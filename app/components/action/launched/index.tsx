@@ -92,7 +92,6 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
               } button`}
             onClick={() => {
               if (!address) {
-                //@ts-ignore
                 window.connect();
                 return;
               }

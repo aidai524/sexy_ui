@@ -45,7 +45,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     disable: infoData?.status < 1
   });
 
-  const { getMC, pool } = useTokenTrade({
+  const { getMC, pool, checkPrePayed } = useTokenTrade({
     tokenName: infoData?.tokenName as string,
     tokenSymbol: infoData?.tokenSymbol as string,
     tokenDecimals: infoData?.tokenDecimals as number,
@@ -156,13 +156,10 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
               }
             </div>
 
-
-
             <div className={styles.action}>
               {infoData?.status === 0 && (
                 <PreLaunchAction
                   token={infoData}
-                  // style={{  }}
                   canFlip={false}
                   onLike={async () => {
                     const res = await actionLikeTrigger(infoData);
