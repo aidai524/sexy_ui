@@ -64,7 +64,7 @@ export default function SmokeBtn({
     return token.isSuperLike || token.account === address;
   }, [isDelay, token, address]);
 
-  const disabledText = useMemo(async () => {
+  const disabledText = useMemo(() => {
     if (flipNum && Number(flipNum) > 0) {
       return 'Fliped ' + new Big(flipNum).div(10 ** 9).div(1 - 0.015).toFixed(4, 0) + 'SOL'
     }

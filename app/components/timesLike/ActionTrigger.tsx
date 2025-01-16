@@ -6,38 +6,41 @@ import type { Project } from "@/app/type";
 import { httpAuthPost } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import Big from "big.js";
+import { MessageContextProvider } from "@/app/context/messageContext";
 export const FIRST_LIKE_TIMES = 10;
 export const SECOND_LIKE_TIMES = 30;
 
 const LIKE_ERROR = -1;
 
 const onLike = async (data: any) => {
-  try {
-    if (data) {
-      const v = await httpAuthPost("/project/like?id=" + data!.id, {});
-      console.log("v:", v);
-      if (v.code === 0) {
-        const points =
-          Number(v.data?.point) < 0.01
-            ? "0.01"
-            : new Big(v.data?.point || 0).toFixed(2, 0);
+  // try {
+  //   if (data) {
+  //     const v = await httpAuthPost("/project/like?id=" + data!.id, {});
+  //     if (v.code === 0) {
+  //       const points =
+  //         Number(v.data?.point) < 0.01
+  //           ? "0.01"
+  //           : new Big(v.data?.point || 0).toFixed(2, 0);
 
-        success(
-          "You liked '" +
-            (data.token_name || data.tokenName) +
-            "', You are expected to receive " +
-            points +
-            " points"
-        );
-        return v.data || {};
-      } else if (v.code === 100002) {
-        fail("You've run out of like times. You can come back tomorrow");
-        return -1;
-      }
-    }
-  } catch (e) {}
+  //       success(
+  //         "You liked '" +
+  //           (data.token_name || data.tokenName) +
+  //           "', You are expected to receive " +
+  //           points +
+  //           " points"
+  //       );
+  //       return v.data || {};
+  //     } else if (v.code === 100002) {
+  //       fail("You've run out of like times. You can come back tomorrow");
+  //       return -1;
+  //     }
+  //   }
+  // } catch (e) {}
 
-  return 0;
+  return {
+    likeNum: 10,
+    projectLikeNum: 0
+  };
 };
 
 const onHate = async (data: Project) => {
@@ -48,7 +51,7 @@ const onHate = async (data: Project) => {
   } catch {}
 };
 
-export async function actionLikeTrigger(data: Project) {
+export async function actionLikeTrigger(data: Project, onShare: (data: Project) => void) {
   const { likeNum, projectLikeNum } = await onLike(data);
   if (projectLikeNum === 100) {
     const timeLikeHandler = Modal.show({
@@ -71,15 +74,20 @@ export async function actionLikeTrigger(data: Project) {
     if (data) {
       const timeLikeHandler = Modal.show({
         content: (
-          <FirstTimeLike
-            data={data}
-            onClose={() => {
+            <FirstTimeLike
+              data={data}
+              onShare={onShare}
+              onClose={() => {
               timeLikeHandler.close();
             }}
           />
         ),
+        maskStyle: {
+          backdropFilter: "none"
+        },
         closeOnMaskClick: true,
-        className: "no-bg"
+        className: "no-bg",
+        
       });
     }
   }
@@ -90,6 +98,7 @@ export async function actionLikeTrigger(data: Project) {
         content: (
           <SecondTimeLike
             data={data}
+            onShare={onShare}
             onClose={() => {
               timeLikeHandler.close();
             }}
