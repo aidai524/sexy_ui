@@ -155,10 +155,10 @@ export default function InfoPart({
         <div className={styles.singleProgress}>
           <div className={styles.progressTitleWrapper}>
             <div className={styles.progressTitle}>Pre-launch progress (Likes)</div>
-            <div className={styles.progressPercent}>{data.like}/100</div>
+            <div className={styles.progressPercent}>{data.like || 0}/100</div>
           </div>
 
-          <ProgressBar percent={data.like} style={{
+          <ProgressBar percent={data.like || 0} style={{
             '--track-width': '14px',
             '--fill-color': '#FFA8E8',
             '--track-color': '#29242B'
@@ -169,8 +169,8 @@ export default function InfoPart({
 
         <div className={styles.singleProgress} style={{ marginTop: 15 }}>
           <div className={styles.progressTitleWrapper}>
-            <div className={styles.progressTitle}>{data.prePaid} Flipped</div>
-            <div className={styles.progressPercent}>{data.prePaidAmount ? new Big(data.prePaidAmount).div(10 ** 9).toString() : 0}SOL</div>
+            <div className={styles.progressTitle}>{data.prePaid || 0} Flipped</div>
+            <div className={styles.progressPercent}>{data.prePaidAmount ? new Big(data.prePaidAmount || 0).div(10 ** 9).toString() : 0}SOL</div>
           </div>
 
           <div className={styles.progressDesc} style={{ color: '#D9D9D9' }}>{"‘Flip’ means ‘pre-buy’, users will auto-buy in when this meme launched."}</div>
@@ -192,8 +192,8 @@ export default function InfoPart({
               '--track-color': '#29242B'
             }} />
 
-            <div className={styles.progressDesc}>Graduate this coin to Orca at $50,403 market cap.
-              There is 43.46 SOL in the bonding curve.</div>
+            <div className={styles.progressDesc}>Graduate this coin to Orca at $40560 market cap.
+            there will be 40.56 SOL in the bonding curve.</div>
           </div>
 
           <div className={styles.singleProgress} style={{ marginTop: 15 }}>

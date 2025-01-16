@@ -1,9 +1,5 @@
-import { Modal } from "antd-mobile";
 import style from "./index.module.css";
-import MainBtn from "@/app/components/mainBtn";
 import type { Project, UserInfo } from "@/app/type";
-import { httpGet } from "@/app/utils";
-import { useCallback } from "react";
 import { defaultAvatar } from "@/app/utils/config";
 import { numberFormatter } from "@/app/utils/common";
 
