@@ -8,8 +8,7 @@ import Menu from "./menu";
 import { LaptopContext } from "@/app/context/laptop";
 import { useAuth } from "@/app/context/auth";
 import useNotice from "../../../hooks/use-notice";
-import { useFullScreen } from "@/app/store/use-full-screen";
-import { useUserAgent } from "@/app/context/user-agent";
+import { useSetting } from "@/app/store/use-setting";
 
 const CreatePage = dynamic(() => import("@/app/sections/create/laptop"), {
   ssr: false
@@ -31,6 +30,7 @@ export default function Laptop({ children }: any) {
   const updateInfo = useUpdateInfo();
   const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
     useAuth();
+  const settingStore: any = useSetting();
   useNotice();
 
   return (
@@ -42,7 +42,12 @@ export default function Laptop({ children }: any) {
       <div className={styles.Container}>
         <RightActions logout={logout} userInfo={userInfo} />
         <Menu />
-        <div className={styles.Content}>
+        <div
+          className={styles.Content}
+          style={{
+            width: `calc(100vw - ${settingStore.menuExpand ? 160 : 62}px)`
+          }}
+        >
           {pathname === "/" && <Main />}{" "}
           {pathname === "/reward" && <RewardPage />}
           {pathname === "/create" && <CreatePage />}

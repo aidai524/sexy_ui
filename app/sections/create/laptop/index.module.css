@@ -1,72 +1,39 @@
 .Wrapper {
-  padding: 0 30px;
+  position: relative;
+  height: 100vh;
 }
 
 .Container {
-  border-radius: 20px;
-  background-color: #d8226f;
+  padding-top: 66px;
+  height: 100%;
+  overflow-y: auto;
 }
 
-.Header {
-  height: 82px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px solid #ffffff33;
-}
-
-.BackWrapper {
+.TitleWrapper {
   position: absolute;
-  left: 24px;
-  top: 33px;
-}
-
-.Button {
-  padding: 0px 35px;
-  height: 46px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  left: 30px;
+  top: 20px;
   color: #fff;
-  text-align: center;
   font-family: Unbounded;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  text-transform: capitalize;
 }
 
-.Title {
-  color: #fff;
-  font-family: Unbounded;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  text-align: center;
+.EditWrapper {
+  width: 700px;
+  margin: 0 auto;
+  padding-bottom: 60px;
 }
 
-.Create {
-  font-family: Unbounded;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  color: rgba(255, 255, 255, 0.6);
-  text-align: center;
-}
-
-.Content {
-  padding: 0px 24px 10px;
-  height: calc(100vh - 180px);
-  overflow-y: auto;
-}
-
-.Buttons {
+.PreviewWrapper {
   display: flex;
-  gap: 10px;
-  position: absolute;
-  top: 22px;
-  right: 24px;
+  align-items: center;
+  height: 90%;
+  gap: 200px;
+  position: relative;
+  width: 100%;
+  padding-left: 10%;
+  overflow-x: hidden;
 }

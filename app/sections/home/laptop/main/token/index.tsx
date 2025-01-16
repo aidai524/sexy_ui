@@ -22,6 +22,7 @@ import { useAuth } from "@/app/context/auth";
 import useMc from "@/app/hooks/useMc";
 import { useRouter } from "next/navigation";
 import useCommentList from "@/app/hooks/use-comment-list";
+import { useMessage } from "@/app/context/messageContext";
 
 export default function Token({
   infoData2,
@@ -39,6 +40,7 @@ export default function Token({
   const [mc, setMC] = useState<string | number>("-");
   const router = useRouter();
   const comments = useCommentList({ id: infoData2?.id });
+  const { showShare } = useMessage();
   const { mc: pumpMc } = useMc({
     tokenAddress: infoData2?.address,
     disable: infoData2?.status < 1
@@ -79,7 +81,7 @@ export default function Token({
 
   const like = async () => {
     next();
-    await actionLikeTrigger(infoData2);
+    await actionLikeTrigger(infoData2, showShare);
     updateInfo("liked");
   };
 

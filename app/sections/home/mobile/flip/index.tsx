@@ -5,11 +5,13 @@ import CircleLoading from "@/app/components/icons/loading";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useDebounceFn } from "ahooks";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
+import { useMessage } from "@/app/context/messageContext";
 
 let startX = 0;
 export default function Flip({ token, onSuccess, id, onClick }: any) {
   const [x, setX] = useState(0);
   const [loading, setLoading] = useState(false);
+  const { showShare } = useMessage();
   const { prePaid } = useTokenTrade({
     tokenName: token?.tokenName,
     tokenSymbol: token?.tokenSymbol,
@@ -26,7 +28,7 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
       try {
         setLoading(true);
         await prePaid(0.1 * 1e8);
-        const likeRes = await actionLikeTrigger(token);
+        const likeRes = await actionLikeTrigger(token, showShare);
         const params: any = {
           isSuperLike: true,
           total_amount: 0.1,

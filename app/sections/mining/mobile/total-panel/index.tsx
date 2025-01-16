@@ -113,7 +113,7 @@ export default function TotalPanel({ info }: any) {
         <div
           className={isMobile ? styles.StatisticsItem : styles.StatisticsItemPc}
         >
-          <div className={styles.StatisticsLabel}>Refferrals</div>
+          <div className={styles.StatisticsLabel}>Referrals</div>
           <div
             className={styles.StatisticsValue}
             style={{

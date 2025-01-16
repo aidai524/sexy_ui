@@ -25,6 +25,7 @@ import { mapDataToProject } from "@/app/utils/mapTo";
 import CircleLoading from "@/app/components/icons/loading";
 import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
+import { useMessage } from "@/app/context/messageContext";
 
 export default function Fullscreen({
   list = [],
@@ -40,10 +41,11 @@ export default function Fullscreen({
   const { userInfo, logout } = useAuth();
   const splitIndex = useRef(0);
   const router = useRouter();
+  const { showShare } = useMessage();
 
   const next = (_t?: 0 | 1) => {
     if (_t !== undefined && type !== "launching") {
-      _t ? actionLikeTrigger(list[index]) : actionHateTrigger(list[index]);
+      _t ? actionLikeTrigger(list[index], showShare) : actionHateTrigger(list[index]);
     }
 
     if (index === list.length) {

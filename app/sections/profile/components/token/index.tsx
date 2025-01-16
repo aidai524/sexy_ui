@@ -9,6 +9,7 @@ import useMc from "@/app/hooks/useMc";
 import { numberFormatter } from '@/app/utils/common';
 import Big from 'big.js';
 import { SOL } from '@/app/components/trade/buySellPump';
+import { useUser } from '@/app/store/useUser';
 
 interface Props {
   data: Project;
@@ -30,7 +31,10 @@ export default function Token({
   onWithdrawSuccess
 }: Props) {
   const router = useRouter();
+  const { userInfo }: any = useUser();
+
   const [mc, setMC] = useState<string | number>(0);
+  const [isPrepaid, setIsPrepaid] = useState(false);
 
   const { mc: pumpMc } = useMc({
     tokenAddress: data?.address,
@@ -55,6 +59,19 @@ export default function Token({
     return false;
   }, [prepaidWithdrawDelayTime, data]);
 
+  const smookeable = useMemo(() => {
+    if (data.account === userInfo?.address) return false;
+    if (data.isSuperLike) {
+      return 1;
+    }
+    return 2;
+  }, [data, userInfo]);
+
+  const showWithdraw = useMemo(
+    () => isDelay && !isOther && isPrepaid,
+    [isDelay, isOther, isPrepaid]
+  );
+
   useEffect(() => {
     if (
       pool &&
@@ -67,6 +84,18 @@ export default function Token({
       });
     }
   }, [pool, data]);
+
+  useEffect(() => {
+    if (isOther) {
+      setIsPrepaid(false);
+      return;
+    }
+    checkPrePayed().then((res) => {
+      if (Number(res) > 0) {
+        setIsPrepaid(true);
+      }
+    });
+  }, [isOther, data]);
 
   return (
     <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
@@ -89,7 +118,16 @@ export default function Token({
         <div className={styles.nameContent}>
           <div className={styles.name}>{data.tokenName}</div>
           <div className={styles.trikerContent}>
-            <div className={styles.tickerName}>Ticker: {data.ticker}</div>
+            <div className={styles.tickerName}>
+              <div>Ticker: {data.ticker}</div>
+              <div
+                className={styles.tickerNameAvatar}
+                style={{
+                  backgroundImage: `url("${data.tokenIcon || data.tokenImg || '/img/token-placeholder.png'}")`,
+                  border: (data.status === 0 && !!smookeable && !showWithdraw) ? `${smookeable === 1 ? '1px dashed #FFF' : '1px dashed #9290B1'}` : '',
+                }}
+              />
+            </div>
           </div>
           {
             data?.status === 0 ? (

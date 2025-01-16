@@ -33,7 +33,12 @@ export default function EarnAndInvite({ info }: any) {
         <div className={styles.ItemContent}>
           <div className={styles.Title}>Like to Earn</div>
           <div className={styles.Desc}>100 likes per day</div>
-          <div className={styles.Num}>
+          <div
+            className={styles.Num}
+            style={{
+              height: isMobile ? 24 : 27
+            }}
+          >
             {info?.remaining_like_num || 100} left
           </div>
           <Link className={styles.Button} href="/">

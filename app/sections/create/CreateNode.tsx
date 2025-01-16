@@ -12,7 +12,6 @@ import Link from "./components/link";
 import MainBtn from "@/app/components/mainBtn";
 import CheckBox from "@/app/components/checkBox";
 import { useUserAgent } from "@/app/context/user-agent";
-import { success, fail } from "@/app/utils/toast";
 import ErrMsg from "./components/errMsg";
 import type { Project } from "@/app/type";
 import { httpGet, isValidURL } from "@/app/utils";
@@ -52,11 +51,12 @@ export default forwardRef(function CreateNode(
       isValid = true;
     }
 
-    const tokenInUse = await httpGet(`/project?token_name=${tokenName}&token_symbol=${tokenName.toUpperCase()}`)
-    
+    const tokenInUse = await httpGet(
+      `/project?token_name=${tokenName}&token_symbol=${tokenName.toUpperCase()}`
+    );
+
     if (tokenInUse.code === 0 && tokenInUse.data?.length > 0) {
-      inValidVals["tokenName"] =
-      "Token name already in use";
+      inValidVals["tokenName"] = "Token name already in use";
       isValid = true;
     }
 
@@ -140,7 +140,8 @@ export default forwardRef(function CreateNode(
       website,
       x,
       tg,
-      discord
+      discord,
+      status: 0
     });
   }, [
     tokenName,
@@ -174,72 +175,65 @@ export default forwardRef(function CreateNode(
 
   return (
     <div
-      className={styles.create}
       style={{
         display: show ? "block" : "none",
         paddingBottom: isMobile ? 100 : 20
       }}
     >
       <div
-        className={styles.Flex}
+        className={styles.group}
         style={{
-          gap: isMobile ? 0 : 20
+          width: isMobile ? "100%" : "calc(50% - 10px)"
         }}
       >
-        <div
-          className={styles.group}
-          style={{
-            width: isMobile ? "100%" : "calc(50% - 10px)"
-          }}
-        >
-          <div className={styles.groupTitle}>
-            <span className={styles.require}>*</span>Name
-          </div>
-          <div className={styles.groupContent}>
-            <input
-              value={tokenName}
-              onChange={(e) => {
-                setTokenName(e.target.value);
-              }}
-              className={`${styles.inputText} ${
-                inValidVals["tokenName"] ? styles.inputError : ""
-              } ${!isMobile && styles.laptopInputText}`}
-              placeholder="Meme name"
-            />
-          </div>
-          {inValidVals["tokenName"] && (
-            <ErrMsg>{inValidVals["tokenName"]}</ErrMsg>
-          )}
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <span className={styles.require}>* </span>
+          Name
         </div>
+        <div className={styles.groupContent}>
+          <input
+            value={tokenName}
+            onChange={(e) => {
+              setTokenName(e.target.value);
+            }}
+            className={`${
+              isMobile ? styles.inputText : styles.laptopInputText
+            } ${inValidVals["tokenName"] ? styles.inputError : ""}`}
+            placeholder="Meme name"
+          />
+        </div>
+        {inValidVals["tokenName"] && (
+          <ErrMsg>{inValidVals["tokenName"]}</ErrMsg>
+        )}
+      </div>
 
-        <div
-          className={styles.group}
-          style={{
-            width: isMobile ? "100%" : "calc(50% - 10px)"
-          }}
-        >
-          <div className={styles.groupTitle}>
-            <span className={styles.require}>*</span>Ticker
-          </div>
-          <div className={styles.groupContent}>
-            <input
-              value={ticker}
-              onChange={(e) => {
-                setTicker(e.target.value);
-              }}
-              className={`${styles.inputText} ${
-                inValidVals["ticker"] ? styles.inputError : ""
-              } ${!isMobile && styles.laptopInputText}`}
-              placeholder="say something"
-            />
-          </div>
-          {inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>}
+      <div
+        className={styles.group}
+        style={{
+          width: isMobile ? "100%" : "calc(50% - 10px)"
+        }}
+      >
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <span className={styles.require}>* </span>Ticker
         </div>
+        <div className={styles.groupContent}>
+          <input
+            value={ticker}
+            onChange={(e) => {
+              setTicker(e.target.value);
+            }}
+            className={`${
+              isMobile ? styles.inputText : styles.laptopInputText
+            } ${inValidVals["ticker"] ? styles.inputError : ""}`}
+            placeholder="say something"
+          />
+        </div>
+        {inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>}
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>
-          <span className={styles.require}>*</span>Image or Video
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <span className={styles.require}>* </span>Image or Video
         </div>
         <div
           className={
@@ -249,7 +243,6 @@ export default forwardRef(function CreateNode(
             " " +
             (inValidVals["tokenImg"] ? styles.uploadError : "")
           }
-          style={{ paddingLeft: 15, paddingTop: 10 }}
         >
           <Upload
             percent={0}
@@ -302,8 +295,8 @@ export default forwardRef(function CreateNode(
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>
-          <span className={styles.require}>*</span>About us
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <span className={styles.require}>* </span>About us
         </div>
         <div className={styles.groupContent}>
           <input
@@ -321,14 +314,10 @@ export default forwardRef(function CreateNode(
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>Website</div>
-        <div
-          className={styles.groupContent}
-          style={{
-            paddingTop: 10,
-            background: isMobile ? "rgba(18, 23, 25, 1)" : "transparent"
-          }}
-        >
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          Website
+        </div>
+        <div className={isMobile ? styles.Website : styles.LinkPc}>
           <Link
             value={website}
             onChange={(val) => {
@@ -340,7 +329,9 @@ export default forwardRef(function CreateNode(
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>Community</div>
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          Community
+        </div>
         <div
           className={styles.Flex}
           style={{
@@ -350,7 +341,7 @@ export default forwardRef(function CreateNode(
           <div
             className={styles.groupContent}
             style={{
-              width: isMobile ? "100%" : "calc(50% - 10px)"
+              width: "100%"
             }}
           >
             <Link
@@ -364,9 +355,9 @@ export default forwardRef(function CreateNode(
             {inValidVals["x"] && <ErrMsg>{inValidVals["x"]}</ErrMsg>}
           </div>
           <div
-            className={styles.groupContent}
+            className={isMobile ? styles.groupContent : styles.LinkPc}
             style={{
-              width: isMobile ? "100%" : "calc(50% - 10px)"
+              width: "100%"
             }}
           >
             <Link
@@ -380,9 +371,9 @@ export default forwardRef(function CreateNode(
             {inValidVals["tg"] && <ErrMsg>{inValidVals["tg"]}</ErrMsg>}
           </div>
           <div
-            className={styles.groupContent}
+            className={isMobile ? styles.groupContent : styles.LinkPc}
             style={{
-              width: isMobile ? "100%" : "calc(50% - 10px)"
+              width: "100%"
             }}
           >
             <Link

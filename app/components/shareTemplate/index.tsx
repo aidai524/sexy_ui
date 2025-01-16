@@ -232,8 +232,7 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
               )}&imgUrl=${encodeURIComponent(img)}&address=${
                 token.address
               }&referral=${userInfo.address}`;
-
-              console.log('longUrl', longUrl)
+              
 
               try {
                 const shreUrl = await getShortUrl(longUrl);

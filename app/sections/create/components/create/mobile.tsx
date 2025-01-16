@@ -1,4 +1,4 @@
-import { Popup } from "antd-mobile";
+import Modal from "@/app/components/modal";
 import Content from "./content";
 
 export default function Create({
@@ -8,23 +8,15 @@ export default function Create({
   ...rest
 }: any) {
   return (
-    <Popup
-      visible={show}
-      onMaskClick={() => {
-        onHide && onHide();
-      }}
-      onClose={() => {
-        onHide && onHide();
-      }}
-      bodyStyle={{
-        borderTopLeftRadius: "8px",
-        borderTopRightRadius: "8px",
-        paddingTop: 30,
-        paddingBottom: 0
-        // height: '50vh'
+    <Modal
+      open={show}
+      onClose={onHide}
+      animation="popup"
+      closeStyle={{
+        display: "none"
       }}
     >
-      <Content {...{ onHide, setShowSuccessModal, ...rest }} />
-    </Popup>
+      <Content {...{ onHide, setShowSuccessModal, ...rest }} width="100vw" />
+    </Modal>
   );
 }

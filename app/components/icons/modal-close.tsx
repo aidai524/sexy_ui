@@ -1,9 +1,9 @@
-export default function ModalClose() {
+export default function ModalClose({ size = 55 }: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="55"
-      height="51"
+      width={size}
+      height={0.9272727272727272 * size}
       viewBox="0 0 55 51"
       fill="none"
       className="button"

@@ -8,17 +8,8 @@ export default function Laptop({
   ...rest
 }: any) {
   return (
-    <Modal
-      open={show}
-      onClose={onHide}
-      mainStyle={{
-        width: 502,
-        borderColor: "#FFFFFF33",
-        backgroundColor: "#18131C",
-        padding: "30px"
-      }}
-    >
-      <Content {...{ onHide, setShowSuccessModal, ...rest }} />
+    <Modal open={show} onClose={onHide}>
+      <Content {...{ onHide, setShowSuccessModal, ...rest }} width="375px" />
     </Modal>
   );
 }

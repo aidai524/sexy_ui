@@ -15,7 +15,6 @@
 }
 
 .Comment {
-  height: 30px;
   align-items: center;
   padding: 5px 10px 5px 5px;
   border-radius: 30px;
@@ -43,10 +42,8 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  max-width: 165px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  max-width: 200px;
+  white-space: pre-wrap;
 }
 
 .Like {

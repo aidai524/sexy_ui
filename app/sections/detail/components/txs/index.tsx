@@ -156,7 +156,7 @@ export default function Txs({ from, data }: any) {
 
               <div className={styles.txList}>
                 {list.map((item: any) => {
-                  const isSelf = item.address === userInfo.address;
+                  const isSelf = item.address === userInfo?.address;
                   return (
                     <div
                       key={item.id}

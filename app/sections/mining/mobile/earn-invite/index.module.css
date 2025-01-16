@@ -33,7 +33,6 @@
 }
 
 .Title {
-  margin-top: 10px;
   color: #fff;
   font-family: Unbounded;
   font-size: 14px;
@@ -60,11 +59,11 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-top: 9px;
+  margin-top: 6px;
 }
 
 .Button {
-  margin-top: 16px;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -11,6 +11,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
+import { useMessage } from "@/app/context/messageContext";
 
 interface Props {
   token: Project;
@@ -35,6 +36,7 @@ export default function Trade({
   const { address } = useAccount();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
   const { isMobile } = useUserAgent();
+  const { showShare } = useMessage()
 
   const { prePaid, checkPrePayed } = useTokenTrade({
     tokenName: token.tokenName,
@@ -133,7 +135,7 @@ export default function Trade({
                   await prePaid(inputNum, false);
                   setIsLoading(false);
                   success("Flip success");
-                  await actionLikeTrigger(token);
+                  await actionLikeTrigger(token, showShare);
                   onSuccess?.(inputVal);
                 }
               } catch (e: any) {
