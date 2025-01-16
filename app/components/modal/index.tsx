@@ -29,7 +29,6 @@ const Modal: React.FC<ModalProps> = ({
   maskClose = true,
   animation = "modal"
 }) => {
-  const { innerHeight, innerWidth } = useUserAgent();
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -54,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({
       <AnimatePresence mode="wait">
         <div
           className={styles.Container}
-          style={{ ...style, height: innerHeight, width: innerWidth }}
+          style={style}
           onClick={handleBackdropClick}
         >
           <div
@@ -82,7 +81,7 @@ const Modal: React.FC<ModalProps> = ({
                   className={styles.CloseButton}
                   style={closeStyle}
                 >
-                  <CloseIcon />
+                  <CloseIcon size={35} />
                 </button>
               ) : null}
               {children}

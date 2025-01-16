@@ -1,6 +1,6 @@
 .Container {
   padding-left: 16px;
-  width: 140px;
+  width: 160px;
   height: calc(100vh - 44px);
   display: flex;
   flex-direction: column;

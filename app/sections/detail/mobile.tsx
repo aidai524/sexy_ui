@@ -1,20 +1,15 @@
 "use client";
 import Info from "./components/info/detail";
 import Chart from "./components/chart/index";
-import Trade from "./components/trade/index";
 import Txs from "./components/txs/index";
-import { AvatarBack } from "@/app/components/thumbnail/avatar";
 import styles from "./detail.module.css";
 import { useEffect, useMemo, useState } from "react";
 import Tab from "@/app/components/tab";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import CircleLoading from "@/app/components/icons/loading";
-import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import useTokenDetail from "./use-token-detail";
-import useMc from "@/app/hooks/useMc";
 import AvatarDetail from "@/app/components/avatarDetail";
 import Back from "@/app/components/backNew";
-import Menu from "@/app/components/menu";
 import CommnentList from "./components/comment/commnet";
 import PreLaunchAction from "@/app/components/action/launching";
 import LaunchedAction from "@/app/components/action/launched";
@@ -23,7 +18,7 @@ import {
   actionHateTrigger,
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
-import { useMessage } from "@/app/context/messageContext";
+import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 
 export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   const [activeKey, setActiveKey] = useState("Info");
@@ -32,7 +27,6 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     isLoading,
     getDetailInfo
   } = useTokenDetail({ token });
-  const [mc, setMC] = useState<string | number>("-");
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
 
   const infoData = useMemo(
@@ -40,30 +34,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     [token, queryedInfoData]
   );
 
-  const { mc: pumpMc } = useMc({
-    tokenAddress: infoData?.address,
-    disable: infoData?.status < 1
-  });
-
-  const { getMC, pool, checkPrePayed } = useTokenTrade({
-    tokenName: infoData?.tokenName as string,
-    tokenSymbol: infoData?.tokenSymbol as string,
-    tokenDecimals: infoData?.tokenDecimals as number,
-    loadData: false
-  });
-
-  useEffect(() => {
-    if (
-      pool &&
-      pool.length > 0 &&
-      infoData?.DApp === "sexy" &&
-      infoData?.status === 1
-    ) {
-      getMC().then((res) => {
-        setMC(res as number);
-      });
-    }
-  }, [pool, infoData]);
+  const mc = useMcWithPump(infoData);
 
   useEffect(() => {
     onBack &&
@@ -97,33 +68,47 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                 <div style={{ marginTop: 8 }}>
                   <Back onBack={onBack} />
                 </div>
-                <AvatarDetail token={infoData} mc={pumpMc || mc} />
+                <AvatarDetail token={infoData} mc={mc} />
               </div>
             </div>
 
-            <div style={{ height: innerHeight - 60, overflow: 'auto', paddingBottom: 100 }}>
-
-              {
-
-                infoData?.status === 0 && <div className={styles.commentWrapper}>
+            <div
+              style={{
+                height: innerHeight - 60,
+                overflow: "auto",
+                paddingBottom: 100
+              }}
+            >
+              {infoData?.status === 0 && (
+                <div className={styles.commentWrapper}>
                   <Info
-                    mc={pumpMc || mc}
+                    mc={mc}
                     data={infoData}
                     showHodler={false}
                     onUpdate={() => {
                       getDetailInfo();
                     }}
                   />
-                  <CommnentList style={{ backgroundColor: '#121719', borderRadius: '10px', margin: '3px' }} token={infoData} onSuccess={() => {
-                    getDetailInfo();
-                  }} />
+                  <CommnentList
+                    style={{
+                      backgroundColor: "#121719",
+                      borderRadius: "10px",
+                      margin: "3px"
+                    }}
+                    token={infoData}
+                    onSuccess={() => {
+                      getDetailInfo();
+                    }}
+                  />
                 </div>
-              }
+              )}
 
-              {infoData?.status !== 0 && <Chart token={infoData} style={{ position: 'relative' }} />}
+              {infoData?.status !== 0 && (
+                <Chart token={infoData} style={{ position: "relative" }} />
+              )}
 
-              {
-                infoData?.status !== 0 && <Tab
+              {infoData?.status !== 0 && (
+                <Tab
                   activeNode={activeKey}
                   onTabChange={(nodeName) => {
                     setActiveKey(nodeName);
@@ -133,7 +118,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                       name: "Info",
                       content: (
                         <Info
-                          mc={pumpMc || mc}
+                          mc={mc}
                           data={infoData}
                           onUpdate={() => {
                             getDetailInfo();
@@ -143,17 +128,22 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                     },
                     {
                       name: "Comments",
-                      content: <CommnentList token={infoData} onSuccess={() => {
-                        getDetailInfo();
-                      }} />
+                      content: (
+                        <CommnentList
+                          token={infoData}
+                          onSuccess={() => {
+                            getDetailInfo();
+                          }}
+                        />
+                      )
                     },
                     {
                       name: "Trade",
-                      content: <Txs mc={pumpMc || mc} data={infoData} />
+                      content: <Txs mc={mc} data={infoData} />
                     }
                   ]}
                 />
-              }
+              )}
             </div>
 
             <div className={styles.action}>
@@ -189,9 +179,9 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                 />
               )}
 
-              {
-                (infoData?.status === 1 || infoData?.status === 3) && <LaunchedAction data={infoData} />
-              }
+              {(infoData?.status === 1 || infoData?.status === 3) && (
+                <LaunchedAction data={infoData} />
+              )}
             </div>
           </div>
         </div>
