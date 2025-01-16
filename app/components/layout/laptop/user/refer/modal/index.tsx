@@ -74,10 +74,10 @@ const ReferModalContent = (props: any) => {
     navigator.clipboard
       .writeText(shareLink.toString())
       .then(() => {
-        success("Copied share link!");
+        success("Copied share link!", { maskStyle: { zIndex: 2000 } });
       })
       .catch((err) => {
-        fail("Copy failed!");
+        fail("Copy failed!", { maskStyle: { zIndex: 2000 } });
       })
       .finally(() => {
         setLoading(false);
