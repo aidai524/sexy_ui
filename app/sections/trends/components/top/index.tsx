@@ -6,6 +6,7 @@ import Big from 'big.js';
 import { useCreator } from '@/app/sections/trends/hooks/creator';
 import { motion } from "framer-motion";
 import Likes from '@/app/components/thumbnail/likes';
+import Carousel from '@/app/sections/trends/components/carousel';
 
 export default function Top(props: Props) {
   const { onBuy, trend, isMobile, loading } = props;
@@ -35,6 +36,7 @@ export default function Top(props: Props) {
 
   return isMobile ? (
     <div className={styles.Top}>
+      <Carousel />
       <div
         className={styles.TopAvatar}
         style={{ backgroundImage: `url("${top1Icon}")` }}

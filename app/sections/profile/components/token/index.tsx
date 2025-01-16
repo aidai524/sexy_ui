@@ -159,9 +159,7 @@ export default function Token({
         >
           <img
             className={styles.tokenImg}
-            src={
-              data.tokenIcon || data.tokenImg || "/img/token-placeholder.png"
-            }
+            src={data.tokenImg || "/img/token-placeholder.png"}
           />
           <LaunchTag type={data.status as number} />
         </div>
@@ -174,7 +172,7 @@ export default function Token({
               <div
                 className={styles.tickerNameAvatar}
                 style={{
-                  backgroundImage: `url("${data.tokenIcon || data.tokenImg || '/img/token-placeholder.png'}")`,
+                  backgroundImage: `url("${data.tokenIcon || '/img/token-placeholder.png'}")`,
                   border: (data.status === 0 && !!smookeable && !showWithdraw) ? `${smookeable === 1 ? '1px dashed #FFF' : '1px dashed #9290B1'}` : '',
                 }}
               />
