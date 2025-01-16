@@ -8,6 +8,7 @@ import { defaultAvatar } from "@/app/utils/config";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
 import { Switch } from "antd-mobile";
+import { useAccount } from "@/app/hooks/useAccount";
 
 const addressReg = /(\w{2}).+(\w{2})/;
 
@@ -49,6 +50,7 @@ function SexSwitch({ checked, onChange }: any) {
 export default function Txs({ from, data }: any) {
   const [list, setList] = useState([]);
   const router = useRouter();
+  const { address } = useAccount();
   const { userInfo } = useAuth();
   const [filter, setFilter] = useState<any>({
     1: false,
@@ -88,51 +90,55 @@ export default function Txs({ from, data }: any) {
           />
         </div>
 
-        <div className={styles.filterItem}>
-          <div className={styles.filterText}>
-            Filter by my following (12 trades)
-          </div>
-          <SexSwitch
-            checked={filter[2]}
-            onChange={() => {
-              setFilter({
-                ...filter,
-                2: !filter[2]
-              });
-            }}
-          />
-        </div>
+        {
+          address && <>
+            <div className={styles.filterItem}>
+              <div className={styles.filterText}>
+                Filter by my following (12 trades)
+              </div>
+              <SexSwitch
+                checked={filter[2]}
+                onChange={() => {
+                  setFilter({
+                    ...filter,
+                    2: !filter[2]
+                  });
+                }}
+              />
+            </div>
 
-        <div className={styles.filterItem}>
-          <div className={styles.filterText}>
-            Filter by own trades (0 trades)
-          </div>
-          <SexSwitch
-            checked={filter[3]}
-            onChange={() => {
-              setFilter({
-                ...filter,
-                3: !filter[3]
-              });
-            }}
-          />
-        </div>
+            <div className={styles.filterItem}>
+              <div className={styles.filterText}>
+                Filter by own trades (0 trades)
+              </div>
+              <SexSwitch
+                checked={filter[3]}
+                onChange={() => {
+                  setFilter({
+                    ...filter,
+                    3: !filter[3]
+                  });
+                }}
+              />
+            </div>
+          </>
+        }
+
+
       </div>
 
       {data && (
         <div
-          className={`${styles.txContent} ${
-            from === "laptop-home" ? styles.LaptopContent : ""
-          }`}
+          className={`${styles.txContent} ${from === "laptop-home" ? styles.LaptopContent : ""
+            }`}
         >
           {data?.status === 1 && (
             <>
               <div
-                className={`${styles.txTtitles} ${
-                  from === "laptop-home"
+                className={`${styles.txTtitles} ${from === "laptop-home"
                     ? styles.LaptopTitles
                     : styles.MobileTitles
-                }`}
+                  }`}
               >
                 <div style={{ flex: 2 }} className={styles.titleItem}>
                   Account
@@ -161,11 +167,10 @@ export default function Txs({ from, data }: any) {
                       }}
                     >
                       <div
-                        className={`${styles.account} ${
-                          from === "laptop-home"
+                        className={`${styles.account} ${from === "laptop-home"
                             ? styles.LaptopAccount
                             : styles.MobileAccount
-                        }`}
+                          }`}
                       >
                         <img
                           className={styles.avatar}

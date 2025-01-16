@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SmokPanel from "./smoke-panel";
 import type { Project } from "@/app/type";
 import { Modal } from "antd-mobile";
@@ -9,6 +9,7 @@ import BoostSuperNoTimes from "../boost/boostSuperNoTimes";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import SmokeButton from "./smoke-button";
 import Big from "big.js";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 interface Props {
   token: Project;
@@ -33,7 +34,21 @@ export default function SmokeBtn({
   const { address } = useAccount();
   const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
+  const [flipNum, setFlipNum] = useState(0);
 
+  const { getMC, pool, checkPrePayed } = useTokenTrade({
+    tokenName: token?.tokenName as string,
+    tokenSymbol: token?.tokenSymbol as string,
+    tokenDecimals: token?.tokenDecimals as number,
+    loadData: false
+  });
+
+  useEffect(() => {
+    checkPrePayed().then((res) => {
+      setFlipNum(res);
+    })
+  }, [checkPrePayed]);  
+  
   const isDelay = useMemo(() => {
     if (
       prepaidDelayTime &&
@@ -49,9 +64,9 @@ export default function SmokeBtn({
     return token.isSuperLike || token.account === address;
   }, [isDelay, token, address]);
 
-  const disabledText = useMemo(() => {
-    if (token.prePaidAmount && Number(token.prePaidAmount) > 0) {
-      return 'Fliped ' + new Big(token.prePaidAmount).div(10 ** 9).toFixed(4, 0) + 'SOL'
+  const disabledText = useMemo(async () => {
+    if (flipNum && Number(flipNum) > 0) {
+      return 'Fliped ' + new Big(flipNum).div(10 ** 9).div(1 - 0.015).toFixed(4, 0) + 'SOL'
     }
 
     if (token.account === address) {
@@ -59,7 +74,7 @@ export default function SmokeBtn({
     }
 
     return 'Flipped'
-  }, [isDelay, token, address])
+  }, [isDelay, token, address, flipNum])
 
   const VipModal = (
     <BoostVip
@@ -88,11 +103,9 @@ export default function SmokeBtn({
 
   const onButtonClick = () => {
     if (!address) {
-      //@ts-ignore
       window.connect();
       return;
     }
-
 
     if (isDisabled) {
       return;

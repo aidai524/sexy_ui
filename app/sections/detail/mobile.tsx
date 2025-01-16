@@ -45,7 +45,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     disable: infoData?.status < 1
   });
 
-  const { getMC, pool } = useTokenTrade({
+  const { getMC, pool, checkPrePayed } = useTokenTrade({
     tokenName: infoData?.tokenName as string,
     tokenSymbol: infoData?.tokenSymbol as string,
     tokenDecimals: infoData?.tokenDecimals as number,
@@ -75,8 +75,6 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
       );
   }, [onBack, token]);
 
-  console.log(isLoading)
-
   if (isLoading) {
     return (
       <div className={styles.loadingBox}>
@@ -101,15 +99,13 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                 </div>
                 <AvatarDetail token={infoData} mc={pumpMc || mc} />
               </div>
-              {/* <div className={styles.menuWrapper}>
-                <Menu />
-              </div> */}
             </div>
 
             <div style={{ height: innerHeight - 60, overflow: 'auto', paddingBottom: 100 }}>
 
               {
-                infoData?.status === 0 && <>
+
+                infoData?.status === 0 && <div className={styles.commentWrapper}>
                   <Info
                     mc={pumpMc || mc}
                     data={infoData}
@@ -118,13 +114,13 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                       getDetailInfo();
                     }}
                   />
-                  <CommnentList token={infoData} onSuccess={() => {
+                  <CommnentList style={{ backgroundColor: '#121719', borderRadius: '10px', margin: '3px' }} token={infoData} onSuccess={() => {
                     getDetailInfo();
-                  }}/>
-                </>
+                  }} />
+                </div>
               }
 
-              {infoData?.status !== 0 && <Chart token={infoData} style={{ position: 'relative' }}/>}
+              {infoData?.status !== 0 && <Chart token={infoData} style={{ position: 'relative' }} />}
 
               {
                 infoData?.status !== 0 && <Tab
@@ -149,7 +145,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                       name: "Comments",
                       content: <CommnentList token={infoData} onSuccess={() => {
                         getDetailInfo();
-                      }}/>
+                      }} />
                     },
                     {
                       name: "Trade",
@@ -160,13 +156,10 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
               }
             </div>
 
-
-
             <div className={styles.action}>
               {infoData?.status === 0 && (
                 <PreLaunchAction
                   token={infoData}
-                  // style={{  }}
                   canFlip={false}
                   onLike={async () => {
                     const res = await actionLikeTrigger(infoData);

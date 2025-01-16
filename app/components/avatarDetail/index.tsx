@@ -9,8 +9,12 @@ interface Props {
 }
 
 export default function AvatarDetail({ token, mc }: Props) {
+    if (!token) {
+        return null;
+    }
+
     return <div className={styles.avatarBox}>
-        <div className={styles.tokenImgBox} >
+        <div className={styles.tokenImgBox}>
             <img
                 className={styles.tokenImg}
                 src={token.tokenIcon || "/img/token-icon-placeholder.svg"}
