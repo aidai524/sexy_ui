@@ -30,11 +30,11 @@
       }
       .tab:first-child {
         background: url('/img/trade/buy-grey.png') no-repeat 0 0;
-          background-size: contain;
+        background-size: 100% auto;
       }
       .tab:last-child {
         background: url('/img/trade/sell-grey.png') no-repeat 0 0;
-        background-size: contain;
+        background-size: 100% auto;
       }
     }
   }

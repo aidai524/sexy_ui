@@ -1,9 +1,5 @@
-import { Modal } from "antd-mobile";
 import style from "./index.module.css";
-import MainBtn from "@/app/components/mainBtn";
 import type { Project, UserInfo } from "@/app/type";
-import { httpGet } from "@/app/utils";
-import { useCallback } from "react";
 import { defaultAvatar } from "@/app/utils/config";
 import { numberFormatter } from "@/app/utils/common";
 
@@ -61,9 +57,9 @@ export default function TradeSuccessModal({
           <div className={style.successText}>successfully!</div>
         </div>
 
-        <div className={style.userIcon}>
+        {/* <div className={style.userIcon}>
           <img className={style.userImg} src={defaultAvatar} />
-        </div>
+        </div> */}
 
         <div className={style.tips}>
           <span>You are expected to receive</span>
@@ -72,13 +68,16 @@ export default function TradeSuccessModal({
             {numberFormatter(point, 3, true, {
               isShort: true
             })}{" "}
-            points
+            $FlipN
           </span>
         </div>
       </div>
 
       <div className={style.close} onClick={onClose}>
-        <img src="/img/home/close.svg" />
+        <svg width="55" height="51" viewBox="0 0 55 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M48.8069 17.1506L13.7846 6.85943L14.915 11.564L11.4147 14.9143L12.3431 18.6595L9.46321 21.5474L10.7878 25.409L7.5117 28.1805L9.55875 31.482L5.97848 33.3918L41.0008 43.683L38.6093 40.1551L42.9171 37.1697L41.1812 33.0596L45.0778 29.8257L42.7365 26.3101L46.8201 23.9035L44.618 18.884L48.8069 17.1506Z" fill="#A9A5EA" fill-opacity="0.8" stroke="black" stroke-linejoin="round" />
+          <path d="M35.69 20.5209C35.69 20.5209 20.3832 32.075 18.8934 26.9214M22.6558 16.6714C24.511 17.6522 29.9842 28.7396 32.9236 34.5177" stroke="black" stroke-width="3" stroke-linejoin="round" />
+        </svg>
       </div>
     </div>
   );

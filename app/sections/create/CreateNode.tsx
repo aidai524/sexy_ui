@@ -140,7 +140,8 @@ export default forwardRef(function CreateNode(
       website,
       x,
       tg,
-      discord
+      discord,
+      status: 0
     });
   }, [
     tokenName,

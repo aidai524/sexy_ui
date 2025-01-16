@@ -11,10 +11,6 @@ import { useEffect, useState } from "react";
 import type { Comment, Project } from "@/app/type";
 import { httpAuthPost, httpGet } from "@/app/utils";
 import { useDebounceFn } from "ahooks";
-import {
-  actionHateTrigger,
-  actionLikeTrigger
-} from "@/app/components/timesLike/ActionTrigger";
 import { useUserAgent } from "@/app/context/user-agent";
 import useCommentList from "@/app/hooks/use-comment-list";
 

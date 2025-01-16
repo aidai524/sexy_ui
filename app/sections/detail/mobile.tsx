@@ -28,10 +28,11 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     getDetailInfo
   } = useTokenDetail({ token });
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
+  const { showShare } = useMessage()
 
   const infoData = useMemo(
     () => queryedInfoData || token,
-    [token, queryedInfoData]
+    [queryedInfoData, token]
   );
 
   const mc = useMcWithPump(infoData);
@@ -152,7 +153,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                   token={infoData}
                   canFlip={false}
                   onLike={async () => {
-                    const res = await actionLikeTrigger(infoData);
+                    const res = await actionLikeTrigger(infoData, showShare);
                     if (res) {
                       getDetailInfo();
                       onSuccess?.({
