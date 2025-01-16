@@ -6,6 +6,7 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useLaptop } from "@/app/context/laptop";
+import { useAccount } from "@/app/hooks/useAccount";
 import Coppied from "@/app/sections/profile/components/coppied";
 
 export default function Tabs({
@@ -23,62 +24,57 @@ export default function Tabs({
   const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
   const { isMobile } = useUserAgent();
-
   const { likedListKey, flipListKey, createListKey } = useLaptop();
+  // base tab
+  const createTabContent = (type: string, index: number) => ({
+    content: (
+      <Created
+        hideHot={type === "created"}
+        address={address}
+        type={type}
+        isOther={isOther}
+        prepaidWithdrawDelayTime={prepaidDelayTime}
+        from={from}
+        refresher={
+          type === "created" 
+            ? createListKey 
+            : type === "flipped" 
+              ? flipListKey 
+              : likedListKey
+        }
+        isCurrent={homeTabStore.profileTabIndex === index}
+      />
+    )
+  });
 
-  const tabs = [
-    // {
-    //   name: "Coppied",
-    //   content: <Coppied from={from} address={address} />
-    // },
+  const baseTabs = [
     {
       name: "Held",
       content: <Held from={from} address={address} />
     },
     {
       name: "Created",
-      content: (
-        <Created
-          hideHot={true}
-          address={address}
-          type="created"
-          isOther={isOther}
-          prepaidWithdrawDelayTime={prepaidDelayTime}
-          from={from}
-          refresher={createListKey}
-          isCurrent={homeTabStore.profileTabIndex === 1}
-        />
-      )
+      ...createTabContent("created", 1)
     },
     {
       name: "Flipped",
-      content: (
-        <Created
-          address={address}
-          type="flipped"
-          isOther={isOther}
-          prepaidWithdrawDelayTime={prepaidDelayTime}
-          refresher={flipListKey}
-          isCurrent={homeTabStore.profileTabIndex === 2}
-          from={from}
-        />
-      )
+      ...createTabContent("flipped", 2)
     },
     {
       name: "Liked",
-      content: (
-        <Created
-          address={address}
-          type="liked"
-          isOther={isOther}
-          prepaidWithdrawDelayTime={prepaidDelayTime}
-          refresher={likedListKey}
-          isCurrent={homeTabStore.profileTabIndex === 3}
-          from={from}
-        />
-      )
+      ...createTabContent("liked", 3)
     }
   ];
+
+  const tabs = isOther 
+    ? baseTabs
+    : [
+        {
+          name: "Coppied",
+          content: <Coppied from={from} address={address} />
+        },
+        ...baseTabs
+      ];
 
   const activeNode = useMemo(
     () => tabs[homeTabStore.profileTabIndex].name,

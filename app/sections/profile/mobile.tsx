@@ -105,7 +105,7 @@ export default function Profile({
         isOther={isOther}
         tabHeaderStyle={{
           flexShrink: 0,
-          padding: "10px 15px",
+          padding: isOther ? "10px 15px" : "10px",
           fontSize: "14px",
           marginTop: 20
         }}
