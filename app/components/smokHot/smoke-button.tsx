@@ -29,7 +29,7 @@ export default function SmokeButton({
         !isDisabled && onClick();
       }}
     >
-      {isDisabled ? <div>{ disabledText }</div> : <div className={ styles.innerFlex }><SmokeIcon  /> Flip</div>}
+      {isDisabled ? <div dangerouslySetInnerHTML={{ __html: disabledText }}></div> : <div className={ styles.innerFlex }><SmokeIcon  /> Flip</div>}
     </button>
   );
 }
