@@ -4,7 +4,6 @@ import Big from "big.js";
 import styles from "./trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
-import { useLaptop } from "@/app/context/laptop";
 import { getFullNum, httpGet } from "@/app/utils";
 import { Avatar } from "@/app/components/thumbnail/avatar";
 import { Checkbox } from "antd-mobile";
@@ -37,7 +36,7 @@ export default function Create({
   width
 }: any) {
   const { tokenName, tokenSymbol, tokenUri } = token;
-  const { updateInfo } = useLaptop();
+
   const { isMobile } = useUserAgent();
   const [infoData, setInfoData] = useState<Project>({
     tokenName: tokenName,
@@ -193,9 +192,6 @@ export default function Create({
                 if (isSuccess) {
                   onHide();
                   setShowSuccessModal(true);
-                  if (!isMobile) {
-                    updateInfo?.("create");
-                  }
                 }
 
                 setIsLoading(false);

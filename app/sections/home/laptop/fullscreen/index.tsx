@@ -16,7 +16,6 @@ import { shareToX } from "@/app/utils/share";
 import styles from "./index.module.css";
 import { addSearchParam } from "@/app/utils/search-params";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useLaptop } from "@/app/context/laptop";
 import {
   actionHateTrigger,
   actionLikeTrigger
@@ -35,7 +34,6 @@ export default function Fullscreen({
   getnext
 }: any) {
   const swaperRef = useRef<any>();
-  const { updateInfo } = useLaptop();
   const [index, setIndex] = useState(0);
   const [data, setData] = useState<any>([]);
   const { userInfo, logout } = useAuth();
@@ -45,7 +43,9 @@ export default function Fullscreen({
 
   const next = (_t?: 0 | 1) => {
     if (_t !== undefined && type !== "launching") {
-      _t ? actionLikeTrigger(list[index], showShare) : actionHateTrigger(list[index]);
+      _t
+        ? actionLikeTrigger(list[index], showShare)
+        : actionHateTrigger(list[index]);
     }
 
     if (index === list.length) {
@@ -129,7 +129,6 @@ export default function Fullscreen({
                       canFlip={false}
                       onLike={async () => {
                         next(1);
-                        updateInfo("liked");
                       }}
                       onHate={async () => {
                         next(0);

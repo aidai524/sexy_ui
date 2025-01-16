@@ -14,7 +14,6 @@ import {
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
 import { useState, useMemo, useEffect } from "react";
-import { useLaptop } from "@/app/context/laptop";
 import Loading from "@/app/components/icons/loading";
 import NextButton from "../../fullscreen/next-button";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
@@ -35,7 +34,6 @@ export default function Token({
   list
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
-  const { updateInfo } = useLaptop();
   const { userInfo } = useAuth();
   const [mc, setMC] = useState<string | number>("-");
   const router = useRouter();
@@ -82,7 +80,6 @@ export default function Token({
   const like = async () => {
     next();
     await actionLikeTrigger(infoData2, showShare);
-    updateInfo("liked");
   };
 
   const hate = () => {
@@ -194,7 +191,6 @@ export default function Token({
         onHate={hate}
         onSuperLike={() => {
           next();
-          updateInfo("flip");
         }}
         onBoost={next}
       />
