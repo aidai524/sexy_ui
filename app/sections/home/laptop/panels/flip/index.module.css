@@ -1,0 +1,24 @@
+.Container {
+  width: 375px;
+  border-radius: 30px;
+  background-color: #252328;
+  border: 1px solid #3b3b3b;
+  flex-shrink: 0;
+  position: absolute;
+  right: 100px;
+  top: 0px;
+}
+
+.Header {
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 12px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.Content {
+  height: calc(100% - 62px);
+  overflow-y: auto;
+}

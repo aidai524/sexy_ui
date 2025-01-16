@@ -25,6 +25,13 @@ const CommentsPanel = dynamic(
   }
 );
 
+const FlipPanel = dynamic(
+  () => import("@/app/sections/home/laptop/panels/flip"),
+  {
+    ssr: false
+  }
+);
+
 export default function List({ type, isCurrentTab }: any) {
   const {
     getIndex,
@@ -157,6 +164,21 @@ export default function List({ type, isCurrentTab }: any) {
                 onSuccess={() => {
                   currentToken.comment = currentToken.comment + 1;
                   updateProject(type, currentToken);
+                }}
+              />
+            )}
+            {tokenPanelStatusStore.showFlip && (
+              <FlipPanel
+                token={currentToken}
+                onClose={() => {
+                  tokenPanelStatusStore.setShow("showFlip", false);
+                }}
+                onSuccess={(amount: string) => {
+                  currentToken.isSuperLike = true;
+                  currentToken.prePaid = currentToken.prePaid + 1;
+                  currentToken.total_amount = amount;
+                  updateProject(type, currentToken);
+                  tokenPanelStatusStore.setShow("showFlip", false);
                 }}
               />
             )}

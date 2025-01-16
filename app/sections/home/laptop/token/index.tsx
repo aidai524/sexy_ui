@@ -10,7 +10,6 @@ import Trade from "@/app/sections/home/mobile/trade";
 import SmokePanel from "@/app/components/smokHot/smoke-panel";
 import Danmaku from "@/app/components/danmaku";
 import TradeModal from "@/app/components/trade-modal";
-import CommentsModal from "@/app/sections/home/mobile/comments";
 import DetailButton from "./detail-button";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
@@ -24,7 +23,6 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
   const descContentRef = useRef<any>();
   const [showFlipModal, setShowFlipModal] = useState(false);
   const [showTradeModal, setShowTradeModal] = useState(false);
-  const [showCommentsModal, setShowCommentsModal] = useState(false);
   const tokenPanelStatusStore: any = useTokenPanelStatus();
 
   const { total: totalHolders } = useHolders(token);
@@ -78,7 +76,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                         window.connect();
                         return;
                       }
-                      setShowFlipModal(true);
+                      tokenPanelStatusStore.setShow("showFlip", true);
                     }}
                     id={isCurrent ? "guid-tour-flip" : token.id}
                   />
@@ -126,10 +124,16 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                     return;
                   }
                   if (type === "flip") {
-                    setShowFlipModal(true);
+                    tokenPanelStatusStore.setShow(
+                      "showFlip",
+                      !tokenPanelStatusStore.showFlip
+                    );
                   }
                   if (type === "trade") {
-                    setShowTradeModal(true);
+                    tokenPanelStatusStore.setShow(
+                      "showTrade",
+                      !tokenPanelStatusStore.showTrade
+                    );
                   }
                 }}
                 totalHolders={totalHolders}
@@ -170,20 +174,6 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
             setShowTradeModal(false);
           }}
           data={token}
-        />
-      )}
-      {showCommentsModal && (
-        <CommentsModal
-          show={showCommentsModal}
-          onClose={() => {
-            setShowCommentsModal(false);
-          }}
-          id={token.id}
-          onSuccess={() => {
-            token.comment = token.comment + 1;
-            onUpdate(token);
-          }}
-          total={token.comment}
         />
       )}
     </>

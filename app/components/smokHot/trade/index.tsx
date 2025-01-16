@@ -17,6 +17,8 @@ interface Props {
   token: Project;
   onSuccess?: (amount: any) => void;
   panelStyle?: any;
+  mainStyle?: any;
+  bottomStyle?: any;
   modalShow: boolean;
   onClose?: () => void;
 }
@@ -28,15 +30,16 @@ export default function Trade({
   panelStyle,
   modalShow,
   onSuccess,
-  onClose
+  onClose,
+  mainStyle,
+  bottomStyle
 }: Props) {
   const [inputVal, setInputVal] = useState(max.toString());
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
-  const { isMobile } = useUserAgent();
-  const { showShare } = useMessage()
+  const { showShare } = useMessage();
 
   const { prePaid, checkPrePayed } = useTokenTrade({
     tokenName: token.tokenName,
@@ -70,7 +73,7 @@ export default function Trade({
   }, [modalShow]);
 
   return (
-    <div className={styles.main} style={{ paddingTop: isMobile ? 0 : 90 }}>
+    <div className={styles.main} style={mainStyle}>
       <div className={styles.avatar}>
         <Avatar data={token} showLaunchType={true} />
       </div>
@@ -103,7 +106,8 @@ export default function Trade({
             </div>
           </div>
         </div>
-
+      </div>
+      <div className={styles.Bottom} style={bottomStyle}>
         <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
           {isPrePayd ? (
             <div className={styles.receiveTitle}>
@@ -148,15 +152,6 @@ export default function Trade({
           >
             Pre-Buy
           </MainBtn>
-
-          {/* <div
-            onClick={() => {
-              onClose && onClose();
-            }}
-            className={`${styles.cancel} button`}
-          >
-            Cancel
-          </div> */}
         </div>
       </div>
     </div>
