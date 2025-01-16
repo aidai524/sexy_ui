@@ -482,30 +482,6 @@ export default function BuySell({ token, initType, onClose, show }: Props) {
             isLoading={isLoading}
             isDisabled={isError}
             onClick={async () => {
-
-
-              // const modalHandler = Modal.show({
-              //   content: (
-              //     <TradeSuccessModal
-              //       type={activeIndex}
-              //       userInfo={userInfo}
-              //       token={token}
-              //       solAmount={activeIndex === 0 ? buyInSol : sellOutSol}
-              //       amount={new Big(activeIndex === 0 ? 1 : sellOut)
-              //                                 .div(10 ** token.tokenDecimals!)
-              //                                 .toFixed(2)}
-              //       point={'111'}
-              //       onClose={() => {
-              //         modalHandler.close();
-              //       }}
-              //     />
-              //   ),
-              //   className: "buy-sell-modal",
-              //   closeOnMaskClick: true
-              // });
-
-              // return
-
               try {
                 if (isLoading || isError) {
                   return;

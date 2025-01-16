@@ -3,7 +3,7 @@
   --foreground: #fff;
   --part-bg: #fbca04;
   --error-color: #ff7587;
-  --adm-mask-z-index: 2000;
+  /* --adm-mask-z-index: 2000; */
 }
 
 :root body {
