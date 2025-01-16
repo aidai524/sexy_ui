@@ -5,6 +5,7 @@
 
   /* background: #fff; */
   padding: 0;
+  overflow-y: auto;
 
   .avatarBox {
     position: relative;
