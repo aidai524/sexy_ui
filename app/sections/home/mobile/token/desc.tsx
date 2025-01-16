@@ -5,13 +5,13 @@ import { formatAddress, timeAgo, simplifyNum } from "@/app/utils";
 import { useMemo, useState, useEffect } from "react";
 import useMc from "@/app/hooks/useMc";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
-import { useRouter } from "next/navigation";
 import { useHome } from "../context";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Desc({ token }: any) {
   const [mc, setMc] = useState(0);
-  const router = useRouter();
   const { goDetail } = useHome();
+  const { isMobile } = useUserAgent();
   const { mc: pumpMc } = useMc({
     tokenAddress: token.address,
     disable: token.status! < 1
@@ -55,7 +55,7 @@ export default function Desc({ token }: any) {
       className={`button ${styles.Container}`}
       onClick={() => {
         // router.push(`/detail?address=${token.address}`);
-        goDetail(token);
+        if (isMobile) goDetail(token);
       }}
     >
       <div className={styles.Title}>{token.tokenName}</div>
@@ -63,7 +63,7 @@ export default function Desc({ token }: any) {
         <img
           style={{ borderColor: token.status === 0 ? "#fff" : "transparent" }}
           className={styles.Avatar}
-          src={token.tokenImg || "/img/token-icon-placeholder.svg"}
+          src={token.icon || "/img/token-icon-placeholder.svg"}
         />
         <div className={styles.TickerWrapper}>
           <span className={styles.TickerLabel}>Ticker: </span>

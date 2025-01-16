@@ -5,24 +5,32 @@ import CommentIcon from "@/app/components/icons/comment";
 import ShareIcon from "./share-icon";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Actions({
   token,
   totalHolders,
-  onClick,
+  onClick = () => {},
   onSuccess,
-  isCurrent
+  isCurrent,
+  disabled
 }: any) {
   const { showShare } = useMessage();
+  const { isMobile } = useUserAgent();
   return (
-    <div className={styles.Actions}>
+    <div
+      className={`${styles.Actions} ${isMobile && styles.MbActions}`}
+      style={{
+        opacity: disabled ? 0.3 : 1
+      }}
+    >
       {token.status === 0 ? (
         <>
           <Like
             isLiked={token.isLike}
             like={token.like}
             onClick={async () => {
-              if (token.isLike) return;
+              if (token.isLike || disabled) return;
               if (!window.sexAddress) {
                 window.connect();
                 return;
@@ -33,9 +41,11 @@ export default function Actions({
             id={isCurrent ? "guid-tour-like" : ""}
           />
           <button
-            className={`${styles.Item} button`}
+            className={`${styles.Item} ${isMobile && styles.PcItem} ${
+              !disabled && "button"
+            }`}
             onClick={() => {
-              if (token.isSuperLike) return;
+              if (token.isSuperLike || disabled) return;
               onClick("flip");
             }}
           >
@@ -49,9 +59,11 @@ export default function Actions({
       ) : (
         <>
           <button
-            className={`${styles.Item} button`}
+            className={`${styles.Item} ${isMobile && styles.PcItem} ${
+              !disabled && "button"
+            }`}
             onClick={() => {
-              onClick("trade");
+              if (!disabled) onClick("trade");
             }}
           >
             <img src="/img/home/holder-icon.png" style={{ width: 34 }} />
@@ -60,17 +72,22 @@ export default function Actions({
         </>
       )}
       <button
-        className={`${styles.Item} button`}
+        className={`${styles.Item} ${isMobile && styles.PcItem} ${
+          !disabled && "button"
+        }`}
         onClick={() => {
-          onClick("comments");
+          if (!disabled) onClick("comments");
         }}
       >
         <CommentIcon />
         <span>{token.comment || 0}</span>
       </button>
       <button
-        className={`${styles.Item} button`}
+        className={`${styles.Item} ${isMobile && styles.PcItem} ${
+          !disabled && "button"
+        }`}
         onClick={() => {
+          if (disabled) return;
           if (!window?.sexAddress) {
             window.connect();
             return;
