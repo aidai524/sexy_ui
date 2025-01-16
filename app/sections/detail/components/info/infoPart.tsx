@@ -192,8 +192,8 @@ export default function InfoPart({
               '--track-color': '#29242B'
             }} />
 
-            <div className={styles.progressDesc}>Graduate this coin to Orca at $40560 market cap.
-            there will be 40.56 SOL in the bonding curve.</div>
+            <div className={styles.progressDesc}>Graduate this coin to Orca at $40,560 market cap.
+            There will be 40.56 SOL in the bonding curve.</div>
           </div>
 
           <div className={styles.singleProgress} style={{ marginTop: 15 }}>

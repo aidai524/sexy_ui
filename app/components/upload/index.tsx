@@ -4,6 +4,7 @@ import { upload } from "@/app/utils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircleLoading from "../icons/loading";
 import UploadBox from "./upload-box";
+import { fail } from "@/app/utils/toast";
 
 interface Props {
   fileList: ImageUploadItem[];
@@ -39,7 +40,16 @@ export default function Upload({
   const input = useRef<ImageUploaderRef>(null);
 
   const uploadImg = useCallback(async (file: File) => {
+    console.log('file', file)  
+    if (file.size > 50 * 1024 * 1024) {
+      fail("File size too large")
+      return {
+        url: ''
+      }
+    }
+
     setIsUpload(true);
+
     const url = await upload(
       file.name,
       file,
@@ -109,7 +119,7 @@ export default function Upload({
         />
       </div>
 
-      {mergedFiles.length === 0 ? (
+      {mergedFiles.length === 0 || mergedFiles[0].url === '' ? (
         <UploadBox type={type} onClick={onUpload} />
       ) : (
         <>

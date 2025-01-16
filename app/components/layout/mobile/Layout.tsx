@@ -136,7 +136,7 @@ export default function Component({ children }: any) {
         trade()
       }}>juipter</Button> */}
       {children}
-
+      <Refer isMobile />
       {/* {showTabs && (
           <>
             <TabBg className={styles.TabBg} />

@@ -97,7 +97,7 @@ export default function Profile({
         </div>
       </div>
 
-      {/*<Summaries />*/}
+      {isOther && <Summaries address={address} isFollower={isFollower} setRefreshNum={setRefreshNum} refreshNum={refreshNum} />}
 
       <Tabs
         address={address}
