@@ -1,3 +1,4 @@
+import { useUserAgent } from "@/app/context/user-agent";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
 
@@ -13,8 +14,14 @@ const TABS = [
 ];
 
 export default function Tabs({ launchIndex, setLaunchIndex }: any) {
+  const { isMobile } = useUserAgent();
   return (
-    <div className={styles.launchPadTab}>
+    <div
+      className={styles.launchPadTab}
+      style={{
+        gap: isMobile ? 20 : 146
+      }}
+    >
       {TABS.map((tab: any, i: number) => (
         <div
           key={tab.key}
@@ -43,6 +50,9 @@ export default function Tabs({ launchIndex, setLaunchIndex }: any) {
                 }
               }}
               className={styles.Line}
+              style={{
+                backgroundColor: isMobile ? "#fff" : "#FBCA04"
+              }}
             />
           )}
         </div>

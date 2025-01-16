@@ -53,6 +53,7 @@ export function mapDataToUser(item: any): UserInfo {
     usingSuperLikeNum: item.using_super_like_num,
     usingBuySuperLikeNum: item.using_buy_super_like_num,
     vipType: item.vip_type,
-    isFollower: item.is_follower
+    isFollower: item.is_follower,
+    ...item
   };
 }

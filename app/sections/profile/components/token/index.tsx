@@ -7,6 +7,8 @@ import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import TokenAction from "../tokenAction";
 import useMc from "@/app/hooks/useMc";
 import { numberFormatter } from '@/app/utils/common';
+import Big from 'big.js';
+import { SOL } from '@/app/components/trade/buySellPump';
 
 interface Props {
   data: Project;
@@ -15,6 +17,7 @@ interface Props {
   hideHot?: boolean;
   from?: string;
   isOther: boolean;
+  onWithdrawSuccess?(): void;
 }
 
 export default function Token({
@@ -23,7 +26,8 @@ export default function Token({
   prepaidWithdrawDelayTime,
   hideHot,
   from,
-  isOther
+  isOther,
+  onWithdrawSuccess
 }: Props) {
   const router = useRouter();
   const [mc, setMC] = useState<string | number>(0);
@@ -98,7 +102,7 @@ export default function Token({
                 </div>
                 <div className={styles.trikerContent}>
                   <div className={styles.tickerName}>
-                    Flipped: {numberFormatter(data?.prePaid, 2, true)} SOL
+                    Flipped: {numberFormatter(Big(data?.prePaidAmount || 0).div(10 ** SOL.tokenDecimals), 2, true)} SOL
                   </div>
                 </div>
               </>
@@ -117,6 +121,7 @@ export default function Token({
         isDelay={isDelay}
         token={data}
         prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
+        onWithdrawSuccess={onWithdrawSuccess}
       />
     </div>
   );

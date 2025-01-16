@@ -3,15 +3,24 @@ import Link from "next/link";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useAuth } from "@/app/context/auth";
 import { fail, success } from "@/app/utils/toast";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function EarnAndInvite({ info }: any) {
   const { userInfo } = useAuth();
+  const { isMobile } = useUserAgent();
   return (
-    <div className={styles.Container}>
+    <div
+      className={styles.Container}
+      style={{
+        gap: isMobile ? 14 : 24
+      }}
+    >
       <div
         className={styles.Item}
         style={{
-          border: " 1px solid #ffa8e8"
+          border: " 1px solid #ffa8e8",
+          width: isMobile ? "calc(50vw - 21px)" : 320,
+          height: isMobile ? 142 : 165
         }}
       >
         <div
@@ -35,7 +44,9 @@ export default function EarnAndInvite({ info }: any) {
       <div
         className={styles.Item}
         style={{
-          border: " 1px solid #C9FF5D"
+          border: " 1px solid #C9FF5D",
+          width: isMobile ? "calc(50vw - 21px)" : 320,
+          height: isMobile ? 142 : 165
         }}
       >
         <div
@@ -48,7 +59,13 @@ export default function EarnAndInvite({ info }: any) {
         <div className={styles.ItemContent}>
           <div className={styles.Title}>Invite Frenz</div>
           <div className={styles.Desc}>My invite link</div>
-          <div className={styles.Link}>
+          <div
+            className={styles.Link}
+            style={{
+              width: isMobile ? 159 : 272,
+              height: isMobile ? 24 : 27
+            }}
+          >
             {userInfo?.address
               ? `${window?.location?.origin}?referral=${userInfo.address}`
               : "-"}

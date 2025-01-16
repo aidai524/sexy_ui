@@ -1,0 +1,27 @@
+.Container {
+  padding-top: 6px;
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0px 0px 19px;
+}
+
+.MenuButton {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 34px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  transition: 0.3s;
+}
+
+.MenuButton:hover {
+  background-color: #ffffff33;
+}

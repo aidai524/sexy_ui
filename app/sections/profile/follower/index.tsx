@@ -82,6 +82,23 @@ export default function Follower() {
             )
           }
         ]}
+        tabHeaderStyle={{
+          flexShrink: 0,
+          padding: "10px 15px",
+          fontSize: "14px",
+          marginTop: 20
+        }}
+        tabHeadersStyle={{
+          overflowX: 'auto',
+          height: "unset"
+        }}
+        cursorStyle={{
+          height: 3,
+          borderRadius: 2,
+          bottom: 0,
+          width: '55%',
+          background: 'var(--part-bg)',
+        }}
       />
     </div>
   );

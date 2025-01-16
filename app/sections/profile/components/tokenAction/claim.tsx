@@ -44,14 +44,14 @@ export default function Claim({
       <div className={styles.ClaimContainer}>
         <motion.div
           className={styles.ClaimBg1}
-          initial={{ opacity: 0, scaleX: 0.8, scaleY: 0.8 }}
-          animate={{ opacity: [0, 1, 0], scaleX: [0.8, 1, 1.42], scaleY: [0.8, 1.1, 1.52] }}
+          initial={{ opacity: 0, scaleX: 0.9, scaleY: 0.9 }}
+          animate={{ opacity: [0, 1, 0], scaleX: [0.9, 1, 1.3], scaleY: [0.9, 1.05, 1.6] }}
           transition={{ times: [0, 0.1, 1], repeat: Infinity, duration: 2, ease: "linear" }}
         />
         <motion.div
           className={styles.ClaimBg1}
-          initial={{ opacity: 0, scaleX: 0.8, scaleY: 0.8 }}
-          animate={{ opacity: [0, 1, 0], scaleX: [0.8, 1, 1.42], scaleY: [0.8, 1.1, 1.52] }}
+          initial={{ opacity: 0, scaleX: 0.9, scaleY: 0.9 }}
+          animate={{ opacity: [0, 1, 0], scaleX: [0.9, 1, 1.3], scaleY: [0.9, 1.05, 1.6] }}
           transition={{ delay: 1, times: [0, 0.1, 1], repeat: Infinity, duration: 2, ease: "linear" }}
         />
         <button

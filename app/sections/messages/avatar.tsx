@@ -51,12 +51,12 @@ export function Avatar({ style }: any) {
   );
 }
 
-export function ReadAvatar() {
+export function ReadAvatar({ size = 38 }: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="38"
-      height="38"
+      width={size}
+      height={size}
       viewBox="0 0 38 38"
       fill="none"
       style={{ flexShrink: 0 }}

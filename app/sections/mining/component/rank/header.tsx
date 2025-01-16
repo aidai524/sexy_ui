@@ -9,8 +9,7 @@ export default function Header({
     <div
       className={styles.Header}
       style={{
-        padding: isMobile ? 0 : "20px 60px 15px",
-        borderBottom: isMobile ? "none" : "1px solid #FFFFFF33"
+        padding: isMobile ? 0 : "15px 25px 0px"
       }}
       onClick={onClick}
     >

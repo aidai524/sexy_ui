@@ -1,16 +1,12 @@
-.Container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 13px 30px 7px;
-  position: relative;
-}
-
 .Actions {
   display: flex;
   align-items: center;
   gap: 18px;
   flex-shrink: 0;
+  position: absolute;
+  right: 22px;
+  top: 22px;
+  z-index: 20;
 }
 
 .ConnectButton {

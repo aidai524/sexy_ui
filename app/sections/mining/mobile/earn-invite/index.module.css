@@ -1,17 +1,17 @@
 .Container {
   display: flex;
   justify-content: center;
-  gap: 14px;
   margin-top: 15px;
 }
 
 .Item {
-  width: calc(50vw - 21px);
-  height: 142px;
   border-radius: 16px;
   position: relative;
   border: 1px solid #ffa8e8;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .ItemBg {
@@ -82,8 +82,6 @@
 }
 
 .Link {
-  width: 159px;
-  height: 24px;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.1);
   line-height: 24px;

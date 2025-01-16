@@ -41,7 +41,7 @@ export default function Profile({
   return (
     <div
       className={styles.main}
-      style={store.entryVisible ? { paddingBottom: 200 } : {}}
+      style={{}}
     >
       <PageHeader
         title=""
@@ -56,6 +56,7 @@ export default function Profile({
             }}
           />
         }
+        isOther={isOther}
       />
       <AirdropEntry />
       <div style={backgroundImgStyle1} className={styles.avatarBox}>
@@ -108,12 +109,20 @@ export default function Profile({
           fontSize: "14px",
           marginTop: 20
         }}
-        tabHeadersClassName={styles.Tabs}
         tabHeadersStyle={{
+          overflowX: 'auto',
           height: "unset"
         }}
-        cursorClassName={styles.TabsCursorClassName}
-        tabContentClassName={styles.TabsContentClassName}
+        cursorStyle={{
+          height: 2,
+          borderRadius: 1,
+          bottom: 0,
+          width: '100%',
+        }}
+        tabContentStyle={{
+          background: 'rgba(255, 255, 255, 0.08)',
+          minHeight: 'calc(100dvh - 274px)',
+        }}
       />
     </div>
   );

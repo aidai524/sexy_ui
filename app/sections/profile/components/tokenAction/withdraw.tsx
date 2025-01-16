@@ -1,36 +1,19 @@
 import styles from "./index.module.css";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { DotLoading } from "antd-mobile";
 import { fail, success } from "@/app/utils/toast";
+
 export default function Withdraw({
   prepaidSolWithdraw,
-  prepaidWithdrawDelayTime,
-  token,
-  isPrepaid,
-  isOther
+  onSuccess,
 }: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [isWithdrawed, setIsWithdrawed] = useState(false);
 
-  const isDelay = useMemo(() => {
-    return (
-      prepaidWithdrawDelayTime &&
-      token.createdAt &&
-      Date.now() - token.createdAt > prepaidWithdrawDelayTime
-    );
-  }, [prepaidWithdrawDelayTime, token]);
-
-  const showWithdraw = useMemo(
-    () => isDelay && !isOther && isPrepaid,
-    [isDelay, isOther, isPrepaid]
-  );
-
   return (
-    !!showWithdraw &&
-    //
-    (isWithdrawed ? (
+    isWithdrawed ? (
       <button className={`${styles.ActionBtn} ${styles.DisabledBtn}`}>
-        Withdrew
+        Refunded
       </button>
     ) : (
       <button
@@ -41,21 +24,23 @@ export default function Withdraw({
             const res = await prepaidSolWithdraw();
 
             if (!res) {
-              fail("Withdraw fail");
+              fail("Refund fail");
             } else {
-              success("Withdraw success");
+              success("Refund success");
               setIsWithdrawed(true);
+              // fix#REF-9368
+              onSuccess?.();
             }
           } catch (e) {
             console.log(e);
-            fail("Withdraw fail");
+            fail("Refund fail");
           }
 
           setIsLoading(false);
         }}
       >
-        {isLoading ? <DotLoading /> : "Withdraw"}
+        {isLoading ? <DotLoading /> : "Refund"}
       </button>
-    ))
+    )
   );
 }

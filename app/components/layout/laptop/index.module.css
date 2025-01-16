@@ -1,14 +1,10 @@
 .Container {
   width: 100vw;
   height: 100vh;
-  background-color: #fff;
+  background-color: #151515;
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .Content {
-  background-color: #000;
-  position: relative;
-  overflow: hidden;
+  flex-grow: 1;
 }
