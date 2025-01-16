@@ -10,5 +10,10 @@
   transform: translateX(-50%);
 }
 
+.TrendBanner {
+  display: flex;
+  justify-content: center;
+}
+
 .Content {
 }

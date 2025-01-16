@@ -1,5 +1,6 @@
 import TypesTabs from "@/app/sections/home/tabs";
 import List from "./list";
+import TrendBanner from "../../trends/components/banner";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import styles from "./index.module.css";
 
@@ -15,14 +16,17 @@ export default function Laptop() {
           }}
         />
       </div>
+      <div className={styles.TrendBanner}>
+        <TrendBanner />
+      </div>
       <div className={styles.Content}>
-        <List
+        {/* <List
           type="preLaunch"
           onChangeTab={(tab: number) => {
             homeTabStore.set({ homeTabIndex: tab });
           }}
           isCurrentTab={homeTabStore.homeTabIndex === 0}
-        />
+        /> */}
       </div>
     </div>
   );

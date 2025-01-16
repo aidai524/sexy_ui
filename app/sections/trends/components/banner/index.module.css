@@ -1,36 +1,16 @@
 .Container {
-  font-family: Unbounded;
-  height: 56px;
-  flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  padding: 7px 47px 7px 7px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   border-radius: 31px;
+  height: 34px;
+  background-color: #fbca04;
+  padding-right: 8px;
 }
-.ContainerMobile {
-  composes: Container;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: unset;
-  padding: 26px 22px 13px 19px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  backdrop-filter: blur(4px);
-  z-index: 10;
-}
+
 .Avatar {
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
   position: relative;
   background-position: center;
@@ -45,15 +25,9 @@
   left: -26px;
   top: -20px;
 }
-.Content {
-  flex: 1;
-}
-.ContentMobile {
-  composes: Content;
-  width: 0;
-}
+
 .Title {
-  color: #fff;
+  color: #000;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -62,12 +36,9 @@
   align-items: center;
   gap: 4px;
 }
-.Name {}
-.NameMobile {
-  composes: Name;
-  flex: 1;
-  width: 0;
+.Name {
 }
+
 .TitleRight {
   margin-left: auto;
   display: flex;
@@ -75,20 +46,21 @@
   align-items: center;
   gap: 14px;
 }
-.TitleRightMobile {
-  composes: TitleRight;
-  flex-shrink: 0;
-}
+
 .CloseBtnMobile {
   width: 14px;
   height: 14px;
   background: url("/img/trends/icon-close.svg") no-repeat center / contain;
 }
 .Rank {
-  color: #af0;
+  color: #90f;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 .Summaries {
-  margin-top: 4px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -98,29 +70,50 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 300;
 }
-.SummaryLabel {
-  color: rgba(255, 255, 255, 0.6);
-}
+
 .SummaryValue {
 }
 .Trade {
-  height: 20px;
+  width: 65px;
+  height: 26px;
   flex-shrink: 0;
-  border: 1px solid #fefffbcc;
-  color: #fff;
-  font-size: 10px;
+  border-radius: 13px;
+  border: 1px solid #000;
+  background: #fff9c0;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  text-transform: capitalize;
   display: flex;
   align-items: center;
   gap: 3px;
-  border-radius: 10px;
-  padding: 0 5px;
+  padding: 0 2px;
 }
 .TradeIcon {
-  width: 12px;
-  height: 12px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
+}
+.ViewButton {
+  width: 65px;
+  height: 26px;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+  flex-shrink: 0;
+  border-radius: 13px;
+  border: 1px solid #000;
 }
