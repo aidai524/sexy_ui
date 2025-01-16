@@ -9,6 +9,8 @@ import { useUser } from "@/app/store/useUser";
 import Withdraw from "./withdraw";
 import Claim from "./claim";
 import FlipIcon from "./flip-icon";
+import Big from 'big.js';
+import { SOL } from '@/app/components/trade/buySellPump';
 
 interface Props {
   token: Project;
@@ -23,32 +25,41 @@ export default function ActionList({
   prepaidWithdrawDelayTime,
   onWithdrawSuccess
 }: Props) {
-  const [isPrepaid, setIsPrepaid] = useState(false);
+  const [prepaidRealAmount, setPrepaidRealAmount] = useState(Big(0));
+  const [prepaidAmount, setPrepaidAmount] = useState(Big(0));
 
   const [updateNum, setUpdateNum] = useState(1);
   const [isClaimed, setIsClaimed] = useState(false);
 
   const { userInfo }: any = useUser();
 
-  const { prepaidSolWithdraw, prepaidTokenWithdraw, checkPrePayed } =
-    useTokenTrade({
-      tokenName: token.tokenName,
-      tokenSymbol: token.tokenSymbol as string,
-      tokenDecimals: token.tokenDecimals as number,
-      loadData: false
-    });
+  const {
+    prepaidSolWithdraw,
+    prepaidTokenWithdraw,
+    checkPrePayed,
+  } = useTokenTrade({
+    tokenName: token.tokenName,
+    tokenSymbol: token.tokenSymbol as string,
+    tokenDecimals: token.tokenDecimals as number,
+    loadData: false
+  });
 
   useEffect(() => {
     if (isOther) {
-      setIsPrepaid(false);
+      setPrepaidAmount(Big(0));
       return;
     }
     checkPrePayed().then((res) => {
-      if (Number(res) > 0) {
-        setIsPrepaid(true);
-      }
+      const _amount = Big(res || 0).div(10 ** SOL.tokenDecimals);
+      console.log('%ccheckPrePayed - %o: %o, show amount: %o', 'background:#ff5f00;color:#fff;', token.tokenSymbol, _amount.toString(), Big(_amount).div(0.985).toString());
+      setPrepaidRealAmount(_amount);
+      setPrepaidAmount(Big(_amount).div(0.985));
     });
   }, [updateNum, isOther, token]);
+
+  const isPrepaid = useMemo(() => {
+    return Big(prepaidAmount || 0).gt(0);
+  }, [prepaidAmount]);
 
   const smookeable = useMemo(() => {
     if (token.account === userInfo?.address) return false;
@@ -80,6 +91,7 @@ export default function ActionList({
             showWithdraw ? (
               <Withdraw
                 {...{
+                  token,
                   prepaidSolWithdraw,
                   onSuccess: onWithdrawSuccess,
                 }}
@@ -116,7 +128,8 @@ export default function ActionList({
             isOther,
             prepaidTokenWithdraw,
             isClaimed,
-            setIsClaimed
+            setIsClaimed,
+            token
           }}
         />
       )}
