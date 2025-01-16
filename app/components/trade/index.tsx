@@ -21,8 +21,8 @@ export default function Trade({
 }: Props) {
   return (
     <div className={styles.main}>
-      {
-        token.status === 1 && token.DApp === 'pump' && <BuySellPump
+      {token.status === 1 && token.DApp === "pump" && (
+        <BuySellPump
           token={token}
           initType={initType}
           show={show}
@@ -31,9 +31,9 @@ export default function Trade({
             onClose && onClose();
           }}
         />
-      }
-      {
-        token.status === 1 && token.DApp === 'sexy' && <BuySell
+      )}
+      {token.status === 1 && token.DApp === "sexy" && (
+        <BuySell
           token={token}
           initType={initType}
           from={from}
@@ -42,17 +42,18 @@ export default function Trade({
             onClose && onClose();
           }}
         />
-      }
-      {
-        token.status === 3 && <BuySellLaunched
+      )}
+      {token.status === 3 && (
+        <BuySellLaunched
           token={token}
           initType={initType}
           show={show}
+          from={from}
           onClose={() => {
             onClose && onClose();
           }}
         />
-      }
+      )}
     </div>
   );
 }

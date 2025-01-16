@@ -40,7 +40,7 @@ export default function Actions({
             }}
             id={isCurrent ? "guid-tour-like" : ""}
           />
-          <button
+          <div
             className={styles.Item}
             onClick={() => {
               if (token.isSuperLike || disabled) return;
@@ -58,11 +58,11 @@ export default function Actions({
               />
             </button>
             <span>{token.prePaid}</span>
-          </button>
+          </div>
         </>
       ) : (
         <>
-          <button
+          <div
             className={styles.Item}
             onClick={() => {
               if (!disabled) onClick("trade");
@@ -77,10 +77,10 @@ export default function Actions({
             </button>
 
             <span>{totalHolders}</span>
-          </button>
+          </div>
         </>
       )}
-      <button
+      <div
         className={styles.Item}
         onClick={() => {
           if (!disabled) onClick("comments");
@@ -94,8 +94,8 @@ export default function Actions({
           <CommentIcon />
         </button>
         <span>{token.comment || 0}</span>
-      </button>
-      <button
+      </div>
+      <div
         className={styles.Item}
         onClick={() => {
           if (disabled) return;
@@ -115,7 +115,7 @@ export default function Actions({
           <ShareIcon />
         </button>
         <span>{token.share_num || 0}</span>
-      </button>
+      </div>
     </div>
   );
 }

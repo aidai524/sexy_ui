@@ -6,7 +6,7 @@ import TokenCard from "../token-card";
 import InfoPart from "@/app/sections/detail/components/info/infoPart";
 import Txs from "@/app/sections/detail/components/txs";
 import CommentComp from "@/app/components/comment";
-import PanelWrapper from "./panel-wrapper";
+import PanelWrapper from "../../panels/trade/panel-wrapper";
 import Chart from "@/app/sections/detail/components/chart";
 import Empty from "@/app/components/empty/prelaunch";
 import {

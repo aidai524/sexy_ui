@@ -8,6 +8,7 @@ export const useTokenPanelStatus = create(
       showComments: false,
       showFlip: false,
       showTrade: false,
+      tab: "charts",
       setShow: (key: string, show: boolean) => {
         const params: Record<string, boolean> = {
           showDetail: false,
@@ -26,6 +27,9 @@ export const useTokenPanelStatus = create(
           params.showFlip ||
           params.showTrade
         );
+      },
+      setTab(tab: string) {
+        set({ tab });
       }
     }),
     {
