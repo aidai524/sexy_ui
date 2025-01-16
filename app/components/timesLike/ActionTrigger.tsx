@@ -13,32 +13,32 @@ export const SECOND_LIKE_TIMES = 30;
 const LIKE_ERROR = -1;
 
 const onLike = async (data: any) => {
-  // try {
-  //   if (data) {
-  //     const v = await httpAuthPost("/project/like?id=" + data!.id, {});
-  //     if (v.code === 0) {
-  //       const points =
-  //         Number(v.data?.point) < 0.01
-  //           ? "0.01"
-  //           : new Big(v.data?.point || 0).toFixed(2, 0);
+  try {
+    if (data) {
+      const v = await httpAuthPost("/project/like?id=" + data!.id, {});
+      if (v.code === 0) {
+        const points =
+          Number(v.data?.point) < 0.01
+            ? "0.01"
+            : new Big(v.data?.point || 0).toFixed(2, 0);
 
-  //       success(
-  //         "You liked '" +
-  //           (data.token_name || data.tokenName) +
-  //           "', You are expected to receive " +
-  //           points +
-  //           " points"
-  //       );
-  //       return v.data || {};
-  //     } else if (v.code === 100002) {
-  //       fail("You've run out of like times. You can come back tomorrow");
-  //       return -1;
-  //     }
-  //   }
-  // } catch (e) {}
+        success(
+          "You liked '" +
+            (data.token_name || data.tokenName) +
+            "', You are expected to receive " +
+            points +
+            " points"
+        );
+        return v.data || {};
+      } else if (v.code === 100002) {
+        fail("You've run out of like times. You can come back tomorrow");
+        return -1;
+      }
+    }
+  } catch (e) {}
 
   return {
-    likeNum: 10,
+    likeNum: 0,
     projectLikeNum: 0
   };
 };
