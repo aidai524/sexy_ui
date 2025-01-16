@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./token.module.css";
 import type { Project } from "@/app/type";
-import { simplifyNum, timeAgo } from "@/app/utils";
+import { simplifyNum } from "@/app/utils";
 import { useRouter } from "next/navigation";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import TokenAction from "../tokenAction";
@@ -10,6 +10,9 @@ import { numberFormatter } from '@/app/utils/common';
 import Big from 'big.js';
 import { SOL } from '@/app/components/trade/buySellPump';
 import { useUser } from '@/app/store/useUser';
+import { Program } from '@coral-xyz/anchor';
+import idl from '@/app/hooks/meme_launchpad.json';
+import { useConnection } from '@solana/wallet-adapter-react';
 
 interface Props {
   data: Project;
@@ -32,21 +35,35 @@ export default function Token({
 }: Props) {
   const router = useRouter();
   const { userInfo }: any = useUser();
+  const { connection } = useConnection();
 
   const [mc, setMC] = useState<string | number>(0);
-  const [isPrepaid, setIsPrepaid] = useState(false);
+  const [prepaidRealAmount, setPrepaidRealAmount] = useState(Big(0));
+  const [prepaidAmount, setPrepaidAmount] = useState(Big(0));
+  const [tokenAmount, setTokenAmount] = useState(Big(0));
 
   const { mc: pumpMc } = useMc({
     tokenAddress: data?.address,
     disable: data?.status! < 1
   });
 
-  const { getMC, pool, checkPrePayed } = useTokenTrade({
+  const {
+    getMC,
+    pool,
+    checkPrePayed,
+    prepaidSolWithdraw,
+    prepaidTokenWithdraw,
+    programId,
+  } = useTokenTrade({
     tokenName: data?.tokenName as string,
     tokenSymbol: data?.tokenSymbol as string,
     tokenDecimals: data?.tokenDecimals as number,
     loadData: false
   });
+
+  const isPrepaid = useMemo(() => {
+    return Big(prepaidAmount || 0).gt(0);
+  }, [prepaidAmount]);
 
   const isDelay = useMemo(() => {
     if (
@@ -87,15 +104,49 @@ export default function Token({
 
   useEffect(() => {
     if (isOther) {
-      setIsPrepaid(false);
+      setPrepaidRealAmount(Big(0));
+      setPrepaidAmount(Big(0));
       return;
     }
     checkPrePayed().then((res) => {
-      if (Number(res) > 0) {
-        setIsPrepaid(true);
-      }
+      const _amount = Big(res || 0).div(10 ** SOL.tokenDecimals);
+      setPrepaidRealAmount(_amount);
+      setPrepaidAmount(Big(_amount).div(0.985));
     });
   }, [isOther, data]);
+
+  useEffect(() => {
+    if (pool && pool.length) {
+      const program = new Program<any>(idl, programId, {
+        connection: connection
+      } as any);
+      program.account.pool.fetch(pool[0]).then((poolData: any) => {
+        let { prepaidAmount, prepaidBoughtTokenAmount } = poolData || {};
+        prepaidAmount = Big(prepaidAmount.toNumber());
+        prepaidBoughtTokenAmount = Big(prepaidBoughtTokenAmount.toNumber());
+        const _tokenAmount = Big(prepaidRealAmount)
+          .times(10 ** SOL.tokenDecimals)
+          .div(prepaidAmount)
+          .times(prepaidBoughtTokenAmount)
+          .div(10 ** (data?.tokenDecimals || 6));
+        setTokenAmount(_tokenAmount);
+        // console.log(
+        //   '%c[TokenAmount - %o] prepaidRealAmount: %o, prepaidAmount: %o, prepaidBoughtTokenAmount: %o, _tokenAmount: %o',
+        //   'background:#ff5f00;color:#fff;',
+        //   data.tokenSymbol,
+        //   prepaidRealAmount.toString(),
+        //   prepaidAmount.toString(),
+        //   prepaidBoughtTokenAmount.toString(),
+        //   _tokenAmount.toString(),
+        // );
+      }).catch((err) => {
+        console.log('%cCalc token amount failed - %o: %o', 'background:#ff5f00;color:#fff;', data.tokenSymbol, err);
+        setTokenAmount(Big(0));
+      });
+      return;
+    }
+    setTokenAmount(Big(0));
+  }, [pool, data, prepaidRealAmount]);
 
   return (
     <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
@@ -160,6 +211,14 @@ export default function Token({
         token={data}
         prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
         onWithdrawSuccess={onWithdrawSuccess}
+        prepaidRealAmount={prepaidRealAmount}
+        prepaidAmount={prepaidAmount}
+        smookeable={smookeable}
+        showWithdraw={showWithdraw}
+        isPrepaid={isPrepaid}
+        prepaidSolWithdraw={prepaidSolWithdraw}
+        prepaidTokenWithdraw={prepaidTokenWithdraw}
+        tokenAmount={tokenAmount}
       />
     </div>
   );

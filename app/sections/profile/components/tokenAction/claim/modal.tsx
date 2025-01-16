@@ -3,6 +3,7 @@ import { SOL } from '@/app/components/trade/buySellPump';
 import { useState } from 'react';
 import { fail, success } from '@/app/utils/toast';
 import TokenClaimCard from '@/app/sections/profile/components/tokenAction/card';
+import { numberFormatter } from '@/app/utils/common';
 
 const ClaimModal = (props: any) => {
   const { visible, onClose } = props;
@@ -33,7 +34,8 @@ const Content = (props: any) => {
     token,
     setIsClaimed,
     prepaidTokenWithdraw,
-    onClose
+    prepaidAmount,
+    tokenAmount,
   } = props;
 
   const tokenIcon = token.tokenIcon || token.tokenImg || "/img/token-placeholder.png";
@@ -65,12 +67,12 @@ const Content = (props: any) => {
       list={[
         {
           label: 'You flipped',
-          value: '0.2',
+          value: numberFormatter(prepaidAmount, 4, true, { isShort: true, isShortUppercase: true }),
           icon: SOL.tokenUri,
         },
         {
           label: 'To be claimed',
-          value: '52.35K',
+          value: numberFormatter(tokenAmount, 2, true, { isShort: true, isShortUppercase: true }),
           icon: tokenIcon,
         },
       ]}
