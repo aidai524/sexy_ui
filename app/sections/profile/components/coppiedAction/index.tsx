@@ -4,7 +4,7 @@ import Modal from '@/app/components/modal';
 import { defaultAvatar } from "@/app/utils/config";
 import { formatAddress } from '@/app/utils';
 import {SolIcon} from './icon'
-import { useTokenTrade } from '@/app/hooks/useTokenTrade';
+import useSolBalance from '@/app/hooks/use-sol-balance';
 
 const AmountLevelList = [{
   key: 0.25,
@@ -23,8 +23,8 @@ export default function CoppiedAction({show,onClose,copiedInfo}:any) {
   const [copyAmount, setCopyAmount] = useState<number | string>(1)
   const [minCopyAmount, setMinCopyAmount] = useState<number | string>(0.1)
   const [copyTimes, setCopyTimes] = useState<number | string>(10)
-  
-  
+  const {solBalance} = useSolBalance(Number(show))
+  console.log(solBalance, 'sss')
 
   return (
     <Modal 
