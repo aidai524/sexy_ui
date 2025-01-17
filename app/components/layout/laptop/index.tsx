@@ -6,6 +6,7 @@ import Menu from "./menu";
 import { useAuth } from "@/app/context/auth";
 import useNotice from "../../../hooks/use-notice";
 import { useSetting } from "@/app/store/use-setting";
+import Refer from '@/app/components/layout/laptop/user/refer';
 
 const CreatePage = dynamic(() => import("@/app/sections/create/laptop"));
 const TrendsPage = dynamic(() => import("@/app/sections/trends"));
@@ -46,6 +47,7 @@ export default function Laptop({ children }: any) {
         {pathname === "/detail" && <DetailPage />}
         {pathname === "/messages" && <MessagePage />}
       </div>
+      <Refer userInfo={userInfo} />
     </div>
   );
 }
