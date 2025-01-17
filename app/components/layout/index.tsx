@@ -44,7 +44,7 @@ export default function Layout(props: any) {
       <MessageProvider>
         <MessageContextProvider>
           {isMobile ? <Mobile {...props} /> : <Laptop {...props} />}
-          <AirdropEntry />
+          <AirdropEntry isMobile={isMobile} />
         </MessageContextProvider>
       </MessageProvider>
     </AuthProvider>

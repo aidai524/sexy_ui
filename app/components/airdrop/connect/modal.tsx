@@ -12,7 +12,7 @@ const AirdropConnectModal = (props: any) => {
         border: 0,
       }}
       closeStyle={{
-        display: 'none',
+        top: 55,
       }}
     >
       <Index {...props} />
