@@ -39,10 +39,7 @@ export default function Profile({
     : {};
 
   return (
-    <div
-      className={styles.main}
-      style={{}}
-    >
+    <div className={styles.main} style={{}}>
       <PageHeader
         title=""
         theme="light"
@@ -72,6 +69,7 @@ export default function Profile({
             onEdit={() => {
               router.push("/profile/edit");
             }}
+            address={address}
             isOther={isOther}
             isFollower={isFollower}
             onFollowSuccess={async () => {
@@ -97,7 +95,14 @@ export default function Profile({
         </div>
       </div>
 
-      {isOther && <Summaries address={address} isFollower={isFollower} setRefreshNum={setRefreshNum} refreshNum={refreshNum} />}
+      {isOther && (
+        <Summaries
+          address={address}
+          isFollower={isFollower}
+          setRefreshNum={setRefreshNum}
+          refreshNum={refreshNum}
+        />
+      )}
 
       <Tabs
         address={address}
@@ -110,18 +115,18 @@ export default function Profile({
           marginTop: 20
         }}
         tabHeadersStyle={{
-          overflowX: 'auto',
+          overflowX: "auto",
           height: "unset"
         }}
         cursorStyle={{
           height: 2,
           borderRadius: 1,
           bottom: 0,
-          width: '100%',
+          width: "100%"
         }}
         tabContentStyle={{
-          background: 'rgba(255, 255, 255, 0.08)',
-          minHeight: 'calc(100dvh - 274px)',
+          background: "rgba(255, 255, 255, 0.08)",
+          minHeight: "calc(100dvh - 274px)"
         }}
       />
     </div>
