@@ -4,30 +4,17 @@ import { ReadAvatar } from "@/app/sections/messages/avatar";
 import InfoIcon from "../../icons/info";
 import HowToWork from "../../how-to-work";
 import styles from "./index.module.css";
-import Big from "big.js";
 import Level from "../../level";
 import { useEffect, useState } from "react";
-import { useConnection } from "@solana/wallet-adapter-react";
 import { useAuth } from "@/app/context/auth";
+import useSolBalance from "@/app/hooks/use-sol-balance";
 
 export default function Info({ logout }: any) {
   const { wallet, publicKey } = useWallet();
   const [expand, setExpand] = useState(false);
-  const [solBalance, setSolBalance] = useState("0");
   const [showHowItWork, setShowHowItWork] = useState(false);
   const { userInfo } = useAuth();
-  const { connection } = useConnection();
-
-  useEffect(() => {
-    if (!publicKey || !connection) return;
-    connection.getBalance(publicKey!).then((res) => {
-      if (res) {
-        setSolBalance(new Big(res).div(10 ** 9).toFixed(2));
-      } else {
-        setSolBalance("0");
-      }
-    });
-  }, [publicKey, connection]);
+  const { solBalance } = useSolBalance();
 
   useEffect(() => {
     const close = () => {
