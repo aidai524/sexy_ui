@@ -1097,6 +1097,7 @@ export function useTokenTrade({
     getMC,
     pool,
     tokenInfo,
+    programId,
   };
 }
 

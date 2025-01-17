@@ -117,7 +117,7 @@ export function useTrends(props?: { isPolling?: boolean; }) {
       if (Big(_progress).gt(100)) {
         _progress = Big(100);
       }
-      it.progress = _progress.toFixed(2);
+      it.progress = _progress.toFixed(2, Big.roundDown);
       it.poolAmount = poolAmount;
       it.solAmount = solAmount;
     }
