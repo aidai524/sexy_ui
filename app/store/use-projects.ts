@@ -49,7 +49,15 @@ export const useProjects = create(
         const currentProjects =
           type === "preLaunch" ? get().preProjects : get().launchProjects;
 
-        let prev: any = { ...currentProjects };
+        let prev: any = {};
+
+        if (type === "preLaunch") {
+          prev = { ...currentProjects };
+        }
+
+        if (type === "launching") {
+          prev = hasMore ? { ...currentProjects } : {};
+        }
 
         const list = {
           ...prev,
