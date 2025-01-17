@@ -53,10 +53,15 @@ export const useProjects = create(
         );
         let prev: any = {};
         if (type === "preLaunch" || hasMore) {
-          if (currentProjectsList.length + _projects.length > 100) {
-            const start = currentProjectsList.length + _projects.length - 100;
+          if (currentProjectsList.length + _projects.length > 30) {
+            const start = currentProjectsList.length + _projects.length - 30;
+
+            currentProjectsList.sort(
+              (a: any, b: any) => a.fetched_time - b.fetched_time
+            );
+            console.log(58, start, currentProjectsList);
             prev = currentProjectsList
-              .slice(start, 100)
+              .slice(start)
               .reduce(
                 (acc: any, curr: any) => ({ ...acc, [curr.id]: curr }),
                 {}

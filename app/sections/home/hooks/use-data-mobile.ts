@@ -29,7 +29,7 @@ export default function useData(launchType: Type) {
       const res = await httpGet(
         `/project/list?limit=${limit}&launchType=${launchType}`
       );
-      setHasNext(res.data?.list.length === limit);
+      setHasNext(res.data?.list && res.data?.list.length === limit);
       if (res.code !== 0 || !res.data?.list) {
         return [];
       }

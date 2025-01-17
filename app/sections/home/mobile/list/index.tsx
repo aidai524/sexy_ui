@@ -67,7 +67,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           }}
         >
           <div>
-            {type} Y: {y}
+            {type} Index: {index}
           </div>
           <div>
             {type} Len: {list.length}

@@ -19,11 +19,10 @@ export default function Tabs({
   tabHeadersStyle,
   cursorClassName,
   tabContentClassName,
-  cursorStyle,
+  cursorStyle
 }: any) {
   const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
-  const { isMobile } = useUserAgent();
   const { likedListKey, flipListKey, createListKey } = useLaptop();
   // base tab
   const createTabContent = (type: string, index: number) => ({
@@ -36,11 +35,11 @@ export default function Tabs({
         prepaidWithdrawDelayTime={prepaidDelayTime}
         from={from}
         refresher={
-          type === "created" 
-            ? createListKey 
-            : type === "flipped" 
-              ? flipListKey 
-              : likedListKey
+          type === "created"
+            ? createListKey
+            : type === "flipped"
+            ? flipListKey
+            : likedListKey
         }
         isCurrent={homeTabStore.profileTabIndex === index}
       />
@@ -66,7 +65,7 @@ export default function Tabs({
     }
   ];
 
-  const tabs = isOther 
+  const tabs = isOther
     ? baseTabs
     : [
         {
