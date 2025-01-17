@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import styles from './video.module.css';
+
 
 interface VideoPlayerProps {
   src: string;
