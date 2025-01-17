@@ -1,5 +1,5 @@
 import { useWallet } from "@solana/wallet-adapter-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ReadAvatar } from "@/app/sections/messages/avatar";
 import InfoIcon from "../../icons/info";
 import HowToWork from "../../how-to-work";
@@ -14,8 +14,7 @@ export default function Info({ logout }: any) {
   const [expand, setExpand] = useState(false);
   const [showHowItWork, setShowHowItWork] = useState(false);
   const { userInfo } = useAuth();
-  const { solBalance } = useSolBalance();
-
+  const { solBalance } = useSolBalance(Number(expand));
   useEffect(() => {
     const close = () => {
       setExpand(false);

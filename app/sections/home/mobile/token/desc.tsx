@@ -7,6 +7,7 @@ import useMc from "@/app/hooks/useMc";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useHome } from "../context";
 import { useUserAgent } from "@/app/context/user-agent";
+import TokenTags from "@/app/components/tokenTags";
 
 export default function Desc({ token }: any) {
   const [mc, setMc] = useState(0);
@@ -69,8 +70,9 @@ export default function Desc({ token }: any) {
           <span className={styles.TickerLabel}>Ticker: </span>
           <span className={styles.Ticker}>{token.ticker}</span>
         </div>
-        <StatusTag type={token.status} />
-        {token.DApp === "pump" && <ImportTag />}
+        <div className={styles.StatusWrapper}>
+          <TokenTags token={token} />
+        </div>
       </div>
       {token.DApp === "sexy" && (
         <div className={styles.MC}>

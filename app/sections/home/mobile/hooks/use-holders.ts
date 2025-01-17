@@ -1,19 +1,29 @@
 import { useCallback, useEffect, useState } from "react";
 import { getHoldersByToken } from "@/app/utils/solanaScanApi";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 
 export default function useHolders(token: any) {
   const [total, setTotal] = useState(0);
+  const { connection } = useConnection(); 
   const onQuery = useCallback(async () => {
     try {
-      const response = await getHoldersByToken(token.address, 1, 1);
-      setTotal(response.total);
+      if (process.env.NEXT_PUBLIC_NET === 'Devnet') {
+        const tokenAccounts = await connection.getTokenLargestAccounts(new PublicKey(token.address), "confirmed");
+        const total = tokenAccounts.value.length;
+        setTotal(total);
+      } else {
+        const response = await getHoldersByToken(token.address, 1, 1);
+        setTotal(response.total);
+      }
     } catch (err) {
+      console.log('err:', err)
       setTotal(0);
     }
   }, [token]);
 
   useEffect(() => {
-    if (token?.status !== 3 || !token?.address) return;
+    if (token?.status === 0 || !token?.address) return;
     onQuery();
   }, [token]);
 

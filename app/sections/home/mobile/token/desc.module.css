@@ -22,6 +22,7 @@
   font-weight: 400;
   line-height: normal;
   margin-top: 6px;
+  flex-wrap: wrap;
 }
 
 .Avatar {

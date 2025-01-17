@@ -20,7 +20,8 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
     hasNext,
     onChangeIndex,
     updateProject,
-    getProjectById
+    getProjectById,
+    queryAndUpdateDetail
   } = useData(type);
   const index = getIndex(type);
   const [y, setY] = useState(0);
@@ -69,7 +70,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           left: type === "preLaunch" ? 0 : innerWidth
         }}
       >
-        {/* <div
+        <div
           style={{
             position: "absolute",
             left: 0,
@@ -84,7 +85,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           <div>
             {type} Len: {list.length}
           </div>
-        </div> */}
+        </div>
         <div
           className={styles.List}
           ref={listRef}
@@ -140,6 +141,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any) => {
                   updateProject(type, token);
+                  queryAndUpdateDetail(type, token.id);
                 }}
               />
             );

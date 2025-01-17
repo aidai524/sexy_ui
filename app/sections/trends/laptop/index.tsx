@@ -1,56 +1,58 @@
+"use client";
+
 import styles from "./index.module.css";
 import Top from "@/app/sections/trends/components/top";
-import { useTrends } from "@/app/sections/trends/hooks";
-import GoBack from "@/app/components/back/laptop";
-import Hottest from "@/app/sections/trends/components/hottest";
-import List from "@/app/sections/trends/components/list";
 import { motion } from "framer-motion";
-import { useEffect } from 'react';
+import Item from "@/app/sections/trends/components/item";
+import { useTrends } from "@/app/sections/trends/hooks";
+import { useEffect } from "react";
+import TrendsLoading from "@/app/sections/trends/components/loading";
 
-const Laptop = (props: any) => {
+export default function Mobile(props: any) {
   const { handleBuy } = props;
 
-  const {
-    currentTableList,
-    hottestList,
-    top1,
-    allListLoading,
-    handleCurrentFilter,
-    currentFilter,
-    handleOrderBy,
-    orderBy,
-    searchText,
-    handleSearchText,
-    handleSearchTextClear,
-  } = useTrends();
+  const { hottestList, tableList, top1, getAllList, allListLoading } =
+    useTrends();
 
   useEffect(() => {
+    getAllList();
   }, []);
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className={styles.Container}
+      className={styles.Wrapper}
     >
-      <div className={styles.Back}>
-        <GoBack />
+      <div className={styles.TitleWrapper}>
+        <span>Trends</span>
       </div>
-      <Top onBuy={() => handleBuy(top1)} trend={top1} loading={allListLoading} />
-      <Hottest data={hottestList} onBuy={handleBuy} loading={allListLoading} />
-      <List
-        loading={allListLoading}
-        currentFilter={currentFilter}
-        onCurrentFilter={handleCurrentFilter}
-        data={currentTableList}
-        orderBy={orderBy}
-        onOrderBy={handleOrderBy}
-        searchText={searchText}
-        onSearchText={handleSearchText}
-        onSearchTextClear={handleSearchTextClear}
-      />
+      <div className={styles.Container}>
+        <div className={styles.Box}>
+          <Top
+            onBuy={() => handleBuy(top1)}
+            trend={top1}
+            isMobile={false}
+            loading={allListLoading}
+          />
+          <div className={styles.ListTitle}>Hot Memes</div>
+          <div className={styles.List}>
+            {allListLoading ? (
+              <TrendsLoading />
+            ) : (
+              <>
+                {[...hottestList, ...tableList].map((item) => (
+                  <Item
+                    key={item.id}
+                    onBuy={() => handleBuy(item)}
+                    trend={item}
+                  />
+                ))}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
-};
-
-export default Laptop;
+}
