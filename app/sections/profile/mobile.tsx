@@ -8,6 +8,7 @@ import { useAuth } from "@/app/context/auth";
 import AirdropEntry from "@/app/components/airdrop/entry";
 import PageHeader from "@/app/components/page-header/mobile";
 import Summaries from "@/app/sections/profile/components/summaries";
+import { SHOW_COPY_TRADE } from "@/app/utils/config";
 
 export default function Profile({
   userInfo,
@@ -96,7 +97,7 @@ export default function Profile({
         </div>
       </div>
 
-      {isOther && 
+      {isOther && SHOW_COPY_TRADE && 
         <Summaries 
             address={address} 
             isFollower={isFollower} 
