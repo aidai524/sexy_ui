@@ -7,21 +7,12 @@ import { useAuth } from "@/app/context/auth";
 import useNotice from "../../../hooks/use-notice";
 import { useSetting } from "@/app/store/use-setting";
 
-const CreatePage = dynamic(() => import("@/app/sections/create/laptop"), {
-  ssr: false
-});
-const TrendsPage = dynamic(() => import("@/app/sections/trends"), {
-  ssr: false
-});
-const RewardPage = dynamic(() => import("@/app/sections/mining"), {
-  ssr: false
-});
-
-const ProfileCom = dynamic(() => import("@/app/sections/profile"), {
-  ssr: false
-});
-
+const CreatePage = dynamic(() => import("@/app/sections/create/laptop"));
+const TrendsPage = dynamic(() => import("@/app/sections/trends"));
+const RewardPage = dynamic(() => import("@/app/sections/mining"));
+const ProfileCom = dynamic(() => import("@/app/sections/profile"));
 const DetailPage = dynamic(() => import("@/app/sections/detail"));
+const MessagePage = dynamic(() => import("@/app/sections/messages/laptop"));
 
 export default function Laptop({ children }: any) {
   const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
@@ -53,6 +44,7 @@ export default function Laptop({ children }: any) {
           <ProfileCom updateCurrentUserInfo={updateCurrentUserInfo} />
         )}
         {pathname === "/detail" && <DetailPage />}
+        {pathname === "/messages" && <MessagePage />}
       </div>
     </div>
   );

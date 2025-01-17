@@ -34,7 +34,7 @@ export default function Rank({ rank, list = [], loading }: any) {
           >
             <div className={styles.ItemLeft}>
               <Avatar rank={index + 1} src={item.account_data?.icon} />
-              <div style={{ width: isMobile ? "auto" : 120 }}>
+              <div style={{ width: 120 }}>
                 <div className={styles.NameWrapper}>
                   <button
                     className={`${styles.ItemTitle}`}

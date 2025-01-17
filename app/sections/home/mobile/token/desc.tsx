@@ -52,7 +52,7 @@ export default function Desc({ token }: any) {
 
   return (
     <div
-      className={`button ${styles.Container}`}
+      className={styles.Container}
       onClick={() => {
         // router.push(`/detail?address=${token.address}`);
         if (isMobile) goDetail(token);

@@ -8,24 +8,15 @@ import { AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 
 const DetailPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/detail"),
-  {
-    ssr: false
-  }
+  () => import("@/app/sections/home/laptop/panels/detail")
 );
 
 const CommentsPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/comments"),
-  {
-    ssr: false
-  }
+  () => import("@/app/sections/home/laptop/panels/comments")
 );
 
 const FlipPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/flip"),
-  {
-    ssr: false
-  }
+  () => import("@/app/sections/home/laptop/panels/flip")
 );
 
 export default function Laptop(props: any) {

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { httpGet } from "@/app/utils";
 import { useDebounceFn } from "ahooks";
+import { numberFormatter } from "@/app/utils/common";
 
 export default function useDanmaku({ id, limit = 10 }: any) {
   const [list, setList] = useState<any[]>([]);
@@ -23,6 +24,7 @@ export default function useDanmaku({ id, limit = 10 }: any) {
       if (res?.code !== 0) throw new Error();
 
       let newList: any = [];
+
       if (res.data.list?.length) {
         const newMapList = res.data.list.map((item: any) => {
           let text = "";
@@ -30,10 +32,10 @@ export default function useDanmaku({ id, limit = 10 }: any) {
             text = item.content_1;
           }
           if (item.type === "buy") {
-            text = `bought ${item.content_1} SOL`;
+            text = `bought ${numberFormatter(item.content_1, 4, true)} SOL`;
           }
           if (item.type === "sell") {
-            text = `sold ${item.content_1}`;
+            text = `sold ${numberFormatter(item.content_1, 4, true)} SOL`;
           }
           if (item.type === "share") {
             text = "shared";
