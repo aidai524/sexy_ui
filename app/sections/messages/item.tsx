@@ -55,7 +55,10 @@ export default function Item({
           </div>
           <div className={styles.ItemContent}>
             <div className={styles.ItemTitle} style={{}}>
-              {title}
+              <span>{title}</span>
+              <div className={styles.ItemTime}>
+                {dayjs(item.time).fromNow()}
+              </div>
             </div>
             {expand ? (
               <>
@@ -81,11 +84,6 @@ export default function Item({
             ) : (
               <div className={`${styles.ItemDesc} ${styles.Ellipsis}`}>
                 {content}
-              </div>
-            )}
-            {!expand && (
-              <div className={styles.ItemTime}>
-                {dayjs(item.time).fromNow()}
               </div>
             )}
           </div>
@@ -126,7 +124,6 @@ export default function Item({
               padding: isMobile ? "8px 8px 8px 38px" : "8px 20px 16px 70px"
             }}
           >
-            <div className={styles.ItemTime}>{dayjs(item.time).fromNow()}</div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="13"

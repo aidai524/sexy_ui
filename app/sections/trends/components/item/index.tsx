@@ -1,21 +1,22 @@
 import styles from "./index.module.css";
-import { formatLongText, numberFormatter } from '@/app/utils/common';
-import { Trend } from '@/app/sections/trends/hooks';
-import { useCreator } from '@/app/sections/trends/hooks/creator';
+import { formatLongText, numberFormatter } from "@/app/utils/common";
+import { Trend } from "@/app/sections/trends/hooks";
+import { useCreator } from "@/app/sections/trends/hooks/creator";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Item(props: Props) {
   const { onBuy, trend } = props;
-
+  const { isMobile } = useUserAgent();
   const creator = useCreator();
 
   const name = trend?.token_symbol;
   const ticker = trend?.ticker;
   const icon = trend?.Icon;
-  const tickerAvatar = '';
+  const tickerAvatar = "";
   const marketCap = trend?.market_cap;
 
   return (
-    <div className={styles.Item}>
+    <div className={isMobile ? styles.Item : styles.PcItem}>
       <div
         className={styles.ItemAvatar}
         style={{ backgroundImage: `url("${icon}")` }}
@@ -47,22 +48,26 @@ export default function Item(props: Props) {
               className={styles.ItemHeadBuyBtn}
               onClick={onBuy}
             >
-              <img src="/img/trends/buy-normal.svg" alt="" className={styles.ItemHeadBuyBtnIcon} />
+              <img
+                src="/img/trends/buy-normal.svg"
+                alt=""
+                className={styles.ItemHeadBuyBtnIcon}
+              />
               <div>BUY</div>
             </button>
           </div>
         </div>
         <div className={styles.ItemMarketCap}>
-          <div className={styles.ItemMarketCapLabel}>
-            Market cap:
-          </div>
+          <div className={styles.ItemMarketCapLabel}>Market cap:</div>
           <div className={styles.ItemMarketCapValue}>
-            {numberFormatter(marketCap, 2, true, { prefix: '$', isShort: true, isShortUppercase: true })}
+            {numberFormatter(marketCap, 2, true, {
+              prefix: "$",
+              isShort: true,
+              isShortUppercase: true
+            })}
           </div>
         </div>
-        <div className={styles.ItemCreateTime}>
-          {trend?.created2Now}
-        </div>
+        <div className={styles.ItemCreateTime}>{trend?.created2Now}</div>
       </div>
     </div>
   );
