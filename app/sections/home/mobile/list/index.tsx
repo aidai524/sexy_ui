@@ -15,7 +15,6 @@ let started = false;
 export default function List({ type, isCurrentTab, onChangeTab }: any) {
   const {
     getIndex,
-    hasNext,
     isLoading,
     list,
     onChangeIndex,

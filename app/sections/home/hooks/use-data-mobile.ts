@@ -18,18 +18,19 @@ function preloadImages(urls: string[]) {
 
 export default function useData(launchType: Type) {
   const [isLoading, setIsLoading] = useState(true);
-  const [hasNext, setHasNext] = useState<boolean>(true);
   const [list, setList] = useState<number[]>([]);
   const { accountRefresher, userInfo } = useAuth();
   const projectsStore = useProjects();
   const mountedRef = useRef(false);
+  const fetchingRef = useRef(false);
 
   const queryList = async () => {
+    if (fetchingRef.current) return;
     try {
+      fetchingRef.current = true;
       const res = await httpGet(
         `/project/list?limit=${limit}&launchType=${launchType}`
       );
-      setHasNext(res.data?.list && res.data?.list.length === limit);
       if (res.code !== 0 || !res.data?.list) {
         return [];
       }
@@ -47,7 +48,10 @@ export default function useData(launchType: Type) {
         res.data?.list.length === limit,
         userInfo?.address
       );
-    } catch (err) {}
+    } catch (err) {
+    } finally {
+      fetchingRef.current = false;
+    }
   };
 
   const handleList = useCallback(
@@ -69,10 +73,7 @@ export default function useData(launchType: Type) {
     }
     setList(list);
 
-    if (
-      list.length - projectsStore.getIndex(launchType) <= left_num &&
-      hasNext
-    ) {
+    if (list.length - projectsStore.getIndex(launchType) <= left_num) {
       handleList(true);
     } else {
       setIsLoading(false);
@@ -82,10 +83,7 @@ export default function useData(launchType: Type) {
   const onChangeIndex = (currentIndex: number) => {
     projectsStore.setIndex(launchType, currentIndex);
 
-    if (
-      list.length - projectsStore.getIndex(launchType) <= left_num &&
-      hasNext
-    ) {
+    if (list.length - projectsStore.getIndex(launchType) <= left_num) {
       handleList(true);
     }
   };
@@ -115,7 +113,6 @@ export default function useData(launchType: Type) {
 
   return {
     getIndex: projectsStore.getIndex,
-    hasNext,
     isLoading,
     list,
     updateProject: projectsStore.updateProject,
