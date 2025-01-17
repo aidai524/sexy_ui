@@ -34,18 +34,30 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
         let res = null
         if (process.env.NEXT_PUBLIC_NET === 'Devnet') {
           const tokenAccounts = await connection.getTokenLargestAccounts(new PublicKey(address), "confirmed");
+          console.log('tokenAccounts', tokenAccounts)
 
-          const result = {
-            items: tokenAccounts.value.map((item: any) => {
-              return {
-                owner: item.address?.toString(),
-                amount: item.uiAmount.toString(),
-                decimals: item.decimals,
-                rank: item.rank
-              }
-            }),
 
+          const result: any = {
+            items: []
           }
+
+          const accounts = await connection.getMultipleParsedAccounts(tokenAccounts.value.map((item: any) => item.address));
+          console.log('accounts', accounts)
+
+          for (let i = 0; i < tokenAccounts.value.length; i++) {
+            const item = tokenAccounts.value[i];
+            // const accountInfo = await connection.getParsedAccountInfo(item.address);
+            // const owner = accountInfo.value?.data?.parsed?.info?.owner;
+
+            result.items.push({
+              owner: accounts.value[i].data?.parsed?.info?.owner?.toString(),
+              amount: item.uiAmount?.toString(),
+              decimals: item.decimals,
+              rank: i + 1
+            })
+          } 
+         
+
           res = result
         } else {
           res = await getHoldersByToken(address, _page, pageSize);
