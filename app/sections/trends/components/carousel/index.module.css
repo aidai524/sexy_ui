@@ -11,7 +11,7 @@
   height: 130px;
   overflow: hidden;
   position: absolute;
-  z-index: 1;
+  z-index: 12;
   left: 0;
   top: -56px;
 }
