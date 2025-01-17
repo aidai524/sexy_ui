@@ -189,7 +189,7 @@ export default function Txs({ from, data }: any) {
                   const isSelf = item.address === userInfo?.address;
                   return (
                     <div
-                      key={item.id}
+                      key={item.tx_hash}
                       className={`${styles.item} ${!isSelf && "button"}`}
                       onClick={() => {
                         if (!isSelf)

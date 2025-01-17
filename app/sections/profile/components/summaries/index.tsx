@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import styles from './index.module.css';
 import { numberFormatter } from '@/app/utils/common';
 import FollowBtn from '../followBtn';
+import CoppiedAction from '../coppiedAction';
 
 const Summaries = (props: any) => {
-  const { address, isFollower,setRefreshNum,refreshNum } = props;
+  const { address, isFollower,setRefreshNum,refreshNum,userInfo } = props;
+  const [showModal,setShowModal] = useState(false);
+  console.log("userInfo",userInfo)
 
   return (
     <div className={styles.Container}>
@@ -47,8 +51,17 @@ const Summaries = (props: any) => {
           setRefreshNum(refreshNum + 1);
         }} />
         
-        <button className={styles.CopyBtn}>Copy Trade</button>
+        <button className={styles.CopyBtn} onClick={()=>{
+          setShowModal(true);
+        }}>Copy Trade</button>
       </div>
+      <CoppiedAction 
+        copiedInfo={userInfo}
+        show={showModal} 
+        onClose={() => {
+          setShowModal(false);
+        }} 
+      />
     </div>
   );
 };

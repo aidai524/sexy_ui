@@ -258,6 +258,13 @@ export default forwardRef(function CreateNode(
           <CheckBox
             checked={showTokenSymbol}
             onCheckChange={(isChecked) => {
+              if (tokenImg && tokenImg.length > 0) {
+                const url = tokenImg[0].url;
+                if (videoReg.test(url)) {
+                  setShowTokenSymbol(true);
+                  return
+                }
+              }
               setShowTokenSymbol(isChecked);
             }}
           />
