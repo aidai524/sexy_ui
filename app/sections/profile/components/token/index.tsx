@@ -116,7 +116,7 @@ export default function Token({
   }, [isOther, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals]);
 
   useEffect(() => {
-    if (pool && pool.length) {
+    if (pool && pool.length && showWithdraw) {
       const program = new Program<any>(idl, programId, {
         connection: connection
       } as any);
@@ -146,7 +146,7 @@ export default function Token({
       return;
     }
     setTokenAmount(Big(0));
-  }, [pool, data?.tokenDecimals, prepaidRealAmount]);
+  }, [pool, data?.tokenDecimals, prepaidRealAmount, showWithdraw]);
 
   return (
     <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
