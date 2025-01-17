@@ -59,8 +59,8 @@ export default function Txs({ from, data }: any) {
   });
 
   useEffect(() => {
-    if (data && data.tokenName) {
-      httpGet("/project/trade/list?limit=100&token_name=" + data.address).then(
+    if (data && data.tokenName && data.status === 1 && data.DApp === 'sexy') {
+      httpGet(`/project/trade/list?limit=100&token_name=${data.address}&greater=${filter[1]}&my_following=${filter[2]}&my_trades=${filter[3]}`).then(
         (res) => {
           if (res.code === 0) {
             setList(res.data.list || []);
@@ -68,7 +68,7 @@ export default function Txs({ from, data }: any) {
         }
       );
     }
-  }, [data]);
+  }, [data, filter]);
 
   return (
     <div

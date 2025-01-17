@@ -17,7 +17,7 @@ export default function MainBtn({
     <Button
       loadingIcon={
         <SpinLoading
-          color={"#fff"}
+          color={"#000"}
           style={{ "--size": "24px", marginRight: 10 }}
         />
       }
