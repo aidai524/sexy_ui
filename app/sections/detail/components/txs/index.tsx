@@ -52,6 +52,9 @@ export default function Txs({ from, data }: any) {
   const router = useRouter();
   const { address } = useAccount();
   const { userInfo } = useAuth();
+  const [totalGreater, setTotalGreater] = useState(0);
+  const [totalMyFollowing, setTotalMyFollowing] = useState(0); 
+  const [totalMyTrades, setTotalMyTrades] = useState(0);
   const [filter, setFilter] = useState<any>({
     1: false,
     2: false,
@@ -64,6 +67,9 @@ export default function Txs({ from, data }: any) {
         (res) => {
           if (res.code === 0) {
             setList(res.data.list || []);
+            setTotalGreater(res.data.total_greater || 0);
+            setTotalMyFollowing(res.data.total_my_following || 0);
+            setTotalMyTrades(res.data.total_my_trades || 0);  
           }
         }
       );
@@ -83,7 +89,7 @@ export default function Txs({ from, data }: any) {
           <div className={styles.filterText}>
             Filter by size
             <img style={{ width: "26px" }} src="/img/home/solana.png" /> 0.05
-            (1243 trades)
+            ({ totalGreater } trades)
           </div>
           <SexSwitch
             checked={filter[1]}
@@ -112,7 +118,7 @@ export default function Txs({ from, data }: any) {
                   marginRight: from === "panel" ? 6 : 0
                 }}
               >
-                Filter by my following (12 trades)
+                Filter by my following ({ totalMyFollowing } trades)
               </div>
               <SexSwitch
                 checked={filter[2]}
@@ -134,7 +140,7 @@ export default function Txs({ from, data }: any) {
                   marginRight: from === "panel" ? 6 : 0
                 }}
               >
-                Filter by own trades (0 trades)
+                Filter by own trades ({ totalMyTrades } trades)   
               </div>
               <SexSwitch
                 checked={filter[3]}
