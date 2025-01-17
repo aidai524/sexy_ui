@@ -100,7 +100,7 @@ export default function Token({
         setMC(res as number);
       });
     }
-  }, [pool, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals]);
+  }, [pool, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals, data?.DApp, data?.status]);
 
   useEffect(() => {
     if (isOther) {
