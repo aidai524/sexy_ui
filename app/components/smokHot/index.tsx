@@ -19,6 +19,7 @@ interface Props {
   onClick: () => void;
   actionChildren?: React.ReactNode;
   content?: React.ReactNode;
+  onHide?: () => void;
 }
 
 export default function SmokeBtn({
@@ -27,6 +28,7 @@ export default function SmokeBtn({
   isBigIcon = false,
   actionChildren,
   content,
+  onHide,
   id
 }: Props) {
   const [panelShow, setPanelShow] = useState(false);
@@ -66,6 +68,10 @@ export default function SmokeBtn({
   }, [isDelay, token, address]);
 
   const disabledText = useMemo(() => {
+    if (!isDisabled) {
+      return ''
+    }
+    
     if (flipNum && Number(flipNum) > 0) {
       const flipNumFormatted = numberFormatter(new Big(flipNum).div(10 ** 9).div(1 - 0.015).toString(), 2, true, { isShort: true })
       return 'Fliped <br/>' + flipNumFormatted + 'SOL'
@@ -76,7 +82,7 @@ export default function SmokeBtn({
     }
 
     return 'Flipped'
-  }, [isDelay, token, address, flipNum])
+  }, [isDelay, token, address, flipNum, isDisabled])
 
   const VipModal = (
     <BoostVip

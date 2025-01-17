@@ -40,14 +40,17 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   );
 
   const { run } = useDebounceFn(() => {
+    console.log('headerRef.current?.clientHeight', headerRef.current?.clientHeight)
     setHeaderHeight(headerRef.current?.clientHeight || 60)
-  }, { wait: 100 })
+  }, { wait: 500 })
 
   const mc = useMcWithPump(infoData);
 
   useEffect(() => {
-    run();
-  }, []);
+    if (infoData) {
+      run();
+    }
+  }, [infoData]);
 
   useEffect(() => {
     onBack &&

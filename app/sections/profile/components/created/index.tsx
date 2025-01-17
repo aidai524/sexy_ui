@@ -105,7 +105,7 @@ export default function Created({
   if (list.length === 0) {
     return (
       <div style={{ paddingTop: 116 }}>
-        <Empty text={"No Fun coins " + type + " yet"} id={type} />
+        <Empty text={"No FlipN coins " + type + " yet"} id={type} />
       </div>
     );
   }

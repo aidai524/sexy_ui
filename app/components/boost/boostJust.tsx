@@ -42,7 +42,7 @@ export default function BoostJust({
             {usingBoostNum}/{boostNum}
           </div>
           <div className={styles.initTip}>
-            Boost allows the MEME exposure up to 8.5x in Fun for 30 minutes.
+            Boost allows the MEME exposure up to 8.5x in FlipN for 30 minutes.
             VIP users will have 4 chances per day to boost MEMEs.
           </div>
         </div>

@@ -65,7 +65,7 @@ export default function InfoPart({
     <div>
       <div className={styles.detailAvatar}>
         <div className={styles.tokenImgWrapper}>
-          <img className={styles.tokenImg} src={data.tokenImg || '/img/token-placeholder.png'} />
+          <img className={styles.tokenImg} src={data.tokenIcon || '/img/token-placeholder.png'} />
         </div>
 
         <div className={styles.detailInfo}>

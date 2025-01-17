@@ -57,12 +57,12 @@ export default function TradeSuccessModal({
           <div className={style.successText}>successfully!</div>
         </div>
 
-        {/* <div className={style.userIcon}>
-          <img className={style.userImg} src={defaultAvatar} />
-        </div> */}
+        <div className={style.userIcon}>
+          <img className={style.userImg} src="/img/home/default-flipn.png" />
+        </div>
 
         <div className={style.tips}>
-          <span>You are expected to receive</span>
+          <span>{'You’ve got'}</span>
           <span className={style.sexFi}>
             {" "}
             {numberFormatter(point, 3, true, {

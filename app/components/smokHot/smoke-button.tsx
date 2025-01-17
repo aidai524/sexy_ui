@@ -14,7 +14,9 @@ export default function SmokeButton({
   const { userInfo } = useAuth();
   
 
-  console.log('disabledText', disabledText);
+ if (isDisabled && disabledText === 'Flipped') {
+  return null
+ }
 
   return (
     <button
@@ -29,7 +31,9 @@ export default function SmokeButton({
         !isDisabled && onClick();
       }}
     >
-      {isDisabled ? <div dangerouslySetInnerHTML={{ __html: disabledText }}></div> : <div className={ styles.innerFlex }><SmokeIcon  /> Flip</div>}
+      {isDisabled 
+      ? <div dangerouslySetInnerHTML={{ __html: disabledText }}></div> 
+      : <div className={ styles.innerFlex }><SmokeIcon  /> Flip</div>}
     </button>
   );
 }
