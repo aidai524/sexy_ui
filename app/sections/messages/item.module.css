@@ -16,6 +16,9 @@
   color: #ffffff;
   font-size: 13px;
   font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .ItemDesc {
@@ -47,6 +50,9 @@
   color: #8d8bb8;
   font-size: 12px;
   font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .ItemBottom {

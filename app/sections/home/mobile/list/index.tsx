@@ -69,7 +69,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           left: type === "preLaunch" ? 0 : innerWidth
         }}
       >
-        {/* <div
+        <div
           style={{
             position: "absolute",
             left: 0,
@@ -84,7 +84,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           <div>
             {type} Len: {list.length}
           </div>
-        </div> */}
+        </div>
         <div
           className={styles.List}
           ref={listRef}

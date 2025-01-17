@@ -8,16 +8,14 @@
   }
 }
 .CarouselContainer {
-  width: 100%;
   height: 130px;
   overflow: hidden;
   position: absolute;
-  z-index: 1;
+  z-index: 12;
   left: 0;
   top: -56px;
 }
 .Carousel {
-  font-size: 20px;
   color: #000;
   font-family: Unbounded;
   font-style: normal;
@@ -29,8 +27,7 @@
 }
 .CarouselInner {
   width: 300%;
-  background: #FBCA04;
-  height: 33px;
+  background: #fbca04;
   display: flex;
   align-items: stretch;
   /*animation: slideToRight linear 4s infinite;*/
