@@ -37,7 +37,6 @@ export default function CommentComp({
           // loadMoreComment(0);
         }}
         onSuccessNow={(item: any) => {
-          console.log("onSuccessNow", item);
           update && update();
         }}
       />

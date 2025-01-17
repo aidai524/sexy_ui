@@ -85,7 +85,7 @@ export const AuthProvider: React.FC<{
     if (!address) {
       setAccountRefresher(0);
       setTimeout(() => {
-        if (!userStore.userInfo?.address) {
+        if (!window.sexAddress) {
           logout();
         }
       }, 5000);
@@ -93,8 +93,6 @@ export const AuthProvider: React.FC<{
     }
 
     updateAccount();
-
-
   }, [address]);
 
   if (codeStore.a !== CODE && pathname !== "/") {

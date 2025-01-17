@@ -100,10 +100,10 @@ export default function Token({
         setMC(res as number);
       });
     }
-  }, [pool, data]);
+  }, [pool, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals, data?.DApp, data?.status]);
 
   useEffect(() => {
-    if (isOther) {
+    if (isOther || (!data?.isSuperLike && data?.account !== userInfo?.address)) {
       setPrepaidRealAmount(Big(0));
       setPrepaidAmount(Big(0));
       return;
@@ -113,10 +113,10 @@ export default function Token({
       setPrepaidRealAmount(_amount);
       setPrepaidAmount(Big(_amount).div(0.985));
     });
-  }, [isOther, data]);
+  }, [isOther, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals, data?.isSuperLike, userInfo?.address]);
 
   useEffect(() => {
-    if (pool && pool.length) {
+    if (pool && pool.length && showWithdraw) {
       const program = new Program<any>(idl, programId, {
         connection: connection
       } as any);
@@ -140,13 +140,13 @@ export default function Token({
         //   _tokenAmount.toString(),
         // );
       }).catch((err) => {
-        console.log('%cCalc token amount failed - %o: %o', 'background:#ff5f00;color:#fff;', data.tokenSymbol, err);
+        // console.log('%cCalc token amount failed - %o: %o', 'background:#ff5f00;color:#fff;', data.tokenSymbol, err);
         setTokenAmount(Big(0));
       });
       return;
     }
     setTokenAmount(Big(0));
-  }, [pool, data, prepaidRealAmount]);
+  }, [pool, data?.tokenDecimals, prepaidRealAmount, showWithdraw]);
 
   return (
     <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>

@@ -447,6 +447,9 @@ export async function upload(
   scala = 2
 ) {
   let _file: any = file;
+
+  console.log("file111", file, isImage);
+
   if (isImage) {
     const url = await new Promise<string | void>((resolve) => {
       const reader = new FileReader();
@@ -526,6 +529,8 @@ export async function upload(
   }
 
   const newFileName = generateRandomString(10) + fileName;
+
+  console.log("newFileName", newFileName);
 
   return postUpload(_file, newFileName, file.type);
 }
@@ -733,4 +738,14 @@ export async function getPointByVolume(volume: string, type: "sexy" | "pump") {
       ? { sexy_volume: volume, pump_volume: 0 }
       : { pump_volume: volume, sexy_volume: 0 };
   return httpGet("/mining/swapEstimate", params).then((res) => res.data);
+}
+
+export function formatNumberWithCommas(num: string | number) {
+  if (typeof num === 'number') {
+    num = num.toString();
+  }
+  
+  const parts = num.split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
 }

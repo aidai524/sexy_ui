@@ -48,22 +48,15 @@ export const useProjects = create(
       ) => {
         const currentProjects =
           type === "preLaunch" ? get().preProjects : get().launchProjects;
-        const currentProjectsList = Object.values(
-          type === "preLaunch" ? get().preProjects : get().launchProjects
-        );
+
         let prev: any = {};
-        if (type === "preLaunch" || hasMore) {
-          if (currentProjectsList.length + _projects.length > 100) {
-            const start = currentProjectsList.length + _projects.length - 100;
-            prev = currentProjectsList
-              .slice(start, 100)
-              .reduce(
-                (acc: any, curr: any) => ({ ...acc, [curr.id]: curr }),
-                {}
-              );
-          } else {
-            prev = { ...currentProjects };
-          }
+
+        if (type === "preLaunch") {
+          prev = { ...currentProjects };
+        }
+
+        if (type === "launching") {
+          prev = hasMore ? { ...currentProjects } : {};
         }
 
         const list = {
@@ -77,7 +70,10 @@ export const useProjects = create(
         if (type === "preLaunch") {
           set({ preProjects: list, address: address || "" });
         } else {
-          set({ launchProjects: list, address: address || "" });
+          set({
+            launchProjects: list,
+            address: address || ""
+          });
         }
       },
       getProjectsByType: (type: Type) => {
@@ -125,7 +121,7 @@ export const useProjects = create(
     }),
     {
       name: "_projects",
-      version: 0.12,
+      version: 0.1,
       storage: createJSONStorage(() => localStorage)
     }
   )

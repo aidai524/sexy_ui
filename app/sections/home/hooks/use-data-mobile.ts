@@ -23,16 +23,23 @@ export default function useData(launchType: Type) {
   const { accountRefresher, userInfo } = useAuth();
   const projectsStore = useProjects();
   const mountedRef = useRef(false);
+  const fetchingRef = useRef(false);
 
   const queryList = async () => {
+    if (fetchingRef.current) return;
     try {
+      fetchingRef.current = true;
       const res = await httpGet(
         `/project/list?limit=${limit}&launchType=${launchType}`
       );
-      setHasNext(res.data?.list.length === limit);
+
+      const _hasNext = res.data?.list && res.data?.list.length === limit;
+      setHasNext(_hasNext);
+
       if (res.code !== 0 || !res.data?.list) {
         return [];
       }
+
       const icons = res.data?.list.map((token: any) => token.icon);
       preloadImages(icons);
 
@@ -44,10 +51,13 @@ export default function useData(launchType: Type) {
       projectsStore.setProjects(
         projects,
         launchType,
-        res.data?.list.length === limit,
+        _hasNext,
         userInfo?.address
       );
-    } catch (err) {}
+    } catch (err) {
+    } finally {
+      fetchingRef.current = false;
+    }
   };
 
   const handleList = useCallback(
@@ -69,23 +79,32 @@ export default function useData(launchType: Type) {
     }
     setList(list);
 
-    if (
-      list.length - projectsStore.getIndex(launchType) <= left_num &&
-      hasNext
-    ) {
-      handleList(true);
-    } else {
+    if (list.length - projectsStore.getIndex(launchType) > left_num) {
       setIsLoading(false);
+      return;
+    }
+    if (launchType === "launching") {
+      handleList(true);
+      return;
+    }
+
+    if (launchType === "preLaunch" && hasNext) {
+      handleList(true);
     }
   };
 
   const onChangeIndex = (currentIndex: number) => {
     projectsStore.setIndex(launchType, currentIndex);
 
-    if (
-      list.length - projectsStore.getIndex(launchType) <= left_num &&
-      hasNext
-    ) {
+    if (list.length - projectsStore.getIndex(launchType) > left_num) {
+      return;
+    }
+    if (launchType === "launching") {
+      handleList(true);
+      return;
+    }
+
+    if (launchType === "preLaunch" && hasNext) {
       handleList(true);
     }
   };
@@ -115,9 +134,9 @@ export default function useData(launchType: Type) {
 
   return {
     getIndex: projectsStore.getIndex,
-    hasNext,
     isLoading,
     list,
+    hasNext,
     updateProject: projectsStore.updateProject,
     onChangeIndex,
     getProjectById: projectsStore.getProjectById

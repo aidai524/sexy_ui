@@ -5,12 +5,13 @@
 }
 
 .Container {
-  padding-left: 30px;
   padding-top: calc(50vh - 360px);
+  padding-right: 400px;
 }
 
 .Content {
   width: 664px;
+  margin: 0 auto;
 }
 
 .TitleWrapper {

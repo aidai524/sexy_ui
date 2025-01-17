@@ -2,6 +2,7 @@ import style from "./index.module.css";
 import type { Project, UserInfo } from "@/app/type";
 import { defaultAvatar } from "@/app/utils/config";
 import { numberFormatter } from "@/app/utils/common";
+import { formatNumberWithCommas } from "@/app/utils";
 
 interface Props {
   onClose: () => void;
@@ -52,7 +53,7 @@ export default function TradeSuccessModal({
         <div className={style.contentBox}>
           <div className={style.successText}>You’ve {typeText[type]} </div>
           <div className={style.successNote}>
-            {amount} {token.tokenSymbol}
+            {formatNumberWithCommas(amount)} {token.tokenSymbol}
           </div>
           <div className={style.successText}>successfully!</div>
         </div>

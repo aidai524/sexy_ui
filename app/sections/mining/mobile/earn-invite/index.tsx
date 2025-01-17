@@ -4,7 +4,7 @@ import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useAuth } from "@/app/context/auth";
 import { fail, success } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
-import { useReferStore } from '@/app/store/useRefer';
+import { useReferStore } from "@/app/store/useRefer";
 
 export default function EarnAndInvite({ info }: any) {
   const { userInfo } = useAuth();
@@ -35,7 +35,9 @@ export default function EarnAndInvite({ info }: any) {
         />
         <div className={styles.ItemContent}>
           <div className={styles.Title}>Like to Earn</div>
-          <div className={styles.Desc}>100 likes per day</div>
+          <div className={styles.Desc}>
+            {info?.like_num || 100} likes per day
+          </div>
           <div
             className={styles.Num}
             style={{
@@ -86,14 +88,22 @@ export default function EarnAndInvite({ info }: any) {
                 });
             }}
           >
-            {userInfo?.address
-              ? (
-                <div className={styles.LinkAddress}>
-                  <div className={styles.LinkAddressValue}>{window?.location?.origin}?referral=${userInfo.address}</div>
-                  <img className={styles.LinkAddressIcon} src="/img/mining/icon-copy.svg" alt="" width={16} height={16} />
+            {userInfo?.address ? (
+              <div className={styles.LinkAddress}>
+                <div className={styles.LinkAddressValue}>
+                  {window?.location?.origin}?referral=${userInfo.address}
                 </div>
-              )
-              : "-"}
+                <img
+                  className={styles.LinkAddressIcon}
+                  src="/img/mining/icon-copy.svg"
+                  alt=""
+                  width={16}
+                  height={16}
+                />
+              </div>
+            ) : (
+              "-"
+            )}
           </div>
           {userInfo?.address ? (
             <button

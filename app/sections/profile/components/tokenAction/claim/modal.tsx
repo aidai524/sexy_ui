@@ -36,6 +36,7 @@ const Content = (props: any) => {
     prepaidTokenWithdraw,
     prepaidAmount,
     tokenAmount,
+    onClose,
   } = props;
 
   const tokenIcon = token.tokenIcon || token.tokenImg || "/img/token-placeholder.png";
@@ -47,14 +48,15 @@ const Content = (props: any) => {
     try {
       const res = await prepaidTokenWithdraw();
       if (!res) {
-        fail("Claim fail");
+        fail("Claim fail", { maskStyle: { zIndex: 2000 } });
       } else {
-        success("Claim success");
+        success("Claim success", { maskStyle: { zIndex: 2000 } });
         setIsClaimed(true);
+        onClose?.();
       }
     } catch (e) {
       console.log(e);
-      fail("Claim fail");
+      fail("Claim fail", { maskStyle: { zIndex: 2000 } });
     }
 
     setIsLoading(false);

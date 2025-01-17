@@ -30,7 +30,12 @@ export default function Messages() {
   return (
     <div className={styles.Container} style={{ height: innerHeight }}>
       <PageHeader
-        title="Messages"
+        title={
+          <div className={styles.Title}>
+            <span>Notifications</span>
+            <span className={styles.Num}>{informNum}</span>
+          </div>
+        }
         from="messages"
         rightActions={
           <button
@@ -50,11 +55,11 @@ export default function Messages() {
         }
       />
       <div className={styles.Content} style={{ height: innerHeight - 46 }}>
-        <Header
+        {/* <Header
           currentTab={currentTab}
           onChangeTab={setCurrentTab}
           num={informNum}
-        />
+        /> */}
 
         <div
           className={styles.Content}
@@ -82,7 +87,7 @@ export default function Messages() {
             </InfiniteScroll>
           )}
           {list.length === 0 && !loading ? (
-            <Empty height={300} text="No new informations" />
+            <Empty height={300} text="No notifications" />
           ) : (
             isFirstPage && (
               <div className={styles.LoadingWrapper}>

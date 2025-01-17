@@ -49,6 +49,10 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
     { wait: 500 }
   );
 
+  if (token.account === window.sexAddress) {
+    return null
+  }
+
   return (
     <>
       <div className={styles.Container} id={id}>

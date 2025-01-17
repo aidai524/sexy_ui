@@ -6,30 +6,21 @@ import styles from "./index.module.css";
 import dynamic from "next/dynamic";
 import { AnimatePresence } from "framer-motion";
 import useData from "@/app/sections/home/hooks/use-data-mobile";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 
 const DetailPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/detail"),
-  {
-    ssr: false
-  }
+  () => import("@/app/sections/home/laptop/panels/detail")
 );
 
 const CommentsPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/comments"),
-  {
-    ssr: false
-  }
+  () => import("@/app/sections/home/laptop/panels/comments")
 );
 
 const FlipPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/flip"),
-  {
-    ssr: false
-  }
+  () => import("@/app/sections/home/laptop/panels/flip")
 );
 
 export default function List({ type, isCurrentTab }: any) {
@@ -37,6 +28,7 @@ export default function List({ type, isCurrentTab }: any) {
     getIndex,
     isLoading,
     list,
+    hasNext,
     onChangeIndex,
     updateProject,
     getProjectById
@@ -46,6 +38,7 @@ export default function List({ type, isCurrentTab }: any) {
   const homeTabStore: any = useHomeTab();
   const tokenPanelStatusStore: any = useTokenPanelStatus();
   const { innerHeight, innerWidth } = useUserAgent();
+  const listRef = useRef<any>();
 
   useEffect(() => {
     if (list.length && index > list.length) {
@@ -55,6 +48,17 @@ export default function List({ type, isCurrentTab }: any) {
       setY(-index * (innerHeight + 16));
     }
   }, [index, list]);
+
+  useEffect(() => {
+    if (hasNext || type === "preLaunch") return;
+    if (!listRef.current) return;
+    listRef.current.style.transition = "none";
+    onChangeIndex(0);
+    setY(0);
+    setTimeout(() => {
+      listRef.current.style.transition = "0.3s";
+    }, 60);
+  }, [hasNext]);
 
   const currentToken = useMemo(() => {
     const id = list[index];
@@ -73,6 +77,7 @@ export default function List({ type, isCurrentTab }: any) {
     >
       <div
         className={styles.List}
+        ref={listRef}
         style={{
           transform: `translate(${
             tokenPanelStatusStore.hasShow(type)

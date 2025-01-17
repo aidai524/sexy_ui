@@ -626,7 +626,7 @@ export default function BuySell({
                 style={{
                   color: "#000",
                   background: activeIndex === 0 ? "#C9FF5D" : "#FFC9F1",
-                  height: from === "panel" ? 36 : 72,
+                  height: from === "panel" ? 36 : 60,
                   width: from === "panel" ? "120px" : "100%"
                 }}
               >

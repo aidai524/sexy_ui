@@ -10,6 +10,7 @@ import { useState } from "react";
 export default function Rank({ info, infoLoading }: any) {
   const { userInfo } = useAuth();
   const [visible, setVisible] = useState(false);
+
   return (
     <>
       {userInfo?.address ? (

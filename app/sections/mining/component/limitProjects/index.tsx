@@ -1,8 +1,23 @@
 import styles from "./limitProject.module.css";
+import { useHomeTab } from "@/app/store/useHomeTab";
+import { useRouter } from "next/navigation";
 
 export default function LimitProject({ list = [] }: any) {
+  const homeTabStore: any = useHomeTab();
+  const router = useRouter();
   return !!list.length ? (
-    <div className={styles.main}>
+    <div
+      className={`${styles.main} button`}
+      onClick={() => {
+        homeTabStore.set({
+          currentSummary: { label: "Launched", amount: 0, value: 3 },
+          profileTabIndex: 4
+        });
+        setTimeout(() => {
+          router.push("/profile");
+        }, 60);
+      }}
+    >
       {list?.slice(0, 5).map((item: any) => {
         return <img className={styles.img} key={item.id} src={item.icon} />;
       })}

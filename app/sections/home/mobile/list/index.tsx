@@ -3,7 +3,7 @@ import Empty from "@/app/components/empty";
 import Loading from "../loading";
 import TourGuid from "../tour-guid";
 import useData from "@/app/sections/home/hooks/use-data-mobile";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
@@ -15,9 +15,9 @@ let started = false;
 export default function List({ type, isCurrentTab, onChangeTab }: any) {
   const {
     getIndex,
-    hasNext,
     isLoading,
     list,
+    hasNext,
     onChangeIndex,
     updateProject,
     getProjectById
@@ -27,6 +27,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   const homeTabStore: any = useHomeTab();
   const { innerHeight, innerWidth } = useUserAgent();
   const guidingTourStore = useGuidingTour();
+  const listRef = useRef<any>();
 
   useEffect(() => {
     const prevent = function (e: any) {
@@ -47,6 +48,17 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
     }
   }, [index, list]);
 
+  useEffect(() => {
+    if (hasNext || type === "preLaunch") return;
+    if (!listRef.current) return;
+    listRef.current.style.transition = "none";
+    onChangeIndex(0);
+    setY(0);
+    setTimeout(() => {
+      listRef.current.style.transition = "0.3s";
+    }, 60);
+  }, [hasNext, type]);
+
   return (
     <>
       <div
@@ -57,7 +69,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           left: type === "preLaunch" ? 0 : innerWidth
         }}
       >
-        <div
+        {/* <div
           style={{
             position: "absolute",
             left: 0,
@@ -67,14 +79,15 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           }}
         >
           <div>
-            {type} Y: {y}
+            {type} Index: {index}
           </div>
           <div>
             {type} Len: {list.length}
           </div>
-        </div>
+        </div> */}
         <div
           className={styles.List}
+          ref={listRef}
           style={{
             transform: `translateY(${y}px)`
           }}

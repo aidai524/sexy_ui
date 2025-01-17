@@ -1,6 +1,7 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import styles from "./index.module.css";
-import { videoReg } from "../../upload";
+import { getVideoExt, videoReg, imgReg } from "../../upload";
+import VideoPlayer from "../../video";
 
 export default function Media({ imgHeight, data }: any) {
   return (
@@ -11,12 +12,15 @@ export default function Media({ imgHeight, data }: any) {
           height: imgHeight
         }}
       >
-        {videoReg.test(data.tokenImg) ? (
-          <video width="100%" autoPlay={false}>
-            <source src={data.tokenImg} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        ) : (
+        {
+          videoReg.test(data.tokenImg || '') &&
+          <VideoPlayer
+            src={data.tokenImg}
+            type={getVideoExt(data.tokenImg)}
+            className={styles.tokenImg}
+          />
+        }
+        {imgReg.test(data.tokenImg) && (
           <LazyLoadImage
             effect="blur"
             className={styles.tokenImg}
