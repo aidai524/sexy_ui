@@ -9,6 +9,9 @@ import Big from "big.js";
 import { defaultAvatar } from "@/app/utils/config";
 import { numberFormatter } from "@/app/utils/common";
 import { useDebounceFn } from "ahooks";
+import { PublicKey } from "@solana/web3.js";
+import { useConnection } from "@solana/wallet-adapter-react";
+import Rank from "@/app/sections/mining/component/rank";
 
 const pageSize = 40;
 
@@ -18,6 +21,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
   const [pageIndex, setPageIndex] = useState(1);
   const [supply, setSupply] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const { connection } = useConnection(); 
 
   const loadMore = useCallback(
     async (page?: any) => {
@@ -26,9 +30,29 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
 
       if (_page === 1) setIsLoading(true);
       try {
-        const res = await getHoldersByToken(address, _page, pageSize);
+        
+        let res = null
+        if (process.env.NEXT_PUBLIC_NET === 'Devnet') {
+          const tokenAccounts = await connection.getTokenLargestAccounts(new PublicKey(address), "confirmed");
 
-        if (res.items && res.items.length) {
+          const result = {
+            items: tokenAccounts.value.map((item: any) => {
+              return {
+                owner: item.address?.toString(),
+                amount: item.uiAmount.toString(),
+                decimals: item.decimals,
+                rank: item.rank
+              }
+            }),
+
+          }
+          res = result
+        } else {
+          res = await getHoldersByToken(address, _page, pageSize);
+        }
+
+
+        if (res?.items && res.items.length) {
           const addressList = res.items
             .map((item: any) => item.owner)
             .join(",");
@@ -56,6 +80,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
           }
         }
       } catch (err) {
+        console.log('err:', err)
         if (_page === 1) setList([]);
       } finally {
         setIsLoading(false);
@@ -66,8 +91,13 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
 
   const getTokenInfo = useCallback(async () => {
     if (address) {
-      const tokenInfo = await getTokenMeta(address);
-      setSupply(tokenInfo.data.supply);
+      if (process.env.NEXT_PUBLIC_NET === 'Devnet') {
+        const tokenSupply = await connection.getTokenSupply(new PublicKey(address), "confirmed");
+        setSupply(tokenSupply.value.uiAmount || 0);
+      } else {
+        const tokenInfo = await getTokenMeta(address);
+        setSupply(tokenInfo.data.supply);
+      }
     }
   }, [address]);
 
