@@ -12,6 +12,7 @@ import Refer, {
   ReferContentCard
 } from "@/app/components/layout/laptop/user/refer";
 import TabBg from "./tab-bg";
+import { useAuth } from '@/app/context/auth';
 
 function CustomIcon({
   url,
@@ -114,6 +115,7 @@ const Tabs = (pathname: string) => [
 export default function Component({ children }: any) {
   const pathname = usePathname();
   const { address } = useAccount();
+  const { userInfo } = useAuth();
 
   const showTabs = useMemo(() => {
     return Tabs(pathname).find((tab) => {
@@ -136,7 +138,7 @@ export default function Component({ children }: any) {
         trade()
       }}>juipter</Button> */}
       {children}
-      <Refer isMobile />
+      <Refer userInfo={userInfo} isMobile />
       {/* {showTabs && (
           <>
             <TabBg className={styles.TabBg} />

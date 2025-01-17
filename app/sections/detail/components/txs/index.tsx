@@ -71,7 +71,13 @@ export default function Txs({ from, data }: any) {
   }, [data]);
 
   return (
-    <div className={styles.main}>
+    <div
+      className={styles.main}
+      style={{
+        backgroundColor: from === "panel" ? "#FFFFFF1A" : "#252328",
+        borderRadius: from === "panel" ? "10px" : "15px 15px 0 0"
+      }}
+    >
       <div className={styles.filter}>
         <div className={styles.filterItem}>
           <div className={styles.filterText}>
@@ -90,10 +96,22 @@ export default function Txs({ from, data }: any) {
           />
         </div>
 
-        {
-          address && <>
+        {address && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: from === "panel" ? "row" : "column",
+              justifyContent: from === "panel" ? "space-between" : "flex-start"
+            }}
+          >
             <div className={styles.filterItem}>
-              <div className={styles.filterText}>
+              <div
+                className={styles.filterText}
+                style={{
+                  fontSize: from === "panel" ? 10 : 12,
+                  marginRight: from === "panel" ? 6 : 0
+                }}
+              >
                 Filter by my following (12 trades)
               </div>
               <SexSwitch
@@ -109,7 +127,13 @@ export default function Txs({ from, data }: any) {
             </div>
 
             <div className={styles.filterItem}>
-              <div className={styles.filterText}>
+              <div
+                className={styles.filterText}
+                style={{
+                  fontSize: from === "panel" ? 10 : 12,
+                  marginRight: from === "panel" ? 6 : 0
+                }}
+              >
                 Filter by own trades (0 trades)
               </div>
               <SexSwitch
@@ -123,24 +147,22 @@ export default function Txs({ from, data }: any) {
                 }}
               />
             </div>
-          </>
-        }
-
-
+          </div>
+        )}
       </div>
 
       {data && (
         <div
-          className={`${styles.txContent} ${from === "laptop-home" ? styles.LaptopContent : ""
-            }`}
+          className={`${styles.txContent} ${
+            from === "panel" ? styles.LaptopContent : ""
+          }`}
         >
           {data?.status === 1 && (
             <>
               <div
-                className={`${styles.txTtitles} ${from === "laptop-home"
-                    ? styles.LaptopTitles
-                    : styles.MobileTitles
-                  }`}
+                className={`${styles.txTtitles} ${
+                  from === "panel" ? styles.LaptopTitles : styles.MobileTitles
+                }`}
               >
                 <div style={{ flex: 2 }} className={styles.titleItem}>
                   Account
@@ -169,10 +191,11 @@ export default function Txs({ from, data }: any) {
                       }}
                     >
                       <div
-                        className={`${styles.account} ${from === "laptop-home"
+                        className={`${styles.account} ${
+                          from === "panel"
                             ? styles.LaptopAccount
                             : styles.MobileAccount
-                          }`}
+                        }`}
                       >
                         <img
                           className={styles.avatar}
@@ -240,7 +263,7 @@ export default function Txs({ from, data }: any) {
                 })}
 
                 {(!list || list.length === 0) && (
-                  <Empty height={300} text="No Data" />
+                  <Empty height={from === "panel" ? 241 : 300} text="No Data" />
                 )}
               </div>
             </>
@@ -249,10 +272,7 @@ export default function Txs({ from, data }: any) {
           {data?.status === 3 && (
             <iframe
               style={{
-                height:
-                  from === "laptop-home"
-                    ? "calc(100vh - 430px)"
-                    : "calc(100vh - 210px)"
+                height: from === "panel" ? 296 : "calc(100vh - 210px)"
               }}
               id="dexscreener-embed"
               title="Dexscreener Trading Chart"

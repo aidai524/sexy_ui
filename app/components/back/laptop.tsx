@@ -1,10 +1,8 @@
 import styles from "./laptop.module.css";
-import { useFullScreen } from "@/app/store/use-full-screen";
 
 export default function GoBack(props: { onBack?(): void; from?: string }) {
   const { from, onBack } = props;
 
-  const fullScreenStore: any = useFullScreen();
   return (
     <button
       className={`${styles.Container} button`}
@@ -14,11 +12,7 @@ export default function GoBack(props: { onBack?(): void; from?: string }) {
           return;
         }
         if (from === "detail") {
-          history.pushState(
-            { page: "/" },
-            "Home",
-            `/?launchType=${fullScreenStore.launchType || 0}`
-          );
+          history.pushState({ page: "/" }, "Home", `/`);
           return;
         }
         history.back();

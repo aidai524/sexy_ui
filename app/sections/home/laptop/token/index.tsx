@@ -7,22 +7,28 @@ import Actions from "@/app/sections/home/mobile/actions";
 import Flip from "@/app/sections/home/mobile/flip";
 import Flipped from "@/app/sections/home/mobile/flip/flipped";
 import Trade from "@/app/sections/home/mobile/trade";
-import SmokePanel from "@/app/components/smokHot/smoke-panel";
 import Danmaku from "@/app/components/danmaku";
-import TradeModal from "@/app/components/trade-modal";
-import CommentsModal from "@/app/sections/home/mobile/comments";
+import DetailButton from "./detail-button";
+import ScaleButton from "./scale-button";
+import TradePanel from "../panels/trade";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
 
-export default function Token({ isCurrent, token, onUpdate }: any) {
+export default function Token({
+  isCurrent,
+  token,
+  opacity,
+  showTrade,
+  tradeTab,
+  onUpdate,
+  onOpenPanel,
+  onUpdateTradeTab
+}: any) {
   const [imgHeight, setImgHeight] = useState("80%");
-  const { innerHeight } = useUserAgent();
+  const { innerHeight, innerWidth } = useUserAgent();
   const descContentRef = useRef<any>();
-  const [showFlipModal, setShowFlipModal] = useState(false);
-  const [showTradeModal, setShowTradeModal] = useState(false);
-  const [showCommentsModal, setShowCommentsModal] = useState(false);
 
   const { total: totalHolders } = useHolders(token);
 
@@ -33,10 +39,22 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
   }, []);
 
   return (
-    <>
-      <div className={styles.Container} style={{ height: innerHeight }}>
-        {token?.id && (
-          <>
+    <div
+      className={styles.Box}
+      style={{
+        opacity,
+        height: innerHeight
+      }}
+    >
+      {token?.id && (
+        <div className={styles.Container}>
+          <div
+            className={styles.Token}
+            style={{
+              width: innerWidth,
+              height: innerHeight
+            }}
+          >
             <Media imgHeight={imgHeight} data={token} />
             <div className={styles.Labels}>
               {token.isSuperLike && (
@@ -47,6 +65,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                   src="/img/home/flipped.png"
                 />
               )}
+
               {token.isLike && (
                 <motion.img
                   initial={{ opacity: 0 }}
@@ -71,7 +90,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                         window.connect();
                         return;
                       }
-                      setShowFlipModal(true);
+                      onOpenPanel("showFlip", true);
                     }}
                     id={isCurrent ? "guid-tour-flip" : token.id}
                   />
@@ -87,7 +106,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                       window.connect();
                       return;
                     }
-                    setShowTradeModal(true);
+                    onOpenPanel("showTrade", true);
                   }}
                 />
               )}
@@ -95,11 +114,35 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                 <Desc token={token} />
               </div>
             </div>
+          </div>
+          {token.status !== 0 && isCurrent && showTrade && (
+            <TradePanel
+              onClose={() => {
+                onOpenPanel("showTrade", false);
+              }}
+              token={token}
+              tab={tradeTab}
+              setTab={onUpdateTradeTab}
+            />
+          )}
+          {token.status !== 0 && !showTrade && isCurrent && (
+            <ScaleButton
+              onClick={() => {
+                onOpenPanel("showTrade", !showTrade);
+              }}
+            />
+          )}
+          <div className={styles.Actions}>
+            <DetailButton
+              onClick={() => {
+                onOpenPanel("showDetail");
+              }}
+            />
             <Actions
               token={token}
               onClick={(type: any) => {
                 if (type === "comments") {
-                  setShowCommentsModal(true);
+                  onOpenPanel("showComments");
                   return;
                 }
                 if (!window.sexAddress) {
@@ -107,10 +150,11 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                   return;
                 }
                 if (type === "flip") {
-                  setShowFlipModal(true);
+                  onOpenPanel("showFlip");
                 }
                 if (type === "trade") {
-                  setShowTradeModal(true);
+                  onUpdateTradeTab("holders");
+                  onOpenPanel("showTrade");
                 }
               }}
               totalHolders={totalHolders}
@@ -123,48 +167,9 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
               }}
               isCurrent={isCurrent}
             />
-          </>
-        )}
-      </div>
-      {showFlipModal && (
-        <SmokePanel
-          token={token}
-          show={showFlipModal}
-          onSuccess={(amount: string) => {
-            token.isSuperLike = true;
-            token.prePaid = token.prePaid + 1;
-            token.total_amount = amount;
-            onUpdate(token);
-            setShowFlipModal(false);
-          }}
-          onHide={() => {
-            setShowFlipModal(false);
-          }}
-        />
+          </div>
+        </div>
       )}
-      {showTradeModal && (
-        <TradeModal
-          show={showTradeModal}
-          onClose={() => {
-            setShowTradeModal(false);
-          }}
-          data={token}
-        />
-      )}
-      {showCommentsModal && (
-        <CommentsModal
-          show={showCommentsModal}
-          onClose={() => {
-            setShowCommentsModal(false);
-          }}
-          id={token.id}
-          onSuccess={() => {
-            token.comment = token.comment + 1;
-            onUpdate(token);
-          }}
-          total={token.comment}
-        />
-      )}
-    </>
+    </div>
   );
 }

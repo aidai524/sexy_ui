@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./index.module.css";
 import HomeIcon from "@/app/components/icons/home";
 import CircleLoading from "@/app/components/icons/loading";
+import Button from "./button";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useDebounceFn } from "ahooks";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
@@ -51,27 +52,10 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
   return (
     <>
       <div className={styles.Container} id={id}>
-        <button
-          className={`button ${styles.FlipButton}`}
+        <Button
+          className={styles.FlipButton}
           onClick={onClick}
-          style={{
-            transform: `translateX(${x}px)`
-          }}
-          onTouchStart={(ev: any) => {
-            ev.stopPropagation();
-            startX = ev.touches[0].clientX;
-          }}
-          onTouchMove={(ev) => {
-            let diff = ev.touches[0].clientX - startX;
-            if (diff < 0) {
-              diff = 0;
-            }
-            if (diff > 90) {
-              diff = 170;
-              run();
-            }
-            setX(diff);
-          }}
+          {...{ x, startX, run, setX }}
         >
           {loading ? (
             <CircleLoading size={20} />
@@ -79,7 +63,7 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
             <HomeIcon size={28} type="black" />
           )}
           <span>{loading ? "0.1 SOL" : "Flip it!"}</span>
-        </button>
+        </Button>
         {loading && <div className={styles.Hints}>Quick Buy</div>}
         {!loading && (
           <>

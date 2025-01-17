@@ -5,7 +5,7 @@ import useDanmaku from "@/app/hooks/use-danmaku";
 
 export default function DanmakuComp({ token }: any) {
   const { list, show } = useDanmaku({ id: token?.id });
-  console.log("show", show);
+
   return (
     <div className={styles.Container}>
       {show && !!list.length && (

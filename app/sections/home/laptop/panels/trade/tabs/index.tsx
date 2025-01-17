@@ -2,26 +2,16 @@ import { motion } from "framer-motion";
 import styles from "./index.module.css";
 import { useRef } from "react";
 
-const TABS = [
-  {
-    label: "Info",
-    key: "info"
-  },
-  {
-    label: "Chart",
-    key: "chart"
-  },
-  {
-    label: "Txs",
-    key: "txs"
-  }
-];
-
-export default function Tabs({ currentTab, onChangeTab }: any) {
+export default function Tabs({ currentTab, onChangeTab, tabs, type }: any) {
   const prevI = useRef<number[]>([0]);
   return (
-    <div className={styles.Container}>
-      {TABS.map((tab, i) => (
+    <div
+      className={styles.Container}
+      style={{
+        justifyContent: type === "center" ? "center" : "flex-start"
+      }}
+    >
+      {tabs.map((tab: any, i: number) => (
         <div
           key={tab.key}
           className={`${currentTab === tab.key && styles.active} ${
@@ -31,6 +21,10 @@ export default function Tabs({ currentTab, onChangeTab }: any) {
             onChangeTab(tab.key);
             prevI.current.push(i);
             if (prevI.current.length > 2) prevI.current.shift();
+          }}
+          style={{
+            width: type === "center" ? 130 : "auto",
+            textAlign: type === "center" ? "center" : "left"
           }}
         >
           <span>{tab.label}</span>

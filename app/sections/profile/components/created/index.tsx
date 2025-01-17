@@ -7,6 +7,8 @@ import { mapDataToProject } from "@/app/utils/mapTo";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { useAuth } from "@/app/context/auth";
 import useCheckFliped from "../../hooks/use-check-fliped";
+import styles from "./index.module.css";
+import Popover, { PopoverPlacement, PopoverTrigger } from '@/app/components/popover';
 
 const urls: Record<string, string> = {
   created: "/project/account/list",
@@ -15,6 +17,12 @@ const urls: Record<string, string> = {
 };
 
 const LIMIT = 10;
+
+interface Summary {
+  amount?: number;
+  label: string;
+  value: number | '';
+}
 
 export default function Created({
   address,
@@ -26,9 +34,20 @@ export default function Created({
   refresher = 0,
   isCurrent
 }: any) {
+  const popoverRef = useRef<any>();
+  const [summaries, setSummaries] = useState<Record<string, Summary[]>>({
+    liked: [
+      { label: 'All', amount: 0, value: '' },
+      { label: 'Launched', amount: 0, value: 3 },
+      { label: 'Launching', amount: 0, value: 1 },
+      { label: 'Pre-Launch', amount: 0, value: 0 },
+    ]
+  });
+  const [currentSummary, setCurrentSummary] = useState<Summary>();
   const [list, setList] = useState<Project[]>([]);
   const [refresh, setRefresh] = useState<number>(1);
   const [hasMore, setHasMore] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0);
   const { updateCurrentUserInfo, accountRefresher, userInfo } = useAuth();
   const timerRef = useRef<any>();
@@ -50,23 +69,37 @@ export default function Created({
   }, [refresher, accountRefresher]);
 
   const loadMore = useCallback(
-    async (isInit?: boolean, limit?: number) => {
+    async (isInit?: boolean, limit?: number, opts?: { status?: '' | number; }) => {
+      setLoading(true);
       try {
-        const res = await http(
-          urls[type],
-          "GET",
-          {
-            address,
-            limit: limit || LIMIT,
-            offset: isInit ? 0 : offset
-          },
-          {}
-        );
-        if (!res) throw new Error();
+        const params: any = {
+          address,
+          limit: limit || LIMIT,
+          offset: isInit ? 0 : offset
+        };
+        let project_status: any;
+        if (type === 'liked') {
+          project_status = typeof opts?.status !== void 0 ? opts?.status : currentSummary?.value;
+          if (!['', void 0].includes(project_status)) {
+            params.project_status = project_status;
+          }
+        }
+        const res = await http(urls[type], "GET", params, {});
+        if (!res) {
+          setLoading(false);
+          if (isInit) {
+            setList([]);
+          }
+          return;
+        }
         setHasMore(res.data?.has_next_page || false);
         let _list: any = [];
         if (res.code !== 0 || !res.data?.list?.length) {
-          throw new Error();
+          setLoading(false);
+          if (isInit) {
+            setList([]);
+          }
+          return;
         }
 
         const newMapList = res.data?.list.map(mapDataToProject);
@@ -76,6 +109,24 @@ export default function Created({
         setOffset(_list.length);
         setList(_list);
         clearTimeout(timerRef.current);
+        if (type === 'liked') {
+          const _summaries: Summary[] = [
+            { label: 'All', amount: res.data.total_num || 0, value: '' },
+            { label: 'Launched', amount: res.data.launched_num || 0, value: 3 },
+            { label: 'Launching', amount: res.data.launching_num || 0, value: 1 },
+            { label: 'Pre-Launch', amount: res.data.pre_launch_num || 0, value: 0 },
+          ];
+          setSummaries({
+            ...summaries,
+            liked: _summaries,
+          });
+          let _currentSummary: Summary | undefined;
+          _currentSummary = _summaries.find((s) => s.value === project_status);
+          if (!_currentSummary) {
+            _currentSummary = _summaries[0];
+          }
+          setCurrentSummary(_currentSummary);
+        }
         if (isCurrent) {
           timerRef.current = setTimeout(() => {
             loadMore(true, _list.length);
@@ -84,9 +135,19 @@ export default function Created({
       } catch (err) {
         setList([]);
       }
+      setLoading(false);
     },
-    [address, type, offset, list, isCurrent]
+    [address, type, offset, list, isCurrent, currentSummary, loading]
   );
+
+  const handleSelect = (summary: Summary) => {
+    popoverRef.current?.onClose?.();
+    if (summary.label === currentSummary?.label || loading) {
+      return;
+    }
+    setCurrentSummary(summary);
+    loadMore(true, LIMIT, { status: summary.value });
+  };
 
   useEffect(() => {
     return () => {
@@ -104,14 +165,30 @@ export default function Created({
 
   if (list.length === 0) {
     return (
-      <div style={{ paddingTop: 116 }}>
-        <Empty text={"No FlipN coins " + type + " yet"} id={type} />
-      </div>
+      <>
+        <StatusSelect
+          type={type}
+          popoverRef={popoverRef}
+          summaries={summaries}
+          currentSummary={currentSummary}
+          handleSelect={handleSelect}
+        />
+        <div style={{ paddingTop: 116 }}>
+          <Empty text={'No Fun coins ' + type + ' yet'} id={type} />
+        </div>
+      </>
     );
   }
 
   return (
     <div>
+      <StatusSelect
+        type={type}
+        popoverRef={popoverRef}
+        summaries={summaries}
+        currentSummary={currentSummary}
+        handleSelect={handleSelect}
+      />
       {list.map((item) => {
         const isSuperLike = !isOther
           ? item.isSuperLike
@@ -140,3 +217,56 @@ export default function Created({
     </div>
   );
 }
+
+const StatusSelect = (props: any) => {
+  const {
+    type,
+    popoverRef,
+    summaries,
+    currentSummary,
+    handleSelect,
+  } = props;
+
+  if (type !== 'liked') return null;
+
+  return (
+    <div className={styles.SelectContainer}>
+      <Popover
+        ref={popoverRef}
+        placement={PopoverPlacement.Bottom}
+        trigger={PopoverTrigger.Click}
+        content={(
+          <div className={styles.SelectDropdown}>
+            <ul className={styles.SelectList}>
+              {
+                summaries.liked.map((s: any, idx: any) => (
+                  <li
+                    key={idx}
+                    className={currentSummary?.label === s.label ? styles.SelectItemActive : styles.SelectItem}
+                    onClick={() => handleSelect(s)}
+                  >
+                    <div className={styles.SelectItemLeft}>{s.label}</div>
+                    <div className={styles.SelectItemRight}>
+                      {s.amount}
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        )}
+      >
+        <div className={styles.Select}>
+          <div className={styles.SelectValue}>
+            {currentSummary?.label || 'All'} {currentSummary?.amount || '0'}
+          </div>
+          <div className={styles.SelectArrow}>
+            <svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.8335 1L5.50016 5L1.16683 1" stroke="white" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </div>
+        </div>
+      </Popover>
+    </div>
+  );
+};

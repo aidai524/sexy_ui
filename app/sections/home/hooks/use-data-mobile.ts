@@ -41,7 +41,12 @@ export default function useData(launchType: Type) {
         fetched_time: Date.now()
       }));
 
-      projectsStore.setProjects(projects, launchType, userInfo?.address);
+      projectsStore.setProjects(
+        projects,
+        launchType,
+        res.data?.list.length === limit,
+        userInfo?.address
+      );
     } catch (err) {}
   };
 

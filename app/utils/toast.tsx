@@ -5,7 +5,9 @@ const customStyle: any = {
   wordBreak: "break-word"
 };
 
-export function success(msg: string | React.ReactNode) {
+export function success(msg: string | React.ReactNode, opts?: { maskStyle?: React.CSSProperties; }) {
+  const { maskStyle } = opts ?? {};
+
   Toast.show({
     content: <div style={{ color: "#AAFF00", ...customStyle }}>{msg}</div>,
     position: "top",
@@ -26,11 +28,14 @@ export function success(msg: string | React.ReactNode) {
         />
       </svg>
     ),
-    duration: 2000
+    duration: 2000,
+    maskStyle
   });
 }
 
-export function fail(msg: string) {
+export function fail(msg: string, opts?: { maskStyle?: React.CSSProperties; }) {
+  const { maskStyle } = opts ?? {};
+
   Toast.show({
     content: <div style={{ color: "#FF2681", ...customStyle }}>{msg}</div>,
     position: "top",
@@ -64,6 +69,7 @@ export function fail(msg: string) {
         />
       </svg>
     ),
-    duration: 2000
+    duration: 2000,
+    maskStyle
   });
 }

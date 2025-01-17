@@ -7,7 +7,7 @@
 }
 
 .list {
-  color: #FFFFFF99;
+  color: #ffffff99;
   padding-top: 10px;
   .item {
     display: flex;
@@ -24,10 +24,11 @@
 
 .LaptopList {
   border-radius: 10px;
-  background: #ab1f5c;
+  background: rgba(255, 255, 255, 0.1);
   margin-top: 2px;
   padding: 16px;
   margin-right: 10px;
+  height: 400px;
 }
 
 .UserName {

@@ -4,14 +4,12 @@ import Modal from "@/app/components/modal";
 import { fail, success } from "@/app/utils/toast";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
-import { Popup } from "antd-mobile";
 import Tab, {
   AnimateVariants,
   TabTitle
 } from "@/app/components/layout/laptop/user/refer/modal/tab";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { httpAuthGet } from "@/app/utils";
 import Loading from "@/app/components/icons/loading";
 import { useAirdrop } from "@/app/components/airdrop/hooks";
 import { useUser } from '@/app/store/useUser';
@@ -76,10 +74,10 @@ const ReferModalContent = (props: any) => {
     navigator.clipboard
       .writeText(shareLink.toString())
       .then(() => {
-        success("Copied share link!");
+        success("Copied share link!", { maskStyle: { zIndex: 2000 } });
       })
       .catch((err) => {
-        fail("Copy failed!");
+        fail("Copy failed!", { maskStyle: { zIndex: 2000 } });
       })
       .finally(() => {
         setLoading(false);
@@ -125,7 +123,7 @@ const ReferModalContent = (props: any) => {
               <TabTitle
                 {...props}
                 label="EARNED"
-                value={numberFormatter(Big(userInfo?.referralFee || 0).div(10 ** SOL.tokenDecimals), 2, true, { isShort: true })}
+                value={numberFormatter(Big(userInfo?.referralFee || 0).div(10 ** SOL.tokenDecimals), 4, true, { isShort: true })}
                 unit="SOL"
                 tab={1}
                 current={currentTab}
@@ -134,7 +132,7 @@ const ReferModalContent = (props: any) => {
               <TabTitle
                 {...props}
                 label="EARNED"
-                value={numberFormatter(airdropData?.airdrop_points, 2, true, { isShort: true })}
+                value={numberFormatter(airdropData?.airdrop_points, 4, true, { isShort: true })}
                 unit="Points"
                 tab={2}
                 current={currentTab}

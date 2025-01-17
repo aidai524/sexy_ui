@@ -26,14 +26,3 @@
   margin: 0 auto;
   padding-bottom: 60px;
 }
-
-.PreviewWrapper {
-  display: flex;
-  align-items: center;
-  height: 90%;
-  gap: 200px;
-  position: relative;
-  width: 100%;
-  padding-left: 10%;
-  overflow-x: hidden;
-}

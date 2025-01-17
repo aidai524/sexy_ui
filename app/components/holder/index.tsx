@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import SexInfiniteScroll from "../sexInfiniteScroll";
 import Empty from "../empty";
 import { getHoldersByToken, getTokenMeta } from "@/app/utils/solanaScanApi";
-import { formatAddress, httpGet, simplifyNum } from "@/app/utils";
+import { formatAddress, httpGet } from "@/app/utils";
 import Big from "big.js";
 import { defaultAvatar } from "@/app/utils/config";
 import { numberFormatter } from "@/app/utils/common";
@@ -109,10 +109,12 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
     <div
       style={style}
       className={`${styles.distributionArea} ${
-        from === "laptop-home" ? styles.LaptopList : ""
+        from === "panel" ? styles.LaptopList : ""
       }`}
     >
-      <div className={styles.distributionTitle}>Holder Distribution</div>
+      {from !== "panel" && (
+        <div className={styles.distributionTitle}>Holder Distribution</div>
+      )}
       <div className={`${styles.list} `}>
         {list.map((item) => {
           return (
@@ -165,10 +167,10 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
       {list.length === 0 && !isLoading && (
         <div
           style={{
-            marginTop: 30
+            marginTop: from === "panel" ? 0 : 30
           }}
         >
-          <Empty text="No holders" />
+          <Empty height={from === "panel" ? 300 : "auto"} text="No holders" />
         </div>
       )}
       <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} />

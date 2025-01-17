@@ -1,23 +1,15 @@
-import { motion } from "framer-motion";
 import styles from "./index.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTrends } from "@/app/sections/trends/hooks";
+import { useRouter } from "next/navigation";
 import { numberFormatter } from "@/app/utils/common";
-// import BuyModal from "@/app/sections/trends/components/buy";
 import TradeModal from "@/app/components/trade-modal";
 import { useTrade } from "@/app/sections/trends/hooks/trade";
-import Big from 'big.js';
 
 const TrendBanner = (props: any) => {
-  const { isMobile, onClose } = props;
-
   const { top1 } = useTrends({ isPolling: true });
   const { tradeToken, onTrade, setTradeToken } = useTrade();
-
-  const [currentBg, setCurrentBg] = useState(
-    isMobile ? BG_LIST_MOBILE[1] : BG_LIST[1]
-  );
-  const [currentBgIdx, setCurrentBgIdx] = useState(1);
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
 
   const handleBuy = () => {
@@ -31,71 +23,25 @@ const TrendBanner = (props: any) => {
     setTradeToken({});
   };
 
-  useEffect(() => {
-    const setBg = () => {
-      const _bgList = isMobile ? BG_LIST_MOBILE : BG_LIST;
-      let _currentBgIdx = currentBgIdx + 1;
-      if (_currentBgIdx > _bgList.length - 1) {
-        _currentBgIdx = 0;
-      }
-      setCurrentBg(_bgList[_currentBgIdx]);
-      setCurrentBgIdx(_currentBgIdx);
-    };
-    const timer = setInterval(setBg, 3000);
-    return () => {
-      clearInterval(timer);
-    };
-  }, [currentBgIdx]);
-
   return (
-    <div>
-      <motion.div
-        className={isMobile ? styles.ContainerMobile : styles.Container}
-        initial={{ backgroundImage: isMobile ? BG_LIST_MOBILE[0] : BG_LIST[0] }}
-        animate={{
-          backgroundImage: currentBg
-        }}
-        transition={{
-          duration: 3
-        }}
-      >
-        <div
-          className={styles.Avatar}
-          style={{ backgroundImage: `url("${top1?.Icon}")` }}
-        >
-          <img
-            src="/img/trends/crown-laptop.svg"
-            alt=""
-            className={styles.Crown}
-          />
-        </div>
-        <div className={isMobile ? styles.ContentMobile : styles.Content}>
-          <div className={styles.Title}>
-            <div className={isMobile ? styles.NameMobile : styles.Name}>{top1?.token_symbol}</div>
-            {!isMobile && <div className={styles.Rank}>[KING OF THE HILL]</div>}
-            {isMobile && (
-              <div className={isMobile ? styles.TitleRightMobile : styles.TitleRight}>
-                <BuyButton onBuy={handleBuy} />
-                <button
-                  type="button"
-                  className={styles.CloseBtnMobile}
-                  onClick={onClose}
-                />
-              </div>
-            )}
+    top1 && (
+      <>
+        <div className={styles.Container}>
+          <div
+            className={styles.Avatar}
+            style={{ backgroundImage: `url("${top1?.Icon}")` }}
+          >
+            <img
+              src="/img/trends/crown-laptop.svg"
+              alt=""
+              className={styles.Crown}
+            />
           </div>
-          {isMobile && (
-            <div
-              style={{
-                color: '#6FFF00',
-                fontWeight: 500,
-                fontFamily: 'Unbounded',
-                fontSize: 14,
-              }}
-            >
-              KING OF THE HILL
-            </div>
-          )}
+          <div className={styles.Title}>
+            <div className={styles.Name}>{top1?.token_symbol}</div>
+            <div className={styles.Rank}>[KING OF THE HILL]</div>
+          </div>
+          <CreateTime top1={top1} />
           <div className={styles.Summaries}>
             <div className={styles.Summary}>
               <div className={styles.SummaryLabel}>[Market Cap]</div>
@@ -106,35 +52,32 @@ const TrendBanner = (props: any) => {
                 })}
               </div>
             </div>
-            <div className={styles.Summary}>
-              <div className={styles.SummaryLabel}>[Progress]</div>
-              <div className={styles.SummaryValue}>{isMobile ? numberFormatter(top1?.progress, 0, true) : top1?.progress}%</div>
+            <button
+              className={`${styles.ViewButton} button`}
+              onClick={() => {
+                router.push(`/detail?address=${top1?.address}`);
+              }}
+            >
+              View
+            </button>
+            <div className={styles.TradeContainer}>
+              <BuyButton onBuy={handleBuy} />
             </div>
-            {!isMobile && <CreateTime top1={top1} />}
-            {!isMobile && (
-              <div className={styles.TradeContainer}>
-                <BuyButton onBuy={handleBuy} />
-              </div>
-            )}
           </div>
         </div>
-      </motion.div>
-      {/* <BuyModal
-        visible={visible}
-        tradeToken={tradeToken}
-        onClose={handleBuyClose}
-      /> */}
-      {tradeToken && (
-        <TradeModal
-          show={visible}
-          onClose={() => {
-            handleBuyClose();
-          }}
-          data={tradeToken}
-          initType={"buy"}
-        />
-      )}
-    </div>
+
+        {tradeToken && (
+          <TradeModal
+            show={visible}
+            onClose={() => {
+              handleBuyClose();
+            }}
+            data={tradeToken}
+            initType={"buy"}
+          />
+        )}
+      </>
+    )
   );
 };
 
@@ -162,14 +105,3 @@ const BuyButton = (props: any) => {
     </button>
   );
 };
-
-const BG_LIST = [
-  "linear-gradient(90deg, #5900FF 0%, rgba(255, 38, 129, 0.00) 100%)",
-  "linear-gradient(90deg, #00E4A8 0%, rgba(255, 38, 129, 0.00) 100%)",
-  "linear-gradient(90deg, #FB00FF 0%, rgba(255, 38, 129, 0.00) 100%)"
-];
-const BG_LIST_MOBILE = [
-  "linear-gradient(359deg, #60F 0.75%, rgba(255, 38, 129, 0.70) 98.88%)",
-  "linear-gradient(359deg, #0058E4 0.75%, rgba(255, 38, 129, 0.70) 98.88%)",
-  "linear-gradient(359deg, #FB00FF 0.75%, rgba(255, 38, 129, 0.70) 98.88%)"
-];

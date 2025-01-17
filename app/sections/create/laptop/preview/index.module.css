@@ -26,3 +26,15 @@
   align-items: center;
   justify-content: center;
 }
+
+.Content {
+  height: calc(100vh - 126px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}

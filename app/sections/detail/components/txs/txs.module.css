@@ -1,6 +1,4 @@
 .main {
-  background-color: #252328;
-  border-radius: 15px 15px 0 0;
   padding: 15px;
 }
 
@@ -18,9 +16,9 @@
 .filterText {
   display: flex;
   align-items: center;
-  gap: 5px; 
+  gap: 5px;
   font-size: 12px;
-  color: #9290B1;
+  color: #9290b1;
 }
 
 .txContent {
@@ -30,8 +28,7 @@
 }
 
 .LaptopContent {
-  background: linear-gradient(180deg, #b22261 0.42%, #751e46 99.58%);
-  margin: 10px 10px 0 0;
+  background-color: transparent;
 }
 
 .txTtitles {

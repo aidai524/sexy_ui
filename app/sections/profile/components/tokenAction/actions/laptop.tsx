@@ -2,13 +2,14 @@ import styles from "./laptop.module.css";
 import { motion } from "framer-motion";
 import ActionList from "../actionList";
 import { useEffect } from "react";
-export default function Laptop({
-  modalShow,
-  setModalShow,
-  token,
-  isOther,
-  prepaidWithdrawDelayTime
-}: any) {
+export default function Laptop(props: any) {
+  const {
+    modalShow,
+    setModalShow,
+    token,
+    isOther,
+    prepaidWithdrawDelayTime
+  } = props;
   useEffect(() => {
     const close = () => {
       setModalShow(false);
@@ -37,9 +38,7 @@ export default function Laptop({
         }}
       >
         <ActionList
-          isOther={isOther}
-          token={token}
-          prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
+          {...props}
         />
       </motion.div>
     )

@@ -6,18 +6,28 @@ interface Props {
   address?: string;
   isFollower: boolean;
   onSuccess?: () => void;
+  useAnotherClassName?: boolean;
 }
 
-export default function FollowBtn({ address, isFollower, onSuccess }: Props) {
+export default function FollowBtn({ useAnotherClassName, address, isFollower, onSuccess }: Props) {
   const { follow, unFollow } = useFollow();
   const [followLoading, setFollowLoading] = useState(false);
   const [followingLoading, setFollowingLoading] = useState(false);
+
+  const getButtonClassName = (isLoading: boolean) => {
+    if (useAnotherClassName) {
+      return isLoading ? styles.isFollowBtnOnSumLoading : styles.FollowBtnOnSum;
+    }
+    return isFollower
+      ? (isLoading ? styles.isFollowingLoading : styles.isFollowing)
+      : (isLoading ? styles.isFollowLoading : styles.isFollow);
+  };
 
   return (
     <div className={styles.followerType}>
       {!isFollower ? (
         <div
-          className={followLoading ? styles.isFollowLoading : styles.isFollow}
+          className={getButtonClassName(followLoading)}
           onClick={async () => {
             if (!address) {
               return;
@@ -45,9 +55,7 @@ export default function FollowBtn({ address, isFollower, onSuccess }: Props) {
               onSuccess && onSuccess();
             }, 1200);
           }}
-          className={
-            followingLoading ? styles.isFollowingLoading : styles.isFollowing
-          }
+          className={getButtonClassName(followingLoading)}
         >
           Following
         </div>
