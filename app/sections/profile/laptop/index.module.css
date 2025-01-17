@@ -1,24 +1,29 @@
 .Container {
   position: relative;
-  background: linear-gradient(to bottom, #ea2779 0%, #b81a5d 100%);
   border-radius: 20px;
-  height: calc(100vh - 120px);
-  margin: 0px 30px;
+  height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.Flip {
-  position: absolute;
-  width: 492px;
-  height: 160px;
-  background: url(/img/laptop/flip-1.png) no-repeat;
-  bottom: -7px;
-  z-index: 1;
+.Content {
+  width: 1140px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
 }
 
-.BackWrapper {
+.TitleWrapper {
   position: absolute;
   left: 24px;
-  top: 32px;
+  top: 26px;
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .Top {
@@ -66,14 +71,9 @@
   gap: 10px;
 }
 
-.Content {
-  position: relative;
-  z-index: 10;
-}
-
 .LoadingWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 100vh;
 }

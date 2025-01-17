@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import styles from "./laptop.module.css";
 import TotalPanel from "./mobile/total-panel";
 import EarnAndInvite from "./mobile/earn-invite";
@@ -22,19 +22,21 @@ export default function Laptop({ info, infoLoading }: any) {
           <Others info={info} />
         </div>
       </div>
-      {info?.mining_rank && (
-        <motion.div
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          className={styles.RankWrapper}
-        >
-          <RankPanel
-            rank={info?.your_rank}
-            list={info?.mining_rank}
-            loading={infoLoading}
-          />
-        </motion.div>
-      )}
+      <AnimatePresence mode="wait">
+        {info?.mining_rank && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            className={styles.RankWrapper}
+          >
+            <RankPanel
+              rank={info?.your_rank}
+              list={info?.mining_rank}
+              loading={infoLoading}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

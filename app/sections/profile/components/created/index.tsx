@@ -14,6 +14,7 @@ import Popover, {
   PopoverTrigger
 } from "@/app/components/popover";
 import { useDebounceFn } from "ahooks";
+import { useUserAgent } from "@/app/context/user-agent";
 
 const urls: Record<string, string> = {
   created: "/project/account/list",
@@ -210,29 +211,31 @@ export default function Created({
         currentSummary={homeTabStore.currentSummary}
         handleSelect={handleSelect}
       />
-      {list.map((item) => {
-        const isSuperLike = !isOther
-          ? item.isSuperLike
-          : !unfliped?.includes(item.address);
+      <div className={from === "page" ? styles.PcListWrapper : ""}>
+        {list.map((item) => {
+          const isSuperLike = !isOther
+            ? item.isSuperLike
+            : !unfliped?.includes(item.address);
 
-        return (
-          <Token
-            from={from}
-            data={{ ...item, isSuperLike }}
-            isOther={isOther}
-            key={item.id}
-            hideHot={hideHot}
-            prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
-            update={() => {
-              setRefresh(refresh + 1);
-              updateCurrentUserInfo();
-            }}
-            onWithdrawSuccess={async () => {
-              loadMoreDelay(true, LIMIT);
-            }}
-          />
-        );
-      })}
+          return (
+            <Token
+              from={from}
+              data={{ ...item, isSuperLike }}
+              isOther={isOther}
+              key={item.id}
+              hideHot={hideHot}
+              prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
+              update={() => {
+                setRefresh(refresh + 1);
+                updateCurrentUserInfo();
+              }}
+              onWithdrawSuccess={async () => {
+                loadMoreDelay(true, LIMIT);
+              }}
+            />
+          );
+        })}
+      </div>
 
       <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} />
     </div>
@@ -241,11 +244,16 @@ export default function Created({
 
 const StatusSelect = (props: any) => {
   const { type, popoverRef, summaries, currentSummary, handleSelect } = props;
-
+  const { isMobile } = useUserAgent();
   if (type !== "liked") return null;
 
   return (
-    <div className={styles.SelectContainer}>
+    <div
+      className={styles.SelectContainer}
+      style={{
+        backgroundColor: isMobile ? "rgba(255, 255, 255, 0.08)" : "transparent"
+      }}
+    >
       <Popover
         ref={popoverRef}
         placement={PopoverPlacement.Bottom}
