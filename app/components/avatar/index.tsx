@@ -26,7 +26,7 @@ export default function Avatar({ userInfo, onEdit, onVipShow, isOther, isFollowe
         </div>*/}
       </div>
       <div className={styles.userName}>
-        <div>{userInfo?.name || formatAddress(userInfo?.address) || 'Fun'}</div>
+        <div>{userInfo?.name || formatAddress(userInfo?.address) || 'FlipN'}</div>
         <Level level={userInfo?.level} vipType={userInfo?.vipType} />
         {isOther && (
           <div className={styles.isOther}>

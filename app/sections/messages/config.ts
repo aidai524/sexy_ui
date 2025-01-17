@@ -37,7 +37,7 @@ Click to view Token details.`,
   ],
   add_vip: (item: any) => [
     "Add VIP",
-    "Congratulations, you have become a prestigious Fun VIP user.",
+    "Congratulations, you have become a prestigious FlipN VIP user.",
     "Click to view your profile.",
     "/profile",
     "Profile"

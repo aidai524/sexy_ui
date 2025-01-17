@@ -54,7 +54,7 @@ export default function MainAction({
         <Like id={ids?.like} liked={token.isLike} />
       </div>
 
-      <div className={styles.actionIcon + " " + styles.smokeIcon}>
+      
         <SmokeBtn
           isBigIcon={true}
           token={token}
@@ -63,7 +63,6 @@ export default function MainAction({
           }}
           id={ids?.smoke}
         />
-      </div>
 
       <div
         onClick={() => {

@@ -15,7 +15,7 @@ export default function BoostInit({ onJoinVip, onCanceVip }: Props) {
           <div className={styles.initTitle}>Boost</div>
           <div className={styles.initAmount}>0/0</div>
           <div className={styles.initTip}>
-            Boost allows the MEME exposure up to 8.5x in Fun for 30 minutes.
+            Boost allows the MEME exposure up to 8.5x in FlipN for 30 minutes.
             VIP users will have 2 chances per day to boost MEMEs.
           </div>
         </div>
