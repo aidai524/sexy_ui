@@ -6,7 +6,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-top: -40px;
+      /* margin-top: -40px; */
 
       .tab {
         flex: 1;
