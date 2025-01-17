@@ -12,24 +12,15 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 
 const DetailPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/detail"),
-  {
-    ssr: false
-  }
+  () => import("@/app/sections/home/laptop/panels/detail")
 );
 
 const CommentsPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/comments"),
-  {
-    ssr: false
-  }
+  () => import("@/app/sections/home/laptop/panels/comments")
 );
 
 const FlipPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/flip"),
-  {
-    ssr: false
-  }
+  () => import("@/app/sections/home/laptop/panels/flip")
 );
 
 export default function List({ type, isCurrentTab }: any) {

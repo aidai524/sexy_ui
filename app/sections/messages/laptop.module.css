@@ -1,0 +1,69 @@
+.Wrapper {
+  position: relative;
+  height: 100vh;
+}
+
+.Container {
+  padding-top: 90px;
+}
+
+.Content {
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.List {
+  width: 1062px;
+  margin: 0 auto;
+}
+
+.TitleWrapper {
+  position: absolute;
+  left: 30px;
+  top: 20px;
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.Num {
+  padding: 2px 6px;
+  border-radius: 34px;
+  background: #ff2681;
+  color: #fff;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.ReadAll {
+  text-align: right;
+  padding-bottom: 10px;
+  width: 1062px;
+  margin: 0 auto;
+}
+
+.ReadAll :global(.button) {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.LoadingWrapper {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
