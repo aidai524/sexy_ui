@@ -46,10 +46,10 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
 
           for (let i = 0; i < tokenAccounts.value.length; i++) {
             const item = tokenAccounts.value[i];
-            // const accountInfo = await connection.getParsedAccountInfo(item.address);
-            // const owner = accountInfo.value?.data?.parsed?.info?.owner;
+           
 
             result.items.push({
+              // @ts-ignore
               owner: accounts.value[i].data?.parsed?.info?.owner?.toString(),
               amount: item.uiAmount?.toString(),
               decimals: item.decimals,
