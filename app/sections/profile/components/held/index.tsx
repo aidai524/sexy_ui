@@ -22,7 +22,6 @@ export default function Held({ from, address }: any) {
     if (address) {
       return getTokenByHolder(address, pageIndex, pageSize).then((res) => {
         const newList = [...list, ...(res.data || [])];
-
         setList(newList);
         const newTokenInfo = {
           ...res.metadata.tokens,

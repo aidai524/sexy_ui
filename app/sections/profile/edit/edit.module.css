@@ -23,7 +23,7 @@
   }
 
   .groupTitle {
-    color: #FFF;
+    color: #fff;
     font-family: Unbounded;
     font-size: 16px;
     font-style: normal;
@@ -34,20 +34,17 @@
     gap: 4px;
 
     .require {
-      color: var(--part-bg);
+      color: var(--error-color);
     }
   }
 
   .groupContent {
     .inputText {
-      width: 100%;
-      border: none;
-      background: rgba(18, 23, 25, 1);
-      height: 42px;
       color: #fff;
       font-size: 18px;
       padding: 0 15px;
     }
+
     .inputText:disabled {
       opacity: 0.3;
     }
@@ -133,12 +130,10 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px;
-  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 20;
-  background-color: #0d1012;
   .btn {
     flex: 1;
     height: 60px;
@@ -160,4 +155,14 @@
 .EditContent {
   height: calc(100dvh - 140px);
   overflow-y: auto;
+}
+
+.headerTitle {
+  color: #fff;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }

@@ -8,10 +8,14 @@ import { formatAddress } from "@/app/utils";
 import useUserInfo from "../../../hooks/useUserInfo";
 import { useAuth } from "@/app/context/auth";
 
-export default function Follower() {
+export default function Follower({
+  address,
+  action: defaultAction,
+  onSuccess
+}: any) {
   const params = useSearchParams();
-  const [account] = useState(params.get("account")?.toString());
-  const [action] = useState(params.get("action")?.toString());
+  const [account] = useState(params.get("account")?.toString() || address);
+  const [action] = useState(params.get("action")?.toString() || defaultAction);
   const { userInfo: currentUser, accountRefresher } = useAuth();
   const isOther = useMemo(
     () => account !== currentUser.address,
@@ -39,13 +43,15 @@ export default function Follower() {
 
   return (
     <div className={styles.main}>
-      <div className={styles.header}>
-        <Back />
-        <div>
-          {userInfo &&
-            (userInfo?.name || formatAddress(userInfo?.address as string))}
+      {!address && (
+        <div className={styles.header}>
+          <Back />
+          <div>
+            {userInfo &&
+              (userInfo?.name || formatAddress(userInfo?.address as string))}
+          </div>
         </div>
-      </div>
+      )}
 
       <Tab
         activeNode={activeNode}
@@ -61,6 +67,7 @@ export default function Follower() {
                 onAction={() => {
                   onQueryInfo();
                   setRefeashFollowing(refeashFollowing + 1);
+                  onSuccess?.();
                 }}
                 isOther={isOther}
               />
@@ -76,6 +83,7 @@ export default function Follower() {
                 onAction={() => {
                   onQueryInfo();
                   setRefeashFollowers(refeashFollowers + 1);
+                  onSuccess?.();
                 }}
                 isOther={isOther}
               />
@@ -89,15 +97,15 @@ export default function Follower() {
           marginTop: 20
         }}
         tabHeadersStyle={{
-          overflowX: 'auto',
+          overflowX: "auto",
           height: "unset"
         }}
         cursorStyle={{
           height: 3,
           borderRadius: 2,
           bottom: 0,
-          width: '55%',
-          background: 'var(--part-bg)',
+          width: "55%",
+          background: "var(--part-bg)"
         }}
       />
     </div>

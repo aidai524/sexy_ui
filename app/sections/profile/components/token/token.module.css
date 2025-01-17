@@ -1,9 +1,8 @@
 .main {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background-color: rgba(255, 255, 255, 0.08);
-  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .tokenMag {
@@ -30,7 +29,7 @@
 }
 
 .trikerContent {
-  color: rgba(255, 255, 255, 0.60);
+  color: rgba(255, 255, 255, 0.6);
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
@@ -76,7 +75,7 @@
 
 .MarketCap {
   margin-top: 5px;
-  color: #C9FF5D;
+  color: #c9ff5d;
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
@@ -105,10 +104,10 @@
     background-color: #504964;
   }
   &.launch2 {
-    background-color: #628D0B;
+    background-color: #628d0b;
   }
   &.launch3 {
-    background-color: #642BFF;
+    background-color: #642bff;
   }
 }
 
@@ -118,13 +117,17 @@
   justify-content: flex-end;
 }
 
-.PageToken {
-  cursor: pointer;
-  transition: all 0.3s;
-  border-radius: 14px;
-  background-color: transparent;
+.Bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.PageToken:hover {
-  background-color: #ffffff14;
+.Time {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }

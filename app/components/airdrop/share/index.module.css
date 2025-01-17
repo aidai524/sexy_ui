@@ -1,0 +1,173 @@
+.AirdropShareContainer {
+  width: 320px;
+}
+.AirdropShareCard {
+  width: 100%;
+  height: 500px;
+  border-radius: 20px;
+  background: url("/img/airdrop/share-banner.png") no-repeat top / contain;
+  position: relative;
+  padding: 0 14px;
+}
+.AirdropShareFooter {
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 11px;
+}
+.AirdropShareButton {
+  flex: 1;
+  color: #FFF;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  height: 42px;
+  border-radius: 21px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease-in-out;
+}
+.AirdropShareButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.AirdropShareButtonDark {
+  composes: AirdropShareButton;
+  border-radius: 30px;
+  border: 1px solid #FBCA04;
+  background: #000;
+}
+.AirdropShareButtonPrimary {
+  composes: AirdropShareButton;
+  color: #000;
+  border-radius: 30px;
+  border: 1px solid #000;
+  background: #FBCA04;
+}
+.AirdropShareButtonIcon {
+  flex-shrink: 0;
+}
+
+.AirdropShareInfoCard {
+  width: calc(100% - 28px);
+  border-radius: 12px;
+  background: #000;
+  backdrop-filter: blur(12px);
+  padding: 10px 10px 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  bottom: 13px;
+  left: 14px;
+}
+.AirdropShareInfoCardTip {
+  position: absolute;
+  top: -32px;
+  right: 0;
+  width: 59px;
+  height: 33px;
+}
+.AirdropShareInfoCardAvatar {
+  flex-shrink: 0;
+}
+.AirdropShareInfoCardInfo {
+  flex: 1;
+  width: 0;
+}
+.AirdropShareInfoCardFooter {
+  flex-shrink: 0;
+  margin-left: 13px;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.90);
+}
+.AirdropShareInfoCardFooter canvas {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 6px;
+}
+.AirdropShareInfoCardInfoInviterLabel {
+  width: 100%;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+.AirdropShareInfoCardInfoInviter {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+.AirdropShareInfoCardInfoAddress {
+  flex: 1;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.AirdropShareInfoCardInfoLevel {
+  flex-shrink: 0;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  justify-content: center;
+  position: relative;
+  padding: 0 5px 0 7px;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #A4A4A4 0%, #313131 100%);
+  text-align: center;
+}
+.AirdropShareInfoCardInfoLevelIcon {
+  width: 11.507px;
+  height: 10.248px;
+  flex-shrink: 0;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.AirdropShareInfoCardInfoLink {
+  width: 100%;
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  margin-top: 4px;
+}
+.AirdropShareInfoCardQrLogo {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

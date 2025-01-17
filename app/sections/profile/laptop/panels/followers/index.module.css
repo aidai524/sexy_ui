@@ -1,0 +1,30 @@
+.Container {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  z-index: 10;
+  width: 396px;
+  height: calc(100vh - 100px);
+  background-color: #252328;
+  border: 1px solid #3b3b3b;
+  border-radius: 16px 16px 0px 0px;
+}
+
+.Title {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding: 20px 20px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Content {
+  height: calc(100% - 30px);
+  overflow-y: auto;
+  padding-right: 10px;
+}

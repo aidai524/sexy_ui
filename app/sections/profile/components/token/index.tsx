@@ -6,13 +6,14 @@ import { useRouter } from "next/navigation";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import TokenAction from "../tokenAction";
 import useMc from "@/app/hooks/useMc";
-import { numberFormatter } from '@/app/utils/common';
-import Big from 'big.js';
-import { SOL } from '@/app/components/trade/buySellPump';
-import { useUser } from '@/app/store/useUser';
-import { Program } from '@coral-xyz/anchor';
-import idl from '@/app/hooks/meme_launchpad.json';
-import { useConnection } from '@solana/wallet-adapter-react';
+import { numberFormatter } from "@/app/utils/common";
+import Big from "big.js";
+import { SOL } from "@/app/components/trade/buySellPump";
+import { useUser } from "@/app/store/useUser";
+import { Program } from "@coral-xyz/anchor";
+import idl from "@/app/hooks/meme_launchpad.json";
+import { useConnection } from "@solana/wallet-adapter-react";
+import dayjs from "dayjs";
 
 interface Props {
   data: Project;
@@ -53,7 +54,7 @@ export default function Token({
     checkPrePayed,
     prepaidSolWithdraw,
     prepaidTokenWithdraw,
-    programId,
+    programId
   } = useTokenTrade({
     tokenName: data?.tokenName as string,
     tokenSymbol: data?.tokenSymbol as string,
@@ -100,10 +101,20 @@ export default function Token({
         setMC(res as number);
       });
     }
-  }, [pool, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals, data?.DApp, data?.status]);
+  }, [
+    pool,
+    data?.tokenName,
+    data?.tokenSymbol,
+    data?.tokenDecimals,
+    data?.DApp,
+    data?.status
+  ]);
 
   useEffect(() => {
-    if (isOther || (!data?.isSuperLike && data?.account !== userInfo?.address)) {
+    if (
+      isOther ||
+      (!data?.isSuperLike && data?.account !== userInfo?.address)
+    ) {
       setPrepaidRealAmount(Big(0));
       setPrepaidAmount(Big(0));
       return;
@@ -113,44 +124,75 @@ export default function Token({
       setPrepaidRealAmount(_amount);
       setPrepaidAmount(Big(_amount).div(0.985));
     });
-  }, [isOther, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals, data?.isSuperLike, userInfo?.address]);
+  }, [
+    isOther,
+    data?.tokenName,
+    data?.tokenSymbol,
+    data?.tokenDecimals,
+    data?.isSuperLike,
+    userInfo?.address
+  ]);
 
   useEffect(() => {
     if (pool && pool.length && showWithdraw) {
       const program = new Program<any>(idl, programId, {
         connection: connection
       } as any);
-      program.account.pool.fetch(pool[0]).then((poolData: any) => {
-        let { prepaidAmount, prepaidBoughtTokenAmount } = poolData || {};
-        prepaidAmount = Big(prepaidAmount.toNumber());
-        prepaidBoughtTokenAmount = Big(prepaidBoughtTokenAmount.toNumber());
-        const _tokenAmount = Big(prepaidRealAmount)
-          .times(10 ** SOL.tokenDecimals)
-          .div(prepaidAmount)
-          .times(prepaidBoughtTokenAmount)
-          .div(10 ** (data?.tokenDecimals || 6));
-        setTokenAmount(_tokenAmount);
-        // console.log(
-        //   '%c[TokenAmount - %o] prepaidRealAmount: %o, prepaidAmount: %o, prepaidBoughtTokenAmount: %o, _tokenAmount: %o',
-        //   'background:#ff5f00;color:#fff;',
-        //   data.tokenSymbol,
-        //   prepaidRealAmount.toString(),
-        //   prepaidAmount.toString(),
-        //   prepaidBoughtTokenAmount.toString(),
-        //   _tokenAmount.toString(),
-        // );
-      }).catch((err) => {
-        // console.log('%cCalc token amount failed - %o: %o', 'background:#ff5f00;color:#fff;', data.tokenSymbol, err);
-        setTokenAmount(Big(0));
-      });
+      program.account.pool
+        .fetch(pool[0])
+        .then((poolData: any) => {
+          let { prepaidAmount, prepaidBoughtTokenAmount } = poolData || {};
+          prepaidAmount = Big(prepaidAmount.toNumber());
+          prepaidBoughtTokenAmount = Big(prepaidBoughtTokenAmount.toNumber());
+          const _tokenAmount = Big(prepaidRealAmount)
+            .times(10 ** SOL.tokenDecimals)
+            .div(prepaidAmount)
+            .times(prepaidBoughtTokenAmount)
+            .div(10 ** (data?.tokenDecimals || 6));
+          setTokenAmount(_tokenAmount);
+          // console.log(
+          //   '%c[TokenAmount - %o] prepaidRealAmount: %o, prepaidAmount: %o, prepaidBoughtTokenAmount: %o, _tokenAmount: %o',
+          //   'background:#ff5f00;color:#fff;',
+          //   data.tokenSymbol,
+          //   prepaidRealAmount.toString(),
+          //   prepaidAmount.toString(),
+          //   prepaidBoughtTokenAmount.toString(),
+          //   _tokenAmount.toString(),
+          // );
+        })
+        .catch((err) => {
+          // console.log('%cCalc token amount failed - %o: %o', 'background:#ff5f00;color:#fff;', data.tokenSymbol, err);
+          setTokenAmount(Big(0));
+        });
       return;
     }
     setTokenAmount(Big(0));
   }, [pool, data?.tokenDecimals, prepaidRealAmount, showWithdraw]);
 
   return (
-    <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
-      <div className={styles.tokenMag}>
+    <div
+      className={styles.main}
+      style={{
+        width: from === "page" ? 340 : "100%",
+        backgroundColor:
+          from === "page" ? "transparent" : "rgba(255, 255, 255, 0.08)",
+        flexDirection: from === "page" ? "column" : "row",
+        gap: from === "page" ? 10 : 0,
+        padding: from === "page" ? 0 : "10px 15px",
+        alignItems: from === "page" ? "flex-start" : "center"
+      }}
+    >
+      <div
+        className={styles.tokenMag}
+        style={{
+          height: from === "page" ? 112 : "auto",
+          width: from === "page" ? "100%" : "auto",
+          backgroundColor:
+            from === "page" ? "rgba(255, 255, 255, 0.05)" : "transparent",
+          padding: from === "page" ? "4px 12px 15px" : 0,
+          borderRadius: from === "page" ? 12 : 0
+        }}
+      >
         <div
           className={`${styles.tokenImgContent} button`}
           onClick={() => {
@@ -172,52 +214,83 @@ export default function Token({
               <div
                 className={styles.tickerNameAvatar}
                 style={{
-                  backgroundImage: `url("${data.tokenIcon || '/img/token-placeholder.png'}")`,
-                  border: (data.status === 0 && !!smookeable && !showWithdraw) ? `${smookeable === 1 ? '1px dashed #FFF' : '1px dashed #9290B1'}` : '',
+                  backgroundImage: `url("${
+                    data.tokenIcon || "/img/token-placeholder.png"
+                  }")`,
+                  border:
+                    data.status === 0 && !!smookeable && !showWithdraw
+                      ? `${
+                          smookeable === 1
+                            ? "1px dashed #FFF"
+                            : "1px dashed #9290B1"
+                        }`
+                      : ""
                 }}
               />
             </div>
           </div>
-          {
-            data?.status === 0 ? (
-              <>
-                <div className={styles.trikerContent}>
-                  <div className={styles.Likes}>
-                    <div>Likes: <span style={{ color: 'white' }}>{data?.like}</span>/100</div>
-                    <img src="/img/profile/icon-like.svg" alt="" width={13} height={11} />
+          {data?.status === 0 ? (
+            <>
+              <div className={styles.trikerContent}>
+                <div className={styles.Likes}>
+                  <div>
+                    Likes: <span style={{ color: "white" }}>{data?.like}</span>
+                    /100
                   </div>
+                  <img
+                    src="/img/profile/icon-like.svg"
+                    alt=""
+                    width={13}
+                    height={11}
+                  />
                 </div>
-                <div className={styles.trikerContent}>
-                  <div className={styles.tickerName}>
-                    Flipped: {numberFormatter(Big(data?.prePaidAmount || 0).div(10 ** SOL.tokenDecimals), 2, true)} SOL
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className={styles.MarketCap}>
-              MarketCap:{' '}
-                {pumpMc || mc ? `$${simplifyNum(Number(pumpMc || mc), 2)}` : '-'}
               </div>
-            )
-          }
+              <div className={styles.trikerContent}>
+                <div className={styles.tickerName}>
+                  Flipped:{" "}
+                  {numberFormatter(
+                    Big(data?.prePaidAmount || 0).div(10 ** SOL.tokenDecimals),
+                    2,
+                    true
+                  )}{" "}
+                  SOL
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className={styles.MarketCap}>
+              MarketCap:{" "}
+              {pumpMc || mc ? `$${simplifyNum(Number(pumpMc || mc), 2)}` : "-"}
+            </div>
+          )}
         </div>
       </div>
 
-      <TokenAction
-        isOther={isOther}
-        isDelay={isDelay}
-        token={data}
-        prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
-        onWithdrawSuccess={onWithdrawSuccess}
-        prepaidRealAmount={prepaidRealAmount}
-        prepaidAmount={prepaidAmount}
-        smookeable={smookeable}
-        showWithdraw={showWithdraw}
-        isPrepaid={isPrepaid}
-        prepaidSolWithdraw={prepaidSolWithdraw}
-        prepaidTokenWithdraw={prepaidTokenWithdraw}
-        tokenAmount={tokenAmount}
-      />
+      <div
+        className={styles.Bottom}
+        style={{
+          width: from === "page" ? "100%" : "auto"
+        }}
+      >
+        {from === "page" && (
+          <div className={styles.Time}>{dayjs(data.time).fromNow()}</div>
+        )}
+        <TokenAction
+          isOther={isOther}
+          isDelay={isDelay}
+          token={data}
+          prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
+          onWithdrawSuccess={onWithdrawSuccess}
+          prepaidRealAmount={prepaidRealAmount}
+          prepaidAmount={prepaidAmount}
+          smookeable={smookeable}
+          showWithdraw={showWithdraw}
+          isPrepaid={isPrepaid}
+          prepaidSolWithdraw={prepaidSolWithdraw}
+          prepaidTokenWithdraw={prepaidTokenWithdraw}
+          tokenAmount={tokenAmount}
+        />
+      </div>
     </div>
   );
 }
