@@ -25,6 +25,7 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 4px;
+    flex-wrap: wrap;
     .name {
         color: #fff;
         font-size: 16px;
