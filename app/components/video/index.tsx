@@ -21,6 +21,31 @@ export default function VideoPlayer({ src, type, className }: VideoPlayerProps) 
     };
   }, [handleClick]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            videoRef.current?.play();
+          } else {
+            videoRef.current?.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, [videoRef]);
+
   return (
     <video ref={videoRef} className={className} autoPlay>
       <source src={src} type={`video/${type}`} />
