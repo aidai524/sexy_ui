@@ -21,13 +21,18 @@
 
 .detailAvatar {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   padding: 15px;
   gap: 10px;
 }
 
 .tokenImgWrapper {
   width: 100px;
+  height: 100%;
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .tokenImg {
     width: 100%;
     border-radius: 10px;
