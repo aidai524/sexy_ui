@@ -103,7 +103,7 @@ export default function Token({
   }, [pool, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals, data?.DApp, data?.status]);
 
   useEffect(() => {
-    if (isOther) {
+    if (isOther || (!data?.isSuperLike && data?.account !== userInfo?.address)) {
       setPrepaidRealAmount(Big(0));
       setPrepaidAmount(Big(0));
       return;
@@ -113,7 +113,7 @@ export default function Token({
       setPrepaidRealAmount(_amount);
       setPrepaidAmount(Big(_amount).div(0.985));
     });
-  }, [isOther, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals]);
+  }, [isOther, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals, data?.isSuperLike, userInfo?.address]);
 
   useEffect(() => {
     if (pool && pool.length && showWithdraw) {
