@@ -24,29 +24,23 @@ export default function Laptop() {
       >
         <div className={styles.TitleWrapper}>Create token</div>
         <div className={styles.Container}>
-          {step === "edit" && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className={styles.EditWrapper}
-            >
-              <CreateNode
-                ref={createRef}
-                show={step === "edit"}
-                onAddDataFill={(value: any) => {
-                  setDataAdd(value);
-                  setStep("preview");
-                  window.scrollTo(0, 0);
-                }}
-              />
-            </motion.div>
-          )}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={styles.EditWrapper}
+          >
+            <CreateNode
+              ref={createRef}
+              show={step === "edit"}
+              onAddDataFill={(value: any) => {
+                setDataAdd(value);
+                setStep("preview");
+                window.scrollTo(0, 0);
+              }}
+            />
+          </motion.div>
           {step === "preview" && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className={styles.PreviewWrapper}
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <PreviewNode token={dataAdd} />
             </motion.div>
           )}

@@ -34,12 +34,14 @@ export default function Preview({ token }: any) {
   }, []);
 
   return (
-    <>
+    <div className={styles.Content}>
       <div
         style={{
           height: innerHeight,
           width: innerWidth,
-          transform: `translateX(${showDetail ? 0 : "calc(100% - 200px)"})`
+          transform: `translateX(${
+            showDetail ? "calc(50vw - 600px)" : "calc(50vw - 300px)"
+          })`
         }}
         className={styles.Token}
       >
@@ -72,6 +74,6 @@ export default function Preview({ token }: any) {
           />
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }

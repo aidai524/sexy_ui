@@ -11,9 +11,9 @@ export default function DetailPanel({ token, onClose }: any) {
   const mc = useMcWithPump(token);
   return (
     <motion.div
-      initial={{ x: 375 }}
-      exit={{ x: 375 }}
-      animate={{ x: 0 }}
+      initial={{ x: 375, y: "-50%" }}
+      exit={{ x: 375, y: "-50%" }}
+      animate={{ x: 0, y: "-50%" }}
       transition={{
         ease: "linear",
         duration: 0.3

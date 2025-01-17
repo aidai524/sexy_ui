@@ -21,13 +21,13 @@ export default function Laptop() {
         <TrendBanner />
       </div>
       <div className={styles.Content}>
-        {/* <List
+        <List
           type="preLaunch"
           onChangeTab={(tab: number) => {
             homeTabStore.set({ homeTabIndex: tab });
           }}
           isCurrentTab={homeTabStore.homeTabIndex === 0}
-        /> */}
+        />
         <List
           type="launching"
           onChangeTab={(tab: number) => {

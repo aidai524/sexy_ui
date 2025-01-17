@@ -6,7 +6,8 @@
   flex-shrink: 0;
   position: absolute;
   right: 100px;
-  top: 0px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .Header {

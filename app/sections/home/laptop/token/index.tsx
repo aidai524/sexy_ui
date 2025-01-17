@@ -15,13 +15,20 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
-import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 
-export default function Token({ isCurrent, token, onUpdate }: any) {
+export default function Token({
+  isCurrent,
+  token,
+  opacity,
+  showTrade,
+  tradeTab,
+  onUpdate,
+  onOpenPanel,
+  onUpdateTradeTab
+}: any) {
   const [imgHeight, setImgHeight] = useState("80%");
   const { innerHeight, innerWidth } = useUserAgent();
   const descContentRef = useRef<any>();
-  const tokenPanelStatusStore: any = useTokenPanelStatus();
 
   const { total: totalHolders } = useHolders(token);
 
@@ -32,148 +39,137 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
   }, []);
 
   return (
-    <>
+    <div
+      className={styles.Box}
+      style={{
+        opacity,
+        height: innerHeight
+      }}
+    >
       {token?.id && (
-        <div className={styles.Box}>
-          <div className={styles.Container}>
-            <div
-              className={styles.Token}
-              style={{
-                height: innerHeight,
-                width: innerWidth
-              }}
-            >
-              <Media imgHeight={imgHeight} data={token} />
-              <div className={styles.Labels}>
-                {token.isSuperLike && (
-                  <motion.img
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className={styles.FlippedLabel}
-                    src="/img/home/flipped.png"
-                  />
-                )}
+        <div className={styles.Container}>
+          <div
+            className={styles.Token}
+            style={{
+              width: innerWidth,
+              height: innerHeight
+            }}
+          >
+            <Media imgHeight={imgHeight} data={token} />
+            <div className={styles.Labels}>
+              {token.isSuperLike && (
+                <motion.img
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className={styles.FlippedLabel}
+                  src="/img/home/flipped.png"
+                />
+              )}
 
-                {token.isLike && (
-                  <motion.img
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className={styles.LikedLabel}
-                    src="/img/home/liked.png"
-                  />
-                )}
-              </div>
-              <div className={styles.Bottom}>
-                {isCurrent && <Danmaku token={token} />}
+              {token.isLike && (
+                <motion.img
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className={styles.LikedLabel}
+                  src="/img/home/liked.png"
+                />
+              )}
+            </div>
+            <div className={styles.Bottom}>
+              {isCurrent && <Danmaku token={token} />}
 
-                {token.status === 0 ? (
-                  !token.isSuperLike ? (
-                    <Flip
-                      token={token}
-                      onSuccess={(params: any) => {
-                        onUpdate({ ...token, ...params });
-                      }}
-                      onClick={() => {
-                        if (!window.sexAddress) {
-                          window.connect();
-                          return;
-                        }
-                        tokenPanelStatusStore.setShow("showFlip", true);
-                      }}
-                      id={isCurrent ? "guid-tour-flip" : token.id}
-                    />
-                  ) : (
-                    <Flipped token={token} />
-                  )
-                ) : (
-                  <Trade
+              {token.status === 0 ? (
+                !token.isSuperLike ? (
+                  <Flip
                     token={token}
-                    totalHolders={totalHolders}
+                    onSuccess={(params: any) => {
+                      onUpdate({ ...token, ...params });
+                    }}
                     onClick={() => {
                       if (!window.sexAddress) {
                         window.connect();
                         return;
                       }
-                      tokenPanelStatusStore.setShow("showTrade", true);
+                      onOpenPanel("showFlip", true);
                     }}
+                    id={isCurrent ? "guid-tour-flip" : token.id}
                   />
-                )}
-                <div className={styles.Desc} ref={descContentRef}>
-                  <Desc token={token} />
-                </div>
-              </div>
-            </div>
-            {token.status !== 0 &&
-              isCurrent &&
-              tokenPanelStatusStore.showTrade && (
-                <TradePanel
-                  onClose={() => {
-                    tokenPanelStatusStore.setShow("showTrade", false);
-                  }}
+                ) : (
+                  <Flipped token={token} />
+                )
+              ) : (
+                <Trade
                   token={token}
+                  totalHolders={totalHolders}
+                  onClick={() => {
+                    if (!window.sexAddress) {
+                      window.connect();
+                      return;
+                    }
+                    onOpenPanel("showTrade", true);
+                  }}
                 />
               )}
-            {token.status !== 0 && !tokenPanelStatusStore.showTrade && (
-              <ScaleButton
-                onClick={() => {
-                  tokenPanelStatusStore.setShow(
-                    "showTrade",
-                    !tokenPanelStatusStore.showTrade
-                  );
-                }}
-              />
-            )}
-            <div className={styles.Actions}>
-              <DetailButton
-                onClick={() => {
-                  tokenPanelStatusStore.setShow(
-                    "showDetail",
-                    !tokenPanelStatusStore.showDetail
-                  );
-                }}
-              />
-              <Actions
-                token={token}
-                onClick={(type: any) => {
-                  if (type === "comments") {
-                    tokenPanelStatusStore.setShow(
-                      "showComments",
-                      !tokenPanelStatusStore.showComments
-                    );
-                    return;
-                  }
-                  if (!window.sexAddress) {
-                    window.connect();
-                    return;
-                  }
-                  if (type === "flip") {
-                    tokenPanelStatusStore.setShow(
-                      "showFlip",
-                      !tokenPanelStatusStore.showFlip
-                    );
-                  }
-                  if (type === "trade") {
-                    tokenPanelStatusStore.setTab("holders");
-                    tokenPanelStatusStore.setShow(
-                      "showTrade",
-                      !tokenPanelStatusStore.showTrade
-                    );
-                  }
-                }}
-                totalHolders={totalHolders}
-                onSuccess={(type: string) => {
-                  if (type === "like") {
-                    token.isLike = true;
-                    token.like = token.like + 1;
-                  }
-                  onUpdate(token);
-                }}
-                isCurrent={isCurrent}
-              />
+              <div className={styles.Desc} ref={descContentRef}>
+                <Desc token={token} />
+              </div>
             </div>
+          </div>
+          {token.status !== 0 && isCurrent && showTrade && (
+            <TradePanel
+              onClose={() => {
+                onOpenPanel("showTrade", false);
+              }}
+              token={token}
+              tab={tradeTab}
+              setTab={onUpdateTradeTab}
+            />
+          )}
+          {token.status !== 0 && !showTrade && isCurrent && (
+            <ScaleButton
+              onClick={() => {
+                onOpenPanel("showTrade", !showTrade);
+              }}
+            />
+          )}
+          <div className={styles.Actions}>
+            <DetailButton
+              onClick={() => {
+                onOpenPanel("showDetail");
+              }}
+            />
+            <Actions
+              token={token}
+              onClick={(type: any) => {
+                if (type === "comments") {
+                  onOpenPanel("showComments");
+                  return;
+                }
+                if (!window.sexAddress) {
+                  window.connect();
+                  return;
+                }
+                if (type === "flip") {
+                  onOpenPanel("showFlip");
+                }
+                if (type === "trade") {
+                  onUpdateTradeTab("holders");
+                  onOpenPanel("showTrade");
+                }
+              }}
+              totalHolders={totalHolders}
+              onSuccess={(type: string) => {
+                if (type === "like") {
+                  token.isLike = true;
+                  token.like = token.like + 1;
+                }
+                onUpdate(token);
+              }}
+              isCurrent={isCurrent}
+            />
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

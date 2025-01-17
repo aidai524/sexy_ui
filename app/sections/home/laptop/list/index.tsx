@@ -35,7 +35,6 @@ const FlipPanel = dynamic(
 export default function List({ type, isCurrentTab }: any) {
   const {
     getIndex,
-    hasNext,
     isLoading,
     list,
     onChangeIndex,
@@ -49,21 +48,11 @@ export default function List({ type, isCurrentTab }: any) {
   const { innerHeight, innerWidth } = useUserAgent();
 
   useEffect(() => {
-    const prevent = function (e: any) {
-      e.preventDefault();
-    };
-    document.body.addEventListener("touchmove", prevent);
-    return () => {
-      document.body.removeEventListener("touchmove", prevent);
-    };
-  }, []);
-
-  useEffect(() => {
     if (list.length && index > list.length) {
       onChangeIndex(0);
       setY(0);
     } else {
-      setY(-index * innerHeight);
+      setY(-index * (innerHeight + 16));
     }
   }, [index, list]);
 
@@ -74,117 +63,140 @@ export default function List({ type, isCurrentTab }: any) {
   }, [index, list]);
 
   return (
-    <>
+    <div
+      className={styles.Container}
+      style={{
+        height: innerHeight,
+        zIndex: isCurrentTab ? 10 : 0,
+        opacity: isCurrentTab ? 1 : 0
+      }}
+    >
       <div
-        className={styles.Container}
+        className={styles.List}
         style={{
-          height: innerHeight
+          transform: `translate(${
+            tokenPanelStatusStore.hasShow(type)
+              ? "calc(50vw - 600px)"
+              : "calc(50vw - 300px)"
+          }, ${y}px)`,
+          width: innerWidth
         }}
       >
-        <div
-          className={styles.List}
-          style={{
-            transform: `translate(${
-              tokenPanelStatusStore.hasShow()
-                ? "calc(50vw - 600px)"
-                : "calc(50vw - 300px)"
-            }, ${y}px)`,
-            width: innerWidth
-          }}
-        >
-          {list?.map((item: number, i: number) => {
-            let token = null;
+        {list?.map((item: number, i: number) => {
+          let token = null;
 
-            if (Math.abs(i - index) < 2 && item) {
-              token = getProjectById(type, item);
-            }
+          if (Math.abs(i - index) < 2 && item) {
+            token = getProjectById(type, item);
+          }
 
-            return (
-              <Token
-                key={token?.address || item}
-                token={token}
-                isCurrent={index === i && isCurrentTab}
-                onUpdate={(token: any) => {
-                  updateProject(type, token);
-                }}
-              />
-            );
-          })}
+          return (
+            <Token
+              key={token?.address || item}
+              token={token}
+              isCurrent={index === i && isCurrentTab}
+              onUpdate={(token: any) => {
+                updateProject(type, token);
+              }}
+              opacity={index > i ? 0 : 1}
+              showTrade={tokenPanelStatusStore.showTrade}
+              tradeTab={tokenPanelStatusStore.tab}
+              onUpdateTradeTab={tokenPanelStatusStore.setTab}
+              onOpenPanel={(type: string) => {
+                tokenPanelStatusStore.setShow(
+                  type,
+                  !tokenPanelStatusStore[type]
+                );
+              }}
+            />
+          );
+        })}
 
-          {!isLoading && (
-            <div
-              className={styles.EmptyWrapper}
-              style={{ height: innerHeight, width: innerWidth }}
+        {!isLoading && (
+          <div
+            className={styles.EmptyWrapper}
+            style={{ height: innerHeight, width: innerWidth }}
+          >
+            <Empty height={300} text="No more projects" />
+            <button
+              className={styles.Button}
+              onClick={() => {
+                homeTabStore.set({
+                  homeTabIndex: type === "preLaunch" ? 1 : 0
+                });
+              }}
             >
-              <Empty height={300} text="No more projects" />
-              <button
-                className={styles.Button}
-                onClick={() => {
-                  homeTabStore.set({
-                    homeTabIndex: type === "preLaunch" ? 1 : 0
-                  });
-                }}
-              >
-                {type === "preLaunch" ? "View Launches" : "View Pre-Launch"}
-              </button>
-            </div>
-          )}
-
-          {isLoading && (
-            <div
-              className={styles.Wrapper}
-              style={{ height: innerHeight, width: innerWidth }}
-            >
-              <Loading />
-            </div>
-          )}
-        </div>
-        {!!list?.length && (
-          <div className={styles.ArrowButtons}>
-            <ArrowIcon />
-            <ArrowIcon isDown={true} />
+              {type === "preLaunch" ? "View Launches" : "View Pre-Launch"}
+            </button>
           </div>
         )}
-        {currentToken && (
-          <AnimatePresence mode="wait">
-            {tokenPanelStatusStore.showDetail && (
-              <DetailPanel
-                token={currentToken}
-                onClose={() => {
-                  tokenPanelStatusStore.setShow("showDetail", false);
-                }}
-              />
-            )}
-            {tokenPanelStatusStore.showComments && (
-              <CommentsPanel
-                token={currentToken}
-                onClose={() => {
-                  tokenPanelStatusStore.setShow("showComments", false);
-                }}
-                onSuccess={() => {
-                  currentToken.comment = currentToken.comment + 1;
-                  updateProject(type, currentToken);
-                }}
-              />
-            )}
-            {tokenPanelStatusStore.showFlip && (
-              <FlipPanel
-                token={currentToken}
-                onClose={() => {
-                  tokenPanelStatusStore.setShow("showFlip", false);
-                }}
-                onSuccess={(amount: string) => {
-                  currentToken.isSuperLike = true;
-                  currentToken.prePaid = currentToken.prePaid + 1;
-                  currentToken.total_amount = amount;
-                  updateProject(type, currentToken);
-                  tokenPanelStatusStore.setShow("showFlip", false);
-                }}
-              />
-            )}
-          </AnimatePresence>
+
+        {isLoading && (
+          <div
+            className={styles.Wrapper}
+            style={{ height: innerHeight, width: innerWidth }}
+          >
+            <Loading />
+          </div>
         )}
       </div>
-    </>
+      {!!list?.length && (
+        <div className={styles.ArrowButtons}>
+          <ArrowIcon
+            disabled={index === 0}
+            onClick={() => {
+              if (index === 0) return;
+              onChangeIndex(index - 1);
+            }}
+          />
+          <ArrowIcon
+            disabled={index === list.length}
+            isDown={true}
+            onClick={() => {
+              if (index === list.length) return;
+              onChangeIndex(index + 1);
+            }}
+          />
+        </div>
+      )}
+      {currentToken && (
+        <AnimatePresence mode="wait">
+          {tokenPanelStatusStore.showDetail && (
+            <DetailPanel
+              token={currentToken}
+              onClose={() => {
+                tokenPanelStatusStore.setShow("showDetail", false);
+              }}
+            />
+          )}
+          {tokenPanelStatusStore.showComments && (
+            <CommentsPanel
+              token={currentToken}
+              onClose={() => {
+                tokenPanelStatusStore.setShow("showComments", false);
+              }}
+              onSuccess={() => {
+                currentToken.comment = currentToken.comment + 1;
+                updateProject(type, currentToken);
+              }}
+            />
+          )}
+          {tokenPanelStatusStore.showFlip && (
+            <FlipPanel
+              token={currentToken}
+              onClose={() => {
+                tokenPanelStatusStore.setShow("showFlip", false);
+              }}
+              onSuccess={(amount: string) => {
+                currentToken.isSuperLike = true;
+                currentToken.prePaid = currentToken.prePaid + 1;
+                currentToken.total_amount = amount;
+                updateProject(type, currentToken);
+                tokenPanelStatusStore.setShow("showFlip", false);
+              }}
+            />
+          )}
+        </AnimatePresence>
+      )}
+    </div>
   );
 }

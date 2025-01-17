@@ -5,21 +5,15 @@ import Chart from "@/app/sections/detail/components/chart";
 import Holder from "@/app/components/holder";
 import Txs from "@/app/sections/detail/components/txs";
 import Trade from "@/app/components/trade";
-import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 
-export default function TradePanel({ token, onClose }: any) {
-  const tokenPanelStatusStore: any = useTokenPanelStatus();
+export default function TradePanel({ token, tab, setTab, onClose }: any) {
   const mc = useMcWithPump(token);
   return (
     <div className={styles.Container}>
-      <Header
-        currentTab={tokenPanelStatusStore.tab}
-        onChangeTab={tokenPanelStatusStore.setTab}
-        onClose={onClose}
-      />
+      <Header currentTab={tab} onChangeTab={setTab} onClose={onClose} />
       <div className={styles.Tabs}>
-        {tokenPanelStatusStore.tab === "chart" && (
+        {tab === "chart" && (
           <PanelWrapper>
             <Chart
               token={token}
@@ -33,7 +27,7 @@ export default function TradePanel({ token, onClose }: any) {
             />
           </PanelWrapper>
         )}
-        {tokenPanelStatusStore.tab === "holders" && (
+        {tab === "holders" && (
           <PanelWrapper>
             <Holder
               from="panel"
@@ -43,7 +37,7 @@ export default function TradePanel({ token, onClose }: any) {
             />
           </PanelWrapper>
         )}
-        {tokenPanelStatusStore.tab === "transactions" && (
+        {tab === "transactions" && (
           <PanelWrapper>
             <Txs data={token} from="panel" />
           </PanelWrapper>

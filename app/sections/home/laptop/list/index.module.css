@@ -1,6 +1,10 @@
 .Container {
-  position: relative;
+  position: absolute;
   width: 100%;
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.3s;
 }
 
 .List {
@@ -29,6 +33,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #000;
+  border-radius: 20px;
 }
 
 .Button {

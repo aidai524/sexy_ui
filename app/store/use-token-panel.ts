@@ -19,13 +19,13 @@ export const useTokenPanelStatus = create(
         params[key] = show;
         set(params);
       },
-      hasShow() {
+      hasShow(tab: string) {
         const params = get();
         return (
           params.showDetail ||
           params.showComments ||
           params.showFlip ||
-          params.showTrade
+          (params.showTrade && tab === "launching")
         );
       },
       setTab(tab: string) {
