@@ -1,7 +1,6 @@
 import Modal from "../../modal";
 import styles from "./laptop.module.css";
 import Trade from "../trade";
-import { useLaptop } from "@/app/context/laptop";
 import type { Project } from "@/app/type";
 
 interface Props {
@@ -12,8 +11,6 @@ interface Props {
 }
 
 export default function SmokPanel({ show, token, onHide, onSuccess }: Props) {
-  const { updateInfo } = useLaptop();
-
   return (
     <Modal
       open={show}
@@ -38,7 +35,6 @@ export default function SmokPanel({ show, token, onHide, onSuccess }: Props) {
             onHide && onHide();
           }}
           onSuccess={() => {
-            updateInfo("flip");
             onSuccess && onSuccess();
           }}
         />

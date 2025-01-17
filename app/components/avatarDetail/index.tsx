@@ -2,6 +2,9 @@ import type { Project } from "@/app/type";
 import styles from "./index.module.css";
 import { simplifyNum } from "@/app/utils";
 import LaunchTag from "../tag/status";
+import Import from "../tag/import";
+import Paid from "../tag/Paid";
+import TokenTags from "../tokenTags";
 
 interface Props {
   token: Project;
@@ -24,7 +27,7 @@ export default function AvatarDetail({ token, mc }: Props) {
       <div className={styles.InfoWrapper}>
         <div className={styles.nameWrapper}>
           <div className={styles.name}>{token.tokenName}</div>
-          <LaunchTag type={token.status as number} />
+          <TokenTags token={token} />
         </div>
         <div className={styles.ticker}>
           Ticker: <span className={styles.dec}>{token.ticker}</span>

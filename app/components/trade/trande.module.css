@@ -17,23 +17,23 @@
         justify-content: center;
         height: 82px;
         text-indent: -1000px;
-        
+
         &.active:first-child {
-          background: url('/img/trade/buy.png') no-repeat 0 0;
+          background: url("/img/trade/buy.png") no-repeat 0 -10px;
           background-size: 100% auto;
         }
 
         &.active:last-child {
-          background: url('/img/trade/sell.png') no-repeat 0 0;
+          background: url("/img/trade/sell.png") no-repeat 0 -10px;
           background-size: 100% auto;
         }
       }
       .tab:first-child {
-        background: url('/img/trade/buy-grey.png') no-repeat 0 0;
+        background: url("/img/trade/buy-grey.png") no-repeat 0 -10px;
         background-size: 100% auto;
       }
       .tab:last-child {
-        background: url('/img/trade/sell-grey.png') no-repeat 0 0;
+        background: url("/img/trade/sell-grey.png") no-repeat 0 -10px;
         background-size: 100% auto;
       }
     }
@@ -133,6 +133,25 @@
           color: #fff;
         }
       }
+
+      .PanelPercentTag {
+        height: 20px;
+        padding: 4px 6px;
+        line-height: 20px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        font-family: Unbounded;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+        border-radius: 30px;
+        border: 1px solid rgba(146, 144, 177, 0.4);
+        backdrop-filter: blur(5px);
+        &.tagActive {
+          background-color: #9290b166;
+        }
+      }
     }
   }
 
@@ -165,7 +184,19 @@
   background-color: #121719;
 }
 
-.LaptopMain {
-  background-color: transparent;
-  padding: 0px 30px;
+.PanelContent {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 14px;
+  display: flex;
+  gap: 20px;
+}
+
+.PanelInput {
+  border-radius: 8px;
+  border: 1px solid rgba(146, 144, 177, 0.6) !important;
+  background: rgba(146, 144, 177, 0.1);
+  width: 335px;
+  height: 68px;
+  flex-shrink: 0;
 }

@@ -1,16 +1,40 @@
 import Token from "../token";
 import Empty from "@/app/components/empty";
 import Loading from "@/app/sections/home/mobile/loading";
-import useData from "@/app/sections/home/hooks/use-data-mobile";
-import { useEffect, useState } from "react";
+import ArrowIcon from "./arrow-icon";
 import styles from "./index.module.css";
+import dynamic from "next/dynamic";
+import { AnimatePresence } from "framer-motion";
+import useData from "@/app/sections/home/hooks/use-data-mobile";
+import { useEffect, useState, useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { useTokenPanelStatus } from "@/app/store/use-token-panel";
+
+const DetailPanel = dynamic(
+  () => import("@/app/sections/home/laptop/panels/detail"),
+  {
+    ssr: false
+  }
+);
+
+const CommentsPanel = dynamic(
+  () => import("@/app/sections/home/laptop/panels/comments"),
+  {
+    ssr: false
+  }
+);
+
+const FlipPanel = dynamic(
+  () => import("@/app/sections/home/laptop/panels/flip"),
+  {
+    ssr: false
+  }
+);
 
 export default function List({ type, isCurrentTab }: any) {
   const {
     getIndex,
-    hasNext,
     isLoading,
     list,
     onChangeIndex,
@@ -20,80 +44,91 @@ export default function List({ type, isCurrentTab }: any) {
   const index = getIndex(type);
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
+  const tokenPanelStatusStore: any = useTokenPanelStatus();
   const { innerHeight, innerWidth } = useUserAgent();
-
-  useEffect(() => {
-    const prevent = function (e: any) {
-      e.preventDefault();
-    };
-    document.body.addEventListener("touchmove", prevent);
-    return () => {
-      document.body.removeEventListener("touchmove", prevent);
-    };
-  }, []);
 
   useEffect(() => {
     if (list.length && index > list.length) {
       onChangeIndex(0);
       setY(0);
     } else {
-      setY(-index * innerHeight);
+      setY(-index * (innerHeight + 16));
     }
   }, [index, list]);
 
+  const currentToken = useMemo(() => {
+    const id = list[index];
+    if (!id) return null;
+    return getProjectById(type, id);
+  }, [index, list]);
+
   return (
-    <>
+    <div
+      className={styles.Container}
+      style={{
+        height: innerHeight,
+        zIndex: isCurrentTab ? 10 : 0,
+        opacity: isCurrentTab ? 1 : 0
+      }}
+    >
       <div
-        className={styles.Container}
+        className={styles.List}
         style={{
-          height: innerHeight,
-          width: innerWidth,
-          left: type === "preLaunch" ? 0 : innerWidth
+          transform: `translate(${
+            tokenPanelStatusStore.hasShow(type)
+              ? "calc(50vw - 600px)"
+              : "calc(50vw - 300px)"
+          }, ${y}px)`,
+          width: innerWidth
         }}
       >
-        <div
-          className={styles.List}
-          style={{
-            transform: `translateY(${y}px)`
-          }}
-        >
-          {list?.map((item: number, i: number) => {
-            let token = null;
+        {list?.map((item: number, i: number) => {
+          let token = null;
 
-            if (Math.abs(i - index) < 2 && item) {
-              token = getProjectById(type, item);
-            }
+          if (Math.abs(i - index) < 2 && item) {
+            token = getProjectById(type, item);
+          }
 
-            return (
-              <Token
-                key={token?.address || item}
-                token={token}
-                isCurrent={index === i && isCurrentTab}
-                onUpdate={(token: any) => {
-                  updateProject(type, token);
-                }}
-              />
-            );
-          })}
-          {!isLoading && (
-            <div
-              className={styles.EmptyWrapper}
-              style={{ height: innerHeight }}
+          return (
+            <Token
+              key={token?.address || item}
+              token={token}
+              isCurrent={index === i && isCurrentTab}
+              onUpdate={(token: any) => {
+                updateProject(type, token);
+              }}
+              opacity={index > i ? 0 : 1}
+              showTrade={tokenPanelStatusStore.showTrade}
+              tradeTab={tokenPanelStatusStore.tab}
+              onUpdateTradeTab={tokenPanelStatusStore.setTab}
+              onOpenPanel={(type: string) => {
+                tokenPanelStatusStore.setShow(
+                  type,
+                  !tokenPanelStatusStore[type]
+                );
+              }}
+            />
+          );
+        })}
+
+        {!isLoading && (
+          <div
+            className={styles.EmptyWrapper}
+            style={{ height: innerHeight, width: innerWidth }}
+          >
+            <Empty height={300} text="No more projects" />
+            <button
+              className={styles.Button}
+              onClick={() => {
+                homeTabStore.set({
+                  homeTabIndex: type === "preLaunch" ? 1 : 0
+                });
+              }}
             >
-              <Empty height={300} text="No more projects" />
-              <button
-                className={styles.Button}
-                onClick={() => {
-                  homeTabStore.set({
-                    homeTabIndex: type === "preLaunch" ? 1 : 0
-                  });
-                }}
-              >
-                {type === "preLaunch" ? "View Launches" : "View Pre-Launch"}
-              </button>
-            </div>
-          )}
-        </div>
+              {type === "preLaunch" ? "View Launches" : "View Pre-Launch"}
+            </button>
+          </div>
+        )}
 
         {isLoading && (
           <div
@@ -104,6 +139,64 @@ export default function List({ type, isCurrentTab }: any) {
           </div>
         )}
       </div>
-    </>
+      {!!list?.length && (
+        <div className={styles.ArrowButtons}>
+          <ArrowIcon
+            disabled={index === 0}
+            onClick={() => {
+              if (index === 0) return;
+              onChangeIndex(index - 1);
+            }}
+          />
+          <ArrowIcon
+            disabled={index === list.length}
+            isDown={true}
+            onClick={() => {
+              if (index === list.length) return;
+              onChangeIndex(index + 1);
+            }}
+          />
+        </div>
+      )}
+      {currentToken && (
+        <AnimatePresence mode="wait">
+          {tokenPanelStatusStore.showDetail && (
+            <DetailPanel
+              token={currentToken}
+              onClose={() => {
+                tokenPanelStatusStore.setShow("showDetail", false);
+              }}
+            />
+          )}
+          {tokenPanelStatusStore.showComments && (
+            <CommentsPanel
+              token={currentToken}
+              onClose={() => {
+                tokenPanelStatusStore.setShow("showComments", false);
+              }}
+              onSuccess={() => {
+                currentToken.comment = currentToken.comment + 1;
+                updateProject(type, currentToken);
+              }}
+            />
+          )}
+          {tokenPanelStatusStore.showFlip && (
+            <FlipPanel
+              token={currentToken}
+              onClose={() => {
+                tokenPanelStatusStore.setShow("showFlip", false);
+              }}
+              onSuccess={(amount: string) => {
+                currentToken.isSuperLike = true;
+                currentToken.prePaid = currentToken.prePaid + 1;
+                currentToken.total_amount = amount;
+                updateProject(type, currentToken);
+                tokenPanelStatusStore.setShow("showFlip", false);
+              }}
+            />
+          )}
+        </AnimatePresence>
+      )}
+    </div>
   );
 }

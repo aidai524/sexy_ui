@@ -22,9 +22,9 @@ export default function Chart({ token, style = {} }: Props) {
 
     return 3;
   }, [token]);
-  console.log("data", token);
+
   if (!token) return <div />;
-  
+
   return (
     <div style={{ paddingTop: 10, height: "400px", ...style }}>
       {/* {type === 2 && (

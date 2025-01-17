@@ -30,7 +30,7 @@ const Tab = (props: any) => {
                   setValue(item.value);
                 }}
                 onMouseLeave={() => {
-                  setValue(25);
+                  setValue(50);
                 }}
               >
                 <div className={styles.NodeInner}>

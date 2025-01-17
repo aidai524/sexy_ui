@@ -12,6 +12,7 @@ import Copyed from "@/app/components/copyed";
 import Holder from "@/app/components/holder";
 import { ProgressBar } from "antd-mobile";
 import Big from "big.js";
+import TokenTags from "@/app/components/tokenTags";
 
 interface Props {
   data: Project;
@@ -65,7 +66,7 @@ export default function InfoPart({
     <div>
       <div className={styles.detailAvatar}>
         <div className={styles.tokenImgWrapper}>
-          <img className={styles.tokenImg} src={data.tokenImg || '/img/token-placeholder.png'} />
+          <img className={styles.tokenImg} src={data.tokenIcon || '/img/token-placeholder.png'} />
         </div>
 
         <div className={styles.detailInfo}>
@@ -73,7 +74,7 @@ export default function InfoPart({
             <div className={styles.name}>{data.tokenName}</div>
             <div className={styles.tickerWrapper}>
               <div className={styles.ticker}>Ticker:<span className={styles.des}>{data.ticker}</span></div>
-              <LaunchTag type={data.status as number} />
+              <TokenTags token={data} />  
             </div>
           </div>
 

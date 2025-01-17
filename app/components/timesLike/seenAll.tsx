@@ -26,7 +26,7 @@ export default function SeenAll({ show, onClose }: Props) {
               You have seen all the Pre-Launch tokens.
             </div>
             <div className={styles.text}>
-              Buy or sell Fun or Pump platform tokens on Fun and earn up to
+              Buy or sell FlipN or Pump platform tokens on FlipN and earn up to
               <br />
               <strong>300% reward bonus</strong>.
             </div>

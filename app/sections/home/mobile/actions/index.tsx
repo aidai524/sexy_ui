@@ -40,52 +40,63 @@ export default function Actions({
             }}
             id={isCurrent ? "guid-tour-like" : ""}
           />
-          <button
-            className={`${styles.Item} ${isMobile && styles.PcItem} ${
-              !disabled && "button"
-            }`}
+          <div
+            className={styles.Item}
             onClick={() => {
               if (token.isSuperLike || disabled) return;
               onClick("flip");
             }}
           >
-            <HomeIcon
-              size={30}
-              type={token.isSuperLike ? "primary" : "normal"}
-            />
+            <button
+              className={`${!disabled ? "button" : ""} ${
+                !isMobile && styles.PcItem
+              }`}
+            >
+              <HomeIcon
+                size={30}
+                type={token.isSuperLike ? "primary" : "normal"}
+              />
+            </button>
             <span>{token.prePaid}</span>
-          </button>
+          </div>
         </>
       ) : (
         <>
-          <button
-            className={`${styles.Item} ${isMobile && styles.PcItem} ${
-              !disabled && "button"
-            }`}
+          <div
+            className={styles.Item}
             onClick={() => {
               if (!disabled) onClick("trade");
             }}
           >
-            <img src="/img/home/holder-icon.png" style={{ width: 34 }} />
+            <button
+              className={`${!disabled ? "button" : ""} ${
+                !isMobile && styles.PcItem
+              }`}
+            >
+              <img src="/img/home/holder-icon.png" style={{ width: 34 }} />
+            </button>
+
             <span>{totalHolders}</span>
-          </button>
+          </div>
         </>
       )}
-      <button
-        className={`${styles.Item} ${isMobile && styles.PcItem} ${
-          !disabled && "button"
-        }`}
+      <div
+        className={styles.Item}
         onClick={() => {
           if (!disabled) onClick("comments");
         }}
       >
-        <CommentIcon />
+        <button
+          className={`${!disabled ? "button" : ""} ${
+            !isMobile && styles.PcItem
+          }`}
+        >
+          <CommentIcon />
+        </button>
         <span>{token.comment || 0}</span>
-      </button>
-      <button
-        className={`${styles.Item} ${isMobile && styles.PcItem} ${
-          !disabled && "button"
-        }`}
+      </div>
+      <div
+        className={styles.Item}
         onClick={() => {
           if (disabled) return;
           if (!window?.sexAddress) {
@@ -96,9 +107,15 @@ export default function Actions({
           onSuccess("share");
         }}
       >
-        <ShareIcon />
+        <button
+          className={`${!disabled ? "button" : ""} ${
+            !isMobile && styles.PcItem
+          }`}
+        >
+          <ShareIcon />
+        </button>
         <span>{token.share_num || 0}</span>
-      </button>
+      </div>
     </div>
   );
 }

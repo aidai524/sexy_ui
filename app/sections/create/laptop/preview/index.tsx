@@ -34,12 +34,14 @@ export default function Preview({ token }: any) {
   }, []);
 
   return (
-    <>
+    <div className={styles.Content}>
       <div
         style={{
           height: innerHeight,
           width: innerWidth,
-          transform: `translateX(${showDetail ? 0 : "calc(100% - 200px)"})`
+          transform: `translateX(${
+            showDetail ? "calc(50vw - 600px)" : "calc(50vw - 300px)"
+          })`
         }}
         className={styles.Token}
       >
@@ -64,24 +66,14 @@ export default function Preview({ token }: any) {
       </div>
       <AnimatePresence mode="wait">
         {showDetail && (
-          <motion.div
-            initial={{ x: "100%" }}
-            exit={{ x: "100%" }}
-            animate={{ x: 0 }}
-            transition={{
-              ease: "linear",
-              duration: 0.3
+          <DetailPanel
+            token={info}
+            onClose={() => {
+              setShowDetail(false);
             }}
-          >
-            <DetailPanel
-              token={info}
-              onClose={() => {
-                setShowDetail(false);
-              }}
-            />
-          </motion.div>
+          />
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }

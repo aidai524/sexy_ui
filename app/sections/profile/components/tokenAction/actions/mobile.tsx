@@ -1,12 +1,13 @@
 import { Popup } from "antd-mobile";
 import ActionList from "../actionList";
-export default function Mobile({
-  modalShow,
-  setModalShow,
-  token,
-  isOther,
-  prepaidWithdrawDelayTime
-}: any) {
+export default function Mobile(props: any) {
+  const {
+    modalShow,
+    setModalShow,
+    token,
+    isOther,
+    prepaidWithdrawDelayTime
+  } = props;
   return (
     <Popup
       visible={modalShow}
@@ -25,9 +26,7 @@ export default function Mobile({
       }}
     >
       <ActionList
-        isOther={isOther}
-        token={token}
-        prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
+        {...props}
       />
     </Popup>
   );
