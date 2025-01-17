@@ -37,7 +37,6 @@ export default function Profile({
         backgroundSize: "cover"
       }
     : {};
-
   return (
     <div
       className={styles.main}
@@ -97,7 +96,15 @@ export default function Profile({
         </div>
       </div>
 
-      {isOther && <Summaries address={address} isFollower={isFollower} setRefreshNum={setRefreshNum} refreshNum={refreshNum} />}
+      {isOther && 
+        <Summaries 
+            address={address} 
+            isFollower={isFollower} 
+            setRefreshNum={setRefreshNum} 
+            refreshNum={refreshNum} 
+            userInfo={userInfo}
+        />
+      }
 
       <Tabs
         address={address}

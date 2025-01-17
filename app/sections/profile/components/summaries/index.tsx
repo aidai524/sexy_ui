@@ -5,9 +5,9 @@ import FollowBtn from '../followBtn';
 import CoppiedAction from '../coppiedAction';
 
 const Summaries = (props: any) => {
-  const { address, isFollower,setRefreshNum,refreshNum } = props;
+  const { address, isFollower,setRefreshNum,refreshNum,userInfo } = props;
   const [showModal,setShowModal] = useState(false);
-
+  console.log("userInfo",userInfo)
 
   return (
     <div className={styles.Container}>
@@ -55,9 +55,13 @@ const Summaries = (props: any) => {
           setShowModal(true);
         }}>Copy Trade</button>
       </div>
-      <CoppiedAction show={showModal} onClose={() => {
-        setShowModal(false);
-      }} />
+      <CoppiedAction 
+        copiedInfo={userInfo}
+        show={showModal} 
+        onClose={() => {
+          setShowModal(false);
+        }} 
+      />
     </div>
   );
 };
