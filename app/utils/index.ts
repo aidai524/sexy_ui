@@ -447,6 +447,9 @@ export async function upload(
   scala = 2
 ) {
   let _file: any = file;
+
+  console.log("file111", file, isImage);
+
   if (isImage) {
     const url = await new Promise<string | void>((resolve) => {
       const reader = new FileReader();
@@ -526,6 +529,8 @@ export async function upload(
   }
 
   const newFileName = generateRandomString(10) + fileName;
+
+  console.log("newFileName", newFileName);
 
   return postUpload(_file, newFileName, file.type);
 }

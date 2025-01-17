@@ -1,9 +1,8 @@
-
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
 import { formatAddress, simplifyNum, timeAgo } from "@/app/utils";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useAccount } from "@/app/hooks/useAccount";
 import useMc from "@/app/hooks/useMc";
@@ -13,6 +12,8 @@ import Holder from "@/app/components/holder";
 import { ProgressBar } from "antd-mobile";
 import Big from "big.js";
 import TokenTags from "@/app/components/tokenTags";
+import { getVideoExt, imgReg, videoReg } from "@/app/components/upload";
+import VideoPlayer from '@/app/components/video';
 
 interface Props {
   data: Project;
@@ -66,7 +67,18 @@ export default function InfoPart({
     <div>
       <div className={styles.detailAvatar}>
         <div className={styles.tokenImgWrapper}>
-          <img className={styles.tokenImg} src={data.tokenIcon || '/img/token-placeholder.png'} />
+          {
+            videoReg.test(data.tokenImg || '') &&
+            <VideoPlayer
+              src={data.tokenImg}
+              type={getVideoExt(data.tokenImg)}
+              className={styles.tokenImg}
+            />
+          }
+          {
+            (imgReg.test(data.tokenImg || '') || !data.tokenImg) &&
+            <img className={styles.tokenImg} src={data.tokenImg || '/img/token-placeholder.png'} />
+          }
         </div>
 
         <div className={styles.detailInfo}>
@@ -74,7 +86,7 @@ export default function InfoPart({
             <div className={styles.name}>{data.tokenName}</div>
             <div className={styles.tickerWrapper}>
               <div className={styles.ticker}>Ticker:<span className={styles.des}>{data.ticker}</span></div>
-              <TokenTags token={data} />  
+              <TokenTags token={data} />
             </div>
           </div>
 
@@ -153,30 +165,30 @@ export default function InfoPart({
 
       {
         data.status === 0 && <div className={styles.panel}>
-        <div className={styles.singleProgress}>
-          <div className={styles.progressTitleWrapper}>
-            <div className={styles.progressTitle}>Pre-launch progress (Likes)</div>
-            <div className={styles.progressPercent}>{data.like || 0}/100</div>
+          <div className={styles.singleProgress}>
+            <div className={styles.progressTitleWrapper}>
+              <div className={styles.progressTitle}>Pre-launch progress (Likes)</div>
+              <div className={styles.progressPercent}>{data.like || 0}/100</div>
+            </div>
+
+            <ProgressBar percent={data.like || 0} style={{
+              '--track-width': '14px',
+              '--fill-color': '#FFA8E8',
+              '--track-color': '#29242B'
+            }} />
+
+            <div className={styles.progressDesc}>It takes 100 likes to get into launching phase.</div>
           </div>
 
-          <ProgressBar percent={data.like || 0} style={{
-            '--track-width': '14px',
-            '--fill-color': '#FFA8E8',
-            '--track-color': '#29242B'
-          }} />
+          <div className={styles.singleProgress} style={{ marginTop: 15 }}>
+            <div className={styles.progressTitleWrapper}>
+              <div className={styles.progressTitle}>{data.prePaid || 0} Flipped</div>
+              <div className={styles.progressPercent}>{data.prePaidAmount ? new Big(data.prePaidAmount || 0).div(10 ** 9).toString() : 0}SOL</div>
+            </div>
 
-          <div className={styles.progressDesc}>It takes 100 likes to get into launching phase.</div>
-        </div>
-
-        <div className={styles.singleProgress} style={{ marginTop: 15 }}>
-          <div className={styles.progressTitleWrapper}>
-            <div className={styles.progressTitle}>{data.prePaid || 0} Flipped</div>
-            <div className={styles.progressPercent}>{data.prePaidAmount ? new Big(data.prePaidAmount || 0).div(10 ** 9).toString() : 0}SOL</div>
+            <div className={styles.progressDesc} style={{ color: '#D9D9D9' }}>{"‘Flip’ means ‘pre-buy’, users will auto-buy in when this meme launched."}</div>
           </div>
-
-          <div className={styles.progressDesc} style={{ color: '#D9D9D9' }}>{"‘Flip’ means ‘pre-buy’, users will auto-buy in when this meme launched."}</div>
         </div>
-      </div>
       }
 
       {
@@ -194,7 +206,7 @@ export default function InfoPart({
             }} />
 
             <div className={styles.progressDesc}>Graduate this coin to Orca at $40,560 market cap.
-            There will be 40.56 SOL in the bonding curve.</div>
+              There will be 40.56 SOL in the bonding curve.</div>
           </div>
 
           <div className={styles.singleProgress} style={{ marginTop: 15 }}>
