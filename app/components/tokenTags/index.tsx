@@ -13,7 +13,7 @@ export default function TokenTags({ token }: Props) {
     <div className={styles.tags}>
       <LaunchTag type={token.status as number} />
       {token.DApp === 'pump' && <Import />}
-      {Number(token.prePaidAmount) > 0 && <Paid />}
+      {token.initiativeLaunching && <Paid />}
     </div>
   );
 } 

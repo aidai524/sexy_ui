@@ -16,10 +16,10 @@ interface Props {
   scala?: number;
 }
 
-export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
+export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|mp4|webm|ogv))$/i;
 export const svgReg = /(.+\.(svg))$/i;
 export const gifReg = /(.+\.(gif))$/i;
-export const videoReg = /(.+\.(mp4))$/i;
+export const videoReg = /(.+\.(mp4|webm|ogv))$/i;
 const StyleMaps = {
   avatar: [styles.Avatar, styles.AvatarImg],
   banner: [styles.Banner, styles.Banner],
