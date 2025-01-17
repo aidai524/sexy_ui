@@ -93,6 +93,12 @@ export default function useData(launchType: Type) {
     }
   };
 
+  const queryAndUpdateDetail = useCallback(async (type: Type, id: number) => {
+    const res = await httpGet(`/project/detail?id=${id}`);
+    if (res.code !== 0 || !res.data) return;
+    projectsStore.updateProject(type, res.data);  
+  }, [projectsStore]);
+
   const onChangeIndex = (currentIndex: number) => {
     projectsStore.setIndex(launchType, currentIndex);
 
@@ -139,6 +145,7 @@ export default function useData(launchType: Type) {
     hasNext,
     updateProject: projectsStore.updateProject,
     onChangeIndex,
-    getProjectById: projectsStore.getProjectById
+    getProjectById: projectsStore.getProjectById,
+    queryAndUpdateDetail,
   };
 }

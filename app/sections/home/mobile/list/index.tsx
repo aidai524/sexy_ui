@@ -20,7 +20,8 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
     hasNext,
     onChangeIndex,
     updateProject,
-    getProjectById
+    getProjectById,
+    queryAndUpdateDetail
   } = useData(type);
   const index = getIndex(type);
   const [y, setY] = useState(0);
@@ -140,6 +141,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any) => {
                   updateProject(type, token);
+                  queryAndUpdateDetail(type, token.id);
                 }}
               />
             );

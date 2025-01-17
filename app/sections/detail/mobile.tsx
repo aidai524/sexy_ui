@@ -21,6 +21,7 @@ import {
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { useMessage } from "@/app/context/messageContext";
 import { useDebounceFn } from "ahooks";
+import { useProjects } from "@/app/store/use-projects";
 
 export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   const [activeKey, setActiveKey] = useState("Info");
@@ -29,6 +30,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     isLoading,
     getDetailInfo
   } = useTokenDetail({ token });
+  const projectsStore = useProjects();
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
   const { showShare } = useMessage()
   const headerRef = useRef<HTMLDivElement>(null)
@@ -40,7 +42,6 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   );
 
   const { run } = useDebounceFn(() => {
-    console.log('headerRef.current?.clientHeight', headerRef.current?.clientHeight)
     setHeaderHeight(headerRef.current?.clientHeight || 60)
   }, { wait: 500 })
 
@@ -53,6 +54,12 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   }, [infoData]);
 
   useEffect(() => {
+    if (infoData) {
+      projectsStore.updateProject(infoData.status === 0 ? 'preLaunch' : 'launching', infoData); 
+    }
+  }, [infoData]);
+
+  useEffect(() => {
     onBack &&
       token &&
       history.pushState(
@@ -61,6 +68,8 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
         `/detail?address=${token.address}`
       );
   }, [onBack, token]);
+
+  const from = "detail"; // or whatever value is appropriate for your use case
 
   if (isLoading) {
     return (
