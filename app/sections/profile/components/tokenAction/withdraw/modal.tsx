@@ -38,6 +38,7 @@ const Content = (props: any) => {
     token,
     prepaidAmount,
     prepaidRealAmount,
+    onClose,
   } = props;
 
   const tokenIcon = token.tokenIcon || token.tokenImg || "/img/token-placeholder.png";
@@ -50,16 +51,17 @@ const Content = (props: any) => {
       const res = await prepaidSolWithdraw();
 
       if (!res) {
-        fail("Refund fail");
+        fail("Refund fail", { maskStyle: { zIndex: 2000 } });
       } else {
-        success("Refund success");
+        success("Refund success", { maskStyle: { zIndex: 2000 } });
         setIsWithdrawed(true);
         // fix#REF-9368
         onSuccess?.();
+        onClose?.();
       }
     } catch (e) {
       console.log(e);
-      fail("Refund fail");
+      fail("Refund fail", { maskStyle: { zIndex: 2000 } });
     }
 
     setIsLoading(false);

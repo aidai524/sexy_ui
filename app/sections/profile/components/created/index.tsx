@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Token from "../token";
-import { http } from "@/app/utils";
+import { http, httpGet } from '@/app/utils';
 import Empty from "@/app/components/empty";
 import type { Project } from "@/app/type";
 import { mapDataToProject } from "@/app/utils/mapTo";
@@ -9,6 +9,7 @@ import { useAuth } from "@/app/context/auth";
 import useCheckFliped from "../../hooks/use-check-fliped";
 import styles from "./index.module.css";
 import Popover, { PopoverPlacement, PopoverTrigger } from '@/app/components/popover';
+import { useDebounceFn } from 'ahooks';
 
 const urls: Record<string, string> = {
   created: "/project/account/list",
@@ -140,6 +141,9 @@ export default function Created({
     [address, type, offset, list, isCurrent, currentSummary, loading]
   );
 
+  // fix#REF-9400
+  const { run: loadMoreDelay } = useDebounceFn(loadMore, { wait: 5000 });
+
   const handleSelect = (summary: Summary) => {
     popoverRef.current?.onClose?.();
     if (summary.label === currentSummary?.label || loading) {
@@ -206,8 +210,8 @@ export default function Created({
               setRefresh(refresh + 1);
               updateCurrentUserInfo();
             }}
-            onWithdrawSuccess={() => {
-              loadMore(true, list.length);
+            onWithdrawSuccess={async () => {
+              loadMoreDelay(true, LIMIT);
             }}
           />
         );

@@ -100,7 +100,7 @@ export default function Token({
         setMC(res as number);
       });
     }
-  }, [pool, data]);
+  }, [pool, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals]);
 
   useEffect(() => {
     if (isOther) {
@@ -113,7 +113,7 @@ export default function Token({
       setPrepaidRealAmount(_amount);
       setPrepaidAmount(Big(_amount).div(0.985));
     });
-  }, [isOther, data]);
+  }, [isOther, data?.tokenName, data?.tokenSymbol, data?.tokenDecimals]);
 
   useEffect(() => {
     if (pool && pool.length) {
@@ -140,13 +140,13 @@ export default function Token({
         //   _tokenAmount.toString(),
         // );
       }).catch((err) => {
-        console.log('%cCalc token amount failed - %o: %o', 'background:#ff5f00;color:#fff;', data.tokenSymbol, err);
+        // console.log('%cCalc token amount failed - %o: %o', 'background:#ff5f00;color:#fff;', data.tokenSymbol, err);
         setTokenAmount(Big(0));
       });
       return;
     }
     setTokenAmount(Big(0));
-  }, [pool, data, prepaidRealAmount]);
+  }, [pool, data?.tokenDecimals, prepaidRealAmount]);
 
   return (
     <div className={`${styles.main} ${from === "page" && styles.PageToken}`}>
