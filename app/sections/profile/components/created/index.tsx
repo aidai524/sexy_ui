@@ -218,7 +218,7 @@ export default function Created({
   }
 
   return (
-    <div>
+    <div className={styles.ProfileCreatedContainer}>
       <StatusSelect
         type={type}
         popoverRef={popoverRef}

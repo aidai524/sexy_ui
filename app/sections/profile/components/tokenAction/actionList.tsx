@@ -6,6 +6,7 @@ import BuySell from "./buySell";
 import Withdraw from "./withdraw";
 import Claim from "./claim";
 import Big from 'big.js';
+import { useUserAgent } from '@/app/context/user-agent';
 
 interface Props {
   token: Project;
@@ -33,12 +34,15 @@ export default function ActionList(props: Props) {
     isPrepaid,
     prepaidSolWithdraw,
     prepaidTokenWithdraw,
+    isDelay,
   } = props;
+
+  const { isMobile } = useUserAgent();
 
   const [isClaimed, setIsClaimed] = useState(false);
 
   return (
-    <div className={styles.Btns}>
+    <div className={isMobile ? styles.BtnsMobile : styles.Btns}>
       {token.status === 0 && (
         <>
           {
@@ -52,10 +56,11 @@ export default function ActionList(props: Props) {
             ) : (
               <>
                 {!!smookeable && (smookeable === 1 ? (
-                  /*<button className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}>
-                    <span>Flipped</span>
-                  </button>*/
-                  <></>
+                  !isDelay && (
+                    <button className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}>
+                      <span>Flipped</span>
+                    </button>
+                  )
                 ) : (
                   <SmokeHot
                     actionChildren={
@@ -66,6 +71,7 @@ export default function ActionList(props: Props) {
                     }
                     token={token}
                     onClick={() => {}}
+                    onSuccess={onWithdrawSuccess}
                   />
                 ))}
               </>
