@@ -3,13 +3,6 @@ import styles from './index.module.css'
 import { defaultAvatar } from "@/app/utils/config";
 import { RingChart } from '../copyAmountPie';
 
-const SolIconWithoutBg = () => {
-    return (
-        <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" clipRule="evenodd" d="M1.875 0H11.25L9.375 2.5H0L1.875 0ZM1.875 7.5H11.25L9.375 10H0L1.875 7.5ZM11.25 6.25H1.875L0 3.75H9.375L11.25 6.25Z" fill="#9290B1"/>
-     </svg> )   
-}
-
 export default function CopyItem({itemInfo}: any) {
   return (
     <div className={styles.ItemBox}>
@@ -88,4 +81,12 @@ export default function CopyItem({itemInfo}: any) {
       </div>
     </div>
   )
+}
+
+
+const SolIconWithoutBg = () => {
+    return (
+        <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M1.875 0H11.25L9.375 2.5H0L1.875 0ZM1.875 7.5H11.25L9.375 10H0L1.875 7.5ZM11.25 6.25H1.875L0 3.75H9.375L11.25 6.25Z" fill="#9290B1"/>
+     </svg> )   
 }
