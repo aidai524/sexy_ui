@@ -24,6 +24,11 @@ export const useReferStore = create(persist<ReferStore>((set) => ({
   setBind: (bind) => set((state) => ({ ...state, bind })),
 }), {
   name: '_refer',
-  version: 0.1,
-  storage: createJSONStorage(() => localStorage)
+  version: 0.2,
+  storage: createJSONStorage(() => localStorage),
+  partialize: (state) => ({
+    entryVisible: state.entryVisible,
+    isInvite: state.isInvite,
+    bind: state.bind,
+  } as any)
 }));

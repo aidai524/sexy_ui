@@ -69,8 +69,6 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
       );
   }, [onBack, token]);
 
-  const from = "detail"; // or whatever value is appropriate for your use case
-
   if (isLoading) {
     return (
       <div className={styles.loadingBox}>

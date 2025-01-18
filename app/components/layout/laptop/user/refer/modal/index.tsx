@@ -248,36 +248,32 @@ const ReferModalContent = (props: any) => {
               )}
             </AnimatePresence>
           </div>
-          <div className={isMobile ? styles.InviteMobile : styles.Invite}>
-            <AnimatePresence mode="wait">
-              {currentTab === 1 && (
-                <motion.div
-                  key={1}
-                  className={styles.InviteText}
-                  {...AnimateVariants}
-                >
-                  Invite Friends and Earn Commissions Get up {!isMobile && <br />}{" "}
-                  to <strong className={styles.InviteTextPrimary}>$5000</strong>{" "}
-                  rebates
-                </motion.div>
-              )}
-              {currentTab === 2 && (
-                <motion.div
-                  key={2}
-                  className={styles.InviteText}
-                  {...AnimateVariants}
-                >
-                  When you invite a new user,
-                  <br />
-                  you will earn an{" "}
-                  <strong className={styles.InviteTextPrimary}>
-                    extra 10%
-                  </strong>{" "}
-                  of their points.
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+        </div>
+        <div className={isMobile ? styles.InviteMobile : styles.Invite}>
+          <AnimatePresence mode="wait">
+            {currentTab === 1 && (
+              <motion.div
+                key={1}
+                className={styles.InviteText}
+                {...AnimateVariants}
+              >
+                Users invite more than <strong className={styles.InviteTextPrimary}>1,000</strong> people and get <strong
+                className={styles.InviteTextPrimary}
+              >50%</strong> Referral kickback
+              </motion.div>
+            )}
+            {currentTab === 2 && (
+              <motion.div
+                key={2}
+                className={styles.InviteText}
+                {...AnimateVariants}
+              >
+                Users invite more than <strong className={styles.InviteTextPrimary}>1,000</strong> people and get <strong
+                className={styles.InviteTextPrimary}
+              >50%</strong> Referral kickback
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
       <div className={styles.Footer}>

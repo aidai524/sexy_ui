@@ -1,25 +1,30 @@
 .Content {
-  margin-top: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7px;
-  height: 200px;
+  gap: 10px;
+  min-height: 200px;
+  max-height: calc(100dvh - 380px);
   overflow-y: auto;
   overflow-x: hidden;
 }
 .Card {
   width: 100%;
-  padding: 16px;
-  border-radius: 10px;
-  border: 1px dashed rgba(161, 161, 161, 0.60);
-  background: #FAFAFA;
+  padding: 9px 6px 10px 14px;
+  border-radius: 14px;
+  border: 1px dashed rgba(161, 161, 161, 0.60);;
+  background: rgba(251, 202, 4, 0.20);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
 }
 .CardTitle {
-  color: #636183;
-  font-size: 18px;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   line-height: normal;
 }
 .CardTitlePrimary {
@@ -27,10 +32,43 @@
   font-weight: 700;
 }
 .CardContent {
-  color: #9290B1;
+  color: #000;
+  font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
-  margin-top: 6px;
+  margin-top: 2px;
+}
+.CardContentPrimary {
+  color: #000;
+  font-weight: 600;
+}
+.AirdropInfoContent {
+  width: 100%;
+  padding: 16px 20px 24px;
+}
+.AirdropInfoUser {
+  flex: 1;
+}
+.AirdropInfoUserIcon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+}
+
+.AirdropEntryMobile {
+  position: fixed;
+  left: 4px;
+  top: 39px;
+  width: 65px;
+  height: 68px;
+  background: url("/img/airdrop/icon-entry.svg") no-repeat center / contain;
+}
+.AirdropEntryMobileInner {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transform-origin: center 50px;
+  background: url("/img/airdrop/icon-entry.svg") no-repeat center / contain;
 }

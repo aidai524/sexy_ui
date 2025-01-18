@@ -1,7 +1,7 @@
 import Modal from '@/app/components/modal';
 import Index from './index';
 
-const AirdropMoreModal = (props: any) => {
+const AirdropShareModal = (props: any) => {
   const { visible, onClose } = props;
 
   return (
@@ -11,9 +11,7 @@ const AirdropMoreModal = (props: any) => {
       mainStyle={{
         border: 0,
       }}
-      closeStyle={{
-        top: 55,
-      }}
+      closeStyle={{}}
       maskClose={false}
     >
       <Index {...props} />
@@ -21,4 +19,4 @@ const AirdropMoreModal = (props: any) => {
   );
 };
 
-export default AirdropMoreModal;
+export default AirdropShareModal;

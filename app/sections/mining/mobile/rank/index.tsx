@@ -1,6 +1,5 @@
 import styles from "./index.module.css";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
-import LoginIcon from "./login-icon";
 import RankPanel from "../../component/rank";
 import RankHeader from "../../component/rank/header";
 import { useAuth } from "@/app/context/auth";
@@ -12,7 +11,7 @@ export default function Rank({ info, infoLoading }: any) {
   const [visible, setVisible] = useState(false);
 
   return (
-    <>
+    <div className={styles.RankContainer}>
       {userInfo?.address ? (
         <div className={styles.RankWrapper}>
           <RankHeader
@@ -28,7 +27,6 @@ export default function Rank({ info, infoLoading }: any) {
             Connect wallet
           </WalletModalButton>
           <span>and get start!</span>
-          <LoginIcon className={styles.ConnectIcon} />
         </div>
       )}
       <Popup
@@ -50,6 +48,6 @@ export default function Rank({ info, infoLoading }: any) {
           loading={infoLoading}
         />
       </Popup>
-    </>
+    </div>
   );
 }

@@ -1,8 +1,11 @@
-.ConnectContainer {
+.RankContainer {
   position: fixed;
   bottom: 0px;
   left: 0px;
   width: 100vw;
+}
+
+.ConnectContainer {
   height: 72px;
   border: 1px solid #3b3b3b;
   border-radius: 24px 24px 0px 0px;
@@ -41,9 +44,5 @@
 }
 
 .RankWrapper {
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  width: 100vw;
   padding: 10px 16px;
 }

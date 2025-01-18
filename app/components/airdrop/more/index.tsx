@@ -1,25 +1,18 @@
 import AirdropCard from '../components/card';
 import { useRouter } from 'next/navigation';
-import { useReferStore } from '@/app/store/useRefer';
 import { useContext, useEffect } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
-import { numberFormatter } from '@/app/utils/common';
+import InviteCard, { Card } from '@/app/components/airdrop/components/invite-card';
 
 const AirdropMore = (props: any) => {
   const { onClose } = props;
 
-  const { getUserData, userData } = useContext(AirdropContext);
+  const { getUserData } = useContext(AirdropContext);
 
   const router = useRouter();
-  const referStore = useReferStore();
 
   const handleCreate = () => {
     router.push('/create');
-    onClose?.();
-  };
-
-  const handleRefer = () => {
-    referStore.setVisible(true, true);
     onClose?.();
   };
 
@@ -29,164 +22,44 @@ const AirdropMore = (props: any) => {
 
   return (
     <AirdropCard
-      title="Want to earn more points?"
-      bg="/img/airdrop/more-bg.svg"
-      height={476}
-      bgHeight={542}
+      title="Want to earn more?"
+      titleStyle={{
+        color: '#000',
+        fontFamily: 'Unbounded',
+        fontSize: 16,
+        fontStyle: 'normal',
+        fontWeight: 700,
+        lineHeight: 'normal',
+        textTransform: 'capitalize',
+        marginTop: 8,
+      }}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 4,
-          position: 'absolute',
-          left: 16,
-          top: 16,
-        }}
-      >
-        <Badge icon="/img/airdrop/diamond.svg" label={`Lv.${userData?.level ?? 1}`} />
-        <Badge icon="/img/airdrop/points.svg" label={numberFormatter(userData?.points, 0, true)} />
-      </div>
       <div
         style={{
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: 7,
-          marginTop: 16,
-          paddingBottom: 24,
-          height: 317,
-          overflowY: 'auto',
-          overflowX: 'hidden',
+          gap: 15,
+          padding: '16px 20px 29px',
         }}
       >
         <Card
           title="Create a new token"
           btn="Create"
           onClick={handleCreate}
+          borderColor="#FFA8DC"
+          bg="radial-gradient(74.25% 66.17% at 63.1% 125%, rgba(255, 60, 96, 0.80) 0%, rgba(255, 246, 246, 0.80) 100%)"
         >
-          <span style={{ color: "#000", fontWeight: 600 }}>30%</span> integral amplification
+          <span style={{ color: '#000', fontWeight: 600 }}>30%</span> integral amplification for the first creation
         </Card>
-        <Card
-          title="Refer to Earn"
-          btn="Refer"
-          btnPrimary
-          onClick={handleRefer}
-        >
-          Invite Friends and Earn Points Get up to <span style={{ color: "#000", fontWeight: 600 }}>1M</span>
-        </Card>
+        <InviteCard
+          onReferAfter={() => {
+            onClose?.();
+          }}
+        />
       </div>
     </AirdropCard>
   );
 };
 
 export default AirdropMore;
-
-const Card = (props: any) => {
-  const { title, onClick, btn, children, btnPrimary } = props;
-
-  return (
-    <div
-      style={{
-        width: '100%',
-        borderRadius: '10px',
-        border: '1px solid rgba(161, 161, 161, 0.20)',
-        background: '#FAFAFA',
-        padding: '12px 25px 14px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <div
-        style={{
-          color: "#000",
-          textAlign: "center",
-          fontFamily: "Unbounded",
-          fontSize: "14px",
-          fontStyle: "normal",
-          fontWeight: 400,
-          lineHeight: "normal",
-        }}
-      >
-        {title}
-      </div>
-      <div
-        style={{
-          marginTop: "8px",
-          color: "#9290B1",
-          fontFamily: "Unbounded",
-          fontSize: "12px",
-          fontStyle: "normal",
-          fontWeight: 300,
-          lineHeight: "normal",
-          textAlign: "center",
-        }}
-      >
-        {children}
-      </div>
-      <button
-        type="button"
-        style={{
-          marginTop: "16px",
-          height: "50px",
-          color: "#000",
-          textAlign: "center",
-          fontFamily: "Unbounded",
-          fontSize: "16px",
-          fontStyle: "normal",
-          fontWeight: 600,
-          lineHeight: "normal",
-          padding: "0 65px",
-          borderRadius: "30px",
-          background: "#FBCA04",
-          border: "2px solid #000",
-        }}
-        onClick={onClick}
-      >
-        {btn}
-      </button>
-    </div>
-  );
-};
-
-const Badge = (props: any) => {
-  const { icon, label } = props;
-
-  return (
-    <div
-      style={{
-        height: '24px',
-        flexShrink: 0,
-        background: '#F2FFF8',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 4,
-        padding: '0 8px 0 6px',
-        borderRadius: 12,
-      }}
-    >
-      <img
-        src={icon}
-        alt=""
-        style={{
-          width: 16,
-          height: 16,
-          flexShrink: 0,
-        }}
-      />
-      <div
-        style={{
-          flex: 1,
-          color: '#000',
-          fontFamily: 'Unbounded',
-          fontSize: '12px',
-          fontWeight: 400,
-        }}
-      >
-        {label}
-      </div>
-    </div>
-  );
-};
