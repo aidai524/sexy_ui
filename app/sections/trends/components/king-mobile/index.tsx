@@ -49,7 +49,7 @@ export default function King() {
             className={`${styles.Avatar} button`}
             style={{ backgroundImage: `url("${top1Shown.Icon}")` }}
             onClick={() => {
-              router.push(`/detail?address=${top1Shown.address}`);
+              router.push(`/detail?address=${top1Shown.address}&from=trends`);
             }}
           >
             <img

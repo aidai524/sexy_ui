@@ -55,7 +55,7 @@ const TrendBanner = (props: any) => {
             <button
               className={`${styles.ViewButton} button`}
               onClick={() => {
-                router.push(`/detail?address=${top1?.address}`);
+                router.push(`/detail?address=${top1?.address}&from=trends`);
               }}
             >
               View

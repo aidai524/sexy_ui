@@ -44,7 +44,7 @@ export default function Laptop(props: any) {
     >
       <div className={styles.TitleWrapper}>
         {
-          ["profile"].includes(search.get("from") || "") && (
+          ["profile", "trends", "messages"].includes(search.get("from") || "") && (
             <GoBack text="" />
           )
         }
