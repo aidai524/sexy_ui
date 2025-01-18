@@ -50,6 +50,10 @@
 
 .titleItem {
   flex: 1;
+  height: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .txList {
