@@ -49,7 +49,7 @@ export default function Tabs({
   const baseTabs = [
     {
       name: "Held",
-      content: <Held from={from} address={address} />
+      content: <Held from={from} address={'MNVa2STL6Hcb86yWVNykCGVE8Stqj9a8XatPQHeQM7m'} />
     },
     {
       name: "Created",

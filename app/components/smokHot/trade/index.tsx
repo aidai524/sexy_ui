@@ -34,7 +34,7 @@ export default function Trade({
   mainStyle,
   bottomStyle
 }: Props) {
-  const [inputVal, setInputVal] = useState(max.toString());
+  const [inputVal, setInputVal] = useState(0.01);
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
