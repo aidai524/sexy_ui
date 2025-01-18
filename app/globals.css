@@ -23,6 +23,13 @@ div.adm-image-uploader {
 }
 
 @font-face {
+  font-family: "FingerPaint";
+  src: url("/font/FingerPaint-Regular.ttf");
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
+@font-face {
   font-family: "Lilita One";
   src: url("/font/LilitaOne-Regular.ttf");
   font-weight: 200 900;

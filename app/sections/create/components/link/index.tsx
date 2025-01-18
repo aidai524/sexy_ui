@@ -6,9 +6,10 @@ interface Props {
   img?: string;
   value: string;
   onChange: (value: string) => void;
+  onBlur: () => void;
 }
 
-export default function Link({ type, img, value, onChange }: Props) {
+export default function Link({ type, img, value, onChange, onBlur }: Props) {
   const { isMobile } = useUserAgent();
   return (
     <div
@@ -32,6 +33,7 @@ export default function Link({ type, img, value, onChange }: Props) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={`${styles.linkInput}`}
+          onBlur={onBlur}
           placeholder={type ? `Link to ${type}` : ""}
         />
         {isMobile && (

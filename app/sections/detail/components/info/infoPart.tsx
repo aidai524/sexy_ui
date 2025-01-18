@@ -101,7 +101,7 @@ export default function InfoPart({
             <div
               onClick={() => {
                 if (address !== data.account)
-                  router.push("/profile/user?account=" + data.account);
+                  router.push("/profile/user?account=" + data.account + "&from=detail");
               }}
               className={[
                 styles.authorDesc,
