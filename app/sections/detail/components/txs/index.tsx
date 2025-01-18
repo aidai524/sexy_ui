@@ -118,7 +118,7 @@ export default function Txs({ from, data }: any) {
                   marginRight: from === "panel" ? 6 : 0
                 }}
               >
-                Filter by my following ({ totalMyFollowing } trades)
+                Filter by my following ({ totalMyFollowing } trade{ totalMyFollowing > 1 ? 's' : '' })
               </div>
               <SexSwitch
                 checked={filter[2]}
@@ -140,7 +140,7 @@ export default function Txs({ from, data }: any) {
                   marginRight: from === "panel" ? 6 : 0
                 }}
               >
-                Filter by own trades ({ totalMyTrades } trades)   
+                Filter by own trades ({ totalMyTrades } trade{ totalMyTrades > 1 ? 's' : '' })   
               </div>
               <SexSwitch
                 checked={filter[3]}
