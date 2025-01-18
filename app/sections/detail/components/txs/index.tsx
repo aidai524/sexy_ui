@@ -89,7 +89,7 @@ export default function Txs({ from, data }: any) {
           <div className={styles.filterText}>
             Filter by size
             <img style={{ width: "26px" }} src="/img/home/solana.png" /> 0.05
-            ({ totalGreater } trades)
+            ({ totalGreater } trade{ totalGreater > 1 ? 's' : '' })
           </div>
           <SexSwitch
             checked={filter[1]}
