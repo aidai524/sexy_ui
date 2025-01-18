@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo,useRef } from "react";
 import styles from "./index.module.css";
 import Modal from "@/app/components/modal";
 import { defaultAvatar } from "@/app/utils/config";
 import { formatAddress } from "@/app/utils";
 import useSolBalance from "@/app/hooks/use-sol-balance";
+import useSolPrice from "@/app/hooks/use-sol-price";
 import Big from "big.js";
 import { numberFormatter } from "@/app/utils/common";
 import Warning from "@/app/components/warning";
@@ -21,7 +22,10 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   const [copyTimes, setCopyTimes] = useState<string>("10");
   const [isManualCopyTimes, setIsManualCopyTimes] = useState<boolean>(false);
   const [minCopyAmountTips, setMinCopyAmountTips] = useState<boolean>(false);
+  const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { solBalance } = useSolBalance();
+  const { solPrice } = useSolPrice();
   const resetForm = () => {
     setMinCopyAmountTips(false);
     setOnceCopyAmount("0.1");
@@ -97,6 +101,14 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     }
   };
 
+  const handleSetClick = () => {
+    setIsInputDisabled(false);
+    setTimeout(() => {
+      inputRef.current?.focus();
+      inputRef.current?.setSelectionRange(copyTimes.length, copyTimes.length);
+    }, 0);
+  };
+
   return (
     <Modal
       open={show}
@@ -153,7 +165,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
             </span>
           </div>
           <p className={`${styles.amountDetail}  ${styles.textWhite07}`}>
-            <span>$20</span>
+            <span>${(+solPrice * +copyAmount)}</span>
             <span>Bal: {solBalance} SOL</span>
           </p>
         </div>
@@ -168,11 +180,16 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
         <div
           className={`${styles.yourCoppies} ${styles.public} ${styles.textWhite07}`}
         >
-          <span>Your Coppies</span>
+          <div className={`${styles.public} ${styles.textWhite07}`}>
+            <span>Your Coppies</span>
+            <div className={styles.setBtn} onClick={handleSetClick}>set</div>
+          </div>
           <input
+            ref={inputRef}
             type="text"
             value={copyTimes}
             onChange={handleCopyTimesChange}
+            disabled={isInputDisabled}
           />
         </div>
 

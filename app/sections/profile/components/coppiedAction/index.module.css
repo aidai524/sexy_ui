@@ -89,6 +89,16 @@
   justify-content: flex-start;
 }
 
+.setBtn {
+  cursor: pointer;
+  border: 1px solid rgba(146, 144, 177, 0.4);
+  border-radius: 30px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 300;
+  margin-left: 10px;
+}
+
 .yourCoppies {
   margin-top: 30px;
   margin-bottom: 16px;

@@ -134,6 +134,8 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
             token.isSuperLike = true;
             token.prePaid = token.prePaid + 1;
             token.total_amount = amount;
+            token.isLike = true;
+            token.like = token.like + 1;
             onUpdate(token);
             setShowFlipModal(false);
           }}

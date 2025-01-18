@@ -141,7 +141,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any) => {
                   updateProject(type, token);
-                  queryAndUpdateDetail(type, token.id);
+                  queryAndUpdateDetail(type, token.address);
                 }}
               />
             );
