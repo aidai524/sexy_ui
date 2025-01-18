@@ -33,7 +33,9 @@ export default function Laptop({}: any) {
         <div className={styles.ReadAll}>
           <button
             className="button"
+            disabled={!informNum}
             onClick={() => {
+              if (!informNum) return;
               onRead({
                 ids: [],
                 onSuccess: () => {
@@ -72,14 +74,13 @@ export default function Laptop({}: any) {
                 {hasMore && <CircleLoading size={20} />}
               </InfiniteScroll>
             )}
-            {list.length === 0 && !loading ? (
+            {list.length === 0 && !loading && (
               <Empty height={300} text="No notifications" />
-            ) : (
-              isFirstPage && (
-                <div className={styles.LoadingWrapper}>
-                  <CircleLoading size={30} />
-                </div>
-              )
+            )}
+            {isFirstPage && loading && (
+              <div className={styles.LoadingWrapper}>
+                <CircleLoading size={30} />
+              </div>
             )}
           </div>
         </div>

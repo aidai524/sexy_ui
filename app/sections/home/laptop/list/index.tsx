@@ -32,6 +32,7 @@ export default function List({ type, isCurrentTab }: any) {
     hasNext,
     onChangeIndex,
     updateProject,
+    queryAndUpdateDetail,
     getProjectById
   } = useData(type);
   const index = getIndex(type);
@@ -102,6 +103,7 @@ export default function List({ type, isCurrentTab }: any) {
               isCurrent={index === i && isCurrentTab}
               onUpdate={(token: any) => {
                 updateProject(type, token);
+                queryAndUpdateDetail(type, token.address);
               }}
               opacity={index > i ? 0 : 1}
               showTrade={tokenPanelStatusStore.showTrade}
@@ -187,6 +189,7 @@ export default function List({ type, isCurrentTab }: any) {
               onSuccess={() => {
                 currentToken.comment = currentToken.comment + 1;
                 updateProject(type, currentToken);
+                queryAndUpdateDetail(type, currentToken.address);
               }}
             />
           )}
@@ -201,6 +204,7 @@ export default function List({ type, isCurrentTab }: any) {
                 currentToken.prePaid = currentToken.prePaid + 1;
                 currentToken.total_amount = amount;
                 updateProject(type, currentToken);
+                queryAndUpdateDetail(type, currentToken.address);
                 tokenPanelStatusStore.setShow("showFlip", false);
               }}
             />
