@@ -45,7 +45,7 @@ export default function Laptop({
               <div className={styles.Desc}>
                 <div className={styles.NameTop}>
                   <div className={styles.NameWrapper}>
-                    <div>{userInfo.name}</div>
+                    <div>{userInfo?.name}</div>
                     <Level level={userInfo.level} />
                     {!isOther && (
                       <EditButton

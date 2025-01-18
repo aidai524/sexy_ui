@@ -8,6 +8,9 @@ import Big from 'big.js';
 import UserInfoCard from '@/app/components/airdrop/components/userinfo-card';
 import LevelCard, { Card } from '@/app/components/airdrop/components/level-card';
 import InviteCard from '@/app/components/airdrop/components/invite-card';
+import { useAccount } from '@/app/hooks/useAccount';
+import { useAuth } from '@/app/context/auth';
+import { useDebounceFn } from 'ahooks';
 
 const AirdropList = (props: any) => {
   const {} = props;
@@ -23,7 +26,11 @@ const AirdropList = (props: any) => {
     airdropDataLoading,
     airdropData,
     onClose: onAirdropClose,
+    userHasPoints,
+    setConnectVisible,
   } = useContext(AirdropContext);
+  const { address } = useAccount();
+  const { accountRefresher } = useAuth();
 
   const pointList = useMemo(() => {
     if (!userData || !Object.keys(userData).length) return [];
@@ -31,7 +38,7 @@ const AirdropList = (props: any) => {
       {
         type: 'Level',
         total: `Lv.${userData.level}`,
-        icon: `/img/airdrop/user-level${userData.level > 1 ? '' : '-inactive'}.svg`,
+        icon: `/img/airdrop/user-level${userHasPoints ? '' : '-inactive'}.svg`,
         desc: (
           <>
             Starts your FlipN journey from <span className={styles.CardContentPrimary}>Lv. {userData.level}</span>, it will boost <span className={styles.CardContentPrimary}>10%</span> of mining.
@@ -49,17 +56,27 @@ const AirdropList = (props: any) => {
         ),
       },
     ];
-  }, [userData]);
+  }, [userData, address]);
 
   const btnLoading = useMemo(() => {
     return claiming || airdropDataLoading || userDataLoading;
   }, [claiming, airdropDataLoading, userDataLoading]);
 
+  const { run: setConnectVisibleDelay, cancel: setConnectVisibleDelayCancel } = useDebounceFn(() => {
+    setConnectVisible?.(true);
+  }, { wait: 300 });
+
   useEffect(() => {
+    setConnectVisibleDelayCancel();
+    if (!address || !accountRefresher) {
+      setConnectVisibleDelay();
+      return;
+    }
+    setConnectVisible?.(false);
     getUserData?.();
     handleBind?.();
     getAirdropData?.();
-  }, []);
+  }, [address, accountRefresher]);
 
   return (
     <AirdropCard
@@ -82,10 +99,11 @@ const AirdropList = (props: any) => {
                         onStart={() => {
                           onAirdropClose?.();
                         }}
+                        userHasPoints={userHasPoints}
                       />
                     );
                   }
-                  if (userData?.level > 1) {
+                  if (userHasPoints) {
                     return (
                       <Card
                         key={idx}
@@ -111,7 +129,7 @@ const AirdropList = (props: any) => {
           }
         </div>
         {
-          userData?.level > 1 && (
+          userHasPoints && (
             <div
               style={{
                 width: "100%",

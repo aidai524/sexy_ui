@@ -12,6 +12,8 @@ import { useDebounceFn } from "ahooks";
 import { PublicKey } from "@solana/web3.js";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { useAuth } from "@/app/context/auth";
+import { useRouter } from "next/navigation";
+import { fail } from "@/app/utils/toast";
 
 const pageSize = 40;
 
@@ -23,6 +25,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
   const [isLoading, setIsLoading] = useState(true);
   const { connection } = useConnection();
   const { address: authAddress } = useAuth();
+  const router = useRouter();
 
   const loadMore = useCallback(
     async (page?: any) => {
@@ -194,7 +197,13 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                   </div>
                 </div>
               ) : (
-                <div className={styles.itemContent}>
+                <div className={styles.itemContent} onClick={() => {
+                  if (item.flipUser) {
+                    router.push(`/profile/user?account=${item.owner}`)
+                  }
+                  
+                  fail('Not flipN user yet')
+                }}>
                   <div style={{ minWidth: 20 }}>{item.rank}.</div>
                   <div className={styles.UserName}>
                     <span>
