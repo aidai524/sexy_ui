@@ -37,7 +37,7 @@ export default function Avatar({
         <div>
           {formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || "FlipN"}
         </div>
-        <Level level={userInfo?.level} vipType={userInfo?.vipType} />
+        <Level level={userInfo?.level} vipType={userInfo?.vipType} style={{ marginLeft: 20 }} />
         {isOther && (
           <div className={styles.isOther}>
             <div className={styles.FollowBtnBox}>
