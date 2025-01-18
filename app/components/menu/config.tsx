@@ -21,7 +21,8 @@ export default [
     icon: <Create />,
     label: "Create",
     key: ["/create"],
-    path: "/create"
+    path: "/create",
+    needLogin: true
   },
   {
     icon: <Reward />,
@@ -33,7 +34,8 @@ export default [
     icon: <Profile />,
     label: "Profile",
     key: ["/profile"],
-    path: "/profile"
+    path: "/profile",
+    needLogin: true
   }
 ];
 

@@ -53,7 +53,7 @@ function UserItem({ item, type }: any) {
   return (
     <div className={styles.userItem}>
       <div
-        className={styles.userBox}
+        className={`${styles.userBox} button`}
         onClick={() => {
           router.push("/profile/user?account=" + item.address);
         }}

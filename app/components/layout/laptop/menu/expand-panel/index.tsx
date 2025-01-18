@@ -25,10 +25,7 @@ export default function ExpandPanel() {
               className={`${styles.Item} ${isActive && styles.ItemActive}`}
               key={item.path}
               onClick={() => {
-                if (
-                  !window.sexAddress &&
-                  !["/reward", "/", "/trends", "/profile"].includes(item.path)
-                ) {
+                if (!window.sexAddress && item.needLogin) {
                   window.connect();
                   return;
                 }

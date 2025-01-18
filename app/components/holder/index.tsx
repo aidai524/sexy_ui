@@ -197,13 +197,16 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                   </div>
                 </div>
               ) : (
-                <div className={styles.itemContent} onClick={() => {
-                  if (item.flipUser) {
-                    router.push(`/profile/user?account=${item.owner}`)
-                  }
-                  
-                  fail('Not flipN user yet')
-                }}>
+                <div
+                  className={`${styles.itemContent} button`}
+                  onClick={() => {
+                    if (item.flipUser) {
+                      router.push(`/profile/user?account=${item.owner}`);
+                    }
+
+                    fail("Not flipN user yet");
+                  }}
+                >
                   <div style={{ minWidth: 20 }}>{item.rank}.</div>
                   <div className={styles.UserName}>
                     <span>

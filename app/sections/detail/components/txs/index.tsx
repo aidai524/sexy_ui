@@ -195,7 +195,7 @@ export default function Txs({ from, data }: any) {
                   return (
                     <div
                       key={item.tx_hash}
-                      className={`${styles.item} ${!isSelf && "button"}`}
+                      className={`${styles.item}`}
                       onClick={() => {
                         if (!isSelf)
                           router.push(`/profile/user?account=${item.address}`);
@@ -206,7 +206,7 @@ export default function Txs({ from, data }: any) {
                           from === "panel"
                             ? styles.LaptopAccount
                             : styles.MobileAccount
-                        }`}
+                        } ${!isSelf && "button"}`}
                       >
                         <img
                           className={styles.avatar}
@@ -274,7 +274,7 @@ export default function Txs({ from, data }: any) {
                 })}
 
                 {(!list || list.length === 0) && (
-                  <Empty height={from === "panel" ? 241 : 300} text="No Data" />
+                  <Empty height={from === "panel" ? 220 : 300} text="No Data" />
                 )}
               </div>
             </>
