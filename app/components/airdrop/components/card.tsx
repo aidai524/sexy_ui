@@ -6,6 +6,7 @@ const AirdropCard = (props: any) => {
     bannerStyle,
     style,
     contentStyle,
+    addonContent,
   } = props;
 
   return (
@@ -20,6 +21,7 @@ const AirdropCard = (props: any) => {
         ...style,
       }}
     >
+      {addonContent}
       <div
         style={{
           width: 'calc(100% + 1px)',
