@@ -21,13 +21,9 @@
 }
 
 .adhs-container .adhs-modal {
-  background: radial-gradient(
-    89.59% 86.58% at 40.75% 0%,
-    #ffbcd8 0%,
-    #ffe8f1 100%
-  );
+  background: #fbca04;
   border-radius: 20px;
-  border: 1px solid #ff008a;
+  border: 1px solid #fbca04;
   left: 50%;
   margin: auto;
   max-width: 400px;
