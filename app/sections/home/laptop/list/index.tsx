@@ -90,7 +90,7 @@ export default function List({ type, isCurrentTab }: any) {
         {list?.map((item: number, i: number) => {
           let token = null;
 
-          if (Math.abs(i - index) < 2 && item) {
+          if (Math.abs(i - index) < 5 && item) {
             token = getProjectById(type, item);
           }
 

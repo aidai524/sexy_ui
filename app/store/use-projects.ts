@@ -85,6 +85,7 @@ export const useProjects = create(
           .filter(
             (project: any) => Date.now() - project.fetched_time < TIME_DURATION
           )
+          .sort((a: any, b: any) => a.fetched_time - b.fetched_time)
           .map((project: any) => project.id);
       },
       updateProject: (type: Type, item: any) => {
