@@ -5,21 +5,24 @@ import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import { useUserAgent } from "@/app/context/user-agent";
 
-export default function FlipPanel({ token, onClose, onSuccess }: any) {
+export default function FlipPanel({ from, token, onClose, onSuccess }: any) {
   const { innerHeight } = useUserAgent();
 
   return (
     <motion.div
-      initial={{ x: 375 }}
-      exit={{ x: 375 }}
-      animate={{ x: 0 }}
+      initial={{ x: 375, y: from === "button" ? 0 : "-50%" }}
+      exit={{ x: 375, y: from === "button" ? 0 : "-50%" }}
+      animate={{ x: 0, y: from === "button" ? 0 : "-50%" }}
       transition={{
         ease: "linear",
         duration: 0.3
       }}
-      className={styles.Container}
+      className={`${styles.Container} ${
+        from === "button" && styles.BottomContainer
+      }`}
       style={{
-        height: innerHeight
+        height: innerHeight,
+        ...(from === "button" ? { bottom: 0 } : { top: "50%" })
       }}
     >
       <div className={styles.Header}>

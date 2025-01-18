@@ -291,7 +291,9 @@ export default function BuySellPump({
           </div>
         )}
 
-        <div className={from === "panel" ? styles.PanelContent : ""}>
+        <div
+          className={from === "panel" ? styles.PanelContent : styles.Content}
+        >
           <div
             className={styles.inputArea}
             style={{
@@ -358,12 +360,12 @@ export default function BuySellPump({
                       });
                     } else if (activeIndex === 0) {
                       setSolPercent(0);
-                      setTokenPercent(0)
+                      setTokenPercent(0);
                       SOL_PERCENT_LIST.map((item) => {
                         if (Number(item) === Number(e.target.value)) {
                           setSolPercent(Number(item));
                         }
-                      })
+                      });
                     }
                   }}
                   className={`${styles.input}`}
