@@ -88,8 +88,12 @@ export default function Created({
           offset: isInit ? 0 : offset
         };
 
-        if (type === "liked" && homeTabStore.currentSummary.value) {
-          params.project_status = homeTabStore.currentSummary?.value;
+        let _summary: any = homeTabStore.currentSummary.value;
+        if (typeof opts?.status !== 'undefined') {
+          _summary = opts?.status;
+        }
+        if (type === "liked" && typeof _summary !== "undefined") {
+          params.project_status = _summary;
         }
         const res = await http(urls[type], "GET", params, {});
         if (!res) {
@@ -136,15 +140,15 @@ export default function Created({
             liked: _summaries
           });
           let _currentSummary: Summary | undefined;
-          if (!homeTabStore.currentSummary) {
+          if (typeof _summary === "number") {
             _currentSummary = _summaries.find(
-              (s) => s.value === params.project_status
+              (s) => s.value === _summary
             );
-            if (!_currentSummary) {
-              _currentSummary = _summaries[0];
-            }
-            homeTabStore.set({ currentSummary: _currentSummary });
           }
+          if (!_currentSummary) {
+            _currentSummary = _summaries[0];
+          }
+          homeTabStore.set({ currentSummary: _currentSummary });
         }
         if (isCurrent) {
           timerRef.current = setTimeout(() => {
@@ -168,7 +172,7 @@ export default function Created({
       return;
     }
     homeTabStore.set({ currentSummary: summary });
-    loadMore(true, LIMIT);
+    loadMore(true, LIMIT, { status: summary.value });
   };
 
   useEffect(() => {

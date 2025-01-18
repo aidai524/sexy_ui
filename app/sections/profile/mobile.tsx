@@ -120,10 +120,12 @@ export default function Profile({
           height: "unset"
         }}
         cursorStyle={{
-          height: 2,
-          borderRadius: 1,
+          height: 3,
+          background: "var(--part-bg)",
+          borderRadius: 2,
           bottom: 0,
-          width: "100%"
+          width: "100%",
+          filter: "drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25))"
         }}
         tabContentStyle={{
           background: "rgba(255, 255, 255, 0.08)",
