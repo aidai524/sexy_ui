@@ -117,8 +117,8 @@ export default function Trade({
             <div className={styles.receiveTitle}>
               You will auto-buy in when this meme launching.{" "}
               {delayTime
-                ? `You can withdraw after ${delayTime}.`
-                : "You can withdraw anytime before launching."}
+                ? `You can refund after ${delayTime}.`
+                : "You can refund anytime before launching."}
             </div>
           )}
         </div>

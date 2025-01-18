@@ -33,6 +33,7 @@
   z-index: 1;
   top: -50%;
   left: -50%;
+  pointer-events: none;
 }
 
 .TopAvatarContent {
@@ -150,6 +151,9 @@
   justify-content: center;
   align-items: center;
   gap: 4px;
+}
+.TopBadgeClickable {
+  cursor: pointer;
 }
 .TopMarketCap {
   display: flex;

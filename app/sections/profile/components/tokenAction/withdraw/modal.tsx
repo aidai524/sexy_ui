@@ -74,17 +74,17 @@ const Content = (props: any) => {
       list={[
         {
           label: 'You flipped',
-          value: numberFormatter(prepaidAmount, 4, true, { isShort: true, isShortUppercase: true }),
+          value: numberFormatter(prepaidAmount, 4, true, { isShort: true, isShortUppercase: true, round: Big.roundDown }),
           icon: SOL.tokenUri,
         },
         {
           label: 'Fee',
-          value: numberFormatter(Big(prepaidAmount).minus(prepaidRealAmount), 4, true, { isShort: true, isShortUppercase: true }),
+          value: numberFormatter(Big(prepaidAmount).minus(prepaidRealAmount), 4, true, { isShort: true, isShortUppercase: true, round: Big.roundDown }),
           icon: SOL.tokenUri,
         },
         {
           label: 'Est. refund',
-          value: numberFormatter(prepaidRealAmount, 4, true, { isShort: true, isShortUppercase: true }),
+          value: numberFormatter(prepaidRealAmount, 4, true, { isShort: true, isShortUppercase: true, round: Big.roundDown }),
           icon: SOL.tokenUri,
         },
       ]}

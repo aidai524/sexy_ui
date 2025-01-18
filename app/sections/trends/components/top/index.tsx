@@ -169,7 +169,7 @@ export default function Top(props: Props) {
             Created in {trend?.created2Now?.replace?.(/ago$/, "")}
           </div>
           <div
-            className={[styles.Badge, styles.TopBadge].join(" ")}
+            className={[styles.Badge, styles.TopBadge, styles.TopBadgeClickable].join(" ")}
             onClick={() => {
               creator.onClick(trend?.project_creator);
             }}

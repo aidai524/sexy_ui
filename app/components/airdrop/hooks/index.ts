@@ -71,10 +71,10 @@ export function useAirdrop(): Airdrop {
       setReferVisible(true);
       return;
     }
-    setClaimPointsVisible(true);
     if (airdropData?.clime_pump) {
       handleClose();
       setClaiming(false);
+      setMorePointsVisible(true);
       return;
     }
     const res = await httpAuthPost('/airdrop/account/points');
@@ -84,6 +84,7 @@ export function useAirdrop(): Airdrop {
       return;
     }
     success('Claim points successful', { maskStyle: { zIndex: 2000 } });
+    setClaimPointsVisible(true);
     handleClose();
     setClaiming(false);
   };
