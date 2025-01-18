@@ -85,7 +85,7 @@ export default function Held({ from, address }: any) {
             }`}
             onClick={() => {
               // console.log(item)
-              router.push("/detail?address=" + item.token_address);
+              router.push("/detail?address=" + item.token_address + "&from=profile");
               // window.open('https://solscan.io/account/' + item.token_account)
             }}
             key={item.token_address}

@@ -4,6 +4,13 @@
   align-items: center;
   padding-top: 14px;
   padding-bottom: 14px;
+  position: absolute;
+  right: 0;
+  top: -8px;
+}
+.SelectContainerMobile {
+  composes: SelectContainer;
+  position: unset;
 }
 .Select {
   display: flex;

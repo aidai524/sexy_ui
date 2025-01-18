@@ -11,6 +11,10 @@ import { useState } from "react";
 import EditButton from "./edit-button";
 import EditProfile from "./panels/edit-profile";
 import FollowersPanel from "./panels/followers";
+import { formatLongText } from '@/app/utils/common';
+import { formatAddress } from '@/app/utils';
+import { useSearchParams } from 'next/navigation';
+import GoBack from '@/app/components/back/laptop';
 
 export default function Laptop({
   userInfo,
@@ -26,6 +30,7 @@ export default function Laptop({
   const [followModalType, setFollowModalType] = useState("");
   const [showFollowers, setShowFollowers] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const search = useSearchParams();
 
   return (
     <motion.div
@@ -33,7 +38,14 @@ export default function Laptop({
       animate={{ opacity: 1 }}
       className={styles.Container}
     >
-      <div className={styles.TitleWrapper}>Profile</div>
+      <div className={styles.TitleWrapper}>
+        {
+          ["profile"].includes(search.get("from") || "") && (
+            <GoBack text="" />
+          )
+        }
+        Profile
+      </div>
       <div className={styles.Content}>
         {userInfo ? (
           <>
@@ -45,7 +57,7 @@ export default function Laptop({
               <div className={styles.Desc}>
                 <div className={styles.NameTop}>
                   <div className={styles.NameWrapper}>
-                    <div>{userInfo?.name}</div>
+                    <div>{formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || "FlipN"}</div>
                     <Level level={userInfo.level} />
                     {!isOther && (
                       <EditButton
@@ -89,15 +101,32 @@ export default function Laptop({
               showHot={showHot}
               isOther={isOther}
               from="page"
+              style={{
+                position: "relative",
+              }}
               tabContentStyle={{
-                padding: "0px 30px",
+                padding: "22px 30px 0",
                 height: "calc(100vh - 280px)",
                 overflowY: "auto",
-                flex: "0"
+                flex: "0",
               }}
               tabHeaderStyle={{
                 flex: 0,
-                padding: "0px 16px"
+                padding: "0px 30px"
+              }}
+              tabHeadersStyle={{
+                overflowX: "auto",
+                height: "47px",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                justifyContent: "flex-start",
+              }}
+              cursorStyle={{
+                height: 3,
+                background: "var(--part-bg)",
+                borderRadius: 2,
+                bottom: 0,
+                width: "52px",
+                filter: "drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25))"
               }}
             />
           </>

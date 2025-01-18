@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
+import { useSearchParams } from 'next/navigation';
+import GoBack from '@/app/components/back/laptop';
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/detail")
@@ -28,6 +30,7 @@ export default function Laptop(props: any) {
   const [showTrade, setShowTrade] = useState(false);
   const [tradeTab, setTradeTab] = useState("chart");
   const { innerHeight, innerWidth } = useUserAgent();
+  const search = useSearchParams();
 
   useEffect(() => {
     setCurrentToken(infoData);
@@ -39,7 +42,14 @@ export default function Laptop(props: any) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <div className={styles.TitleWrapper}>Detail</div>
+      <div className={styles.TitleWrapper}>
+        {
+          ["profile"].includes(search.get("from") || "") && (
+            <GoBack text="" />
+          )
+        }
+        Detail
+      </div>
       <div className={styles.Content}>
         <div
           style={{
