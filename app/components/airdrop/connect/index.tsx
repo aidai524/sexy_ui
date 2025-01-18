@@ -6,13 +6,6 @@ import AirdropCard from '@/app/components/airdrop/components/card';
 const AirdropConnect = (props: any) => {
   const { onClose } = props;
 
-  const { onClose: onAirdropClose } = useContext(AirdropContext);
-
-  const handleClose = () => {
-    onClose?.();
-    onAirdropClose?.();
-  };
-
   return (
     <AirdropCard
       bannerStyle={{
@@ -111,7 +104,7 @@ const AirdropConnect = (props: any) => {
               color: '#000',
               textDecoration: 'underline',
             }}
-            onClick={handleClose}
+            onClick={onClose}
           >
             No, Thanks
           </button>

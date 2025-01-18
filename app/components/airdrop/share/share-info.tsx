@@ -2,12 +2,17 @@ import styles from './index.module.css';
 import { useUser } from '@/app/store/useUser';
 import { formatLongText } from '@/app/utils/common';
 import QRCodeCom from '@/app/components/qrcode';
-import React, { useImperativeHandle } from 'react';
+import React, { useContext, useImperativeHandle } from 'react';
+import { AirdropContext } from '@/app/components/airdrop/context';
 
 const AirdropShareInfoCard = (props: any, ref: any) => {
   const { shareLink } = props;
 
   const { userInfo } = useUser();
+  const {
+    userData,
+    userHasPoints,
+  } = useContext(AirdropContext);
 
   const refs = {};
   useImperativeHandle(ref, () => refs);
@@ -34,11 +39,11 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
           </div>
           <div className={styles.AirdropShareInfoCardInfoLevel}>
             <img
-              src={userInfo?.level > 1 ? '/img/airdrop/user-level.svg' : '/img/airdrop/user-level-inactive.svg'}
+              src={userHasPoints ? '/img/airdrop/user-level.svg' : '/img/airdrop/user-level-inactive.svg'}
               alt=""
               className={styles.AirdropShareInfoCardInfoLevelIcon}
             />
-            <div>Lv.{userInfo?.level || 1}</div>
+            <div>Lv.{userData?.level || 1}</div>
           </div>
         </div>
         <div className={styles.AirdropShareInfoCardInfoLink}>
