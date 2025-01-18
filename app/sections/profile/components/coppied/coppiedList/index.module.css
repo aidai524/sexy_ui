@@ -1,0 +1,177 @@
+.ListContainer {
+  background-color:rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 10px;
+}
+
+.ItemBox {
+  width: 100%;
+  height: 131px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 13px;
+}
+
+.PersonalTradeInfoBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.PersonalInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.Name {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 200px;
+}
+
+.Avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.CopyAmount {
+    composes: PersonalTradeInfoBox;
+    gap: 4px;
+}
+.CopyAmountText {
+    composes: PersonalTradeInfoBox;
+}
+.CopyAmountTextUseAmount {
+    font-size: 12px;
+    color: #fff;
+    font-weight: 300;
+}
+.CopyAmountTextTotal {
+    font-size: 12px;
+    color: #9290B1;
+    font-weight: 300;
+}
+
+.CopyInfo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.TooltipContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.Tooltip {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    transform: translateX(-80%);
+    background-color: #252328;
+    color: #9290B1;
+    padding:18px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    width: 208px;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.TooltipItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.TooltipItemValue {
+    color: #fff;
+    gap: 4px;
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+}
+
+/* PC hover */
+@media (hover: hover) {
+    .TooltipContainer:hover .Tooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+/* Mobile touch */
+@media (hover: none) {
+    .TooltipContainer:active .Tooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+
+.TradeInfoBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 16px;
+}
+
+.TokenIconBox {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    justify-content: flex-end;    
+}
+
+.TokenIconBox img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-left: -8px;
+}
+
+.TitlePubStyle {
+    font-size: 12px;
+    color: #9290B1;
+    font-weight: 300;
+    margin-bottom: 6px;
+}
+
+.PNLValuePercent {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.PNLValueUSD {
+    font-size: 12px;
+    color: #C9FF5D;
+    font-weight: 300;
+}
+
+.MoreTokens {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #202325;
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    color:#9290B1;
+    margin-left: -8px;
+}
