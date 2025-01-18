@@ -54,12 +54,6 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   }, [infoData]);
 
   useEffect(() => {
-    if (infoData) {
-      projectsStore.updateProject(infoData.status === 0 ? 'preLaunch' : 'launching', infoData); 
-    }
-  }, [infoData]);
-
-  useEffect(() => {
     onBack &&
       token &&
       history.pushState(
@@ -76,6 +70,8 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
       </div>
     );
   }
+
+  console.log('infoData', infoData)
 
   return (
     <div>
@@ -177,11 +173,11 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                   onLike={async () => {
                     const res = await actionLikeTrigger(infoData, showShare);
                     if (res) {
-                      getDetailInfo();
                       onSuccess?.({
                         isLike: true,
                         like: token.like + 1
                       });
+                      getDetailInfo();
                     }
                   }}
                   onHate={async () => {
@@ -189,12 +185,12 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                     getDetailInfo();
                   }}
                   onSuperLike={(amount: any) => {
+                    // onSuccess?.({
+                    //   isSuperLike: true,
+                    //   prePaid: token.prePaid + 1,
+                    //   total_amount: amount
+                    // });
                     getDetailInfo();
-                    onSuccess?.({
-                      isSuperLike: true,
-                      prePaid: token.prePaid + 1,
-                      total_amount: amount
-                    });
                   }}
                   onBoost={() => {
                     getDetailInfo();

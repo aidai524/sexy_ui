@@ -94,7 +94,7 @@ export default function useData(launchType: Type) {
   };
 
   const queryAndUpdateDetail = useCallback(async (type: Type, address: number) => {
-    const res = await httpGet(`/project/detail?address=${address}`);
+    const res = await httpGet(`/project?address=${address}`);
     if (res.code !== 0 || !res.data) return;
     projectsStore.updateProject(type, res.data);  
   }, [projectsStore]);

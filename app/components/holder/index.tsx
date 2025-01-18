@@ -192,6 +192,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                 <div className={styles.itemContent} onClick={() => {
                   if (item.flipUser) {
                     router.push(`/profile/user?account=${item.owner}`)
+                    return
                   }
                   
                   fail('Not flipN user yet')

@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
 import { updateOneInList } from "@/app/utils/listStore";
-import { httpGet } from "@/app/utils";
+import { httpAuthGet, httpGet } from "@/app/utils";
 import { mapDataToProject } from "@/app/utils/mapTo";
 
 export default function useTokenDetail({ token }: any) {
@@ -12,13 +12,17 @@ export default function useTokenDetail({ token }: any) {
   const { userInfo } = useAuth();
 
   const getDetailInfo = useCallback(() => {
-    const address = params.get("address");
+    const address = params.get("address") || token?.address;
     if (!address) {
       setIsLoading(false);
       return;
     }
-    setIsLoading(true);
-    return httpGet("/project", { address })
+
+    if (!token) {
+      setIsLoading(true);
+    }
+    
+    return httpAuthGet("/project", { address: address })
       .then((res) => {
         if (res.code === 0 && res.data && res.data.length) {
           const infoData = mapDataToProject(res.data[0]);
@@ -35,12 +39,10 @@ export default function useTokenDetail({ token }: any) {
       .catch((err) => {
         setIsLoading(false);
       });
-  }, [params, userInfo]);
+  }, [params, userInfo, token]);
 
   useEffect(() => {
-    if (!token) {
-      getDetailInfo();
-    }
+    getDetailInfo();
   }, [params, token]);
 
   return { infoData, isLoading, getDetailInfo };
