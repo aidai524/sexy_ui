@@ -1,8 +1,22 @@
-import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState, useEffect } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+  useEffect
+} from "react";
 import type { Project } from "@/app/type";
 import styles from "./card.module.css";
 import html2canvas from "html2canvas";
-import { base64ToBlob, formatAddress, generateRandomString, postUpload, simplifyNum } from "@/app/utils";
+import {
+  base64ToBlob,
+  formatAddress,
+  generateRandomString,
+  postUpload,
+  simplifyNum
+} from "@/app/utils";
 import QRCode from "../qrcode";
 import TokenTags from "../tokenTags";
 import { useAuth } from "@/app/context/auth";
@@ -14,6 +28,7 @@ import Modal from "../modal";
 interface Props {
   token: Project | undefined;
   show: boolean;
+  isNew?: boolean;
   onClose: () => void;
 }
 
@@ -23,7 +38,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const containerRef = useRef(null);
   const { userInfo } = useAuth();
   const [isSharing, setIsSharing] = useState(false);
-  const [shareUrl, setShareUrl] = useState('');
+  const [shareUrl, setShareUrl] = useState("");
 
   useImperativeHandle(ref, () => ({
     getShareImg
@@ -57,11 +72,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
         const longUrl = `${domain}/api/twitter?tokenName=${encodeURIComponent(
           token.tokenName
-        )}&about=${encodeURIComponent(
-          token.about
-        )}&imgUrl=${encodeURIComponent(img)}&address=${token.address
-          }&referral=${userInfo.address}`;
-
+        )}&about=${encodeURIComponent(token.about)}&imgUrl=${encodeURIComponent(
+          img
+        )}&address=${token.address}&referral=${userInfo.address}`;
 
         try {
           const shareUrl = await getShortUrl(longUrl);
@@ -81,105 +94,139 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
   if (!token || !show) return null;
 
-  return <Modal
-    open={show}
-    onClose={() => {
-      onClose();
-    }}
-    closeIcon={<></>}
-    mainStyle={{
-      border: 0,
-    }}
-    closeStyle={{
-      top: 55,
-      display: 'none'
-    }}
-    maskClose={true}
-  >
-    <div ref={containerRef} className={styles.cardContainer} onClick={() => {
-      if (shareUrl) {
-        shareToX(token.tokenName, shareUrl); 
-      }
-    }}>
-      <img src="/img/share/logo.png" alt="Flip" className={styles.logo} />
-      <div className={styles.header}>
-        <img src="/img/share/subTitle.png" alt="Flip" className={styles.subTitle} />
-      </div>
+  return (
+    <Modal
+      open={show}
+      onClose={() => {
+        onClose();
+      }}
+      closeIcon={<></>}
+      mainStyle={{
+        border: 0
+      }}
+      closeStyle={{
+        top: 55,
+        display: "none"
+      }}
+      maskClose={true}
+    >
+      <div
+        ref={containerRef}
+        className={styles.cardContainer}
+        onClick={() => {
+          if (shareUrl) {
+            shareToX(token.tokenName, shareUrl);
+          }
+        }}
+      >
+        <img src="/img/share/logo.png" alt="Flip" className={styles.logo} />
+        <div className={styles.header}>
+          <img
+            src="/img/share/subTitle.png"
+            alt="Flip"
+            className={styles.subTitle}
+          />
+        </div>
 
-      {/* Main Card Content */}
-      <div className={styles.mainCard}>
-        {/* Stats */}
-        <div className={styles.stats}>
-          <div className={styles.statsFlip}>
-            {
-              (Number(token?.prePaidAmount) > 0) ? (
-                <div className={styles.statsFlipText} >
+        {/* Main Card Content */}
+        <div className={styles.mainCard}>
+          {/* Stats */}
+          <div className={styles.stats}>
+            <div className={styles.statsFlip}>
+              {Number(token?.prePaidAmount) > 0 ? (
+                <div className={styles.statsFlipText}>
                   <span className={styles.statsFlipTextTitle}>Flipped</span>
-                  <span className={styles.statsFlipTextCount}>{simplifyNum(Number(token?.prePaidAmount), 2)} SOL</span>
+                  <span className={styles.statsFlipTextCount}>
+                    {simplifyNum(Number(token?.prePaidAmount), 2)} SOL
+                  </span>
                 </div>
               ) : (
                 <div className={styles.statsFlipText}>
                   <span>Flip it!</span>
                 </div>
-              )
-            }
-          </div>
-          <div className={styles.statsLike}>
-            {
-              (Number(token?.like) > 0) ? (
-                <div className={styles.statsLikeText} >
+              )}
+            </div>
+            <div className={styles.statsLike}>
+              {Number(token?.like) > 0 ? (
+                <div className={styles.statsLikeText}>
                   <span className={styles.statsLikeTextTitle}>Liked</span>
-                  <span className={styles.statsLikeTextCount}>{token.like || 0}</span>
+                  <span className={styles.statsLikeTextCount}>
+                    {token.like || 0}
+                  </span>
                 </div>
               ) : (
                 <div className={styles.statsLikeText}>
                   <span>Like it!</span>
                 </div>
-              )
-            }
+              )}
+            </div>
+          </div>
+
+          <div className={styles.tokenImage}>
+            <img
+              src={token.tokenIcon}
+              alt={token.tokenName}
+              className={styles.tokenImg}
+            />
           </div>
         </div>
 
-        <div className={styles.tokenImage}>
-          <img src={token.tokenIcon} alt={token.tokenName} className={styles.tokenImg} />
-        </div>
-      </div>
-
-      <div className={styles.tokenInfo}>
-        <div className={styles.tokenIcon}>
-          <img src={token.tokenIcon} alt="Flip" className={styles.badge} />
-        </div>
-        <div>
-          <div className={styles.tokenName}>{token.tokenName}</div>
-          <div className={styles.tokenTicker}>
-            <div>Ticker: <span className={styles.createdByAddress}>{token.ticker}</span></div>
-            <TokenTags token={token} />
+        <div className={styles.tokenInfo}>
+          <div className={styles.tokenIcon}>
+            <img src={token.tokenIcon} alt="Flip" className={styles.badge} />
           </div>
-          <div className={styles.createdBy}>
-            Created by <span className={styles.createdByAddress}>@{token.creater?.name || formatAddress(token.creater?.address || '')}</span>
-          </div>
-        </div>
-
-        <img src="/img/share/tie.png" alt="Flip" className={styles.tie} />
-      </div>
-
-      {/* Footer with QR Code */}
-      <div className={styles.footer}>
-        <div className={styles.inviteBox}>
           <div>
-            <img src="/img/share/invite.png" alt="Flip" className={styles.invite} />
+            <div className={styles.tokenName}>{token.tokenName}</div>
+            <div className={styles.tokenTicker}>
+              <div>
+                Ticker:{" "}
+                <span className={styles.createdByAddress}>{token.ticker}</span>
+              </div>
+              <TokenTags token={token} />
+            </div>
+            <div className={styles.createdBy}>
+              Created by{" "}
+              <span className={styles.createdByAddress}>
+                @
+                {token.creater?.name ||
+                  formatAddress(token.creater?.address || "")}
+              </span>
+            </div>
           </div>
-          <div className={styles.inviteInfo}>
-            <div>Inviter:</div>
-            <div className={styles.inviteAddress}>{formatAddress(token.creater?.address || '')}<Level level={token.creater?.level || 0} /></div>
-            <div className={styles.inviteUrl}>flipn.fun/invite/{formatAddress(userInfo?.address || '')}</div>
-          </div>
+
+          <img src="/img/share/tie.png" alt="Flip" className={styles.tie} />
         </div>
-        <QRCode url={`${domain}/invite/${token.creater?.address || ''}`} size={50} />
-        <img src="/img/share/scan.png" alt="Flip" className={styles.scan} />
+
+        {/* Footer with QR Code */}
+        <div className={styles.footer}>
+          <div className={styles.inviteBox}>
+            <div>
+              <img
+                src="/img/share/invite.png"
+                alt="Flip"
+                className={styles.invite}
+              />
+            </div>
+            <div className={styles.inviteInfo}>
+              <div>Inviter:</div>
+              <div className={styles.inviteAddress}>
+                {formatAddress(token.creater?.address || "")}
+                <Level level={token.creater?.level || 0} />
+              </div>
+              <div className={styles.inviteUrl}>
+                flipn.fun/invite/{formatAddress(userInfo?.address || "")}
+              </div>
+            </div>
+          </div>
+          <QRCode
+            url={`${domain}/invite/${token.creater?.address || ""}`}
+            size={50}
+          />
+          <img src="/img/share/scan.png" alt="Flip" className={styles.scan} />
+        </div>
       </div>
-    </div>
-  </Modal>;
+    </Modal>
+  );
 }
 
 export default forwardRef(Card);
