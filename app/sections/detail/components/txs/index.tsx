@@ -91,7 +91,12 @@ export default function Txs({ from, data }: any) {
             justifyContent: from === "panel" ? "flex-start" : "space-between"
           }}
         >
-          <div className={styles.filterText}>
+          <div
+            className={styles.filterText}
+            style={{
+              fontSize: from === "panel" ? 10 : 12
+            }}
+          >
             Filter by size
             <img style={{ width: "26px" }} src="/img/home/solana.png" /> 0.05 (
             {totalGreater} trade{totalGreater > 1 ? "s" : ""})
