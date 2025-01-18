@@ -12,11 +12,9 @@ export default function LimitProject({ list = [] }: any) {
       onClick={() => {
         homeTabStore.set({
           currentSummary: { label: "Launched", amount: 0, value: 3 },
-          profileTabIndex: SHOW_COPY_TRADE ? 5 : 4
+          profileTabIndex: SHOW_COPY_TRADE ? 4 : 3
         });
-        setTimeout(() => {
-          router.push("/profile");
-        }, 60);
+        router.push("/profile");
       }}
     >
       {list?.slice(0, 5).map((item: any) => {
