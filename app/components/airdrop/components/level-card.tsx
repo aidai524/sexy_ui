@@ -67,9 +67,9 @@ export const Card = (props: any) => {
 };
 
 const LevelCard = (props: any) => {
-  const { level = 1, onStart } = props;
+  const { level = 1, onStart, userHasPoints } = props;
 
-  return level > 1 ? (
+  return userHasPoints ? (
     <Card
       {...props}
     />
