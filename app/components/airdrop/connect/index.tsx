@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
 import { WalletModalButton } from '@/app/libs/solana/wallet-adapter/modal';
 import AirdropCard from '@/app/components/airdrop/components/card';
+import Countdown from '@/app/components/airdrop/components/countdown';
 
 const AirdropConnect = (props: any) => {
   const { onClose } = props;
@@ -16,8 +17,19 @@ const AirdropConnect = (props: any) => {
         paddingTop: 200,
       }}
       contentStyle={{
-        paddingTop: 80,
+        paddingTop: 110,
       }}
+      addonContent={(
+        <Countdown
+          style={{
+            position: 'absolute',
+            zIndex: 3,
+            top: 0,
+            left: '50%',
+            transform: 'translate(-50%, 230px)',
+          }}
+        />
+      )}
     >
       <div>
         <div

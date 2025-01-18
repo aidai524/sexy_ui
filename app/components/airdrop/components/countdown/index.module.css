@@ -1,0 +1,51 @@
+.AirdropCountdownContainer {
+  border-radius: 30px;
+  border: 1px solid #000;
+  background: #C9FF5D;
+  width: 246px;
+  height: 49px;
+  flex-shrink: 0;
+  color: #000;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.AirdropCountdownContainerEnded {
+  composes: AirdropCountdownContainer;
+  background: #CFCFCF;
+  color: #737373;
+}
+.AirdropCountdownTitle {
+
+}
+.AirdropCountdownLabel {
+
+}
+.AirdropCountdownItems {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+.AirdropCountdownValue {
+  color: #000;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.AirdropCountdownItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
