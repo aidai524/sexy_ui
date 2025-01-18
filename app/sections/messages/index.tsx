@@ -33,7 +33,7 @@ export default function Messages() {
         title={
           <div className={styles.Title}>
             <span>Notifications</span>
-            <span className={styles.Num}>{informNum}</span>
+            {!!informNum && <span className={styles.Num}>{informNum}</span>}
           </div>
         }
         from="messages"
