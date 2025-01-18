@@ -37,8 +37,8 @@ const Refer = (props: any) => {
 
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
-      {
-        isMobile ? (isMining && (
+      {isMobile ? (
+        isMining && (
           <div
             className={isMobile ? styles.EntryMobile : styles.Entry}
             onClick={handleEntryOpen}
@@ -51,21 +51,13 @@ const Refer = (props: any) => {
           className={isMobile ? styles.EntryMobile : styles.Entry}
           onClick={handleEntryOpen}
         >
-          <EntryAnimation />
+          <EntryAnimation
+            onClick={handleEntryOpen}
+            entryVisible={store.entryVisible}
+            isMobile={isMobile}
+          />
         </div>
       )}
-        )) : (
-          <div
-            className={isMobile ? styles.EntryMobile : styles.Entry}
-          >
-            <EntryAnimation
-              onClick={handleEntryOpen}
-              entryVisible={store.entryVisible}
-              isMobile={isMobile}
-            />
-          </div>
-        )
-      }
       <motion.div
         className={isMobile ? styles.CardMobile : styles.Card}
         variants={{
