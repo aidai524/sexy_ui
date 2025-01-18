@@ -195,6 +195,16 @@ input::placeholder {
 .button:active {
   opacity: 0.6;
 }
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.text-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 a.adm-picker-header-button {
   color: #fff;

@@ -47,12 +47,19 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
               if (isSelf) return;
               router.push("/profile/user?account=" + item.address);
             }}
-            className={`${styles.name} ${!isSelf && "button"}`}
+            className={`${styles.NameWrapper} ${!isSelf && "button"}`}
           >
-            <span>
-              {userName}
-              {isSelf && ` (Self)`}
-            </span>
+            <div className={styles.NameBox}>
+              <div
+                className="text-overflow"
+                style={{
+                  maxWidth: isSelf ? 60 : 160
+                }}
+              >
+                {userName}
+              </div>
+              <div> {isSelf && ` (Self)`}</div>
+            </div>
             <Level level={item.level} />
           </div>
         </div>
@@ -68,7 +75,7 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
             }
             setisLoading(true);
 
-            console.log('item', item)
+            console.log("item", item);
 
             const method = item.isLike ? httpAuthDelete : httpAuthPost;
             if (item.isUnlike && !item.isLike) {
