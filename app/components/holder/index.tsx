@@ -11,7 +11,8 @@ import { numberFormatter } from "@/app/utils/common";
 import { useDebounceFn } from "ahooks";
 import { PublicKey } from "@solana/web3.js";
 import { useConnection } from "@solana/wallet-adapter-react";
-import Rank from "@/app/sections/mining/component/rank";
+import { useAccount } from "@/app/hooks/useAccount";
+import { useAuth } from "@/app/context/auth";
 
 const pageSize = 40;
 
@@ -22,6 +23,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
   const [supply, setSupply] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const { connection } = useConnection(); 
+  const { address: authAddress } = useAuth();
 
   const loadMore = useCallback(
     async (page?: any) => {
@@ -159,6 +161,9 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
       )}
       <div className={`${styles.list} `}>
         {list.map((item) => {
+          if (item.amount === '0') {
+            return null;
+          }
           return (
             <div key={item.owner} className={styles.item}>
               {showAvatar ? (
@@ -172,7 +177,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                   </div>
                   <div className={styles.nameContent}>
                     <div className={styles.nameLevel}>
-                      <span>{formatAddress(item.owner)}</span>
+                      <span>{formatAddress(item.owner)}{ item.owner === authAddress ? '(Self)' : ''}</span>
                       {item.flipUser && <Level level={item.flipUser?.level} />}
                     </div>
                     <div className={styles.followers}>
@@ -184,7 +189,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                 <div className={styles.itemContent}>
                   <div style={{ minWidth: 20 }}>{item.rank}.</div>
                   <div className={styles.UserName}>
-                    <span>{formatAddress(item.owner)}</span>
+                    <span>{formatAddress(item.owner)}{ item.owner === authAddress ? '(Self)' : ''}</span>
                     {item.flipUser && <Level level={item.flipUser?.level} />}
                   </div>
                 </div>
