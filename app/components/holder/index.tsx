@@ -11,7 +11,6 @@ import { numberFormatter } from "@/app/utils/common";
 import { useDebounceFn } from "ahooks";
 import { PublicKey } from "@solana/web3.js";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { useAccount } from "@/app/hooks/useAccount";
 import { useAuth } from "@/app/context/auth";
 
 const pageSize = 40;
@@ -22,7 +21,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
   const [pageIndex, setPageIndex] = useState(1);
   const [supply, setSupply] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const { connection } = useConnection(); 
+  const { connection } = useConnection();
   const { address: authAddress } = useAuth();
 
   const loadMore = useCallback(
@@ -32,23 +31,25 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
 
       if (_page === 1) setIsLoading(true);
       try {
-        
-        let res = null
-        if (process.env.NEXT_PUBLIC_NET === 'Devnet') {
-          const tokenAccounts = await connection.getTokenLargestAccounts(new PublicKey(address), "confirmed");
-          console.log('tokenAccounts', tokenAccounts)
-
+        let res = null;
+        if (process.env.NEXT_PUBLIC_NET === "Devnet") {
+          const tokenAccounts = await connection.getTokenLargestAccounts(
+            new PublicKey(address),
+            "confirmed"
+          );
+          console.log("tokenAccounts", tokenAccounts);
 
           const result: any = {
             items: []
-          }
+          };
 
-          const accounts = await connection.getMultipleParsedAccounts(tokenAccounts.value.map((item: any) => item.address));
-          console.log('accounts', accounts)
+          const accounts = await connection.getMultipleParsedAccounts(
+            tokenAccounts.value.map((item: any) => item.address)
+          );
+          console.log("accounts", accounts);
 
           for (let i = 0; i < tokenAccounts.value.length; i++) {
             const item = tokenAccounts.value[i];
-           
 
             result.items.push({
               // @ts-ignore
@@ -56,15 +57,13 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
               amount: item.uiAmount?.toString(),
               decimals: item.decimals,
               rank: i + 1
-            })
-          } 
-         
+            });
+          }
 
-          res = result
+          res = result;
         } else {
           res = await getHoldersByToken(address, _page, pageSize);
         }
-
 
         if (res?.items && res.items.length) {
           const addressList = res.items
@@ -94,7 +93,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
           }
         }
       } catch (err) {
-        console.log('err:', err)
+        console.log("err:", err);
         if (_page === 1) setList([]);
       } finally {
         setIsLoading(false);
@@ -105,8 +104,11 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
 
   const getTokenInfo = useCallback(async () => {
     if (address) {
-      if (process.env.NEXT_PUBLIC_NET === 'Devnet') {
-        const tokenSupply = await connection.getTokenSupply(new PublicKey(address), "confirmed");
+      if (process.env.NEXT_PUBLIC_NET === "Devnet") {
+        const tokenSupply = await connection.getTokenSupply(
+          new PublicKey(address),
+          "confirmed"
+        );
         setSupply(tokenSupply.value.uiAmount || 0);
       } else {
         const tokenInfo = await getTokenMeta(address);
@@ -159,9 +161,12 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
       {from !== "panel" && (
         <div className={styles.distributionTitle}>Holder Distribution</div>
       )}
-      <div className={`${styles.list} `}>
+      <div
+        className={`${styles.list}`}
+        style={{ paddingTop: from === "panel" ? 0 : 10 }}
+      >
         {list.map((item) => {
-          if (item.amount === '0') {
+          if (item.amount === "0") {
             return null;
           }
           return (
@@ -177,7 +182,10 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                   </div>
                   <div className={styles.nameContent}>
                     <div className={styles.nameLevel}>
-                      <span>{formatAddress(item.owner)}{ item.owner === authAddress ? '(Self)' : ''}</span>
+                      <span>
+                        {formatAddress(item.owner)}
+                        {item.owner === authAddress ? "(Self)" : ""}
+                      </span>
                       {item.flipUser && <Level level={item.flipUser?.level} />}
                     </div>
                     <div className={styles.followers}>
@@ -189,7 +197,10 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                 <div className={styles.itemContent}>
                   <div style={{ minWidth: 20 }}>{item.rank}.</div>
                   <div className={styles.UserName}>
-                    <span>{formatAddress(item.owner)}{ item.owner === authAddress ? '(Self)' : ''}</span>
+                    <span>
+                      {formatAddress(item.owner)}
+                      {item.owner === authAddress ? "(Self)" : ""}
+                    </span>
                     {item.flipUser && <Level level={item.flipUser?.level} />}
                   </div>
                 </div>

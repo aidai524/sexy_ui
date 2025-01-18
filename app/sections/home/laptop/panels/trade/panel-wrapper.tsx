@@ -18,7 +18,7 @@ export default function PanelWrapper({ children, style = {} }: any) {
       className={styles.PanelWrapper}
       style={style}
     >
-      {children}
+      <div className={styles.PanelContent}>{children}</div>
     </motion.div>
   );
 }

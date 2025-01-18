@@ -21,10 +21,11 @@ export const useTokenPanelStatus = create(
       },
       hasShow(tab: string) {
         const params = get();
+
         return (
           params.showDetail ||
           params.showComments ||
-          params.showFlip ||
+          (params.showFlip && tab === "preLaunch") ||
           (params.showTrade && tab === "launching")
         );
       },
