@@ -30,8 +30,11 @@ export default function MainAction({
       <div
         onClick={() => {
           if (!address) {
-            //@ts-ignore
             window.connect();
+            return;
+          }
+
+          if (token.isLike) {
             return;
           }
 
@@ -41,9 +44,9 @@ export default function MainAction({
           setLikeTrigger(true);
           onLike();
 
-          setTimeout(() => {
-            setLikeTrigger(false);
-          }, 1600);
+          // setTimeout(() => {
+          //   setLikeTrigger(false);
+          // }, 1600);
         }}
         className={[styles.actionIcon, styles.likeIcon, "button"].join(" ")}
         style={{
@@ -53,16 +56,14 @@ export default function MainAction({
       >
         <Like id={ids?.like} liked={token.isLike} />
       </div>
-
-      
-        <SmokeBtn
-          isBigIcon={true}
-          token={token}
-          onClick={(amount?: any) => {
-            onSuperLike?.(amount);
-          }}
-          id={ids?.smoke}
-        />
+      <SmokeBtn
+        isBigIcon={true}
+        token={token}
+        onClick={(amount?: any) => {
+          onSuperLike?.(amount);
+        }}
+        id={ids?.smoke}
+      />
 
       <div
         onClick={() => {
