@@ -43,6 +43,7 @@
   position: relative;
   z-index: 10;
   border-radius: 20px;
+  cursor: pointer;
 }
 
 .PcCarouselWrapper {

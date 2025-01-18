@@ -14,6 +14,7 @@ interface Props {
   activeNode?: string;
   tabHeadersStyle?: React.CSSProperties;
   cursorStyle?: React.CSSProperties;
+  style?: React.CSSProperties;
   tabHeadersClassName?: any;
   cursorClassName?: any;
   tabContentClassName?: any;
@@ -31,6 +32,7 @@ export default function Tab({
   cursorClassName,
   tabContentClassName,
   cursorStyle,
+  style,
 }: Props) {
   const [tabIndex, setTabIndex] = useState(0);
   const prevI = useRef<number[]>([0]);
@@ -50,7 +52,7 @@ export default function Tab({
   }, [activeNode, onTabChange, nodes]);
 
   return (
-    <div className={styles.tabs}>
+    <div className={styles.tabs} style={style}>
       <div className={[styles.tabHeaders, tabHeadersClassName].join(' ')} style={tabHeadersStyle}>
         {nodes.map((node, index) => {
           return (

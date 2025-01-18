@@ -20,7 +20,8 @@ export default function Tabs({
   tabHeadersStyle,
   cursorClassName,
   tabContentClassName,
-  cursorStyle
+  cursorStyle,
+  style,
 }: any) {
   const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
@@ -102,6 +103,7 @@ export default function Tabs({
       cursorClassName={cursorClassName}
       tabContentClassName={tabContentClassName}
       cursorStyle={cursorStyle}
+      style={style}
     />
   );
 }

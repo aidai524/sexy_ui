@@ -253,7 +253,7 @@ const StatusSelect = (props: any) => {
 
   return (
     <div
-      className={styles.SelectContainer}
+      className={isMobile ? styles.SelectContainerMobile : styles.SelectContainer}
       style={{
         backgroundColor: isMobile ? "rgba(255, 255, 255, 0.08)" : "transparent"
       }}
