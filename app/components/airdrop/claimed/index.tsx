@@ -1,11 +1,12 @@
 import AirdropCard from '../components/card';
 import { useContext } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
+import { numberFormatter } from '@/app/utils/common';
 
 const AirdropClaimed = (props: any) => {
   const { onClose } = props;
 
-  const { setMorePointsVisible } = useContext(AirdropContext);
+  const { setMorePointsVisible, userData } = useContext(AirdropContext);
 
   const handleMore = () => {
     setMorePointsVisible?.(true);
@@ -57,7 +58,7 @@ const AirdropClaimed = (props: any) => {
           }}
         >
           Congratulations! <br />
-          200 points claimed
+          {numberFormatter(userData?.points, 0, true)} points claimed
         </div>
         <button
           type="button"
