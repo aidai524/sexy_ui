@@ -90,7 +90,7 @@ export default function Created({
           offset: isInit ? 0 : offset
         };
 
-        let _summary: any = homeTabStore.currentSummary.value;
+        let _summary: any = homeTabStore.currentSummary?.value;
         if (typeof opts?.status !== 'undefined') {
           _summary = opts?.status;
         }
@@ -158,6 +158,12 @@ export default function Created({
           }, 1000 * 60 * 1);
         }
       } catch (err) {
+        console.log(
+          '%cLoad <%s> list failed: %o',
+          'background: #FF2BA0;color:#fff;font-size:16px;',
+          urls[type],
+          err,
+        );
         setList([]);
       }
       setLoading(false);
