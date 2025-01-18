@@ -53,7 +53,7 @@ export default function Txs({ from, data }: any) {
   const { address } = useAccount();
   const { userInfo } = useAuth();
   const [totalGreater, setTotalGreater] = useState(0);
-  const [totalMyFollowing, setTotalMyFollowing] = useState(0); 
+  const [totalMyFollowing, setTotalMyFollowing] = useState(0);
   const [totalMyTrades, setTotalMyTrades] = useState(0);
   const [filter, setFilter] = useState<any>({
     1: false,
@@ -62,17 +62,17 @@ export default function Txs({ from, data }: any) {
   });
 
   useEffect(() => {
-    if (data && data.tokenName && data.status === 1 && data.DApp === 'sexy') {
-      httpGet(`/project/trade/list?limit=100&token_name=${data.address}&greater=${filter[1]}&my_following=${filter[2]}&my_trades=${filter[3]}`).then(
-        (res) => {
-          if (res.code === 0) {
-            setList(res.data.list || []);
-            setTotalGreater(res.data.total_greater || 0);
-            setTotalMyFollowing(res.data.total_my_following || 0);
-            setTotalMyTrades(res.data.total_my_trades || 0);  
-          }
+    if (data && data.tokenName && data.status === 1 && data.DApp === "sexy") {
+      httpGet(
+        `/project/trade/list?limit=100&token_name=${data.address}&greater=${filter[1]}&my_following=${filter[2]}&my_trades=${filter[3]}`
+      ).then((res) => {
+        if (res.code === 0) {
+          setList(res.data.list || []);
+          setTotalGreater(res.data.total_greater || 0);
+          setTotalMyFollowing(res.data.total_my_following || 0);
+          setTotalMyTrades(res.data.total_my_trades || 0);
         }
-      );
+      });
     }
   }, [data, filter]);
 
@@ -80,16 +80,21 @@ export default function Txs({ from, data }: any) {
     <div
       className={styles.main}
       style={{
-        backgroundColor: from === "panel" ? "#FFFFFF1A" : "#252328",
+        backgroundColor: from === "panel" ? "transparent" : "#252328",
         borderRadius: from === "panel" ? "10px" : "15px 15px 0 0"
       }}
     >
       <div className={styles.filter}>
-        <div className={styles.filterItem}>
+        <div
+          className={styles.filterItem}
+          style={{
+            justifyContent: from === "panel" ? "flex-start" : "space-between"
+          }}
+        >
           <div className={styles.filterText}>
             Filter by size
-            <img style={{ width: "26px" }} src="/img/home/solana.png" /> 0.05
-            ({ totalGreater } trade{ totalGreater > 1 ? 's' : '' })
+            <img style={{ width: "26px" }} src="/img/home/solana.png" /> 0.05 (
+            {totalGreater} trade{totalGreater > 1 ? "s" : ""})
           </div>
           <SexSwitch
             checked={filter[1]}
@@ -114,11 +119,11 @@ export default function Txs({ from, data }: any) {
               <div
                 className={styles.filterText}
                 style={{
-                  fontSize: from === "panel" ? 10 : 12,
-                  marginRight: from === "panel" ? 6 : 0
+                  fontSize: from === "panel" ? 10 : 12
                 }}
               >
-                Filter by my following ({ totalMyFollowing } trade{ totalMyFollowing > 1 ? 's' : '' })
+                Filter by my following ({totalMyFollowing} trade
+                {totalMyFollowing > 1 ? "s" : ""})
               </div>
               <SexSwitch
                 checked={filter[2]}
@@ -136,11 +141,11 @@ export default function Txs({ from, data }: any) {
               <div
                 className={styles.filterText}
                 style={{
-                  fontSize: from === "panel" ? 10 : 12,
-                  marginRight: from === "panel" ? 6 : 0
+                  fontSize: from === "panel" ? 10 : 12
                 }}
               >
-                Filter by own trades ({ totalMyTrades } trade{ totalMyTrades > 1 ? 's' : '' })   
+                Filter by own trades ({totalMyTrades} trade
+                {totalMyTrades > 1 ? "s" : ""})
               </div>
               <SexSwitch
                 checked={filter[3]}

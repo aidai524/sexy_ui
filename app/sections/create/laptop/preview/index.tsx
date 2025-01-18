@@ -22,7 +22,8 @@ export default function Preview({ token }: any) {
       creater: userInfo,
       time: Date.now(),
       status: 0,
-      like: 0
+      like: 0,
+      icon: token.tokenIcon
     }),
     [token]
   );
@@ -71,6 +72,7 @@ export default function Preview({ token }: any) {
             onClose={() => {
               setShowDetail(false);
             }}
+            from="create"
           />
         )}
       </AnimatePresence>

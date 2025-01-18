@@ -2,6 +2,7 @@ import Token from "../token";
 import Empty from "@/app/components/empty";
 import Loading from "@/app/sections/home/mobile/loading";
 import ArrowIcon from "./arrow-icon";
+import TipsButton from "../tips-button";
 import styles from "./index.module.css";
 import dynamic from "next/dynamic";
 import { AnimatePresence } from "framer-motion";
@@ -146,21 +147,25 @@ export default function List({ type, isCurrentTab }: any) {
       </div>
       {!!list?.length && (
         <div className={styles.ArrowButtons}>
-          <ArrowIcon
-            disabled={index === 0}
-            onClick={() => {
-              if (index === 0) return;
-              onChangeIndex(index - 1);
-            }}
-          />
-          <ArrowIcon
-            disabled={index === list.length}
-            isDown={true}
-            onClick={() => {
-              if (index === list.length) return;
-              onChangeIndex(index + 1);
-            }}
-          />
+          <TipsButton tips="Previous">
+            <ArrowIcon
+              disabled={index === 0}
+              onClick={() => {
+                if (index === 0) return;
+                onChangeIndex(index - 1);
+              }}
+            />
+          </TipsButton>
+          <TipsButton tips="Next">
+            <ArrowIcon
+              disabled={index === list.length}
+              isDown={true}
+              onClick={() => {
+                if (index === list.length) return;
+                onChangeIndex(index + 1);
+              }}
+            />
+          </TipsButton>
         </div>
       )}
       {currentToken && (
@@ -185,7 +190,7 @@ export default function List({ type, isCurrentTab }: any) {
               }}
             />
           )}
-          {tokenPanelStatusStore.showFlip && (
+          {tokenPanelStatusStore.showFlip && type === "preLaunch" && (
             <FlipPanel
               token={currentToken}
               onClose={() => {

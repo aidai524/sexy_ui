@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { useUserAgent } from "@/app/context/user-agent";
 
-export default function DetailPanel({ token, onClose }: any) {
+export default function DetailPanel({ token, onClose, from }: any) {
   const { innerHeight } = useUserAgent();
   const mc = useMcWithPump(token);
   return (
@@ -35,7 +35,13 @@ export default function DetailPanel({ token, onClose }: any) {
         </button>
       </div>
       <div className={styles.Content}>
-        <Info mc={mc} data={token} showHodler={false} onUpdate={() => {}} />
+        <Info
+          mc={mc}
+          data={token}
+          showHodler={false}
+          onUpdate={() => {}}
+          showAddress={from !== "create"}
+        />
       </div>
     </motion.div>
   );
