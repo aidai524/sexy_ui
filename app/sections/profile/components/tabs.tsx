@@ -76,7 +76,7 @@ export default function Tabs({
       ];
 
   const activeNode = useMemo(
-    () => tabs[homeTabStore.profileTabIndex].name,
+    () => tabs[homeTabStore.profileTabIndex]?.name,
     [homeTabStore.profileTabIndex]
   );
 
