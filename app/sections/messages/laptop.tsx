@@ -26,7 +26,7 @@ export default function Laptop({}: any) {
     >
       <div className={styles.TitleWrapper}>
         <span>Notifications </span>
-        <span className={styles.Num}>{informNum}</span>
+        {!!informNum && <span className={styles.Num}>{informNum}</span>}
       </div>
 
       <div className={styles.Container}>

@@ -1,13 +1,22 @@
 import Modal from '@/app/components/modal';
 import Index from './index';
+import { useContext } from 'react';
+import { AirdropContext } from '@/app/components/airdrop/context';
 
 const AirdropConnectModal = (props: any) => {
   const { visible, onClose } = props;
 
+  const { onClose: onAirdropClose } = useContext(AirdropContext);
+
+  const handleClose = () => {
+    onClose?.();
+    onAirdropClose?.();
+  };
+
   return (
     <Modal
       open={visible}
-      onClose={onClose}
+      onClose={handleClose}
       mainStyle={{
         border: 0,
       }}
@@ -15,7 +24,7 @@ const AirdropConnectModal = (props: any) => {
         top: 55,
       }}
     >
-      <Index {...props} />
+      <Index {...props} onClose={handleClose} />
     </Modal>
   );
 };

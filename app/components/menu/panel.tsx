@@ -54,12 +54,7 @@ export default function Panel({ show }: any) {
                 <button
                   key={item.path}
                   onClick={() => {
-                    if (
-                      !window.sexAddress &&
-                      !["/reward", "/", "/trends", "/profile"].includes(
-                        item.path
-                      )
-                    ) {
+                    if (!window.sexAddress && item.needLogin) {
                       window.connect();
                       return;
                     }
@@ -73,7 +68,7 @@ export default function Panel({ show }: any) {
                       : "#252328"
                   }}
                 >
-                  {item.icon}{" "}
+                  {item.icon}
                   <span className={styles.ItemText}>{item.label}</span>
                 </button>
               ))}

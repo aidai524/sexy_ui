@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 
 interface VideoPlayerProps {
@@ -9,10 +9,15 @@ interface VideoPlayerProps {
 
 export default function VideoPlayer({ src, type, className }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isShow, setIsShow] = useState(false);
 
   const handleClick = useCallback(() => {
-    videoRef.current?.play();
-  }, []);
+    if (isShow) {
+      videoRef.current?.play();
+    } else {
+      videoRef.current?.pause();
+    }
+  }, [isShow]);
 
   useEffect(() => {
     document.addEventListener('click', handleClick);
@@ -26,8 +31,10 @@ export default function VideoPlayer({ src, type, className }: VideoPlayerProps) 
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            setIsShow(true)
             videoRef.current?.play();
           } else {
+            setIsShow(false)
             videoRef.current?.pause();
           }
         });

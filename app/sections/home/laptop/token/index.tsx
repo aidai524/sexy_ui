@@ -12,6 +12,7 @@ import DetailButton from "./detail-button";
 import ScaleButton from "./scale-button";
 import TradePanel from "../panels/trade";
 import { motion } from "framer-motion";
+import TipsButton from "../tips-button";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -133,11 +134,14 @@ export default function Token({
             />
           )}
           <div className={styles.Actions}>
-            <DetailButton
-              onClick={() => {
-                onOpenPanel("showDetail");
-              }}
-            />
+            <TipsButton tips="Details">
+              <DetailButton
+                onClick={() => {
+                  onOpenPanel("showDetail");
+                }}
+              />
+            </TipsButton>
+
             <Actions
               token={token}
               onClick={(type: any) => {

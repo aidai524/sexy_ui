@@ -367,9 +367,10 @@ export default function BuySellLaunched({
                       });
                     } else if (activeIndex === 0) {
                       setSolPercent(0);
+                      setTokenPercent(0)
                       SOL_PERCENT_LIST.map((item) => {
                         if (Number(item) === Number(e.target.value)) {
-                          setTokenPercent(item);
+                          setSolPercent(Number(item));
                         }
                       });
                     }

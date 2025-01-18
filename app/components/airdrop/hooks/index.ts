@@ -1,16 +1,16 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { httpAuthGet, httpAuthPost } from '@/app/utils';
 import { fail, success } from '@/app/utils/toast';
 import { useReferStore } from '@/app/store/useRefer';
 import { useAirdropStore } from '@/app/store/use-airdrop';
 import Big from 'big.js';
+import { useAccount } from '@/app/hooks/useAccount';
 
 export function useAirdrop(): Airdrop {
   const search = useSearchParams();
   const referStore = useReferStore();
-  const { publicKey } = useWallet();
+  const { address } = useAccount();
   const {
     visible: airdropVisible,
     setVisible: setAirdropVisible,
@@ -46,6 +46,10 @@ export function useAirdrop(): Airdrop {
   const [claimPointsVisible, setClaimPointsVisible] = useState(false);
   const [referVisible, setReferVisible] = useState(false);
 
+  const userHasPoints = useMemo(() => {
+    return Big(userData?.points ?? 0).gt(0);
+  }, [userData]);
+
   // const { connected } = useWallet();
   const connected = !!window.sexAddress;
 
@@ -67,10 +71,10 @@ export function useAirdrop(): Airdrop {
       setReferVisible(true);
       return;
     }
-    setClaimPointsVisible(true);
     if (airdropData?.clime_pump) {
       handleClose();
       setClaiming(false);
+      setMorePointsVisible(true);
       return;
     }
     const res = await httpAuthPost('/airdrop/account/points');
@@ -80,6 +84,7 @@ export function useAirdrop(): Airdrop {
       return;
     }
     success('Claim points successful', { maskStyle: { zIndex: 2000 } });
+    setClaimPointsVisible(true);
     handleClose();
     setClaiming(false);
   };
@@ -109,7 +114,7 @@ export function useAirdrop(): Airdrop {
   };
 
   const handleBind = async () => {
-    if (binding || !inviter || inviter.toLowerCase() === publicKey?.toString()?.toLowerCase()) return;
+    if (binding || !inviter || inviter.toLowerCase() === address?.toLowerCase()) return;
     setBinding(true);
     const res = await httpAuthPost(`/airdrop/binding?account=${inviter}`, {
       account: inviter,
@@ -129,7 +134,7 @@ export function useAirdrop(): Airdrop {
   const getUserData = async () => {
     setUserDataLoading(true);
     const res = await httpAuthGet('/airdrop/account/level_points', {
-      account: publicKey?.toString(),
+      account: address,
     });
     if (res.code !== 0) {
       setUserDataLoading(false);
@@ -184,6 +189,7 @@ export function useAirdrop(): Airdrop {
     userDataLoading,
     shareImageVisible,
     setShareImageVisible,
+    userHasPoints,
   };
 }
 
@@ -211,6 +217,7 @@ export interface Airdrop {
   setReferVisible: Dispatch<SetStateAction<boolean>>;
   shareImageVisible: boolean;
   setShareImageVisible: Dispatch<SetStateAction<boolean>>;
+  userHasPoints: boolean;
 
   handleClaim(): Promise<void>;
   handleBind(): Promise<void>;

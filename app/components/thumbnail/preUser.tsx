@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   token: Project;
+  from?: string;
 }
 
-export default function PreUser({ token }: Props) {
+export default function PreUser({ token, from }: Props) {
   const [superLikeList, setSuperLikeList] = useState([]);
   const [likeList, setLikeList] = useState([]);
 
@@ -30,8 +31,11 @@ export default function PreUser({ token }: Props) {
   }, [token]);
 
   return (
-    <div className={styles.main}>
-      <div className={styles.title}>Founders</div>
+    <div
+      className={styles.main}
+      style={{ padding: from === "panel" ? "0px 10px" : 0 }}
+    >
+      {from !== "panel" && <div className={styles.title}>Founders</div>}
       <UserItem item={token.creater} type={1} />
       {superLikeList.map((item: any) => {
         return <UserItem key={"super-like-" + item.id} item={item} type={3} />;
@@ -49,7 +53,7 @@ function UserItem({ item, type }: any) {
   return (
     <div className={styles.userItem}>
       <div
-        className={styles.userBox}
+        className={`${styles.userBox} button`}
         onClick={() => {
           router.push("/profile/user?account=" + item.address);
         }}
