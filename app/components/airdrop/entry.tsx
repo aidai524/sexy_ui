@@ -41,10 +41,8 @@ const AirdropEntry = (props: any) => {
     return true;
   }, [search, address]);
 
-  const isMobileShownEntry = useMemo(() => {
-    if (!isMobile) return false;
+  const isShownEntry = useMemo(() => {
     if (pathname !== '/') return false;
-    if (airdropVisible) return false;
     return true;
   }, [isMobile, pathname, airdropVisible]);
 
@@ -53,36 +51,47 @@ const AirdropEntry = (props: any) => {
   }, [isAirdrop]);
 
   useEffect(() => {
-    if (!isMobileShownEntry) {
+    if (!isShownEntry) {
       setMobileDropped(false);
     }
-  }, [isMobileShownEntry]);
+  }, [isShownEntry]);
 
   return (
     <>
       <AnimatePresence mode="wait">
-        {isMobileShownEntry && (
+        {isShownEntry && (
           <motion.div
             ref={airdropEntryRef}
             className={styles.AirdropEntryMobile}
-            initial={{
-              scale: 0.5,
-              y: -100,
+            variants={{
+              visible: {
+                scale: 1,
+                x: 0,
+                y: 330,
+              },
+              invisible: {
+                scale: 0.5,
+                x: -70,
+                y: 330,
+              },
+              visibleMobile: {
+                scale: 1,
+                y: 0,
+              },
+              invisibleMobile: {
+                scale: 0.5,
+                y: -100,
+              },
             }}
-            animate={{
-              scale: 1,
-              y: 0,
-            }}
-            exit={{
-              scale: 0.5,
-              y: -100,
-            }}
+            initial={isMobile ? 'invisibleMobile' : 'invisible'}
+            animate={isMobile ? 'visibleMobile' : 'visible'}
+            exit={isMobile ? 'invisibleMobile' : 'invisible'}
             transition={{
               type: 'spring',
               stiffness: 300,
               damping: 15,
-              delay: 3,
-              duration: 5,
+              delay: 1,
+              duration: 0.9,
             }}
             onAnimationComplete={() => {
               setMobileDropped(true);
