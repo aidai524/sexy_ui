@@ -234,7 +234,7 @@ export default function BuySellLaunched({
   }, [debounceVal, tokenType, slip, currentToken]);
 
   return (
-    <div>
+    <>
       <div
         className={[
           styles.cationArea,
@@ -299,7 +299,9 @@ export default function BuySellLaunched({
             </div>
           </div>
         )}
-        <div className={from === "panel" ? styles.PanelContent : ""}>
+        <div
+          className={from === "panel" ? styles.PanelContent : styles.Content}
+        >
           <div
             className={styles.inputArea}
             style={{
@@ -367,7 +369,7 @@ export default function BuySellLaunched({
                       });
                     } else if (activeIndex === 0) {
                       setSolPercent(0);
-                      setTokenPercent(0)
+                      setTokenPercent(0);
                       SOL_PERCENT_LIST.map((item) => {
                         if (Number(item) === Number(e.target.value)) {
                           setSolPercent(Number(item));
@@ -615,6 +617,6 @@ export default function BuySellLaunched({
           setShowSlip(false);
         }}
       />
-    </div>
+    </>
   );
 }

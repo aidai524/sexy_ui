@@ -2,6 +2,7 @@ import styles from "./index.module.css";
 import Bg from "./bg";
 import Image from "next/image";
 import { numberFormatter, addThousandSeparator } from "@/app/utils/common";
+import { SHOW_COPY_TRADE } from "@/app/utils/config";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useRouter } from "next/navigation";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -103,7 +104,7 @@ export default function TotalPanel({ info }: any) {
             }}
             onClick={() => {
               if (!info?.liked) return;
-              set({ profileTabIndex: 3 });
+              set({ profileTabIndex: SHOW_COPY_TRADE ? 4 : 3 });
               router.push("/profile");
             }}
           >

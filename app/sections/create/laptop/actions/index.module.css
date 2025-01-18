@@ -4,10 +4,11 @@
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 17px;
+  bottom: 0px;
   width: 100%;
   height: 46px;
   background-color: #151515;
+  padding-bottom: 17px;
 }
 
 .Steps {
