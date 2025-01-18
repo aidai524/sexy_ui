@@ -16,7 +16,7 @@
 }
 
 .detailInfo {
-  flex: 1;
+  width: calc(100% - 100px);
 }
 
 .detailAvatar {
@@ -33,6 +33,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   .tokenImg {
     width: 100%;
     border-radius: 10px;
@@ -72,7 +73,8 @@
   }
   .authorDesc {
     color: #ffffff;
-    white-space: nowrap;
+    width: calc(100% - 100px);
+    text-align: right;
     &.authorDescEs {
       color: #ff37a3;
     }

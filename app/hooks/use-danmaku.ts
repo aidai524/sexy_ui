@@ -92,6 +92,12 @@ export default function useDanmaku({ id, limit = 10 }: any) {
     loadData();
   }, [id]);
 
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+
   return {
     loadMore,
     list,

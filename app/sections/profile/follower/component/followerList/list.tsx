@@ -5,6 +5,7 @@ import { formatAddress } from "@/app/utils";
 import CircleLoading from "@/app/components/icons/loading";
 import FollowBtn from "../../../components/followBtn";
 import Empty from "@/app/components/empty";
+import { formatLongText } from '@/app/utils/common';
 
 export default function List({
   list,
@@ -31,7 +32,7 @@ export default function List({
               <img className={styles.img} src={item.icon || defaultAvatar} />
               <div className={styles.nameContent}>
                 <div className={styles.name}>
-                  {item.name || formatAddress(item.address)}
+                  {formatLongText(item.name, 10, 4) || formatAddress(item.address)}
                 </div>
                 <div className={styles.followers}>
                   {item.followers} followers

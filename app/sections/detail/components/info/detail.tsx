@@ -15,7 +15,8 @@ export default function Info({
   mc,
   onUpdate,
   showHodler = true,
-  showAddress = true
+  showAddress = true,
+  ...rest
 }: Props) {
   return (
     <div className={styles.main}>
@@ -26,6 +27,7 @@ export default function Info({
         theme="light"
         showHolders={showHodler}
         showAddress={showAddress}
+        {...rest}
       />
     </div>
   );

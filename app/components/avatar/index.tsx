@@ -6,6 +6,7 @@ import { formatAddress } from "@/app/utils";
 import { defaultAvatar } from "@/app/utils/config";
 import { useUserAgent } from "@/app/context/user-agent";
 import FollowBtn from "@/app/sections/profile/components/followBtn";
+import { formatLongText } from '@/app/utils/common';
 
 export default function Avatar({
   userInfo,
@@ -34,7 +35,7 @@ export default function Avatar({
       </div>
       <div className={styles.userName}>
         <div>
-          {userInfo?.name || formatAddress(userInfo?.address) || "FlipN"}
+          {formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || "FlipN"}
         </div>
         <Level level={userInfo?.level} vipType={userInfo?.vipType} />
         {isOther && (

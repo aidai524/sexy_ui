@@ -3,6 +3,7 @@ import Follower from "../../../follower";
 import { motion } from "framer-motion";
 import styles from "./index.module.css";
 import { useMemo } from "react";
+import { formatLongText } from '@/app/utils/common';
 
 export default function Followers({
   userInfo,
@@ -12,7 +13,7 @@ export default function Followers({
   onSuccess
 }: any) {
   const name = useMemo(() => {
-    if (userInfo?.name) return userInfo.name;
+    if (userInfo?.name) return formatLongText(userInfo.name, 10, 4);
     return address.slice(0, 4) + "..." + address.slice(-4);
   }, [userInfo, address]);
   return (

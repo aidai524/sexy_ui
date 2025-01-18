@@ -196,7 +196,7 @@ export default function Token({
         <div
           className={`${styles.tokenImgContent} button`}
           onClick={() => {
-            router.push("/detail?address=" + data.address);
+            router.push("/detail?address=" + data.address + "&from=profile");
           }}
         >
           <img

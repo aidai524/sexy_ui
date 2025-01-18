@@ -1,7 +1,7 @@
 import styles from "./laptop.module.css";
 
-export default function GoBack(props: { onBack?(): void; from?: string }) {
-  const { from, onBack } = props;
+export default function GoBack(props: { onBack?(): void; from?: string ; text?: string; }) {
+  const { from, onBack, text = "Back" } = props;
 
   return (
     <button
@@ -33,7 +33,9 @@ export default function GoBack(props: { onBack?(): void; from?: string }) {
           strokeLinejoin="round"
         />
       </svg>
-      <span className={styles.Text}>Back</span>
+      <span className={styles.Text}>
+        {text}
+      </span>
     </button>
   );
 }

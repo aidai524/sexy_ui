@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
+import { useRouter, useSearchParams } from 'next/navigation';
+import GoBack from '@/app/components/back/laptop';
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/detail")
@@ -28,10 +30,18 @@ export default function Laptop(props: any) {
   const [showTrade, setShowTrade] = useState(false);
   const [tradeTab, setTradeTab] = useState("chart");
   const { innerHeight, innerWidth } = useUserAgent();
+  const search = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     setCurrentToken(infoData);
   }, [infoData]);
+
+  useEffect(() => {
+    if (search.get("details")) {
+      setShowDetail(true);
+    }
+  }, [search]);
 
   return (
     <motion.div
@@ -39,7 +49,14 @@ export default function Laptop(props: any) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <div className={styles.TitleWrapper}>Detail</div>
+      <div className={styles.TitleWrapper}>
+        {
+          ["profile", "trends", "messages"].includes(search.get("from") || "") && (
+            <GoBack text="" />
+          )
+        }
+        Detail
+      </div>
       <div className={styles.Content}>
         <div
           style={{
@@ -63,7 +80,18 @@ export default function Laptop(props: any) {
             onUpdateTradeTab={setTradeTab}
             onOpenPanel={(type: string) => {
               if (type === "showDetail") {
-                setShowDetail(!showDetail);
+                const _showDetail = !showDetail;
+                setShowDetail(_showDetail);
+                const { origin, pathname, search } = location;
+                const _search = new URLSearchParams(search);
+                if (_showDetail) {
+                  if (!_search.get("details")) {
+                    _search.set("details", "1");
+                  }
+                } else {
+                  _search.delete("details");
+                }
+                router.replace(new URL(origin + pathname + "?" + _search.toString()).toString());
                 return;
               }
               if (type === "showComments") {
@@ -88,6 +116,10 @@ export default function Laptop(props: any) {
                 token={currentToken}
                 onClose={() => {
                   setShowDetail(false);
+                  const { origin, pathname, search } = location;
+                  const _search = new URLSearchParams(search);
+                  _search.delete("details");
+                  router.replace(new URL(origin + pathname + "?" + _search.toString()).toString());
                 }}
               />
             )}

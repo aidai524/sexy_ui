@@ -29,19 +29,12 @@ export default function Link({ type, img, value, onChange, onBlur }: Props) {
       )}
 
       <div className={isMobile ? styles.linkEdit : styles.LinkEditPc}>
-        {type && !isMobile && (
-          <div className={styles.linkContent}>
-            <div className={styles.linkTitle}>
-              {img && <img className={styles.linkImg} src={img} />}
-              <span>Link to {type}</span>
-            </div>
-          </div>
-        )}
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={`${styles.linkInput}`}
           onBlur={onBlur}
+          placeholder={type ? `Link to ${type}` : ""}
         />
         {isMobile && (
           <span
