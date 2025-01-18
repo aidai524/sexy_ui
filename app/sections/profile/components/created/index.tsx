@@ -30,6 +30,15 @@ interface Summary {
   value: number | "";
 }
 
+const SUMMARIES_DEFAULT: Record<string, Summary[]> = {
+  liked: [
+    { label: "All", amount: 0, value: "" },
+    { label: "Launched", amount: 0, value: 3 },
+    { label: "Launching", amount: 0, value: 1 },
+    { label: "Pre-Launch", amount: 0, value: 0 }
+  ]
+};
+
 export default function Created({
   address,
   type,
@@ -42,14 +51,7 @@ export default function Created({
 }: any) {
   const popoverRef = useRef<any>();
   const homeTabStore: any = useHomeTab();
-  const [summaries, setSummaries] = useState<Record<string, Summary[]>>({
-    liked: [
-      { label: "All", amount: 0, value: "" },
-      { label: "Launched", amount: 0, value: 3 },
-      { label: "Launching", amount: 0, value: 1 },
-      { label: "Pre-Launch", amount: 0, value: 0 }
-    ]
-  });
+  const [summaries, setSummaries] = useState<Record<string, Summary[]>>(SUMMARIES_DEFAULT);
   const [list, setList] = useState<Project[]>([]);
   const [refresh, setRefresh] = useState<number>(1);
   const [hasMore, setHasMore] = useState(false);
@@ -176,6 +178,9 @@ export default function Created({
   };
 
   useEffect(() => {
+    setSummaries(SUMMARIES_DEFAULT);
+    homeTabStore.set({ currentSummary: SUMMARIES_DEFAULT[0] });
+
     return () => {
       clearTimeout(timerRef.current);
     };

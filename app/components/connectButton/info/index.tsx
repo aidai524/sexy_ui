@@ -92,7 +92,7 @@ export default function Info({ logout }: any) {
             <button
               className={`${styles.Disconnect} button`}
               onClick={(ev) => {
-                logout?.();
+                logout?.(true);
               }}
             >
               <svg
