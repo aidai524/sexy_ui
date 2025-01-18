@@ -8,6 +8,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { useLaptop } from "@/app/context/laptop";
 import { useAccount } from "@/app/hooks/useAccount";
 import Coppied from "@/app/sections/profile/components/coppied";
+import { SHOW_COPY_TRADE } from '@/app/utils/config'
 
 export default function Tabs({
   address,
@@ -65,7 +66,7 @@ export default function Tabs({
     }
   ];
 
-  const tabs = isOther
+  const tabs = isOther || !SHOW_COPY_TRADE
     ? baseTabs
     : [
         {
