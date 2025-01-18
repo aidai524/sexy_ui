@@ -1,17 +1,18 @@
-import Back from "@/app/components/back";
 import styles from "./edit.module.css";
 import EditContent from "./content";
 import { useRouter } from "next/navigation";
+import PageHeader from "@/app/components/page-header/mobile";
 
 export default function ProfileEdit() {
   const router = useRouter();
 
   return (
     <div className={styles.main}>
-      <div className={styles.header}>
-        <Back />
-        <div className={styles.headerTitle}>Edit Profile</div>
-      </div>
+      <PageHeader
+        from="create"
+        style={{ position: "static" }}
+        title="Edit Profile"
+      />
       <div className={styles.EditContent}>
         <EditContent
           onSuccess={() => {

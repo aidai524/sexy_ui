@@ -139,7 +139,7 @@ export default function EditContent({ onSuccess, onClose }: any) {
         className={styles.actionBtns}
         style={{
           position: isMobile ? "fixed" : "inherit",
-          backgroundColor: isMobile ? "#0d1012" : "transparent"
+          backgroundColor: isMobile ? "transparent" : "transparent"
         }}
       >
         {isMobile && (

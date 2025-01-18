@@ -5,7 +5,7 @@ import styles from "./index.module.css";
 import { useReferStore } from "@/app/store/useRefer";
 import ReferModal from "@/app/components/layout/laptop/user/refer/modal";
 import { useAccount } from "@/app/hooks/useAccount";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 
 const Refer = (props: any) => {
   const { isMobile } = props;
@@ -37,15 +37,8 @@ const Refer = (props: any) => {
 
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
-      {(isMobile && store.entryVisible) ? null : (
-        isMobile ? isProfile && (
-          <div
-            className={isMobile ? styles.EntryMobile : styles.Entry}
-            onClick={handleEntryOpen}
-          >
-            <EntryAnimation />
-          </div>
-        ) : (
+      {isMobile && store.entryVisible ? null : isMobile ? (
+        isProfile && (
           <div
             className={isMobile ? styles.EntryMobile : styles.Entry}
             onClick={handleEntryOpen}
@@ -53,6 +46,13 @@ const Refer = (props: any) => {
             <EntryAnimation />
           </div>
         )
+      ) : (
+        <div
+          className={isMobile ? styles.EntryMobile : styles.Entry}
+          onClick={handleEntryOpen}
+        >
+          <EntryAnimation />
+        </div>
       )}
       <motion.div
         className={styles.Card}
