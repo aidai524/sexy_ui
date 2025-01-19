@@ -132,15 +132,19 @@ export default function Trade({
             }
             isLoading={isLoading}
             onClick={async () => {
+              onSuccess?.(inputVal);
+              return;
               try {
                 if (inputVal) {
                   setIsLoading(true);
                   const inputNum = new Big(inputVal).mul(10 ** 9).toFixed(0);
-                  await prePaid(inputNum, false);
+                  const res = await prePaid(inputNum, false);
                   setIsLoading(false);
-                  success("Flip success");
-                  await actionLikeTrigger(token, showShare);
-                  onSuccess?.(inputVal);
+                  if (res) {
+                    success("Flip success");
+                    await actionLikeTrigger(token, showShare);
+                    onSuccess?.(inputVal);
+                  }
                 }
               } catch (e: any) {
                 console.log(e);
