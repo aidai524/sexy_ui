@@ -326,12 +326,14 @@ export default function BuySellPump({
 
               <div></div>
               <div
-                onClick={() => {
+                onClick={(ev) => {
+                  ev.stopPropagation();
                   setShowSlip(true);
                 }}
-                className={`${styles.slippage} button`}
+                className={`${styles.slippage}`}
+                id="slippage-setting"
               >
-                Set max slippage
+                <span className="button">Set max slippage</span>
               </div>
             </div>
 

@@ -214,7 +214,10 @@
   flex-shrink: 0;
 }
 
-
 .receiveTitle {
   white-space: nowrap;
+}
+
+.slippage {
+  position: relative;
 }
