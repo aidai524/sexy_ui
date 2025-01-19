@@ -1,9 +1,8 @@
 .launchPadTab {
   display: flex;
-  gap: 20px;
   font-size: 14px;
   font-weight: 500;
-  padding-top: 19px;
+  padding-top: 10px;
 
   .launchPadTabTitle {
     position: relative;

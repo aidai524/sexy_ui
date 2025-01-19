@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import CloseIcon from "../icons/close";
+import CloseIcon from "../icons/modal-close";
 import { AnimatePresence, motion } from "framer-motion";
+import { useUserAgent } from "@/app/context/user-agent";
 import styles from "./index.module.css";
+import animations from "./animations";
 
 interface ModalProps {
   open?: boolean;
@@ -13,6 +15,7 @@ interface ModalProps {
   mainStyle?: React.CSSProperties;
   closeStyle?: React.CSSProperties;
   maskClose?: boolean;
+  animation?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -23,7 +26,8 @@ const Modal: React.FC<ModalProps> = ({
   style,
   mainStyle,
   closeStyle,
-  maskClose = true
+  maskClose = true,
+  animation = "modal"
 }) => {
   useEffect(() => {
     if (open) {
@@ -43,6 +47,7 @@ const Modal: React.FC<ModalProps> = ({
       onClose && onClose();
     }
   };
+
   return ReactDOM.createPortal(
     (
       <AnimatePresence mode="wait">
@@ -51,20 +56,21 @@ const Modal: React.FC<ModalProps> = ({
           style={style}
           onClick={handleBackdropClick}
         >
-          <div className={styles.Main} style={mainStyle}>
+          <div
+            className={styles.Main}
+            style={{
+              ...mainStyle,
+              ...(animation === "popup"
+                ? {
+                    position: "absolute",
+                    left: 0,
+                    bottom: 0
+                  }
+                : {})
+            }}
+          >
             <motion.div
-              initial={{
-                scale: 0.8
-              }}
-              animate={{
-                scale: 1,
-                transition: {
-                  duration: 0.3
-                }
-              }}
-              exit={{
-                scale: 0.8
-              }}
+              {...animations[animation]}
               onClick={(e) => {
                 e.stopPropagation();
               }}
@@ -75,7 +81,7 @@ const Modal: React.FC<ModalProps> = ({
                   className={styles.CloseButton}
                   style={closeStyle}
                 >
-                  <CloseIcon />
+                  <CloseIcon size={35} />
                 </button>
               ) : null}
               {children}

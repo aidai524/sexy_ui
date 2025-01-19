@@ -1,0 +1,57 @@
+.Container {
+  width: 100%;
+  height: 144px;
+  margin-left: 10px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 10%,
+    rgba(0, 0, 0, 0)
+  );
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0));
+}
+
+.List {
+}
+
+.Comment {
+  padding: 5px 10px 5px 5px;
+  border-radius: 30px;
+  background: rgba(60, 60, 60, 0.7);
+  backdrop-filter: blur(5px);
+  gap: 4px;
+  white-space: nowrap;
+  display: inline-flex;
+  margin-bottom: 6px;
+  transition: 0.5s;
+  opacity: 1;
+}
+
+.CommentIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 20px;
+}
+
+.CommentText {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  max-width: 200px;
+  white-space: pre-wrap;
+}
+
+.Like {
+  display: flex;
+  gap: 8px;
+  color: #ff61a4;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}

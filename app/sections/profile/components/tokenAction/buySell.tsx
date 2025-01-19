@@ -13,7 +13,7 @@ export default function BuySell({ token }: Props) {
   return (
     <>
       <button
-        className={`${styles.ActionBtn} ${styles.Flip} button`}
+        className={`${styles.ActionBtn} ${styles.BuySell} button`}
         onClick={() => {
           setTradeShow(true);
         }}

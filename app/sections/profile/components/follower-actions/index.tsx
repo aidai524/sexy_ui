@@ -9,7 +9,7 @@ export default function FollowerActions({ userInfo, style, onItemClick }: any) {
           onItemClick("followers");
         }}
       >
-        <span className={styles.follwerAmount}>{userInfo?.followers}</span>
+        <span className={styles.follwerAmount}>{userInfo?.followers || 0}</span>
         <span>Followers</span>
       </div>
       <div
@@ -18,13 +18,13 @@ export default function FollowerActions({ userInfo, style, onItemClick }: any) {
           onItemClick("following");
         }}
       >
-        <span className={styles.follwerAmount}>{userInfo?.following}</span>
+        <span className={styles.follwerAmount}>{userInfo?.following || 0}</span>
         <span>Following</span>
       </div>
-      {/* <div className={styles.follwerItem}>
+      <div className={styles.follwerItem}>
         <span className={styles.follwerAmount}>{userInfo?.likeNum}</span>
-        <span>Likes</span>
-      </div> */}
+        <span>Coppied</span>
+      </div>
     </div>
   );
 }

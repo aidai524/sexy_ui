@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import styles from "./held.module.css";
-import { getTokenByHolder } from "@/app/utils/solanaScanApi";
+import { getTokenByHolder, getTokenMeta } from "@/app/utils/solanaScanApi";
 import { useAccount } from "@/app/hooks/useAccount";
 import Big from "big.js";
-import { simplifyNum } from "@/app/utils";
+import { httpGet, simplifyNum } from "@/app/utils";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import Empty from "@/app/components/empty";
 import { useRouter } from "next/navigation";
@@ -17,18 +17,30 @@ export default function Held({ from, address }: any) {
   const [hasMore, setHasMore] = useState(true);
   const [pageIndex, setPageIndex] = useState(1);
   const [tokenInfo, setTokenInfo] = useState<any>({});
+  const [tokenPrice, setTokenPrice] = useState<any>({});
+
+  const getTokenPrice = useCallback(async (address: string[]) => {
+     const v = await httpGet(`/token/price/list?token_list=${encodeURIComponent(address.join(','))}`)
+     if (v.code === 0 && v.data) {
+      setTokenPrice({
+        ...tokenPrice,
+        ...v.data
+      })
+     }
+  }, [tokenPrice])
 
   const loadMore = useCallback(async () => {
     if (address) {
       return getTokenByHolder(address, pageIndex, pageSize).then((res) => {
         const newList = [...list, ...(res.data || [])];
-
         setList(newList);
         const newTokenInfo = {
           ...res.metadata.tokens,
           ...tokenInfo
         };
         setTokenInfo(newTokenInfo);
+
+        getTokenPrice(newList.map(item => item.token_address))
 
         if (res.data) {
           if (res.data.length < pageSize) {
@@ -40,6 +52,7 @@ export default function Held({ from, address }: any) {
         }
       });
     }
+    setHasMore(false);
   }, [address, list, tokenInfo, pageIndex]);
 
   useEffect(() => {
@@ -48,11 +61,13 @@ export default function Held({ from, address }: any) {
 
   if (list.length === 0 && !hasMore) {
     return (
-      <div style={{ paddingTop: 60 }}>
-        <Empty text={"No token yet"} />
+      <div style={{ paddingTop: 116 }}>
+        <Empty text="No meme held yet" />
       </div>
     );
   }
+
+  console.log('tokenPrice', tokenPrice)
 
   return (
     <div
@@ -70,7 +85,7 @@ export default function Held({ from, address }: any) {
             }`}
             onClick={() => {
               // console.log(item)
-              router.push("/detail?address=" + item.token_address);
+              router.push("/detail?address=" + item.token_address + "&from=profile");
               // window.open('https://solscan.io/account/' + item.token_account)
             }}
             key={item.token_address}
@@ -118,7 +133,10 @@ export default function Held({ from, address }: any) {
                   2
                 )}
               </div>
-              {/* <div className={styles.solPrice}>0.005 SOL</div> */}
+              <div className={styles.solPrice}>{tokenPrice[item.token_address] 
+                    ? tokenPrice[item.token_address] * new Big(item.amount)
+                    .div(10 ** item.token_decimals)
+                    .toNumber() : '~'} SOL</div>
             </div>
           </div>
         );

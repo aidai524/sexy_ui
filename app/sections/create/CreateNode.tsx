@@ -12,7 +12,6 @@ import Link from "./components/link";
 import MainBtn from "@/app/components/mainBtn";
 import CheckBox from "@/app/components/checkBox";
 import { useUserAgent } from "@/app/context/user-agent";
-import { success, fail } from "@/app/utils/toast";
 import ErrMsg from "./components/errMsg";
 import type { Project } from "@/app/type";
 import { httpGet, isValidURL } from "@/app/utils";
@@ -43,85 +42,140 @@ export default forwardRef(function CreateNode(
   const [canValid, setCanValid] = useState(false);
   const [inValidVals, setInvaldVasl] = useState<any>({});
 
-  const onPreview = useCallback(async () => {
-    let isValid = false;
-    const inValidVals: any = {};
+  const validateName = useCallback(async (tokenName: string) => {
     if (!name_reg.test(tokenName)) {
-      inValidVals["tokenName"] =
-        "Only uppercase and lowercase letters and numbers are supported and the length is less than 16";
-      isValid = true;
+      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 16";
     }
 
-    const tokenInUse = await httpGet(`/project?token_name=${tokenName}&token_symbol=${tokenName.toUpperCase()}`)
-    
+    const tokenInUse = await httpGet(
+      `/project?token_name=${tokenName}&token_symbol=${tokenName.toUpperCase()}`
+    );
+
     if (tokenInUse.code === 0 && tokenInUse.data?.length > 0) {
-      inValidVals["tokenName"] =
-      "Token name already in use";
-      isValid = true;
+      return "Token name already in use";
     }
 
+    return "";
+  }, []);
+
+  const validateTicker = useCallback((ticker: string) => {
     if (!ticker) {
-      inValidVals["ticker"] = "Ticker cannot be empty";
-      isValid = true;
+      return "Ticker cannot be empty";
     }
 
     if (ticker.length > 80) {
-      inValidVals["ticker"] = "Ticker cannot be length than 80";
-      isValid = true;
+      return "Ticker cannot be length than 80";
     }
 
+    return "";
+  }, []);
+
+  const validateImages = useCallback((tokenImg: ImageUploadItem[], tokenIcon: ImageUploadItem[], showTokenSymbol: boolean) => {
     if (tokenImg.length === 0) {
-      inValidVals["tokenImg"] = "Token image cannot be empty";
-      isValid = true;
-    } else {
-      const tokenImgObj = tokenImg[0];
-      if (videoReg.test(tokenImgObj.url) || showTokenSymbol) {
-        if (tokenIcon.length === 0) {
-          inValidVals["tokenIcon"] = "Token icon cannot be empty";
-          isValid = true;
-        }
-      }
+      return "Token image cannot be empty";
     }
 
+    const tokenImgObj = tokenImg[0];
+    if ((videoReg.test(tokenImgObj.url) || showTokenSymbol) && tokenIcon.length === 0) {
+      return "Token icon cannot be empty";
+    }
+
+    return "";
+  }, []);
+
+  const validateAbout = useCallback((about: string) => {
     if (!about) {
-      inValidVals["about"] = "About icon cannot be empty";
-      isValid = true;
+      return "About icon cannot be empty";
     }
 
     if (about.length > 200) {
-      inValidVals["about"] = "About cannot be length than 200";
+      return "About cannot be length than 200";
+    }
+
+    return "";
+  }, []);
+
+  const validateWebsite = useCallback((website: string) => {
+    if (website && !isValidURL(website)) {
+      return "Website is not a valid url";
+    }
+    return "";
+  }, []);
+
+  const validateTelegram = useCallback((tg: string) => {
+    if (tg && !isValidURL(tg)) {
+      return "Tg is not a valid url";
+    }
+    return "";
+  }, []);
+
+  const validateTwitter = useCallback((x: string) => {
+    if (x && !isValidURL(x)) {
+      return "Twitter is not a valid url";
+    }
+    return "";
+  }, []);
+
+  const validateDiscord = useCallback((discord: string) => {
+    if (discord && !isValidURL(discord)) {
+      return "Discord is not a valid url";
+    }
+    return "";
+  }, []);
+
+  const onPreview = useCallback(async () => {
+    const inValidVals: any = {};
+    let isValid = false;
+
+    const nameError = await validateName(tokenName);
+    if (nameError) {
+      inValidVals["tokenName"] = nameError;
+      isValid = true;
+    }
+
+    const tickerError = validateTicker(ticker);
+    if (tickerError) {
+      inValidVals["ticker"] = tickerError;
+      isValid = true;
+    }
+
+    const imagesError = validateImages(tokenImg, tokenIcon, showTokenSymbol);
+    if (imagesError) {
+      inValidVals[imagesError.includes("icon") ? "tokenIcon" : "tokenImg"] = imagesError;
+      isValid = true;
+    }
+
+    const aboutError = validateAbout(about);
+    if (aboutError) {
+      inValidVals["about"] = aboutError;
+      isValid = true;
+    }
+
+    const websiteError = validateWebsite(website);
+    if (websiteError) {
+      inValidVals["website"] = websiteError;
+      isValid = true;
+    }
+
+    const tgError = validateTelegram(tg);
+    if (tgError) {
+      inValidVals["tg"] = tgError;
+      isValid = true;
+    }
+
+    const xError = validateTwitter(x);
+    if (xError) {
+      inValidVals["x"] = xError;
+      isValid = true;
+    }
+
+    const discordError = validateDiscord(discord);
+    if (discordError) {
+      inValidVals["discord"] = discordError;
       isValid = true;
     }
 
     setInvaldVasl(inValidVals);
-
-    if (website) {
-      if (!isValidURL(website)) {
-        inValidVals["website"] = "Website is not a valid url";
-        isValid = true;
-      }
-    }
-
-    if (tg) {
-      if (!isValidURL(tg)) {
-        inValidVals["tg"] = "Tg is not a valid url";
-        isValid = true;
-      }
-    }
-
-    if (x) {
-      if (!isValidURL(x)) {
-        inValidVals["x"] = "Twitter is not a valid url";
-        isValid = true;
-      }
-    }
-
-    if (discord) {
-      if (!isValidURL(discord)) {
-        inValidVals["discord"] = "Discord is not a valid url";
-        isValid = true;
-      }
-    }
 
     if (isValid) {
       window.scrollTo({
@@ -140,7 +194,8 @@ export default forwardRef(function CreateNode(
       website,
       x,
       tg,
-      discord
+      discord,
+      status: 0
     });
   }, [
     tokenName,
@@ -152,7 +207,15 @@ export default forwardRef(function CreateNode(
     x,
     tg,
     discord,
-    showTokenSymbol
+    showTokenSymbol,
+    validateName,
+    validateTicker,
+    validateImages,
+    validateAbout,
+    validateWebsite,
+    validateTelegram,
+    validateTwitter,
+    validateDiscord
   ]);
 
   useImperativeHandle(
@@ -174,72 +237,77 @@ export default forwardRef(function CreateNode(
 
   return (
     <div
-      className={styles.create}
       style={{
         display: show ? "block" : "none",
         paddingBottom: isMobile ? 100 : 20
       }}
     >
       <div
-        className={styles.Flex}
+        className={styles.group}
         style={{
-          gap: isMobile ? 0 : 20
+          width: isMobile ? "100%" : "calc(50% - 10px)"
         }}
       >
-        <div
-          className={styles.group}
-          style={{
-            width: isMobile ? "100%" : "calc(50% - 10px)"
-          }}
-        >
-          <div className={styles.groupTitle}>
-            <span className={styles.require}>*</span>Name
-          </div>
-          <div className={styles.groupContent}>
-            <input
-              value={tokenName}
-              onChange={(e) => {
-                setTokenName(e.target.value);
-              }}
-              className={`${styles.inputText} ${
-                inValidVals["tokenName"] ? styles.inputError : ""
-              } ${!isMobile && styles.laptopInputText}`}
-              placeholder="Meme name"
-            />
-          </div>
-          {inValidVals["tokenName"] && (
-            <ErrMsg>{inValidVals["tokenName"]}</ErrMsg>
-          )}
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <span className={styles.require}>* </span>
+          Name
         </div>
+        <div className={styles.groupContent}>
+          <input
+            value={tokenName}
+            onChange={(e) => {
+              setTokenName(e.target.value);
+            }}
+            onBlur={async () => {
+              const nameError = await validateName(tokenName);
+              if (nameError) {
+                setInvaldVasl({ ...inValidVals, tokenName: nameError });
+              }
+            }}
+            className={`${
+              isMobile ? styles.inputText : styles.laptopInputText
+            } ${inValidVals["tokenName"] ? styles.inputError : ""}`}
+            placeholder="Meme name"
+          />
+        </div>
+        {inValidVals["tokenName"] && (
+          <ErrMsg>{inValidVals["tokenName"]}</ErrMsg>
+        )}
+      </div>
 
-        <div
-          className={styles.group}
-          style={{
-            width: isMobile ? "100%" : "calc(50% - 10px)"
-          }}
-        >
-          <div className={styles.groupTitle}>
-            <span className={styles.require}>*</span>Ticker
-          </div>
-          <div className={styles.groupContent}>
-            <input
-              value={ticker}
-              onChange={(e) => {
-                setTicker(e.target.value);
-              }}
-              className={`${styles.inputText} ${
-                inValidVals["ticker"] ? styles.inputError : ""
-              } ${!isMobile && styles.laptopInputText}`}
-              placeholder="say something"
-            />
-          </div>
-          {inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>}
+      <div
+        className={styles.group}
+        style={{
+          width: isMobile ? "100%" : "calc(50% - 10px)"
+        }}
+      >
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <span className={styles.require}>* </span>Ticker
         </div>
+        <div className={styles.groupContent}>
+          <input
+            value={ticker}
+            onChange={(e) => {
+              setTicker(e.target.value);
+            }}
+            onBlur={() => {
+              const tickerError = validateTicker(ticker);
+              if (tickerError) {
+                setInvaldVasl({ ...inValidVals, ticker: tickerError });
+              }
+            }}
+            className={`${
+              isMobile ? styles.inputText : styles.laptopInputText
+            } ${inValidVals["ticker"] ? styles.inputError : ""}`}
+            placeholder="say something"
+          />
+        </div>
+        {inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>}
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>
-          <span className={styles.require}>*</span>Image or Video
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <span className={styles.require}>* </span>Image or Video
         </div>
         <div
           className={
@@ -249,7 +317,6 @@ export default forwardRef(function CreateNode(
             " " +
             (inValidVals["tokenImg"] ? styles.uploadError : "")
           }
-          style={{ paddingLeft: 15, paddingTop: 10 }}
         >
           <Upload
             percent={0}
@@ -265,6 +332,13 @@ export default forwardRef(function CreateNode(
           <CheckBox
             checked={showTokenSymbol}
             onCheckChange={(isChecked) => {
+              if (tokenImg && tokenImg.length > 0) {
+                const url = tokenImg[0].url;
+                if (videoReg.test(url)) {
+                  setShowTokenSymbol(true);
+                  return
+                }
+              }
               setShowTokenSymbol(isChecked);
             }}
           />
@@ -302,14 +376,20 @@ export default forwardRef(function CreateNode(
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>
-          <span className={styles.require}>*</span>About us
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <span className={styles.require}>* </span>About us
         </div>
         <div className={styles.groupContent}>
           <input
             value={about}
             onChange={(e) => {
               setAbout(e.target.value);
+            }}
+            onBlur={() => {
+              const aboutError = validateAbout(about);
+              if (aboutError) {
+                setInvaldVasl({ ...inValidVals, about: aboutError });
+              }
             }}
             className={`${styles.inputText} ${
               inValidVals["about"] ? styles.inputError : ""
@@ -321,18 +401,20 @@ export default forwardRef(function CreateNode(
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>Website</div>
-        <div
-          className={styles.groupContent}
-          style={{
-            paddingTop: 10,
-            background: isMobile ? "rgba(18, 23, 25, 1)" : "transparent"
-          }}
-        >
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          Website
+        </div>
+        <div className={isMobile ? styles.Website : styles.LinkPc}>
           <Link
             value={website}
             onChange={(val) => {
               setWebsite(val);
+            }}
+            onBlur={() => {
+              const websiteError = validateWebsite(website);
+              if (websiteError) {
+                setInvaldVasl({ ...inValidVals, website: websiteError });
+              }
             }}
           />
         </div>
@@ -340,7 +422,9 @@ export default forwardRef(function CreateNode(
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>Community</div>
+        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          Community
+        </div>
         <div
           className={styles.Flex}
           style={{
@@ -350,7 +434,7 @@ export default forwardRef(function CreateNode(
           <div
             className={styles.groupContent}
             style={{
-              width: isMobile ? "100%" : "calc(50% - 10px)"
+              width: "100%"
             }}
           >
             <Link
@@ -358,15 +442,21 @@ export default forwardRef(function CreateNode(
               onChange={(val) => {
                 setTwitter(val);
               }}
+              onBlur={() => {
+                const xError = validateTwitter(x);
+                if (xError) {
+                  setInvaldVasl({ ...inValidVals, x: xError });
+                }
+              }}
               type="X"
               img="/img/community/x.svg"
             />
             {inValidVals["x"] && <ErrMsg>{inValidVals["x"]}</ErrMsg>}
           </div>
           <div
-            className={styles.groupContent}
+            className={isMobile ? styles.groupContent : styles.LinkPc}
             style={{
-              width: isMobile ? "100%" : "calc(50% - 10px)"
+              width: "100%"
             }}
           >
             <Link
@@ -374,21 +464,33 @@ export default forwardRef(function CreateNode(
               onChange={(val) => {
                 setTelegram(val);
               }}
+              onBlur={() => {
+                const tgError = validateTelegram(tg);
+                if (tgError) {
+                  setInvaldVasl({ ...inValidVals, tg: tgError });
+                }
+              }}  
               type="Telegram"
               img="/img/community/telegram.svg"
             />
             {inValidVals["tg"] && <ErrMsg>{inValidVals["tg"]}</ErrMsg>}
           </div>
           <div
-            className={styles.groupContent}
+            className={isMobile ? styles.groupContent : styles.LinkPc}
             style={{
-              width: isMobile ? "100%" : "calc(50% - 10px)"
+              width: "100%"
             }}
           >
             <Link
               value={discord}
               onChange={(val) => {
                 setDiscord(val);
+              }}
+              onBlur={() => {
+                const discordError = validateDiscord(discord);
+                if (discordError) {
+                  setInvaldVasl({ ...inValidVals, discord: discordError });
+                }
               }}
               type="Discord"
               img="/img/community/discard.svg"

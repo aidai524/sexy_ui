@@ -10,9 +10,9 @@ import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
 import { Button, Modal } from "antd-mobile";
 import type { Project } from "@/app/type";
+import Tabs from "@/app/sections/home/laptop/panels/trade/tabs";
 import { useUser } from "@/app/store/useUser";
 import usePump from "@/app/hooks/usePump";
-import { useUserAgent } from "@/app/context/user-agent";
 import { useSlip } from "@/app/store/useSlip";
 import useBalance from "@/app/hooks/useBalance";
 import { useConnection } from "@solana/wallet-adapter-react";
@@ -41,11 +41,16 @@ export const SOL: Token = {
 
 const SOL_PERCENT_LIST = [0.0001, 0.0005, 0.001];
 
-export default function BuySellPump({ token, initType, from, show, onClose }: Props) {
+export default function BuySellPump({
+  token,
+  initType,
+  from,
+  show,
+  onClose
+}: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
-  const { slip, set: setSlip }: any = useSlip()
-  const { isMobile } = useUserAgent();
+  const { slip, set: setSlip }: any = useSlip();
   const tokenUri = token.tokenIcon || token.tokenImg;
 
   const desToken: Token = {
@@ -74,18 +79,18 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
 
   const [sellOut, setSellOut] = useState("0");
   const [sellOutSol, setSellOutSol] = useState("0");
-  const [reFreshBalnace, setReFreshBalnace] = useState(1)
+  const [reFreshBalnace, setReFreshBalnace] = useState(1);
 
   const { userInfo }: any = useUser();
 
   useEffect(() => {
     if (initType === "buy") {
       setActiveIndex(0);
-      setTokenType(1)
-      setCurrentToken(SOL)
+      setTokenType(1);
+      setCurrentToken(SOL);
     } else {
       setActiveIndex(1);
-      setCurrentToken(desToken)
+      setCurrentToken(desToken);
       setTokenType(0);
     }
   }, [initType, show]);
@@ -93,9 +98,9 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
   const { solBalance, tokenBalance } = useBalance({
     mint: token.address as string,
     tokenDecimals: token.tokenDecimals as number,
-    reFreshBalnace: reFreshBalnace,
-  })
-  const { connection } = useConnection()
+    reFreshBalnace: reFreshBalnace
+  });
+  const { connection } = useConnection();
 
   const { buy, sell, estimateToken, estimateSol } = usePump({
     tokenAddress: token.address as string
@@ -122,27 +127,28 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
             return;
           }
 
-
-          estimateToken(new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toNumber(), slip / 100)
-            .then(res => {
-
-              setBuyInSol(debounceVal)
-              setBuyIn(new Big(res).toFixed(desToken.tokenDecimals))
+          estimateToken(
+            new Big(debounceVal).mul(10 ** SOL.tokenDecimals).toNumber(),
+            slip / 100
+          )
+            .then((res) => {
+              setBuyInSol(debounceVal);
+              setBuyIn(new Big(res).toFixed(desToken.tokenDecimals));
 
               if (Number(debounceVal) > Number(solBalance)) {
                 setIsError(true);
-                setIsLoading(false)
+                setIsLoading(false);
                 setErrorMsg("Invalid balance");
                 return;
               }
 
-              setIsLoading(false)
-              setIsError(false)
-            }).catch(e => {
-              setIsLoading(false)
-              setIsError(false)
+              setIsLoading(false);
+              setIsError(false);
             })
-
+            .catch((e) => {
+              setIsLoading(false);
+              setIsError(false);
+            });
         } else if (tokenType === 0) {
           if (Number(debounceVal) <= 0) {
             setIsError(true);
@@ -150,20 +156,23 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
             return;
           }
 
+          estimateSol(
+            new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(),
+            slip / 100
+          )
+            .then((res) => {
+              console.log("res:", res, debounceVal);
 
-          estimateSol(new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(), slip / 100)
-            .then(res => {
-              console.log('res:', res, debounceVal)
+              setBuyIn(debounceVal);
+              setBuyInSol(new Big(res).div(10 ** SOL.tokenDecimals).toString());
 
-              setBuyIn(debounceVal)
-              setBuyInSol(new Big(res).div(10 ** SOL.tokenDecimals).toString())
-
-              setIsLoading(false)
-              setIsError(false)
-            }).catch(e => {
-              setIsLoading(false)
-              setIsError(false)
+              setIsLoading(false);
+              setIsError(false);
             })
+            .catch((e) => {
+              setIsLoading(false);
+              setIsError(false);
+            });
         }
       } else if (activeIndex === 1) {
         let sellOut = "";
@@ -181,83 +190,118 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
             .mul(10 ** desToken.tokenDecimals)
             .toFixed(0);
 
-          estimateSol(new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(), slip / 100)
-            .then(res => {
-
-              setSellOutSol(new Big(res).div(10 ** SOL.tokenDecimals).toString())
+          estimateSol(
+            new Big(debounceVal).mul(10 ** desToken.tokenDecimals).toNumber(),
+            slip / 100
+          )
+            .then((res) => {
+              setSellOutSol(
+                new Big(res).div(10 ** SOL.tokenDecimals).toString()
+              );
 
               if (Number(debounceVal) > Number(tokenBalance)) {
                 setIsError(true);
-                setIsLoading(false)
+                setIsLoading(false);
                 setErrorMsg("Invalid balance");
                 // setSellOutSol(getFullNum(sellSolOut));
                 return;
               }
 
               setSellOut(sellOut);
-              setIsLoading(false)
-              setIsError(false)
-            }).catch(e => {
-              setIsLoading(false)
-              setIsError(false)
+              setIsLoading(false);
+              setIsError(false);
             })
-
+            .catch((e) => {
+              setIsLoading(false);
+              setIsError(false);
+            });
         }
       }
     } else {
       setBuyIn("");
       setBuyInSol("");
       setSellOut("");
-      setSellOutSol('')
+      setSellOutSol("");
       setIsError(true);
       setErrorMsg("Enter a amount");
     }
   }, [debounceVal, tokenType, slip, currentToken]);
 
   return (
-    <div>
-      <div
-        className={[
-          styles.cationArea,
-          !isMobile ? styles.LaptopMain : styles.panel
-        ].join(" ")}
-      >
-        <div className={styles.tradeTabs}>
-          <div
-            onClick={() => {
-              setActiveIndex(0);
-              setCurrentToken(SOL);
-              setTokenType(1);
+    <>
+      <div className={[styles.cationArea].join(" ")}>
+        {from === "panel" ? (
+          <Tabs
+            tabs={[
+              {
+                label: "Buy",
+                key: 0
+              },
+              {
+                label: "Sell",
+                key: 1
+              }
+            ]}
+            type="center"
+            currentTab={activeIndex}
+            onChangeTab={(index: number) => {
+              setActiveIndex(index);
               setValInput("");
+              if (index === 0) {
+                setCurrentToken(SOL);
+                setTokenType(1);
+              } else {
+                setCurrentToken(desToken);
+                setTokenType(0);
+              }
             }}
-            className={[
-              styles.tab,
-              activeIndex === 0 ? styles.active : null,
-              "button"
-            ].join(" ")}
-          >
-            Buy
+          />
+        ) : (
+          <div className={styles.tradeTabs}>
+            <div
+              onClick={() => {
+                setActiveIndex(0);
+                setCurrentToken(SOL);
+                setTokenType(1);
+                setValInput("");
+              }}
+              className={[
+                styles.tab,
+                activeIndex === 0 ? styles.active : null,
+                "button"
+              ].join(" ")}
+            >
+              Buy
+            </div>
+            <div
+              onClick={() => {
+                setActiveIndex(1);
+                setCurrentToken(desToken);
+                setTokenType(0);
+                setValInput("");
+              }}
+              className={[
+                styles.tab,
+                activeIndex === 1 ? styles.active : null,
+                "button"
+              ].join(" ")}
+            >
+              Sell
+            </div>
           </div>
-          <div
-            onClick={() => {
-              setActiveIndex(1);
-              setCurrentToken(desToken);
-              setTokenType(0);
-              setValInput("");
-            }}
-            className={[
-              styles.tab,
-              activeIndex === 1 ? styles.active : null,
-              "button"
-            ].join(" ")}
-          >
-            Sell
-          </div>
-        </div>
+        )}
 
-        <div className={styles.inputArea}>
-          <div className={styles.actionArea}>
-            {/* {activeIndex === 0 ? (
+        <div
+          className={from === "panel" ? styles.PanelContent : styles.Content}
+        >
+          <div
+            className={styles.inputArea}
+            style={{
+              width: from === "panel" ? 335 : "100%"
+            }}
+          >
+            <div className={styles.actionArea}>
+              {/* {activeIndex === 0 ? (
               <div
                 className={`${styles.switchToken} button`}
                 onClick={() => {
@@ -280,236 +324,275 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
               <div></div>
             )} */}
 
-            <div></div>
-            <div
-              onClick={() => {
-                setShowSlip(true);
-              }}
-              className={`${styles.slippage} button`}
-            >
-              Set max slippage
-            </div>
-          </div>
-
-          <div className={styles.tokenBalanceBox}>
-            <div className={styles.inputArea}>
-              <input
-                value={valInput}
-                onChange={(e) => {
-                  setValInput(e.target.value);
-                  if (activeIndex === 1) {
-                    setTokenPercent(0)
-                    TOKEN_PERCENT_LIST.forEach(percent => {
-                      const tokenPercentVal = new Big(tokenBalance)
-                        .mul(percent / 100)
-                        .toFixed(percent === 100 ? tokenDecimals : 2, 0)
-
-                      if (Number(tokenPercentVal) === Number(e.target.value)) {
-                        setTokenPercent(percent);
-                      }
-                    })
-                  } else if (activeIndex === 0) {
-                    setSolPercent(0);
-                    SOL_PERCENT_LIST.map((item) => {
-                      if (Number(item) === Number(e.target.value)) {
-                        setTokenPercent(item);
-                      }
-                    })
-                  }
+              <div></div>
+              <div
+                onClick={() => {
+                  setShowSlip(true);
                 }}
-                className={styles.input}
-              />
-              <div className={styles.inputToken}>
-                <div className={styles.tokenName}>{currentToken.tokenName}</div>
-                <div className={styles.tokenImg}>
-                  <img className={styles.tiImg} src={currentToken.tokenUri} />
-                </div>
+                className={`${styles.slippage} button`}
+              >
+                Set max slippage
               </div>
             </div>
-            <div className={styles.balance}>
-              Balance: {tokenType === 0 ? tokenBalance : solBalance}
-            </div>
-          </div>
 
-          {activeIndex === 0 &&
-            (tokenType === 1 ? (
+            <div
+              className={`${styles.tokenBalanceBox} ${
+                from === "panel" && styles.PanelInput
+              }`}
+            >
+              <div className={styles.inputArea}>
+                <input
+                  value={valInput}
+                  onChange={(e) => {
+                    setValInput(e.target.value);
+                    if (activeIndex === 1) {
+                      setTokenPercent(0);
+                      TOKEN_PERCENT_LIST.forEach((percent) => {
+                        const tokenPercentVal = new Big(tokenBalance)
+                          .mul(percent / 100)
+                          .toFixed(percent === 100 ? tokenDecimals : 2, 0);
+
+                        if (
+                          Number(tokenPercentVal) === Number(e.target.value)
+                        ) {
+                          setTokenPercent(percent);
+                        }
+                      });
+                    } else if (activeIndex === 0) {
+                      setSolPercent(0);
+                      setTokenPercent(0);
+                      SOL_PERCENT_LIST.map((item) => {
+                        if (Number(item) === Number(e.target.value)) {
+                          setSolPercent(Number(item));
+                        }
+                      });
+                    }
+                  }}
+                  className={`${styles.input}`}
+                />
+                <div className={styles.inputToken}>
+                  <div className={styles.tokenName}>
+                    {currentToken.tokenName}
+                  </div>
+                  <div className={styles.tokenImg}>
+                    <img className={styles.tiImg} src={currentToken.tokenUri} />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.balance}>
+                Balance: {tokenType === 0 ? tokenBalance : solBalance}
+              </div>
+            </div>
+
+            {activeIndex === 0 &&
+              (tokenType === 1 ? (
+                <div className={styles.tokenPercent}>
+                  <div
+                    onClick={() => {
+                      setSolPercent(0);
+                      setValInput("");
+                    }}
+                    className={`${
+                      from === "panel"
+                        ? styles.PanelPercentTag
+                        : styles.percentTag
+                    } button`}
+                  >
+                    Reset
+                  </div>
+                  {SOL_PERCENT_LIST.map((item) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          setSolPercent(item);
+                          setValInput(getFullNum(item));
+                        }}
+                        key={item}
+                        className={[
+                          from === "panel"
+                            ? styles.PanelPercentTag
+                            : styles.percentTag,
+                          item === solPercent ? styles.tagActive : "",
+                          "button"
+                        ].join(" ")}
+                      >
+                        {getFullNum(item)}SOL
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className={styles.paid}>
+                  <div>Maximum Payment</div>
+                  <div>{buyInSol && buyInSol} SOL</div>
+                </div>
+              ))}
+
+            {activeIndex === 1 && (
               <div className={styles.tokenPercent}>
                 <div
                   onClick={() => {
-                    setSolPercent(0);
+                    setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${styles.percentTag} button`}
+                  className={`${
+                    from === "panel"
+                      ? styles.PanelPercentTag
+                      : styles.percentTag
+                  } button`}
                 >
                   Reset
                 </div>
-                {SOL_PERCENT_LIST.map((item) => {
+                {TOKEN_PERCENT_LIST.map((item) => {
                   return (
                     <div
                       onClick={() => {
-                        setSolPercent(item);
-                        setValInput(getFullNum(item));
+                        setTokenPercent(item);
+                        const tokenPercentVal = new Big(tokenBalance)
+                          .mul(item / 100)
+                          .toFixed(item === 100 ? tokenDecimals : 2, 0);
+                        setValInput(tokenPercentVal);
                       }}
                       key={item}
                       className={[
                         styles.percentTag,
-                        item === solPercent ? styles.tagActive : "",
-                        "button"
+                        item === tokenPercent ? styles.tagActive : ""
                       ].join(" ")}
                     >
-                      {getFullNum(item)}SOL
+                      {item}%
                     </div>
                   );
                 })}
               </div>
-            ) : (
-              <div className={styles.paid}>
-                <div>Maximum Payment</div>
-                <div>
-                  {buyInSol && buyInSol}{" "}
-                  SOL
+            )}
+          </div>
+
+          <div>
+            {activeIndex === 0 && tokenType === 1 && (
+              <div
+                style={{
+                  marginTop: 30,
+                  flexDirection: from === "panel" ? "column" : "row"
+                }}
+                className={styles.receiveTokenAmount}
+              >
+                <div className={styles.receiveTitle}></div>
+                <div className={styles.receiveAmount}>
+                  {buyIn
+                    ? new Big(buyIn)
+                        .div(10 ** token.tokenDecimals!)
+                        .toFixed(token.tokenDecimals)
+                    : ""}{" "}
+                  {tokenName}
                 </div>
               </div>
-            ))}
-
-          {activeIndex === 1 && (
-            <div className={styles.tokenPercent}>
+            )}
+            {activeIndex === 1 && (
               <div
-                onClick={() => {
-                  setTokenPercent(0);
-                  setValInput("");
+                style={{
+                  marginTop: 30,
+                  flexDirection: from === "panel" ? "column" : "row"
                 }}
-                className={styles.percentTag}
+                className={styles.receiveTokenAmount}
               >
-                Reset
+                <div className={styles.receiveTitle}>Minimum Received</div>
+                <div className={styles.receiveAmount}>
+                  {sellOutSol && sellOutSol} SOL
+                </div>
               </div>
-              {TOKEN_PERCENT_LIST.map((item) => {
-                return (
-                  <div
-                    onClick={() => {
-                      setTokenPercent(item);
-                      const tokenPercentVal = new Big(tokenBalance)
-                        .mul(item / 100)
-                        .toFixed(item === 100 ? tokenDecimals : 2, 0);
-                      setValInput(tokenPercentVal);
-                    }}
-                    key={item}
-                    className={[
-                      styles.percentTag,
-                      item === tokenPercent ? styles.tagActive : ""
-                    ].join(" ")}
-                  >
-                    {item}%
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+            )}
 
-        {activeIndex === 0 && tokenType === 1 && (
-          <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}></div>
-            <div className={styles.receiveAmount}>
-              {buyIn
-                ? new Big(buyIn)
-                  .div(10 ** token.tokenDecimals!)
-                  .toFixed(token.tokenDecimals)
-                : ""}{" "}
-              {tokenName}
-            </div>
-          </div>
-        )}
+            <div style={{ marginTop: 18 }}>
+              <MainBtn
+                isLoading={isLoading}
+                isDisabled={isError}
+                onClick={async () => {
+                  // trade()
 
-        {activeIndex === 1 && (
-          <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
-            <div className={styles.receiveTitle}>Minimum Received</div>
-            <div className={styles.receiveAmount}>
-              {sellOutSol && sellOutSol}{" "}
-              SOL
-            </div>
-          </div>
-        )}
-
-        <div style={{ marginTop: 18 }}>
-          <MainBtn
-            isLoading={isLoading}
-            isDisabled={isError}
-            onClick={async () => {
-              // trade()
-
-              try {
-                if (isLoading || isError) {
-                  return;
-                }
-
-                let hash;
-                let showBuyInToken = buyIn
-                if (activeIndex === 0) {
-
-                  setIsLoading(true);
-                  hash = await buy(Number(buyInSol), slip / 100)
-                  if (hash) {
-                    // hash = '4XBoqSoGTcz7LbAJcfEWZf2wNhXjtbrNu27uDpaFC6pdnGMybyw1zs9m982RgQBKhEQYbABZKbDyLj5NPkFvtvDE'
-                    const _showBuyInToken = await getTransaction(connection, hash, token.address as string, userInfo.address)
-                    if (_showBuyInToken) {
-                      showBuyInToken = _showBuyInToken
+                  try {
+                    if (isLoading || isError) {
+                      return;
                     }
+
+                    let hash;
+                    let showBuyInToken = buyIn;
+                    if (activeIndex === 0) {
+                      setIsLoading(true);
+                      hash = await buy(Number(buyInSol), slip / 100);
+                      if (hash) {
+                        // hash = '4XBoqSoGTcz7LbAJcfEWZf2wNhXjtbrNu27uDpaFC6pdnGMybyw1zs9m982RgQBKhEQYbABZKbDyLj5NPkFvtvDE'
+                        const _showBuyInToken = await getTransaction(
+                          connection,
+                          hash,
+                          token.address as string,
+                          userInfo.address
+                        );
+                        if (_showBuyInToken) {
+                          showBuyInToken = _showBuyInToken;
+                        }
+                      }
+                      setIsLoading(true);
+                    } else if (activeIndex === 1) {
+                      setIsLoading(true);
+
+                      console.log("sellOut:", sellOut);
+
+                      hash = await sell(Number(sellOut), slip / 100);
+                    }
+                    setIsLoading(false);
+                    setReFreshBalnace(reFreshBalnace + 1);
+
+                    if (hash) {
+                      const volume = activeIndex === 0 ? buyInSol : sellOutSol;
+                      const pointByVolume = await getPointByVolume(
+                        Big(volume).toFixed(SOL.tokenDecimals),
+                        "pump"
+                      );
+
+                      const modalHandler = Modal.show({
+                        content: (
+                          <TradeSuccessModal
+                            type={activeIndex}
+                            userInfo={userInfo}
+                            token={token}
+                            solAmount={
+                              activeIndex === 0 ? buyInSol : sellOutSol
+                            }
+                            amount={new Big(
+                              activeIndex === 0 ? showBuyInToken : sellOut
+                            )
+                              .div(10 ** token.tokenDecimals!)
+                              .toFixed(2)}
+                            point={pointByVolume}
+                            onClose={() => {
+                              modalHandler.close();
+                            }}
+                          />
+                        ),
+                        className: "buy-sell-modal",
+                        closeOnMaskClick: true
+                      });
+
+                      setValInput("");
+                      onClose();
+                    }
+                  } catch (e) {
+                    console.log(e);
+                    setIsLoading(false);
+                    fail("Transtion fail");
                   }
-                  setIsLoading(true);
-                } else if (activeIndex === 1) {
-                  setIsLoading(true);
-
-                  console.log('sellOut:', sellOut)
-
-                  hash = await sell(Number(sellOut), slip / 100)
-                }
-                setIsLoading(false);
-                setReFreshBalnace(reFreshBalnace + 1)
-
-                if (hash) {
-                  const volume = activeIndex === 0 ? buyInSol : sellOutSol
-                  const pointByVolume = await getPointByVolume(Big(volume).toFixed(SOL.tokenDecimals), 'pump')
-
-                  const modalHandler = Modal.show({
-                    content: (
-                      <TradeSuccessModal
-                        type={activeIndex}
-                        userInfo={userInfo}
-                        token={token}
-                        solAmount={activeIndex === 0 ? buyInSol : sellOutSol}
-                        amount={new Big(activeIndex === 0 ? showBuyInToken : sellOut)
-                          .div(10 ** token.tokenDecimals!)
-                          .toFixed(2)}
-                        point={pointByVolume}
-                        onClose={() => {
-                          modalHandler.close();
-                        }}
-                      />
-                    ),
-                    className: "buy-sell-modal",
-                    closeOnMaskClick: true
-                  });
-
-                  setValInput("");
-                  onClose();
-                }
-
-              } catch (e) {
-                console.log(e);
-                setIsLoading(false);
-                fail("Transtion fail");
-              }
-            }}
-            style={{
-              background:
-                activeIndex === 0
-                  ? "rgba(109, 181, 0, 1)"
-                  : "rgba(255, 47, 116, 1)"
-            }}
-          >
-            Place Trade
-          </MainBtn>
+                }}
+                style={{
+                  color: "#000",
+                  background: activeIndex === 0 ? "#C9FF5D" : "#FFC9F1",
+                  height: from === "panel" ? 36 : 60,
+                  width: from === "panel" ? "120px" : "100%"
+                }}
+              >
+                {activeIndex === 0 ? "Buy" : "Sell"}
+              </MainBtn>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -526,6 +609,6 @@ export default function BuySellPump({ token, initType, from, show, onClose }: Pr
           setShowSlip(false);
         }}
       />
-    </div>
+    </>
   );
 }

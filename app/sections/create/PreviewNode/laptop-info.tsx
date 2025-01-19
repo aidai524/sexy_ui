@@ -1,5 +1,5 @@
 import TokenCard from "../../home/laptop/main/token-card";
-import PanelWrapper from "../../home/laptop/main/token/panel-wrapper";
+import PanelWrapper from "../../home/laptop/panels/trade/panel-wrapper";
 import styles from "../../home/laptop/main/token/index.module.css";
 import InfoPart from "@/app/sections/detail/components/info/infoPart";
 export default function LaptopInfo({ newData }: any) {
@@ -26,13 +26,8 @@ export default function LaptopInfo({ newData }: any) {
           <InfoPart
             showLikes={false}
             specialTime={"just now"}
-            showBackIcon={false}
-            showThumbnailProgress={false}
             data={newData}
             theme="light"
-            sepSize={2}
-            showThumbnailHead={false}
-            showTop={false}
           />
           <div style={{ height: 2 }} />
         </PanelWrapper>

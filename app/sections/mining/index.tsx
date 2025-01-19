@@ -14,6 +14,7 @@ export default memo(function Mining(props: any) {
     info,
     infoLoading
   };
+
   return isMobile ? (
     <Mobile {...props} {...params} />
   ) : (

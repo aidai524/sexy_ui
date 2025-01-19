@@ -1,0 +1,26 @@
+.Container {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+
+.Tab {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-family: Unbounded;
+  position: relative;
+  cursor: pointer;
+  height: 38px;
+  line-height: 38px;
+}
+.Tab.active {
+  color: #fff;
+}
+
+.Line {
+  position: absolute;
+  border-radius: 4px;
+  height: 3px;
+  width: 100%;
+  background-color: #fbca04;
+}

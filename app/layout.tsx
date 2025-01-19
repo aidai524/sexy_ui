@@ -15,7 +15,7 @@ export default function RootLayout({
   useEffect(() => {
     if (!window.navigator.userAgent.includes("Mobile")) return;
     window.AddToHomeScreenInstance = window?.AddToHomeScreen?.({
-      appName: "FlipN",
+      appName: "Fun",
       appNameDisplay: "standalone",
       appIconUrl: "/192x192.png",
       assetUrl: "/libs/add_to_homescreen/img/", // Link to directory of library image assets.
@@ -31,13 +31,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
         />
         <link rel="stylesheet" href="/libs/add_to_homescreen/index.css" />
         <link rel="manifest" href="/manifest.json" />
-        <title>FlipN</title>
+        <title>Fun</title>
         <script async src="/libs/add_to_homescreen/index.js" />
       </head>
       <body>

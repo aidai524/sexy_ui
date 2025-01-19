@@ -1,32 +1,20 @@
 import { useWallet } from "@solana/wallet-adapter-react";
-import { motion } from "framer-motion";
-import XIcon from "../../icons/x";
-import TelegramIcon from "../../icons/telegram";
+import { AnimatePresence, motion } from "framer-motion";
+import { ReadAvatar } from "@/app/sections/messages/avatar";
 import InfoIcon from "../../icons/info";
 import HowToWork from "../../how-to-work";
 import styles from "./index.module.css";
-import Big from "big.js";
+import Level from "../../level";
 import { useEffect, useState } from "react";
-import { useConnection } from "@solana/wallet-adapter-react";
+import { useAuth } from "@/app/context/auth";
+import useSolBalance from "@/app/hooks/use-sol-balance";
 
 export default function Info({ logout }: any) {
   const { wallet, publicKey } = useWallet();
   const [expand, setExpand] = useState(false);
-  const [solBalance, setSolBalance] = useState("0");
   const [showHowItWork, setShowHowItWork] = useState(false);
-  const { connection } = useConnection();
-
-  useEffect(() => {
-    if (!publicKey || !connection) return;
-    connection.getBalance(publicKey!).then((res) => {
-      if (res) {
-        setSolBalance(new Big(res).div(10 ** 9).toFixed(2));
-      } else {
-        setSolBalance("0");
-      }
-    });
-  }, [publicKey, connection]);
-
+  const { userInfo } = useAuth();
+  const { solBalance } = useSolBalance(Number(expand));
   useEffect(() => {
     const close = () => {
       setExpand(false);
@@ -39,6 +27,16 @@ export default function Info({ logout }: any) {
     };
   }, []);
 
+  const Avatar = () => (
+    <div className={styles.Avatar}>
+      {userInfo?.icon ? (
+        <img src={userInfo.icon} className={`${styles.Logo}`} />
+      ) : (
+        <ReadAvatar size={30} />
+      )}
+    </div>
+  );
+
   return wallet ? (
     <>
       <div className={`${styles.Container}`}>
@@ -50,25 +48,7 @@ export default function Info({ logout }: any) {
             ev.nativeEvent.stopImmediatePropagation();
           }}
         >
-          <img src={wallet.adapter.icon} className={styles.Logo} />
-          <motion.svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="9"
-            viewBox="0 0 14 9"
-            fill="none"
-            animate={{
-              rotate: expand ? "-180deg" : "0deg"
-            }}
-          >
-            <path
-              d="M12.3136 1.6283L6.65674 7.28516L0.999884 1.6283"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </motion.svg>
+          <Avatar />
         </div>
         {expand && (
           <motion.div
@@ -86,11 +66,23 @@ export default function Info({ logout }: any) {
               ev.nativeEvent.stopImmediatePropagation();
             }}
           >
-            <div className={styles.PanelTitle}>WALLET</div>
-            <div className={styles.PanelAddressBox}>
-              <div className={styles.PanelAddress}>
-                {publicKey?.toString().slice(0, 7)}....
-                {publicKey?.toString().slice(-3)}
+            <div className={styles.PanelTitle}>
+              <div className={styles.Flex}>
+                <Avatar />
+                <div className={styles.PanelAddress}>
+                  {publicKey?.toString().slice(0, 4)}....
+                  {publicKey?.toString().slice(-4)}
+                </div>
+              </div>
+              <Level level={userInfo?.level} vipType={userInfo.vipType} />
+            </div>
+            <div className={styles.BalanceWrapper}>
+              <div className={styles.Wallet}>
+                <img
+                  src={wallet.adapter.icon}
+                  className={`${styles.WalletIcon}`}
+                />
+                <span>{wallet.adapter.name}</span>
               </div>
               <div className={styles.PanelSol}>
                 <img src="/img/home/solana.png" className={styles.SolnaIcon} />
@@ -100,48 +92,50 @@ export default function Info({ logout }: any) {
             <button
               className={`${styles.Disconnect} button`}
               onClick={(ev) => {
-                logout?.();
+                logout?.(true);
               }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
-                height="19"
-                viewBox="0 0 18 19"
+                height="18"
+                viewBox="0 0 18 18"
                 fill="none"
               >
                 <path
-                  d="M8.84619 9.49997V1"
-                  stroke="#6A7279"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
+                  d="M11.1333 1H1V16.2H11.1333"
+                  stroke="#FF70D9"
+                  strokeWidth="2"
                 />
                 <path
-                  d="M4.92306 3.35742C2.57785 4.71405 1 7.2497 1 10.1539C1 14.4872 4.51283 18 8.84613 18C13.1794 18 16.6923 14.4872 16.6923 10.1539C16.6923 7.2497 15.1144 4.71405 12.7692 3.35742"
-                  stroke="#6A7279"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
+                  d="M7.33325 8.6001H13.6666"
+                  stroke="#FF70D9"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M17.4666 8.59987L13.6666 12.9877L13.6666 4.21201L17.4666 8.59987Z"
+                  fill="#FF70D9"
                 />
               </svg>
               <span>Disconnect</span>
             </button>
-            <div
+            {/* <div
               className={styles.PanelTitle}
               style={{
                 margin: "34px 0px 18px"
               }}
             >
               MENU
-            </div>
-            <div className={`${styles.Item} button`}>
+            </div> */}
+            {/* <div className={`${styles.Item} button`}>
               <XIcon />
               <span>Twitter</span>
             </div>
             <div className={`${styles.Item} button`}>
               <TelegramIcon />
               <span>Telegram</span>
-            </div>
-            <div
+            </div> */}
+            {/* <div
               className={`${styles.Item} button`}
               onClick={() => {
                 setShowHowItWork(true);
@@ -149,16 +143,16 @@ export default function Info({ logout }: any) {
             >
               <InfoIcon />
               <span>How it works</span>
-            </div>
+            </div> */}
           </motion.div>
         )}
       </div>
-      <HowToWork
+      {/* <HowToWork
         open={showHowItWork}
         onClose={() => {
           setShowHowItWork(false);
         }}
-      />
+      /> */}
     </>
   ) : null;
 }

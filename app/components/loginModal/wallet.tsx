@@ -1,0 +1,80 @@
+export default function WalletIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="95"
+      height="90"
+      viewBox="0 0 95 90"
+      fill="none"
+    >
+      <circle
+        cx="44.5128"
+        cy="44.5128"
+        r="43.5128"
+        fill="#FF8E6B"
+        stroke="black"
+        strokeWidth="2"
+      />
+      <rect
+        x="16.1407"
+        y="34.053"
+        width="41.8614"
+        height="22.8643"
+        rx="5"
+        transform="rotate(-24.8958 16.1407 34.053)"
+        fill="#7C4CFF"
+        stroke="black"
+        strokeWidth="2"
+      />
+      <circle
+        cx="30.3026"
+        cy="26.3932"
+        r="10.4089"
+        fill="#F1B900"
+        stroke="black"
+        strokeWidth="2"
+      />
+      <circle
+        cx="30.3026"
+        cy="26.3934"
+        r="5.70443"
+        fill="#FFDA41"
+        stroke="black"
+        strokeWidth="2"
+      />
+      <rect
+        x="15.4589"
+        y="33.3873"
+        width="55.394"
+        height="40.3398"
+        rx="5"
+        transform="rotate(-9.49075 15.4589 33.3873)"
+        fill="#A890FF"
+        stroke="black"
+        strokeWidth="2"
+      />
+      <path
+        d="M47.9963 45.418C47.541 42.6944 49.3798 40.1173 52.1035 39.662L72.1115 36.3171L74.7294 51.9766L54.7214 55.3215C51.9977 55.7768 49.4207 53.938 48.9654 51.2144L47.9963 45.418Z"
+        fill="#CCBEFF"
+        stroke="black"
+        strokeWidth="2"
+      />
+      <circle
+        cx="82.2692"
+        cy="67.9617"
+        r="11.7308"
+        fill="#F1B900"
+        stroke="black"
+        strokeWidth="2"
+      />
+      <circle
+        cx="82.2693"
+        cy="67.9621"
+        r="6.36538"
+        fill="#FFDA41"
+        stroke="black"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}

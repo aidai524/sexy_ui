@@ -1,9 +1,16 @@
-import styles from "./index.module.css";
+import PageHeader from "@/app/components/page-header/mobile";
 
 export default function Header() {
   return (
-    <div className={styles.Header}>
-      <img src="/img/trends/title.png" className={styles.HeaderTitle} />
+    <div>
+      <PageHeader
+        title="Trends"
+        theme="light"
+        from="trends"
+        style={{
+          background: "#000"
+        }}
+      />
     </div>
   );
 }

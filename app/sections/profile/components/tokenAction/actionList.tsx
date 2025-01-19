@@ -1,99 +1,97 @@
 import type { Project } from "@/app/type";
 import styles from "./index.module.css";
-import Boost from "@/app/components/boost";
 import SmokeHot from "@/app/components/smokHot";
-import { useTokenTrade } from "@/app/hooks/useTokenTrade";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import BuySell from "./buySell";
-import { useUser } from "@/app/store/useUser";
 import Withdraw from "./withdraw";
 import Claim from "./claim";
-import FlipIcon from "./flip-icon";
+import Big from 'big.js';
+import { useUserAgent } from '@/app/context/user-agent';
 
 interface Props {
   token: Project;
   isOther: boolean;
+  isDelay: boolean;
   prepaidWithdrawDelayTime: number;
+  prepaidRealAmount: Big.Big;
+  prepaidAmount: Big.Big;
+  smookeable: false | 1 | 2;
+  showWithdraw: boolean;
+  isPrepaid: boolean;
+  prepaidSolWithdraw: any;
+  prepaidTokenWithdraw: any;
+  tokenAmount: Big.Big;
+  onWithdrawSuccess?(): void;
 }
 
-export default function ActionList({
-  token,
-  isOther,
-  prepaidWithdrawDelayTime
-}: Props) {
-  const [isPrepaid, setIsPrepaid] = useState(false);
+export default function ActionList(props: Props) {
+  const {
+    token,
+    isOther,
+    onWithdrawSuccess,
+    smookeable,
+    showWithdraw,
+    isPrepaid,
+    prepaidSolWithdraw,
+    prepaidTokenWithdraw,
+    isDelay,
+  } = props;
 
-  const [updateNum, setUpdateNum] = useState(1);
+  const { isMobile } = useUserAgent();
+
   const [isClaimed, setIsClaimed] = useState(false);
 
-  const { userInfo }: any = useUser();
-
-  const { prepaidSolWithdraw, prepaidTokenWithdraw, checkPrePayed } =
-    useTokenTrade({
-      tokenName: token.tokenName,
-      tokenSymbol: token.tokenSymbol as string,
-      tokenDecimals: token.tokenDecimals as number,
-      loadData: false
-    });
-
-  useEffect(() => {
-    if (isOther) {
-      setIsPrepaid(false);
-      return;
-    }
-    checkPrePayed().then((res) => {
-      if (Number(res) > 0) {
-        setIsPrepaid(true);
-      }
-    });
-  }, [updateNum, isOther, token]);
-
-  const smookeable = useMemo(() => {
-    return !token.isSuperLike && token.account !== userInfo?.address;
-  }, [token, userInfo]);
-
   return (
-    <div className={styles.Btns}>
+    <div className={isMobile ? styles.BtnsMobile : styles.Btns}>
       {token.status === 0 && (
         <>
-          <Withdraw
-            {...{
-              prepaidSolWithdraw,
-              prepaidWithdrawDelayTime,
-              token,
-              isPrepaid,
-              isOther
-            }}
-          />
-
-          {smookeable && (
-            <SmokeHot
-              actionChildren={
-                <button className={`${styles.ActionBtn} ${styles.Flip} button`}>
-                  <FlipIcon />
-                  <span>Flip</span>
-                </button>
-              }
-              token={token}
-              onClick={() => {}}
-            />
-          )}
+          {
+            // fix#REF-9370
+            showWithdraw ? (
+              <Withdraw
+                {...props}
+                onSuccess={onWithdrawSuccess}
+                prepaidSolWithdraw={prepaidSolWithdraw}
+              />
+            ) : (
+              <>
+                {!!smookeable && (smookeable === 1 ? (
+                  !isDelay && (
+                    <button className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}>
+                      <span>Flipped</span>
+                    </button>
+                  )
+                ) : (
+                  <SmokeHot
+                    actionChildren={
+                      <button className={`${styles.ActionBtn} ${styles.ProfileFlip} button`}>
+                        <img src="/img/profile/icon-flip.svg" alt="" width="17px" height="21px" />
+                        <span>Flip</span>
+                      </button>
+                    }
+                    token={token}
+                    onClick={() => {}}
+                    onSuccess={onWithdrawSuccess}
+                  />
+                ))}
+              </>
+            )
+          }
         </>
       )}
 
       {[1, 2, 3].includes(Number(token.status)) && !isOther && (
         <Claim
-          {...{
-            isPrepaid,
-            isOther,
-            prepaidTokenWithdraw,
-            isClaimed,
-            setIsClaimed
-          }}
+          {...props}
+          isClaimed={isClaimed}
+          setIsClaimed={setIsClaimed}
+          prepaidTokenWithdraw={prepaidTokenWithdraw}
         />
       )}
-      {[1, 3].includes(Number(token.status)) &&
-        (!(isPrepaid && !isOther) || isClaimed) && <BuySell token={token} />}
+
+      {[1, 3].includes(Number(token.status)) && (!(isPrepaid && !isOther) || isClaimed) && (
+        <BuySell token={token} />
+      )}
     </div>
   );
 }

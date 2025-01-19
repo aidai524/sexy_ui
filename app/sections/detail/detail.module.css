@@ -94,3 +94,31 @@ div.tabBar {
   bottom: 0px;
   transform: rotate(180deg);
 }
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between ;
+  padding: 10px 16px 10px 20px;
+}
+
+.menuWrapper {
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+.backWrapper {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.commentWrapper {
+  background-color: #252328;
+  border-radius: 15px 15px 0 0;
+}
+
+.commentListWrapper {
+  background-color: #121719;
+}

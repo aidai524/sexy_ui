@@ -1,0 +1,93 @@
+.SelectContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  position: absolute;
+  right: 0;
+  top: -8px;
+  cursor: pointer;
+}
+.SelectContainerMobile {
+  composes: SelectContainer;
+  position: unset;
+}
+.Select {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  min-width: 126px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0 12px 0 10px;
+  white-space: nowrap;
+}
+.SelectValue {
+  flex: 1;
+  overflow: hidden;
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.SelectArrow {
+  flex-shrink: 0;
+}
+.SelectDropdown {
+  width: 208px;
+  flex-shrink: 0;
+  background: #252328;
+  border: 1px solid #3b3b3b;
+  border-radius: 12px;
+  padding: 7px 0;
+}
+.SelectList {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.SelectItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease-in-out;
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 11px 13px 10px 17px;
+}
+.SelectItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.SelectItemActive {
+  composes: SelectItem;
+  background: rgba(255, 255, 255, 0.1);
+}
+.SelectItemLeft {
+  flex: 1;
+  width: 0;
+  overflow: hidden;
+}
+.SelectItemRight {
+  flex-shrink: 0;
+}
+
+.PcListWrapper {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.ProfileCreatedContainer {
+  height: 100%;
+}

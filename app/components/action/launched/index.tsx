@@ -6,6 +6,8 @@ import { useState } from "react";
 import type { Project } from "@/app/type";
 import { useAccount } from "@/app/hooks/useAccount";
 import Boost from "../../boost";
+import { useMessage } from "@/app/context/messageContext";
+import Share from "../../icons/share";
 
 interface Props {
   data?: Project;
@@ -18,6 +20,7 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
   const [tradeShow, setTradeShow] = useState(false);
   const [initType, setInitType] = useState("buy");
   const { address } = useAccount();
+  const { showShare } = useMessage();
 
   const usedStyle = justPlus
     ? styles.justPlus
@@ -31,7 +34,6 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
     <div
       key={data.id}
       className={`${usedStyle} ${from === "laptop" && styles.LaptopContainer}`}
-      style={style}
     >
       {justPlus ? (
         <>
@@ -84,13 +86,11 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
       ) : (
         <>
           <div
-            className={`${styles.actionBtn} ${
-              from === "laptop" &&
+            className={`${styles.actionBtn} ${from === "laptop" &&
               styles.LaptopActionButton + " " + styles.LaptopBuyButton
-            } button`}
+              } button`}
             onClick={() => {
               if (!address) {
-                //@ts-ignore
                 window.connect();
                 return;
               }
@@ -99,13 +99,19 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
               setInitType("buy");
             }}
           >
-            {from === "laptop" ? <LaptopBuyIcon /> : <MobileBuyIcon />}
-            <div>Buy</div>
+            {/* {from === "laptop" ? <LaptopBuyIcon /> : <MobileBuyIcon />} */}
+            <div>Place Trade</div>
+          </div>
+
+          <div className={styles.share} onClick={() => {
+            showShare(data)
+          }}>
+           <Share />
           </div>
 
           {/* <Boost token={data} isBigIcon={true} onClick={() => {}}/> */}
 
-          <div
+          {/* <div
             className={`${styles.actionBtn} ${
               from === "laptop" &&
               styles.LaptopActionButton + " " + styles.LaptopSellButton
@@ -123,7 +129,7 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
           >
             {from === "laptop" ? <LaptopSellIcon /> : <MobileSellIcon />}
             <div>Sell</div>
-          </div>
+          </div> */}
         </>
       )}
       <TradeModal

@@ -1,0 +1,109 @@
+.Container {
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+}
+
+.FunPanel {
+  position: relative;
+  width: 343px;
+  height: 80px;
+  margin: 0 auto;
+  padding: 2px;
+}
+
+.FunPanelContent {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  padding-left: 14px;
+  height: 100%;
+}
+
+.FunPanelBg {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+}
+
+.FunLike {
+  font-family: Unbounded;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  background: linear-gradient(180deg, #ffeb9c 0%, #fbca04 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.MyLike {
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.PabelLabel {
+  color: #fff;
+  font-family: Unbounded;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.Statistics {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.StatisticsItem {
+  width: 33.333333%;
+}
+
+.StatisticsItemPc {
+  width: 33.333333%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.StatisticsItemPc:not(:last-child):after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 18px;
+  opacity: 0.5;
+  background: #fff;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.StatisticsLabel {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+}
+
+.StatisticsValue {
+  color: #fff;
+  font-family: Unbounded;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}

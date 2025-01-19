@@ -11,8 +11,8 @@ import Link from "next/link";
 import Refer, {
   ReferContentCard
 } from "@/app/components/layout/laptop/user/refer";
-import { FlipProvider } from "@/app/context/flip";
 import TabBg from "./tab-bg";
+import { useAuth } from '@/app/context/auth';
 
 function CustomIcon({
   url,
@@ -115,6 +115,7 @@ const Tabs = (pathname: string) => [
 export default function Component({ children }: any) {
   const pathname = usePathname();
   const { address } = useAccount();
+  const { userInfo } = useAuth();
 
   const showTabs = useMemo(() => {
     return Tabs(pathname).find((tab) => {
@@ -132,14 +133,13 @@ export default function Component({ children }: any) {
   useNotice();
 
   return (
-    <FlipProvider>
-      <div className={styles.Main}>
-        {/* <Button onClick={() => {
+    <div className={styles.Main} id="main-content">
+      {/* <Button onClick={() => {
         trade()
       }}>juipter</Button> */}
-        <main className="pb-16">{children}</main>
-
-        {showTabs && (
+      {children}
+      <Refer userInfo={userInfo} isMobile />
+      {/* {showTabs && (
           <>
             <TabBg className={styles.TabBg} />
             <TabBar
@@ -179,8 +179,7 @@ export default function Component({ children }: any) {
             </TabBar>
           </>
         )}
-        {isRefer && <ReferContentCard />}
-      </div>
-    </FlipProvider>
+        {isRefer && <ReferContentCard />} */}
+    </div>
   );
 }

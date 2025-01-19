@@ -1,0 +1,23 @@
+.Actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+  position: absolute;
+  right: 22px;
+  top: 22px;
+  z-index: 20;
+}
+
+.ConnectButton {
+  width: 157px;
+  height: 36px;
+  border-radius: 48px;
+  border: 2px solid #af0;
+  color: #af0;
+  font-size: 14px;
+}
+
+.Alarm {
+  position: relative;
+}

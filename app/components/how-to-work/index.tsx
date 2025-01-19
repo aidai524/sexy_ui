@@ -1,5 +1,5 @@
 import Modal from "../modal";
-import { Avatar } from "../messages/avatar";
+import { Avatar } from "../../sections/messages/avatar";
 import config from "./config";
 import styles from "./index.module.css";
 import { useState } from "react";

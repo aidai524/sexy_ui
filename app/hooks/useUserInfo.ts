@@ -43,7 +43,8 @@ export default function useUserInfo(
           vipExpirationTime: res.data.vip_expiration_time,
           vipStartTime: res.data.vip_start_time,
           proxyFee: res.data.proxy_fee,
-          referralFee: res.data.referral_fee
+          referralFee: res.data.referral_fee,
+          level: res.data.level,
         };
 
         return userInfo;

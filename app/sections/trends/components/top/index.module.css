@@ -1,7 +1,7 @@
 .Badge {
   height: 26px;
   border-radius: 13px;
-  background: #C9FF5D;
+  background: #c9ff5d;
   padding: 0 8px;
   white-space: nowrap;
   display: flex;
@@ -18,16 +18,44 @@
 
 /*#region Top first*/
 .Top {
-  margin-top: 10px;
+  position: relative;
+  margin-top: 106px;
 }
 .TopAvatar {
   width: 210px;
   height: 210px;
-  border-radius: 20px;
   margin: 0 auto;
-  background: url("/512x512.png") no-repeat center / cover;
   position: relative;
 }
+
+.TopAvatarBg {
+  position: absolute;
+  z-index: 1;
+  top: -50%;
+  left: -50%;
+  pointer-events: none;
+}
+
+.TopAvatarContent {
+  width: 100%;
+  height: 100%;
+  background: url("/512x512.png") no-repeat center / cover;
+  position: relative;
+  z-index: 10;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.PcCarouselWrapper {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border-radius: 20px;
+}
+
 .TopSummary {
   display: flex;
   justify-content: center;
@@ -40,8 +68,8 @@
   padding-bottom: 8px;
 }
 .TopSummaryLike {
-  background: #FFF2F8 !important;
-  color: #FF3499 !important;
+  background: #fff2f8 !important;
+  color: #ff3499 !important;
 }
 .TopCrown {
   width: 60px;
@@ -49,7 +77,6 @@
   position: absolute;
   z-index: 2;
   top: -30px;
-  right: -24px;
 }
 .TopInfo {
   display: flex;
@@ -60,7 +87,7 @@
   font-family: Unbounded;
 }
 .TopName {
-  color: #FFF;
+  color: #fff;
   text-align: right;
   font-size: 16px;
   font-style: normal;
@@ -74,7 +101,7 @@
   gap: 4px;
 }
 .TopTickerLabel {
-  color: #9290B1;
+  color: #9290b1;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -92,7 +119,7 @@
 }
 .TopTickerName {
   margin-left: 2px;
-  color: #FFF;
+  color: #fff;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -114,10 +141,9 @@
   height: 31px;
   border-radius: 30px;
   padding: 0 11px;
-  opacity: 0.4;
-  background: #3C3C3C;
+  background: rgba(60, 60, 60, 0.4);
   backdrop-filter: blur(5px);
-  color: #D9D9D9;
+  color: #d9d9d9;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
@@ -126,6 +152,9 @@
   justify-content: center;
   align-items: center;
   gap: 4px;
+}
+.TopBadgeClickable {
+  cursor: pointer;
 }
 .TopMarketCap {
   display: flex;
@@ -136,14 +165,14 @@
   margin-top: 7px;
 }
 .TopMarketCapLabel {
-  color: #9290B1;
+  color: #6fff00;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
 .TopMarketCapValue {
-  color: #FFF;
+  color: #fff;
   text-align: right;
   font-size: 20px;
   font-style: normal;
@@ -157,17 +186,10 @@
   margin-top: 16px;
 }
 .TopBuyBtn {
-  height: 52px;
+  width: 174px;
+  height: 69px;
   flex-shrink: 0;
-  border-radius: 30px;
-  background: #C9FF5D;
-  color: #000;
-  font-family: Unbounded;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  padding: 0 34px 0 28px;
+  background: url("/img/trends/buy-btn.svg") no-repeat center / contain;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -218,9 +240,10 @@
   height: 65px;
   flex-shrink: 0;
 }
-.LaptopTopContentInfo {}
+.LaptopTopContentInfo {
+}
 .LaptopTopName {
-  color: #FFF;
+  color: #fff;
   text-align: left;
   font-size: 22px;
   font-style: normal;
@@ -240,14 +263,14 @@
   white-space: nowrap;
 }
 .LaptopTopTickerLabel {
-  color: #FFF;
+  color: #fff;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
 .LaptopTopTickerValue {
-  color: #FFF;
+  color: #fff;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -257,7 +280,7 @@
   gap: 6px;
 }
 .LaptopTopTickerTime {
-  color: rgba(255, 255, 255, 0.60);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -267,7 +290,7 @@
   margin-top: 16px;
 }
 .LaptopTopMarketCapValue {
-  color: #FBFFF4;
+  color: #fbfff4;
   font-size: 34px;
   font-style: normal;
   font-weight: 700;
@@ -277,7 +300,7 @@
   line-height: 1;
 }
 .LaptopTopMarketCapTrend {
-  color: #6FFF00;
+  color: #6fff00;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -285,7 +308,7 @@
 }
 .LaptopTopMarketCapTrendDown {
   composes: LaptopTopMarketCapTrend;
-  color: #FF2F74;
+  color: #ff2f74;
 }
 .LaptopTopMarketCapLabel {
   color: rgba(255, 255, 255, 0.63);
@@ -302,7 +325,7 @@
   margin-top: 24px;
 }
 .LaptopTopBadge {
-  color: #FF3499;
+  color: #ff3499;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -314,12 +337,12 @@
   justify-content: center;
   align-items: center;
   gap: 4px;
-  background: #FFF2F8;
+  background: #fff2f8;
   padding: 0 8px 0 7px;
 }
 .LaptopTopBadgeGreen {
   color: #000;
-  background: #C9FF5D;
+  background: #c9ff5d;
 }
 .LaptopTopContentBuy {
 }
@@ -337,7 +360,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  background: #C9FF5D;
+  background: #c9ff5d;
 }
 .LaptopTopContentBuyBtnIcon {
   width: 28px;

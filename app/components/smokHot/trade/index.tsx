@@ -11,11 +11,14 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
+import { useMessage } from "@/app/context/messageContext";
 
 interface Props {
   token: Project;
-  onSuccess?: () => void;
+  onSuccess?: (amount: any) => void;
   panelStyle?: any;
+  mainStyle?: any;
+  bottomStyle?: any;
   modalShow: boolean;
   onClose?: () => void;
 }
@@ -27,14 +30,16 @@ export default function Trade({
   panelStyle,
   modalShow,
   onSuccess,
-  onClose
+  onClose,
+  mainStyle,
+  bottomStyle
 }: Props) {
   const [inputVal, setInputVal] = useState(max.toString());
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
-  const { isMobile } = useUserAgent();
+  const { showShare } = useMessage();
 
   const { prePaid, checkPrePayed } = useTokenTrade({
     tokenName: token.tokenName,
@@ -68,7 +73,7 @@ export default function Trade({
   }, [modalShow]);
 
   return (
-    <div className={styles.main} style={{ paddingTop: isMobile ? 0 : 90 }}>
+    <div className={styles.main} style={mainStyle}>
       <div className={styles.avatar}>
         <Avatar data={token} showLaunchType={true} />
       </div>
@@ -101,7 +106,8 @@ export default function Trade({
             </div>
           </div>
         </div>
-
+      </div>
+      <div className={styles.Bottom} style={bottomStyle}>
         <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
           {isPrePayd ? (
             <div className={styles.receiveTitle}>
@@ -111,14 +117,19 @@ export default function Trade({
             <div className={styles.receiveTitle}>
               You will auto-buy in when this meme launching.{" "}
               {delayTime
-                ? `You can withdraw after ${delayTime}.`
-                : "You can withdraw anytime before launching."}
+                ? `You can refund after ${delayTime}.`
+                : "You can refund anytime before launching."}
             </div>
           )}
         </div>
         <div style={{ marginTop: 18 }}>
           <MainBtn
-            isDisabled={!inputVal || Number(inputVal) > max || isPrePayd || Number(inputVal) <= 0}
+            isDisabled={
+              !inputVal ||
+              Number(inputVal) > max ||
+              isPrePayd ||
+              Number(inputVal) <= 0
+            }
             isLoading={isLoading}
             onClick={async () => {
               try {
@@ -128,8 +139,8 @@ export default function Trade({
                   await prePaid(inputNum, false);
                   setIsLoading(false);
                   success("Flip success");
-                  await actionLikeTrigger(token);
-                  onSuccess && onSuccess();
+                  await actionLikeTrigger(token, showShare);
+                  onSuccess?.(inputVal);
                 }
               } catch (e: any) {
                 console.log(e);
@@ -137,19 +148,10 @@ export default function Trade({
                 setIsLoading(false);
               }
             }}
-            style={{ backgroundColor: "#9514FF" }}
+            style={{ backgroundColor: "#FBCA04", color: "#000" }}
           >
-            Flip
+            Pre-Buy
           </MainBtn>
-
-          <div
-            onClick={() => {
-              onClose && onClose();
-            }}
-            className={`${styles.cancel} button`}
-          >
-            Cancel
-          </div>
         </div>
       </div>
     </div>

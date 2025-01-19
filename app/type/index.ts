@@ -29,6 +29,9 @@ export interface Project {
     initiativeLaunching?: boolean;
     prePaidAmount?: string;
     prePaid?: string;
+    comment?: number;
+    bondingProgress?: number;
+    kingProgress?: number;
 }
 
 export interface Comment {

@@ -1,12 +1,12 @@
 import { Modal } from "antd-mobile";
 import FirstTimeLike from "./firstTimeLike";
 import SecondTimeLike from "./secondTimesLike";
+import FinalLike from "./final-like";
 import type { Project } from "@/app/type";
 import { httpAuthPost } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import Big from "big.js";
-import { useRouter } from "next/navigation";
-
+import { MessageContextProvider } from "@/app/context/messageContext";
 export const FIRST_LIKE_TIMES = 10;
 export const SECOND_LIKE_TIMES = 30;
 
@@ -16,7 +16,6 @@ const onLike = async (data: any) => {
   try {
     if (data) {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
-      console.log("v:", v);
       if (v.code === 0) {
         const points =
           Number(v.data?.point) < 0.01
@@ -30,7 +29,7 @@ const onLike = async (data: any) => {
             points +
             " points"
         );
-        return v.data?.likeNum;
+        return v.data || {};
       } else if (v.code === 100002) {
         fail("You've run out of like times. You can come back tomorrow");
         return -1;
@@ -38,7 +37,10 @@ const onLike = async (data: any) => {
     }
   } catch (e) {}
 
-  return 0;
+  return {
+    likeNum: 0,
+    projectLikeNum: 0
+  };
 };
 
 const onHate = async (data: Project) => {
@@ -49,36 +51,54 @@ const onHate = async (data: Project) => {
   } catch {}
 };
 
-export async function actionLikeTrigger(data: Project) {
-  const times = await onLike(data);
-
-  if (times === LIKE_ERROR) {
-    return false;
+export async function actionLikeTrigger(data: Project, onShare: (data: Project) => void) {
+  const { likeNum, projectLikeNum } = await onLike(data);
+  if (projectLikeNum === 100) {
+    const timeLikeHandler = Modal.show({
+      content: (
+        <FinalLike
+          token={data}
+          onClose={() => {
+            timeLikeHandler.close();
+          }}
+        />
+      ),
+      maskStyle: {
+        backdropFilter: "none"
+      },
+      closeOnMaskClick: true,
+      className: "final-like-modal no-bg"
+    });
   }
-
-  if (times === FIRST_LIKE_TIMES) {
+  if (likeNum === FIRST_LIKE_TIMES) {
     if (data) {
       const timeLikeHandler = Modal.show({
         content: (
-          <FirstTimeLike
-            data={data}
-            onClose={() => {
+            <FirstTimeLike
+              data={data}
+              onShare={onShare}
+              onClose={() => {
               timeLikeHandler.close();
             }}
           />
         ),
+        maskStyle: {
+          backdropFilter: "none"
+        },
         closeOnMaskClick: true,
-        className: "no-bg"
+        className: "no-bg",
+        
       });
     }
   }
 
-  if (times === SECOND_LIKE_TIMES) {
+  if (likeNum === SECOND_LIKE_TIMES) {
     if (data) {
       const timeLikeHandler = Modal.show({
         content: (
           <SecondTimeLike
             data={data}
+            onShare={onShare}
             onClose={() => {
               timeLikeHandler.close();
             }}
@@ -90,7 +110,7 @@ export async function actionLikeTrigger(data: Project) {
     }
   }
 
-  return true;
+  return likeNum === LIKE_ERROR ? false : true;
 }
 
 export function actionHateTrigger(data: Project) {

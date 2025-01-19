@@ -63,7 +63,7 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
             round: 0
           })}
         </div>
-        <div className={styles.Desc}>$FlipN</div>
+        <div className={styles.Desc}>$Fun</div>
       </div>
     </div>
   );

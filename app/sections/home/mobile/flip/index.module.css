@@ -1,0 +1,78 @@
+.Container {
+  width: 299px;
+  height: 68px;
+  flex-shrink: 0;
+  border-radius: 34px;
+  border: 1px solid #3b3b3b;
+  background: rgba(37, 35, 40, 0.8);
+  backdrop-filter: blur(5px);
+  margin-left: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.FlipButton {
+  width: 109px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 24px;
+  background: #fbca04;
+  color: #000;
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: 0.5s;
+  position: relative;
+  z-index: 2;
+}
+
+.Label {
+  color: rgba(255, 255, 255, 0.3);
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.Value {
+  color: #fff;
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.Line {
+  transform: translateX(-18px);
+}
+
+.Right {
+  margin-left: 0px;
+}
+
+.Hints {
+  color: rgba(255, 255, 255, 0.3);
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  position: absolute;
+  left: 18px;
+  top: 24px;
+}

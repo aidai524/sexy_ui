@@ -12,7 +12,7 @@ const AirdropMoreModal = (props: any) => {
         border: 0,
       }}
       closeStyle={{
-        color: '#fff',
+        top: 55,
       }}
       maskClose={false}
     >

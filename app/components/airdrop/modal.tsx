@@ -5,6 +5,8 @@ import { AirdropContext } from './context';
 import AirdropConnectModal from '@/app/components/airdrop/connect/modal';
 import AirdropMoreModal from '@/app/components/airdrop/more/modal';
 import AirdropReferModal from '@/app/components/airdrop/refer/modal';
+import AirdropClaimedModal from '@/app/components/airdrop/claimed/modal';
+import AirdropShareModal from '@/app/components/airdrop/share/modal';
 
 const AirdropModal = (props: any) => {
   const airdrop = useAirdrop();
@@ -18,7 +20,7 @@ const AirdropModal = (props: any) => {
           border: 0,
         }}
         closeStyle={{
-          color: '#fff',
+          top: 55,
         }}
         maskClose={false}
       >
@@ -40,6 +42,18 @@ const AirdropModal = (props: any) => {
         visible={airdrop.referVisible}
         onClose={() => {
           airdrop.setReferVisible(false);
+        }}
+      />
+      <AirdropClaimedModal
+        visible={airdrop.claimPointsVisible}
+        onClose={() => {
+          airdrop.setClaimPointsVisible(false);
+        }}
+      />
+      <AirdropShareModal
+        visible={airdrop.shareImageVisible}
+        onClose={() => {
+          airdrop.setShareImageVisible(false);
         }}
       />
     </AirdropContext.Provider>

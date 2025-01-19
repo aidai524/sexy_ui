@@ -7,16 +7,12 @@ import { success, fail } from "@/app/utils/toast";
 import MainBtn from "@/app/components/mainBtn";
 import Education from "./education";
 import { useAuth } from "@/app/context/auth";
+import { useUserAgent } from "@/app/context/user-agent";
 
 const defaultAvatar = "/img/avatar.png";
 const defaultBannerImg = "/img/upload-banner.png";
 
-export default function EditContent({
-  inputStyle,
-  actionButtonsStyle,
-  onSuccess,
-  onClose
-}: any) {
+export default function EditContent({ onSuccess, onClose }: any) {
   const [name, setName] = useState<string>("");
   const [disableNameEdit, setDisableNameEdit] = useState(false);
   const [education, setEducation] = useState<string>("");
@@ -24,6 +20,7 @@ export default function EditContent({
   const [banner, setBanner] = useState<ImageUploadItem[]>([]);
   const { userInfo, updateCurrentUserInfo } = useAuth();
   const { saveUserInfo } = useUserInfo(userInfo?.address, true);
+  const { isMobile } = useUserAgent();
 
   const iaInValid = useMemo(() => {
     if (!name || avatar.length === 0) {
@@ -69,7 +66,7 @@ export default function EditContent({
         <div className={styles.groupTitle}>
           <span className={styles.require}>*</span>Username
         </div>
-        <div className={styles.groupContent}>
+        <div className={styles.groupContent} style={{ marginTop: 12 }}>
           <input
             disabled={disableNameEdit}
             value={name}
@@ -78,20 +75,22 @@ export default function EditContent({
             }}
             className={styles.inputText}
             placeholder="say something"
-            style={inputStyle}
+            style={{
+              width: isMobile ? "100%" : "calc(100% - 20px)",
+              border: isMobile ? "none" : "1px solid rgba(146, 144, 177, 0.60)",
+              backgroundColor: isMobile
+                ? "rgba(18, 23, 25, 1)"
+                : "rgba(146, 144, 177, 0.10)",
+              marginLeft: isMobile ? 0 : 10,
+              borderRadius: isMobile ? 0 : 8,
+              height: isMobile ? 42 : 50
+            }}
           />
         </div>
         <div className={styles.tip}>*It can be modified only once</div>
       </div>
 
-      <div className={styles.group}>
-        <div className={styles.groupTitle}>Highest education</div>
-        <div className={styles.groupContent}>
-          <Education {...{ inputStyle, setEducation, education }} />
-        </div>
-      </div>
-
-      <div className={styles.group}>
+      <div className={styles.group} style={{ paddingTop: 8 }}>
         <div className={styles.groupTitle}>
           <span className={styles.require}>*</span>Profile Photo
         </div>
@@ -105,6 +104,13 @@ export default function EditContent({
             setFileList={setAvatar}
             type="avatar"
           />
+        </div>
+      </div>
+
+      <div className={styles.group}>
+        <div className={styles.groupTitle}>Highest education</div>
+        <div className={styles.groupContent}>
+          <Education {...{ setEducation, education }} />
         </div>
       </div>
 
@@ -129,15 +135,23 @@ export default function EditContent({
         </div>
       </div>
 
-      <div className={styles.actionBtns} style={actionButtonsStyle}>
-        <div
-          onClick={() => {
-            onClose();
-          }}
-          className={styles.cancel + " " + styles.btn + " button"}
-        >
-          Cancel
-        </div>
+      <div
+        className={styles.actionBtns}
+        style={{
+          position: isMobile ? "fixed" : "inherit",
+          backgroundColor: isMobile ? "transparent" : "transparent"
+        }}
+      >
+        {isMobile && (
+          <div
+            onClick={() => {
+              onClose();
+            }}
+            className={styles.cancel + " " + styles.btn + " button"}
+          >
+            Cancel
+          </div>
+        )}
         <MainBtn
           isDisabled={iaInValid}
           onClick={async () => {
@@ -170,7 +184,7 @@ export default function EditContent({
               }
             }
           }}
-          style={{ flex: 1 }}
+          style={{ flex: 1, color: "#000" }}
         >
           Save
         </MainBtn>

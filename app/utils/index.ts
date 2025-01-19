@@ -5,6 +5,7 @@ import { clearAll } from "./listStore";
 import { Connection } from "@solana/web3.js";
 import Big from "big.js";
 import { deleteCookie } from "./common";
+import { imgReg, videoReg } from "../components/upload";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_API || "https://api.dumpdump.fun/api/v1";
@@ -218,8 +219,8 @@ let isInitingAuthorization = false,
   authorization: string | undefined;
 const watingQuene: any[] = [];
 
-const rejectDuration = 1000 * 30;
-let rejectTime = Date.now() - rejectDuration - 1;
+// const rejectDuration = 1000 * 30;
+// let rejectTime = Date.now() - rejectDuration - 1;
 
 export async function getAuthorization() {
   authorization = getAuthorizationByLocal();
@@ -263,9 +264,9 @@ export async function initAuthorization() {
   // if (getAuthorizationByLocal()) {
   //   return
   // }
-  if (Date.now() - rejectTime < rejectDuration) {
-    return;
-  }
+  // if (Date.now() - rejectTime < rejectDuration) {
+  //   return;
+  // }
 
   if (isInitingAuthorization) {
     return;
@@ -306,23 +307,21 @@ export async function initAuthorization() {
       _reslove(v.data);
     }
   } catch (e) {
-    console.log("e:", e);
     while (watingQuene.length) {
       const _reslove = watingQuene.shift();
       _reslove(null);
     }
     watingQuene.length = 0;
-    rejectTime = Date.now();
+    window.disconnect?.();
+    logOut();
   }
 
   isInitingAuthorization = false;
 }
 
 export function logOut() {
-  // @ts-ignore
   window.walletProvider = null;
-  // @ts-ignore
-  window.sexAddress = null;
+  window.sexAddress = undefined;
   window.localStorage.removeItem(AUTH_KEY);
   deleteCookie("referral");
   authorization = undefined;
@@ -449,6 +448,9 @@ export async function upload(
   scala = 2
 ) {
   let _file: any = file;
+
+  console.log("file111", file, isImage);
+
   if (isImage) {
     const url = await new Promise<string | void>((resolve) => {
       const reader = new FileReader();
@@ -528,6 +530,8 @@ export async function upload(
   }
 
   const newFileName = generateRandomString(10) + fileName;
+
+  console.log("newFileName", newFileName);
 
   return postUpload(_file, newFileName, file.type);
 }
@@ -701,14 +705,10 @@ export async function getTransaction(
   tokenAddress: string,
   userAddress: string
 ) {
-  console.log("hash:", hash);
-
   const transactionDetails = await connection.getTransaction(hash, {
     commitment: "finalized",
     maxSupportedTransactionVersion: 0
   });
-
-  console.log("transactionDetails:", transactionDetails);
 
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta;
@@ -739,4 +739,24 @@ export async function getPointByVolume(volume: string, type: "sexy" | "pump") {
       ? { sexy_volume: volume, pump_volume: 0 }
       : { pump_volume: volume, sexy_volume: 0 };
   return httpGet("/mining/swapEstimate", params).then((res) => res.data);
+}
+
+export function formatNumberWithCommas(num: string | number) {
+  if (typeof num === 'number') {
+    num = num.toString();
+  }
+  
+  const parts = num.split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
+}
+
+
+export function checkFileType(file: string): 'image' | 'video' | null {
+  if (videoReg.test(file)) {
+    return 'video';
+  } else if (imgReg.test(file)) {
+    return 'image';
+  }
+  return null;
 }

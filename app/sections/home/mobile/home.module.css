@@ -1,94 +1,12 @@
-.main {
-  background-color: rgba(255, 38, 129, 1);
-  height: 100vh;
+.Container {
   overflow: hidden;
-
-  .thumbnailListBox {
-    position: relative;
-    height: calc(100vh - 232px);
-    z-index: 1;
-    .thumbnailBox {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      /* transition: all 0.3s; */
-
-      &.hate {
-        animation: rotateDownOut .8s 1 forwards;
-        transform-origin: center top;
-        filter: grayscale(100%);
-      }
-      &.like {
-        transform-origin: center top;
-        animation: rotateUpOut .8s 1 forwards;
-      }
-    }
-  }
-}
-
-.header {
-  display: flex;
-  padding: 15px 12px 0;
-  justify-content: space-between;
-  align-items: center;
   position: relative;
-
-  .icons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    .notice {
-      cursor: pointer;
-    }
-  }
 }
 
-@keyframes rotateDownOut {
-  /* 0% {
-    transform: rotate(0deg) translate(0, 0);
-    opacity: 1;
-  } */
-  100% {
-    transform: rotate(40deg) translate(0, 100vh);
-    opacity: 0;
-  }
-}
-
-@keyframes rotateUpOut {
-  /* 0% {
-    transform: rotate(0deg) translate(0, 0);
-    opacity: 1;
-  } */
-  100% {
-    transform: rotate(40deg) translate(0, -100vh);
-    opacity: 0;
-  }
-}
-
-
-.sellAll {
-  height: 100%;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
-  margin: 10px;
+.ListWrapper {
+  transition: 0.5s;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  .sellAllImg {
-    width: 173px;
-  }
-  .textMain {
-    margin-top: 15px;
-    color: rgba(255, 255, 255, 0.65);
-  }
-  .textMain2 {
-    margin-top: 10px;
-    color: rgba(255, 255, 255, 0.65);
-    .textMore {
-      color: #fff;
-    }
-  }
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }

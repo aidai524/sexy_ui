@@ -34,6 +34,10 @@ export async function fetchLastData(address: string, granularity: string) {
   const response = await httpGet(
     `/kline/last?address=${address}&granularity=${Number(granularity) * 60}`
   );
+
+  if (!response.data ||response.data.length === 0) {
+    return []
+  }
   // return { data: mockData.data, hasNextPage: false };
   return response.data[0];
 }

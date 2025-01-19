@@ -1,0 +1,22 @@
+.CardWarning {
+    background: rgba(251, 202, 4, 0.10);
+    color: #FBCA04;
+    font-family: Unbounded;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 11px 13px 14px;
+    width: 100%;
+  }
+  .CardWarningIcon {
+    flex-shrink: 0;
+  }
+  .CardWarningText {
+    flex: 1;
+    width: 0;
+  }

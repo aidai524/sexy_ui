@@ -6,7 +6,7 @@ import TokenCard from "../token-card";
 import InfoPart from "@/app/sections/detail/components/info/infoPart";
 import Txs from "@/app/sections/detail/components/txs";
 import CommentComp from "@/app/components/comment";
-import PanelWrapper from "./panel-wrapper";
+import PanelWrapper from "../../panels/trade/panel-wrapper";
 import Chart from "@/app/sections/detail/components/chart";
 import Empty from "@/app/components/empty/prelaunch";
 import {
@@ -14,7 +14,6 @@ import {
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
 import { useState, useMemo, useEffect } from "react";
-import { useLaptop } from "@/app/context/laptop";
 import Loading from "@/app/components/icons/loading";
 import NextButton from "../../fullscreen/next-button";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
@@ -22,6 +21,7 @@ import { useAuth } from "@/app/context/auth";
 import useMc from "@/app/hooks/useMc";
 import { useRouter } from "next/navigation";
 import useCommentList from "@/app/hooks/use-comment-list";
+import { useMessage } from "@/app/context/messageContext";
 
 export default function Token({
   infoData2,
@@ -34,11 +34,11 @@ export default function Token({
   list
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
-  const { updateInfo } = useLaptop();
   const { userInfo } = useAuth();
   const [mc, setMC] = useState<string | number>("-");
   const router = useRouter();
   const comments = useCommentList({ id: infoData2?.id });
+  const { showShare } = useMessage();
   const { mc: pumpMc } = useMc({
     tokenAddress: infoData2?.address,
     disable: infoData2?.status < 1
@@ -79,8 +79,7 @@ export default function Token({
 
   const like = async () => {
     next();
-    await actionLikeTrigger(infoData2);
-    updateInfo("liked");
+    await actionLikeTrigger(infoData2, showShare);
   };
 
   const hate = () => {
@@ -139,10 +138,8 @@ export default function Token({
                   <InfoPart
                     showLikes={false}
                     data={infoData2}
-                    showThumbnailHead={false}
-                    showTop={false}
+                    showProgress={false}
                     theme="light"
-                    sepSize={2}
                     mc={pumpMc || mc}
                   />
                   <div style={{ height: 2 }} />
@@ -152,7 +149,7 @@ export default function Token({
               {currentTab === "chart" && (
                 <PanelWrapper>
                   <Chart
-                    data={infoData2}
+                    token={infoData2}
                     style={{
                       padding: "10px",
                       marginRight: "10px",
@@ -194,7 +191,6 @@ export default function Token({
         onHate={hate}
         onSuperLike={() => {
           next();
-          updateInfo("flip");
         }}
         onBoost={next}
       />

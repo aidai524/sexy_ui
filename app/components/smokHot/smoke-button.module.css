@@ -1,15 +1,39 @@
 .Container {
   border-radius: 100px;
-  background-color: rgba(0, 0, 0, 0.4);
+  /* background-color: rgba(0, 0, 0, 0.4); */
   display: flex;
   justify-content: center;
   align-items: center;
   transition: 0.3s;
   cursor: pointer;
   position: relative;
+  font-size: 16px;
+  font-weight: 500;
+  gap: 5px;
+  font-family: var(--adm-font-family);
+  background-color: var(--part-bg);
+  display: block;
+  flex: 1;
+  height: 100%;
+  height: 50px;
+}
+
+.Container.disabled {
+  background-color: #000;
+  color: var(--part-bg);
+  border: 1px solid var(--part-bg);
+  line-height: 20px;
+  font-size: 14px;
 }
 
 .Active:active {
   background-color: #fff;
   box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 1);
+}
+
+.innerFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  gap: 5px;
 }

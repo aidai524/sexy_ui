@@ -30,7 +30,11 @@ export function mapDataToProject(currentToken: any): Project {
     prePaid: currentToken.pre_paid,
     x: currentToken.x,
     tg: currentToken.tg,
-    discord: currentToken.discord
+    discord: currentToken.discord,
+    comment: currentToken.comment,
+    bondingProgress: currentToken.bonding_progress,
+    kingProgress: currentToken.king_progress,
+    ...currentToken
   };
 }
 
@@ -49,6 +53,7 @@ export function mapDataToUser(item: any): UserInfo {
     usingSuperLikeNum: item.using_super_like_num,
     usingBuySuperLikeNum: item.using_buy_super_like_num,
     vipType: item.vip_type,
-    isFollower: item.is_follower
+    isFollower: item.is_follower,
+    ...item
   };
 }

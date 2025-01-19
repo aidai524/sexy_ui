@@ -6,11 +6,12 @@ export default function Empty({
   height,
   text,
   iconSize = 200,
-  textStyle
+  textStyle,
+  id
 }: any) {
   return (
     <div className={styles.Container} style={{ height, ...style }}>
-      <EmptyIcon size={iconSize} />
+      <EmptyIcon size={iconSize} id={id} />
       {text && (
         <div className={styles.Text} style={textStyle}>
           {text}

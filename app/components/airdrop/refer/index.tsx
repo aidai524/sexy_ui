@@ -6,12 +6,13 @@ import { AirdropContext } from '@/app/components/airdrop/context';
 const AirdropRefer = (props: any) => {
   const { onClose } = props;
 
-  const { getUserData, userData } = useContext(AirdropContext);
+  const { getUserData, setShareImageVisible } = useContext(AirdropContext);
 
   const referStore = useReferStore();
 
   const handleRefer = () => {
-    referStore.setVisible(true, true);
+    // referStore.setVisible(true, true);
+    setShareImageVisible?.(true);
     onClose?.();
   };
 
@@ -27,12 +28,12 @@ const AirdropRefer = (props: any) => {
     <AirdropCard title="">
       <div
         style={{
-          color: '#FF2681',
+          color: '#FBCA04',
           textAlign: 'center',
           fontFamily: 'Unbounded',
           fontSize: '14px',
           fontWeight: 300,
-          marginTop: 60,
+          marginTop: 10,
           padding: '0 16px',
         }}
       >
@@ -60,56 +61,64 @@ const AirdropRefer = (props: any) => {
           marginTop: 10,
         }}
       >
-        Invite Friends and Earn Points Get up to <strong
+        Invite Friends and Earn Points Get <br /> up to <strong
         style={{
-          color: '#C926FF',
+          color: '#FBCA04',
           fontSize: 14,
           fontWeight: 600
         }}
-      >1M</strong>
+      >$5000</strong>
       </div>
-      <button
-        type="button"
+      <div
         style={{
           width: '100%',
-          marginTop: 30,
-          height: 60,
-          color: "#FFF",
-          textAlign: "center",
-          fontFamily: "Unbounded",
-          fontSize: "16px",
-          fontStyle: "normal",
-          fontWeight: 600,
-          lineHeight: "normal",
-          padding: "0 65px",
-          borderRadius: "30px",
-          background: "#C926FF",
+          marginTop: 27,
+          padding: '0 20px',
         }}
-        onClick={handleRefer}
       >
-        Refer
-      </button>
-      <button
-        type="button"
-        style={{
-          width: '100%',
-          marginTop: 0,
-          height: 60,
-          color: "#898989",
-          textAlign: "center",
-          fontFamily: "Unbounded",
-          fontSize: "16px",
-          fontStyle: "normal",
-          fontWeight: 400,
-          lineHeight: "normal",
-          padding: "0 65px",
-          borderRadius: "30px",
-          background: "#FFF",
-        }}
-        onClick={handleCancel}
-      >
-        No, Thanks
-      </button>
+        <button
+          type="button"
+          style={{
+            width: '100%',
+            height: 54,
+            color: "#000",
+            textAlign: "center",
+            fontFamily: "Unbounded",
+            fontSize: "14px",
+            fontStyle: "normal",
+            fontWeight: 500,
+            lineHeight: "normal",
+            padding: "0 65px",
+            borderRadius: "30px",
+            background: "var(--part-bg)",
+            border: '1px solid #000',
+          }}
+          onClick={handleRefer}
+        >
+          Refer
+        </button>
+        <button
+          type="button"
+          style={{
+            width: '100%',
+            marginTop: 0,
+            height: 54,
+            color: "#000",
+            textAlign: "center",
+            fontFamily: "Unbounded",
+            fontSize: "14px",
+            fontStyle: "normal",
+            fontWeight: 500,
+            lineHeight: "normal",
+            padding: "0 65px",
+            borderRadius: "30px",
+            background: "#FFF",
+          }}
+          onClick={handleCancel}
+        >
+          No, Thanks
+        </button>
+      </div>
     </AirdropCard>
   );
 };

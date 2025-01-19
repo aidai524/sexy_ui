@@ -1,0 +1,70 @@
+.Container {
+  padding-left: 12px;
+  width: 62px;
+  height: calc(100vh - 44px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 84px;
+}
+
+.List {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+.Item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  text-transform: capitalize;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  transition: 0.3s;
+}
+
+.ItemActive {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.Item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ItemIcon {
+  transform: scale(0.74);
+  margin-top: -4px;
+}
+
+.ItemText {
+  margin-top: -4px;
+}
+
+.Bottom {
+  padding-left: 0px;
+  padding-bottom: 20px;
+}
+
+.Links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.LinkIcon {
+  transform: scale(0.66);
+}

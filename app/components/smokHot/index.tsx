@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SmokPanel from "./smoke-panel";
 import type { Project } from "@/app/type";
 import { Modal } from "antd-mobile";
@@ -8,6 +8,9 @@ import { useAccount } from "@/app/hooks/useAccount";
 import BoostSuperNoTimes from "../boost/boostSuperNoTimes";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import SmokeButton from "./smoke-button";
+import Big from "big.js";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import { numberFormatter } from "@/app/utils/common";
 
 interface Props {
   token: Project;
@@ -15,6 +18,9 @@ interface Props {
   id?: string;
   onClick: () => void;
   actionChildren?: React.ReactNode;
+  content?: React.ReactNode;
+  onHide?: () => void;
+  onSuccess?(): void;
 }
 
 export default function SmokeBtn({
@@ -22,7 +28,10 @@ export default function SmokeBtn({
   token,
   isBigIcon = false,
   actionChildren,
-  id
+  content,
+  onHide,
+  id,
+  onSuccess
 }: Props) {
   const [panelShow, setPanelShow] = useState(false);
   const [vipShow, setVipShow] = useState(false);
@@ -30,7 +39,21 @@ export default function SmokeBtn({
   const { address } = useAccount();
   const [boostSuperNoTimesShow, setBoostSuperNoTimesShow] = useState(false);
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
+  const [flipNum, setFlipNum] = useState(0);
 
+  const { getMC, pool, checkPrePayed } = useTokenTrade({
+    tokenName: token?.tokenName as string,
+    tokenSymbol: token?.tokenSymbol as string,
+    tokenDecimals: token?.tokenDecimals as number,
+    loadData: false
+  });
+
+  useEffect(() => {
+    checkPrePayed().then((res) => {
+      setFlipNum(res);
+    })
+  }, [checkPrePayed]);  
+  
   const isDelay = useMemo(() => {
     if (
       prepaidDelayTime &&
@@ -45,6 +68,23 @@ export default function SmokeBtn({
   const isDisabled = useMemo(() => {
     return token.isSuperLike || token.account === address;
   }, [isDelay, token, address]);
+
+  const disabledText = useMemo(() => {
+    if (!isDisabled) {
+      return ''
+    }
+    
+    if (flipNum && Number(flipNum) > 0) {
+      const flipNumFormatted = numberFormatter(new Big(flipNum).div(10 ** 9).div(1 - 0.015).toString(), 2, true, { isShort: true })
+      return 'Fliped <br/>' + flipNumFormatted + 'SOL'
+    }
+
+    if (token.account === address) {
+      return 'Flipped'
+    }
+
+    return 'Flipped'
+  }, [isDelay, token, address, flipNum, isDisabled])
 
   const VipModal = (
     <BoostVip
@@ -73,7 +113,6 @@ export default function SmokeBtn({
 
   const onButtonClick = () => {
     if (!address) {
-      //@ts-ignore
       window.connect();
       return;
     }
@@ -92,7 +131,7 @@ export default function SmokeBtn({
         </div>
       ) : (
         <SmokeButton
-          {...{ size, id, address, token }}
+          {...{ size, id, address, token, isDisabled, disabledText }}
           onClick={onButtonClick}
         />
       )}
@@ -113,6 +152,7 @@ export default function SmokeBtn({
         onSuccess={() => {
           onClick && onClick();
           setPanelShow(false);
+          onSuccess?.();
         }}
         onHide={() => {
           setPanelShow(false);

@@ -1,0 +1,144 @@
+.main {
+  width: 100vw;
+  min-height: 401px;
+  background-color: #252328;
+  border-radius: 16px 16px 0 0;
+  padding: 23px 20px;
+  position: relative;
+  border: 1px solid #3b3b3b;
+}
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #000;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.userName {
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  margin-top: 24px;
+}
+
+.public {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.amount {
+  margin-top: 27px;
+}
+
+.amountInput {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(146, 144, 177, 0.6);
+  background-color: rgba(146, 144, 177, 0.1);
+  border-radius: 8px;
+  padding: 12px 10px;
+  margin-top: 12px;
+  margin-bottom: 10px;
+}
+
+.amountInputBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+}
+
+.amountInputBox input {
+  width: 95%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+}
+
+.amountIcon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.amountLevel {
+  composes: public;
+}
+
+.amountLevelSeparator {
+  margin: 0 4px;
+  cursor: pointer;
+}
+
+.amountDetail {
+  composes: public;
+}
+
+.min {
+  composes: public;
+  justify-content: flex-start;
+}
+
+.setBtn {
+  cursor: pointer;
+  border: 1px solid rgba(146, 144, 177, 0.4);
+  border-radius: 30px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 300;
+  margin-left: 10px;
+}
+
+.yourCoppies {
+  margin-top: 30px;
+  margin-bottom: 16px;
+}
+
+.yourCoppies input {
+  text-align: right;
+}
+
+.textWhite {
+  color: #fff;
+}
+.textWhite07 {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.copyBtn {
+  height: 50px;
+  border-radius: 30px;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border: 2px solid #fbca04;
+  background: #fbca04;
+  color: #000;
+  text-align: center;
+  line-height: 50px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.copyBtnDisabled {
+  composes: copyBtn;
+  opacity: 0.3;
+}
+
+.SolnaIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+}

@@ -1,0 +1,124 @@
+.ClaimCard {
+  width: 300px;
+  flex-shrink: 0;
+  background: #252328;
+  border: 1px solid #3B3B3B;
+  padding: 22px 0 0;
+  overflow: hidden;
+  border-radius: 20px;
+}
+.ClaimHeader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+}
+.ClaimTokenIcon {
+  border-radius: 50%;
+}
+.ClaimTokenIconTo {
+  composes: ClaimTokenIcon;
+  border: 2px solid #000;
+}
+.ClaimCardTitle {
+  color: #FFF;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 23px;
+}
+.ClaimCardList {
+  margin-top: 16px;
+  padding: 0 15px;
+}
+.ClaimCardItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+}
+.ClaimCardLabel {
+  color: #ABAEBD;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+.ClaimCardValue {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+}
+.ClaimCardValueText {
+  color: #FFF;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+.ClaimCardValueIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.ClaimCardFooter {
+  margin-top: 16px;
+  padding: 0 15px 12px;
+}
+.ClaimCardButton {
+  width: 100%;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 22px;
+  background: #C9FF5D;
+  color: #000;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.ClaimCardButtonPrimary {
+  composes: ClaimCardButton;
+  background: var(--part-bg);
+}
+.ClaimCardButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.ClaimCardButtonPrimary:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.ClaimCardWarning {
+  margin-top: 4px;
+  background: rgba(251, 202, 4, 0.10);
+  color: #FBCA04;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 9px 11px 13px 14px;
+}
+.ClaimCardWarningIcon {
+  flex-shrink: 0;
+}
+.ClaimCardWarningText {
+  flex: 1;
+  width: 0;
+}
+

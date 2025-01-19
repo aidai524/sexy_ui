@@ -6,78 +6,81 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useLaptop } from "@/app/context/laptop";
+import { useAccount } from "@/app/hooks/useAccount";
+import Coppied from "@/app/sections/profile/components/coppied";
+import { SHOW_COPY_TRADE } from '@/app/utils/config'
+
 export default function Tabs({
-  showHot,
   address,
-  defaultIndex,
   tabContentStyle,
   tabHeaderStyle,
   from,
   isOther,
-  onTabChange
+  tabHeadersClassName,
+  tabHeadersStyle,
+  cursorClassName,
+  tabContentClassName,
+  cursorStyle,
+  style,
 }: any) {
-  const { set: setProfileTabIndex }: any = useHomeTab();
+  const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
-  const { isMobile } = useUserAgent();
-  const [tabIndex, setTabIndex] = useState(0);
   const { likedListKey, flipListKey, createListKey } = useLaptop();
+  // base tab
+  const createTabContent = (type: string, index: number) => ({
+    content: (
+      <Created
+        hideHot={type === "created"}
+        address={address}
+        type={type}
+        isOther={isOther}
+        prepaidWithdrawDelayTime={prepaidDelayTime}
+        from={from}
+        refresher={
+          type === "created"
+            ? createListKey
+            : type === "flipped"
+            ? flipListKey
+            : likedListKey
+        }
+        isCurrent={homeTabStore.profileTabIndex === index}
+      />
+    )
+  });
 
-  const activeIndex = useMemo(
-    () => (isMobile ? defaultIndex || 0 : tabIndex),
-    [defaultIndex, tabIndex]
-  );
-
-  const tabs = [
+  const baseTabs = [
     {
       name: "Held",
-      content: <Held from={from} address={address}/>
+      content: <Held from={from} address={'MNVa2STL6Hcb86yWVNykCGVE8Stqj9a8XatPQHeQM7m'} />
     },
     {
       name: "Created",
-      content: (
-        <Created
-          hideHot={true}
-          address={address}
-          type="created"
-          isOther={isOther}
-          prepaidWithdrawDelayTime={prepaidDelayTime}
-          from={from}
-          refresher={createListKey}
-          isCurrent={activeIndex === 1}
-        />
-      )
+      ...createTabContent("created", 1)
     },
     {
       name: "Flipped",
-      content: (
-        <Created
-          address={address}
-          type="flipped"
-          isOther={isOther}
-          prepaidWithdrawDelayTime={prepaidDelayTime}
-          refresher={flipListKey}
-          isCurrent={activeIndex === 2}
-          from={from}
-        />
-      )
+      ...createTabContent("flipped", 2)
     },
     {
       name: "Liked",
-      content: (
-        <Created
-          address={address}
-          type="liked"
-          isOther={isOther}
-          prepaidWithdrawDelayTime={prepaidDelayTime}
-          refresher={likedListKey}
-          isCurrent={activeIndex === 3}
-          from={from}
-        />
-      )
+      ...createTabContent("liked", 3)
     }
   ];
 
-  const activeNode = useMemo(() => tabs[activeIndex].name, [activeIndex, tabs]);
+  const tabs = isOther || !SHOW_COPY_TRADE
+    ? baseTabs
+    : [
+        {
+          name: "Coppied",
+          content: <Coppied from={from} address={address} />
+        },
+        ...baseTabs
+      ];
+
+  const activeNode = useMemo(
+    () => tabs[homeTabStore.profileTabIndex]?.name,
+    [homeTabStore.profileTabIndex]
+  );
 
   return (
     <Tab
@@ -88,15 +91,19 @@ export default function Tabs({
           defaultIndex = index;
           return tab.name === nodeName;
         });
-        isMobile
-          ? setProfileTabIndex({
-              profileTabIndex: defaultIndex
-            })
-          : setTabIndex(defaultIndex);
+        homeTabStore.set({
+          profileTabIndex: defaultIndex
+        });
       }}
       activeNode={activeNode}
       tabContentStyle={tabContentStyle}
       tabHeaderStyle={tabHeaderStyle}
+      tabHeadersClassName={tabHeadersClassName}
+      tabHeadersStyle={tabHeadersStyle}
+      cursorClassName={cursorClassName}
+      tabContentClassName={tabContentClassName}
+      cursorStyle={cursorStyle}
+      style={style}
     />
   );
 }

@@ -1,6 +1,6 @@
 /*#region Item*/
 .Item {
-  background: rgba(0, 0, 0, 0.50);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
   width: 100%;
   padding: 12px 10px 14px;
@@ -10,6 +10,16 @@
   align-items: center;
   gap: 7px;
 }
+
+.PcItem {
+  width: 360px;
+  padding: 12px 10px;
+  background: #ffffff0d;
+  display: flex;
+  border-radius: 12px;
+  gap: 6px;
+}
+
 .ItemAvatar {
   width: 86px;
   height: 86px;
@@ -35,7 +45,7 @@
 }
 .ItemHeadName {
   width: 100%;
-  color: #FFF;
+  color: #fff;
   font-family: Unbounded;
   font-size: 14px;
   font-style: normal;
@@ -53,14 +63,13 @@
   margin-top: 5px;
 }
 .ItemHeadTickerName {
-  color: rgba(255, 255, 255, 0.60);
+  max-width: 131px;
+  color: rgba(255, 255, 255, 0.6);
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  flex: 1;
-  width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -84,14 +93,14 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  color: #FFF;
+  color: #fff;
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.40);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   padding: 0 16px 0 3px;
 }
 .ItemHeadBuyBtnIcon {
@@ -106,7 +115,7 @@
   gap: 4px;
 }
 .ItemMarketCapLabel {
-  color: rgba(255, 255, 255, 0.60);
+  color: rgba(255, 255, 255, 0.6);
   font-family: Unbounded;
   font-size: 14px;
   font-style: normal;
@@ -114,7 +123,7 @@
   line-height: normal;
 }
 .ItemMarketCapValue {
-  color: #6FFF00;
+  color: #6fff00;
   font-family: Unbounded;
   font-size: 14px;
   font-style: normal;
@@ -122,12 +131,20 @@
   line-height: normal;
 }
 .ItemCreateTime {
-  color: rgba(255, 255, 255, 0.60);
+  color: rgba(255, 255, 255, 0.6);
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   margin-top: 5px;
+}
+.ItemCreateTimePrimary {
+  color: #FBCA04;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 /*#endregion*/

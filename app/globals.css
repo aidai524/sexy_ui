@@ -1,7 +1,9 @@
 :root {
-  --background: #0d1012;
+  --background: #000000;
   --foreground: #fff;
-  --part-bg: rgba(255, 38, 129, 1);
+  --part-bg: #fbca04;
+  --error-color: #ff7587;
+  /* --adm-mask-z-index: 2000; */
 }
 
 :root body {
@@ -21,6 +23,13 @@ div.adm-image-uploader {
 }
 
 @font-face {
+  font-family: "FingerPaint";
+  src: url("/font/FingerPaint-Regular.ttf");
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
+@font-face {
   font-family: "Lilita One";
   src: url("/font/LilitaOne-Regular.ttf");
   font-weight: 200 900;
@@ -29,20 +38,21 @@ div.adm-image-uploader {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #000000;
     --foreground: #ededed;
   }
 }
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  width: 100vw;
+  height: 100%;
+  overflow: hidden;
+  background: var(--background);
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -186,12 +196,22 @@ input::placeholder {
   transition: 0.3s;
   cursor: pointer;
 }
-/* .button:hover {
+.button:hover {
   opacity: 0.8;
 }
 .button:active {
   opacity: 0.6;
-} */
+}
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.text-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 a.adm-picker-header-button {
   color: #fff;
@@ -246,4 +266,8 @@ div.adm-tab-bar-wrap {
 .adm-checkbox.adm-checkbox-checked div.adm-checkbox-icon {
   border-color: rgba(146, 144, 177, 0.6);
   background-color: var(--part-bg);
+}
+
+.final-like-modal .adm-center-popup-wrap {
+  top: calc(100% - 120px) !important;
 }

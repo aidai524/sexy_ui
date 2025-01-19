@@ -12,7 +12,7 @@ interface Props {
   ids?: any;
   canFlip: boolean;
   onLike?: () => void;
-  onSuperLike?: () => void;
+  onSuperLike?: (amount?: string) => void;
   onHate?: () => void;
   onBoost?: () => void;
 }

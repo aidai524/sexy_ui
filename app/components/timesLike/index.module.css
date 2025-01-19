@@ -1,7 +1,17 @@
 .main {
-  padding-top: 80px;
-  width: 80vw;
-  max-width: 340px;
+  width: 90vw;
+  max-width: 350px;
+  
+  &.firstTimeLike {
+    position: absolute ;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -47vh;
+  }
+
+  &.secondTimeLike {
+    padding-top: 100px;
+  }
   .content {
     background-color: rgba(255, 243, 248, 1);
     border-radius: 20px;
@@ -15,7 +25,7 @@
 
   .learnTip {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 25px;
     .learnLink {
       color: rgba(32, 32, 32, 1);
       text-decoration: underline;
@@ -41,5 +51,18 @@
         width: 50px;
       }
     }
+  }
+
+  .shareText {
+    font-size: 16px;
+    width: 155px;
+    height: 50px;
+    border-radius: 30px;
+    background-color: #FBCA04;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    border: 2px solid #000;
   }
 }

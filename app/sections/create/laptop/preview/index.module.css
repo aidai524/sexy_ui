@@ -1,0 +1,40 @@
+.Desc {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+.Token {
+  border-radius: 20px;
+  background: #000;
+  position: relative;
+  transition: 0.3s;
+}
+.ActionsWrapper {
+  position: absolute;
+  right: -50px;
+  bottom: 0px;
+}
+
+.DetailBtn {
+  margin-bottom: 20px;
+  transition: 0.3s;
+  width: 42px;
+  height: 42px;
+  border-radius: 42px;
+  background-color: #ffffff1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Content {
+  height: calc(100vh - 126px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}

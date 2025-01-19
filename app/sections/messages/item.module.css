@@ -1,0 +1,72 @@
+.Item {
+  border-radius: 14px;
+  font-family: Unbounded;
+  padding-bottom: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(5px);
+}
+
+.ItemTop {
+  display: flex;
+  gap: 12px;
+}
+
+.ItemTitle {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ItemDesc {
+  color: #ffffff99;
+  font-weight: 300;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.ItemContent {
+  flex-grow: 1;
+}
+
+.ItemLink {
+  margin-top: 20px;
+  color: #5c8dff;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Unbounded;
+}
+
+.ItemLeft {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.ItemTime {
+  color: #8d8bb8;
+  font-size: 12px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ItemBottom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.Ellipsis {
+  height: 18px;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

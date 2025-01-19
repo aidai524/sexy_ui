@@ -1,24 +1,21 @@
 import styles from '@/app/components/layout/laptop/user/refer/modal/index.module.css';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 const Tab = (props: any) => {
   const { isMobile, bg, list } = props;
 
-  const [value, setValue] = useState(25);
+  const [value, setValue] = useState(50);
 
   return (
     <motion.div
       className={isMobile ? styles.EarnedMobile : styles.Earned}
-      style={{
-        backgroundImage: `url("${bg}")`
-      }}
       {...AnimateVariants}
     >
       <div className={isMobile ? styles.ProgressMobile : styles.Progress}>
         <motion.div
           className={styles.ProgressValue}
-          animate={{ width: `${value}%` }}
+          animate={{ height: `${value}%` }}
         />
         <div className={styles.NodeList}>
           {
@@ -33,40 +30,21 @@ const Tab = (props: any) => {
                   setValue(item.value);
                 }}
                 onMouseLeave={() => {
-                  setValue(25);
+                  setValue(50);
                 }}
               >
-                <motion.div
-                  className={styles.NodeLabel}
-                  animate={{
-                    color: item.value === value ? '#FF2681' : '#634F56'
-                  }}
-                >
-                  {item.label}
-                </motion.div>
-                <AnimatePresence mode="wait">
-                  {
-                    item.value === value && (
-                      <motion.div
-                        className={styles.NodeReward}
-                        {...AnimateVariants}
-                      >
-                        <div className={styles.NodeRewardLabel}>
-                          <img
-                            className={styles.NodeRewardIcon}
-                            src="/img/home/refer-checked.svg"
-                            alt=""
-                          />
-                          <div>Earn</div>
-                        </div>
-                        <div className={styles.NodeRewardContent}>
-                          <div className={styles.NodeRewardValue}>{item.amount} {item.unit}</div>
-                          <div className={styles.NodeRewardUnit}> / {item.perUnit}</div>
-                        </div>
-                      </motion.div>
-                    )
-                  }
-                </AnimatePresence>
+                <div className={styles.NodeInner}>
+                  <div className={styles.NodeLabel}>
+                    {item.label}
+                  </div>
+                  <div className={styles.NodeRewardContent}>
+                    <div className={styles.NodeRewardValue}>
+                      <span className={styles.NodeRewardValueText}>{item.amount} {item.unit}</span>
+                      <span>/</span>
+                    </div>
+                    <div className={styles.NodeRewardUnit}>{item.perUnit}</div>
+                  </div>
+                </div>
               </motion.div>
             ))
           }
@@ -89,13 +67,23 @@ export const TabTitle = (props: any) => {
         cursor: tab === current ? 'default' : 'pointer',
       }}
     >
-      <div className={styles.EarnedTitleText}>{label}</div>
+      <div
+        className={styles.EarnedTitleText}
+        style={{
+          color: tab === current ? 'rgba(0, 0, 0, 0.60)' : 'rgba(255, 255, 255, 0.44)',
+        }}
+      >
+        {label}
+      </div>
       <div
         className={
           isMobile
             ? styles.EarnedTitleValueMobile
             : styles.EarnedTitleValue
         }
+        style={{
+          color: tab === current ? '#000' : '#FFF',
+        }}
       >
         {value} {unit}
       </div>

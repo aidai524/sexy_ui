@@ -6,9 +6,10 @@ interface Props {
   img?: string;
   value: string;
   onChange: (value: string) => void;
+  onBlur: () => void;
 }
 
-export default function Link({ type, img, value, onChange }: Props) {
+export default function Link({ type, img, value, onChange, onBlur }: Props) {
   const { isMobile } = useUserAgent();
   return (
     <div
@@ -18,7 +19,7 @@ export default function Link({ type, img, value, onChange }: Props) {
         padding: isMobile ? "0 20px 10px" : "0px"
       }}
     >
-      {type && (
+      {type && isMobile && (
         <div className={styles.linkContent}>
           <div className={styles.linkTitle}>
             {img && <img className={styles.linkImg} src={img} />}
@@ -27,30 +28,31 @@ export default function Link({ type, img, value, onChange }: Props) {
         </div>
       )}
 
-      <div
-        className={`${styles.linkEdit} ${
-          isMobile ? "" : styles.laptopInputText
-        }`}
-      >
+      <div className={isMobile ? styles.linkEdit : styles.LinkEditPc}>
+        {img && !isMobile && <img className={styles.linkImg} src={img} />}
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={`${styles.linkInput}`}
+          onBlur={onBlur}
+          placeholder={type ? `Link to ${type}` : ""}
         />
-        <span
-          onClick={async () => {
-            const text = await navigator.clipboard.readText();
-            onChange(text);
-          }}
-          className="button"
-          style={{
-            fontSize: 12,
-            color: isMobile ? "#FF67A7" : "#C9FF5D",
-            textDecoration: isMobile ? "none" : "underline"
-          }}
-        >
-          Paste Link
-        </span>
+        {isMobile && (
+          <span
+            onClick={async () => {
+              const text = await navigator.clipboard.readText();
+              onChange(text);
+            }}
+            className="button"
+            style={{
+              fontSize: 12,
+              color: isMobile ? "#FBCA04" : "#C9FF5D",
+              textDecoration: isMobile ? "none" : "underline"
+            }}
+          >
+            Paste Link
+          </span>
+        )}
       </div>
     </div>
   );

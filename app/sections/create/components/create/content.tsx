@@ -4,7 +4,6 @@ import Big from "big.js";
 import styles from "./trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
-import { useLaptop } from "@/app/context/laptop";
 import { getFullNum, httpGet } from "@/app/utils";
 import { Avatar } from "@/app/components/thumbnail/avatar";
 import { Checkbox } from "antd-mobile";
@@ -33,10 +32,11 @@ export default function Create({
   data,
   onHide,
   onCreateTokenSuccess,
-  setShowSuccessModal
+  setShowSuccessModal,
+  width
 }: any) {
   const { tokenName, tokenSymbol, tokenUri } = token;
-  const { updateInfo} = useLaptop();
+
   const { isMobile } = useUserAgent();
   const [infoData, setInfoData] = useState<Project>({
     tokenName: tokenName,
@@ -86,7 +86,10 @@ export default function Create({
   }, [debounceVal]);
 
   return (
-    <>
+    <div
+      className={styles.Container}
+      style={{ width, borderRadius: isMobile ? "20px 20px 0px 0px" : "20px" }}
+    >
       <div className={styles.avatar}>
         <Avatar data={infoData} />
       </div>
@@ -189,10 +192,6 @@ export default function Create({
                 if (isSuccess) {
                   onHide();
                   setShowSuccessModal(true);
-                  if (!isMobile) {
-                    updateInfo?.("create");
-                  }
-                  
                 }
 
                 setIsLoading(false);
@@ -203,16 +202,21 @@ export default function Create({
                 fail("Create token error");
               }
             }}
-            style={{ background: "rgba(255, 47, 116, 1)" }}
+            style={{ background: "#FBCA04", color: "#000" }}
           >
             Create Coin
           </MainBtn>
         </div>
       </div>
 
-      <div className={styles.launchTip}>
+      <div
+        className={styles.launchTip}
+        style={{
+          borderRadius: isMobile ? 0 : "0px 0px 20px 20px"
+        }}
+      >
         After successful creation, the creator will not be able to Pre-buy again
       </div>
-    </>
+    </div>
   );
 }

@@ -1,19 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import styles from "./action.module.css";
 import { useMessage } from "@/app/context/messageContext";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useUserAgent } from "@/app/context/user-agent";
 import SmokeBtn from "../smokHot";
-import SmokeButtonWithFlip from "../smokHot/smoke-button-flip";
-
-const likeAnis = [
-  "/img/home/likeAni1.svg",
-  "/img/home/likeAni2.svg",
-  "/img/home/likeAni3.svg",
-  "/img/home/likeAni4.svg"
-];
+import Share from "../icons/share";
 
 export default function MainAction({
   onLike,
@@ -23,8 +15,13 @@ export default function MainAction({
   onSuperLike,
   token
 }: any) {
-  const { likeTrigger, setLikeTrigger, hateTrigger, setHateTrigger } =
-    useMessage();
+  const {
+    likeTrigger,
+    setLikeTrigger,
+    hateTrigger,
+    setHateTrigger,
+    showShare
+  } = useMessage();
   const { address } = useAccount();
   const { isMobile } = useUserAgent();
 
@@ -33,54 +30,11 @@ export default function MainAction({
       <div
         onClick={() => {
           if (!address) {
-            //@ts-ignore
             window.connect();
             return;
           }
 
-          setHateTrigger(true);
-          onHate();
-          setTimeout(() => {
-            setHateTrigger(false);
-          }, 1600);
-        }}
-        className={[
-          styles.actionIcon,
-          hateTrigger ? styles.hate : "",
-          "button"
-        ].join(" ")}
-        style={{}}
-      >
-        <DisLike fill={hateTrigger ? "#000000" : "#C7DDEE"} id={ids?.dislike} />
-
-        {/* <DisLike fill="#000000" /> */}
-      </div>
-      <div style={{ marginTop: isMobile ? "-30px" : 0 }}>
-        {canFlip ? (
-          <SmokeButtonWithFlip
-            size={48}
-            onClick={() => {
-              onSuperLike && onSuperLike();
-            }}
-            token={token}
-            id={ids?.smoke}
-          />
-        ) : (
-          <SmokeBtn
-            isBigIcon={true}
-            token={token}
-            onClick={() => {
-              onSuperLike && onSuperLike();
-            }}
-            id={ids?.smoke}
-          />
-        )}
-      </div>
-      <div
-        onClick={() => {
-          if (!address) {
-            //@ts-ignore
-            window.connect();
+          if (token.isLike) {
             return;
           }
 
@@ -90,31 +44,38 @@ export default function MainAction({
           setLikeTrigger(true);
           onLike();
 
-          setTimeout(() => {
-            setLikeTrigger(false);
-          }, 1600);
+          // setTimeout(() => {
+          //   setLikeTrigger(false);
+          // }, 1600);
         }}
-        className={[
-          styles.actionIcon,
-          likeTrigger ? styles.tick : "",
-          "button"
-        ].join(" ")}
+        className={[styles.actionIcon, styles.likeIcon, "button"].join(" ")}
+        style={{
+          backgroundColor: token.isLike ? "#000" : "#FF045C",
+          border: token.isLike ? "1px solid #FF045C" : "none"
+        }}
       >
-        <Like id={ids?.like} />
-        {likeAnis.map((item, index) => {
-          return (
-            <div
-              key={item}
-              style={{
-                animationDelay: `${index / 4}s`,
-                animationName: likeTrigger ? styles["float" + (index + 1)] : ""
-              }}
-              className={styles.bolloon}
-            >
-              <img src={item} key={item} />
-            </div>
-          );
-        })}
+        <Like id={ids?.like} liked={token.isLike} />
+      </div>
+      <SmokeBtn
+        isBigIcon={true}
+        token={token}
+        onClick={(amount?: any) => {
+          onSuperLike?.(amount);
+        }}
+        id={ids?.smoke}
+      />
+
+      <div
+        onClick={() => {
+          if (!address) {
+            window.connect();
+            return;
+          }
+
+          showShare(token);
+        }}
+      >
+        <Share />
       </div>
     </div>
   );
@@ -140,35 +101,24 @@ function DisLike({ fill = "#C7DDEE", id }: { fill?: string; id?: string }) {
   );
 }
 
-function Like({ id }: any) {
+function Like({ id, liked }: any) {
   return (
     <div className={styles.likeSvg}>
       <svg
-        width="30"
-        height="26"
-        viewBox="0 0 30 26"
+        width="21"
+        height="18"
+        viewBox="0 0 21 18"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        id={id}
       >
         <path
-          d="M8.25 0C3.69365 0 0 3.69368 0 8.25C0 16.5 9.75 24 15 25.7446C20.25 24 30 16.5 30 8.25C30 3.69368 26.3063 0 21.75 0C18.9598 0 16.493 1.38518 15 3.50535C13.507 1.38518 11.0402 0 8.25 0Z"
-          fill="url(#paint0_linear_60_3189)"
+          d="M0.188688 4.05842C-1.39401 10.3649 7.41097 16.9674 10.5062 18C15.665 15.9347 22.1558 9.36409 20.8238 4.05832C19.2567 -2.18416 12.8277 -0.0727158 10.5062 2.76718C8.9586 0.185311 1.75531 -2.18404 0.188688 4.05842Z"
+          fill={liked ? "#FF045C" : "#fff"}
         />
-        <defs>
-          <linearGradient
-            id="paint0_linear_60_3189"
-            x1="15"
-            y1="0"
-            x2="15"
-            y2="25.7446"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#FF8ABB" />
-            <stop offset="1" stopColor="#FF2681" />
-          </linearGradient>
-        </defs>
       </svg>
+      <span style={{ color: liked ? "#FF045C" : "#fff" }}>
+        {liked ? "Liked" : "Like"}
+      </span>
     </div>
   );
 }

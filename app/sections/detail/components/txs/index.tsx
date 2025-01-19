@@ -7,6 +7,8 @@ import Empty from "@/app/components/empty";
 import { defaultAvatar } from "@/app/utils/config";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
+import { Switch } from "antd-mobile";
+import { useAccount } from "@/app/hooks/useAccount";
 
 const addressReg = /(\w{2}).+(\w{2})/;
 
@@ -22,40 +24,160 @@ export function formatAddress(address: string) {
   }
 }
 
-export default function Txs({ from, data, mc }: any) {
+const switchStyle = {
+  "--checked-color": "#90CD15",
+  "--width": "37px",
+  "--height": "16px",
+  "--adm-color-background": "#515B63",
+  "--adm-color-border": "#515B63"
+  // '--adm-color-text-light-solid': '#808E9A',
+};
+
+function SexSwitch({ checked, onChange }: any) {
+  return (
+    <Switch
+      checked={checked}
+      onChange={onChange}
+      style={{
+        ...switchStyle,
+        // @ts-ignore
+        "--adm-color-text-light-solid": checked ? "#fff" : "#808E9A"
+      }}
+    />
+  );
+}
+
+export default function Txs({ from, data }: any) {
   const [list, setList] = useState([]);
   const router = useRouter();
+  const { address } = useAccount();
   const { userInfo } = useAuth();
+  const [totalGreater, setTotalGreater] = useState(0);
+  const [totalMyFollowing, setTotalMyFollowing] = useState(0);
+  const [totalMyTrades, setTotalMyTrades] = useState(0);
+  const [filter, setFilter] = useState<any>({
+    1: false,
+    2: false,
+    3: false
+  });
 
   useEffect(() => {
-    if (data && data.tokenName) {
-      httpGet("/project/trade/list?limit=100&token_name=" + data.address).then(
-        (res) => {
-          if (res.code === 0) {
-            setList(res.data.list || []);
-          }
+    if (data && data.tokenName && data.status === 1 && data.DApp === "sexy") {
+      httpGet(
+        `/project/trade/list?limit=100&token_name=${data.address}&greater=${filter[1]}&my_following=${filter[2]}&my_trades=${filter[3]}`
+      ).then((res) => {
+        if (res.code === 0) {
+          setList(res.data.list || []);
+          setTotalGreater(res.data.total_greater || 0);
+          setTotalMyFollowing(res.data.total_my_following || 0);
+          setTotalMyTrades(res.data.total_my_trades || 0);
         }
-      );
+      });
     }
-  }, [data]);
+  }, [data, filter]);
 
   return (
-    <div className={styles.main}>
-      <CA from={from} data={data} mc={mc} />
+    <div
+      className={styles.main}
+      style={{
+        backgroundColor: from === "panel" ? "transparent" : "#252328",
+        borderRadius: from === "panel" ? "10px" : "15px 15px 0 0"
+      }}
+    >
+      <div className={styles.filter}>
+        <div
+          className={styles.filterItem}
+          style={{
+            justifyContent: from === "panel" ? "flex-start" : "space-between"
+          }}
+        >
+          <div
+            className={styles.filterText}
+            style={{
+              fontSize: from === "panel" ? 10 : 12
+            }}
+          >
+            Filter by size
+            <img style={{ width: "26px" }} src="/img/home/solana.png" /> 0.05 (
+            {totalGreater} trade{totalGreater > 1 ? "s" : ""})
+          </div>
+          <SexSwitch
+            checked={filter[1]}
+            onChange={() => {
+              setFilter({
+                ...filter,
+                1: !filter[1]
+              });
+            }}
+          />
+        </div>
+
+        {address && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: from === "panel" ? "row" : "column",
+              justifyContent: from === "panel" ? "space-between" : "flex-start"
+            }}
+          >
+            <div className={styles.filterItem}>
+              <div
+                className={styles.filterText}
+                style={{
+                  fontSize: from === "panel" ? 10 : 12
+                }}
+              >
+                Filter by my following ({totalMyFollowing} trade
+                {totalMyFollowing > 1 ? "s" : ""})
+              </div>
+              <SexSwitch
+                checked={filter[2]}
+                onChange={() => {
+                  setFilter({
+                    ...filter,
+                    2: !filter[2],
+                    3: false
+                  });
+                }}
+              />
+            </div>
+
+            <div className={styles.filterItem}>
+              <div
+                className={styles.filterText}
+                style={{
+                  fontSize: from === "panel" ? 10 : 12
+                }}
+              >
+                Filter by own trades ({totalMyTrades} trade
+                {totalMyTrades > 1 ? "s" : ""})
+              </div>
+              <SexSwitch
+                checked={filter[3]}
+                onChange={() => {
+                  setFilter({
+                    ...filter,
+                    3: !filter[3],
+                    2: false
+                  });
+                }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
       {data && (
         <div
           className={`${styles.txContent} ${
-            from === "laptop-home" ? styles.LaptopContent : ""
+            from === "panel" ? styles.LaptopContent : ""
           }`}
         >
           {data?.status === 1 && (
             <>
               <div
                 className={`${styles.txTtitles} ${
-                  from === "laptop-home"
-                    ? styles.LaptopTitles
-                    : styles.MobileTitles
+                  from === "panel" ? styles.LaptopTitles : styles.MobileTitles
                 }`}
               >
                 <div style={{ flex: 2 }} className={styles.titleItem}>
@@ -74,22 +196,23 @@ export default function Txs({ from, data, mc }: any) {
 
               <div className={styles.txList}>
                 {list.map((item: any) => {
-                  const isSelf = item.address === userInfo.address;
+                  const isSelf = item.address === userInfo?.address;
                   return (
                     <div
-                      key={item.id}
-                      className={`${styles.item} ${!isSelf && "button"}`}
-                      onClick={() => {
-                        if (!isSelf)
-                          router.push(`/profile/user?account=${item.address}`);
-                      }}
+                      key={item.tx_hash}
+                      className={`${styles.item}`}
                     >
                       <div
                         className={`${styles.account} ${
-                          from === "laptop-home"
+                          from === "panel"
                             ? styles.LaptopAccount
                             : styles.MobileAccount
-                        }`}
+                        } ${!isSelf && "button"}`}
+
+                        onClick={() => {
+                          if (!isSelf)
+                            router.push(`/profile/user?account=${item.address}&from=detail`);
+                        }}
                       >
                         <img
                           className={styles.avatar}
@@ -157,7 +280,7 @@ export default function Txs({ from, data, mc }: any) {
                 })}
 
                 {(!list || list.length === 0) && (
-                  <Empty height={300} text="No Data" />
+                  <Empty height={from === "panel" ? 220 : 300} text="No Data" />
                 )}
               </div>
             </>
@@ -166,10 +289,7 @@ export default function Txs({ from, data, mc }: any) {
           {data?.status === 3 && (
             <iframe
               style={{
-                height:
-                  from === "laptop-home"
-                    ? "calc(100vh - 430px)"
-                    : "calc(100vh - 210px)"
+                height: from === "panel" ? 296 : "calc(100vh - 210px)"
               }}
               id="dexscreener-embed"
               title="Dexscreener Trading Chart"

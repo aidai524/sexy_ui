@@ -1,69 +1,67 @@
 "use client";
 import Info from "./components/info/detail";
 import Chart from "./components/chart/index";
-import Trade from "./components/trade/index";
 import Txs from "./components/txs/index";
-import { AvatarBack } from "@/app/components/thumbnail/avatar";
 import styles from "./detail.module.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Tab from "@/app/components/tab";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
 import CircleLoading from "@/app/components/icons/loading";
-import MobileBg from "./mobile-bg";
-import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import useTokenDetail from "./use-token-detail";
-import useMc from "@/app/hooks/useMc";
+import AvatarDetail from "@/app/components/avatarDetail";
+import Back from "@/app/components/backNew";
+import CommnentList from "./components/comment/commnet";
+import PreLaunchAction from "@/app/components/action/launching";
+import LaunchedAction from "@/app/components/action/launched";
+import { useUserAgent } from "@/app/context/user-agent";
+import {
+  actionHateTrigger,
+  actionLikeTrigger
+} from "@/app/components/timesLike/ActionTrigger";
+import useMcWithPump from "@/app/hooks/use-mc-with-pump";
+import { useMessage } from "@/app/context/messageContext";
+import { useDebounceFn } from "ahooks";
+import { useProjects } from "@/app/store/use-projects";
 
-export default function Detail({ token, onBack, onNext }: any) {
+export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   const [activeKey, setActiveKey] = useState("Info");
   const {
     infoData: queryedInfoData,
     isLoading,
     getDetailInfo
   } = useTokenDetail({ token });
-  const [mc, setMC] = useState<string | number>("-");
+  const projectsStore = useProjects();
+  const { isMobile, innerHeight, innerWidth } = useUserAgent();
+  const { showShare } = useMessage()
+  const headerRef = useRef<HTMLDivElement>(null)
+  const [headerHeight, setHeaderHeight] = useState(60);
 
   const infoData = useMemo(
-    () => token || queryedInfoData,
-    [token, queryedInfoData]
+    () => queryedInfoData || token,
+    [queryedInfoData, token]
   );
 
-  const { mc: pumpMc } = useMc({
-    tokenAddress: infoData?.address,
-    disable: infoData?.status < 1
-  });
+  const { run } = useDebounceFn(() => {
+    setHeaderHeight(headerRef.current?.clientHeight || 60)
+  }, { wait: 500 })
 
-  console.log("pumpMc:", pumpMc);
-
-  const { getMC, pool } = useTokenTrade({
-    tokenName: infoData?.tokenName as string,
-    tokenSymbol: infoData?.tokenSymbol as string,
-    tokenDecimals: infoData?.tokenDecimals as number,
-    loadData: false
-  });
+  const mc = useMcWithPump(infoData);
 
   useEffect(() => {
-    if (
-      pool &&
-      pool.length > 0 &&
-      infoData?.DApp === "sexy" &&
-      infoData?.status === 1
-    ) {
-      getMC().then((res) => {
-        setMC(res as number);
-      });
+    if (infoData) {
+      run();
     }
-  }, [pool, infoData]);
+  }, [infoData]);
 
   useEffect(() => {
-    onBack &&
-      infoData &&
+    if (onBack && token) {
       history.pushState(
         { page: "/detail" },
         "Detail",
-        `/detail?address=${infoData.address}`
+        `/detail?address=${token.address}`
       );
-  }, [onBack, infoData]);
+    }
+  }, [onBack, token]);
 
   if (isLoading) {
     return (
@@ -72,65 +70,139 @@ export default function Detail({ token, onBack, onNext }: any) {
       </div>
     );
   }
-  return (
-    <SexPullToRefresh
-      onRefresh={async () => {
-        await getDetailInfo();
-      }}
-    >
-      <div className={styles.main}>
-        <MobileBg className={styles.Bg} />
-        <div className={styles.Content}>
-          <AvatarBack data={infoData} onBack={onBack} />
 
-          {infoData.status === 0 ? (
-            <Info
-              data={infoData}
-              mc={pumpMc || mc}
-              onUpdate={() => {
-                getDetailInfo?.();
-                onNext?.();
+  return (
+    <div>
+      <SexPullToRefresh
+        onRefresh={async () => {
+          await getDetailInfo();
+        }}
+      >
+        <div className={styles.main}>
+          <div className={styles.Content}>
+            <div className={styles.header} ref={headerRef}>
+              <div className={styles.backWrapper}>
+                <div style={{ marginTop: 8 }}>
+                  <Back onBack={onBack} />
+                </div>
+                <AvatarDetail token={infoData} mc={mc} />
+              </div>
+            </div>
+
+            <div
+              style={{
+                height: innerHeight - headerHeight,
+                overflow: "auto",
+                paddingBottom: 100
               }}
-            />
-          ) : (
-            <Tab
-              activeNode={activeKey}
-              onTabChange={(nodeName) => {
-                setActiveKey(nodeName);
-              }}
-              nodes={[
-                {
-                  name: "Info",
-                  content: (
-                    <Info
-                      mc={pumpMc || mc}
-                      data={infoData}
-                      onUpdate={() => {
-                        getDetailInfo();
-                      }}
-                    />
-                  )
-                },
-                {
-                  name: "Chart",
-                  content: <Chart data={infoData} />
-                },
-                {
-                  name: "Buy/Sell",
-                  content: (
-                    <Trade mc={pumpMc || mc} from="mobile" data={infoData} />
-                  )
-                },
-                {
-                  name: "Txs",
-                  content: <Txs mc={pumpMc || mc} data={infoData} />
-                }
-              ]}
-            />
-          )}
+            >
+              {infoData?.status === 0 && (
+                <div className={styles.commentWrapper}>
+                  <Info
+                    mc={mc}
+                    data={infoData}
+                    showHodler={false}
+                    onUpdate={() => {
+                      getDetailInfo();
+                    }}
+                  />
+                  <CommnentList
+                    style={{
+                      backgroundColor: "#121719",
+                      borderRadius: "10px",
+                      margin: "3px"
+                    }}
+                    token={infoData}
+                    onSuccess={() => {
+                      getDetailInfo();
+                    }}
+                  />
+                </div>
+              )}
+
+              {infoData?.status !== 0 && (
+                <Chart token={infoData} style={{ position: "relative" }} />
+              )}
+
+              {infoData?.status !== 0 && (
+                <Tab
+                  activeNode={activeKey}
+                  onTabChange={(nodeName) => {
+                    setActiveKey(nodeName);
+                  }}
+                  nodes={[
+                    {
+                      name: "Info",
+                      content: (
+                        <Info
+                          mc={mc}
+                          data={infoData}
+                          onUpdate={() => {
+                            getDetailInfo();
+                          }}
+                        />
+                      )
+                    },
+                    {
+                      name: "Comments",
+                      content: (
+                        <CommnentList
+                          token={infoData}
+                          onSuccess={() => {
+                            getDetailInfo();
+                          }}
+                        />
+                      )
+                    },
+                    {
+                      name: "Trade",
+                      content: <Txs mc={mc} data={infoData} />
+                    }
+                  ]}
+                />
+              )}
+            </div>
+
+            <div className={styles.action}>
+              {infoData?.status === 0 && (
+                <PreLaunchAction
+                  token={infoData}
+                  canFlip={false}
+                  onLike={async () => {
+                    const res = await actionLikeTrigger(infoData, showShare);
+                    if (res) {
+                      onSuccess?.({
+                        isLike: true,
+                        like: token.like + 1
+                      });
+                      getDetailInfo();
+                    }
+                  }}
+                  onHate={async () => {
+                    await actionHateTrigger(infoData);
+                    getDetailInfo();
+                  }}
+                  onSuperLike={(amount: any) => {
+                    // onSuccess?.({
+                    //   isSuperLike: true,
+                    //   prePaid: token.prePaid + 1,
+                    //   total_amount: amount
+                    // });
+                    getDetailInfo();
+                  }}
+                  onBoost={() => {
+                    getDetailInfo();
+                  }}
+                />
+              )}
+
+              {(infoData?.status === 1 || infoData?.status === 3) && (
+                <LaunchedAction data={infoData} />
+              )}
+            </div>
+          </div>
         </div>
-        {activeKey === "Info" && <MobileBg className={styles.BottomBg} />}
-      </div>
-    </SexPullToRefresh>
+      </SexPullToRefresh>
+    </div>
   );
 }

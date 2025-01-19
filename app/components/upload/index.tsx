@@ -4,6 +4,7 @@ import { upload } from "@/app/utils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircleLoading from "../icons/loading";
 import UploadBox from "./upload-box";
+import { fail } from "@/app/utils/toast";
 
 interface Props {
   fileList: ImageUploadItem[];
@@ -18,7 +19,17 @@ interface Props {
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
 export const svgReg = /(.+\.(svg))$/i;
 export const gifReg = /(.+\.(gif))$/i;
-export const videoReg = /(.+\.(mp4))$/i;
+export const videoReg = /(.+\.(mp4|webm|mov))$/i;
+
+export const getVideoExt = (url: string) => {
+  const match = url.match(videoReg);
+  if (match && match[2]) {
+    if (match[2] === 'mov') return 'mp4';
+    return match[2].toLowerCase();
+  }
+  return '';
+};
+
 const StyleMaps = {
   avatar: [styles.Avatar, styles.AvatarImg],
   banner: [styles.Banner, styles.Banner],
@@ -39,7 +50,23 @@ export default function Upload({
   const input = useRef<ImageUploaderRef>(null);
 
   const uploadImg = useCallback(async (file: File) => {
+    console.log('file', file)
+    if (file.size > 50 * 1024 * 1024) {
+      fail("File size too large")
+      return {
+        url: ''
+      }
+    }
+
+    if (!imgReg.test(file.name) && !videoReg.test(file.name)) {
+      fail("File type not supported")
+      return {
+        url: ''
+      }
+    }
+
     setIsUpload(true);
+
     const url = await upload(
       file.name,
       file,
@@ -49,7 +76,7 @@ export default function Upload({
     );
     setTimeout(() => {
       setIsUpload(false);
-    }, 1000);
+    }, 100);
 
     if (url) {
       return {
@@ -109,7 +136,7 @@ export default function Upload({
         />
       </div>
 
-      {mergedFiles.length === 0 ? (
+      {mergedFiles.length === 0 || mergedFiles[0].url === '' ? (
         <UploadBox type={type} onClick={onUpload} />
       ) : (
         <>
@@ -124,10 +151,12 @@ export default function Upload({
             </div>
           )}
           {fileType === "video" && (
-            <video className={styles.imgPreview} controls>
-              <source src={mergedFiles[0].url} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <div className={ styles.videoBox }>
+              <video className={styles.imgPreview} controls>
+                <source src={mergedFiles[0].url} type={"video/" + getVideoExt(mergedFiles[0].url)} />
+                Your browser does not support the video tag.
+              </video>
+            </div>
           )}
         </>
       )}

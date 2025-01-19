@@ -8,9 +8,7 @@ import { Program } from '@coral-xyz/anchor';
 import idl from '@/app/hooks/meme_launchpad.json';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { trim } from 'lodash-es';
-import { useDebounceFn } from 'ahooks';
 import { useConfig } from '@/app/store/useConfig';
-import { getTokenMeta } from '@/app/utils/solanaScanApi';
 
 export function useTrends(props?: { isPolling?: boolean; }) {
   const { isPolling } = props ?? {};
@@ -117,7 +115,7 @@ export function useTrends(props?: { isPolling?: boolean; }) {
       if (Big(_progress).gt(100)) {
         _progress = Big(100);
       }
-      it.progress = _progress.toFixed(2);
+      it.progress = _progress.toFixed(2, Big.roundDown);
       it.poolAmount = poolAmount;
       it.solAmount = solAmount;
     }
@@ -142,11 +140,6 @@ export function useTrends(props?: { isPolling?: boolean; }) {
       if (_top1) {
         _top1.marketCapTrendsDirection = '+';
         _top1.marketCapTrends = '0.00';
-        _top1.holder = 0;
-        const _top1Meta = await getTokenMeta(_top1.address);
-        if (_top1Meta.success && _top1Meta.data?.holder) {
-          _top1.holder = _top1Meta.data?.holder;
-        }
         if (_top1.poolAmount && Big(_top1.poolAmount).gt(0)) {
           const tokenMintAddress = new PublicKey(_top1.address);
           const tokenSupplyInfo = await connection.getTokenSupply(tokenMintAddress);

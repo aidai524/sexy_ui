@@ -1,17 +1,20 @@
-import Back from "@/app/components/back/laptop";
 import styles from "./index.module.css";
-import Vip from "@/app/components/avatar/vip";
+import Level from "@/app/components/level";
 import FollowBtn from "../components/followBtn";
 import FollowerActions from "../components/follower-actions";
 import Tabs from "../components/tabs";
-import Address from "@/app/sections/profile/components/address";
-import FollowerModal from "@/app/components/layout/laptop/user/follower-modal";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Empty from "@/app/components/empty";
 import CircleLoading from "@/app/components/icons/loading";
 import { defaultAvatar } from "@/app/utils/config";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import EditButton from "./edit-button";
+import EditProfile from "./panels/edit-profile";
+import FollowersPanel from "./panels/followers";
+import { formatLongText } from '@/app/utils/common';
+import { formatAddress } from '@/app/utils';
+import { useSearchParams } from 'next/navigation';
+import GoBack from '@/app/components/back/laptop';
 
 export default function Laptop({
   userInfo,
@@ -19,125 +22,149 @@ export default function Laptop({
   isFollower,
   refreshNum,
   setRefreshNum,
-  updateUserInfo,
-  updateCurrentUserInfo,
-  profileTabIndex,
+  onQueryInfo,
   showHot = true,
-  isOther,
+  isOther = false,
   isLoading
 }: any) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const [followModalType, setFollowModalType] = useState("");
-  const isTrends = searchParams.get("from") === "trends";
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const search = useSearchParams();
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className={styles.Container}
     >
-      <div className={styles.Flip} />
-      <div className={styles.BackWrapper}>
-        <Back
-          onBack={
-            isTrends
-              ? () => {
-                  router.back();
-                }
-              : void 0
-          }
-          from="detail"
-        />
+      <div className={styles.TitleWrapper}>
+        {
+          ["profile", "messages", "detail"].includes(search.get("from") || "") && (
+            <GoBack text="" />
+          )
+        }
+        Profile
       </div>
-      {userInfo ? (
-        <div className={styles.Content}>
-          <div className={styles.Top}>
-            <img
-              src={userInfo.icon || defaultAvatar}
-              className={styles.Avatar}
-            />
-            <div className={styles.Desc}>
-              <div className={styles.NameTop}>
-                <div className={styles.NameWrapper}>
-                  <div>{userInfo.name}</div>
-                  {/* <Vip {...{ userInfo, address, onVipShow: setShowVip }} /> */}
-                </div>
-                <div className={styles.Buttons}>
-                  <FollowBtn
-                    address={address}
-                    isFollower={isFollower}
-                    onSuccess={async () => {
-                      setRefreshNum(refreshNum + 1);
-                      updateCurrentUserInfo();
-                    }}
-                  />
-                </div>
-              </div>
-              <FollowerActions
-                userInfo={userInfo}
-                onItemClick={(action: string) => {
-                  setFollowModalType(action);
-                }}
-                style={{
-                  padding: "0px",
-                  gap: "30px",
-                  justifyContent: "start",
-                  marginTop: "10px",
-                  width: 200
-                }}
+      <div className={styles.Content}>
+        {userInfo ? (
+          <>
+            <div className={styles.Top}>
+              <img
+                src={userInfo.icon || defaultAvatar}
+                className={styles.Avatar}
               />
-              {address && (
-                <Address
-                  address={address}
-                  isFull={true}
-                  color="#fff"
-                  fontSize={12}
+              <div className={styles.Desc}>
+                <div className={styles.NameTop}>
+                  <div className={styles.NameWrapper}>
+                    <div>{formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || "FlipN"}</div>
+                    <Level level={userInfo.level} style={{ marginLeft: 24 }} />
+                    {!isOther && (
+                      <EditButton
+                        onClick={() => {
+                          setShowEdit(true);
+                        }}
+                      />
+                    )}
+                  </div>
+                  {isOther && (
+                    <div className={styles.Buttons}>
+                      <FollowBtn
+                        address={address}
+                        isFollower={isFollower}
+                        onSuccess={async () => {
+                          setRefreshNum(refreshNum + 1);
+                          onQueryInfo();
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <FollowerActions
+                  userInfo={userInfo}
+                  onItemClick={(action: string) => {
+                    setFollowModalType(action);
+                    setShowFollowers(true);
+                  }}
                   style={{
-                    padding: 0,
-                    width: 440
+                    padding: "0px",
+                    gap: "30px",
+                    justifyContent: "start",
+                    marginTop: "10px",
+                    width: 200
                   }}
                 />
-              )}
+              </div>
             </div>
+            <Tabs
+              address={address}
+              showHot={showHot}
+              isOther={isOther}
+              from="page"
+              style={{
+                position: "relative",
+              }}
+              tabContentStyle={{
+                padding: "22px 30px 0",
+                height: "calc(100vh - 280px)",
+                overflowY: "auto",
+                flex: "0",
+              }}
+              tabHeaderStyle={{
+                flex: 0,
+                padding: "0px 30px"
+              }}
+              tabHeadersStyle={{
+                overflowX: "auto",
+                height: "47px",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                justifyContent: "flex-start",
+              }}
+              cursorStyle={{
+                height: 3,
+                background: "var(--part-bg)",
+                borderRadius: 2,
+                bottom: 0,
+                width: "52px",
+                filter: "drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25))"
+              }}
+            />
+          </>
+        ) : isLoading ? (
+          <div className={styles.LoadingWrapper}>
+            <CircleLoading size={40} />
           </div>
-          <Tabs
-            address={address}
-            defaultIndex={profileTabIndex}
-            showHot={showHot}
-            from="page"
-            tabContentStyle={{
-              padding: "0px 30px",
-              height: "calc(100vh - 430px)",
-              overflowY: "auto",
-              flex: "0"
+        ) : (
+          <Empty text="No Data" height="100%" />
+        )}
+      </div>
+      <AnimatePresence mode="wait">
+        {showEdit && (
+          <EditProfile
+            onClose={() => {
+              setShowEdit(false);
             }}
-            tabHeaderStyle={{
-              flex: 0,
-              padding: "0px 16px"
+            onSuccess={() => {
+              onQueryInfo();
+              setShowEdit(false);
             }}
-            isOther={isOther}
           />
-        </div>
-      ) : isLoading ? (
-        <div className={styles.LoadingWrapper}>
-          <CircleLoading size={40} />
-        </div>
-      ) : (
-        <Empty text="No Data" height="100%" />
-      )}
-      <FollowerModal
-        address={address}
-        open={!!followModalType}
-        onClose={() => {
-          setFollowModalType("");
-        }}
-        onRefresh={() => {
-          setRefreshNum(refreshNum + 1);
-          updateUserInfo();
-        }}
-        type={followModalType}
-        isOther={isOther}
-      />
+        )}
+        {showFollowers && (
+          <FollowersPanel
+            address={address}
+            userInfo={userInfo}
+            action={followModalType}
+            onClose={() => {
+              setShowFollowers(false);
+            }}
+            onSuccess={() => {
+              setRefreshNum(refreshNum + 1);
+              onQueryInfo();
+            }}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

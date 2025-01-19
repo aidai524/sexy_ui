@@ -22,7 +22,6 @@
   border: 1px dashed #9290b1;
   box-sizing: border-box;
   cursor: pointer;
-  background-color: #00000029;
 }
 
 .Token {
@@ -31,7 +30,6 @@
   border-radius: 8px;
   cursor: pointer;
   border: 1px dashed #9290b1;
-  background-color: #00000029;
 }
 
 .Banner {
@@ -40,12 +38,14 @@
   max-width: 422px;
   max-height: 212px;
   margin-top: 10px;
-  border-radius: 20px;
+  /* border-radius: 20px; */
 }
 
 .BannerDefault {
   background-image: url(/img/upload-banner.png);
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .BannerButton {
@@ -92,4 +92,15 @@
   z-index: 2;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
+}
+
+.videoBox {
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+}
+
+.imgPreview {
+  height: 120px;
+  object-fit: contain;
 }

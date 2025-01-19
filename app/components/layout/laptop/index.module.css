@@ -1,18 +1,11 @@
 .Container {
-  background: #ff2681;
+  width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  background-color: #151515;
   display: flex;
 }
 
 .Content {
-  height: 100%;
-  padding: 0;
-  flex: 1;
-  width: 0;
-}
-
-.ContentInner {
-  height: calc(100% - 76px);
-  overflow-y: auto;
+  flex-grow: 1;
+  overflow-x: hidden;
 }
