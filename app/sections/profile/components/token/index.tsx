@@ -203,6 +203,7 @@ export default function Token({
           <Media
             data={data}
             imgHeight={84}
+            autoPlay={false}
             imgStyle={{
               width: 84,
               height: 84,
