@@ -131,7 +131,7 @@ export default function Trade({
       <div className={styles.tokenPercent}>
         <div
           onClick={() => {
-            setInputVal(max.toString());
+            setInputVal('');
           }}
           className={`${styles.percentTag} button`}
         >
@@ -143,7 +143,7 @@ export default function Trade({
             onClick={() => {
               setInputVal(amount.toString());
             }}
-            className={`${styles.percentTag} button`}
+            className={`${styles.percentTag} ${inputVal === amount.toString() ? styles.active : ''} button`}
           >
             {amount} SOL
           </div>

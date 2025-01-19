@@ -135,7 +135,7 @@
     border: 1px solid #9290B166;
   }
 
-  .percentTag:hover {
+  .percentTag.active {
     background: rgba(255, 255, 255, 0.2);
   }
 
