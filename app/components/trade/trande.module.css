@@ -213,3 +213,8 @@
   height: 68px;
   flex-shrink: 0;
 }
+
+
+.receiveTitle {
+  white-space: nowrap;
+}

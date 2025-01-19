@@ -324,7 +324,7 @@ export default function BuySell({
           <div
             className={styles.inputArea}
             style={{
-              width: from === "panel" ? 335 : "100%"
+              width: from === "panel" ? 325 : "100%"
             }}
           >
             <div className={styles.actionArea}>

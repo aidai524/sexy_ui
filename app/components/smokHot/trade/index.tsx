@@ -12,6 +12,7 @@ import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
+import useBalance from "@/app/hooks/useBalance";
 
 interface Props {
   token: Project;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const max = 1;
+const SOL_PERCENT_LIST = [0.01, 0.05, 0.1];
 
 export default function Trade({
   token,
@@ -34,12 +36,17 @@ export default function Trade({
   mainStyle,
   bottomStyle
 }: Props) {
-  const [inputVal, setInputVal] = useState(max.toString());
+  const [inputVal, setInputVal] = useState('0.1');
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
   const { showShare } = useMessage();
+  const { solBalance } = useBalance({
+    mint: token.address as string,
+    tokenDecimals: token.tokenDecimals as number,
+    reFreshBalnace: 1000
+  });
 
   const { prePaid, checkPrePayed } = useTokenTrade({
     tokenName: token.tokenName,
@@ -89,23 +96,58 @@ export default function Trade({
             </div>
             <div className={styles.slippage}>Maximum {max} SOL</div>
           </div>
+          <div className={styles.inputWrapper}>
+            <div className={styles.inputArea}>
+              <input
+                value={inputVal}
+                onChange={(e) => {
+                  setInputVal(e.target.value);
+                  const val = Number(e.target.value);
+                  // Check if input value matches any percent tag
+                  const isPercentMatch = SOL_PERCENT_LIST.some(amount => amount === val);
+                  // Only update if valid number
+                  if (!isNaN(val)) {
+                    setInputVal(e.target.value);
+                  }
 
-          <div className={styles.inputArea}>
-            <input
-              value={inputVal}
-              onChange={(e) => {
-                setInputVal(e.target.value);
-              }}
-              className={styles.input}
-            />
-            <div className={styles.inputToken}>
-              <div className={styles.tokenName}>SOL</div>
-              <div className={styles.tokenImg}>
-                <img className={styles.tiImg} src="/img/home/solana.png" />
+                }}
+                className={styles.input}
+              />
+              <div className={styles.inputToken}>
+                <div className={styles.tokenName}>SOL</div>
+                <div className={styles.tokenImg}>
+                  <img className={styles.tiImg} src="/img/home/solana.png" />
+                </div>
               </div>
+            </div>
+            <div className={styles.solBalance}>
+              <div className={styles.solBalanceTitle}>Balance:</div>
+              <div className={styles.solBalanceAmount}>{solBalance}</div>
             </div>
           </div>
         </div>
+      </div>
+
+      <div className={styles.tokenPercent}>
+        <div
+          onClick={() => {
+            setInputVal(max.toString());
+          }}
+          className={`${styles.percentTag} button`}
+        >
+          Reset
+        </div>
+        {SOL_PERCENT_LIST.map((amount) => (
+          <div
+            key={amount}
+            onClick={() => {
+              setInputVal(amount.toString());
+            }}
+            className={`${styles.percentTag} button`}
+          >
+            {amount} SOL
+          </div>
+        ))}
       </div>
       <div className={styles.Bottom} style={bottomStyle}>
         <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
@@ -128,7 +170,8 @@ export default function Trade({
               !inputVal ||
               Number(inputVal) > max ||
               isPrePayd ||
-              Number(inputVal) <= 0
+              Number(inputVal) <= 0 ||
+              Number(inputVal) >= Number(solBalance)
             }
             isLoading={isLoading}
             onClick={async () => {
