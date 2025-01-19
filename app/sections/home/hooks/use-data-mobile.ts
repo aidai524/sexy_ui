@@ -95,13 +95,13 @@ export default function useData(launchType: Type) {
 
   const queryAndUpdateDetail = useCallback(async (type: Type, address: number) => {
     const res = await httpGet(`/project?address=${address}`);
-    if (res.code !== 0 || !res.data) return;
-    projectsStore.updateProject(type, res.data);  
+    if (res.code !== 0 || !res.data || !res.data.length) return;
+    projectsStore.updateProject(type, res.data[0]);
+    return  res.data[0];
   }, [projectsStore]);
 
   const onChangeIndex = (currentIndex: number) => {
     projectsStore.setIndex(launchType, currentIndex);
-
     if (list.length - projectsStore.getIndex(launchType) > left_num) {
       return;
     }
