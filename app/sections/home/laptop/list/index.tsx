@@ -30,6 +30,7 @@ export default function List({ type, isCurrentTab }: any) {
     getIndex,
     isLoading,
     list,
+    refresher,
     hasNext,
     onChangeIndex,
     updateProject,
@@ -67,7 +68,7 @@ export default function List({ type, isCurrentTab }: any) {
     const id = list[index];
     if (!id) return null;
     return getProjectById(type, id);
-  }, [index, list]);
+  }, [index, list, refresher]);
 
   return (
     <div
