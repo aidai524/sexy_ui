@@ -1,18 +1,27 @@
-.Container {
-  width: 55px;
+.UserLevelContainer {
   height: 20px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   flex-shrink: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  color: #fff;
+  padding: 0 6px 0 12px;
+  color: #FFF;
+  text-align: center;
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  padding-right: 8px;
+  position: relative;
+}
+.UserLevelIcon {
+  width: 24px;
+  height: 20px;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
 }

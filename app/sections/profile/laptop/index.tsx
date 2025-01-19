@@ -58,7 +58,7 @@ export default function Laptop({
                 <div className={styles.NameTop}>
                   <div className={styles.NameWrapper}>
                     <div>{formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || "FlipN"}</div>
-                    <Level level={userInfo.level} />
+                    <Level level={userInfo.level} style={{ marginLeft: 24 }} />
                     {!isOther && (
                       <EditButton
                         onClick={() => {

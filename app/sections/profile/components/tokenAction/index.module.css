@@ -6,6 +6,11 @@
   gap: 12px;
 }
 
+.BtnsMobile {
+  composes: Btns;
+  flex-direction: row;
+}
+
 .ActionBtn {
   width: 80px;
   height: 28px;
