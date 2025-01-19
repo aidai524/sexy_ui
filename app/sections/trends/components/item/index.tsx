@@ -12,7 +12,7 @@ export default function Item(props: Props) {
   const name = trend?.token_symbol;
   const ticker = trend?.ticker;
   const icon = trend?.Icon;
-  const tickerAvatar = "";
+  const tickerAvatar = trend?.Icon;
   const marketCap = trend?.market_cap;
 
   return (
@@ -67,7 +67,17 @@ export default function Item(props: Props) {
             })}
           </div>
         </div>
-        <div className={styles.ItemCreateTime}>{trend?.created2Now}</div>
+        {
+          !isMobile ? (
+            <div className={styles.ItemCreateTime}>
+              Created by <span className={styles.ItemCreateTimePrimary}>{formatLongText(trend?.creator_name || trend?.project_creator, 3, 4)}</span> {trend?.created2Now?.replace(/\sago$/, '')}
+            </div>
+          ) : (
+            <div className={styles.ItemCreateTime}>
+              {trend?.created2Now}
+            </div>
+          )
+        }
       </div>
     </div>
   );

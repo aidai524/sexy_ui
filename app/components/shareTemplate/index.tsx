@@ -24,6 +24,8 @@ import Level from "../level";
 import { fail } from "@/app/utils/toast";
 import { getShortUrl, shareToX } from "@/app/utils/share";
 import Modal from "../modal";
+import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
+import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 
 interface Props {
   token: Project | undefined;
@@ -39,6 +41,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const { userInfo } = useAuth();
   const [isSharing, setIsSharing] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
+  const { total: totalHolders } = useHolders(token);
+  const pumpMc = useMcWithPump(token);
 
   useImperativeHandle(ref, () => ({
     getShareImg
@@ -94,6 +98,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
   if (!token || !show) return null;
 
+  console.log("pumpMc:", pumpMc, totalHolders);
+
   return (
     <Modal
       open={show}
@@ -130,37 +136,71 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
         {/* Main Card Content */}
         <div className={styles.mainCard}>
-          {/* Stats */}
-          <div className={styles.stats}>
-            <div className={styles.statsFlip}>
-              {Number(token?.prePaidAmount) > 0 ? (
-                <div className={styles.statsFlipText}>
-                  <span className={styles.statsFlipTextTitle}>Flipped</span>
-                  <span className={styles.statsFlipTextCount}>
-                    {simplifyNum(Number(token?.prePaidAmount), 2)} SOL
-                  </span>
+          {
+            token?.status === 0 && (
+              <div className={styles.stats}>
+                <div className={styles.statsFlip}>
+                  {Number(token?.prePaidAmount) > 0 ? (
+                    <div className={styles.statsFlipText}>
+                      <span className={styles.statsFlipTextTitle}>Flipped</span>
+                      <span className={styles.statsFlipTextCount}>
+                        {simplifyNum(Number(token?.prePaidAmount), 2)} SOL
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={styles.statsFlipText}>
+                      <span>Flip it!</span>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className={styles.statsFlipText}>
-                  <span>Flip it!</span>
+                <div className={styles.statsLike}>
+                  {Number(token?.like) > 0 ? (
+                    <div className={styles.statsLikeText}>
+                      <span className={styles.statsLikeTextTitle}>Liked</span>
+                      <span className={styles.statsLikeTextCount}>
+                        {token.like || 0}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={styles.statsLikeText}>
+                      <span>Like it!</span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-            <div className={styles.statsLike}>
-              {Number(token?.like) > 0 ? (
-                <div className={styles.statsLikeText}>
-                  <span className={styles.statsLikeTextTitle}>Liked</span>
-                  <span className={styles.statsLikeTextCount}>
-                    {token.like || 0}
-                  </span>
+              </div>
+            )}
+
+          {
+            token?.status !== 0 && (
+              <div className={styles.statsLaunches}>
+                <div className={styles.statsBuyMe}>
+                  <img src="/img/share/buy.png" alt="Flip" className={styles.buyMe} />
                 </div>
-              ) : (
-                <div className={styles.statsLikeText}>
-                  <span>Like it!</span>
+                <div className={styles.statsFlip}>
+                  <div className={styles.statsFlipText}>
+                    <span className={styles.statsFlipTextTitle}>Marketcap</span>
+                    <span className={styles.statsFlipTextCount}>
+                      {pumpMc === 0 || pumpMc === "0" || pumpMc === "-" ? (
+                        <div>$-</div>
+                      ) : (
+                        <div>
+                          ${simplifyNum(pumpMc as number, 2)}
+                        </div>
+                      )}
+                    </span>
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
+                <div className={styles.statsHolder}>
+                  <div className={styles.statsHolderText}>
+                    <span className={styles.statsHolderTextTitle}>holders</span>
+                    <span className={styles.statsHolderTextCount}>
+                      {totalHolders}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )
+          }
 
           <div className={styles.tokenImage}>
             <img
@@ -177,11 +217,14 @@ function Card({ token, show, onClose }: Props, ref: any) {
           </div>
           <div>
             <div className={styles.tokenName}>{token.tokenName}</div>
+
             <div className={styles.tokenTicker}>
-              <div>
-                Ticker:{" "}
-                <span className={styles.createdByAddress}>{token.ticker}</span>
-              </div>
+              {token.ticker && (
+                <div>
+                  Ticker:{" "}
+                  <span className={styles.createdByAddress}>{token.ticker}</span>
+                </div>
+              )}
               <TokenTags token={token} />
             </div>
             <div className={styles.createdBy}>
@@ -189,7 +232,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               <span className={styles.createdByAddress}>
                 @
                 {token.creater?.name ||
-                  formatAddress(token.creater?.address || "")}
+                  formatAddress(token.account || "")}
               </span>
             </div>
           </div>
@@ -210,8 +253,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
             <div className={styles.inviteInfo}>
               <div>Inviter:</div>
               <div className={styles.inviteAddress}>
-                {formatAddress(token.creater?.address || "")}
-                <Level level={token.creater?.level || 0} />
+                {formatAddress(userInfo?.address || "")}
+                <Level level={userInfo?.level || 0} />
               </div>
               <div className={styles.inviteUrl}>
                 flipn.fun/invite/{formatAddress(userInfo?.address || "")}

@@ -1,14 +1,21 @@
 import styles from "./index.module.css";
-export default function Level({ level, vipType }: any) {
-  const _level = level || 1;
+import { getCurrentLevel } from '@/app/config';
+
+export default function Level({ level, vipType, style, className }: any) {
+  const _level: any = level || 1;
+  const currentLevel = getCurrentLevel(_level);
   return (
     <div
-      className={styles.Container}
+      className={[styles.UserLevelContainer, className || ''].join(' ')}
       style={{
-        backgroundImage: `url(${!vipType || vipType === 'normal' ? '/img/profile/icon-level-inactive.svg' : '/img/profile/icon-level-active.svg'})`,
+        // backgroundImage: `url(${!vipType || vipType === 'normal' ? '/img/profile/icon-level-inactive.svg' : '/img/profile/icon-level-active.svg'})`,
+        // fix#REF-9505
+        backgroundImage: currentLevel.theme,
+        ...style,
       }}
     >
-      <div>Lv.{_level}</div>
+      <img src={currentLevel.icon} alt="" className={styles.UserLevelIcon} />
+      <div>{currentLevel.label}</div>
     </div>
   );
 }

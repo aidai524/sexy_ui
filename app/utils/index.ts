@@ -5,6 +5,7 @@ import { clearAll } from "./listStore";
 import { Connection } from "@solana/web3.js";
 import Big from "big.js";
 import { deleteCookie } from "./common";
+import { imgReg, videoReg } from "../components/upload";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_API || "https://api.dumpdump.fun/api/v1";
@@ -748,4 +749,14 @@ export function formatNumberWithCommas(num: string | number) {
   const parts = num.split('.');
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   return parts.join('.');
+}
+
+
+export function checkFileType(file: string): 'image' | 'video' | null {
+  if (videoReg.test(file)) {
+    return 'video';
+  } else if (imgReg.test(file)) {
+    return 'image';
+  }
+  return null;
 }

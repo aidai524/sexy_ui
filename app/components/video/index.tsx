@@ -5,9 +5,10 @@ interface VideoPlayerProps {
   src: string;
   type: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export default function VideoPlayer({ src, type, className }: VideoPlayerProps) {
+export default function VideoPlayer({ src, type, className, style }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isShow, setIsShow] = useState(false);
 
@@ -54,7 +55,7 @@ export default function VideoPlayer({ src, type, className }: VideoPlayerProps) 
   }, [videoRef]);
 
   return (
-    <video ref={videoRef} className={className} autoPlay>
+    <video ref={videoRef} className={className} autoPlay style={style}>
       <source src={src} type={`video/${type}`} />
     </video>
   );

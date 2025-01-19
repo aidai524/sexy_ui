@@ -115,10 +115,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
               }}
               totalHolders={totalHolders}
               onSuccess={(type: string) => {
-                if (type === "like") {
-                  token.isLike = true;
-                  token.like = token.like + 1;
-                }
+                // if (type === "like") {
+                //   token.isLike = true;
+                //   token.like = token.like + 1;
+                // }
                 onUpdate(token);
               }}
               isCurrent={isCurrent}

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { mapDataToProject } from "../utils/mapTo";
 
 const TIME_DURATION = 1000 * 60 * 60;
 
@@ -92,7 +93,7 @@ export const useProjects = create(
         const currentProjects =
           type === "preLaunch" ? get().preProjects : get().launchProjects;
         if (!currentProjects[item.id]) return;
-        currentProjects[item.id] = item;
+        currentProjects[item.id] = mapDataToProject(item);
         if (type === "preLaunch") {
           set({ preProjects: currentProjects });
         } else {
