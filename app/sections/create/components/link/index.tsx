@@ -29,6 +29,7 @@ export default function Link({ type, img, value, onChange, onBlur }: Props) {
       )}
 
       <div className={isMobile ? styles.linkEdit : styles.LinkEditPc}>
+        {img && !isMobile && <img className={styles.linkImg} src={img} />}
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}

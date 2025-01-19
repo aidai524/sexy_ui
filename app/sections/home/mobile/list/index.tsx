@@ -139,9 +139,15 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                 key={token?.address || item}
                 token={token}
                 isCurrent={index === i && isCurrentTab}
-                onUpdate={(token: any) => {
+                onUpdate={(token: any, action?: string) => {
                   updateProject(type, token);
-                  queryAndUpdateDetail(type, token.address);
+                  if (action === "flip") {
+                    setTimeout(() => {
+                      queryAndUpdateDetail(type, token.address);
+                    }, 2000);
+                  } else {
+                    queryAndUpdateDetail(type, token.address);
+                  }
                 }}
               />
             );

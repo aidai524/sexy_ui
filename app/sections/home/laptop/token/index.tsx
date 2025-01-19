@@ -84,7 +84,7 @@ export default function Token({
                   <Flip
                     token={token}
                     onSuccess={(params: any) => {
-                      onUpdate({ ...token, ...params });
+                      onUpdate({ ...token, ...params }, "flip");
                     }}
                     onClick={() => {
                       if (!window.sexAddress) {

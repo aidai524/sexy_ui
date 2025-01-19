@@ -70,6 +70,9 @@
   font-weight: 300;
   line-height: 120%; /* 14.4px */
   margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .Creator {

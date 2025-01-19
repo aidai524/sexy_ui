@@ -32,7 +32,7 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
         const likeRes = await actionLikeTrigger(token, showShare);
         const params: any = {
           isSuperLike: true,
-          total_amount: 0.1,
+          total_amount: Number(token.total_amount) + 0.1,
           prePaid: token.prePaid + 1
         };
         if (likeRes) {
@@ -50,7 +50,7 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
   );
 
   if (token.account === window.sexAddress) {
-    return null
+    return null;
   }
 
   return (

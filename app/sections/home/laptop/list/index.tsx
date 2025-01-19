@@ -101,18 +101,24 @@ export default function List({ type, isCurrentTab }: any) {
               key={token?.address || item}
               token={token}
               isCurrent={index === i && isCurrentTab}
-              onUpdate={(token: any) => {
+              onUpdate={(token: any, action?: string) => {
                 updateProject(type, token);
-                queryAndUpdateDetail(type, token.address);
+                if (action === "flip") {
+                  setTimeout(() => {
+                    queryAndUpdateDetail(type, token.address);
+                  }, 2000);
+                } else {
+                  queryAndUpdateDetail(type, token.address);
+                }
               }}
               opacity={index > i ? 0 : 1}
               showTrade={tokenPanelStatusStore.showTrade}
               tradeTab={tokenPanelStatusStore.tab}
               onUpdateTradeTab={tokenPanelStatusStore.setTab}
-              onOpenPanel={(type: string) => {
+              onOpenPanel={(panleType: string) => {
                 tokenPanelStatusStore.setShow(
-                  type,
-                  !tokenPanelStatusStore[type]
+                  panleType,
+                  !tokenPanelStatusStore[panleType]
                 );
               }}
             />
@@ -202,10 +208,13 @@ export default function List({ type, isCurrentTab }: any) {
               onSuccess={(amount: string) => {
                 currentToken.isSuperLike = true;
                 currentToken.prePaid = currentToken.prePaid + 1;
-                currentToken.total_amount = amount;
+                currentToken.total_amount =
+                  Number(currentToken.total_amount) + Number(amount);
                 updateProject(type, currentToken);
-                queryAndUpdateDetail(type, currentToken.address);
                 tokenPanelStatusStore.setShow("showFlip", false);
+                setTimeout(() => {
+                  queryAndUpdateDetail(type, currentToken.address);
+                }, 2000);
               }}
             />
           )}
