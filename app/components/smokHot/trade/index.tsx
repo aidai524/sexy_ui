@@ -36,7 +36,7 @@ export default function Trade({
   mainStyle,
   bottomStyle
 }: Props) {
-  const [inputVal, setInputVal] = useState('0.1');
+  const [inputVal, setInputVal] = useState("0.1");
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
@@ -104,12 +104,13 @@ export default function Trade({
                   setInputVal(e.target.value);
                   const val = Number(e.target.value);
                   // Check if input value matches any percent tag
-                  const isPercentMatch = SOL_PERCENT_LIST.some(amount => amount === val);
+                  const isPercentMatch = SOL_PERCENT_LIST.some(
+                    (amount) => amount === val
+                  );
                   // Only update if valid number
                   if (!isNaN(val)) {
                     setInputVal(e.target.value);
                   }
-
                 }}
                 className={styles.input}
               />
@@ -131,7 +132,7 @@ export default function Trade({
       <div className={styles.tokenPercent}>
         <div
           onClick={() => {
-            setInputVal('');
+            setInputVal("");
           }}
           className={`${styles.percentTag} button`}
         >
@@ -143,7 +144,9 @@ export default function Trade({
             onClick={() => {
               setInputVal(amount.toString());
             }}
-            className={`${styles.percentTag} ${inputVal === amount.toString() ? styles.active : ''} button`}
+            className={`${styles.percentTag} ${
+              inputVal === amount.toString() ? styles.active : ""
+            } button`}
           >
             {amount} SOL
           </div>
@@ -175,8 +178,6 @@ export default function Trade({
             }
             isLoading={isLoading}
             onClick={async () => {
-              onSuccess?.(inputVal);
-              return;
               try {
                 if (inputVal) {
                   setIsLoading(true);
