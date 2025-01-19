@@ -11,11 +11,12 @@ export default function QRCodeCom({ url, size = 50 }: any) {
           console.error(err);
           return;
         }
-        console.log(canvas);
+        canvas.style.width = size + "px";
+        canvas.style.height = size + "px";
         domRef.current.appendChild(canvas);
       });
     }
     
   }, [url]);
-  return <div ref={domRef}></div>;
+  return <div ref={domRef} style={{ width: size, height: size }}></div>;
 }

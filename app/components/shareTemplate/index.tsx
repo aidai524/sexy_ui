@@ -299,10 +299,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
               </div>
             </div>
           </div>
-          {/* <QRCode
+          <QRCode
             url={`${domain}/api/twitter?address=${token.address}&referral=${userInfo.address}`}
             size={50}
-          /> */}
+          />
           <img src="/img/share/scan.png" alt="Flip" className={styles.scan} />
         </div>
       </div>
