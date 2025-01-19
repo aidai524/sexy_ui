@@ -64,7 +64,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                   <Flip
                     token={token}
                     onSuccess={(params: any) => {
-                      onUpdate({ ...token, ...params });
+                      onUpdate({ ...token, ...params }, "flip");
                     }}
                     onClick={() => {
                       if (!window.sexAddress) {
@@ -133,10 +133,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
           onSuccess={(amount: string) => {
             token.isSuperLike = true;
             token.prePaid = token.prePaid + 1;
-            token.total_amount = amount;
+            token.total_amount = Number(token.total_amount) + Number(amount);
             token.isLike = true;
             token.like = token.like + 1;
-            onUpdate(token);
+            onUpdate(token, "flip");
             setShowFlipModal(false);
           }}
           onHide={() => {
