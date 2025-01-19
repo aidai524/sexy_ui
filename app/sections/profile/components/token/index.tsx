@@ -14,6 +14,7 @@ import { Program } from "@coral-xyz/anchor";
 import idl from "@/app/hooks/meme_launchpad.json";
 import { useConnection } from "@solana/wallet-adapter-react";
 import dayjs from "dayjs";
+import Media from '@/app/components/thumbnail/media';
 
 interface Props {
   data: Project;
@@ -199,9 +200,20 @@ export default function Token({
             router.push("/detail?address=" + data.address + "&from=profile");
           }}
         >
-          <img
-            className={styles.tokenImg}
-            src={data.tokenImg || "/img/token-placeholder.png"}
+          <Media
+            data={data}
+            imgHeight={84}
+            imgStyle={{
+              width: 84,
+              height: 84,
+            }}
+            style={{
+              overflow: "hidden",
+            }}
+            videoStyle={{
+              height: "100%",
+              background: "#000",
+            }}
           />
           <LaunchTag type={data.status as number} />
         </div>
