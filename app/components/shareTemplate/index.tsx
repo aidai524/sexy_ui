@@ -26,6 +26,7 @@ import { getShortUrl, shareToX } from "@/app/utils/share";
 import Modal from "../modal";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
+import Big from "big.js";
 
 interface Props {
   token: Project | undefined;
@@ -51,10 +52,47 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const getShareImg = useCallback(async () => {
     if (token && containerRef.current) {
       const canvas = await html2canvas(containerRef.current, { useCORS: true });
-      const base64Url = canvas.toDataURL("image/webp");
-      const bloBData = base64ToBlob(base64Url);
+      // const base64Url = canvas.toDataURL("image/webp");
       const newFileName = generateRandomString(10);
-      const url = await postUpload(bloBData[0], newFileName, bloBData[1]);
+      // Create a new canvas with 375x625 dimensions
+      const canvas2 = document.createElement('canvas');
+      canvas2.width = 1000;
+      canvas2.height = 500;
+      
+      const ctx = canvas2.getContext('2d');
+      if (ctx) {
+        // Fill entire canvas with black background
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, canvas2.width, canvas2.height);
+        
+        // Calculate scaling factor to fit within canvas2
+        const scale = Math.min(
+          canvas2.width / canvas.width,
+          canvas2.height / canvas.height
+        );
+        
+        // Calculate dimensions after scaling
+        const scaledWidth = canvas.width * scale;
+        const scaledHeight = canvas.height * scale;
+        
+        // Calculate position to center scaled image
+        const x = (canvas2.width - scaledWidth) / 2;
+        const y = (canvas2.height - scaledHeight) / 2;
+        
+        // Draw scaled and centered image
+        ctx.drawImage(
+          canvas,
+          x, y,
+          scaledWidth,
+          scaledHeight
+        );
+        
+        const base64Url = canvas2.toDataURL("image/webp");
+        const bloBData = base64ToBlob(base64Url);
+        const url = await postUpload(bloBData[0], newFileName, bloBData[1]);
+        console.log("url:", url);
+      }
+      
       return newFileName;
     }
   }, [token]);
@@ -98,7 +136,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
   if (!token || !show) return null;
 
-  console.log("pumpMc:", pumpMc, totalHolders);
+  console.log("token:", token);
 
   return (
     <Modal
@@ -144,7 +182,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
                     <div className={styles.statsFlipText}>
                       <span className={styles.statsFlipTextTitle}>Flipped</span>
                       <span className={styles.statsFlipTextCount}>
-                        {simplifyNum(Number(token?.prePaidAmount), 2)} SOL
+                        {simplifyNum(new Big(token?.prePaidAmount || '').div(10 ** 9).toNumber(), 2)} SOL
                       </span>
                     </div>
                   ) : (
@@ -262,7 +300,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
             </div>
           </div>
           <QRCode
-            url={`${domain}/invite/${token.creater?.address || ""}`}
+            url={`${domain}/api/twitter?address=${token.address}&referral=${userInfo.address}`}
             size={50}
           />
           <img src="/img/share/scan.png" alt="Flip" className={styles.scan} />

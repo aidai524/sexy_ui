@@ -6,7 +6,7 @@ import { ASSOCIATED_TOKEN_PROGRAM_ID, getAccount, getAssociatedTokenAddressSync,
 import { PublicKey } from "@solana/web3.js";
 
 export default function useBalance({ reFreshBalnace, mint, tokenDecimals }
-    : { mint: string, tokenDecimals: number, reFreshBalnace: number }) {
+    : { mint?: string, tokenDecimals?: number, reFreshBalnace: number }) {
     const { connection } = useConnection();
     const { walletProvider } = useAccount();
 
@@ -26,7 +26,7 @@ export default function useBalance({ reFreshBalnace, mint, tokenDecimals }
     }, [connection, walletProvider]);
 
     useEffect(() => {
-        if (connection) {
+        if (connection && mint && tokenDecimals) {
             const mintAddress = new PublicKey(mint)
 
             try {
