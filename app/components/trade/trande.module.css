@@ -160,27 +160,29 @@
       }
     }
   }
+  
+}
 
-  .paid {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 300;
-    margin-top: 10px;
-    height: 27px;
-  }
+.paid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+  margin-top: 10px;
+  height: 27px;
+  flex: 1;
+}
 
-  .receiveTokenAmount {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex: 1;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 300;
-  }
+.receiveTokenAmount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
 }
 
 .panel {
