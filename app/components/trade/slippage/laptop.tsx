@@ -1,6 +1,7 @@
-import Modal from "@/app/components/modal";
 import styles from "./laptop.module.css";
 import { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 const list = [0.1, 0.5, 1];
 export default function Laptop({
@@ -13,21 +14,32 @@ export default function Laptop({
   useEffect(() => {
     show && setCustomVal(list.includes(Number(slipData)) ? "" : slipData);
   }, [show]);
-  return (
-    <Modal
-      open={show}
-      onClose={onHide}
-      mainStyle={{
-        width: 268,
-        borderColor: "#9290B199",
-        backgroundColor: "#1A1927"
-      }}
-      closeStyle={{
-        transform: "scale(0.8)",
-        marginTop: "-10px"
-      }}
-    >
-      <div className={styles.Container}>
+
+  useEffect(() => {
+    document.addEventListener("click", onHide);
+    return () => {
+      document.removeEventListener("click", onHide);
+    };
+  }, []);
+
+  if (!show) return null;
+  return ReactDOM.createPortal(
+    <AnimatePresence mode="wait">
+      <motion.div
+        initial={{
+          opacity: 0
+        }}
+        animate={{
+          opacity: 1
+        }}
+        exit={{
+          opacity: 0
+        }}
+        className={styles.Container}
+        onClick={(ev) => {
+          ev.stopPropagation();
+        }}
+      >
         <div className={styles.Title}>Set max slippage</div>
         <div className={styles.Labels}>
           {list.map((item: number) => (
@@ -59,7 +71,8 @@ export default function Laptop({
           />
           <span>%</span>
         </div>
-      </div>
-    </Modal>
+      </motion.div>
+    </AnimatePresence>,
+    document.getElementById("slippage-setting") || document.body
   );
 }

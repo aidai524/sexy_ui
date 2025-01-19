@@ -324,7 +324,7 @@ export default function BuySell({
           <div
             className={styles.inputArea}
             style={{
-              width: from === "panel" ? 325 : "100%"
+              // width: from === "panel" ? 325 : "100%"
             }}
           >
             <div className={styles.actionArea}>
@@ -353,12 +353,14 @@ export default function BuySell({
               )}
 
               <div
-                onClick={() => {
+                onClick={(ev) => {
+                  ev.stopPropagation();
                   setShowSlip(true);
                 }}
-                className={`${styles.slippage} button`}
+                className={`${styles.slippage}`}
+                id="slippage-setting"
               >
-                Set max slippage
+                <span className="button">Set max slippage</span>
               </div>
             </div>
 
@@ -412,7 +414,7 @@ export default function BuySell({
             </div>
 
             {activeIndex === 0 &&
-              (tokenType === 1 ? (
+              (tokenType === 1 && (
                 <div className={styles.tokenPercent}>
                   <div
                     onClick={() => {
@@ -447,17 +449,6 @@ export default function BuySell({
                       </div>
                     );
                   })}
-                </div>
-              ) : (
-                <div className={styles.paid}>
-                  <div>Maximum Payment</div>
-                  <div>
-                    {buyInSol &&
-                      new Big(buyInSol)
-                        .div(10 ** SOL.tokenDecimals)
-                        .toFixed()}{" "}
-                    SOL
-                  </div>
                 </div>
               ))}
 
@@ -500,12 +491,12 @@ export default function BuySell({
             )}
           </div>
 
-          <div>
+          <div className={from === "panel" ? styles.receiveAmountWrapper : styles.receiveAmountWrapperMobile}>
             {activeIndex === 0 && tokenType === 1 && (
               <div
                 style={{
-                  marginTop: 30,
-                  flexDirection: from === "panel" ? "column" : "row"
+                  // marginTop: 30,
+                  // flexDirection: from === "panel" ? "column" : "row"
                 }}
                 className={styles.receiveTokenAmount}
               >
@@ -521,11 +512,26 @@ export default function BuySell({
               </div>
             )}
 
+            {
+               activeIndex === 0 && tokenType === 0 && (
+                <div className={styles.paid}>
+                  <div>Maximum Payment</div>
+                  <div>
+                    {buyInSol &&
+                      new Big(buyInSol)
+                        .div(10 ** SOL.tokenDecimals)
+                        .toFixed()}{" "}
+                    SOL
+                  </div>
+                </div>
+              )
+            }
+
             {activeIndex === 1 && (
               <div
                 style={{
-                  marginTop: 30,
-                  flexDirection: from === "panel" ? "column" : "row"
+                  // marginTop: 30,
+                  // flexDirection: from === "panel" ? "column" : "row"
                 }}
                 className={styles.receiveTokenAmount}
               >
@@ -541,7 +547,7 @@ export default function BuySell({
               </div>
             )}
 
-            <div style={{ marginTop: 18 }}>
+            <div style={{ marginTop: from === "panel" ? 0 : 18 }}>
               <MainBtn
                 isLoading={isLoading}
                 isDisabled={isError}

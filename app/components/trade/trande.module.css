@@ -160,26 +160,28 @@
       }
     }
   }
+}
 
-  .paid {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 300;
-    margin-top: 10px;
-    height: 27px;
-  }
+.paid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+  margin-top: 10px;
+  height: 27px;
+  flex: 1;
+}
 
-  .receiveTokenAmount {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 300;
-  }
+.receiveTokenAmount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
 }
 
 .panel {
@@ -194,8 +196,8 @@
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.1);
   padding: 10px 14px;
-  display: flex;
-  gap: 20px;
+  /* display: flex;
+  gap: 20px; */
 }
 
 .Content {
@@ -209,12 +211,28 @@
   border-radius: 8px;
   border: 1px solid rgba(146, 144, 177, 0.6) !important;
   background: rgba(146, 144, 177, 0.1);
-  width: 335px;
+  /* width: 335px; */
   height: 68px;
   flex-shrink: 0;
 }
 
-
 .receiveTitle {
   white-space: nowrap;
+}
+
+.slippage {
+  position: relative;
+}
+
+.receiveAmountWrapper {
+  white-space: nowrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.receiveAmountWrapperMobile {
+  margin-top: 10px;
 }
