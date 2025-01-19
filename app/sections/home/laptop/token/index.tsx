@@ -158,7 +158,7 @@ export default function Token({
                 }
                 if (type === "trade") {
                   onUpdateTradeTab("holders");
-                  onOpenPanel("showTrade");
+                  if (!showTrade) onOpenPanel("showTrade");
                 }
               }}
               totalHolders={totalHolders}
