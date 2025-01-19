@@ -211,7 +211,7 @@ export default function Txs({ from, data }: any) {
 
                         onClick={() => {
                           if (!isSelf)
-                            router.push(`/profile/user?account=${item.address}`);
+                            router.push(`/profile/user?account=${item.address}&from=detail`);
                         }}
                       >
                         <img
