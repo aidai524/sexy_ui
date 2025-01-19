@@ -297,7 +297,7 @@ export default function BuySellPump({
           <div
             className={styles.inputArea}
             style={{
-              width: from === "panel" ? 335 : "100%"
+              // width: from === "panel" ? 335 : "100%"
             }}
           >
             <div className={styles.actionArea}>
@@ -469,34 +469,27 @@ export default function BuySellPump({
             )}
           </div>
 
-          <div>
+          <div className={from === "panel" ? styles.receiveAmountWrapper : styles.receiveAmountWrapperMobile}>
             {activeIndex === 0 && tokenType === 1 && (
-              <div
-                style={{
-                  marginTop: 30,
-                  flexDirection: from === "panel" ? "column" : "row"
-                }}
-                className={styles.receiveTokenAmount}
-              >
-                <div className={styles.receiveTitle}></div>
+              <div className={styles.receiveTokenAmount}>
+                <div className={styles.receiveTitle}>Minimum Received</div>
                 <div className={styles.receiveAmount}>
-                  {buyIn
-                    ? new Big(buyIn)
-                        .div(10 ** token.tokenDecimals!)
-                        .toFixed(token.tokenDecimals)
-                    : ""}{" "}
-                  {tokenName}
+                  {buyIn ? new Big(buyIn)
+                    .div(10 ** token.tokenDecimals!)
+                    .toFixed(token.tokenDecimals) : ""} {tokenName}
                 </div>
               </div>
             )}
+
+            {activeIndex === 0 && tokenType === 0 && (
+              <div className={styles.paid}>
+                <div>Maximum Payment</div>
+                <div>{buyInSol && buyInSol} SOL</div>
+              </div>
+            )}
+
             {activeIndex === 1 && (
-              <div
-                style={{
-                  marginTop: 30,
-                  flexDirection: from === "panel" ? "column" : "row"
-                }}
-                className={styles.receiveTokenAmount}
-              >
+              <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Minimum Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && sellOutSol} SOL
@@ -504,7 +497,7 @@ export default function BuySellPump({
               </div>
             )}
 
-            <div style={{ marginTop: 18 }}>
+            <div style={{ marginTop: from === "panel" ? 0 : 18 }}>
               <MainBtn
                 isLoading={isLoading}
                 isDisabled={isError}
@@ -614,3 +607,4 @@ export default function BuySellPump({
     </>
   );
 }
+

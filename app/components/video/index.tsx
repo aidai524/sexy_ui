@@ -6,19 +6,23 @@ interface VideoPlayerProps {
   type: string;
   className?: string;
   style?: React.CSSProperties;
+  autoPlay?: boolean;
 }
 
-export default function VideoPlayer({ src, type, className, style }: VideoPlayerProps) {
+export default function VideoPlayer({ src, type, className, style, autoPlay = true }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isShow, setIsShow] = useState(false);
 
   const handleClick = useCallback(() => {
+    if (!autoPlay) {
+      return;
+    }
     if (isShow) {
       videoRef.current?.play();
     } else {
       videoRef.current?.pause();
     }
-  }, [isShow]);
+  }, [isShow, autoPlay]);
 
   useEffect(() => {
     document.addEventListener('click', handleClick);
@@ -28,6 +32,9 @@ export default function VideoPlayer({ src, type, className, style }: VideoPlayer
   }, [handleClick]);
 
   useEffect(() => {
+    if (!autoPlay) {
+      return;
+    }
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -52,10 +59,10 @@ export default function VideoPlayer({ src, type, className, style }: VideoPlayer
         observer.unobserve(videoRef.current);
       }
     };
-  }, [videoRef]);
+  }, [videoRef, autoPlay]);
 
   return (
-    <video ref={videoRef} className={className} autoPlay style={style}>
+    <video ref={videoRef} className={className} autoPlay={autoPlay} preload={autoPlay ? "auto" : "none"} style={style}>
       <source src={src} type={`video/${type}`} />
     </video>
   );
