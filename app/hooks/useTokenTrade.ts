@@ -30,7 +30,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useVip } from "./useVip";
 import {
   programId_address,
-//   referral_address,
+  //   referral_address,
   total_supply
 } from "../utils/config";
 import { useSolPriceStore } from "../store/useSolPrice";
@@ -57,8 +57,8 @@ export function useTokenTrade({
   const [tokenBalance, setTokenBalance] = useState("0");
   const [solBalance, setSolBalance] = useState("0");
   const [reFreshBalnace, setReFreshBalnace] = useState(0);
-  const { config }: any = useConfig()
-  const { referral: referral_address } = useReferralStore()
+  const { config }: any = useConfig();
+  const { referral: referral_address } = useReferralStore();
 
   const programId = useMemo(() => {
     return new PublicKey(programId_address);
@@ -246,7 +246,7 @@ export function useTokenTrade({
       console.log(e);
     }
 
-    console.log('referral:', referral.toBase58())
+    console.log("referral:", referral.toBase58());
 
     const referralFeeRateRecord = PublicKey.findProgramAddressSync(
       [
@@ -444,9 +444,7 @@ export function useTokenTrade({
 
       console.log("transaction:", transaction);
 
-      const hash = await walletProvider.signAndSendTransaction(
-        transaction
-      );
+      const hash = await walletProvider.signAndSendTransaction(transaction);
 
       console.log("hash:", hash);
 
@@ -501,9 +499,7 @@ export function useTokenTrade({
 
       console.log("transaction:", transaction);
 
-      const hash = await walletProvider.signAndSendTransaction(
-        transaction
-      );
+      const hash = await walletProvider.signAndSendTransaction(transaction);
 
       console.log("hash:", hash);
 
@@ -546,13 +542,15 @@ export function useTokenTrade({
 
       transaction.add(sellInstruction);
 
-      const closeUseSolIns = createCloseAccountInstruction(keys.userWsolAccount, walletProvider.publicKey!, walletProvider.publicKey!)
-
-      transaction.add(closeUseSolIns)
-
-      const hash = await walletProvider.signAndSendTransaction(
-        transaction,
+      const closeUseSolIns = createCloseAccountInstruction(
+        keys.userWsolAccount,
+        walletProvider.publicKey!,
+        walletProvider.publicKey!
       );
+
+      transaction.add(closeUseSolIns);
+
+      const hash = await walletProvider.signAndSendTransaction(transaction);
       console.log("hash:", hash);
       return hash;
     },
@@ -873,9 +871,13 @@ export function useTokenTrade({
 
       transaction.add(prepaidSolWithdrawInstruction);
 
-      const closeUseSolIns = createCloseAccountInstruction(keys.userWsolAccount, walletProvider.publicKey!, walletProvider.publicKey!)
+      const closeUseSolIns = createCloseAccountInstruction(
+        keys.userWsolAccount,
+        walletProvider.publicKey!,
+        walletProvider.publicKey!
+      );
 
-      transaction.add(closeUseSolIns)
+      transaction.add(closeUseSolIns);
 
       const hash = await walletProvider.signAndSendTransaction(transaction);
 
@@ -936,7 +938,7 @@ export function useTokenTrade({
         TOKEN_PROGRAM_ID
       );
 
-      transaction.add(instruction1).add(instruction2)
+      transaction.add(instruction1).add(instruction2);
 
       transaction.add(prepaidTokenWithdrawInstruction);
 
@@ -952,7 +954,7 @@ export function useTokenTrade({
     if (!pool) {
       return false;
     }
-    
+
     const prePaidRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("prepaid_record"),
@@ -992,14 +994,14 @@ export function useTokenTrade({
     const program = new Program<any>(idl, programId, {
       connection: connection
     } as any);
-    
-    try {
-        const stateData: any = await program.account.launchpad.fetch(state[0]);
-        console.log('stateData:', stateData)
 
-        return stateData
+    try {
+      const stateData: any = await program.account.launchpad.fetch(state[0]);
+      console.log("stateData:", stateData);
+
+      return stateData;
     } catch (e) {
-        return {}
+      return {};
     }
 
     // const prepaidWithdrawDelayTime =
@@ -1007,7 +1009,6 @@ export function useTokenTrade({
   }, [programId, state, connection]);
 
   const getMC = useCallback(async () => {
-
     if (pool && pool.length) {
       const program = new Program<any>(idl, programId, {
         connection: connection
@@ -1046,7 +1047,7 @@ export function useTokenTrade({
             .div(10 ** tokenDecimals)
             .toString();
 
-            console.log('balance:', balance)
+          console.log("balance:", balance);
 
           setTokenBalance(balance);
           return;
@@ -1097,7 +1098,7 @@ export function useTokenTrade({
     getMC,
     pool,
     tokenInfo,
-    programId,
+    programId
   };
 }
 
