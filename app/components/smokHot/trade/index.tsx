@@ -160,7 +160,8 @@ export default function Trade({
             </div>
           ) : (
             <div className={styles.receiveTitle}>
-              You will auto-buy in when this meme launching.{" "}
+              You will auto-buy in at the average price when this meme
+              launching.{" "}
               {delayTime
                 ? `You can refund after ${delayTime}.`
                 : "You can refund anytime before launching."}
@@ -193,6 +194,7 @@ export default function Trade({
               } catch (e: any) {
                 console.log(e);
                 fail(e.toString());
+              } finally {
                 setIsLoading(false);
               }
             }}

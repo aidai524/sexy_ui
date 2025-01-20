@@ -24,7 +24,16 @@ export default function Item(props: Props) {
         // style={{ backgroundImage: `url("${icon}")` }}
         onClick={() => creator.onDetail(trend?.address)}
       >
-        <Media data={{ tokenImg: icon }} autoPlay={false} />
+        <Media
+          data={{ tokenImg: icon }}
+          autoPlay={false}
+          imgStyle={{
+            height: 86,
+            width: 86,
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
+        />
       </div>
 
       <div className={styles.ItemContent}>

@@ -4,10 +4,12 @@ import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useAuth } from "@/app/context/auth";
 import { fail, success } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useReferStore } from "@/app/store/useRefer";
 
 export default function EarnAndInvite({ info, rate, rateLoading }: any) {
   const { userInfo } = useAuth();
   const { isMobile } = useUserAgent();
+  const store = useReferStore();
 
   return (
     <div
@@ -81,16 +83,12 @@ export default function EarnAndInvite({ info, rate, rateLoading }: any) {
               type="button"
               className={styles.Button}
               onClick={() => {
-                navigator.clipboard
-                  .writeText(
-                    `${window?.location?.origin}?referral=${userInfo.address}`
-                  )
-                  .then(() => {
-                    success("Copied my invite link!");
-                  })
-                  .catch((err) => {
-                    fail("Copy failed!");
-                  });
+                if (!window.sexAddress) {
+                  //@ts-ignore
+                  window.connect();
+                  return;
+                }
+                store.setVisible(true);
               }}
             >
               Invite

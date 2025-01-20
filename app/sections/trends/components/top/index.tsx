@@ -9,6 +9,7 @@ import Likes from "@/app/components/thumbnail/likes";
 import Carousel from "@/app/sections/trends/components/carousel";
 import AvatarBg from "./avatar-bg";
 import useHolders from '@/app/sections/home/mobile/hooks/use-holders';
+import Media from '@/app/components/thumbnail/media';
 
 export default function Top(props: Props) {
   const { onBuy, trend, isMobile, loading } = props;
@@ -66,9 +67,19 @@ export default function Top(props: Props) {
         {!isMobile && <AvatarBg className={styles.TopAvatarBg} />}
         <div
           className={styles.TopAvatarContent}
-          style={{ backgroundImage: `url("${top1Icon}")` }}
           onClick={() => creator.onDetail(trend?.address)}
         >
+          <Media
+            data={{ tokenImg: top1Icon }}
+            autoPlay={false}
+            imgStyle={{
+              height: 210,
+              width: 210,
+              objectFit: 'cover',
+              objectPosition: 'center',
+              borderRadius: 20,
+            }}
+          />
           {!isMobile && (
             <div className={styles.PcCarouselWrapper}>
               <Carousel />
