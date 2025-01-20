@@ -199,20 +199,18 @@ export default function Txs({ from, data }: any) {
                 {list.map((item: any) => {
                   const isSelf = item.address === userInfo?.address;
                   return (
-                    <div
-                      key={item.tx_hash}
-                      className={`${styles.item}`}
-                    >
+                    <div key={item.tx_hash} className={`${styles.item}`}>
                       <div
                         className={`${styles.account} ${
                           from === "panel"
                             ? styles.LaptopAccount
                             : styles.MobileAccount
                         } ${!isSelf && "button"}`}
-
                         onClick={() => {
                           if (!isSelf)
-                            router.push(`/profile/user?account=${item.address}&from=detail`);
+                            router.push(
+                              `/profile/user?account=${item.address}&from=detail`
+                            );
                         }}
                       >
                         <img

@@ -11,10 +11,10 @@ import { useState } from "react";
 import EditButton from "./edit-button";
 import EditProfile from "./panels/edit-profile";
 import FollowersPanel from "./panels/followers";
-import { formatLongText } from '@/app/utils/common';
-import { formatAddress } from '@/app/utils';
-import { useSearchParams } from 'next/navigation';
-import GoBack from '@/app/components/back/laptop';
+import { formatLongText } from "@/app/utils/common";
+import { formatAddress } from "@/app/utils";
+import { useSearchParams } from "next/navigation";
+import GoBack from "@/app/components/back/laptop";
 
 export default function Laptop({
   userInfo,
@@ -39,11 +39,9 @@ export default function Laptop({
       className={styles.Container}
     >
       <div className={styles.TitleWrapper}>
-        {
-          ["profile", "messages", "detail"].includes(search.get("from") || "") && (
-            <GoBack text="" />
-          )
-        }
+        {["profile", "messages", "detail"].includes(
+          search.get("from") || ""
+        ) && <GoBack text="" />}
         Profile
       </div>
       <div className={styles.Content}>
@@ -57,7 +55,11 @@ export default function Laptop({
               <div className={styles.Desc}>
                 <div className={styles.NameTop}>
                   <div className={styles.NameWrapper}>
-                    <div>{formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || "FlipN"}</div>
+                    <div>
+                      {formatLongText(userInfo?.name, 9, 4) ||
+                        formatAddress(userInfo?.address) ||
+                        "FlipN"}
+                    </div>
                     <Level level={userInfo.level} style={{ marginLeft: 24 }} />
                     {!isOther && (
                       <EditButton
@@ -102,13 +104,13 @@ export default function Laptop({
               isOther={isOther}
               from="page"
               style={{
-                position: "relative",
+                position: "relative"
               }}
               tabContentStyle={{
                 padding: "22px 30px 0",
                 height: "calc(100vh - 280px)",
                 overflowY: "auto",
-                flex: "0",
+                flex: "0"
               }}
               tabHeaderStyle={{
                 flex: 0,
@@ -118,7 +120,7 @@ export default function Laptop({
                 overflowX: "auto",
                 height: "47px",
                 borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-                justifyContent: "flex-start",
+                justifyContent: "flex-start"
               }}
               cursorStyle={{
                 height: 3,
@@ -135,7 +137,7 @@ export default function Laptop({
             <CircleLoading size={40} />
           </div>
         ) : (
-          <Empty text="No Data" height="100%" />
+          <Empty text="No Data" height="600px" />
         )}
       </div>
       <AnimatePresence mode="wait">
