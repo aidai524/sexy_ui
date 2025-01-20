@@ -17,6 +17,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Token({
   isCurrent,
+  isNext,
   token,
   opacity,
   showTrade,
@@ -50,7 +51,7 @@ export default function Token({
           <div
             className={styles.Token}
             style={{
-              width: innerWidth,
+              width: showTrade && isNext ? 968 : innerWidth,
               height: innerHeight
             }}
           >
@@ -119,7 +120,7 @@ export default function Token({
           {token.status !== 0 && isCurrent && showTrade && (
             <TradePanel
               onClose={() => {
-                // onOpenPanel("showTrade", false);
+                onOpenPanel("showTrade", false);
               }}
               token={token}
               tab={tradeTab}

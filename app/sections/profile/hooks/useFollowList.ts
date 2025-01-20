@@ -70,7 +70,7 @@ export default function useFollowList({
     if (!isOther) {
       accountRefresher ? loadMore(true) : setList([]);
     }
-  }, [currentUser, accountRefresher, isOther]);
+  }, [currentUser?.address, accountRefresher, isOther]);
 
   useEffect(() => {
     if (refresh > 0) {
