@@ -3,6 +3,7 @@ import { formatLongText, numberFormatter } from "@/app/utils/common";
 import { Trend } from "@/app/sections/trends/hooks";
 import { useCreator } from "@/app/sections/trends/hooks/creator";
 import { useUserAgent } from "@/app/context/user-agent";
+import Media from "@/app/components/thumbnail/media";
 
 export default function Item(props: Props) {
   const { onBuy, trend } = props;
@@ -15,13 +16,22 @@ export default function Item(props: Props) {
   const tickerAvatar = trend?.Icon;
   const marketCap = trend?.market_cap;
 
+  console.log('trend:',trend);
+
   return (
     <div className={isMobile ? styles.Item : styles.PcItem}>
       <div
         className={styles.ItemAvatar}
-        style={{ backgroundImage: `url("${icon}")` }}
+        // style={{ backgroundImage: `url("${icon}")` }}
         onClick={() => creator.onDetail(trend?.address)}
-      />
+      >
+        <Media
+          data={{ tokenImg: icon }}
+          autoPlay={false}
+        />  
+      </div>
+
+      
       <div className={styles.ItemContent}>
         <div className={styles.ItemHead}>
           <div className={styles.ItemHeadInfo}>

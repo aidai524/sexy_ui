@@ -23,7 +23,7 @@ export default function Media({ imgHeight, data, imgStyle, videoStyle, style, au
             autoPlay={autoPlay}
           />
         }
-        {imgReg.test(data.tokenImg) && (
+        {(imgReg.test(data.tokenImg) || !data.tokenImg) && (
           <LazyLoadImage
             effect="blur"
             className={styles.tokenImg}
