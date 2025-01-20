@@ -119,7 +119,7 @@ export default function Token({
           {token.status !== 0 && isCurrent && showTrade && (
             <TradePanel
               onClose={() => {
-                // onOpenPanel("showTrade", false);
+                onOpenPanel("showTrade", false);
               }}
               token={token}
               tab={tradeTab}

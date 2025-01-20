@@ -21,7 +21,7 @@ interface Props {
   show: boolean;
 }
 
-const name_reg = /^[a-zA-Z0-9]{1,16}$/;
+const name_reg = /^[a-zA-Z0-9]{1,10}$/;
 
 export default forwardRef(function CreateNode(
   { onAddDataFill, show }: Props,
