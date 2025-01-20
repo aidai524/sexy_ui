@@ -38,7 +38,7 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.0005, 0.001];
+const SOL_PERCENT_LIST = [0.1, 0.5, 1];
 
 export default function BuySell({
   from,
@@ -49,11 +49,9 @@ export default function BuySell({
 }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
-  // const [slip, setSlip] = useState(3);
   const { slip, set: setSlip }: any = useSlip();
   const slippageTextRef = useRef<any>();
-
-  const tokenUri = token.tokenIcon || token.tokenImg;
+  const tokenUri = token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
 
   const desToken: Token = {
     tokenName,
@@ -70,6 +68,7 @@ export default function BuySell({
 
   const [isLoading, setIsLoading] = useState(false);
   const [successMoalShow, setSuccessMoalShow] = useState(true);
+  const [buyTokenType, setBuyTokenType] = useState(1);
 
   const [solPercent, setSolPercent] = useState(0);
   const [tokenPercent, setTokenPercent] = useState(1);
@@ -284,6 +283,11 @@ export default function BuySell({
                 setTokenType(0);
                 setTokenPercent(0);
               }
+
+              if (index === 0) {
+                setTokenType(buyTokenType);
+                setCurrentToken(buyTokenType === 1 ? SOL : desToken);
+              } 
             }}
           />
         ) : (
@@ -338,12 +342,20 @@ export default function BuySell({
                     if (tokenType === 0) {
                       setCurrentToken(SOL);
                       setTokenType(1);
+                      if (activeIndex === 0) {
+                        setBuyTokenType(1);
+                      } 
                     } else {
                       setCurrentToken(desToken);
                       setTokenType(0);
+                      if (activeIndex === 0) {
+                        setBuyTokenType(0);
+                      } 
                     }
                     setValInput("");
                     setSolPercent(0);
+
+                    
                   }}
                 >
                   <span className={styles.switchTitle}>switch to </span>
