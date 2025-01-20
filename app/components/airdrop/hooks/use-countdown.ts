@@ -12,10 +12,10 @@ export function useCountdown() {
   useEffect(() => {
     const calc = () => {
       clearTimeout(timer.current);
-      timer.current = setTimeout(calc, 60000);
+      timer.current = setTimeout(calc, 1000);
       const _result = {
-        startSplit: [0, 0, 0],
-        endSplit: [0, 0, 0],
+        startSplit: [0, 0, 0, 0],
+        endSplit: [0, 0, 0, 0],
         start: 0,
         end: 0,
       };
@@ -28,9 +28,10 @@ export function useCountdown() {
         const days = diffDuration.days();
         const hours = diffDuration.hours();
         const minutes = diffDuration.minutes();
+        const seconds = diffDuration.seconds();
 
         _result.end = diff;
-        _result.endSplit = [days, hours, minutes];
+        _result.endSplit = [days, hours, minutes, seconds];
       }
 
       const start = dayjs(AirdropStartTime);
@@ -40,9 +41,10 @@ export function useCountdown() {
         const days = diffDuration.days();
         const hours = diffDuration.hours();
         const minutes = diffDuration.minutes();
+        const seconds = diffDuration.seconds();
 
         _result.start = diff;
-        _result.startSplit = [days, hours, minutes];
+        _result.startSplit = [days, hours, minutes, seconds];
       }
 
       setResult(_result);
@@ -54,7 +56,7 @@ export function useCountdown() {
     return () => {
       clearTimeout(timer.current);
     };
-  }, [AirdropEndTime]);
+  }, [AirdropEndTime, AirdropStartTime]);
 
   return [result];
 }

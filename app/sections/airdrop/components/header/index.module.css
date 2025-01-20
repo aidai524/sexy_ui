@@ -2,8 +2,19 @@
   width: 100%;
   height: 65px;
   padding: 20px 13px 20px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.AirdropHeaderImage {
-  width: 100%;
+.AirdropHeaderImageLogo {
+  width: 72px;
+  height: 25px;
+  flex-shrink: 0;
+}
+
+.AirdropHeaderImageSlogan {
+  width: 188px;
+  height: 16px;
+  flex-shrink: 0;
 }
