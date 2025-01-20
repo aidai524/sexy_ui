@@ -1,3 +1,7 @@
+.cardWrapper {
+    width: 375px;
+}
+
 .cardContainer {
     width: 375px;
     height: 625px;
@@ -5,11 +9,6 @@
     border-radius: 20px;
     border: 1px solid #000;
     padding: 20px;
-    /* position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999; */
 }
 
 .header {
@@ -104,8 +103,6 @@
 .statsFlipTextCount {
     font-size: 20px;
 }
-
-
 
 .statsLikeText {
     transform: rotate(17.34deg);
@@ -302,4 +299,43 @@
 
 .statsHolderTextCount {
     font-size: 20px;
+}
+
+.buttonContainer {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+.saveButton {
+    padding: 12px 24px;
+    border-radius: 100px;
+    background: transparent;
+    border: 1px solid #FFB800;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    flex: 1;
+}
+
+.shareButtonActive {
+    opacity: 0.5;
+}
+
+.shareButton {
+    padding: 12px 40px;
+    border-radius: 100px;
+    background: #FFB800;
+    border: none;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;   
 }       
