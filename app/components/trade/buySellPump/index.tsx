@@ -430,7 +430,7 @@ export default function BuySellPump({
                 </div>
               ) : (
                 <div className={styles.paid}>
-                  <div>Maximum Payment</div>
+                  <div>Payment</div>
                   <div>{buyInSol && buyInSol} SOL</div>
                 </div>
               ))}
@@ -497,7 +497,7 @@ export default function BuySellPump({
 
             {activeIndex === 0 && tokenType === 0 && (
               <div className={styles.paid}>
-                <div>Maximum Payment</div>
+                <div>Payment</div>
                 <div>{buyInSol && buyInSol} SOL</div>
               </div>
             )}
