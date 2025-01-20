@@ -5,7 +5,7 @@ import EarnAndInvite from "./mobile/earn-invite";
 import Others from "./mobile/others";
 import RankPanel from "./component/rank";
 
-export default function Laptop({ info, infoLoading }: any) {
+export default function Laptop({ info, infoLoading, rate, rateLoading }: any) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -17,7 +17,7 @@ export default function Laptop({ info, infoLoading }: any) {
         <div className={styles.Content}>
           <TotalPanel info={info} />
           <div style={{ height: 20 }} />
-          <EarnAndInvite info={info} />
+          <EarnAndInvite info={info} rate={rate} rateLoading={rateLoading} />
           <div style={{ height: 36 }} />
           <Others info={info} />
         </div>

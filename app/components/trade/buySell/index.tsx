@@ -51,7 +51,8 @@ export default function BuySell({
   const [showSlip, setShowSlip] = useState(false);
   const { slip, set: setSlip }: any = useSlip();
   const slippageTextRef = useRef<any>();
-  const tokenUri = token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
+  const tokenUri =
+    token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
 
   const desToken: Token = {
     tokenName,
@@ -287,7 +288,7 @@ export default function BuySell({
               if (index === 0) {
                 setTokenType(buyTokenType);
                 setCurrentToken(buyTokenType === 1 ? SOL : desToken);
-              } 
+              }
             }}
           />
         ) : (
@@ -344,18 +345,16 @@ export default function BuySell({
                       setTokenType(1);
                       if (activeIndex === 0) {
                         setBuyTokenType(1);
-                      } 
+                      }
                     } else {
                       setCurrentToken(desToken);
                       setTokenType(0);
                       if (activeIndex === 0) {
                         setBuyTokenType(0);
-                      } 
+                      }
                     }
                     setValInput("");
                     setSolPercent(0);
-
-                    
                   }}
                 >
                   <span className={styles.switchTitle}>switch to </span>
@@ -523,7 +522,7 @@ export default function BuySell({
                 }
                 className={styles.receiveTokenAmount}
               >
-                <div className={styles.receiveTitle}>Minimum Received</div>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
                     ? new Big(buyIn)
@@ -558,7 +557,7 @@ export default function BuySell({
                 }
                 className={styles.receiveTokenAmount}
               >
-                <div className={styles.receiveTitle}>Minimum Received</div>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && Number(sellOutSol) > 0
                     ? new Big(sellOutSol)

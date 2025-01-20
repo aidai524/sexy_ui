@@ -12,6 +12,13 @@
   z-index: 30;
 }
 
+.PcActions {
+  position: absolute;
+  right: -50px;
+  bottom: 0px;
+  z-index: 30;
+}
+
 .Item {
   color: #fff;
   text-align: right;

@@ -19,7 +19,7 @@ export default function Info({
   ...rest
 }: Props) {
   return (
-    <div className={styles.main}>
+    <div className={!data ? styles.mainEmpty : styles.main}>
       <InfoPart
         showLikes={true}
         mc={mc}

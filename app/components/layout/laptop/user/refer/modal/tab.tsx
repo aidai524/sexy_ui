@@ -3,54 +3,72 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 const Tab = (props: any) => {
-  const { isMobile, bg, list } = props;
+  const { isMobile, tab, list } = props;
 
   const [value, setValue] = useState(50);
+  const isPointsTab = tab === 2;
 
   return (
-    <motion.div
-      className={isMobile ? styles.EarnedMobile : styles.Earned}
-      {...AnimateVariants}
-    >
-      <div className={isMobile ? styles.ProgressMobile : styles.Progress}>
+    <div>
+      {
+        isPointsTab && (
+          <div className={styles.ProgressLabel}>
+            <div className={styles.ProgressLabelTitle}>
+              Refferrals
+            </div>
+            <div className={styles.ProgressLabelTitle}>
+              Yours
+            </div>
+          </div>
+        )
+      }
+      <motion.div
+        className={isMobile ? styles.EarnedMobile : styles.Earned}
+        style={{
+          marginTop: isPointsTab ? 10 : 30,
+        }}
+        {...AnimateVariants}
+      >
+        <div className={isMobile ? styles.ProgressMobile : styles.Progress}>
         <motion.div
-          className={styles.ProgressValue}
-          animate={{ height: `${value}%` }}
-        />
-        <div className={styles.NodeList}>
-          {
-            list.map((item: any) => (
-              <motion.div
-                key={item.key}
-                className={item.value >= value ? styles.NodeActive : styles.Node}
-                animate={{
-                  backgroundImage: `url("${item.value <= value ? item.iconActive : item.icon}")`
-                }}
-                onMouseEnter={() => {
-                  setValue(item.value);
-                }}
-                onMouseLeave={() => {
-                  setValue(50);
-                }}
-              >
-                <div className={styles.NodeInner}>
-                  <div className={styles.NodeLabel}>
-                    {item.label}
-                  </div>
-                  <div className={styles.NodeRewardContent}>
-                    <div className={styles.NodeRewardValue}>
-                      <span className={styles.NodeRewardValueText}>{item.amount} {item.unit}</span>
-                      <span>/</span>
+            className={styles.ProgressValue}
+            animate={{ height: `${value}%` }}
+          />
+          <div className={styles.NodeList}>
+            {
+              list.map((item: any) => (
+                <motion.div
+                  key={item.key}
+                  className={item.value >= value ? styles.NodeActive : styles.Node}
+                  animate={{
+                    backgroundImage: `url("${item.value <= value ? item.iconActive : item.icon}")`
+                  }}
+                  onMouseEnter={() => {
+                    setValue(item.value);
+                  }}
+                  onMouseLeave={() => {
+                    setValue(50);
+                  }}
+                >
+                  <div className={styles.NodeInner}>
+                    <div className={styles.NodeLabel}>
+                      {item.label}
                     </div>
-                    <div className={styles.NodeRewardUnit}>{item.perUnit}</div>
+                    <div className={styles.NodeRewardContent}>
+                      <div className={styles.NodeRewardValue}>
+                        <span className={styles.NodeRewardValueText}>{item.amount} {item.unit}</span>
+                        <span>/</span>
+                      </div>
+                      <div className={styles.NodeRewardUnit}>{item.perUnit}</div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))
-          }
+                </motion.div>
+              ))
+            }
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 

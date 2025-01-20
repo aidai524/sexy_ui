@@ -14,6 +14,7 @@ import Big from "big.js";
 import TokenTags from "@/app/components/tokenTags";
 import { getVideoExt, imgReg, videoReg } from "@/app/components/upload";
 import VideoPlayer from "@/app/components/video";
+import Empty from '@/app/components/empty';
 
 interface Props {
   data: Project;
@@ -41,11 +42,11 @@ export default function InfoPart({
   const { address } = useAccount();
   const router = useRouter();
   const { mc: pumpMc } = useMc({
-    tokenAddress: data.address,
-    disable: data.DApp !== "pump"
+    tokenAddress: data?.address,
+    disable: data?.DApp !== "pump"
   });
   const userName = useMemo(() => {
-    if (data.creater) {
+    if (data?.creater) {
       if (data.creater.name) {
         return data.creater.name;
       }
@@ -55,7 +56,7 @@ export default function InfoPart({
       }
     }
 
-    if (data.account) {
+    if (data?.account) {
       return formatAddress(data.account);
     }
     return "-";
@@ -63,7 +64,9 @@ export default function InfoPart({
   const { isMobile } = useUserAgent();
 
   if (!data) {
-    return;
+    return (
+      <Empty text="No info" />
+    )
   }
 
   return (
