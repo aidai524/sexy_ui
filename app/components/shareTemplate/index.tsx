@@ -28,6 +28,7 @@ import Modal from "../modal";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import Big from "big.js";
+import Media from "../thumbnail/media";
 
 interface Props {
   token: Project | undefined;
@@ -175,7 +176,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
           ref={containerRef}
           className={styles.cardContainer}
           onClick={() => {
-            
+
           }}
         >
           <img src="/img/share/logo.png" alt="Flip" className={styles.logo} />
@@ -185,6 +186,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               alt="Flip"
               className={styles.subTitle}
             />
+
           </div>
 
           {/* Main Card Content */}
@@ -193,7 +195,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               token?.status === 0 && (
                 <div className={styles.stats}>
                   <div className={styles.statsFlip}>
-                    {Number(token?.prePaidAmount) > 0 ? (
+                    {Number(token?.prePaidAmount) >= 10e9 ? (
                       <div className={styles.statsFlipText}>
                         <span className={styles.statsFlipTextTitle}>Flipped</span>
                         <span className={styles.statsFlipTextCount}>
@@ -207,7 +209,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
                     )}
                   </div>
                   <div className={styles.statsLike}>
-                    {Number(token?.like) > 0 ? (
+                    {Number(token?.like) >= 50 ? (
                       <div className={styles.statsLikeText}>
                         <span className={styles.statsLikeTextTitle}>Liked</span>
                         <span className={styles.statsLikeTextCount}>
@@ -256,7 +258,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
             }
 
             <div className={styles.tokenImage}>
-              {
+              {/* {
                 checkFileType(token.tokenImg) === 'image' && (
                   <img
                     src={token.tokenIcon}
@@ -269,6 +271,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
                 src={token.tokenIcon}
                 alt={token.tokenName}
                 className={styles.tokenImg}
+              /> */}
+              <Media
+                autoPlay={false}
+                data={token}
               />
             </div>
           </div>
@@ -341,8 +347,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
               fail("Wait for a while");
             }
           }}>Save image</button>
-          <button className={styles.shareButton + ' ' + (!shareUrl ? styles.shareButtonActive : '')} onClick={() => {
-          if (shareUrl) {
+          <button className={styles.shareButton + ' ' + (!shareUrl ? styles.shareButtonActive : '')} onClick={async () => {
+            await getShareImg()
+            if (shareUrl) {
               shareToX(token.tokenName, shareUrl);
             }
           }}>
