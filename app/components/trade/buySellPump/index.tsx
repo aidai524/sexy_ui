@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import { useDebounce } from "ahooks";
-import { BN } from "@coral-xyz/anchor";
 import Big from "big.js";
 import styles from "../trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
@@ -52,6 +51,7 @@ export default function BuySellPump({
   const [showSlip, setShowSlip] = useState(false);
   const { slip, set: setSlip }: any = useSlip();
   const tokenUri = token.tokenIcon || token.tokenImg;
+  const slippageTextRef = useRef<any>();
 
   const desToken: Token = {
     tokenName,
@@ -296,9 +296,11 @@ export default function BuySellPump({
         >
           <div
             className={styles.inputArea}
-            style={{
-              // width: from === "panel" ? 335 : "100%"
-            }}
+            style={
+              {
+                // width: from === "panel" ? 335 : "100%"
+              }
+            }
           >
             <div className={styles.actionArea}>
               {/* {activeIndex === 0 ? (
@@ -328,10 +330,11 @@ export default function BuySellPump({
               <div
                 onClick={(ev) => {
                   ev.stopPropagation();
+                  ev.nativeEvent.stopImmediatePropagation();
                   setShowSlip(true);
                 }}
                 className={`${styles.slippage}`}
-                id="slippage-setting"
+                ref={slippageTextRef}
               >
                 <span className="button">Set max slippage</span>
               </div>
@@ -469,14 +472,23 @@ export default function BuySellPump({
             )}
           </div>
 
-          <div className={from === "panel" ? styles.receiveAmountWrapper : styles.receiveAmountWrapperMobile}>
+          <div
+            className={
+              from === "panel"
+                ? styles.receiveAmountWrapper
+                : styles.receiveAmountWrapperMobile
+            }
+          >
             {activeIndex === 0 && tokenType === 1 && (
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Minimum Received</div>
                 <div className={styles.receiveAmount}>
-                  {buyIn ? new Big(buyIn)
-                    .div(10 ** token.tokenDecimals!)
-                    .toFixed(token.tokenDecimals) : ""} {tokenName}
+                  {buyIn
+                    ? new Big(buyIn)
+                        .div(10 ** token.tokenDecimals!)
+                        .toFixed(token.tokenDecimals)
+                    : ""}{" "}
+                  {tokenName}
                 </div>
               </div>
             )}
@@ -595,6 +607,7 @@ export default function BuySellPump({
         show={showSlip}
         slipData={slip}
         token={token}
+        textRef={slippageTextRef}
         onSlipDataChange={(val: any) => {
           setSlip({
             slip: val
@@ -607,4 +620,3 @@ export default function BuySellPump({
     </>
   );
 }
-

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import { useDebounce } from "ahooks";
 import { BN } from "@coral-xyz/anchor";
 import Big from "big.js";
@@ -51,6 +51,7 @@ export default function BuySell({
   const [showSlip, setShowSlip] = useState(false);
   // const [slip, setSlip] = useState(3);
   const { slip, set: setSlip }: any = useSlip();
+  const slippageTextRef = useRef<any>();
 
   const tokenUri = token.tokenIcon || token.tokenImg;
 
@@ -323,9 +324,11 @@ export default function BuySell({
         >
           <div
             className={styles.inputArea}
-            style={{
-              // width: from === "panel" ? 325 : "100%"
-            }}
+            style={
+              {
+                // width: from === "panel" ? 325 : "100%"
+              }
+            }
           >
             <div className={styles.actionArea}>
               {activeIndex === 0 ? (
@@ -355,10 +358,11 @@ export default function BuySell({
               <div
                 onClick={(ev) => {
                   ev.stopPropagation();
+                  ev.nativeEvent.stopImmediatePropagation();
                   setShowSlip(true);
                 }}
                 className={`${styles.slippage}`}
-                id="slippage-setting"
+                ref={slippageTextRef}
               >
                 <span className="button">Set max slippage</span>
               </div>
@@ -413,44 +417,43 @@ export default function BuySell({
               </div>
             </div>
 
-            {activeIndex === 0 &&
-              (tokenType === 1 && (
-                <div className={styles.tokenPercent}>
-                  <div
-                    onClick={() => {
-                      setSolPercent(0);
-                      setValInput("");
-                    }}
-                    className={`${
-                      from === "panel"
-                        ? styles.PanelPercentTag
-                        : styles.percentTag
-                    } button`}
-                  >
-                    Reset
-                  </div>
-                  {SOL_PERCENT_LIST.map((item) => {
-                    return (
-                      <div
-                        onClick={() => {
-                          setSolPercent(item);
-                          setValInput(getFullNum(item));
-                        }}
-                        key={item}
-                        className={[
-                          from === "panel"
-                            ? styles.PanelPercentTag
-                            : styles.percentTag,
-                          item === solPercent ? styles.tagActive : "",
-                          "button"
-                        ].join(" ")}
-                      >
-                        {getFullNum(item)}SOL
-                      </div>
-                    );
-                  })}
+            {activeIndex === 0 && tokenType === 1 && (
+              <div className={styles.tokenPercent}>
+                <div
+                  onClick={() => {
+                    setSolPercent(0);
+                    setValInput("");
+                  }}
+                  className={`${
+                    from === "panel"
+                      ? styles.PanelPercentTag
+                      : styles.percentTag
+                  } button`}
+                >
+                  Reset
                 </div>
-              ))}
+                {SOL_PERCENT_LIST.map((item) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        setSolPercent(item);
+                        setValInput(getFullNum(item));
+                      }}
+                      key={item}
+                      className={[
+                        from === "panel"
+                          ? styles.PanelPercentTag
+                          : styles.percentTag,
+                        item === solPercent ? styles.tagActive : "",
+                        "button"
+                      ].join(" ")}
+                    >
+                      {getFullNum(item)}SOL
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
             {activeIndex === 1 && (
               <div className={styles.tokenPercent}>
@@ -491,13 +494,21 @@ export default function BuySell({
             )}
           </div>
 
-          <div className={from === "panel" ? styles.receiveAmountWrapper : styles.receiveAmountWrapperMobile}>
+          <div
+            className={
+              from === "panel"
+                ? styles.receiveAmountWrapper
+                : styles.receiveAmountWrapperMobile
+            }
+          >
             {activeIndex === 0 && tokenType === 1 && (
               <div
-                style={{
-                  // marginTop: 30,
-                  // flexDirection: from === "panel" ? "column" : "row"
-                }}
+                style={
+                  {
+                    // marginTop: 30,
+                    // flexDirection: from === "panel" ? "column" : "row"
+                  }
+                }
                 className={styles.receiveTokenAmount}
               >
                 <div className={styles.receiveTitle}>Minimum Received</div>
@@ -512,27 +523,27 @@ export default function BuySell({
               </div>
             )}
 
-            {
-               activeIndex === 0 && tokenType === 0 && (
-                <div className={styles.paid}>
-                  <div>Maximum Payment</div>
-                  <div>
-                    {buyInSol &&
-                      new Big(buyInSol)
-                        .div(10 ** SOL.tokenDecimals)
-                        .toFixed()}{" "}
-                    SOL
-                  </div>
+            {activeIndex === 0 && tokenType === 0 && (
+              <div className={styles.paid}>
+                <div>Maximum Payment</div>
+                <div>
+                  {buyInSol &&
+                    new Big(buyInSol)
+                      .div(10 ** SOL.tokenDecimals)
+                      .toFixed()}{" "}
+                  SOL
                 </div>
-              )
-            }
+              </div>
+            )}
 
             {activeIndex === 1 && (
               <div
-                style={{
-                  // marginTop: 30,
-                  // flexDirection: from === "panel" ? "column" : "row"
-                }}
+                style={
+                  {
+                    // marginTop: 30,
+                    // flexDirection: from === "panel" ? "column" : "row"
+                  }
+                }
                 className={styles.receiveTokenAmount}
               >
                 <div className={styles.receiveTitle}>Minimum Received</div>
@@ -650,6 +661,7 @@ export default function BuySell({
         show={showSlip}
         slipData={slip}
         token={token}
+        textRef={slippageTextRef}
         onSlipDataChange={(val: any) => {
           setSlip({
             slip: val
