@@ -104,3 +104,12 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.AirdropInfoCardLaptop {
+  margin-top: 42px;
+  width: 461px !important;
+  padding: 23px 30px 17px !important;
+}
+.AirdropInfoCardLaptopTitle {
+  text-align: left !important;
+}
