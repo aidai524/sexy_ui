@@ -322,6 +322,7 @@
     font-weight: bold;
     cursor: pointer;
     flex: 1;
+    font-family: 'Unbounded';
 }
 
 .shareButtonActive {
@@ -342,4 +343,20 @@
     align-items: center;
     justify-content: center;
     gap: 8px;   
+    font-family: 'Unbounded';
 }       
+
+.qrcode1 {
+    position: relative;
+}
+
+.qrLogo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: none;
+}
