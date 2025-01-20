@@ -79,6 +79,10 @@ export default function Trade({
     }
   }, [modalShow]);
 
+  useEffect(() => {
+    setIsLoading(false);
+  }, [token]);
+
   return (
     <div className={styles.main} style={mainStyle}>
       <div className={styles.avatar}>
@@ -200,7 +204,7 @@ export default function Trade({
             }}
             style={{ backgroundColor: "#FBCA04", color: "#000" }}
           >
-            Pre-Buy
+            Flip
           </MainBtn>
         </div>
       </div>

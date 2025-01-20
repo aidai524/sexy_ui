@@ -42,9 +42,8 @@ export default function Main({ userInfo }: any) {
             content: (
               <>
                 With <span style={{ fontWeight: "bold" }}>Pre-Launch</span>{" "}
-                tokens, you can{" "}
-                <span style={{ fontWeight: "bold" }}>Pre-Buy</span> first to get
-                a better price.
+                tokens, you can <span style={{ fontWeight: "bold" }}>Flip</span>{" "}
+                first to get a better price.
               </>
             ),
             placement: MaskPlacement.TopLeft
