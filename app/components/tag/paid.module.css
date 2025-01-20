@@ -1,11 +1,13 @@
 .Tag {
   display: flex;
   align-items: center;
-  padding: 2px 8px;
   background: #FF008A;
   border-radius: 22px;
   font-size: 10px;
   color: #fff;
   font-weight: 300;
+  height: 20px;
+  padding: 0 8px;
+  align-items: center;
 }
 

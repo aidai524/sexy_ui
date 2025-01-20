@@ -21,7 +21,7 @@ import {
 import QRCode from "../qrcode";
 import TokenTags from "../tokenTags";
 import { useAuth } from "@/app/context/auth";
-import Level from "../level/simple";
+import Level from "../level";
 import { fail } from "@/app/utils/toast";
 import { getShortUrl, shareToX } from "@/app/utils/share";
 import Modal from "../modal";
@@ -325,7 +325,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
                 <div>Inviter:</div>
                 <div className={styles.inviteAddress}>
                   {formatAddress(userInfo?.address || "")}
-                  <Level level={userInfo?.level || 0} />
+                  <div style={{ transform: 'scale(0.8)', marginLeft: 10 }}>
+                    <Level level={userInfo?.level || 0} />
+                  </div>
                 </div>
                 <div className={styles.inviteUrl}>
                   {shareUrl}
@@ -348,7 +350,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
         </div>
         <div className={styles.buttonContainer}>
           <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
-            console.log(111, canvasRef.current)
             if (canvasRef.current) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;
@@ -359,9 +360,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
             }
           }}>Save image</button>
           <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current ? 1 : 0.5 }} onClick={async () => {
-            // await getShareImg()
             if (shareUrl) {
               shareToX(token.tokenName, shareUrl);
+              onClose();
             }
           }}>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
