@@ -64,6 +64,31 @@ class CopyTrade {
     }
   }
 
+ //   
+ async sendTransaction(params: {
+  session: string;
+  publicKey: string;
+  signature: string;
+ }) {
+    try {
+        const sendResponse = await fetch(`${this.baseURL}/copy_trade/send_transactions`, {
+            method: 'POST',
+            headers: this.headers,
+            body: JSON.stringify({
+              walletAddress: params.publicKey.toString(),
+              chain: 'solana',
+              messageData: params.signature,
+              type: 1,
+              session: params.session,
+            })
+          });
+        return this.handleResponse(sendResponse);
+    } catch (error) {
+        console.log(error, 'error')
+        return error;
+    }
+ }  
+
   // 
   async getCopyTradeList(params: {
     address: string;

@@ -72,7 +72,7 @@
     border-radius: 12px;
     font-size: 14px;
     white-space: nowrap;
-    width: 208px;
+    min-width: 208px;
     font-weight: 300;
     display: flex;
     flex-direction: column;
@@ -91,8 +91,6 @@
     align-items: center;
     font-weight: 400;
 }
-
-
 
 .TradeInfoBox {
     display: flex;
