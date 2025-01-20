@@ -1,8 +1,9 @@
 import styles from "./index.module.css";
-import config, { Links } from "@/app/components/menu/config";
+import config from "@/app/components/menu/config";
 import { useRouter, usePathname } from "next/navigation";
 import BarIcon from "../bar-icon";
 import { motion } from "framer-motion";
+import ExpandPanelLinks from '@/app/components/layout/laptop/menu/expand-panel/links';
 
 export default function ExpandPanel() {
   const pathname = usePathname();
@@ -40,13 +41,7 @@ export default function ExpandPanel() {
         })}
       </div>
       <div className={styles.Bottom}>
-        <div className={styles.Links}>
-          {Links.map((link: any) => (
-            <a className="button" href={link.href} key={link.icon}>
-              <img src={link.icon} className={styles.LinkIcon} />
-            </a>
-          ))}
-        </div>
+        <ExpandPanelLinks />
         <div className={styles.Desc}>
           <span>Flip🫰, Like🩷, and EarN</span>
           <BarIcon />

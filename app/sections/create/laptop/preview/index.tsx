@@ -51,7 +51,7 @@ export default function Preview({ token }: any) {
           <Desc token={info} />
         </div>
         <div className={styles.ActionsWrapper}>
-          <button
+          {/* <button
             className={`button ${styles.DetailBtn}`}
             style={{
               transform: `rotate(${showDetail ? 0 : 180}deg)`
@@ -61,7 +61,7 @@ export default function Preview({ token }: any) {
             }}
           >
             <ArrowIcon />
-          </button>
+          </button> */}
           <Actions token={info} disabled={true} isCurrent={true} />
         </div>
       </div>

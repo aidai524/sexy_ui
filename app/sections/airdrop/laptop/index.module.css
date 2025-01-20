@@ -1,0 +1,45 @@
+.AirdropContainer {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+}
+.AirdropInner {
+  min-width: 1000px;
+  height: 100%;
+  background: #151515;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.AirdropLeft {
+  height: 100%;
+  padding: 102px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: url("/img/airdrop/laptop-connect-bg.svg") no-repeat 42% 240px / 484px 286px;
+}
+.AirdropLeftConnected {
+  composes: AirdropLeft;
+  background: unset;
+}
+.AirdropRight {
+  height: 100%;
+  background: url("/img/airdrop/laptop-banner.png") no-repeat center / cover;
+}
+.AirdropSlogan {
+  width: 188px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 16px;
+}
+.AirdropLinks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  padding-bottom: 34px;
+}
+.AirdropLinksInner {
+  transform: scale(1.42);
+  transform-origin: bottom;
+}
