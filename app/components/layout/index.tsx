@@ -19,7 +19,6 @@ export default function Layout(props: any) {
   const configStore: any = useConfig();
   const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
   const router = useRouter();
-  const { address } = useAccount();
   const pathname = usePathname();
 
   const { getConfig } = useTokenTrade({
@@ -56,7 +55,7 @@ export default function Layout(props: any) {
         router.replace("/airdrop");
       }
     }
-  }, [address, configStore.config, pathname]);
+  }, [configStore.config, pathname]);
 
   return (
     <AuthProvider>

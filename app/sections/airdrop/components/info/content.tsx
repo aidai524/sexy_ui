@@ -12,6 +12,7 @@ import { useAirdropStore } from '@/app/store/use-airdrop';
 import Big from 'big.js';
 import { createLevelAndPoints } from '@/app/components/airdrop/utils';
 import { formatLongText, numberFormatter } from '@/app/utils/common';
+import { useAuth } from '@/app/context/auth';
 
 const AirdropInfoContent = (props: any) => {
   const {
@@ -34,6 +35,7 @@ const AirdropInfoContent = (props: any) => {
     handleClaim,
     claiming,
   } = useAirdrop();
+  const { accountRefresher } = useAuth();
   const { address } = useAccount();
   const [countdown] = useCountdown();
   const router = useRouter();
@@ -85,7 +87,7 @@ const AirdropInfoContent = (props: any) => {
   useEffect(() => {
     getAirdropData();
     getUserData();
-  }, [address]);
+  }, [address, accountRefresher]);
 
   return (
     <AirdropCard className={[styles.AirdropInfoCard, className].join(' ')}>
