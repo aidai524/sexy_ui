@@ -140,7 +140,7 @@ export default function BuySell({
             solAmount: buyInSol
           }).then((res: any) => {
             const buyIn = new Big(res)
-              // .mul(1 - slip / 100)
+              .mul(1 - slip / 100)
               .toFixed(token.tokenDecimals);
             setBuyIn(buyIn);
             setIsLoading(false);
@@ -179,7 +179,7 @@ export default function BuySell({
           }).then((res: any) => {
             setIsLoading(false);
             buyInSol = new Big(res)
-              // .mul(1 + slip / 100)
+              .mul(1 + slip / 100)
               .toFixed(0);
             if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
               setBuyInSol(buyInSol);
@@ -231,7 +231,7 @@ export default function BuySell({
           }).then((res: any) => {
             setIsLoading(false);
             sellSolOut = new Big(res)
-              // .mul(1 - slip / 100)
+              .mul(1 - slip / 100)
               .toFixed(0);
 
             if (Number(debounceVal) > Number(tokenBalance)) {
@@ -262,6 +262,7 @@ export default function BuySell({
       setErrorMsg("Enter a amount");
     }
   }, [debounceVal, tokenType, slip, currentToken]);
+
 
   return (
     <>
@@ -301,6 +302,9 @@ export default function BuySell({
               onClick={() => {
                 setActiveIndex(0);
                 setValInput("");
+                
+                setTokenType(buyTokenType);
+                setCurrentToken(buyTokenType === 1 ? SOL : desToken);
               }}
               className={[
                 styles.tab,
@@ -318,8 +322,7 @@ export default function BuySell({
                 setValInput("");
                 setTokenPercent(0);
 
-                setTokenType(buyTokenType);
-                setCurrentToken(buyTokenType === 1 ? SOL : desToken);
+                
               }}
               className={[
                 styles.tab,
@@ -336,11 +339,6 @@ export default function BuySell({
         >
           <div
             className={styles.inputArea}
-            style={
-              {
-                // width: from === "panel" ? 325 : "100%"
-              }
-            }
           >
             <div className={styles.actionArea}>
               {activeIndex === 0 ? (
@@ -521,18 +519,13 @@ export default function BuySell({
           >
             {activeIndex === 0 && tokenType === 1 && (
               <div
-                style={
-                  {
-                    // marginTop: 30,
-                    // flexDirection: from === "panel" ? "column" : "row"
-                  }
-                }
                 className={styles.receiveTokenAmount}
               >
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
                     ? new Big(buyIn)
+                        .div(1 - slip / 100)
                         .div(10 ** token.tokenDecimals!)
                         .toFixed(token.tokenDecimals)
                     : ""}{" "}
@@ -547,8 +540,9 @@ export default function BuySell({
                 <div>
                   {buyInSol &&
                     new Big(buyInSol)
+                      .div(1 + slip / 100)
                       .div(10 ** SOL.tokenDecimals)
-                      .toFixed()}{" "}
+                      .toFixed(SOL.tokenDecimals)}{" "}
                   SOL
                 </div>
               </div>
@@ -556,18 +550,13 @@ export default function BuySell({
 
             {activeIndex === 1 && (
               <div
-                style={
-                  {
-                    // marginTop: 30,
-                    // flexDirection: from === "panel" ? "column" : "row"
-                  }
-                }
                 className={styles.receiveTokenAmount}
               >
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && Number(sellOutSol) > 0
                     ? new Big(sellOutSol)
+                        .div(1 - slip / 100)
                         .div(10 ** SOL.tokenDecimals)
                         .toFixed(SOL.tokenDecimals)
                     : 0}{" "}
