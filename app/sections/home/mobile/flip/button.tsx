@@ -1,4 +1,5 @@
 import { useUserAgent } from "@/app/context/user-agent";
+import { useRef } from "react";
 
 let entered = false;
 let isDrag = false;
@@ -7,15 +8,8 @@ export default function Button(props: any) {
   return isMobile ? <MobileButton {...props} /> : <LaptopButton {...props} />;
 }
 
-const LaptopButton = ({
-  children,
-  className,
-  onClick,
-  x,
-  startX,
-  run,
-  setX
-}: any) => {
+const LaptopButton = ({ children, className, onClick, x, run, setX }: any) => {
+  const startXRef = useRef(0);
   return (
     <button
       className={`button ${className}`}
@@ -24,17 +18,19 @@ const LaptopButton = ({
       }}
       onMouseDown={(ev: any) => {
         ev.stopPropagation();
-        startX = ev.clientX;
+        startXRef.current = ev.clientX;
         entered = true;
         isDrag = false;
       }}
       onMouseMove={(ev) => {
         if (!entered) return;
-        let diff = ev.clientX - startX;
+
+        let diff = ev.clientX - startXRef.current;
+        console.log("diff", diff);
         if (diff < 0) {
           diff = 0;
         }
-        if (diff > 90) {
+        if (diff > 50) {
           diff = 170;
           run();
           entered = false;
@@ -53,15 +49,8 @@ const LaptopButton = ({
   );
 };
 
-const MobileButton = ({
-  children,
-  className,
-  onClick,
-  x,
-  startX,
-  run,
-  setX
-}: any) => {
+const MobileButton = ({ children, className, onClick, x, run, setX }: any) => {
+  const startXRef = useRef(0);
   return (
     <button
       className={`button ${className}`}
@@ -71,10 +60,10 @@ const MobileButton = ({
       }}
       onTouchStart={(ev: any) => {
         ev.stopPropagation();
-        startX = ev.touches[0].clientX;
+        startXRef.current = ev.touches[0].clientX;
       }}
       onTouchMove={(ev) => {
-        let diff = ev.touches[0].clientX - startX;
+        let diff = ev.touches[0].clientX - startXRef.current;
         if (diff < 0) {
           diff = 0;
         }

@@ -226,7 +226,7 @@ export default function Create({
           borderRadius: isMobile ? 0 : "0px 0px 20px 20px"
         }}
       >
-        After successful creation, the creator will not be able to Pre-buy again
+        After successful creation, the creator will not be able to flip again
       </div>
     </div>
   );
