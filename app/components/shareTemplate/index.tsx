@@ -359,9 +359,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
             }
           }}>Save image</button>
           <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current ? 1 : 0.5 }} onClick={async () => {
-            // await getShareImg()
             if (shareUrl) {
               shareToX(token.tokenName, shareUrl);
+              onClose();
             }
           }}>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
