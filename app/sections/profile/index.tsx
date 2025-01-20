@@ -8,15 +8,16 @@ import { useUserAgent } from "@/app/context/user-agent";
 import useUserInfo from "../../hooks/useUserInfo";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
-import { useHomeTab } from "@/app/store/useHomeTab";
 import { useUser } from "@/app/store/useUser";
 import { httpAuthGet } from "@/app/utils";
 import SexPullToRefresh from "@/app/components/sexPullToRefresh";
+import { TokenActionsProvider, useTokenActions } from "./token-context";
+import TradeModal from "@/app/components/trade-modal";
 import { useAuth } from "@/app/context/auth";
 
 export default memo(function Home(props: any) {
   const { showHot = true, isOther = false } = props;
-  const { isMobile } = useUserAgent();
+
   const router = useRouter();
   const params = useSearchParams();
   const { accountRefresher, userInfo: currentUserInfo } = useAuth();
@@ -84,25 +85,46 @@ export default memo(function Home(props: any) {
   }, [address, isOther, refreshNum]);
 
   return (
-    <>
-      {isMobile ? (
-        <SexPullToRefresh
-          onRefresh={async () => {
-            await getAccountFollower();
-            await onQueryInfo();
-          }}
-        >
-          <Mobile {...props} {...comProps} />
-        </SexPullToRefresh>
-      ) : (
-        <Laptop {...props} {...comProps} />
-      )}
+    <TokenActionsProvider>
+      <Content {...props} {...comProps} />
       <VipModal
         show={showVip}
         onClose={() => {
           setShowVip(false);
         }}
       />
-    </>
+    </TokenActionsProvider>
   );
 });
+
+const Content = (props: any) => {
+  const { isMobile } = useUserAgent();
+  const { showTradeModal, currentToken, onCloseTradeModal } = useTokenActions();
+
+  return (
+    <>
+      {isMobile ? (
+        <SexPullToRefresh
+          onRefresh={async () => {
+            await props.getAccountFollower();
+            await props.onQueryInfo();
+          }}
+        >
+          <Mobile {...props} />
+        </SexPullToRefresh>
+      ) : (
+        <Laptop {...props} />
+      )}
+      {showTradeModal && currentToken && (
+        <TradeModal
+          show={showTradeModal}
+          onClose={() => {
+            onCloseTradeModal(false);
+          }}
+          data={currentToken}
+          initType={"buy"}
+        />
+      )}
+    </>
+  );
+};
