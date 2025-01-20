@@ -34,7 +34,7 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
           <div
             className={styles.avtar}
             onClick={() => {
-              router.push("/profile/user?account=" + item.address);
+              router.push("/profile/user?account=" + item.address + "&from=detail");
             }}
           >
             <img
@@ -45,7 +45,7 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
           <div
             onClick={() => {
               if (isSelf) return;
-              router.push("/profile/user?account=" + item.address);
+              router.push("/profile/user?account=" + item.address + "&from=detail");
             }}
             className={`${styles.NameWrapper} ${!isSelf && "button"}`}
           >
