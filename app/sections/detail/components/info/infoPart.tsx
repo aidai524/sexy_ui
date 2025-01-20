@@ -215,11 +215,12 @@ export default function InfoPart({
               </div>
             </div>
 
-            <div className={styles.progressDesc} style={{ color: "#D9D9D9" }}>
-              {
-                "‘Flip’ means ‘pre-buy’, users will auto-buy in at the average price when this meme launching."
-              }
-            </div>
+
+              <div className={styles.progressDesc} style={{ color: "#D9D9D9" }}>
+                {
+                  "‘Flip’ means ‘pre-buy’, users will auto-buy in at the average price when this meme launching."
+                }
+              </div>
           </div>
         </div>
       )}
@@ -266,9 +267,14 @@ export default function InfoPart({
               }}
             />
 
-            <div className={styles.progressDesc} style={{ color: "#BF66FF" }}>
-              Crowned king of the hill on 1/6/2025, 8:50:03 PM
-            </div>
+            {
+              data.isKing && (
+                <div className={styles.progressDesc} style={{ color: "#BF66FF" }}>
+                  Crowned king of the hill on 1/6/2025, 8:50:03 PM
+                </div>
+              )
+            }
+            
           </div>
         </div>
       )}
