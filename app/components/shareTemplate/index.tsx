@@ -16,7 +16,8 @@ import {
   formatAddress,
   generateRandomString,
   postUpload,
-  simplifyNum
+  simplifyNum,
+  httpGet,
 } from "@/app/utils";
 import QRCode from "../qrcode";
 import TokenTags from "../tokenTags";
@@ -49,6 +50,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const [newFileName] = useState(generateRandomString(10))
   const canvasRef = useRef<any>(null);
   const [qrcodeCanvas, setQrcodeCanvas] = useState<any>(null);
+  const [shareCopy, setShareCopy] = useState("");
 
   useImperativeHandle(ref, () => ({
     getShareImg
@@ -155,6 +157,24 @@ function Card({ token, show, onClose }: Props, ref: any) {
       }
     })();
   }, [token, newFileName]);
+
+
+  useEffect(() => {
+    const getShareCopy = async () => {
+      if (token) {
+        try {
+          const v = await httpGet('/project/sharing_copy');
+          if (v.code === 0) {
+            setShareCopy(v.data.SharingCopy || '');
+          }
+        } catch (error) {
+          console.error('Failed to fetch share copy:', error);
+        }
+      }
+    };
+
+    getShareCopy();
+  }, [token]);
 
   if (!token || !show) return null;
 
@@ -280,8 +300,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
                   />
                 )
               }
-             
-              
+
+
             </div>
           </div>
 
@@ -347,7 +367,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               />
               <img src="/img/share/qr-logo.png" alt="Flip" className={styles.qrLogo} />
             </div>
-            
+
             <img src="/img/share/scan.png" alt="Flip" className={styles.scan} />
           </div>
         </div>
@@ -364,7 +384,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
           }}>Save image</button>
           <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current ? 1 : 0.5 }} onClick={async () => {
             if (shareUrl) {
-              shareToX(token.tokenName, shareUrl);
+              shareToX(shareCopy, shareUrl);
               onClose();
             }
           }}>
