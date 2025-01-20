@@ -140,9 +140,13 @@ export default AirdropEntry;
 const AirdropEntryMobile = (props: any) => {
   const { onClose } = props;
 
-  const { setVisible: setAirdropVisible } = useAirdropStore();
+  const { setVisible: setAirdropVisible, setConnectVisible } = useAirdropStore();
 
   const handleAirdropOpen = () => {
+    if (!window.sexAddress) {
+      setConnectVisible(true);
+      return;
+    }
     setAirdropVisible(true);
   };
 
