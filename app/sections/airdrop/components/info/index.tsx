@@ -10,6 +10,7 @@ import Loading from '@/app/components/icons/loading';
 import { useCountdown } from '@/app/components/airdrop/hooks/use-countdown';
 import { useRouter } from 'next/navigation';
 import Big from 'big.js';
+import { useAirdropStore } from '@/app/store/use-airdrop';
 
 const AirdropInfo = (props: any) => {
   const { } = props;
@@ -27,6 +28,7 @@ const AirdropInfo = (props: any) => {
   const { address } = useAccount();
   const [countdown] = useCountdown();
   const router = useRouter();
+  const { setHomepageVisited } = useAirdropStore();
 
   const isClaimed = airdropData?.clime_pump;
   const isEnded = !countdown?.end;
@@ -41,18 +43,40 @@ const AirdropInfo = (props: any) => {
     });
   }, [userData, address, airdropData]);
 
-  const onClaim = () => {
+  const buttonText = useMemo(() => {
+    if (!countdown) return '';
+    if (countdown?.startSplit?.[0] > 0) {
+      return `${countdown.startSplit[0]} days`;
+    }
+    if (countdown?.startSplit?.[1] > 0) {
+      return `${countdown.startSplit[1]} hours`;
+    }
+    if (countdown?.startSplit?.[2] > 0) {
+      return `${countdown.startSplit[2]} minutes`;
+    }
+    return '';
+  }, [countdown]);
+
+  const onClaim = async () => {
     if (isEnded || isClaimed || !isPoints) {
+      setHomepageVisited(address, true);
       router.replace('/');
       return;
     }
-    handleClaim?.({ from: 'airdrop_before' });
+    const succeed = await handleClaim?.({ from: 'airdrop_before' });
+    if (succeed) {
+      setHomepageVisited(address, true);
+      const timer = setTimeout(() => {
+        clearTimeout(timer);
+        router.replace('/');
+      }, 2000);
+    }
   };
 
   useEffect(() => {
     getAirdropData();
     getUserData();
-  }, []);
+  }, [address]);
 
   return (
     <div className={styles.AirdropInfoContainer}>
@@ -114,7 +138,7 @@ const AirdropInfo = (props: any) => {
             type="button"
             className={styles.AirdropInfoButton}
             onClick={onClaim}
-            disabled={claiming}
+            disabled={claiming || !isStarted}
           >
             {
               claiming && (
@@ -124,7 +148,7 @@ const AirdropInfo = (props: any) => {
             {
               !isStarted ? (
                 <span>
-                  Claimable in {countdown?.endSplit?.[0]} days {countdown?.endSplit?.[1]} hours {countdown?.endSplit?.[2]} minutes
+                  Claimable in {buttonText}
                 </span>
               ) : (
                 isEnded ? (

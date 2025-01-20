@@ -93,6 +93,7 @@ export function useAirdrop(): Airdrop {
       handleClose();
     }
     setClaiming(false);
+    return true;
   };
 
   const getList = async () => {
@@ -225,7 +226,7 @@ export interface Airdrop {
   setShareImageVisible: Dispatch<SetStateAction<boolean>>;
   userHasPoints: boolean;
 
-  handleClaim(params?: { from?: string; }): Promise<void>;
+  handleClaim(params?: { from?: string; }): Promise<void | boolean>;
   handleBind(): Promise<void>;
   getList(): Promise<void>;
   getUserData(): Promise<void>;

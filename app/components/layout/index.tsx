@@ -10,11 +10,17 @@ import { AuthProvider } from "@/app/context/auth";
 import { MessageProvider } from "@/app/context/messages";
 import { MessageContextProvider } from "@/app/context/messageContext";
 import AirdropEntry from '@/app/components/airdrop/entry';
+import { usePathname, useRouter } from 'next/navigation';
+import dayjs from 'dayjs';
+import { useAccount } from '@/app/hooks/useAccount';
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
   const configStore: any = useConfig();
   const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
+  const router = useRouter();
+  const { address } = useAccount();
+  const pathname = usePathname();
 
   const { getConfig } = useTokenTrade({
     tokenName: "",
@@ -38,6 +44,19 @@ export default function Layout(props: any) {
       );
     });
   }, []);
+
+  useEffect(() => {
+    // Check if the current time is earlier than the start time
+    // If so, redirect to the airdrop page
+    // otherwise, go to the homepage
+    const { AirdropStartTime } = configStore.config || {};
+    const CurrentTime = dayjs();
+    if (AirdropStartTime && dayjs(CurrentTime).isBefore(dayjs(AirdropStartTime))) {
+      if (pathname !== '/airdrop') {
+        router.replace("/airdrop");
+      }
+    }
+  }, [address, configStore.config, pathname]);
 
   return (
     <AuthProvider>
