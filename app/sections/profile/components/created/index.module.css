@@ -12,6 +12,8 @@
 .SelectContainerMobile {
   composes: SelectContainer;
   position: unset;
+  justify-content: flex-end;
+  padding-right: 15px;
 }
 .Select {
   display: flex;

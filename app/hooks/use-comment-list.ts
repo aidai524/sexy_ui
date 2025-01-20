@@ -56,6 +56,8 @@ export default function useCommentList({ id, limit = 10 }: any) {
     (args: any = {}) => {
       if (!id) {
         setCommentList([]);
+        setIsCommentLoading(false);
+        setCommentHasMore(false);
       } else {
         loadMoreComment(0);
       }

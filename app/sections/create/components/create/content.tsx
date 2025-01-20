@@ -10,6 +10,7 @@ import { Checkbox } from "antd-mobile";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
+import Paid from '@/app/components/tag/Paid';
 
 type Token = {
   tokenName: string;
@@ -156,10 +157,19 @@ export default function Create({
             }}
             checked={launchChecked}
           />
-          <div className={styles.receiveTitle}>
-            For an additional{" "}
-            <strong style={{ color: "#C36EFF" }}>0.1SOL</strong>, you can
-            directly enter the Launching phase
+          <div className={styles.receiveTitleWrapper}>
+            <div className={styles.receiveTitlePaidWrapper}>
+              <Paid
+                style={{
+                  height: 24,
+                  fontSize: 12,
+                }}
+              />
+              <div className={styles.receiveTitlePaid}>0.1 SOL</div>
+            </div>
+            <div className={styles.receiveTitle}>
+              For an additional 0.1 SOL, you can directly enter the Launching phase
+            </div>
           </div>
         </div>
         <div style={{ marginTop: 18 }}>

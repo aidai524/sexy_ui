@@ -28,6 +28,8 @@
             .avatarImg {
                 width: 100%;
                 border-radius: 85px;
+                object-fit: cover;
+                object-position: center;
             }
         }
 
