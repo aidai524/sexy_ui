@@ -48,13 +48,14 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const pumpMc = useMcWithPump(token);
   const [newFileName] = useState(generateRandomString(10))
   const canvasRef = useRef<any>(null);
+  const [qrcodeCanvas, setQrcodeCanvas] = useState<any>(null);
 
   useImperativeHandle(ref, () => ({
     getShareImg
   }));
 
   const getShareImg = useCallback(async () => {
-    if (token && containerRef.current) {
+    if (token && containerRef.current && qrcodeCanvas) {
       const canvas = await html2canvas(containerRef.current, { useCORS: true, scale: 5 });
       canvasRef.current = canvas;
       // const base64Url = canvas.toDataURL("image/webp");
@@ -100,7 +101,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
       return newFileName;
     }
-  }, [token, newFileName]);
+  }, [token, newFileName, qrcodeCanvas]);
 
   useEffect(() => {
     (async () => {
@@ -329,10 +330,17 @@ function Card({ token, show, onClose }: Props, ref: any) {
                 </div>
               </div>
             </div>
-            <QRCode
-              url={shareUrl}
-              size={50}
-            />
+            <div className={styles.qrcode1}>
+              <QRCode
+                url={shareUrl}
+                size={50}
+                onSuccess={(canvas: any) => {
+                  setQrcodeCanvas(canvas);
+                }}
+              />
+              <img src="/img/share/qr-logo.png" alt="Flip" className={styles.qrLogo} />
+            </div>
+            
             <img src="/img/share/scan.png" alt="Flip" className={styles.scan} />
           </div>
         </div>
@@ -348,7 +356,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
             }
           }}>Save image</button>
           <button className={styles.shareButton + ' ' + (!shareUrl ? styles.shareButtonActive : '')} onClick={async () => {
-            await getShareImg()
+            // await getShareImg()
             if (shareUrl) {
               shareToX(token.tokenName, shareUrl);
             }
