@@ -48,9 +48,7 @@ export default function Rank({ rank, list = [], loading }: any) {
                       ? formatAddress(item.address, 4)
                       : ""}
                   </button>
-                  {item.account_data?.level && (
-                    <Level level={item.account_data.level} />
-                  )}
+                  <Level level={item.account_data?.level} />
                 </div>
 
                 <div className={styles.ItemDesc}>

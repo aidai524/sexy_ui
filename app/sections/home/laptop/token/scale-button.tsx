@@ -12,7 +12,8 @@ export default function ScaleButton({ onClick }: any) {
         marginBottom: 20,
         position: "absolute",
         top: 0,
-        right: -50
+        right: -50,
+        zIndex: 35
       }}
     >
       <path

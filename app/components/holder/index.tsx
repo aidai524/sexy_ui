@@ -201,7 +201,9 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                   className={`${styles.itemContent} button`}
                   onClick={() => {
                     if (item.flipUser) {
-                      router.push(`/profile/user?account=${item.owner}&from=detail`);
+                      router.push(
+                        `/profile/user?account=${item.owner}&from=detail`
+                      );
                       return;
                     }
 

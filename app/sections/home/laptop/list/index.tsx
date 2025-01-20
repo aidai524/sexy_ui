@@ -72,6 +72,7 @@ export default function List({ type, isCurrentTab }: any) {
 
   return (
     <div
+      id={`${type}-list`}
       className={styles.Container}
       style={{
         height: innerHeight,

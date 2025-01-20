@@ -9,10 +9,10 @@ export default function Laptop({ open, onClose, onSelect }: any) {
       onClose();
     };
 
-    document.body.addEventListener("click", close);
+    document.addEventListener("click", close);
 
     return () => {
-      document.body.removeEventListener("click", close);
+      document.removeEventListener("click", close);
     };
   }, []);
 
@@ -31,7 +31,9 @@ export default function Laptop({ open, onClose, onSelect }: any) {
           <div
             key={option.value}
             className={styles.Item}
-            onClick={() => {
+            onClick={(ev) => {
+              ev.stopPropagation();
+              ev.nativeEvent.stopImmediatePropagation();
               onSelect(option);
             }}
           >

@@ -14,7 +14,7 @@ import Big from "big.js";
 import TokenTags from "@/app/components/tokenTags";
 import { getVideoExt, imgReg, videoReg } from "@/app/components/upload";
 import VideoPlayer from "@/app/components/video";
-import Empty from '@/app/components/empty';
+import Empty from "@/app/components/empty";
 
 interface Props {
   data: Project;
@@ -64,9 +64,7 @@ export default function InfoPart({
   const { isMobile } = useUserAgent();
 
   if (!data) {
-    return (
-      <Empty text="No info" />
-    )
+    return <Empty text="No info" />;
   }
 
   return (
@@ -104,7 +102,9 @@ export default function InfoPart({
             <div
               onClick={() => {
                 if (address !== data.account)
-                  router.push("/profile/user?account=" + data.account + "&from=detail");
+                  router.push(
+                    "/profile/user?account=" + data.account + "&from=detail"
+                  );
               }}
               className={[
                 styles.authorDesc,
@@ -215,11 +215,12 @@ export default function InfoPart({
               </div>
             </div>
 
-            <div className={styles.progressDesc} style={{ color: "#D9D9D9" }}>
-              {
-                "‘Flip’ means ‘pre-buy’, users will auto-buy in when this meme launched."
-              }
-            </div>
+
+              <div className={styles.progressDesc} style={{ color: "#D9D9D9" }}>
+                {
+                  "‘Flip’ means ‘pre-buy’, users will auto-buy in at the average price when this meme launching."
+                }
+              </div>
           </div>
         </div>
       )}
@@ -266,9 +267,14 @@ export default function InfoPart({
               }}
             />
 
-            <div className={styles.progressDesc} style={{ color: "#BF66FF" }}>
-              Crowned king of the hill on 1/6/2025, 8:50:03 PM
-            </div>
+            {
+              data.isKing && (
+                <div className={styles.progressDesc} style={{ color: "#BF66FF" }}>
+                  Crowned king of the hill on 1/6/2025, 8:50:03 PM
+                </div>
+              )
+            }
+            
           </div>
         </div>
       )}

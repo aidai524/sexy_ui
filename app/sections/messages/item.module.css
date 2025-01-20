@@ -10,6 +10,7 @@
 .ItemTop {
   display: flex;
   gap: 12px;
+  align-items: center;
 }
 
 .ItemTitle {
@@ -40,10 +41,9 @@
   font-family: Unbounded;
 }
 
-.ItemLeft {
-  display: flex;
-  gap: 16px;
-  align-items: center;
+.Arrow {
+  flex-shrink: 0;
+  transition: 0.3s;
 }
 
 .ItemTime {

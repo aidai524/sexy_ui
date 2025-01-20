@@ -12,6 +12,7 @@ import { useAccount } from '@/app/hooks/useAccount';
 import { useAuth } from '@/app/context/auth';
 import { useDebounceFn } from 'ahooks';
 import Countdown from '@/app/components/airdrop/components/countdown';
+import { createLevelAndPoints } from '@/app/components/airdrop/utils';
 
 const AirdropList = (props: any) => {
   const {} = props;
@@ -36,75 +37,12 @@ const AirdropList = (props: any) => {
   const isClaimed = airdropData?.clime_pump;
 
   const pointList = useMemo(() => {
-    if (!userData || !Object.keys(userData).length) return [];
-    return [
-      {
-        type: 'Level',
-        total: `Lv.${userData.level}`,
-        icon: `/img/airdrop/user-level${userHasPoints ? '' : '-inactive'}.svg`,
-        desc: (
-          <>
-            Starts your FlipN journey from <span className={styles.CardContentPrimary}>Lv. {userData.level}</span>, it will boost <span className={styles.CardContentPrimary}>10%</span> of mining.
-          </>
-        ),
-      },
-      {
-        type: 'Points',
-        total: (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 10,
-            }}
-          >
-            <div>
-              +{numberFormatter(userData.points, Big(userData.points || 0).gte(1e6) ? 2 : 0, true, { isShort: Big(userData.points || 0).gte(1e6), isShortUppercase: true })}
-            </div>
-            {
-              isClaimed && (
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    gap: 3,
-                  }}
-                >
-                  <img
-                    src="/img/airdrop/icon-checked.svg"
-                    alt=""
-                    style={{
-                      flexShrink: 0,
-                      width: 19,
-                      height: 19,
-                    }}
-                  />
-                  <div
-                    style={{
-                      color: '#000',
-                      fontFamily: 'Unbounded',
-                      fontSize: 12,
-                      fontWeight: 500,
-                    }}
-                  >
-                    Claimed
-                  </div>
-                </div>
-              )
-            }
-          </div>
-        ),
-        icon: '/img/airdrop/user-points.svg',
-        desc: (
-          <>
-            You got <span className={styles.CardContentPrimary}>{numberFormatter(userData.points, 0, true)}</span> points on FlipN based on your meme experience.
-          </>
-        ),
-      },
-    ];
-  }, [userData, address, isClaimed]);
+    return createLevelAndPoints({
+      userData,
+      userHasPoints,
+      airdropData,
+    });
+  }, [userData, address, airdropData]);
 
   const btnLoading = useMemo(() => {
     return claiming || airdropDataLoading || userDataLoading;
@@ -221,7 +159,7 @@ const AirdropList = (props: any) => {
                   opacity: btnLoading ? 0.3 : 1,
                   cursor: btnLoading ? 'not-allowed' : 'pointer',
                 }}
-                onClick={handleClaim}
+                onClick={() => handleClaim?.()}
                 disabled={btnLoading}
               >
                 {

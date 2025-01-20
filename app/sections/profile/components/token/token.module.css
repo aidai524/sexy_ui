@@ -1,8 +1,8 @@
 .main {
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
   transition: all 0.3s;
+  cursor: pointer;
 }
 
 .tokenMag {

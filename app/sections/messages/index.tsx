@@ -3,7 +3,6 @@
 import styles from "./index.module.css";
 import PageHeader from "@/app/components/page-header/mobile";
 import useList from "@/app/components/messages/use-list";
-import Header from "@/app/components/messages/header";
 import Empty from "@/app/components/empty";
 import CircleLoading from "@/app/components/icons/loading";
 import { InfiniteScroll } from "antd-mobile";

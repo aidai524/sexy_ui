@@ -506,7 +506,7 @@ export default function BuySellLaunched({
 
             {activeIndex === 0 && tokenType === 0 && (
               <div className={styles.paid}>
-                <div>Maximum Payment</div>
+                <div>Payment</div>
                 <div>{buyInSol && buyInSol} SOL</div>
               </div>
             )}

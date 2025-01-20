@@ -1,0 +1,14 @@
+.AirdropCardContainer {
+  position: relative;
+  width: 310px;
+  border-radius: 20px;
+  border: 1px solid #000;
+  background: #FEF6E6;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  padding: 23px 15px 17px;
+}

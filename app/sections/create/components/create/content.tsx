@@ -10,7 +10,7 @@ import { Checkbox } from "antd-mobile";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
-import Paid from '@/app/components/tag/Paid';
+import Paid from "@/app/components/tag/Paid";
 
 type Token = {
   tokenName: string;
@@ -98,7 +98,7 @@ export default function Create({
       <div className={[styles.cationArea, styles.panel].join(" ")}>
         <div className={styles.inputArea}>
           <div className={styles.actionArea}>
-            <div className={styles.slippage}>Pre-Buy (optional)</div>
+            <div className={styles.slippage}>Flip (optional)</div>
           </div>
 
           <div className={styles.inputArea}>
@@ -162,13 +162,14 @@ export default function Create({
               <Paid
                 style={{
                   height: 24,
-                  fontSize: 12,
+                  fontSize: 12
                 }}
               />
               <div className={styles.receiveTitlePaid}>0.1 SOL</div>
             </div>
             <div className={styles.receiveTitle}>
-              For an additional 0.1 SOL, you can directly enter the Launching phase
+              For an additional 0.1 SOL, you can directly enter the Launching
+              phase
             </div>
           </div>
         </div>
@@ -225,7 +226,7 @@ export default function Create({
           borderRadius: isMobile ? 0 : "0px 0px 20px 20px"
         }}
       >
-        After successful creation, the creator will not be able to Pre-buy again
+        After successful creation, the creator will not be able to flip again
       </div>
     </div>
   );

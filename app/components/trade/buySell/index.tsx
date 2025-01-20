@@ -140,7 +140,7 @@ export default function BuySell({
             solAmount: buyInSol
           }).then((res: any) => {
             const buyIn = new Big(res)
-              .mul(1 - slip / 100)
+              // .mul(1 - slip / 100)
               .toFixed(token.tokenDecimals);
             setBuyIn(buyIn);
             setIsLoading(false);
@@ -178,7 +178,9 @@ export default function BuySell({
               .toFixed(0)
           }).then((res: any) => {
             setIsLoading(false);
-            buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
+            buyInSol = new Big(res)
+              // .mul(1 + slip / 100)
+              .toFixed(0);
             if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
               setBuyInSol(buyInSol);
               setIsError(true);
@@ -228,7 +230,9 @@ export default function BuySell({
               .toFixed(0)
           }).then((res: any) => {
             setIsLoading(false);
-            sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
+            sellSolOut = new Big(res)
+              // .mul(1 - slip / 100)
+              .toFixed(0);
 
             if (Number(debounceVal) > Number(tokenBalance)) {
               setIsError(true);
@@ -313,6 +317,9 @@ export default function BuySell({
                 setTokenType(0);
                 setValInput("");
                 setTokenPercent(0);
+
+                setTokenType(buyTokenType);
+                setCurrentToken(buyTokenType === 1 ? SOL : desToken);
               }}
               className={[
                 styles.tab,
@@ -536,7 +543,7 @@ export default function BuySell({
 
             {activeIndex === 0 && tokenType === 0 && (
               <div className={styles.paid}>
-                <div>Maximum Payment</div>
+                <div>Payment</div>
                 <div>
                   {buyInSol &&
                     new Big(buyInSol)

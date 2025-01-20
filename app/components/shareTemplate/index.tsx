@@ -21,13 +21,14 @@ import {
 import QRCode from "../qrcode";
 import TokenTags from "../tokenTags";
 import { useAuth } from "@/app/context/auth";
-import Level from "../level/simple";
+import Level from "../level";
 import { fail } from "@/app/utils/toast";
 import { getShortUrl, shareToX } from "@/app/utils/share";
 import Modal from "../modal";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import Big from "big.js";
+import Media from "../thumbnail/media";
 
 interface Props {
   token: Project | undefined;
@@ -47,13 +48,16 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const pumpMc = useMcWithPump(token);
   const [newFileName] = useState(generateRandomString(10))
   const canvasRef = useRef<any>(null);
+  const [qrcodeCanvas, setQrcodeCanvas] = useState<any>(null);
 
   useImperativeHandle(ref, () => ({
     getShareImg
   }));
 
   const getShareImg = useCallback(async () => {
-    if (token && containerRef.current) {
+    console.log(token, containerRef.current, qrcodeCanvas)
+    if (token && containerRef.current && qrcodeCanvas) {
+      console.log(111)
       const canvas = await html2canvas(containerRef.current, { useCORS: true, scale: 5 });
       canvasRef.current = canvas;
       // const base64Url = canvas.toDataURL("image/webp");
@@ -99,7 +103,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
       return newFileName;
     }
-  }, [token, newFileName]);
+  }, [token, newFileName, qrcodeCanvas]);
 
   useEffect(() => {
     (async () => {
@@ -136,7 +140,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
         setIsSharing(false);
       }
     })();
-  }, [token, shareUrl]);
+  }, [token, shareUrl, qrcodeCanvas]);
 
   useEffect(() => {
     (async () => {
@@ -175,7 +179,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
           ref={containerRef}
           className={styles.cardContainer}
           onClick={() => {
-            
+
           }}
         >
           <img src="/img/share/logo.png" alt="Flip" className={styles.logo} />
@@ -185,6 +189,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               alt="Flip"
               className={styles.subTitle}
             />
+
           </div>
 
           {/* Main Card Content */}
@@ -193,7 +198,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               token?.status === 0 && (
                 <div className={styles.stats}>
                   <div className={styles.statsFlip}>
-                    {Number(token?.prePaidAmount) > 0 ? (
+                    {Number(token?.prePaidAmount) >= 10e9 ? (
                       <div className={styles.statsFlipText}>
                         <span className={styles.statsFlipTextTitle}>Flipped</span>
                         <span className={styles.statsFlipTextCount}>
@@ -207,7 +212,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
                     )}
                   </div>
                   <div className={styles.statsLike}>
-                    {Number(token?.like) > 0 ? (
+                    {Number(token?.like) >= 50 ? (
                       <div className={styles.statsLikeText}>
                         <span className={styles.statsLikeTextTitle}>Liked</span>
                         <span className={styles.statsLikeTextCount}>
@@ -256,7 +261,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
             }
 
             <div className={styles.tokenImage}>
-              {
+              {/* {
                 checkFileType(token.tokenImg) === 'image' && (
                   <img
                     src={token.tokenIcon}
@@ -269,6 +274,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
                 src={token.tokenIcon}
                 alt={token.tokenName}
                 className={styles.tokenImg}
+              /> */}
+              <Media
+                autoPlay={false}
+                data={token}
               />
             </div>
           </div>
@@ -316,22 +325,31 @@ function Card({ token, show, onClose }: Props, ref: any) {
                 <div>Inviter:</div>
                 <div className={styles.inviteAddress}>
                   {formatAddress(userInfo?.address || "")}
-                  <Level level={userInfo?.level || 0} />
+                  <div style={{ transform: 'scale(0.8)', marginLeft: 10 }}>
+                    <Level level={userInfo?.level || 0} />
+                  </div>
                 </div>
                 <div className={styles.inviteUrl}>
                   {shareUrl}
                 </div>
               </div>
             </div>
-            <QRCode
-              url={shareUrl}
-              size={50}
-            />
+            <div className={styles.qrcode1}>
+              <QRCode
+                url={shareUrl}
+                size={50}
+                onSuccess={(canvas: any) => {
+                  setQrcodeCanvas(true);
+                }}
+              />
+              <img src="/img/share/qr-logo.png" alt="Flip" className={styles.qrLogo} />
+            </div>
+            
             <img src="/img/share/scan.png" alt="Flip" className={styles.scan} />
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <button className={styles.saveButton} onClick={() => {
+          <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
             if (canvasRef.current) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;
@@ -341,9 +359,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
               fail("Wait for a while");
             }
           }}>Save image</button>
-          <button className={styles.shareButton + ' ' + (!shareUrl ? styles.shareButtonActive : '')} onClick={() => {
-          if (shareUrl) {
+          <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current ? 1 : 0.5 }} onClick={async () => {
+            if (shareUrl) {
               shareToX(token.tokenName, shareUrl);
+              onClose();
             }
           }}>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
