@@ -1,41 +1,87 @@
 import styles from "./index.module.css";
-import Pencil from "../icons/pencil";
 import Level from "../level";
-import { useAccount } from "@/app/hooks/useAccount";
 import { formatAddress } from "@/app/utils";
 import { defaultAvatar } from "@/app/utils/config";
-import { useUserAgent } from "@/app/context/user-agent";
 import FollowBtn from "@/app/sections/profile/components/followBtn";
 import { formatLongText } from '@/app/utils/common';
+import { useEffect, useState } from 'react';
+import { useDebounceFn } from 'ahooks';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function Avatar({
   userInfo,
   onEdit,
-  onVipShow,
   isOther,
   address,
   isFollower,
   onFollowSuccess
 }: any) {
-  const { isMobile } = useUserAgent();
-  // if (!userInfo?.address) {
-  //   return null;
-  // }
+
+  const [avatarShown, setAvatarShown] = useState(userInfo?.icon);
+
+  // Avoid flickering default avatar
+  const { run: handleAvatarShown, cancel: handleAvatarShownCancel } = useDebounceFn(() => {
+    if (!userInfo?.icon) {
+      setAvatarShown(defaultAvatar);
+      return;
+    }
+    setAvatarShown(userInfo.icon);
+  }, { wait: 150 });
+
+  useEffect(() => {
+    handleAvatarShownCancel();
+    handleAvatarShown();
+  }, [userInfo]);
 
   return (
     <>
-      <div className={styles.avatar} onClick={onEdit}>
-        <img
-          className={styles.avatarImg}
-          src={userInfo?.icon || defaultAvatar}
-        />
-        {/*<div className={`${styles.pencil} button`}>
-          <Pencil />
-        </div>*/}
-      </div>
+      <AnimatePresence mode="wait">
+        {
+          avatarShown && (
+            <motion.div
+              className={styles.avatar}
+              onClick={onEdit}
+              variants={{
+                visible: {
+                  borderColor: 'rgba(0, 0, 0, 1)',
+                  transition: {
+                    delay: 0.3,
+                    ease: 'easeIn'
+                  }
+                },
+                invisible: {
+                  borderColor: 'rgba(0, 0, 0, 0)',
+                },
+              }}
+              animate="visible"
+              initial="invisible"
+              exit="invisible"
+            >
+              <motion.img
+                className={styles.avatarImg}
+                src={avatarShown}
+                variants={{
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      ease: 'easeIn'
+                    }
+                  },
+                  invisible: {
+                    opacity: 0,
+                  },
+                }}
+              />
+              {/*<div className={`${styles.pencil} button`}>
+               <Pencil />
+               </div>*/}
+            </motion.div>
+          )
+        }
+      </AnimatePresence>
       <div className={styles.userName}>
         <div>
-          {formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || "FlipN"}
+          {formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || 'FlipN'}
         </div>
         <Level level={userInfo?.level} vipType={userInfo?.vipType} style={{ marginLeft: 20 }} />
         {isOther && (

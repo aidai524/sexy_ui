@@ -62,7 +62,7 @@ export default function VideoPlayer({ src, type, className, style, autoPlay = tr
   }, [videoRef, autoPlay]);
 
   return (
-    <video ref={videoRef} className={className} autoPlay={autoPlay} preload={autoPlay ? "auto" : "none"} style={style}>
+    <video ref={videoRef} playsInline webkit-playsinline className={className} autoPlay={autoPlay} preload={autoPlay ? "auto" : "none"} style={style}>
       <source src={src} type={`video/${type}`} />
     </video>
   );

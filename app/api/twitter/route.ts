@@ -33,9 +33,7 @@ export async function GET(request: Request | NextRequest) {
             <title>${tokenName}</title>
         </head>
         <body>
-        <script>
-          window.location.href = "${domain}/detail?address=${tokenAddress}"
-        </script>
+        
         </body>
         </html>`,
         {
