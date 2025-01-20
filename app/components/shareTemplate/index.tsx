@@ -261,30 +261,33 @@ function Card({ token, show, onClose }: Props, ref: any) {
             }
 
             <div className={styles.tokenImage}>
-              {/* {
-                checkFileType(token.tokenImg) === 'image' && (
+              {
+                (checkFileType(token.tokenImg) === 'image' || !token.tokenImg) && (
                   <img
-                    src={token.tokenIcon}
+                    src={token.tokenImg || token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
                     className={styles.tokenImg}
                   />
                 )
               }
-              <img
-                src={token.tokenIcon}
-                alt={token.tokenName}
-                className={styles.tokenImg}
-              /> */}
-              <Media
-                autoPlay={false}
-                data={token}
-              />
+
+              {
+                checkFileType(token.tokenImg) === 'video' && (
+                  <img
+                    src={token.tokenIcon || '/img/token-placeholder.png'}
+                    alt={token.tokenName}
+                    className={styles.tokenImg}
+                  />
+                )
+              }
+             
+              
             </div>
           </div>
 
           <div className={styles.tokenInfo}>
             <div className={styles.tokenIcon}>
-              <img src={token.tokenIcon} alt="Flip" className={styles.badge} />
+              <img src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
             </div>
             <div>
               <div className={styles.tokenName}>{token.tokenName}</div>
