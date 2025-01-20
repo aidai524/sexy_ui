@@ -65,44 +65,30 @@ class CopyTrade {
   }
 
   // 
-  async stopCopyTrade(tradeId: string) {
+  async getCopyTradeList(params: {
+    address: string;
+    chain: string;
+    page: number;
+    pageSize: number;
+  }) {
     try {
-      const response = await fetch(`${this.baseURL}/api/copy-trades/${tradeId}/stop`, {
-        method: 'POST',
-        headers: this.headers
-      });
-      return this.handleResponse(response);
-    } catch (error) {
-    //   throw new Error('');
-    }
-  }
-
-  // 
-  async getCopyTradeDetails(tradeId: string) {
-    try {
-      const response = await fetch(`${this.baseURL}/api/copy-trades/${tradeId}`, {
+      const queryParams = new URLSearchParams({
+        address: params.address,
+        chain: params.chain,
+        page: params.page.toString(),
+        pageSize: params.pageSize.toString()
+      }).toString();
+      const response = await fetch(`${this.baseURL}/copy_trade/list?${queryParams}`, {
         method: 'GET',
         headers: this.headers
       });
       return this.handleResponse(response);
     } catch (error) {
-    //   throw new Error('');
+        console.log(error);
+      return error;
     }
   }
 
-  // 
-  async updateCopyTradeConfig(tradeId: string, newConfig: any) {
-    try {
-      const response = await fetch(`${this.baseURL}/api/copy-trades/${tradeId}/config`, {
-        method: 'PUT',
-        headers: this.headers,
-        body: JSON.stringify(newConfig)
-      });
-      return this.handleResponse(response);
-    } catch (error) {
-    //   throw new Error('');
-    }
-  }
 }
 
 export default CopyTrade;

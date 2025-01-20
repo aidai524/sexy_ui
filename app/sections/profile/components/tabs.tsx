@@ -73,7 +73,7 @@ export default function Tabs({
     : [
         {
           name: "Coppied",
-          content: <Coppied from={from} address={address} />
+          content: <Coppied from={from} address={address} isOther={isOther}/>
         },
         ...baseTabs
       ];
