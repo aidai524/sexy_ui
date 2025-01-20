@@ -21,6 +21,7 @@ export default function Media({ imgHeight, data, imgStyle, videoStyle, style, au
             className={styles.tokenImg}
             style={videoStyle}
             autoPlay={autoPlay}
+            token={data}
           />
         }
         {(imgReg.test(data.tokenImg) || !data.tokenImg) && (
