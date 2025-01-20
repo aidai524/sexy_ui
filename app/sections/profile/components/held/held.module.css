@@ -13,6 +13,8 @@
         width: 46px;
         height: 46px;
         border-radius: 46px;
+        object-fit: cover;
+        object-position: center;
       }
       .name {
         color: #fff;

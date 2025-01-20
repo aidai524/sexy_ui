@@ -5,7 +5,7 @@ import { useAuth } from "@/app/context/auth";
 import { fail, success } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
 
-export default function EarnAndInvite({ info }: any) {
+export default function EarnAndInvite({ info, rate, rateLoading }: any) {
   const { userInfo } = useAuth();
   const { isMobile } = useUserAgent();
 
@@ -66,31 +66,16 @@ export default function EarnAndInvite({ info }: any) {
         />
         <div className={styles.ItemContent}>
           <div className={styles.Title}>Invite Frenz</div>
-          <div className={styles.Desc}>My invite link</div>
+          <div className={styles.Desc}>Kickback Ratio</div>
           <div
-            className={styles.Link}
+            className={styles.Num}
             style={{
-              width: isMobile ? 159 : 272,
               height: isMobile ? 24 : 27
             }}
           >
-            {userInfo?.address ? (
-              <div className={styles.LinkAddress}>
-                <div className={styles.LinkAddressValue}>
-                  {window?.location?.origin}?referral=${userInfo.address}
-                </div>
-                {/*<img
-                  className={styles.LinkAddressIcon}
-                  src="/img/mining/icon-copy.svg"
-                  alt=""
-                  width={16}
-                  height={16}
-                />*/}
-              </div>
-            ) : (
-              "-"
-            )}
+            {rate || 100} %
           </div>
+
           {userInfo?.address ? (
             <button
               type="button"

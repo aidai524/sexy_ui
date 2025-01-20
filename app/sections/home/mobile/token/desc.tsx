@@ -1,6 +1,4 @@
 import styles from "./desc.module.css";
-import StatusTag from "@/app/components/tag/status";
-import ImportTag from "@/app/components/tag/import";
 import { formatAddress, timeAgo, simplifyNum } from "@/app/utils";
 import { useMemo, useState, useEffect } from "react";
 import useMc from "@/app/hooks/useMc";

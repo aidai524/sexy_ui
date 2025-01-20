@@ -5,13 +5,13 @@ import Others from "./others";
 import Rank from "./rank";
 import styles from "./index.module.css";
 
-export default function Mining({ info, infoLoading }: any) {
+export default function Mining({ info, infoLoading, rate, rateLoading }: any) {
   return (
     <div className={styles.Container}>
       <PageHeader title="Reward" from="reward" />
       <div className={styles.Content}>
         <TotalPanel info={info} />
-        <EarnAndInvite info={info} />
+        <EarnAndInvite info={info} rate={rate} rateLoading={rateLoading} />
         <Others info={info} />
         <Rank info={info} infoLoading={infoLoading} />
       </div>

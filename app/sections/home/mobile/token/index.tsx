@@ -15,6 +15,7 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "../hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useHome } from "../context";
 import Big from "big.js";
 
 export default function Token({ isCurrent, token, onUpdate }: any) {
@@ -24,6 +25,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
   const [showFlipModal, setShowFlipModal] = useState(false);
   const [showTradeModal, setShowTradeModal] = useState(false);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
+  const { goDetail } = useHome();
 
   const { total: totalHolders } = useHolders(token);
 
@@ -103,6 +105,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                   setShowCommentsModal(true);
                   return;
                 }
+                if (type === "detail") {
+                  goDetail(token);
+                  return;
+                }
                 if (!window.sexAddress) {
                   window.connect();
                   return;
@@ -116,10 +122,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
               }}
               totalHolders={totalHolders}
               onSuccess={(type: string) => {
-                // if (type === "like") {
-                //   token.isLike = true;
-                //   token.like = token.like + 1;
-                // }
+                if (type === "like") {
+                  token.isLike = true;
+                  token.like = token.like + 1;
+                }
                 onUpdate(token);
               }}
               isCurrent={isCurrent}
