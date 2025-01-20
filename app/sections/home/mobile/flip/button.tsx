@@ -43,6 +43,7 @@ const LaptopButton = ({
         setX(diff);
       }}
       onMouseUp={() => {
+        entered = false;
         if (isDrag) return;
         onClick();
       }}

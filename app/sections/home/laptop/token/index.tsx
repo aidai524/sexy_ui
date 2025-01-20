@@ -105,7 +105,9 @@ export default function Token({
                       window.connect();
                       return;
                     }
-                    onOpenPanel("showTrade", true);
+                    onUpdateTradeTab("chart");
+
+                    if (!showTrade) onOpenPanel("showTrade", true);
                   }}
                 />
               )}
@@ -117,7 +119,7 @@ export default function Token({
           {token.status !== 0 && isCurrent && showTrade && (
             <TradePanel
               onClose={() => {
-                onOpenPanel("showTrade", false);
+                // onOpenPanel("showTrade", false);
               }}
               token={token}
               tab={tradeTab}
