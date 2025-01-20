@@ -113,7 +113,7 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
   return (
     <div className={className} style={allStyle as React.CSSProperties}>
 
-      <video onPause={() => {
+      <video loop={autoPlay && autoPlaySetting} onPause={() => {
         setIsPlay(false);
       }} onPlay={() => {
         setIsPlay(true);
