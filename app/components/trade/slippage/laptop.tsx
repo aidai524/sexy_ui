@@ -1,5 +1,5 @@
 import styles from "./laptop.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -8,9 +8,11 @@ export default function Laptop({
   show,
   slipData,
   onSlipDataChange,
-  onHide
+  onHide,
+  textRef
 }: any) {
   const [customVal, setCustomVal] = useState("");
+
   useEffect(() => {
     show && setCustomVal(list.includes(Number(slipData)) ? "" : slipData);
   }, [show]);
@@ -22,7 +24,7 @@ export default function Laptop({
     };
   }, []);
 
-  if (!show) return null;
+  if (!show || !textRef.current) return null;
   return ReactDOM.createPortal(
     <AnimatePresence mode="wait">
       <motion.div
@@ -73,6 +75,6 @@ export default function Laptop({
         </div>
       </motion.div>
     </AnimatePresence>,
-    document.getElementById("slippage-setting") || document.body
+    textRef.current
   );
 }

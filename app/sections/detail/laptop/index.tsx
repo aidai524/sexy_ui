@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
-import { useRouter, useSearchParams } from 'next/navigation';
-import GoBack from '@/app/components/back/laptop';
+import { useRouter, useSearchParams } from "next/navigation";
+import GoBack from "@/app/components/back/laptop";
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/detail")
@@ -50,11 +50,9 @@ export default function Laptop(props: any) {
       animate={{ opacity: 1 }}
     >
       <div className={styles.TitleWrapper}>
-        {
-          ["profile", "trends", "messages"].includes(search.get("from") || "") && (
-            <GoBack text="" />
-          )
-        }
+        {["profile", "trends", "messages"].includes(
+          search.get("from") || ""
+        ) && <GoBack text="" />}
         Detail
       </div>
       <div className={styles.Content}>
@@ -82,6 +80,9 @@ export default function Laptop(props: any) {
               if (type === "showDetail") {
                 const _showDetail = !showDetail;
                 setShowDetail(_showDetail);
+                setShowComments(false);
+                setShowFlip(false);
+                setShowTrade(false);
                 const { origin, pathname, search } = location;
                 const _search = new URLSearchParams(search);
                 if (_showDetail) {
@@ -91,19 +92,32 @@ export default function Laptop(props: any) {
                 } else {
                   _search.delete("details");
                 }
-                router.replace(new URL(origin + pathname + "?" + _search.toString()).toString());
+                router.replace(
+                  new URL(
+                    origin + pathname + "?" + _search.toString()
+                  ).toString()
+                );
                 return;
               }
               if (type === "showComments") {
                 setShowComments(!showComments);
+                setShowDetail(false);
+                setShowFlip(false);
+                setShowTrade(false);
                 return;
               }
               if (type === "showFlip") {
                 setShowFlip(!showFlip);
+                setShowDetail(false);
+                setShowComments(false);
+                setShowTrade(false);
                 return;
               }
               if (type === "showTrade") {
                 setShowTrade(!showTrade);
+                setShowFlip(false);
+                setShowDetail(false);
+                setShowComments(false);
                 return;
               }
             }}
@@ -119,7 +133,11 @@ export default function Laptop(props: any) {
                   const { origin, pathname, search } = location;
                   const _search = new URLSearchParams(search);
                   _search.delete("details");
-                  router.replace(new URL(origin + pathname + "?" + _search.toString()).toString());
+                  router.replace(
+                    new URL(
+                      origin + pathname + "?" + _search.toString()
+                    ).toString()
+                  );
                 }}
               />
             )}
