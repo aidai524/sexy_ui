@@ -1,5 +1,7 @@
 import styles from "./index.module.css";
 import Menu from "../../menu";
+import Level from "../../level";
+import { useAuth } from "@/app/context/auth";
 
 export default function PageHeader({
   onBack,
@@ -11,6 +13,7 @@ export default function PageHeader({
   rightActions,
   isOther
 }: any) {
+  const { userInfo } = useAuth();
   return (
     <div className={`${styles.Container} ${className}`} style={style}>
       {(isOther || ["setting", "create", "messages"].includes(from)) && (
@@ -53,7 +56,8 @@ export default function PageHeader({
           color: theme === "dark" ? "#000" : "#fff"
         }}
       >
-        {title}
+        <span>{title}</span>
+        {from === "reward" && <Level level={userInfo.level} />}
       </div>
       <div className={styles.Right}>{rightActions}</div>
     </div>

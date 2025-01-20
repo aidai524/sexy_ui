@@ -9,7 +9,6 @@ import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import Big from "big.js";
 
-let startX = 0;
 export default function Flip({ token, onSuccess, id, onClick }: any) {
   const [x, setX] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -64,7 +63,7 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
         <Button
           className={styles.FlipButton}
           onClick={onClick}
-          {...{ x, startX, run, setX }}
+          {...{ x, run, setX }}
         >
           {loading ? (
             <CircleLoading size={20} />

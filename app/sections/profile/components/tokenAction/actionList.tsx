@@ -5,8 +5,8 @@ import { useState } from "react";
 import BuySell from "./buySell";
 import Withdraw from "./withdraw";
 import Claim from "./claim";
-import Big from 'big.js';
-import { useUserAgent } from '@/app/context/user-agent';
+import Big from "big.js";
+import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   token: Project;
@@ -34,7 +34,7 @@ export default function ActionList(props: Props) {
     isPrepaid,
     prepaidSolWithdraw,
     prepaidTokenWithdraw,
-    isDelay,
+    isDelay
   } = props;
 
   const { isMobile } = useUserAgent();
@@ -55,25 +55,35 @@ export default function ActionList(props: Props) {
               />
             ) : (
               <>
-                {!!smookeable && (smookeable === 1 ? (
-                  !isDelay && (
-                    <button className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}>
-                      <span>Flipped</span>
-                    </button>
-                  )
-                ) : (
-                  <SmokeHot
-                    actionChildren={
-                      <button className={`${styles.ActionBtn} ${styles.ProfileFlip} button`}>
-                        <img src="/img/profile/icon-flip.svg" alt="" width="17px" height="21px" />
-                        <span>Flip</span>
+                {!!smookeable &&
+                  (smookeable === 1 ? (
+                    !isDelay && (
+                      <button
+                        className={`${styles.ActionBtn} ${styles.ProfileFlipDisabled} button`}
+                      >
+                        <span>Flipped</span>
                       </button>
-                    }
-                    token={token}
-                    onClick={() => {}}
-                    onSuccess={onWithdrawSuccess}
-                  />
-                ))}
+                    )
+                  ) : (
+                    <SmokeHot
+                      actionChildren={
+                        <button
+                          className={`${styles.ActionBtn} ${styles.ProfileFlip} button`}
+                        >
+                          <img
+                            src="/img/profile/icon-flip.svg"
+                            alt=""
+                            width="17px"
+                            height="21px"
+                          />
+                          <span>Flip</span>
+                        </button>
+                      }
+                      token={token}
+                      onClick={() => {}}
+                      onSuccess={onWithdrawSuccess}
+                    />
+                  ))}
               </>
             )
           }
@@ -89,9 +99,8 @@ export default function ActionList(props: Props) {
         />
       )}
 
-      {[1, 3].includes(Number(token.status)) && (!(isPrepaid && !isOther) || isClaimed) && (
-        <BuySell token={token} />
-      )}
+      {[1, 3].includes(Number(token.status)) &&
+        (!(isPrepaid && !isOther) || isClaimed) && <BuySell token={token} />}
     </div>
   );
 }

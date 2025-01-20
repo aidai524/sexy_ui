@@ -1,6 +1,5 @@
-import TradeModal from "@/app/components/trade-modal";
 import styles from "./index.module.css";
-import { useState } from "react";
+import { useTokenActions } from "../../token-context";
 import type { Project } from "@/app/type";
 
 interface Props {
@@ -8,28 +7,19 @@ interface Props {
 }
 
 export default function BuySell({ token }: Props) {
-  const [tradeShow, setTradeShow] = useState(false);
+  const { onClick, showTradeModal } = useTokenActions();
 
   return (
     <>
       <button
         className={`${styles.ActionBtn} ${styles.BuySell} button`}
         onClick={() => {
-          setTradeShow(true);
+          onClick("trade", token);
         }}
       >
         <BuySellIcon />
         Buy
       </button>
-
-      <TradeModal
-        show={tradeShow}
-        onClose={() => {
-          setTradeShow(false);
-        }}
-        data={token}
-        initType={"buy"}
-      />
     </>
   );
 }
