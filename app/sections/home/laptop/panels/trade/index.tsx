@@ -48,13 +48,19 @@ export default function TradePanel({ token, tab, setTab, onClose }: any) {
           </PanelWrapper>
         )}
       </div>
-      <Trade
-        from="panel"
-        initType="buy"
-        token={token}
-        show={true}
-        onClose={onClose}
-      />
+      <div
+        style={{
+          marginTop: "-20px"
+        }}
+      >
+        <Trade
+          from="panel"
+          initType="buy"
+          token={token}
+          show={true}
+          onClose={() => {}}
+        />
+      </div>
     </div>
   );
 }
