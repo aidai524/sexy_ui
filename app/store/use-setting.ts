@@ -6,6 +6,7 @@ export const useSetting = create(
     (set, get: any) => ({
       menuExpand: true,
       autoPlay: false,
+      flipMax: 1,
       set: (params: any) => set(() => ({ ...params }))
     }),
     {
