@@ -49,7 +49,7 @@ export default function FollowerList({
           loadMore,
           hasMore,
           onItemClick(item: any) {
-            router.push("/profile/user?account=" + item.address);
+            router.push("/profile/user?account=" + item.address + "&from=profile");
           }
         }}
       />

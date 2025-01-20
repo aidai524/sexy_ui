@@ -201,10 +201,6 @@ export default function Txs({ from, data }: any) {
                     <div
                       key={item.tx_hash}
                       className={`${styles.item}`}
-                      onClick={() => {
-                        if (!isSelf)
-                          router.push(`/profile/user?account=${item.address}`);
-                      }}
                     >
                       <div
                         className={`${styles.account} ${
@@ -212,6 +208,11 @@ export default function Txs({ from, data }: any) {
                             ? styles.LaptopAccount
                             : styles.MobileAccount
                         } ${!isSelf && "button"}`}
+
+                        onClick={() => {
+                          if (!isSelf)
+                            router.push(`/profile/user?account=${item.address}&from=detail`);
+                        }}
                       >
                         <img
                           className={styles.avatar}

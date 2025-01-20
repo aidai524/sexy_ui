@@ -22,6 +22,7 @@
   background: rgba(146, 144, 177, 0.1);
   height: 48px;
   padding: 0px 12px;
+  gap: 8px;
 }
 
 .linkInput {

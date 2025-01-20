@@ -42,13 +42,9 @@ export default forwardRef(function CreateNode(
   const [canValid, setCanValid] = useState(false);
   const [inValidVals, setInvaldVasl] = useState<any>({});
 
-  const onPreview = useCallback(async () => {
-    let isValid = false;
-    const inValidVals: any = {};
+  const validateName = useCallback(async (tokenName: string) => {
     if (!name_reg.test(tokenName)) {
-      inValidVals["tokenName"] =
-        "Only uppercase and lowercase letters and numbers are supported and the length is less than 16";
-      isValid = true;
+      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 16";
     }
 
     const tokenInUse = await httpGet(
@@ -56,72 +52,130 @@ export default forwardRef(function CreateNode(
     );
 
     if (tokenInUse.code === 0 && tokenInUse.data?.length > 0) {
-      inValidVals["tokenName"] = "Token name already in use";
-      isValid = true;
+      return "Token name already in use";
     }
 
+    return "";
+  }, []);
+
+  const validateTicker = useCallback((ticker: string) => {
     if (!ticker) {
-      inValidVals["ticker"] = "Ticker cannot be empty";
-      isValid = true;
+      return "Ticker cannot be empty";
     }
 
     if (ticker.length > 80) {
-      inValidVals["ticker"] = "Ticker cannot be length than 80";
-      isValid = true;
+      return "Ticker cannot be length than 80";
     }
 
+    return "";
+  }, []);
+
+  const validateImages = useCallback((tokenImg: ImageUploadItem[], tokenIcon: ImageUploadItem[], showTokenSymbol: boolean) => {
     if (tokenImg.length === 0) {
-      inValidVals["tokenImg"] = "Token image cannot be empty";
-      isValid = true;
-    } else {
-      const tokenImgObj = tokenImg[0];
-      if (videoReg.test(tokenImgObj.url) || showTokenSymbol) {
-        if (tokenIcon.length === 0) {
-          inValidVals["tokenIcon"] = "Token icon cannot be empty";
-          isValid = true;
-        }
-      }
+      return "Token image cannot be empty";
     }
 
+    const tokenImgObj = tokenImg[0];
+    if ((videoReg.test(tokenImgObj.url) || showTokenSymbol) && tokenIcon.length === 0) {
+      return "Token icon cannot be empty";
+    }
+
+    return "";
+  }, []);
+
+  const validateAbout = useCallback((about: string) => {
     if (!about) {
-      inValidVals["about"] = "About icon cannot be empty";
-      isValid = true;
+      return "About icon cannot be empty";
     }
 
     if (about.length > 200) {
-      inValidVals["about"] = "About cannot be length than 200";
+      return "About cannot be length than 200";
+    }
+
+    return "";
+  }, []);
+
+  const validateWebsite = useCallback((website: string) => {
+    if (website && !isValidURL(website)) {
+      return "Website is not a valid url";
+    }
+    return "";
+  }, []);
+
+  const validateTelegram = useCallback((tg: string) => {
+    if (tg && !isValidURL(tg)) {
+      return "Tg is not a valid url";
+    }
+    return "";
+  }, []);
+
+  const validateTwitter = useCallback((x: string) => {
+    if (x && !isValidURL(x)) {
+      return "Twitter is not a valid url";
+    }
+    return "";
+  }, []);
+
+  const validateDiscord = useCallback((discord: string) => {
+    if (discord && !isValidURL(discord)) {
+      return "Discord is not a valid url";
+    }
+    return "";
+  }, []);
+
+  const onPreview = useCallback(async () => {
+    const inValidVals: any = {};
+    let isValid = false;
+
+    const nameError = await validateName(tokenName);
+    if (nameError) {
+      inValidVals["tokenName"] = nameError;
+      isValid = true;
+    }
+
+    const tickerError = validateTicker(ticker);
+    if (tickerError) {
+      inValidVals["ticker"] = tickerError;
+      isValid = true;
+    }
+
+    const imagesError = validateImages(tokenImg, tokenIcon, showTokenSymbol);
+    if (imagesError) {
+      inValidVals[imagesError.includes("icon") ? "tokenIcon" : "tokenImg"] = imagesError;
+      isValid = true;
+    }
+
+    const aboutError = validateAbout(about);
+    if (aboutError) {
+      inValidVals["about"] = aboutError;
+      isValid = true;
+    }
+
+    const websiteError = validateWebsite(website);
+    if (websiteError) {
+      inValidVals["website"] = websiteError;
+      isValid = true;
+    }
+
+    const tgError = validateTelegram(tg);
+    if (tgError) {
+      inValidVals["tg"] = tgError;
+      isValid = true;
+    }
+
+    const xError = validateTwitter(x);
+    if (xError) {
+      inValidVals["x"] = xError;
+      isValid = true;
+    }
+
+    const discordError = validateDiscord(discord);
+    if (discordError) {
+      inValidVals["discord"] = discordError;
       isValid = true;
     }
 
     setInvaldVasl(inValidVals);
-
-    if (website) {
-      if (!isValidURL(website)) {
-        inValidVals["website"] = "Website is not a valid url";
-        isValid = true;
-      }
-    }
-
-    if (tg) {
-      if (!isValidURL(tg)) {
-        inValidVals["tg"] = "Tg is not a valid url";
-        isValid = true;
-      }
-    }
-
-    if (x) {
-      if (!isValidURL(x)) {
-        inValidVals["x"] = "Twitter is not a valid url";
-        isValid = true;
-      }
-    }
-
-    if (discord) {
-      if (!isValidURL(discord)) {
-        inValidVals["discord"] = "Discord is not a valid url";
-        isValid = true;
-      }
-    }
 
     if (isValid) {
       window.scrollTo({
@@ -153,7 +207,15 @@ export default forwardRef(function CreateNode(
     x,
     tg,
     discord,
-    showTokenSymbol
+    showTokenSymbol,
+    validateName,
+    validateTicker,
+    validateImages,
+    validateAbout,
+    validateWebsite,
+    validateTelegram,
+    validateTwitter,
+    validateDiscord
   ]);
 
   useImperativeHandle(
@@ -196,6 +258,14 @@ export default forwardRef(function CreateNode(
             onChange={(e) => {
               setTokenName(e.target.value);
             }}
+            onBlur={async () => {
+              const nameError = await validateName(tokenName);
+              if (nameError) {
+                setInvaldVasl({ ...inValidVals, tokenName: nameError });
+              } else {
+                setInvaldVasl({ ...inValidVals, tokenName: "" });
+              } 
+            }}
             className={`${
               isMobile ? styles.inputText : styles.laptopInputText
             } ${inValidVals["tokenName"] ? styles.inputError : ""}`}
@@ -221,6 +291,14 @@ export default forwardRef(function CreateNode(
             value={ticker}
             onChange={(e) => {
               setTicker(e.target.value);
+            }}
+            onBlur={() => {
+              const tickerError = validateTicker(ticker);
+              if (tickerError) {
+                setInvaldVasl({ ...inValidVals, ticker: tickerError });
+              } else {
+                setInvaldVasl({ ...inValidVals, ticker: "" });
+              }
             }}
             className={`${
               isMobile ? styles.inputText : styles.laptopInputText
@@ -311,6 +389,14 @@ export default forwardRef(function CreateNode(
             onChange={(e) => {
               setAbout(e.target.value);
             }}
+            onBlur={() => {
+              const aboutError = validateAbout(about);
+              if (aboutError) {
+                setInvaldVasl({ ...inValidVals, about: aboutError });
+              } else {
+                setInvaldVasl({ ...inValidVals, about: "" });
+              }
+            }}
             className={`${styles.inputText} ${
               inValidVals["about"] ? styles.inputError : ""
             } ${!isMobile && styles.laptopInputText}`}
@@ -329,6 +415,14 @@ export default forwardRef(function CreateNode(
             value={website}
             onChange={(val) => {
               setWebsite(val);
+            }}
+            onBlur={() => {
+              const websiteError = validateWebsite(website);
+              if (websiteError) {
+                setInvaldVasl({ ...inValidVals, website: websiteError });
+              } else {
+                setInvaldVasl({ ...inValidVals, website: "" });
+              }
             }}
           />
         </div>
@@ -356,6 +450,14 @@ export default forwardRef(function CreateNode(
               onChange={(val) => {
                 setTwitter(val);
               }}
+              onBlur={() => {
+                const xError = validateTwitter(x);
+                if (xError) {
+                  setInvaldVasl({ ...inValidVals, x: xError });
+                } else {
+                  setInvaldVasl({ ...inValidVals, x: "" });
+                }
+              }}
               type="X"
               img="/img/community/x.svg"
             />
@@ -372,6 +474,14 @@ export default forwardRef(function CreateNode(
               onChange={(val) => {
                 setTelegram(val);
               }}
+              onBlur={() => {
+                const tgError = validateTelegram(tg);
+                if (tgError) {
+                  setInvaldVasl({ ...inValidVals, tg: tgError });
+                } else {
+                  setInvaldVasl({ ...inValidVals, tg: "" });
+                }
+              }}  
               type="Telegram"
               img="/img/community/telegram.svg"
             />
@@ -387,6 +497,14 @@ export default forwardRef(function CreateNode(
               value={discord}
               onChange={(val) => {
                 setDiscord(val);
+              }}
+              onBlur={() => {
+                const discordError = validateDiscord(discord);
+                if (discordError) {
+                  setInvaldVasl({ ...inValidVals, discord: discordError });
+                } else {
+                  setInvaldVasl({ ...inValidVals, discord: "" });
+                }
               }}
               type="Discord"
               img="/img/community/discard.svg"

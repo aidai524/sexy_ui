@@ -19,11 +19,12 @@ interface Props {
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
 export const svgReg = /(.+\.(svg))$/i;
 export const gifReg = /(.+\.(gif))$/i;
-export const videoReg = /(.+\.(mp4|webm))$/i;
+export const videoReg = /(.+\.(mp4|webm|mov))$/i;
 
 export const getVideoExt = (url: string) => {
   const match = url.match(videoReg);
   if (match && match[2]) {
+    if (match[2] === 'mov') return 'mp4';
     return match[2].toLowerCase();
   }
   return '';

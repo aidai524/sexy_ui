@@ -3,13 +3,14 @@ import styles from "./index.module.css";
 import { getVideoExt, videoReg, imgReg } from "../../upload";
 import VideoPlayer from "../../video";
 
-export default function Media({ imgHeight, data }: any) {
+export default function Media({ imgHeight, data, imgStyle, videoStyle, style, autoPlay }: any) {
   return (
     <div className={styles.imgList}>
       <div
         className={styles.ImgWrapper}
         style={{
-          height: imgHeight
+          height: imgHeight,
+          ...style,
         }}
       >
         {
@@ -18,6 +19,8 @@ export default function Media({ imgHeight, data }: any) {
             src={data.tokenImg}
             type={getVideoExt(data.tokenImg)}
             className={styles.tokenImg}
+            style={videoStyle}
+            autoPlay={autoPlay}
           />
         }
         {imgReg.test(data.tokenImg) && (
@@ -26,6 +29,7 @@ export default function Media({ imgHeight, data }: any) {
             className={styles.tokenImg}
             src={data.tokenImg || "/img/token-placeholder.png"}
             placeholderSrc="/img/token-placeholder.png"
+            style={imgStyle}
           />
         )}
       </div>

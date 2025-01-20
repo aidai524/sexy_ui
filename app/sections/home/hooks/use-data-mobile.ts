@@ -20,6 +20,7 @@ export default function useData(launchType: Type) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
   const [list, setList] = useState<number[]>([]);
+  const [refresher, setRefresher] = useState(0);
   const { accountRefresher, userInfo } = useAuth();
   const projectsStore = useProjects();
   const mountedRef = useRef(false);
@@ -93,15 +94,18 @@ export default function useData(launchType: Type) {
     }
   };
 
-  const queryAndUpdateDetail = useCallback(async (type: Type, address: number) => {
-    const res = await httpGet(`/project?address=${address}`);
-    if (res.code !== 0 || !res.data) return;
-    projectsStore.updateProject(type, res.data);  
-  }, [projectsStore]);
+  const queryAndUpdateDetail = useCallback(
+    async (type: Type, address: number) => {
+      const res = await httpGet(`/project?address=${address}`);
+      if (res.code !== 0 || !res.data || !res.data.length) return;
+      projectsStore.updateProject(type, res.data[0]);
+      setRefresher(refresher + 1);
+    },
+    [projectsStore, refresher]
+  );
 
   const onChangeIndex = (currentIndex: number) => {
     projectsStore.setIndex(launchType, currentIndex);
-
     if (list.length - projectsStore.getIndex(launchType) > left_num) {
       return;
     }
@@ -143,9 +147,10 @@ export default function useData(launchType: Type) {
     isLoading,
     list,
     hasNext,
+    refresher,
     updateProject: projectsStore.updateProject,
     onChangeIndex,
     getProjectById: projectsStore.getProjectById,
-    queryAndUpdateDetail,
+    queryAndUpdateDetail
   };
 }

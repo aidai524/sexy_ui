@@ -9,6 +9,8 @@
   width: 80px;
   height: 80px;
   border-radius: 100px;
+  object-fit: cover;
+  object-position: center;
 }
 .pencil {
   position: absolute;

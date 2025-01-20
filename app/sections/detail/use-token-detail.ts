@@ -11,14 +11,15 @@ export default function useTokenDetail({ token }: any) {
   const [isLoading, setIsLoading] = useState(!token);
   const { userInfo } = useAuth();
 
-  const getDetailInfo = useCallback(() => {
+  const getDetailInfo = useCallback((opts?: { isSkipLoading?: boolean; }) => {
+    const { isSkipLoading } = opts ?? {};
     const address = params.get("address") || token?.address;
     if (!address) {
       setIsLoading(false);
       return;
     }
 
-    if (!token) {
+    if (!token && !isSkipLoading) {
       setIsLoading(true);
     }
     

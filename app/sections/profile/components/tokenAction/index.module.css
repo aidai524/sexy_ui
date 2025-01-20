@@ -1,9 +1,14 @@
 .Btns {
   display: flex;
-  flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
   gap: 12px;
+  flex-direction: row;
+}
+
+.BtnsMobile {
+  composes: Btns;
+  flex-direction: column;
 }
 
 .ActionBtn {

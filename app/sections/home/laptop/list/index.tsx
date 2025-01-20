@@ -11,6 +11,7 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useTokenPanelStatus } from "@/app/store/use-token-panel";
+import Big from "big.js";
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/detail")
@@ -29,9 +30,11 @@ export default function List({ type, isCurrentTab }: any) {
     getIndex,
     isLoading,
     list,
+    refresher,
     hasNext,
     onChangeIndex,
     updateProject,
+    queryAndUpdateDetail,
     getProjectById
   } = useData(type);
   const index = getIndex(type);
@@ -65,7 +68,7 @@ export default function List({ type, isCurrentTab }: any) {
     const id = list[index];
     if (!id) return null;
     return getProjectById(type, id);
-  }, [index, list]);
+  }, [index, list, refresher]);
 
   return (
     <div
@@ -100,17 +103,24 @@ export default function List({ type, isCurrentTab }: any) {
               key={token?.address || item}
               token={token}
               isCurrent={index === i && isCurrentTab}
-              onUpdate={(token: any) => {
+              onUpdate={(token: any, action?: string) => {
                 updateProject(type, token);
+                if (action === "flip") {
+                  setTimeout(() => {
+                    queryAndUpdateDetail(type, token.address);
+                  }, 2000);
+                } else {
+                  queryAndUpdateDetail(type, token.address);
+                }
               }}
               opacity={index > i ? 0 : 1}
               showTrade={tokenPanelStatusStore.showTrade}
               tradeTab={tokenPanelStatusStore.tab}
               onUpdateTradeTab={tokenPanelStatusStore.setTab}
-              onOpenPanel={(type: string) => {
+              onOpenPanel={(panleType: string) => {
                 tokenPanelStatusStore.setShow(
-                  type,
-                  !tokenPanelStatusStore[type]
+                  panleType,
+                  !tokenPanelStatusStore[panleType]
                 );
               }}
             />
@@ -187,6 +197,7 @@ export default function List({ type, isCurrentTab }: any) {
               onSuccess={() => {
                 currentToken.comment = currentToken.comment + 1;
                 updateProject(type, currentToken);
+                queryAndUpdateDetail(type, currentToken.address);
               }}
             />
           )}
@@ -199,9 +210,18 @@ export default function List({ type, isCurrentTab }: any) {
               onSuccess={(amount: string) => {
                 currentToken.isSuperLike = true;
                 currentToken.prePaid = currentToken.prePaid + 1;
-                currentToken.total_amount = amount;
+                currentToken.total_amount =
+                  Number(currentToken.total_amount) + Number(amount);
+                currentToken.prePaidAmount = Big(
+                  currentToken.prePaidAmount || 0
+                )
+                  .add(Number(amount) * 1e9)
+                  .toString();
                 updateProject(type, currentToken);
                 tokenPanelStatusStore.setShow("showFlip", false);
+                setTimeout(() => {
+                  queryAndUpdateDetail(type, currentToken.address);
+                }, 2000);
               }}
             />
           )}

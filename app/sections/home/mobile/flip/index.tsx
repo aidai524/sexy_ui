@@ -7,6 +7,7 @@ import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useDebounceFn } from "ahooks";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
+import Big from "big.js";
 
 let startX = 0;
 export default function Flip({ token, onSuccess, id, onClick }: any) {
@@ -32,9 +33,13 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
         const likeRes = await actionLikeTrigger(token, showShare);
         const params: any = {
           isSuperLike: true,
-          total_amount: 0.1,
-          prePaid: token.prePaid + 1
+          total_amount: Number(token.total_amount) + 0.1,
+          prePaid: token.prePaid + 1,
+          prePaidAmount: Big(token.prePaidAmount || 0)
+            .add(Number(0.1) * 1e9)
+            .toString()
         };
+
         if (likeRes) {
           params.isLike = true;
           params.like = token.like + 1;
@@ -50,7 +55,7 @@ export default function Flip({ token, onSuccess, id, onClick }: any) {
   );
 
   if (token.account === window.sexAddress) {
-    return null
+    return null;
   }
 
   return (

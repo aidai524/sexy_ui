@@ -8,11 +8,9 @@ import Flip from "@/app/sections/home/mobile/flip";
 import Flipped from "@/app/sections/home/mobile/flip/flipped";
 import Trade from "@/app/sections/home/mobile/trade";
 import Danmaku from "@/app/components/danmaku";
-import DetailButton from "./detail-button";
 import ScaleButton from "./scale-button";
 import TradePanel from "../panels/trade";
 import { motion } from "framer-motion";
-import TipsButton from "../tips-button";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -84,7 +82,7 @@ export default function Token({
                   <Flip
                     token={token}
                     onSuccess={(params: any) => {
-                      onUpdate({ ...token, ...params });
+                      onUpdate({ ...token, ...params }, "flip");
                     }}
                     onClick={() => {
                       if (!window.sexAddress) {
@@ -133,45 +131,39 @@ export default function Token({
               }}
             />
           )}
-          <div className={styles.Actions}>
-            <TipsButton tips="Details">
-              <DetailButton
-                onClick={() => {
-                  onOpenPanel("showDetail");
-                }}
-              />
-            </TipsButton>
-
-            <Actions
-              token={token}
-              onClick={(type: any) => {
-                if (type === "comments") {
-                  onOpenPanel("showComments");
-                  return;
-                }
-                if (!window.sexAddress) {
-                  window.connect();
-                  return;
-                }
-                if (type === "flip") {
-                  onOpenPanel("showFlip");
-                }
-                if (type === "trade") {
-                  onUpdateTradeTab("holders");
-                  onOpenPanel("showTrade");
-                }
-              }}
-              totalHolders={totalHolders}
-              onSuccess={(type: string) => {
-                if (type === "like") {
-                  token.isLike = true;
-                  token.like = token.like + 1;
-                }
-                onUpdate(token);
-              }}
-              isCurrent={isCurrent}
-            />
-          </div>
+          <Actions
+            token={token}
+            onClick={(type: any) => {
+              if (type === "comments") {
+                onOpenPanel("showComments");
+                return;
+              }
+              if (type === "detail") {
+                onOpenPanel("showDetail");
+                return;
+              }
+              if (!window.sexAddress) {
+                window.connect();
+                return;
+              }
+              if (type === "flip") {
+                onOpenPanel("showFlip");
+              }
+              if (type === "trade") {
+                onUpdateTradeTab("holders");
+                if (!showTrade) onOpenPanel("showTrade");
+              }
+            }}
+            totalHolders={totalHolders}
+            onSuccess={(type: string) => {
+              if (type === "like") {
+                token.isLike = true;
+                token.like = token.like + 1;
+              }
+              onUpdate(token);
+            }}
+            isCurrent={isCurrent}
+          />
         </div>
       )}
     </div>

@@ -30,6 +30,15 @@ interface Summary {
   value: number | "";
 }
 
+const SUMMARIES_DEFAULT: Record<string, Summary[]> = {
+  liked: [
+    { label: "All", amount: 0, value: "" },
+    { label: "Launched", amount: 0, value: 3 },
+    { label: "Launching", amount: 0, value: 1 },
+    { label: "Pre-Launch", amount: 0, value: 0 }
+  ]
+};
+
 export default function Created({
   address,
   type,
@@ -42,14 +51,7 @@ export default function Created({
 }: any) {
   const popoverRef = useRef<any>();
   const homeTabStore: any = useHomeTab();
-  const [summaries, setSummaries] = useState<Record<string, Summary[]>>({
-    liked: [
-      { label: "All", amount: 0, value: "" },
-      { label: "Launched", amount: 0, value: 3 },
-      { label: "Launching", amount: 0, value: 1 },
-      { label: "Pre-Launch", amount: 0, value: 0 }
-    ]
-  });
+  const [summaries, setSummaries] = useState<Record<string, Summary[]>>(SUMMARIES_DEFAULT);
   const [list, setList] = useState<Project[]>([]);
   const [refresh, setRefresh] = useState<number>(1);
   const [hasMore, setHasMore] = useState(false);
@@ -88,7 +90,7 @@ export default function Created({
           offset: isInit ? 0 : offset
         };
 
-        let _summary: any = homeTabStore.currentSummary.value;
+        let _summary: any = homeTabStore.currentSummary?.value;
         if (typeof opts?.status !== 'undefined') {
           _summary = opts?.status;
         }
@@ -156,6 +158,12 @@ export default function Created({
           }, 1000 * 60 * 1);
         }
       } catch (err) {
+        console.log(
+          '%cLoad <%s> list failed: %o',
+          'background: #FF2BA0;color:#fff;font-size:16px;',
+          urls[type],
+          err,
+        );
         setList([]);
       }
       setLoading(false);
@@ -176,6 +184,9 @@ export default function Created({
   };
 
   useEffect(() => {
+    setSummaries(SUMMARIES_DEFAULT);
+    homeTabStore.set({ currentSummary: SUMMARIES_DEFAULT[0] });
+
     return () => {
       clearTimeout(timerRef.current);
     };
@@ -207,7 +218,7 @@ export default function Created({
   }
 
   return (
-    <div>
+    <div className={styles.ProfileCreatedContainer}>
       <StatusSelect
         type={type}
         popoverRef={popoverRef}
@@ -253,14 +264,14 @@ const StatusSelect = (props: any) => {
 
   return (
     <div
-      className={styles.SelectContainer}
+      className={isMobile ? styles.SelectContainerMobile : styles.SelectContainer}
       style={{
         backgroundColor: isMobile ? "rgba(255, 255, 255, 0.08)" : "transparent"
       }}
     >
       <Popover
         ref={popoverRef}
-        placement={PopoverPlacement.Bottom}
+        placement={PopoverPlacement.BottomRight}
         trigger={PopoverTrigger.Click}
         content={
           <div className={styles.SelectDropdown}>

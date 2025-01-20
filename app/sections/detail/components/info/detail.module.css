@@ -2,6 +2,11 @@
   background-color: #252328;
   border-radius: 15px 15px 0 0;
 }
+.mainEmpty {
+  composes: main;
+  padding: 30px 0;
+  border-radius: 15px;
+}
 
 .titles {
   display: flex;
@@ -16,7 +21,7 @@
 }
 
 .detailInfo {
-  flex: 1;
+  width: calc(100% - 100px);
 }
 
 .detailAvatar {
@@ -33,6 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   .tokenImg {
     width: 100%;
     border-radius: 10px;
@@ -72,7 +78,8 @@
   }
   .authorDesc {
     color: #ffffff;
-    white-space: nowrap;
+    width: calc(100% - 100px);
+    text-align: right;
     &.authorDescEs {
       color: #ff37a3;
     }

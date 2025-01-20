@@ -1,6 +1,6 @@
-import Modal from "../../modal";
-import styles from "./laptop.module.css";
-import Trade from "../trade";
+import FlipPanel from "@/app/sections/home/laptop/panels/flip";
+import { AnimatePresence } from "framer-motion";
+import ReactDOM from "react-dom";
 import type { Project } from "@/app/type";
 
 interface Props {
@@ -11,34 +11,17 @@ interface Props {
 }
 
 export default function SmokPanel({ show, token, onHide, onSuccess }: Props) {
-  return (
-    <Modal
-      open={show}
-      onClose={() => {
-        onHide && onHide();
-      }}
-      mainStyle={{ width: 502, border: "none" }}
-      closeStyle={{
-        display: "none"
-      }}
-    >
-      <div className={styles.Container}>
-        <img className={styles.Img} src="/img/home/flipLogo.png" />
-
-        <Trade
-          modalShow={show}
+  return ReactDOM.createPortal(
+    <AnimatePresence mode="wait">
+      {show && (
+        <FlipPanel
           token={token}
-          panelStyle={{
-            backgroundColor: "transparent"
-          }}
-          onClose={() => {
-            onHide && onHide();
-          }}
-          onSuccess={() => {
-            onSuccess && onSuccess();
-          }}
+          onClose={onHide}
+          onSuccess={onSuccess}
+          from="button"
         />
-      </div>
-    </Modal>
+      )}
+    </AnimatePresence>,
+    document.body
   );
 }

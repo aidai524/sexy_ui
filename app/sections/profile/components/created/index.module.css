@@ -4,6 +4,16 @@
   align-items: center;
   padding-top: 14px;
   padding-bottom: 14px;
+  position: absolute;
+  right: 0;
+  top: -8px;
+  cursor: pointer;
+}
+.SelectContainerMobile {
+  composes: SelectContainer;
+  position: unset;
+  justify-content: flex-end;
+  padding-right: 15px;
 }
 .Select {
   display: flex;
@@ -78,4 +88,8 @@
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+}
+
+.ProfileCreatedContainer {
+  height: 100%;
 }

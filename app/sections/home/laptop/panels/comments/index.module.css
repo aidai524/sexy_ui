@@ -2,6 +2,8 @@
   width: 375px;
   border-radius: 30px;
   position: absolute;
+  flex-shrink: 0;
   right: 100px;
-  top: 0px;
+  top: 50%;
+  transform: translateY(-50%);
 }

@@ -1,7 +1,7 @@
 import styles from "./index.module.css";
 import AirdropCard from './components/card';
 import { AirdropContext } from '@/app/components/airdrop/context';
-import { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import Loading from '@/app/components/icons/loading';
 import { numberFormatter } from '@/app/utils/common';
 import Big from 'big.js';
@@ -11,6 +11,7 @@ import InviteCard from '@/app/components/airdrop/components/invite-card';
 import { useAccount } from '@/app/hooks/useAccount';
 import { useAuth } from '@/app/context/auth';
 import { useDebounceFn } from 'ahooks';
+import Countdown from '@/app/components/airdrop/components/countdown';
 
 const AirdropList = (props: any) => {
   const {} = props;
@@ -32,6 +33,8 @@ const AirdropList = (props: any) => {
   const { address } = useAccount();
   const { accountRefresher } = useAuth();
 
+  const isClaimed = airdropData?.clime_pump;
+
   const pointList = useMemo(() => {
     if (!userData || !Object.keys(userData).length) return [];
     return [
@@ -47,7 +50,52 @@ const AirdropList = (props: any) => {
       },
       {
         type: 'Points',
-        total: `+${numberFormatter(userData.points, 0, true)}`,
+        total: (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 10,
+            }}
+          >
+            <div>
+              +{numberFormatter(userData.points, Big(userData.points || 0).gte(1e6) ? 2 : 0, true, { isShort: Big(userData.points || 0).gte(1e6), isShortUppercase: true })}
+            </div>
+            {
+              isClaimed && (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    gap: 3,
+                  }}
+                >
+                  <img
+                    src="/img/airdrop/icon-checked.svg"
+                    alt=""
+                    style={{
+                      flexShrink: 0,
+                      width: 19,
+                      height: 19,
+                    }}
+                  />
+                  <div
+                    style={{
+                      color: '#000',
+                      fontFamily: 'Unbounded',
+                      fontSize: 12,
+                      fontWeight: 500,
+                    }}
+                  >
+                    Claimed
+                  </div>
+                </div>
+              )
+            }
+          </div>
+        ),
         icon: '/img/airdrop/user-points.svg',
         desc: (
           <>
@@ -56,7 +104,7 @@ const AirdropList = (props: any) => {
         ),
       },
     ];
-  }, [userData, address]);
+  }, [userData, address, isClaimed]);
 
   const btnLoading = useMemo(() => {
     return claiming || airdropDataLoading || userDataLoading;
@@ -81,6 +129,20 @@ const AirdropList = (props: any) => {
   return (
     <AirdropCard
       title={<UserInfoCard />}
+      contentStyle={{
+        paddingTop: 68,
+      }}
+      addonContent={(
+        <Countdown
+          style={{
+            position: 'absolute',
+            zIndex: 3,
+            top: 0,
+            left: '50%',
+            transform: 'translate(-50%, 125px)',
+          }}
+        />
+      )}
     >
       <div className={styles.AirdropInfoContent}>
         <div className={styles.Content}>
@@ -140,10 +202,10 @@ const AirdropList = (props: any) => {
                 type="button"
                 style={{
                   width: "100%",
-                  height: "54px",
-                  border: "1px solid #000",
+                  height: isClaimed ? "unset" : "54px",
+                  border: isClaimed ? "unset" : "1px solid #000",
                   borderRadius: "27px",
-                  background: "var(--part-bg)",
+                  background: isClaimed ? "unset" : "var(--part-bg)",
                   color: "#000",
                   textAlign: "center",
                   fontFamily: "Unbounded",
@@ -169,9 +231,10 @@ const AirdropList = (props: any) => {
                 }
                 <div>
                   {
-                    airdropData?.clime_pump ? (
-                      Big(userData?.points ?? 0).lte(0) ? 'Earn More' : 'Airdrop Claimed'
+                    isClaimed ? (
+                      // Big(userData?.points ?? 0).lte(0) ? 'Earn More' : 'Airdrop Claimed'
                       // 'Airdrop Claimed'
+                      'Want to earn more? >'
                     ) : 'Claim'
                   }
                 </div>

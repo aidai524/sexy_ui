@@ -20,6 +20,7 @@ interface Props {
   actionChildren?: React.ReactNode;
   content?: React.ReactNode;
   onHide?: () => void;
+  onSuccess?(): void;
 }
 
 export default function SmokeBtn({
@@ -29,7 +30,8 @@ export default function SmokeBtn({
   actionChildren,
   content,
   onHide,
-  id
+  id,
+  onSuccess
 }: Props) {
   const [panelShow, setPanelShow] = useState(false);
   const [vipShow, setVipShow] = useState(false);
@@ -150,6 +152,7 @@ export default function SmokeBtn({
         onSuccess={() => {
           onClick && onClick();
           setPanelShow(false);
+          onSuccess?.();
         }}
         onHide={() => {
           setPanelShow(false);

@@ -120,11 +120,34 @@
 
 .receiveTokenAmount {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.7);
   font-weight: 300;
   gap: 10px;
+}
+
+.receiveTitleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.receiveTitlePaidWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.receiveTitle {
+  margin-top: 6px;
+}
+.receiveTitlePaid {
+  color: #FFF;
+  text-align: right;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .launchTip {

@@ -103,7 +103,12 @@ const ReferModalContent = (props: any) => {
 
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
-      <div className={styles.Body}>
+      <div
+        className={styles.Body}
+        style={{
+          height: currentTab === 2 ? 493 : 483,
+        }}
+      >
         <div className={isMobile ? styles.TitleMobile : styles.Title}>
           Referral Earning
         </div>
@@ -143,6 +148,7 @@ const ReferModalContent = (props: any) => {
               {currentTab === 1 && (
                 <Tab
                   key={1}
+                  tab={1}
                   {...props}
                   bg="/img/home/refer-modal-content-bg-1.svg"
                   list={[
@@ -196,6 +202,7 @@ const ReferModalContent = (props: any) => {
               {currentTab === 2 && (
                 <Tab
                   key={2}
+                  tab={2}
                   {...props}
                   bg="/img/home/refer-modal-content-bg-2.svg"
                   list={[
@@ -268,9 +275,13 @@ const ReferModalContent = (props: any) => {
                 className={styles.InviteText}
                 {...AnimateVariants}
               >
-                Users invite more than <strong className={styles.InviteTextPrimary}>1,000</strong> people and get <strong
-                className={styles.InviteTextPrimary}
-              >50%</strong> Referral kickback
+                When you invite a new user,
+                <br />
+                you will earn an{" "}
+                <strong className={styles.InviteTextPrimary}>
+                  extra 10%
+                </strong>{" "}
+                of their points.
               </motion.div>
             )}
           </AnimatePresence>

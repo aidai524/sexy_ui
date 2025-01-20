@@ -12,6 +12,7 @@
 
   .cationArea {
     margin-top: 10px;
+
     .tradeTabs {
       padding: 20px 15px;
       display: flex;
@@ -54,17 +55,25 @@
       }
     }
 
-    .inputArea {
+
+    .inputWrapper {
+      color: #fff;
+      gap: 10px;
+      border: 1px solid rgba(146, 144, 177, 0.6);
+      border-radius: 8px;
+      padding: 0 10px 10px;
       margin-top: 10px;
+      background-color: #9290B11A;
+    }
+
+    .inputArea {
       display: flex;
       align-items: center;
       justify-content: space-between;
       color: #fff;
       gap: 10px;
       height: 46px;
-      border: 1px solid rgba(146, 144, 177, 0.6);
-      border-radius: 8px;
-      padding: 0 10px;
+
 
       .input {
         flex: 1;
@@ -98,25 +107,36 @@
       }
     }
 
-    .tokenPercent {
+    .solBalance {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 10px;
-
-      .percentTag {
-        font-size: 12px;
-        font-weight: 300;
-        color: rgba(255, 255, 255, 0.7);
-        border: 1px solid rgba(146, 144, 177, 0.4);
-        border-radius: 30px;
-        padding: 5px 10px;
-        &.tagActive {
-          background-color: rgba(146, 144, 177, 0.4);
-          color: #fff;
-        }
-      }
+      justify-content: flex-end;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 300;
     }
+  }
+
+  .tokenPercent {
+    display: flex;
+    gap: 8px;
+    color: #fff;
+    padding: 0 20px;
+  }
+
+  .percentTag {
+    padding: 4px 8px;
+    border-radius: 30px;
+    font-size: 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    font-weight: 300;
+    transition: background-color 0.2s;
+    border: 1px solid #9290B166;
+  }
+
+  .percentTag.active {
+    background: rgba(255, 255, 255, 0.2);
   }
 
   .receiveTokenAmount {
@@ -130,20 +150,24 @@
 
   .distributionArea {
     margin-top: 30px;
+
     .distributionTitle {
       color: rgba(146, 144, 177, 1);
       font-size: 14px;
       font-weight: 600;
       padding-left: 10px;
     }
+
     .list {
       background-color: rgba(18, 23, 25, 1);
       color: #fff;
+
       .item {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 10px;
+
         .itemContent {
           display: flex;
           align-items: center;

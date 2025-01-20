@@ -30,6 +30,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     isLoading,
     getDetailInfo
   } = useTokenDetail({ token });
+  console.log('>>>>>>> queryedInfoData: %o', queryedInfoData);
   const projectsStore = useProjects();
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
   const { showShare } = useMessage()
@@ -54,13 +55,13 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   }, [infoData]);
 
   useEffect(() => {
-    onBack &&
-      token &&
+    if (onBack && token) {
       history.pushState(
         { page: "/detail" },
         "Detail",
         `/detail?address=${token.address}`
       );
+    }
   }, [onBack, token]);
 
   if (isLoading) {
@@ -70,8 +71,6 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
       </div>
     );
   }
-
-  console.log('infoData', infoData)
 
   return (
     <div>
@@ -116,7 +115,7 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
                     }}
                     token={infoData}
                     onSuccess={() => {
-                      getDetailInfo();
+                      getDetailInfo({ isSkipLoading: true });
                     }}
                   />
                 </div>

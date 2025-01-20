@@ -8,11 +8,13 @@ import { motion } from "framer-motion";
 import Likes from "@/app/components/thumbnail/likes";
 import Carousel from "@/app/sections/trends/components/carousel";
 import AvatarBg from "./avatar-bg";
+import useHolders from '@/app/sections/home/mobile/hooks/use-holders';
 
 export default function Top(props: Props) {
   const { onBuy, trend, isMobile, loading } = props;
 
   const creator = useCreator();
+  const { total: top1Holders } = useHolders(trend);
 
   const [
     top1Name,
@@ -20,14 +22,12 @@ export default function Top(props: Props) {
     top1Icon,
     top1TickerAvatar,
     top1Likes,
-    top1Holders,
     top1CreateBy
   ] = useMemo(() => {
     const _top1Name = trend?.token_symbol;
     const _top1Ticker = trend?.ticker;
     const _top1Icon = trend?.Icon;
     const _top1Like = numberFormatter(trend?.like, 2, true, { isShort: true });
-    const _holder = numberFormatter(trend?.holder, 2, true, { isShort: true });
     const _createBy = formatLongText(
       trend?.creator_name || trend?.project_creator,
       3,
@@ -37,9 +37,8 @@ export default function Top(props: Props) {
       _top1Name,
       _top1Ticker,
       _top1Icon,
-      "",
+      trend?.Icon,
       _top1Like,
-      _holder,
       _createBy
     ];
   }, [trend]);

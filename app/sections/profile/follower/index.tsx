@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { formatAddress } from "@/app/utils";
 import useUserInfo from "../../../hooks/useUserInfo";
 import { useAuth } from "@/app/context/auth";
+import { formatLongText } from '@/app/utils/common';
 
 export default function Follower({
   address,
@@ -48,7 +49,7 @@ export default function Follower({
           <Back />
           <div>
             {userInfo &&
-              (userInfo?.name || formatAddress(userInfo?.address as string))}
+              (formatLongText(userInfo?.name, 10, 4) || formatAddress(userInfo?.address as string))}
           </div>
         </div>
       )}

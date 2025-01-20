@@ -1,6 +1,4 @@
 import styles from "./desc.module.css";
-import StatusTag from "@/app/components/tag/status";
-import ImportTag from "@/app/components/tag/import";
 import { formatAddress, timeAgo, simplifyNum } from "@/app/utils";
 import { useMemo, useState, useEffect } from "react";
 import useMc from "@/app/hooks/useMc";
@@ -86,7 +84,13 @@ export default function Desc({ token }: any) {
       )}
       <div className={styles.Create}>
         <span>Created by</span>
-        <span className={styles.Creator}> {creator}</span>
+        <span
+          className={`${styles.Creator} text-overflow`}
+          style={{ maxWidth: 160 }}
+        >
+          {" "}
+          {creator}
+        </span>
         <span> {timeAgo(token.time)}</span>
       </div>
       {token.status === 0 && <div className={styles.About}>{token.about}</div>}

@@ -20,7 +20,8 @@ export default function Tabs({
   tabHeadersStyle,
   cursorClassName,
   tabContentClassName,
-  cursorStyle
+  cursorStyle,
+  style,
 }: any) {
   const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
@@ -50,7 +51,7 @@ export default function Tabs({
   const baseTabs = [
     {
       name: "Held",
-      content: <Held from={from} address={'MNVa2STL6Hcb86yWVNykCGVE8Stqj9a8XatPQHeQM7m'} />
+      content: <Held from={from} address={address} />
     },
     {
       name: "Created",
@@ -102,6 +103,7 @@ export default function Tabs({
       cursorClassName={cursorClassName}
       tabContentClassName={tabContentClassName}
       cursorStyle={cursorStyle}
+      style={style}
     />
   );
 }

@@ -23,6 +23,13 @@ div.adm-image-uploader {
 }
 
 @font-face {
+  font-family: "FingerPaint";
+  src: url("/font/FingerPaint-Regular.ttf");
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
+@font-face {
   font-family: "Lilita One";
   src: url("/font/LilitaOne-Regular.ttf");
   font-weight: 200 900;
@@ -194,6 +201,16 @@ input::placeholder {
 }
 .button:active {
   opacity: 0.6;
+}
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.text-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 a.adm-picker-header-button {

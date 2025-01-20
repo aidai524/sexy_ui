@@ -1,7 +1,8 @@
 import AirdropCard from '../components/card';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
 import { numberFormatter } from '@/app/utils/common';
+import Countdown from '@/app/components/airdrop/components/countdown';
 
 const AirdropClaimed = (props: any) => {
   const { onClose } = props;
@@ -14,7 +15,23 @@ const AirdropClaimed = (props: any) => {
   };
 
   return (
-    <AirdropCard title="">
+    <AirdropCard
+      title=""
+      contentStyle={{
+        paddingTop: 50,
+      }}
+      addonContent={(
+        <Countdown
+          style={{
+            position: 'absolute',
+            zIndex: 3,
+            top: 0,
+            left: '50%',
+            transform: 'translate(-50%, 125px)',
+          }}
+        />
+      )}
+    >
       <div
         style={{
           padding: '22px 60px 32px',

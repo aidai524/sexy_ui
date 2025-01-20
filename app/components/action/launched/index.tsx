@@ -100,10 +100,15 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
             }}
           >
             {/* {from === "laptop" ? <LaptopBuyIcon /> : <MobileBuyIcon />} */}
-            <div>Place Trade</div>
+            <div>Trade Now</div>
           </div>
 
           <div className={styles.share} onClick={() => {
+            if (!address) {
+              window.connect();
+              return;
+            }
+
             showShare(data)
           }}>
            <Share />

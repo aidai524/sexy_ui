@@ -15,10 +15,11 @@ export default function Info({
   mc,
   onUpdate,
   showHodler = true,
-  showAddress = true
+  showAddress = true,
+  ...rest
 }: Props) {
   return (
-    <div className={styles.main}>
+    <div className={!data ? styles.mainEmpty : styles.main}>
       <InfoPart
         showLikes={true}
         mc={mc}
@@ -26,6 +27,7 @@ export default function Info({
         theme="light"
         showHolders={showHodler}
         showAddress={showAddress}
+        {...rest}
       />
     </div>
   );
