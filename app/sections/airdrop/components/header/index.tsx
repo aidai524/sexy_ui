@@ -5,7 +5,8 @@ const AirdropHeader = (props: any) => {
 
   return (
     <div className={styles.AirdropHeaderContainer}>
-      <img src="/img/airdrop/header.png" alt="" className={styles.AirdropHeaderImage} />
+      <img src="/img/airdrop/logo.svg" alt="" className={styles.AirdropHeaderImageLogo} />
+      <img src="/img/airdrop/slogan.png" alt="" className={styles.AirdropHeaderImageSlogan} />
     </div>
   );
 };

@@ -62,7 +62,17 @@ export default function Layout(props: any) {
     <AuthProvider>
       <MessageProvider>
         <MessageContextProvider>
-          {isMobile ? <Mobile {...props} /> : <Laptop {...props} />}
+          {
+            isMobile ? (
+              <Mobile {...props} />
+            ) : (
+              ["/airdrop"].includes(pathname) ? (
+                props.children
+              ) : (
+                <Laptop {...props} />
+              )
+            )
+          }
           <AirdropEntry isMobile={isMobile} />
         </MessageContextProvider>
       </MessageProvider>
