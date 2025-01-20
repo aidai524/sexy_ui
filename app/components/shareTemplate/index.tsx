@@ -55,7 +55,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
   }));
 
   const getShareImg = useCallback(async () => {
+    console.log(token, containerRef.current, qrcodeCanvas)
     if (token && containerRef.current && qrcodeCanvas) {
+      console.log(111)
       const canvas = await html2canvas(containerRef.current, { useCORS: true, scale: 5 });
       canvasRef.current = canvas;
       // const base64Url = canvas.toDataURL("image/webp");
@@ -138,7 +140,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
         setIsSharing(false);
       }
     })();
-  }, [token, shareUrl]);
+  }, [token, shareUrl, qrcodeCanvas]);
 
   useEffect(() => {
     (async () => {
@@ -335,7 +337,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
                 url={shareUrl}
                 size={50}
                 onSuccess={(canvas: any) => {
-                  setQrcodeCanvas(canvas);
+                  setQrcodeCanvas(true);
                 }}
               />
               <img src="/img/share/qr-logo.png" alt="Flip" className={styles.qrLogo} />
@@ -345,7 +347,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <button className={styles.saveButton} onClick={() => {
+          <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
+            console.log(111, canvasRef.current)
             if (canvasRef.current) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;
@@ -355,7 +358,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               fail("Wait for a while");
             }
           }}>Save image</button>
-          <button className={styles.shareButton + ' ' + (!shareUrl ? styles.shareButtonActive : '')} onClick={async () => {
+          <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current ? 1 : 0.5 }} onClick={async () => {
             // await getShareImg()
             if (shareUrl) {
               shareToX(token.tokenName, shareUrl);

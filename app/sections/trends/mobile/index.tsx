@@ -23,6 +23,7 @@ export default function Mobile(props: any) {
     getAllList();
   }, []);
 
+
   return (
     <div className={styles.Container}>
       <Header />
