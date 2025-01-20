@@ -64,6 +64,7 @@ export const AuthProvider: React.FC<{
   const logout = useCallback(
     async (isRedirect?: boolean) => {
       await disconnect?.();
+      // @ts-ignore
       setUserInfo(undefined);
       userStore.set({
         userInfo: null

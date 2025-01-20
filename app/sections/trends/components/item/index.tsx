@@ -3,35 +3,30 @@ import { formatLongText, numberFormatter } from "@/app/utils/common";
 import { Trend } from "@/app/sections/trends/hooks";
 import { useCreator } from "@/app/sections/trends/hooks/creator";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useRouter } from "next/navigation";
 import Media from "@/app/components/thumbnail/media";
 
 export default function Item(props: Props) {
   const { onBuy, trend } = props;
   const { isMobile } = useUserAgent();
   const creator = useCreator();
-
+  const router = useRouter();
   const name = trend?.token_symbol;
   const ticker = trend?.ticker;
   const icon = trend?.Icon;
   const tickerAvatar = trend?.Icon;
   const marketCap = trend?.market_cap;
 
-  console.log('trend:',trend);
-
   return (
     <div className={isMobile ? styles.Item : styles.PcItem}>
       <div
-        className={styles.ItemAvatar}
+        className={`${styles.ItemAvatar} button`}
         // style={{ backgroundImage: `url("${icon}")` }}
         onClick={() => creator.onDetail(trend?.address)}
       >
-        <Media
-          data={{ tokenImg: icon }}
-          autoPlay={false}
-        />  
+        <Media data={{ tokenImg: icon }} autoPlay={false} />
       </div>
 
-      
       <div className={styles.ItemContent}>
         <div className={styles.ItemHead}>
           <div className={styles.ItemHeadInfo}>
@@ -77,17 +72,27 @@ export default function Item(props: Props) {
             })}
           </div>
         </div>
-        {
-          !isMobile ? (
-            <div className={styles.ItemCreateTime}>
-              Created by <span className={styles.ItemCreateTimePrimary}>{formatLongText(trend?.creator_name || trend?.project_creator, 3, 4)}</span> {trend?.created2Now?.replace(/\sago$/, '')}
-            </div>
-          ) : (
-            <div className={styles.ItemCreateTime}>
-              {trend?.created2Now}
-            </div>
-          )
-        }
+        {!isMobile ? (
+          <div className={styles.ItemCreateTime}>
+            Created by{" "}
+            <span
+              className={`${styles.ItemCreateTimePrimary} button`}
+              onClick={() => {
+                if (trend?.project_creator)
+                  router.push(`/profile/user?account=${trend.project_creator}`);
+              }}
+            >
+              {formatLongText(
+                trend?.creator_name || trend?.project_creator,
+                3,
+                4
+              )}
+            </span>{" "}
+            {trend?.created2Now?.replace(/\sago$/, "")}
+          </div>
+        ) : (
+          <div className={styles.ItemCreateTime}>{trend?.created2Now}</div>
+        )}
       </div>
     </div>
   );
