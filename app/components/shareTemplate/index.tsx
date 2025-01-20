@@ -12,6 +12,7 @@ import styles from "./card.module.css";
 import html2canvas from "html2canvas";
 import {
   base64ToBlob,
+  checkFileType,
   formatAddress,
   generateRandomString,
   postUpload,
@@ -44,6 +45,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const [shareUrl, setShareUrl] = useState("");
   const { total: totalHolders } = useHolders(token);
   const pumpMc = useMcWithPump(token);
+  const [newFileName] = useState(generateRandomString(10))
 
   useImperativeHandle(ref, () => ({
     getShareImg
@@ -53,32 +55,32 @@ function Card({ token, show, onClose }: Props, ref: any) {
     if (token && containerRef.current) {
       const canvas = await html2canvas(containerRef.current, { useCORS: true });
       // const base64Url = canvas.toDataURL("image/webp");
-      const newFileName = generateRandomString(10);
+      // const newFileName = generateRandomString(10);
       // Create a new canvas with 375x625 dimensions
       const canvas2 = document.createElement('canvas');
       canvas2.width = 1000;
       canvas2.height = 500;
-      
+
       const ctx = canvas2.getContext('2d');
       if (ctx) {
         // Fill entire canvas with black background
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, canvas2.width, canvas2.height);
-        
+
         // Calculate scaling factor to fit within canvas2
         const scale = Math.min(
           canvas2.width / canvas.width,
           canvas2.height / canvas.height
         );
-        
+
         // Calculate dimensions after scaling
         const scaledWidth = canvas.width * scale;
         const scaledHeight = canvas.height * scale;
-        
+
         // Calculate position to center scaled image
         const x = (canvas2.width - scaledWidth) / 2;
         const y = (canvas2.height - scaledHeight) / 2;
-        
+
         // Draw scaled and centered image
         ctx.drawImage(
           canvas,
@@ -86,16 +88,16 @@ function Card({ token, show, onClose }: Props, ref: any) {
           scaledWidth,
           scaledHeight
         );
-        
+
         const base64Url = canvas2.toDataURL("image/webp");
         const bloBData = base64ToBlob(base64Url);
         const url = await postUpload(bloBData[0], newFileName, bloBData[1]);
         console.log("url:", url);
       }
-      
+
       return newFileName;
     }
-  }, [token]);
+  }, [token, newFileName]);
 
   useEffect(() => {
     (async () => {
@@ -112,31 +114,43 @@ function Card({ token, show, onClose }: Props, ref: any) {
           return;
         }
 
-        const longUrl = `${domain}/api/twitter?tokenName=${encodeURIComponent(
-          token.tokenName
-        )}&about=${encodeURIComponent(token.about)}&imgUrl=${encodeURIComponent(
-          img
-        )}&address=${token.address}&referral=${userInfo.address}`;
+        // const longUrl = `${domain}/api/twitter?tokenName=${encodeURIComponent(
+        //   token.tokenName
+        // )}&about=${encodeURIComponent(token.about)}&imgUrl=${encodeURIComponent(
+        //   newFileName
+        // )}&address=${token.address}&referral=${userInfo.address}`;
 
-        try {
-          const shareUrl = await getShortUrl(longUrl);
-          console.log("shareUrl:", shareUrl);
-          setShareUrl(shareUrl);
-          // shareToX(token.tokenName, shareUrl);
-        } catch (e) {
-          fail("Share fail");
-          setIsSharing(false);
-          return;
-        }
+        // try {
+        //   const shareUrl = await getShortUrl(longUrl);
+        //   console.log("shareUrl:", shareUrl);
+        //   setShareUrl(shareUrl);
+        //   // shareToX(token.tokenName, shareUrl);
+        // } catch (e) {
+        //   fail("Share fail");
+        //   setIsSharing(false);
+        //   return;
+        // }
 
         setIsSharing(false);
       }
     })();
-  }, [token]);
+  }, [token, shareUrl]);
+
+  useEffect(() => {
+    (async () => {
+      if (token) {
+        const longUrl = `${domain}/api/twitter?tokenName=${encodeURIComponent(
+          token.tokenName
+        )}&about=${encodeURIComponent(token.about)}&imgUrl=${encodeURIComponent(
+          newFileName
+        )}&address=${token.address}&referral=${userInfo.address}`;
+        const shareUrl = await getShortUrl(longUrl);
+        setShareUrl(shareUrl);
+      }
+    })();
+  }, [token, newFileName]);
 
   if (!token || !show) return null;
-
-  console.log("token:", token);
 
   return (
     <Modal
@@ -241,6 +255,15 @@ function Card({ token, show, onClose }: Props, ref: any) {
           }
 
           <div className={styles.tokenImage}>
+            {
+              checkFileType(token.tokenImg) === 'image' && (
+                <img
+                  src={token.tokenIcon}
+                  alt={token.tokenName}
+                  className={styles.tokenImg}
+                />
+              ) 
+            }
             <img
               src={token.tokenIcon}
               alt={token.tokenName}
@@ -295,7 +318,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
                 <Level level={userInfo?.level || 0} />
               </div>
               <div className={styles.inviteUrl}>
-                flipn.fun/invite/{formatAddress(userInfo?.address || "")}
+                {shareUrl}
               </div>
             </div>
           </div>

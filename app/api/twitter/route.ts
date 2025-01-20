@@ -33,7 +33,9 @@ export async function GET(request: Request | NextRequest) {
             <title>${tokenName}</title>
         </head>
         <body>
-        <img src="${s3Domain}/${s3Dir}${imgUrl}" style="width: 100%" />
+        <script>
+          window.location.href = "${domain}/detail?address=${tokenAddress}"
+        </script>
         </body>
         </html>`,
         {
