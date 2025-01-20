@@ -1,7 +1,7 @@
 import QRCode from "qrcode";
 import { useEffect, useRef } from "react";
 
-export default function QRCodeCom({ url, size = 50 }: any) {
+export default function QRCodeCom({ url, size = 50, onSuccess }: any) {
   const domRef = useRef<any>();
 
   useEffect(() => {
@@ -15,6 +15,7 @@ export default function QRCodeCom({ url, size = 50 }: any) {
         canvas.style.height = size + "px";
         domRef.current.innerHTML = '';
         domRef.current.appendChild(canvas);
+        onSuccess && onSuccess(canvas);
       });
     }
     

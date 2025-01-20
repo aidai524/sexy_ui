@@ -26,7 +26,12 @@ const TrendBanner = (props: any) => {
   return (
     top1 && (
       <>
-        <div className={styles.Container}>
+        <div
+          className={`${styles.Container}`}
+          onClick={() => {
+            router.push(`/detail?address=${top1?.address}&from=trends`);
+          }}
+        >
           <div
             className={styles.Avatar}
             style={{ backgroundImage: `url("${top1?.Icon}")` }}
@@ -52,14 +57,14 @@ const TrendBanner = (props: any) => {
                 })}
               </div>
             </div>
-            <button
+            {/* <button
               className={`${styles.ViewButton} button`}
               onClick={() => {
                 router.push(`/detail?address=${top1?.address}&from=trends`);
               }}
             >
               View
-            </button>
+            </button> */}
             <div className={styles.TradeContainer}>
               <BuyButton onBuy={handleBuy} />
             </div>
@@ -99,7 +104,14 @@ const BuyButton = (props: any) => {
   const { onBuy } = props;
 
   return (
-    <button type="button" className={styles.Trade} onClick={onBuy}>
+    <button
+      type="button"
+      className={styles.Trade}
+      onClick={(ev) => {
+        ev.stopPropagation();
+        onBuy();
+      }}
+    >
       <img src="/img/trends/buy.svg" alt="" className={styles.TradeIcon} />
       <div className="">BUY</div>
     </button>

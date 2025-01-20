@@ -13,6 +13,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import useBalance from "@/app/hooks/useBalance";
+import { useSetting } from "@/app/store/use-setting";
 
 interface Props {
   token: Project;
@@ -25,7 +26,7 @@ interface Props {
 }
 
 const max = 1;
-const SOL_PERCENT_LIST = [0.01, 0.05, 0.1];
+const SOL_PERCENT_LIST = [0.1, 0.5, 1];
 
 export default function Trade({
   token,
@@ -36,7 +37,8 @@ export default function Trade({
   mainStyle,
   bottomStyle
 }: Props) {
-  const [inputVal, setInputVal] = useState("0.1");
+  const { flipMax, set }: any = useSetting();
+  const [inputVal, setInputVal] = useState(flipMax.toString() || max.toString());
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
@@ -74,10 +76,14 @@ export default function Trade({
 
   useEffect(() => {
     if (!modalShow) {
-      setInputVal(max.toString());
+      setInputVal(flipMax.toString() || max.toString());
       setIsLoading(false);
     }
   }, [modalShow]);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [token]);
 
   return (
     <div className={styles.main} style={mainStyle}>
@@ -110,6 +116,7 @@ export default function Trade({
                   // Only update if valid number
                   if (!isNaN(val)) {
                     setInputVal(e.target.value);
+                    set({ flipMax: val });
                   }
                 }}
                 className={styles.input}
@@ -143,6 +150,7 @@ export default function Trade({
             key={amount}
             onClick={() => {
               setInputVal(amount.toString());
+              set({ flipMax: amount });
             }}
             className={`${styles.percentTag} ${
               inputVal === amount.toString() ? styles.active : ""
@@ -160,7 +168,8 @@ export default function Trade({
             </div>
           ) : (
             <div className={styles.receiveTitle}>
-              You will auto-buy in when this meme launching.{" "}
+              You will auto-buy in at the average price when this meme
+              launching.{" "}
               {delayTime
                 ? `You can refund after ${delayTime}.`
                 : "You can refund anytime before launching."}
@@ -193,12 +202,13 @@ export default function Trade({
               } catch (e: any) {
                 console.log(e);
                 fail(e.toString());
+              } finally {
                 setIsLoading(false);
               }
             }}
             style={{ backgroundColor: "#FBCA04", color: "#000" }}
           >
-            Pre-Buy
+            Flip
           </MainBtn>
         </div>
       </div>

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
 import { Switch } from "antd-mobile";
 import { useAccount } from "@/app/hooks/useAccount";
+import Level from "@/app/components/level/simple";
 
 const addressReg = /(\w{2}).+(\w{2})/;
 
@@ -180,7 +181,7 @@ export default function Txs({ from, data }: any) {
                   from === "panel" ? styles.LaptopTitles : styles.MobileTitles
                 }`}
               >
-                <div style={{ flex: 2 }} className={styles.titleItem}>
+                <div style={{ flex: 3 }} className={styles.titleItem}>
                   Account
                 </div>
                 <div className={styles.titleItem}>Type</div>
@@ -222,6 +223,7 @@ export default function Txs({ from, data }: any) {
                           {formatAddress(item.address)}
                           {isSelf && "(Self)"}
                         </span>
+                        <Level level={item.level} />
                       </div>
 
                       <div className={styles.type + " " + styles[item.type]}>

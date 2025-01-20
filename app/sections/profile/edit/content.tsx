@@ -115,7 +115,7 @@ export default function EditContent({ onSuccess, onClose }: any) {
       </div>
 
       <div className={styles.group}>
-        <div className={styles.groupTitle}>
+        <div className={styles.groupTitle} style={{ marginBottom: 10 }}>
           <span className={styles.require}>*</span>Head Banner
         </div>
         <div
