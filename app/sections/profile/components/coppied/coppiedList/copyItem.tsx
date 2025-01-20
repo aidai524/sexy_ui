@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './index.module.css'
 import { defaultAvatar } from "@/app/utils/config";
 import { RingChart } from '../copyAmountPie';
+import Popover, { PopoverPlacement, PopoverTrigger } from '@/app/components/popover';
 
 export default function CopyItem({itemInfo}: any) {
   return (
@@ -23,35 +24,42 @@ export default function CopyItem({itemInfo}: any) {
                 </p>
                 <SolIconWithoutBg />
             </div>
-            <div className={styles.TooltipContainer}>
+            <Popover
+              content={
+                <div className={styles.Tooltip}>
+                  <p className={styles.TooltipItem}>
+                    <span>You deposit</span> 
+                    <span className={styles.TooltipItemValue}>
+                      {itemInfo?.useAmount || 0}
+                      <SolIconWithoutBg />
+                    </span>
+                  </p>
+                  <p className={styles.TooltipItem}>
+                    <span>Coppied</span> 
+                    <span className={styles.TooltipItemValue}>
+                      {itemInfo?.totalAmount || 0}
+                      <SolIconWithoutBg />
+                    </span>
+                  </p>
+                  <p className={styles.TooltipItem}>
+                    <span>Balance</span> 
+                    <span className={styles.TooltipItemValue}>
+                      {itemInfo?.balance || 0}
+                      <SolIconWithoutBg />
+                    </span>
+                  </p>
+                </div>
+              }
+              placement={PopoverPlacement.TopLeft}
+              trigger={PopoverTrigger.Hover}
+            >
+              <div>
                 <RingChart data={itemInfo?.chartData || [
                         { value: 30, color: '#C9FF5D' },
                         { value: 45, color: '#515B63' },
                 ]} />
-                <div className={styles.Tooltip}>
-                    <p className={styles.TooltipItem}>
-                        <span>You deposit</span> 
-                        <span className={styles.TooltipItemValue}>
-                            {itemInfo?.useAmount || 0}
-                            <SolIconWithoutBg />
-                        </span>
-                    </p>
-                    <p className={styles.TooltipItem}>
-                        <span>Coppied</span> 
-                        <span className={styles.TooltipItemValue}>
-                            {itemInfo?.totalAmount || 0}
-                            <SolIconWithoutBg />
-                        </span>
-                    </p>
-                    <p className={styles.TooltipItem}>
-                        <span>Balance</span> 
-                        <span className={styles.TooltipItemValue}>
-                            {itemInfo?.balance || 0}
-                            <SolIconWithoutBg />
-                        </span>
-                    </p>
-                </div>
-            </div>
+              </div>
+            </Popover>
         </div>
       </div>
       

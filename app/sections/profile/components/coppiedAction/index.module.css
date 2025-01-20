@@ -115,28 +115,6 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.copyBtn {
-  height: 50px;
-  border-radius: 30px;
-  font-family: Unbounded;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  border: 2px solid #fbca04;
-  background: #fbca04;
-  color: #000;
-  text-align: center;
-  line-height: 50px;
-  width: 100%;
-  margin-top: 24px;
-}
-
-.copyBtnDisabled {
-  composes: copyBtn;
-  opacity: 0.3;
-}
-
 .SolnaIcon {
   width: 20px;
   height: 20px;

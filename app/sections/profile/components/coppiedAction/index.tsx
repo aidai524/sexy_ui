@@ -8,6 +8,11 @@ import useSolPrice from "@/app/hooks/use-sol-price";
 import Big from "big.js";
 import { numberFormatter } from "@/app/utils/common";
 import Warning from "@/app/components/warning";
+import CopyTrade from "@/app/services/copyTrade";
+import { useAuth } from "@/app/context/auth";
+import MainBtn from "@/app/components/mainBtn";
+import { fail, success } from "@/app/utils/toast";
+import { useCopyTrade } from "@/app/sections/profile/hooks/useCreateCopyTrade";
 
 const AmountLevelList = [
   { key: 0.25 },
@@ -17,6 +22,8 @@ const AmountLevelList = [
 ];
 
 export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
+  const { isLoading, handleCopyTrade } = useCopyTrade();
+  const { userInfo: currentUserInfo } = useAuth();
   const [copyAmount, setCopyAmount] = useState<string>("");
   const [onceCopyAmount, setOnceCopyAmount] = useState<string>("0.1");
   const [copyTimes, setCopyTimes] = useState<string>("10");
@@ -50,14 +57,14 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
 
   useEffect(() => {
     if (!copyAmount) return;
-    const copyAmountBig = new Big(copyAmount);
+    const copyAmountBig = new Big(copyAmount || 0);
     setOnceCopyAmount(copyAmountBig.div(copyTimes).toString());
   }, [copyAmount]);
 
   useEffect(() => {
-    if (isManualCopyTimes) {
-      const copyAmountBig = new Big(copyAmount);
-      setOnceCopyAmount(copyAmountBig.div(copyTimes).toString());
+    if (isManualCopyTimes && copyTimes && copyTimes != "0") {
+      const copyAmountBig = new Big(copyAmount || 0);
+      setOnceCopyAmount(copyAmountBig.div(copyTimes || 1).toString());
     }
   }, [copyTimes]);
 
@@ -95,7 +102,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
 
   const handleCopyTimesChange = (e: any) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value) || value === "") {
+    if ((/^\d*$/.test(value) || value === "") && !/^0\d+/.test(value)) {
       setCopyTimes(value);
       setIsManualCopyTimes(true);
     }
@@ -109,6 +116,14 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     }, 0);
   };
 
+  const handleCopyTradeClick = async () => {
+    await handleCopyTrade({
+      walletAddress: currentUserInfo.address,
+      copiedAddress: copiedInfo.address,
+      copyAmount,
+      onceCopyAmount
+    });
+  };
   return (
     <Modal
       open={show}
@@ -165,7 +180,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
             </span>
           </div>
           <p className={`${styles.amountDetail}  ${styles.textWhite07}`}>
-            <span>${(+solPrice * +copyAmount)}</span>
+            <span>${new Big(solPrice || 0).mul(copyAmount || 0).toString()}</span>
             <span>Bal: {solBalance} SOL</span>
           </p>
         </div>
@@ -203,14 +218,24 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
         </div>
 
         {/* copy button */}
-        <button
-          disabled={!validateOnceCopyAmount}
-          className={
-            validateOnceCopyAmount ? styles.copyBtn : styles.copyBtnDisabled
-          }
+        <MainBtn
+          isDisabled={!validateOnceCopyAmount}
+          isLoading={isLoading}
+          style={{
+            height: "50px",
+            borderRadius: "30px",
+            fontSize: "16px",
+            fontWeight: "500",
+            lineHeight: "normal",
+            border: "2px solid #FBCA04",
+            background: "#FBCA04",
+            color: "#000",
+            marginTop: "24px"
+          }}
+          onClick={handleCopyTradeClick}
         >
           Copy Trade
-        </button>
+        </MainBtn>
       </div>
       {minCopyAmountTips && (
         <Warning warning="Min copy amount must greater or equal to 0.1 Sol" />

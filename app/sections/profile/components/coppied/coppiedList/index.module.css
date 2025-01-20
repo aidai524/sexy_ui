@@ -65,25 +65,13 @@
     gap: 4px;
 }
 
-.TooltipContainer {
-    position: relative;
-    display: inline-block;
-}
-
 .Tooltip {
-    visibility: hidden;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    transform: translateX(-80%);
     background-color: #252328;
     color: #9290B1;
     padding:18px 14px;
     border-radius: 12px;
     font-size: 14px;
     white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s;
     width: 208px;
     font-weight: 300;
     display: flex;
@@ -104,21 +92,6 @@
     font-weight: 400;
 }
 
-/* PC hover */
-@media (hover: hover) {
-    .TooltipContainer:hover .Tooltip {
-        visibility: visible;
-        opacity: 1;
-    }
-}
-
-/* Mobile touch */
-@media (hover: none) {
-    .TooltipContainer:active .Tooltip {
-        visibility: visible;
-        opacity: 1;
-    }
-}
 
 
 .TradeInfoBox {

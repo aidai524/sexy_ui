@@ -31,6 +31,10 @@ export const RingChart: React.FC<RingChartProps> = ({ data, size = 20 }) => {
           avoidLabelOverlap: false,
           itemStyle: {
             borderRadius: 0,
+            emphasis: {
+              scale: false,
+              disabled: true
+            }
           },
           label: {
             show: false,
