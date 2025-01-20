@@ -9,6 +9,7 @@
     border-radius: 20px;
     border: 1px solid #000;
     padding: 20px;
+    position: relative;
 }
 
 .header {
@@ -217,7 +218,10 @@
     border-radius: 12px;
     color: #fff;
     margin-top: 65px;
-    position: relative;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
 }
 
 .inviteUrl {

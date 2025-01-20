@@ -21,7 +21,7 @@ import {
 import QRCode from "../qrcode";
 import TokenTags from "../tokenTags";
 import { useAuth } from "@/app/context/auth";
-import Level from "../level";
+import Level from "../level/simple";
 import { fail } from "@/app/utils/toast";
 import { getShortUrl, shareToX } from "@/app/utils/share";
 import Modal from "../modal";
@@ -54,7 +54,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
   const getShareImg = useCallback(async () => {
     if (token && containerRef.current) {
-      const canvas = await html2canvas(containerRef.current, { useCORS: true });
+      const canvas = await html2canvas(containerRef.current, { useCORS: true, scale: 5 });
       canvasRef.current = canvas;
       // const base64Url = canvas.toDataURL("image/webp");
       // const newFileName = generateRandomString(10);
