@@ -50,7 +50,8 @@ export default function BuySellPump({
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
   const { slip, set: setSlip }: any = useSlip();
-  const tokenUri = token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
+  const tokenUri =
+    token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
   const slippageTextRef = useRef<any>();
 
   const desToken: Token = {
@@ -65,7 +66,7 @@ export default function BuySellPump({
   const [currentToken, setCurrentToken] = useState<Token>(SOL);
   const [errorMsg, setErrorMsg] = useState("");
   const [isError, setIsError] = useState(false);
-  const [] = useState()
+  const [] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
   const [successMoalShow, setSuccessMoalShow] = useState(true);
@@ -482,7 +483,7 @@ export default function BuySellPump({
           >
             {activeIndex === 0 && tokenType === 1 && (
               <div className={styles.receiveTokenAmount}>
-                <div className={styles.receiveTitle}>Minimum Received</div>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
                     ? new Big(buyIn)
@@ -503,7 +504,7 @@ export default function BuySellPump({
 
             {activeIndex === 1 && (
               <div className={styles.receiveTokenAmount}>
-                <div className={styles.receiveTitle}>Minimum Received</div>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && sellOutSol} SOL
                 </div>

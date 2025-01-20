@@ -3,6 +3,7 @@ import Like from "./like";
 import HomeIcon from "@/app/components/icons/home";
 import CommentIcon from "@/app/components/icons/comment";
 import ShareIcon from "./share-icon";
+import DetailButton from "../../laptop/token/detail-button";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -19,11 +20,18 @@ export default function Actions({
   const { isMobile } = useUserAgent();
   return (
     <div
-      className={`${styles.Actions} ${isMobile && styles.MbActions}`}
+      className={`${styles.Actions} ${
+        isMobile ? styles.MbActions : styles.PcActions
+      }`}
       style={{
         opacity: disabled ? 0.3 : 1
       }}
     >
+      <DetailButton
+        onClick={() => {
+          onClick("detail");
+        }}
+      />
       {token.status === 0 ? (
         <>
           <Like

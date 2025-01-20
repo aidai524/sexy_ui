@@ -55,7 +55,8 @@ export default function BuySellLaunched({
   const { isMobile } = useUserAgent();
   const slippageTextRef = useRef<any>();
 
-  const tokenUri = token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
+  const tokenUri =
+    token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
 
   const desToken: Token = {
     tokenName,
@@ -496,7 +497,7 @@ export default function BuySellLaunched({
           >
             {activeIndex === 0 && tokenType === 1 && (
               <div className={styles.receiveTokenAmount}>
-                <div className={styles.receiveTitle}>Minimum Received</div>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn && buyIn} {tokenName}
                 </div>
@@ -512,7 +513,7 @@ export default function BuySellLaunched({
 
             {activeIndex === 1 && (
               <div className={styles.receiveTokenAmount}>
-                <div className={styles.receiveTitle}>Minimum Received</div>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && sellOutSol} SOL
                 </div>
