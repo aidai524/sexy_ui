@@ -317,6 +317,9 @@ export default function BuySell({
                 setTokenType(0);
                 setValInput("");
                 setTokenPercent(0);
+
+                setTokenType(buyTokenType);
+                setCurrentToken(buyTokenType === 1 ? SOL : desToken);
               }}
               className={[
                 styles.tab,
