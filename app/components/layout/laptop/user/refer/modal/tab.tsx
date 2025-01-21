@@ -6,27 +6,19 @@ const Tab = (props: any) => {
   const { isMobile, tab, list } = props;
 
   const [value, setValue] = useState(50);
-  const isPointsTab = tab === 2;
 
   return (
     <div>
-      {
-        isPointsTab && (
-          <div className={styles.ProgressLabel}>
-            <div className={styles.ProgressLabelTitle}>
-              Refferrals
-            </div>
-            <div className={styles.ProgressLabelTitle}>
-              Yours
-            </div>
-          </div>
-        )
-      }
+      <div className={styles.ProgressLabel}>
+        <div className={styles.ProgressLabelTitle}>
+          Refferrals
+        </div>
+        <div className={styles.ProgressLabelTitle}>
+          Yours
+        </div>
+      </div>
       <motion.div
         className={isMobile ? styles.EarnedMobile : styles.Earned}
-        style={{
-          marginTop: isPointsTab ? 10 : 30,
-        }}
         {...AnimateVariants}
       >
         <div className={isMobile ? styles.ProgressMobile : styles.Progress}>
