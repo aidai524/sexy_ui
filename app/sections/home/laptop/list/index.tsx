@@ -92,7 +92,6 @@ export default function List({ type, isCurrentTab }: any) {
   useEffect(() => {
     if (!containerRef.current) return;
     const wheel = (ev: any) => {
-      if (!isCurrentTab) return;
       if (startY.current === 0) {
         startY.current = ev.deltaY;
         return;
