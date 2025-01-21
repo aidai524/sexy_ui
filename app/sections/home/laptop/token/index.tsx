@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
-import TipsButton from '@/app/sections/home/laptop/tips-button';
+import TipsButton from "@/app/sections/home/laptop/tips-button";
 
 export default function Token({
   isCurrent,
@@ -44,7 +44,8 @@ export default function Token({
       className={styles.Box}
       style={{
         opacity,
-        height: innerHeight
+        height: innerHeight,
+        width: showTrade && isNext ? 968 : innerWidth
       }}
     >
       {token?.id && (
@@ -52,7 +53,7 @@ export default function Token({
           <div
             className={styles.Token}
             style={{
-              width: showTrade && isNext ? 968 : innerWidth,
+              width: innerWidth,
               height: innerHeight
             }}
           >

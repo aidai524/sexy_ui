@@ -3,11 +3,11 @@
   display: flex;
   align-items: center;
   transition: 0.3s;
+  border-radius: 20px;
+  background: #000;
 }
 
 .Container {
-  border-radius: 20px;
-  background: #000;
   display: flex;
   position: relative;
 }
