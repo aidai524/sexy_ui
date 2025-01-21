@@ -256,6 +256,8 @@ export default function BuySellPump({
                 setCurrentToken(desToken);
                 setTokenType(0);
               }
+              setSolPercent(0);
+              setTokenPercent(0);
             }}
           />
         ) : (
@@ -266,6 +268,8 @@ export default function BuySellPump({
                 setCurrentToken(SOL);
                 setTokenType(1);
                 setValInput("");
+                setSolPercent(0);
+                setTokenPercent(0);
               }}
               className={[
                 styles.tab,
@@ -281,6 +285,8 @@ export default function BuySellPump({
                 setCurrentToken(desToken);
                 setTokenType(0);
                 setValInput("");
+                setSolPercent(0);
+                setTokenPercent(0);
               }}
               className={[
                 styles.tab,
@@ -305,28 +311,6 @@ export default function BuySellPump({
             }
           >
             <div className={styles.actionArea}>
-              {/* {activeIndex === 0 ? (
-              <div
-                className={`${styles.switchToken} button`}
-                onClick={() => {
-                  if (tokenType === 0) {
-                    setCurrentToken(SOL);
-                    setTokenType(1);
-                  } else {
-                    setCurrentToken(desToken);
-                    setTokenType(0);
-                  }
-                  setValInput("");
-                }}
-              >
-                <span className={styles.switchTitle}>switch to </span>
-                <span className={styles.switchTokenName}>
-                  {tokenType === 0 ? SOL.tokenName : tokenName}
-                </span>
-              </div>
-            ) : (
-              <div></div>
-            )} */}
 
               <div></div>
               <div
