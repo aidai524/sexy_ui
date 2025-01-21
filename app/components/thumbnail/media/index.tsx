@@ -11,7 +11,6 @@ export default function Media({
   style,
   autoPlay
 }: any) {
-  if (data.tokenName === "Kaggle AI") console.log(data);
   return (
     <div className={styles.imgList}>
       <div
@@ -21,7 +20,7 @@ export default function Media({
           ...style
         }}
       >
-        {videoReg.test(data.tokenImg || "") && (
+        {videoReg.test(data.tokenImg || "") ? (
           <VideoPlayer
             src={data.tokenImg}
             type={getVideoExt(data.tokenImg)}
@@ -30,8 +29,7 @@ export default function Media({
             autoPlay={autoPlay}
             token={data}
           />
-        )}
-        {(imgReg.test(data.tokenImg) || !data.tokenImg) && (
+        ) : (
           <LazyLoadImage
             effect="blur"
             className={styles.tokenImg}
