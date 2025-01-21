@@ -49,6 +49,8 @@ function TradingViewChart(
     resetChart
   }));
 
+  const fullscreenRef = useRef<any>();
+  const containerRef = useRef<any>();
   const tvWidgetRef = useRef<IChartingLibraryWidget>();
 
   const [loading, setLoading] = useState(false);
@@ -140,7 +142,7 @@ function TradingViewChart(
         .subscribe(null, function (interval, obj) {
           tvStorage?.set("interval", interval);
         });
-      widget.chart().setChartType(10); // 1: Candles 10: Baseline
+      widget.chart().setChartType(1); // 1: Candles 10: Baseline
       widget
         .activeChart()
         .createStudy("Volume", true, false, { id: "volume", visible: true });
@@ -150,14 +152,25 @@ function TradingViewChart(
           useTradingViewStyle: false
         });
         button.addEventListener("click", function () {
-          const ele = document.querySelector("#TVChartContainer");
+          const ele = containerRef.current;
           ele?.classList.toggle("fullscreen");
+
+          if (!ele) return;
+          if (!fullscreenRef.current) {
+            fullscreenRef.current = {
+              width: ele?.clientWidth,
+              height: ele?.clientHeight
+            };
+          }
+
           if (ele?.classList.contains("fullscreen")) {
             button.innerHTML = exitFullscreenIcon;
             button.setAttribute("title", "Exit Fullscreen");
+            containerRef.current.requestFullscreen();
           } else {
             button.innerHTML = fullscreenIcon;
             button.setAttribute("title", "Fullscreen");
+            document.exitFullscreen();
           }
         });
         button.innerHTML = fullscreenIcon;
@@ -281,7 +294,11 @@ function TradingViewChart(
         }}
       >
         {loading && <Loading />}
-        <div id="TVChartContainer" style={{ width: "100%", ...style }} />
+        <div
+          id="TVChartContainer"
+          ref={containerRef}
+          style={{ width: "100%", ...style }}
+        />
       </div>
     </>
   );

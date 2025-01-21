@@ -20,7 +20,7 @@ export default function TradePanel({ token, tab, setTab, onClose }: any) {
                 padding: "10px",
                 marginRight: "10px",
                 borderRadius: "10px",
-                height: "400px",
+                height: "380px",
                 position: "relative"
               }}
             />
