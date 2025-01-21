@@ -259,6 +259,7 @@ export default function BuySell({
     }
   }, [debounceVal, tokenType, slip, currentToken]);
 
+
   return (
     <>
       <div className={[styles.cationArea].join(" ")}>
@@ -297,7 +298,6 @@ export default function BuySell({
               onClick={() => {
                 setActiveIndex(0);
                 setValInput("");
-
                 setTokenType(buyTokenType);
                 setCurrentToken(buyTokenType === 1 ? SOL : desToken);
               }}

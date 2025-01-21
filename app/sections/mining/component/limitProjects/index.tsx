@@ -1,7 +1,6 @@
 import styles from "./limitProject.module.css";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useRouter } from "next/navigation";
-import { SHOW_COPY_TRADE } from "@/app/utils/config";
 
 export default function LimitProject({ list = [] }: any) {
   const homeTabStore: any = useHomeTab();
@@ -12,7 +11,7 @@ export default function LimitProject({ list = [] }: any) {
       onClick={() => {
         homeTabStore.set({
           currentSummary: { label: "Launched", amount: 0, value: 3 },
-          profileTabIndex: SHOW_COPY_TRADE ? 4 : 3
+          profileTabName: "Liked"
         });
         router.push("/profile");
       }}
