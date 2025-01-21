@@ -1,7 +1,7 @@
 import styles from './index.module.css';
 import { useUser } from '@/app/store/useUser';
 import { formatLongText } from '@/app/utils/common';
-import QRCodeCom from '@/app/components/qrcode';
+import QRCodeCom, { QRCodeImage } from '@/app/components/qrcode';
 import React, { useContext, useImperativeHandle } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
 
@@ -47,12 +47,12 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
           </div>
         </div>
         <div className={styles.AirdropShareInfoCardInfoLink}>
-          {formatLongText(shareLink, 22, 4)}
+          {formatLongText(shareLink, 20, 4)}
         </div>
       </div>
       <div className={styles.AirdropShareInfoCardFooter}>
-        <QRCodeCom size={42} url={shareLink} />
-        <img src="/img/airdrop/icon-logo-qr.svg" alt="" className={styles.AirdropShareInfoCardQrLogo} />
+        <QRCodeImage size={60} url={shareLink} scale={2} />
+        {/*<img src="/img/airdrop/icon-logo-qr.svg" alt="" className={styles.AirdropShareInfoCardQrLogo} />*/}
       </div>
     </div>
   );
