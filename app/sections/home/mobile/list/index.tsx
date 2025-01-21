@@ -141,7 +141,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any, action?: string) => {
                   updateProject(type, token);
-                  if (action === "like") return;
+                  if (action && ["like", "share"].includes(action)) return;
                   if (action === "flip") {
                     setTimeout(() => {
                       queryAndUpdateDetail(type, token.address);

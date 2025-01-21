@@ -36,13 +36,27 @@ export default function Mobile({
       }}
     >
       <div className={styles.main}>
-        <div className={styles.title}>
-          <svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 14L2 7.5L8 1" stroke="white" stroke-width="2" stroke-linecap="round" />
+        <div
+          className={styles.title}
+          onClick={() => {
+            onHide?.();
+          }}
+        >
+          <svg
+            width="9"
+            height="15"
+            viewBox="0 0 9 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 14L2 7.5L8 1"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
           </svg>
-          <div className={styles.tip}>
-            Slippage tolerance
-          </div>
+          <div className={styles.tip}>Slippage tolerance</div>
         </div>
         <div className={styles.list}>
           {list.map((item) => {
@@ -51,7 +65,6 @@ export default function Mobile({
                 key={item}
                 onClick={() => {
                   onSlipDataChange && onSlipDataChange(item);
-                  console.log(111, item);
                 }}
                 className={
                   styles.item + " " + (slipData === item ? styles.checked : "")
