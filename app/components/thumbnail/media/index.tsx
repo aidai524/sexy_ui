@@ -3,18 +3,25 @@ import styles from "./index.module.css";
 import { getVideoExt, videoReg, imgReg } from "../../upload";
 import VideoPlayer from "../../video";
 
-export default function Media({ imgHeight, data, imgStyle, videoStyle, style, autoPlay }: any) {
+export default function Media({
+  imgHeight,
+  data,
+  imgStyle,
+  videoStyle,
+  style,
+  autoPlay
+}: any) {
+  if (data.tokenName === "Kaggle AI") console.log(data);
   return (
     <div className={styles.imgList}>
       <div
         className={styles.ImgWrapper}
         style={{
           height: imgHeight,
-          ...style,
+          ...style
         }}
       >
-        {
-          videoReg.test(data.tokenImg || '') &&
+        {videoReg.test(data.tokenImg || "") && (
           <VideoPlayer
             src={data.tokenImg}
             type={getVideoExt(data.tokenImg)}
@@ -23,7 +30,7 @@ export default function Media({ imgHeight, data, imgStyle, videoStyle, style, au
             autoPlay={autoPlay}
             token={data}
           />
-        }
+        )}
         {(imgReg.test(data.tokenImg) || !data.tokenImg) && (
           <LazyLoadImage
             effect="blur"

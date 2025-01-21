@@ -9,7 +9,7 @@ import { fail, success } from "@/app/utils/toast";
 import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
 import { Modal } from "antd-mobile";
-import Tabs from "@/app/sections/home/laptop/panels/trade/tabs";
+import Tabs from "@/app/components/tabs";
 import type { Project } from "@/app/type";
 import { useUser } from "@/app/store/useUser";
 import useJupiter from "@/app/hooks/useJupiter";

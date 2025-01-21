@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import Tabs from "../../../panels/trade/tabs";
+import Tabs from "@/app/components/tabs";
 import ShareIcon from "@/app/components/icons/share";
 import ZoomOutIcon from "@/app/components/icons/zoom-out";
 import TypesTabs from "@/app/sections/home/tabs";
