@@ -96,11 +96,20 @@ export const AuthProvider: React.FC<{
     updateAccount();
   }, [address]);
 
-  if (codeStore.a !== CODE && pathname !== "/") {
-    if (!process.env.NEXT_PUBLIC_BEN_DEV) {
-      redirect("/");
-    }
-  }
+  const { run: runJump } = useDebounceFn(
+    async () => {
+      if (codeStore.a !== CODE && pathname !== "/") {
+        redirect("/");
+      }
+    },
+    { wait: 800 }
+  );
+
+  useEffect(() => {
+    runJump();
+  }, [codeStore.a, pathname]);
+
+  
 
   return (
     <AuthContext.Provider

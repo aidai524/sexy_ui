@@ -1,4 +1,7 @@
+import Image from "next/image";
+import { motion } from "framer-motion";
 import styles from "./like.module.css";
+import { useState } from "react";
 
 export default function Like(props: any) {
   const { like } = props;
@@ -32,31 +35,55 @@ export const Heart = ({
   onClick = () => {},
   style = {}
 }: any) => {
+  const [showAnimation, setShowAnimation] = useState(false);
   return (
-    <div
-      className={`${styles.Heart} button`}
-      style={{
-        bottom: (like / 100) * 180 - 10,
-        ...style
-      }}
-      onClick={onClick}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="42"
-        height="36"
-        viewBox="0 0 42 36"
-        fill="none"
-        className={styles.HeartBg}
+    <>
+      <Image
+        src="/img/home/liked.gif"
+        width={124}
+        height={124}
+        alt="Liked"
+        className={styles.Heart}
+        style={{
+          left: -55,
+          bottom: (like / 100) * 180 - 44,
+          opacity: showAnimation ? 1 : 0
+        }}
+      />
+      <motion.div
+        initial={{ opacity: showAnimation ? 1 : 0 }}
+        animate={{ opacity: showAnimation ? 0 : 1 }}
+        className={`${styles.Heart} button`}
+        style={{
+          left: -22,
+          width: 57,
+          height: 47,
+          bottom: (like / 100) * 180 - 6,
+          ...style
+        }}
+        onClick={() => {
+          setShowAnimation(true);
+          setTimeout(() => {
+            setShowAnimation(false);
+          }, 1000);
+        }}
       >
-        <path
-          d="M1.54603 8.75946C-1.43825 20.6396 15.1641 33.0773 21.0005 35.0224C30.7277 31.1318 42.9664 18.7542 40.4549 8.75925C37.5 -3.00022 25.3777 0.977277 21.0005 6.32704C18.0823 1.46334 4.5 -3 1.54603 8.75946Z"
-          fill={isLiked ? "#FF045C" : "#FFFFFF"}
-          stroke="black"
-          strokeWidth="1.2"
-        />
-      </svg>
-      {/* <svg
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="42"
+          height="36"
+          viewBox="0 0 42 36"
+          fill="none"
+          className={styles.HeartBg}
+        >
+          <path
+            d="M1.54603 8.75946C-1.43825 20.6396 15.1641 33.0773 21.0005 35.0224C30.7277 31.1318 42.9664 18.7542 40.4549 8.75925C37.5 -3.00022 25.3777 0.977277 21.0005 6.32704C18.0823 1.46334 4.5 -3 1.54603 8.75946Z"
+            fill={isLiked ? "#FF045C" : "#FFFFFF"}
+            stroke="black"
+            strokeWidth="1.2"
+          />
+        </svg>
+        {/* <svg
         xmlns="http://www.w3.org/2000/svg"
         width="27"
         height="27"
@@ -69,14 +96,15 @@ export const Heart = ({
           fill={isLiked ? "#00000033" : "#FBCA04"}
         />
       </svg> */}
-      <span
-        style={{
-          color: isLiked ? "#FFFBFB" : "#000000"
-        }}
-        className={styles.HeartNum}
-      >
-        {like}%
-      </span>
-    </div>
+        <span
+          style={{
+            color: isLiked ? "#FFFBFB" : "#000000"
+          }}
+          className={styles.HeartNum}
+        >
+          {like}%
+        </span>
+      </motion.div>
+    </>
   );
 };

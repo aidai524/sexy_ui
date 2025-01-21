@@ -30,7 +30,6 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     isLoading,
     getDetailInfo
   } = useTokenDetail({ token });
-  console.log('>>>>>>> queryedInfoData: %o', queryedInfoData);
   const projectsStore = useProjects();
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
   const { showShare } = useMessage()
