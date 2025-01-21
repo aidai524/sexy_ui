@@ -9,7 +9,7 @@ import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
 import { Button, Modal } from "antd-mobile";
 import type { Project } from "@/app/type";
-import Tabs from "@/app/sections/home/laptop/panels/trade/tabs";
+import Tabs from "@/app/components/tabs";
 import { useUser } from "@/app/store/useUser";
 import usePump from "@/app/hooks/usePump";
 import { useSlip } from "@/app/store/useSlip";
