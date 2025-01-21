@@ -25,6 +25,13 @@
 .AirdropRight {
   height: 100%;
   background: url("/img/airdrop/laptop-banner.png") no-repeat center / cover;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.AirdropRightImage {
+  width: 100%;
 }
 .AirdropSlogan {
   width: 188px;
