@@ -104,7 +104,7 @@ export default function List({ type, isCurrentTab }: any) {
               key={token?.address || item}
               token={token}
               isCurrent={index === i && isCurrentTab}
-              isNext={i - index === 1 && isCurrentTab}
+              isNext={i - 1 === index && type === "launching"}
               onUpdate={(token: any, action?: string) => {
                 updateProject(type, token);
                 if (action && ["like", "share"].includes(action)) return;
