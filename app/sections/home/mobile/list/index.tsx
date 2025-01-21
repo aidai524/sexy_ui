@@ -145,7 +145,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                   if (action === "flip") {
                     setTimeout(() => {
                       queryAndUpdateDetail(type, token.address);
-                    }, 2000);
+                    }, 4000);
                   }
                   queryAndUpdateDetail(type, token.address);
                 }}
