@@ -7,6 +7,7 @@ import { httpGet, simplifyNum } from "@/app/utils";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import Empty from "@/app/components/empty";
 import { useRouter } from "next/navigation";
+import { numberFormatter } from '@/app/utils/common';
 
 const pageSize = 40;
 
@@ -133,10 +134,13 @@ export default function Held({ from, address }: any) {
                   2
                 )}
               </div>
-              <div className={styles.solPrice}>{tokenPrice[item.token_address] 
-                    ? tokenPrice[item.token_address] * new Big(item.amount)
-                    .div(10 ** item.token_decimals)
-                    .toNumber() : '~'} SOL</div>
+              <div className={styles.solPrice}>
+                {
+                  tokenPrice[item.token_address]
+                    ? numberFormatter(Big(tokenPrice[item.token_address]).times(Big(item.amount).div(10 ** item.token_decimals)), 4, true)
+                    : '~'
+                } SOL
+              </div>
             </div>
           </div>
         );
