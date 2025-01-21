@@ -18,7 +18,7 @@ export default function Laptop({ info, infoLoading, rate, rateLoading }: any) {
     >
       <div className={styles.TitleWrapper}>
         <span>Reward</span>
-        <Level level={userInfo.level} />
+        <Level level={userInfo?.level} />
       </div>
       <div className={styles.Container}>
         <div className={styles.Content}>

@@ -57,7 +57,7 @@ export default function PageHeader({
         }}
       >
         <span>{title}</span>
-        {from === "reward" && <Level level={userInfo.level} />}
+        {from === "reward" && <Level level={userInfo?.level} />}
       </div>
       <div className={styles.Right}>{rightActions}</div>
     </div>
