@@ -26,6 +26,7 @@ export default function Tabs({
   const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
   const { likedListKey, flipListKey, createListKey } = useLaptop();
+  const { isMobile } = useUserAgent();
   // base tab
   const createTabContent = (type: string, index: number) => ({
     content: (
@@ -67,12 +68,12 @@ export default function Tabs({
     }
   ];
 
-  const tabs = isOther || !SHOW_COPY_TRADE
+  const tabs = isOther || !SHOW_COPY_TRADE || !isMobile
     ? baseTabs
     : [
         {
           name: "Coppied",
-          content: <Coppied from={from} address={address} />
+          content: <Coppied from={from} address={address} isOther={isOther}/>
         },
         ...baseTabs
       ];

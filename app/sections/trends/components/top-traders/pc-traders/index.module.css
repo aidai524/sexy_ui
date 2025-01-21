@@ -1,0 +1,106 @@
+.container {
+    width: 1150px;
+    border-radius: 12px;
+    margin: 0 auto;
+  }
+  
+  .header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 100px;
+    padding: 12px 16px;
+    color: #9290B1;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .headerItem {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+  
+  .traderList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .traderItem {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 100px;
+    padding: 16px;
+    align-items: center;
+    background: #242424;
+    border-radius: 8px;
+    cursor: pointer;
+   
+  }
+  .traderItem:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+
+  .traderInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+.nameWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+  .name {
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  
+  .followers {
+    color: #9290B1;
+    font-size: 12px;
+  }
+  
+  .roi,
+  .pnl {
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .profit {
+    color: #9290B1;
+    font-size: 12px;
+  }
+  
+  .copyButton {
+    background: transparent;
+    color: #FFFFFF;
+    border: 2px solid #D6A409;
+    border-radius: 30px;
+    padding: 10px 22px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: Unbounded;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    
+  }
+
+  .copyButton:hover {
+    background: #D6A409;
+    color: #000000;
+    border: 2px solid transparent;
+  }
