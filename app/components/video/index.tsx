@@ -10,9 +10,10 @@ interface VideoPlayerProps {
   style?: React.CSSProperties;
   autoPlay?: boolean;
   token?: Project;
+  playManually?: boolean;
 }
 
-export default function VideoPlayer({ src, type, className, style = {}, autoPlay = true, token }: VideoPlayerProps) {
+export default function VideoPlayer({ src, type, className, style = {}, autoPlay = true, token, playManually = false }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isShow, setIsShow] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -20,7 +21,7 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
   const { autoPlay: autoPlaySetting, set }: any = useSetting();
 
   const handleClick = useCallback(() => {
-    if (!autoPlay || !autoPlaySetting) {
+    if (!autoPlay || !autoPlaySetting || !playManually) {
       return;
     }
 
@@ -29,7 +30,7 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
     } else {
       videoRef.current?.pause();
     }
-  }, [isShow, isVisible, autoPlay, autoPlaySetting]);
+  }, [isShow, isVisible, autoPlay, autoPlaySetting, playManually]);
 
   // useEffect(() => {
   //   document.addEventListener('click', handleClick);
@@ -54,7 +55,7 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
                 rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
                 rect.right <= (window.innerWidth || document.documentElement.clientWidth);
               setIsShow(isInViewport)
-              if (autoPlay && autoPlaySetting) {
+              if (autoPlay && autoPlaySetting && !playManually) {
                 console.log('play')
                 videoRef.current?.play();
               }
@@ -141,7 +142,7 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
         setIsPlay(true);
       }} onEnded={() => {
         setIsPlay(false);
-      }} ref={videoRef} playsInline webkit-playsinline className={className} autoPlay={autoPlay} style={style}>
+      }} ref={videoRef} playsInline webkit-playsinline className={className} style={style}>
         <source src={src} type={`video/${type}`} />
       </video>
       {

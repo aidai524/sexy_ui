@@ -141,13 +141,13 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any, action?: string) => {
                   updateProject(type, token);
+                  if (action && ["like", "share"].includes(action)) return;
                   if (action === "flip") {
                     setTimeout(() => {
                       queryAndUpdateDetail(type, token.address);
                     }, 2000);
-                  } else {
-                    queryAndUpdateDetail(type, token.address);
                   }
+                  queryAndUpdateDetail(type, token.address);
                 }}
               />
             );

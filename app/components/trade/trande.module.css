@@ -135,6 +135,7 @@
         border: 1px solid rgba(146, 144, 177, 0.4);
         border-radius: 30px;
         padding: 5px 10px;
+        cursor: pointer;
         &.tagActive {
           background-color: rgba(146, 144, 177, 0.4);
           color: #fff;
@@ -142,6 +143,7 @@
       }
 
       .PanelPercentTag {
+        cursor: pointer;
         height: 20px;
         padding: 4px 6px;
         line-height: 20px;

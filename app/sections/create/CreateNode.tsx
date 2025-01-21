@@ -44,7 +44,7 @@ export default forwardRef(function CreateNode(
 
   const validateName = useCallback(async (tokenName: string) => {
     if (!name_reg.test(tokenName)) {
-      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 16";
+      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 10";
     }
 
     const tokenInUse = await httpGet(
