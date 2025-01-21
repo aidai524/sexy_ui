@@ -35,9 +35,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  left: -22px;
-  width: 57px;
-  height: 47px;
+  transition: 0.3s;
 }
 
 .HeartBg {
