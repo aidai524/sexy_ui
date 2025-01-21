@@ -146,6 +146,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                     setTimeout(() => {
                       queryAndUpdateDetail(type, token.address);
                     }, 4000);
+                    return;
                   }
                   queryAndUpdateDetail(type, token.address);
                 }}
