@@ -93,7 +93,10 @@ export const useProjects = create(
         const currentProjects =
           type === "preLaunch" ? get().preProjects : get().launchProjects;
         if (!currentProjects[item.id]) return;
-        currentProjects[item.id] = mapDataToProject(item);
+        currentProjects[item.id] = {
+          ...mapDataToProject(item),
+          fetched_time: currentProjects[item.id].fetched_time
+        };
         if (type === "preLaunch") {
           set({ preProjects: currentProjects });
         } else {
