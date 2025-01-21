@@ -53,7 +53,7 @@ function TradingViewChart(
 
   const [loading, setLoading] = useState(false);
 
-  const datafeed = useMemo(() => datafeedFn(address), [address]);
+  const datafeed = useMemo(() => datafeedFn(address, tvWidgetRef), [address]);
 
   const { run } = useDebounceFn(
     () => {
