@@ -14,6 +14,7 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
+import TipsButton from '@/app/sections/home/laptop/tips-button';
 
 export default function Token({
   isCurrent,
@@ -128,11 +129,22 @@ export default function Token({
             />
           )}
           {token.status !== 0 && !showTrade && isCurrent && (
-            <ScaleButton
-              onClick={() => {
-                onOpenPanel("showTrade", !showTrade);
+            <TipsButton
+              tips="Expand"
+              triggerStyle={{
+                marginBottom: 20,
+                position: "absolute",
+                top: 0,
+                right: -50,
+                zIndex: 35
               }}
-            />
+            >
+              <ScaleButton
+                onClick={() => {
+                  onOpenPanel("showTrade", !showTrade);
+                }}
+              />
+            </TipsButton>
           )}
           <Actions
             token={token}

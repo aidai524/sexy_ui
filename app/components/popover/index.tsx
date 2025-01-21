@@ -22,7 +22,8 @@ const Popover = (props: Props, ref: any) => {
     contentStyle,
     contentClassName,
     triggerContainerStyle,
-    triggerContainerClassName
+    triggerContainerClassName,
+    closeDelayDuration = 300,
   } = props;
 
   const triggerRef = useRef<any>();
@@ -37,7 +38,7 @@ const Popover = (props: Props, ref: any) => {
       setVisible(false);
       setRealVisible(false);
     },
-    { wait: 300 }
+    { wait: closeDelayDuration }
   );
 
   const refs = {
@@ -53,7 +54,13 @@ const Popover = (props: Props, ref: any) => {
         style={triggerContainerStyle}
         className={triggerContainerClassName}
         onClick={() => {
-          if (trigger === PopoverTrigger.Hover) return;
+          if (trigger === PopoverTrigger.Hover) {
+            if (closeDelayDuration <= 0) {
+              setVisible(false);
+              setRealVisible(false);
+            }
+            return;
+          }
           setVisible(true);
         }}
         onMouseEnter={() => {
@@ -75,6 +82,10 @@ const Popover = (props: Props, ref: any) => {
             y={y}
             onLoaded={(elTooltip) => {
               const triggerEl = triggerRef.current;
+
+              if (!triggerEl) {
+                return;
+              }
 
               const {
                 width: triggerW,
@@ -213,6 +224,7 @@ interface Props {
   triggerContainerStyle?: React.CSSProperties;
   triggerContainerClassName?: string;
   elRef?: HTMLElement;
+  closeDelayDuration?: number;
 }
 
 const Card = (props: CardProps) => {
