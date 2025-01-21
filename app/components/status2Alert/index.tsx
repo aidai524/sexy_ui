@@ -1,4 +1,5 @@
 import Modal from '@/app/components/modal'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface TokenStatusModalProps {
@@ -8,6 +9,7 @@ interface TokenStatusModalProps {
 
 export const TokenStatusModal: React.FC<TokenStatusModalProps> = ({ status, onClose }) => {
     const [visible, setVisible] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         if (status === 2) {
@@ -19,6 +21,7 @@ export const TokenStatusModal: React.FC<TokenStatusModalProps> = ({ status, onCl
         open={visible}
         onClose={() => {
             setVisible(false);
+            router.push("/");       
             // onClose?.();
         }}
         mainStyle={{
