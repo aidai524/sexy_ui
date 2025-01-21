@@ -22,8 +22,8 @@ export default function useTokenDetail({ token }: any) {
     if (!token && !isSkipLoading) {
       setIsLoading(true);
     }
-    
-    return httpAuthGet("/project", { address: address })
+
+    return httpGet("/project", { address: address })
       .then((res) => {
         if (res.code === 0 && res.data && res.data.length) {
           const infoData = mapDataToProject(res.data[0]);
