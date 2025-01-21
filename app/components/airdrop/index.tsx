@@ -13,6 +13,8 @@ import { useAuth } from '@/app/context/auth';
 import { useDebounceFn } from 'ahooks';
 import Countdown from '@/app/components/airdrop/components/countdown';
 import { createLevelAndPoints } from '@/app/components/airdrop/utils';
+import { useConfig } from '@/app/store/useConfig';
+import dayjs from 'dayjs';
 
 const AirdropList = (props: any) => {
   const {} = props;
@@ -33,6 +35,8 @@ const AirdropList = (props: any) => {
   } = useContext(AirdropContext);
   const { address } = useAccount();
   const { accountRefresher } = useAuth();
+  const { config }: any = useConfig();
+  const { AirdropEndTime } = config || {};
 
   const isClaimed = airdropData?.clime_pump;
 
@@ -47,6 +51,13 @@ const AirdropList = (props: any) => {
   const btnLoading = useMemo(() => {
     return claiming || airdropDataLoading || userDataLoading;
   }, [claiming, airdropDataLoading, userDataLoading]);
+
+  const isEnded = useMemo(() => {
+    if (!AirdropEndTime) return false;
+    const curr = dayjs();
+    const end = dayjs(AirdropEndTime);
+    return dayjs(curr).isAfter(end);
+  }, [AirdropEndTime]);
 
   const { run: setConnectVisibleDelay, cancel: setConnectVisibleDelayCancel } = useDebounceFn(() => {
     setConnectVisible?.(true);
@@ -160,7 +171,7 @@ const AirdropList = (props: any) => {
                   cursor: btnLoading ? 'not-allowed' : 'pointer',
                 }}
                 onClick={() => handleClaim?.()}
-                disabled={btnLoading}
+                disabled={btnLoading || (!isClaimed && isEnded)}
               >
                 {
                   btnLoading && (

@@ -52,6 +52,7 @@ export const AuthProvider: React.FC<{
   );
 
   useEffect(() => {
+    console.log('>>>>>>> CODE: %o', searchParams.get("a"));
     if (searchParams.get("a") === CODE) {
       codeStore.set();
     }
