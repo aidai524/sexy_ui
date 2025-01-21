@@ -4,7 +4,6 @@ import { useUser } from "@/app/store/useUser";
 import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCodeStore, CODE } from "@/app/store/use-code";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { redirect } from "next/navigation";
 import { initAuthorization, logOut } from "@/app/utils";
@@ -24,7 +23,6 @@ export const AuthProvider: React.FC<{
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const codeStore: any = useCodeStore();
   useShare();
   const [accountRefresher, setAccountRefresher] = useState(0);
   const { onQueryInfo, setUserInfo, fecthUserInfo } = useUserInfo(
@@ -52,10 +50,6 @@ export const AuthProvider: React.FC<{
   );
 
   useEffect(() => {
-    console.log('>>>>>>> CODE: %o', searchParams.get("a"));
-    if (searchParams.get("a") === CODE) {
-      codeStore.set();
-    }
     window.connect = () => {
       setShowLoginModal(true);
     };
@@ -96,20 +90,6 @@ export const AuthProvider: React.FC<{
 
     updateAccount();
   }, [address]);
-
-  const { run: runJump } = useDebounceFn(
-    async () => {
-      if (codeStore.a !== CODE && pathname !== "/") {
-        !process.env.NEXT_PUBLIC_BEN_DEV && router.replace("/");
-      }
-    },
-    { wait: 800 }
-  );
-
-  useEffect(() => {
-    runJump();
-  }, [codeStore.a, pathname, redirect]);
-  
 
   return (
     <AuthContext.Provider
