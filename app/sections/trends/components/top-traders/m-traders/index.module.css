@@ -1,0 +1,100 @@
+.container {
+    width: 100%;
+    padding: 0px 9px;
+  }
+  
+  .tabContainer {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 8px;
+    
+  }
+  
+  .tabContainer::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .tab {
+    padding: 6px 18px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid transparent;
+    color: #9290B1;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  
+  .activeTab {
+    color: #C9FF5D;
+    border: 1px solid #C9FF5D;
+    background: transparent;
+  }
+  
+  .traderList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .traderCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: rgba(146, 144, 177, 0.1);
+    border-radius: 12px;
+  }
+  
+  .traderInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .avatar {
+    border-radius: 50%;
+  }
+  
+  .nameContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .followers {
+    color: #9290B1;
+    font-size: 12px;
+  }
+  
+  .metrics {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .percentage {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .profit {
+    color: #9290B1;
+    font-size: 12px;
+  }
+  
+  .emptyContainer {
+    padding-top: 80px;
+    text-align: center;
+  }

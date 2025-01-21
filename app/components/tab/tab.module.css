@@ -19,6 +19,7 @@
             color: rgba(255, 255, 255, 1);
             position: relative;
             font-weight: 600;
+            cursor: pointer;
             &.active {
                 color: var(--part-bg);
             }

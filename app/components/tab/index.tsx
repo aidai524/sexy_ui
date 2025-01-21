@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './tab.module.css'
-
+import { motion } from 'framer-motion';
 export type Node = {
     name: string;
     content: React.ReactNode
@@ -33,7 +33,7 @@ export default function Tab({
         }
     }, [activeNode, onTabChange, nodes])
 
-    return <div className={styles.tabs}>
+    return <motion.div className={styles.tabs}>
         <div className={styles.tabHeaders}>
             {
                 nodes.map((node, index) => {
@@ -55,5 +55,5 @@ export default function Tab({
                 </div>
             })
         }
-    </div>
+    </motion.div>
 }
