@@ -31,7 +31,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   const [minCopyAmountTips, setMinCopyAmountTips] = useState<boolean>(false);
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { solBalance } = useSolBalance();
+  const { solBalance } = useSolBalance(Number(show));
   const { solPrice } = useSolPrice();
   const resetForm = () => {
     setMinCopyAmountTips(false);
@@ -47,10 +47,15 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     if (solBalanceBig.gte(1)) {
       setCopyAmount("1");
       setOnceCopyAmount(new Big(1).div(copyTimes).toString());
-    } else {
+    } else if (solBalanceBig.gte(0)) {
       const cpTimes = Math.floor(solBalanceBig.div(0.1).toNumber());
-      setCopyTimes(cpTimes.toString());
-      setOnceCopyAmount(solBalanceBig.div(cpTimes).toString());
+      if (cpTimes <= 0) {
+        setCopyTimes("1");
+        setOnceCopyAmount(solBalanceBig.toString());
+      } else {
+        setCopyTimes(cpTimes.toString());
+        setOnceCopyAmount(solBalanceBig.div(cpTimes).toString());
+      }
       setCopyAmount(solBalanceBig.toString());
     }
   }, [solBalance, show]);

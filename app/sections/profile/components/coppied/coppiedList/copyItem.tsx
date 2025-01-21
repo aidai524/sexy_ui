@@ -48,15 +48,15 @@ export default function CopyItem({itemInfo}: any) {
       <div className={styles.PersonalTradeInfoBox}>
         {/* personal info */}
         <div className={styles.PersonalInfo}>
-            <img className={styles.Avatar} src={copyUserInfo?.icon || defaultAvatar} alt="avatar" />
-            <div className={styles.Name}>@{copyUserInfo?.name || 'Flip'}</div>
+            <img className={styles.Avatar} src={copyUserInfo?.icon  || defaultAvatar} alt="avatar" />
+            <div className={styles.Name}>@{copyUserInfo?.name || itemInfo?.from  || 'Flip'}</div>
         </div>
         {/* copy info */}
         <div className={styles.CopyInfo}>
             <div className={styles.CopyAmount}>
                 <p className={styles.CopyAmountText}>
                     <span className={styles.CopyAmountTextUseAmount}>{new Big(itemInfo?.investment).minus(itemInfo?.balance).toNumber() || 0}</span>
-                    <span className={styles.CopyAmountTextTotal}>/{itemInfo?.balance || 0}</span>
+                    <span className={styles.CopyAmountTextTotal}>/{(+itemInfo?.balance || 0).toFixed(2)}</span>
                 </p>
                 <SolIconWithoutBg />
             </div>

@@ -45,8 +45,8 @@ export default function Coppied({isOther}: any) {
       });
 
       setCopyTradeMap((prev: any) => ({
-        items: [...prev.items, ...res.data.items],
-        total: res.data.total
+        items: [...prev.items, ...(res.data.items || [])],
+        total: res.data.total || 0
       }));
 
       // update page
