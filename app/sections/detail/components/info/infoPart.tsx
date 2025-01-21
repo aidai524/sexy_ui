@@ -67,26 +67,22 @@ export default function InfoPart({
     return <Empty text="No info" />;
   }
 
-  console.log("data:", pumpMc, mc);
-
   return (
     <div>
       <div className={styles.detailAvatar}>
         <div className={styles.tokenImgWrapper}>
-          {videoReg.test(data.tokenImg || "") && (
+          {videoReg.test(data.tokenImg || "") ? (
             <VideoPlayer
               src={data.tokenImg}
               playManually={true}
               type={getVideoExt(data.tokenImg)}
               className={styles.tokenImg}
-            />
-          )}
-          {(imgReg.test(data.tokenImg || "") || !data.tokenImg) && (
-            <img
-              className={styles.tokenImg}
-              src={data.tokenImg || "/img/token-placeholder.png"}
-            />
-          )}
+            /> 
+          ) : <img
+          className={styles.tokenImg}
+          src={data.tokenImg || "/img/token-placeholder.png"}
+        />}
+          
         </div>
 
         <div className={styles.detailInfo}>
