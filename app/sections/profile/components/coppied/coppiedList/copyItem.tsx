@@ -66,7 +66,7 @@ export default function CopyItem({itemInfo}: any) {
                   <p className={styles.TooltipItem}>
                     <span>You deposit</span> 
                     <span className={styles.TooltipItemValue}>
-                      {itemInfo?.useAmount || 0}
+                      {itemInfo?.investment || 0}
                       <SolIconWithoutBg />
                     </span>
                   </p>

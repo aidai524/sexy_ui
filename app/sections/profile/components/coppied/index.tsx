@@ -6,19 +6,6 @@ import { useAuth } from "@/app/context/auth";
 import { fail } from "@/app/utils/toast";
 import { useHomeTab } from "@/app/store/useHomeTab";
 
-const MockData = [
-  {
-    id: 1,
-    name: "Copy 1",
-    amount: 100,
-  },
-  {
-    id: 2,
-    name: "Copy 2",
-    amount: 200,
-  },
-];
-
 export default function Coppied({isOther}: any) {
   const CopyTradeService = new CopyTrade();
   const homeTabStore: any = useHomeTab();
