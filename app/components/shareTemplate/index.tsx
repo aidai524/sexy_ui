@@ -178,6 +178,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
   if (!token || !show) return null;
 
+
   return (
     <Modal
       open={show}
@@ -339,7 +340,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
             <div className={styles.inviteBox}>
               <div>
                 <img
-                  src="/img/share/invite.png"
+                  src={userInfo?.icon || "/img/share/invite.png"}
                   alt="Flip"
                   className={styles.invite}
                 />
@@ -360,12 +361,12 @@ function Card({ token, show, onClose }: Props, ref: any) {
             <div className={styles.qrcode1}>
               <QRCode
                 url={shareUrl}
-                size={50}
+                size={60}
                 onSuccess={(canvas: any) => {
                   setQrcodeCanvas(true);
                 }}
               />
-              <img src="/img/share/qr-logo.png" alt="Flip" className={styles.qrLogo} />
+              {/*<img src="/img/share/qr-logo.png" alt="Flip" className={styles.qrLogo} />*/}
             </div>
 
             <img src="/img/share/scan.png" alt="Flip" className={styles.scan} />

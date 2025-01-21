@@ -49,6 +49,7 @@ export default function Desc({ token }: any) {
     }
   }, [token]);
 
+
   return (
     <div
       className={styles.Container}
@@ -72,12 +73,12 @@ export default function Desc({ token }: any) {
           <TokenTags token={token} />
         </div>
       </div>
-      {token.DApp === "sexy" && (
+      {(token.DApp === "sexy" && token.status === 1) && (
         <div className={styles.MC}>
           Market Cap: ${mc > 0 ? simplifyNum(mc, 2) : "-"}
         </div>
       )}
-      {token.DApp === "pump" && (
+      {(token.DApp === "pump" || token.status > 1) && (
         <div className={styles.MC}>
           Market Cap: ${pumpMc > 0 ? simplifyNum(pumpMc, 2) : "-"}
         </div>

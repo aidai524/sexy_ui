@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import TokenAction from "../tokenAction";
 import useMc from "@/app/hooks/useMc";
-import { numberFormatter } from "@/app/utils/common";
+import { formatLongText, numberFormatter } from '@/app/utils/common';
 import Big from "big.js";
 import { SOL } from "@/app/components/trade/buySellPump";
 import { useUser } from "@/app/store/useUser";
@@ -15,6 +15,7 @@ import idl from "@/app/hooks/meme_launchpad.json";
 import { useConnection } from "@solana/wallet-adapter-react";
 import dayjs from "dayjs";
 import Media from "@/app/components/thumbnail/media";
+import { useUserAgent } from '@/app/context/user-agent';
 
 interface Props {
   data: Project;
@@ -38,6 +39,7 @@ export default function Token({
   const router = useRouter();
   const { userInfo }: any = useUser();
   const { connection } = useConnection();
+  const { isMobile } = useUserAgent();
 
   const [mc, setMC] = useState<string | number>(0);
   const [prepaidRealAmount, setPrepaidRealAmount] = useState(Big(0));
@@ -79,10 +81,11 @@ export default function Token({
   }, [prepaidWithdrawDelayTime, data]);
 
   const smookeable = useMemo(() => {
-    if (data.account === userInfo?.address) return false;
     if (data.isSuperLike) {
       return 1;
     }
+    // fix#REF-9596 👇
+    if (data.account === userInfo?.address) return false;
     return 2;
   }, [data, userInfo]);
 
@@ -187,10 +190,10 @@ export default function Token({
       }}
     >
       <div
-        className={styles.tokenMag}
+        className={isMobile ? styles.tokenMagMobile : styles.tokenMag}
         style={{
           height: from === "page" ? 112 : "auto",
-          width: from === "page" ? "100%" : "auto",
+          // width: from === "page" ? "100%" : "auto",
           backgroundColor:
             from === "page" ? "rgba(255, 255, 255, 0.05)" : "transparent",
           padding: from === "page" ? "4px 12px 15px" : 0,
@@ -217,11 +220,11 @@ export default function Token({
           <LaunchTag type={data.status as number} />
         </div>
 
-        <div className={styles.nameContent}>
-          <div className={styles.name}>{data.tokenName}</div>
+        <div className={isMobile ? styles.nameContent : styles.nameContentLaptop}>
+          <div className={styles.name}>{formatLongText(data.tokenName, 15, 4)}</div>
           <div className={styles.trikerContent}>
             <div className={styles.tickerName}>
-              <div>Ticker: {data.ticker}</div>
+              <div className={styles.tickerNameText}>Ticker: {data.ticker}</div>
               <div
                 className={styles.tickerNameAvatar}
                 style={{
@@ -278,7 +281,7 @@ export default function Token({
       </div>
 
       <div
-        className={styles.Bottom}
+        className={isMobile ? styles.BottomMobile : styles.Bottom}
         style={{
           width: from === "page" ? "100%" : "auto"
         }}
