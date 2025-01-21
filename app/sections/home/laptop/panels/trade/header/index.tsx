@@ -1,5 +1,5 @@
 import styles from "./index.module.css";
-import Tabs from "../tabs";
+import Tabs from "@/app/components/tabs";
 
 const TABS = [
   {

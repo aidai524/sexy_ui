@@ -32,8 +32,8 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   } = useTokenDetail({ token });
   const projectsStore = useProjects();
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
-  const { showShare } = useMessage()
-  const headerRef = useRef<HTMLDivElement>(null)
+  const { showShare } = useMessage();
+  const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(60);
 
   const infoData = useMemo(
@@ -41,9 +41,12 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
     [queryedInfoData, token]
   );
 
-  const { run } = useDebounceFn(() => {
-    setHeaderHeight(headerRef.current?.clientHeight || 60)
-  }, { wait: 500 })
+  const { run } = useDebounceFn(
+    () => {
+      setHeaderHeight(headerRef.current?.clientHeight || 60);
+    },
+    { wait: 500 }
+  );
 
   const mc = useMcWithPump(infoData);
 
