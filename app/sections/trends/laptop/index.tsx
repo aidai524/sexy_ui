@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import TrendsLoading from "@/app/sections/trends/components/loading";
 import Tab from "@/app/components/tab";
 import TopTraders from "@/app/sections/trends/components/top-traders";
+import { SHOW_COPY_TRADE } from "@/app/utils/config";
 
 export default function Mobile(props: any) {
   const { handleBuy } = props;
@@ -16,10 +17,8 @@ export default function Mobile(props: any) {
   const { hottestList, tableList, top1, getAllList, allListLoading } =
     useTrends();
 
-  const tabNotes = [
-    {
-      name: "Hot Memes",
-      content:   <div className={styles.Container}>
+  const hotMemesContent = (
+    <div className={styles.Container}>
       <div className={styles.Box}>
         <Top
           onBuy={() => handleBuy(top1)}
@@ -45,14 +44,18 @@ export default function Mobile(props: any) {
         </div>
       </div>
     </div>
-    },
+  );
+
+  const tabNotes = [
     {
+      name: "Hot Memes",
+      content: hotMemesContent
+    },
+   {
       name: "Top Traders",
       content: <TopTraders />
     }
-  ]
-
-  
+  ];
 
   useEffect(() => {
     getAllList();
@@ -67,7 +70,7 @@ export default function Mobile(props: any) {
       <div className={styles.TitleWrapper}>
         <span>Trends</span>
       </div>
-      <Tab nodes={tabNotes} activeNode={tabNotes[0].name}/>
+      {SHOW_COPY_TRADE ? <Tab nodes={tabNotes} activeNode={tabNotes[0].name}/> : hotMemesContent}
     </motion.div>
   );
 }
