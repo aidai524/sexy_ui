@@ -107,13 +107,13 @@ export default function List({ type, isCurrentTab }: any) {
               isNext={i - index === 1 && isCurrentTab}
               onUpdate={(token: any, action?: string) => {
                 updateProject(type, token);
+                if (action === "like") return;
                 if (action === "flip") {
                   setTimeout(() => {
                     queryAndUpdateDetail(type, token.address);
                   }, 2000);
-                } else {
-                  queryAndUpdateDetail(type, token.address);
                 }
+                queryAndUpdateDetail(type, token.address);
               }}
               opacity={index > i ? 0 : 1}
               showTrade={tokenPanelStatusStore.showTrade}
