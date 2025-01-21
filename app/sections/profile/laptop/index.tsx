@@ -39,7 +39,7 @@ export default function Laptop({
       className={styles.Container}
     >
       <div className={styles.TitleWrapper}>
-        {["profile", "messages", "detail"].includes(
+        {["profile", "messages", "detail", "trends"].includes(
           search.get("from") || ""
         ) && <GoBack text="" />}
         Profile

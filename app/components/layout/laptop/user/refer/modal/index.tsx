@@ -8,7 +8,7 @@ import Tab, {
   AnimateVariants,
   TabTitle
 } from "@/app/components/layout/laptop/user/refer/modal/tab";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from "framer-motion";
 import Loading from "@/app/components/icons/loading";
 import { useAirdrop } from "@/app/components/airdrop/hooks";
@@ -17,6 +17,7 @@ import useUserInfo from '@/app/hooks/useUserInfo';
 import Big from 'big.js';
 import { SOL } from '@/app/components/trade/buySellPump';
 import { numberFormatter } from '@/app/utils/common';
+import useReferralRate from '@/app/sections/mining/use-referral-rate';
 
 const ReferModal = (props: any) => {
   const { isMobile } = props;
@@ -29,7 +30,7 @@ const ReferModal = (props: any) => {
 
   return (
     <Modal
-      open={store.visible && hasShownTour}
+      open={store.visible}
       onClose={handleClose}
       style={{}}
       mainStyle={{
@@ -44,15 +45,74 @@ const ReferModal = (props: any) => {
 
 export default ReferModal;
 
+const SOL_REFERRAL_LIST = [
+  {
+    key: 1,
+    value: 25,
+    icon: "/img/home/refer-modal-progress-node.svg",
+    iconActive:
+      "/img/home/refer-modal-progress-node-active.svg",
+    label: "Vol.50k",
+    volume: 50000,
+    amount: 0,
+    unit: "SOL",
+    perUnit: "Month"
+  },
+  {
+    key: 2,
+    value: 50,
+    icon: "/img/home/refer-modal-progress-node.svg",
+    iconActive:
+      "/img/home/refer-modal-progress-node-active.svg",
+    label: "Vol.250k",
+    volume: 250000,
+    amount: 0,
+    unit: "SOL",
+    perUnit: "Month"
+  },
+  {
+    key: 1,
+    value: 75,
+    icon: "/img/home/refer-modal-progress-node.svg",
+    iconActive:
+      "/img/home/refer-modal-progress-node-active.svg",
+    label: "Vol.500k",
+    volume: 500000,
+    amount: 0,
+    unit: "SOL",
+    perUnit: "Month"
+  },
+  {
+    key: 1,
+    value: 100,
+    icon: "/img/home/refer-modal-progress-node.svg",
+    iconActive:
+      "/img/home/refer-modal-progress-node-active.svg",
+    label: "Vol.1m",
+    volume: 1000000,
+    amount: 0,
+    unit: "SOL",
+    perUnit: "Month"
+  }
+];
+
 const ReferModalContent = (props: any) => {
   const { userInfo, isMobile, isInvite } = props;
   const { address } = useAccount();
   const { getAirdropData, airdropData } = useAirdrop();
   const userStore: any = useUser();
   const { fecthUserInfo } = useUserInfo(address, true, 0);
+  const { rate, isLoading: rateLoading } = useReferralRate();
 
   const [currentTab, setCurrentTab] = useState(isInvite ? 2 : 1);
   const [loading, setLoading] = useState(false);
+
+  const solReferralList = useMemo(() => {
+    return SOL_REFERRAL_LIST.map((it) => {
+      it.amount = numberFormatter(Big(it.volume).times(0.01).times(Big(rate).div(100)), 2, true);
+      return it;
+    });
+  }, [rate]);
 
   const handleCopy = async () => {
     if (loading) return;
@@ -103,12 +163,7 @@ const ReferModalContent = (props: any) => {
 
   return (
     <div className={isMobile ? styles.ContainerMobile : styles.Container}>
-      <div
-        className={styles.Body}
-        style={{
-          height: currentTab === 2 ? 493 : 483,
-        }}
-      >
+      <div className={styles.Body}>
         <div className={isMobile ? styles.TitleMobile : styles.Title}>
           Referral Earning
         </div>
@@ -151,52 +206,7 @@ const ReferModalContent = (props: any) => {
                   tab={1}
                   {...props}
                   bg="/img/home/refer-modal-content-bg-1.svg"
-                  list={[
-                    {
-                      key: 1,
-                      value: 25,
-                      icon: "/img/home/refer-modal-progress-node.svg",
-                      iconActive:
-                        "/img/home/refer-modal-progress-node-active.svg",
-                      label: "Vol.50k",
-                      amount: 0.55,
-                      unit: "SOL",
-                      perUnit: "Month"
-                    },
-                    {
-                      key: 2,
-                      value: 50,
-                      icon: "/img/home/refer-modal-progress-node.svg",
-                      iconActive:
-                        "/img/home/refer-modal-progress-node-active.svg",
-                      label: "Vol.250k",
-                      amount: 13.75,
-                      unit: "SOL",
-                      perUnit: "Month"
-                    },
-                    {
-                      key: 1,
-                      value: 75,
-                      icon: "/img/home/refer-modal-progress-node.svg",
-                      iconActive:
-                        "/img/home/refer-modal-progress-node-active.svg",
-                      label: "Vol.500k",
-                      amount: 27.5,
-                      unit: "SOL",
-                      perUnit: "Month"
-                    },
-                    {
-                      key: 1,
-                      value: 100,
-                      icon: "/img/home/refer-modal-progress-node.svg",
-                      iconActive:
-                        "/img/home/refer-modal-progress-node-active.svg",
-                      label: "Vol.1m",
-                      amount: 55,
-                      unit: "SOL",
-                      perUnit: "Month"
-                    }
-                  ]}
+                  list={solReferralList}
                 />
               )}
               {currentTab === 2 && (

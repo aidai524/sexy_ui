@@ -6,10 +6,8 @@ import Holder from "@/app/components/holder";
 import PreUser from "@/app/components/thumbnail/preUser";
 import Txs from "@/app/sections/detail/components/txs";
 import Trade from "@/app/components/trade";
-import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 
 export default function TradePanel({ token, tab, setTab, onClose }: any) {
-  const mc = useMcWithPump(token);
   return (
     <div className={styles.Container}>
       <Header currentTab={tab} onChangeTab={setTab} onClose={onClose} />

@@ -10,7 +10,7 @@ import { fail, success } from "@/app/utils/toast";
 import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
 import { Modal } from "antd-mobile";
-import Tabs from "@/app/sections/home/laptop/panels/trade/tabs";
+import Tabs from "@/app/components/tabs";
 import type { Project } from "@/app/type";
 import { useUser } from "@/app/store/useUser";
 import { useConnection } from "@solana/wallet-adapter-react";
@@ -178,9 +178,7 @@ export default function BuySell({
               .toFixed(0)
           }).then((res: any) => {
             setIsLoading(false);
-            buyInSol = new Big(res)
-              .mul(1 + slip / 100)
-              .toFixed(0);
+            buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
             if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
               setBuyInSol(buyInSol);
               setIsError(true);
@@ -230,9 +228,7 @@ export default function BuySell({
               .toFixed(0)
           }).then((res: any) => {
             setIsLoading(false);
-            sellSolOut = new Big(res)
-              .mul(1 - slip / 100)
-              .toFixed(0);
+            sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
 
             if (Number(debounceVal) > Number(tokenBalance)) {
               setIsError(true);
@@ -302,7 +298,6 @@ export default function BuySell({
               onClick={() => {
                 setActiveIndex(0);
                 setValInput("");
-                
                 setTokenType(buyTokenType);
                 setCurrentToken(buyTokenType === 1 ? SOL : desToken);
               }}
@@ -321,8 +316,6 @@ export default function BuySell({
                 setTokenType(0);
                 setValInput("");
                 setTokenPercent(0);
-
-                
               }}
               className={[
                 styles.tab,
@@ -337,9 +330,7 @@ export default function BuySell({
         <div
           className={from === "panel" ? styles.PanelContent : styles.Content}
         >
-          <div
-            className={styles.inputArea}
-          >
+          <div className={styles.inputArea}>
             <div className={styles.actionArea}>
               {activeIndex === 0 ? (
                 <div
@@ -518,9 +509,7 @@ export default function BuySell({
             }
           >
             {activeIndex === 0 && tokenType === 1 && (
-              <div
-                className={styles.receiveTokenAmount}
-              >
+              <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
@@ -549,9 +538,7 @@ export default function BuySell({
             )}
 
             {activeIndex === 1 && (
-              <div
-                className={styles.receiveTokenAmount}
-              >
+              <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && Number(sellOutSol) > 0

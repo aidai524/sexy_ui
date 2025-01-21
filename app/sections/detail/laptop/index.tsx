@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import GoBack from "@/app/components/back/laptop";
+import { TokenStatusModal } from "@/app/components/status2Alert";
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/detail")
@@ -22,7 +23,7 @@ const FlipPanel = dynamic(
 );
 
 export default function Laptop(props: any) {
-  const { infoData, isLoading } = useTokenDetail({});
+  const { infoData, isLoading, getDetailInfo } = useTokenDetail({});
   const [currentToken, setCurrentToken] = useState(infoData);
   const [showDetail, setShowDetail] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -171,6 +172,11 @@ export default function Laptop(props: any) {
           </AnimatePresence>
         )}
       </div>
+
+      <TokenStatusModal status={infoData?.status} onClose={() => {
+        getDetailInfo();
+      }} />
+      
     </motion.div>
   );
 }

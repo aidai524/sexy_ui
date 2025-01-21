@@ -2,6 +2,7 @@ import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useMessageStatus } from "@/app/store/use-message-status";
 import config from "./config";
 import dayjs from "dayjs";
 import styles from "./item.module.css";
@@ -13,7 +14,8 @@ export default function Item({
   onClose,
   onSuccess
 }: any) {
-  const [expand, setExpand] = useState(false);
+  const messageStatusStore: any = useMessageStatus();
+  const [expand, setExpand] = useState(messageStatusStore.jumpId === item.id);
   const router = useRouter();
   const { userInfo } = useAuth();
   const [isRead, setIsRead] = useState(item.read);
@@ -64,8 +66,10 @@ export default function Item({
               {linkText && link && (
                 <button
                   className={styles.ItemLink}
-                  onClick={() => {
+                  onClick={(ev) => {
+                    ev.stopPropagation();
                     onClose?.();
+                    messageStatusStore.set({ jumpId: item.id });
                     isMobile
                       ? router.push(link)
                       : history.pushState(

@@ -3,14 +3,13 @@
 import React from "react";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import Info from "../info";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useAuth } from "@/app/context/auth";
 
 export default function ConnectButton({ logout }: any) {
-  const { connected } = useWallet();
-
+  const { userInfo } = useAuth();
   return (
     <div>
-      {connected ? (
+      {userInfo?.address ? (
         <Info logout={logout} />
       ) : (
         <WalletModalButton

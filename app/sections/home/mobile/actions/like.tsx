@@ -62,6 +62,7 @@ export const Heart = ({
           ...style
         }}
         onClick={() => {
+          onClick();
           setShowAnimation(true);
           setTimeout(() => {
             setShowAnimation(false);

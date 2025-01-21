@@ -22,6 +22,8 @@ import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { useMessage } from "@/app/context/messageContext";
 import { useDebounceFn } from "ahooks";
 import { useProjects } from "@/app/store/use-projects";
+import { Modal } from "antd-mobile";
+import { TokenStatusModal } from "@/app/components/status2Alert";
 
 export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   const [activeKey, setActiveKey] = useState("Info");
@@ -32,18 +34,23 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   } = useTokenDetail({ token });
   const projectsStore = useProjects();
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
-  const { showShare } = useMessage()
-  const headerRef = useRef<HTMLDivElement>(null)
+  const { showShare } = useMessage();
+  const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(60);
+
+ 
 
   const infoData = useMemo(
     () => queryedInfoData || token,
     [queryedInfoData, token]
   );
 
-  const { run } = useDebounceFn(() => {
-    setHeaderHeight(headerRef.current?.clientHeight || 60)
-  }, { wait: 500 })
+  const { run } = useDebounceFn(
+    () => {
+      setHeaderHeight(headerRef.current?.clientHeight || 60);
+    },
+    { wait: 500 }
+  );
 
   const mc = useMcWithPump(infoData);
 
@@ -203,6 +210,10 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
           </div>
         </div>
       </SexPullToRefresh>
+
+      <TokenStatusModal status={infoData?.status} onClose={() => {
+        getDetailInfo();
+      }} />
     </div>
   );
 }
