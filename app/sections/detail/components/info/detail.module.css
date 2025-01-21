@@ -50,6 +50,9 @@
     font-size: 20px;
     font-weight: 700;
     color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .tickerWrapper {
     margin-top: 10px;

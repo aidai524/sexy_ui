@@ -22,13 +22,14 @@ export default function useMc({ tokenAddress, disable = true }: Props) {
       .then(res => res.json())
       .then(data => {
         if (data.totalSupply && data.priceUsd) {
-          console.log("mc:", data.name, data.totalSupply * data.priceUsd);
           setMc(data.totalSupply * data.priceUsd);
-        }
-      })
-      .catch((e) => {
-        setMc(0);
-      });
+          } else {
+            setMc(0);
+          }
+        })
+        .catch((e) => {
+          setMc(0);
+        });
 
 
       // Promise.all([

@@ -148,6 +148,7 @@ export default function BuySellLaunched({
                 if (Number(debounceVal) > Number(solBalance)) {
                   setIsError(true);
                   setErrorMsg("Invalid balance");
+                  setIsLoading(false);
                   return;
                 }
 
@@ -267,6 +268,8 @@ export default function BuySellLaunched({
                 setCurrentToken(desToken);
                 setTokenType(0);
               }
+              setSolPercent(0);
+              setTokenPercent(0);
             }}
           />
         ) : (
@@ -276,6 +279,8 @@ export default function BuySellLaunched({
                 setActiveIndex(0);
                 setCurrentToken(SOL);
                 setTokenType(1);
+                setSolPercent(0);
+                setTokenPercent(0);
                 setValInput("");
               }}
               className={[
@@ -291,6 +296,8 @@ export default function BuySellLaunched({
                 setCurrentToken(desToken);
                 setTokenType(0);
                 setValInput("");
+                setSolPercent(0);
+                setTokenPercent(0);
               }}
               className={[
                 styles.tab,
@@ -313,30 +320,6 @@ export default function BuySellLaunched({
             }
           >
             <div className={styles.actionArea}>
-              {/* {activeIndex === 0 ? (
-              <div
-                className={`${styles.switchToken} button`}
-                onClick={() => {
-                  if (tokenType === 0) {
-                    setCurrentToken(SOL);
-                    setTokenType(1);
-                  } else {
-                    setCurrentToken(desToken);
-                    setTokenType(0);
-                  }
-                  setValInput("");
-                }}
-              >
-                <span className={styles.switchTitle}>switch to </span>
-                <span className={styles.switchTokenName}>
-                  {tokenType === 0 ? SOL.tokenName : tokenName}
-                </span>
-              </div>
-            ) : (
-              <div></div>
-            )} */}
-
-              <div></div>
               <div
                 onClick={(ev) => {
                   ev.stopPropagation();
