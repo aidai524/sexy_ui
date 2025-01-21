@@ -77,7 +77,12 @@
   height: 33px;
 }
 .AirdropShareInfoCardAvatar {
+  width: 42px;
+  height: 42px;
   flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
 }
 .AirdropShareInfoCardInfo {
   flex: 1;
