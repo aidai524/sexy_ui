@@ -29,7 +29,9 @@ const AirdropLaptop = () => {
             <ExpandPanelLinks className={styles.AirdropLinksInner} />
           </div>
         </div>
-        <div className={styles.AirdropRight} />
+        <div className={styles.AirdropRight}>
+          <img src="/img/airdrop/cars.svg" alt="" className={styles.AirdropRightImage} />
+        </div>
       </div>
     </div>
   );
