@@ -104,7 +104,7 @@ export default function TotalPanel({ info }: any) {
             }}
             onClick={() => {
               if (!info?.liked) return;
-              set({ profileTabIndex: SHOW_COPY_TRADE ? 4 : 3 });
+              set({ profileTabName: "Liked" });
               router.push("/profile");
             }}
           >

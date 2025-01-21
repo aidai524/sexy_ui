@@ -8,7 +8,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { useLaptop } from "@/app/context/laptop";
 import { useAccount } from "@/app/hooks/useAccount";
 import Coppied from "@/app/sections/profile/components/coppied";
-import { SHOW_COPY_TRADE } from '@/app/utils/config'
+import { SHOW_COPY_TRADE } from "@/app/utils/config";
 
 export default function Tabs({
   address,
@@ -21,14 +21,14 @@ export default function Tabs({
   cursorClassName,
   tabContentClassName,
   cursorStyle,
-  style,
+  style
 }: any) {
   const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
   const { likedListKey, flipListKey, createListKey } = useLaptop();
   const { isMobile } = useUserAgent();
   // base tab
-  const createTabContent = (type: string, index: number) => ({
+  const createTabContent = (type: string, tabName: string) => ({
     content: (
       <Created
         hideHot={type === "created"}
@@ -44,7 +44,7 @@ export default function Tabs({
             ? flipListKey
             : likedListKey
         }
-        isCurrent={homeTabStore.profileTabIndex === index}
+        isCurrent={homeTabStore.profileTabName === tabName}
       />
     )
   });
@@ -56,47 +56,38 @@ export default function Tabs({
     },
     {
       name: "Created",
-      ...createTabContent("created", 1)
+      ...createTabContent("created", "Created")
     },
     {
       name: "Flipped",
-      ...createTabContent("flipped", 2)
+      ...createTabContent("flipped", "Flipped")
     },
     {
       name: "Liked",
-      ...createTabContent("liked", 3)
+      ...createTabContent("liked", "Liked")
     }
   ];
 
-  const tabs = isOther || !SHOW_COPY_TRADE || !isMobile
-    ? baseTabs
-    : [
-        {
-          name: "Coppied",
-          content: <Coppied from={from} address={address} isOther={isOther}/>
-        },
-        ...baseTabs
-      ];
-
-  const activeNode = useMemo(
-    () => tabs[homeTabStore.profileTabIndex]?.name,
-    [homeTabStore.profileTabIndex]
-  );
+  const tabs =
+    isOther || !SHOW_COPY_TRADE || !isMobile
+      ? baseTabs
+      : [
+          {
+            name: "Coppied",
+            content: <Coppied from={from} address={address} isOther={isOther} />
+          },
+          ...baseTabs
+        ];
 
   return (
     <Tab
       nodes={tabs}
       onTabChange={(nodeName: string) => {
-        let defaultIndex = 0;
-        tabs.some((tab, index) => {
-          defaultIndex = index;
-          return tab.name === nodeName;
-        });
         homeTabStore.set({
-          profileTabIndex: defaultIndex
+          profileTabName: nodeName
         });
       }}
-      activeNode={activeNode}
+      activeNode={homeTabStore.profileTabName}
       tabContentStyle={tabContentStyle}
       tabHeaderStyle={tabHeaderStyle}
       tabHeadersClassName={tabHeadersClassName}

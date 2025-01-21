@@ -32,7 +32,7 @@ export default function Tab({
   cursorClassName,
   tabContentClassName,
   cursorStyle,
-  style,
+  style
 }: Props) {
   const [tabIndex, setTabIndex] = useState(0);
   const prevI = useRef<number[]>([0]);
@@ -53,7 +53,10 @@ export default function Tab({
 
   return (
     <div className={styles.tabs} style={style}>
-      <div className={[styles.tabHeaders, tabHeadersClassName].join(' ')} style={tabHeadersStyle}>
+      <div
+        className={[styles.tabHeaders, tabHeadersClassName].join(" ")}
+        style={tabHeadersStyle}
+      >
         {nodes.map((node, index) => {
           return (
             <div
@@ -86,7 +89,7 @@ export default function Tab({
                       }
                     }
                   }}
-                  className={[styles.Line, cursorClassName].join(' ')}
+                  className={[styles.Line, cursorClassName].join(" ")}
                   style={cursorStyle}
                 />
               )}
@@ -102,7 +105,7 @@ export default function Tab({
         return (
           <div
             key={index}
-            className={[styles.tabContent, tabContentClassName].join(' ')}
+            className={[styles.tabContent, tabContentClassName].join(" ")}
             style={{
               ...tabContentStyle,
               display: tabIndex !== index ? "none" : "block"
