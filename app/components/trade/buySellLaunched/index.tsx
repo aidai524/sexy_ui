@@ -514,7 +514,7 @@ export default function BuySellLaunched({
                     }
 
                     let hash;
-                    let showBuyInToken = buyIn;
+                    let showBuyInToken: any = Number(buyIn) * (10 ** token.tokenDecimals!);
                     setIsLoading(true);
                     if (activeIndex === 0) {
                       hash = await trade(buyInSol, "buy", slip * 100);
@@ -525,6 +525,9 @@ export default function BuySellLaunched({
                           token.address as string,
                           userInfo.address
                         );
+
+                        console.log("showBuyInToken:", showBuyInToken, _showBuyInToken);
+
                         if (_showBuyInToken) {
                           showBuyInToken = _showBuyInToken;
                         }

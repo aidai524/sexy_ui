@@ -706,9 +706,11 @@ export async function getTransaction(
   userAddress: string
 ) {
   const transactionDetails = await connection.getTransaction(hash, {
-    commitment: "finalized",
+    commitment: "confirmed",
     maxSupportedTransactionVersion: 0
   });
+
+  console.log("transactionDetails:", transactionDetails);
 
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta;
@@ -720,6 +722,8 @@ export async function getTransaction(
     const postToken = postTokenBalances?.find(
       (item) => item.mint === toeknAddress && item.owner === userAddress
     );
+
+    console.log("preToken:", preToken, postToken);
 
     if (postToken) {
       const preAmount = preToken ? preToken.uiTokenAmount.amount : 0;
