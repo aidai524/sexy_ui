@@ -8,6 +8,8 @@
 }
 
 .Container {
+  border-radius: 20px;
+  background: #000;
   display: flex;
   position: relative;
 }
