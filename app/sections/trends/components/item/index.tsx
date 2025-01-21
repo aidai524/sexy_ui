@@ -87,8 +87,9 @@ export default function Item(props: Props) {
             <span
               className={`${styles.ItemCreateTimePrimary} button`}
               onClick={() => {
-                if (trend?.project_creator)
-                  router.push(`/profile/user?account=${trend.project_creator}`);
+                if (trend?.project_creator) {
+                  router.push(`/profile/user?account=${trend.project_creator}&from=trends`);
+                }
               }}
             >
               {formatLongText(
