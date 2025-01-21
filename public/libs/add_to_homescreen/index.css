@@ -718,12 +718,12 @@
 }
 
 .adhs-container .adhs-modal .adhs-button-cancel {
-  border: 2px solid #ff2681;
-  color: #ff2681;
+  border: 2px solid #000;
+  color: #000;
 }
 
 .adhs-container .adhs-modal .adhs-button-install {
-  background-color: #ff2681;
+  background-color: #000;
   color: white;
 }
 
