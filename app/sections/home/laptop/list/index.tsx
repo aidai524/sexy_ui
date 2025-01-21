@@ -102,7 +102,7 @@ export default function List({ type, isCurrentTab }: any) {
     containerRef.current.addEventListener("wheel", wheel);
 
     return () => {
-      containerRef.current.removeEventListener("wheel", wheel);
+      containerRef.current?.removeEventListener("wheel", wheel);
     };
   }, []);
 
