@@ -23,7 +23,9 @@ export default function useTokenDetail({ token }: any) {
       setIsLoading(true);
     }
 
-    return httpGet("/project", { address: address })
+    const httpFn= userInfo?.address ? httpAuthGet : httpGet;
+
+    return httpFn("/project", { address: address })
       .then((res) => {
         if (res.code === 0 && res.data && res.data.length) {
           const infoData = mapDataToProject(res.data[0]);
