@@ -13,7 +13,7 @@ export default function Chart({ token, style = {} }: Props) {
 
   const type = useMemo(() => {
     if (!token) return void 0;
-    if (token.status === 1 && token.DApp === "sexy") {
+    if (token.status === 1) {
       return 1;
     }
 
