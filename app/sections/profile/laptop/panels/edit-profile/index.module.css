@@ -24,7 +24,7 @@
 }
 
 .Content {
-  height: calc(100% - 30px);
+  height: calc(100dvh - 125px);
   overflow-y: auto;
   padding-right: 10px;
 }

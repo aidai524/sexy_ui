@@ -6,6 +6,8 @@ import { fail, success } from '@/app/utils/toast';
 import html2canvas from 'html2canvas';
 import { generateRandomString } from '@/app/utils';
 import dayjs from 'dayjs';
+import Loading from '@/app/components/icons/loading';
+import Modal from '@/app/components/modal';
 
 const AirdropShare = (props: any) => {
   const { onClose } = props;
@@ -15,6 +17,9 @@ const AirdropShare = (props: any) => {
   const cardRef = useRef<any>(null);
 
   const [loading, setLoading] = useState(false);
+  const [downloadVisible, setDownloadVisible] = useState(false);
+  const [downloadSrc, setDownloadSrc] = useState<any>();
+  const [downloadFileName, setDownloadFileName] = useState<any>();
 
   const shareLink = useMemo(() => {
     const _shareLink = new URL(window?.location?.origin);
@@ -44,14 +49,24 @@ const AirdropShare = (props: any) => {
     if (loading) return;
     setLoading(true);
     if (cardRef.current) {
-      const canvas = await html2canvas(cardRef.current, { useCORS: true });
+      try {
+        const canvas = await html2canvas(cardRef.current, { useCORS: true });
 
-      const base64Url = canvas.toDataURL("image/webp");
-      const newFileName = generateRandomString(10);
-      const link = document.createElement("a");
-      link.href = base64Url;
-      link.download = `${newFileName}.${dayjs().format('YYYY.MM.DD.HH.mm.ss')}.png`;
-      link.click();
+        const base64Url = canvas.toDataURL("image/webp");
+        const newFileName = generateRandomString(10);
+        // setDownloadSrc(base64Url);
+        // setDownloadFileName(`${newFileName}.${dayjs().format('YYYY.MM.DD.HH.mm.ss')}.png`);
+        // setDownloadVisible(true);
+        const link = document.createElement("a");
+        link.href = base64Url;
+        link.download = `${newFileName}.${dayjs().format('YYYY.MM.DD.HH.mm.ss')}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (err: any) {
+        console.log('get share image failed: %o', err);
+        fail(`Got share image failed${err?.message ? ': ' + err?.message : ''}`);
+      }
     }
     setLoading(false);
   };
@@ -68,7 +83,12 @@ const AirdropShare = (props: any) => {
           onClick={getShareImage}
           disabled={loading}
         >
-          Save image
+          {
+            loading && (
+              <Loading size={14} />
+            )
+          }
+          <span>Save image</span>
         </button>
         <button
           type="button"
@@ -79,6 +99,30 @@ const AirdropShare = (props: any) => {
           <span>Share</span>
         </button>
       </div>
+      {/*#region useless currently*/}
+      <Modal
+        open={downloadVisible}
+        onClose={() => {
+          setDownloadVisible(false);
+        }}
+      >
+        <div className={styles.AirdropDownloadModalCard}>
+          <div className={styles.AirdropDownloadModalTitle}>
+            Shareable image is ready
+          </div>
+          <div className={styles.AirdropDownloadModalDesc}>
+            Click the button below to download immediately
+          </div>
+          <a
+            href={downloadSrc}
+            download={downloadFileName}
+            className={styles.AirdropDownloadModalButton}
+          >
+            Download
+          </a>
+        </div>
+      </Modal>
+      {/*#endregion*/}
     </div>
   );
 };
