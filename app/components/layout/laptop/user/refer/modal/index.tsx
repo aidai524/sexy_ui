@@ -29,7 +29,7 @@ const ReferModal = (props: any) => {
 
   return (
     <Modal
-      open={store.visible && hasShownTour}
+      open={store.visible}
       onClose={handleClose}
       style={{}}
       mainStyle={{
