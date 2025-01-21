@@ -99,7 +99,7 @@ export const AuthProvider: React.FC<{
   const { run: runJump } = useDebounceFn(
     async () => {
       if (codeStore.a !== CODE && pathname !== "/") {
-        redirect("/");
+        !process.env.NEXT_PUBLIC_BEN_DEV && router.replace("/");
       }
     },
     { wait: 800 }
@@ -107,8 +107,7 @@ export const AuthProvider: React.FC<{
 
   useEffect(() => {
     runJump();
-  }, [codeStore.a, pathname]);
-
+  }, [codeStore.a, pathname, redirect]);
   
 
   return (
