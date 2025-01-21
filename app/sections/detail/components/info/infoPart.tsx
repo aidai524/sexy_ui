@@ -74,6 +74,7 @@ export default function InfoPart({
           {videoReg.test(data.tokenImg || "") && (
             <VideoPlayer
               src={data.tokenImg}
+              playManually={true}
               type={getVideoExt(data.tokenImg)}
               className={styles.tokenImg}
             />

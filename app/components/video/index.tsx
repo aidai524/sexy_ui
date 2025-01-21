@@ -10,9 +10,10 @@ interface VideoPlayerProps {
   style?: React.CSSProperties;
   autoPlay?: boolean;
   token?: Project;
+  playManually?: boolean;
 }
 
-export default function VideoPlayer({ src, type, className, style = {}, autoPlay = true, token }: VideoPlayerProps) {
+export default function VideoPlayer({ src, type, className, style = {}, autoPlay = true, token, playManually = false }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isShow, setIsShow] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -20,7 +21,7 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
   const { autoPlay: autoPlaySetting, set }: any = useSetting();
 
   const handleClick = useCallback(() => {
-    if (!autoPlay || !autoPlaySetting) {
+    if (!autoPlay || !autoPlaySetting || !playManually) {
       return;
     }
 
@@ -29,14 +30,14 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
     } else {
       videoRef.current?.pause();
     }
-  }, [isShow, isVisible, autoPlay, autoPlaySetting]);
+  }, [isShow, isVisible, autoPlay, autoPlaySetting, playManually]);
 
-  useEffect(() => {
-    document.addEventListener('click', handleClick);
-    return () => {
-      document.removeEventListener('click', handleClick);
-    };
-  }, [handleClick]);
+  // useEffect(() => {
+  //   document.addEventListener('click', handleClick);
+  //   return () => {
+  //     document.removeEventListener('click', handleClick);
+  //   };
+  // }, [handleClick]);
 
   useEffect(() => {
     if (!autoPlay) {
@@ -46,15 +47,25 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setIsShow(true)
-            if (autoPlay && autoPlaySetting) {
-              videoRef.current?.play();
+            const rect = videoRef.current?.getBoundingClientRect();
+            if (rect) {
+              const isInViewport =
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+              setIsShow(isInViewport)
+              if (autoPlay && autoPlaySetting && !playManually) {
+                console.log('play')
+                videoRef.current?.play();
+              }
+            } else {
+              setIsShow(false)
+              videoRef.current?.pause();
             }
           } else {
             setIsShow(false)
-            if (autoPlay && autoPlaySetting) {
-              videoRef.current?.pause();
-            }
+            videoRef.current?.pause();
           }
         });
       },
@@ -70,8 +81,8 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
             setIsVisible(false);
           } else {
             setIsVisible(true)
-            if (autoPlay && autoPlaySetting && isShow) {
-              videoRef.current?.play();
+            if (autoPlay && autoPlaySetting) {
+              // videoRef.current?.play();
             }
           }
         }
@@ -98,7 +109,7 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
         mutationObserver.disconnect();
       }
     };
-  }, [videoRef, autoPlay, autoPlaySetting, token, isShow]);
+  }, [videoRef, autoPlay, autoPlaySetting, token]);
 
 
 
@@ -111,7 +122,19 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
 
 
   return (
-    <div className={className} style={allStyle as React.CSSProperties}>
+    <div className={className} style={allStyle as React.CSSProperties} onClick={() => {
+      if (!autoPlay) {
+        return;
+      }
+
+      if (isPlay) {
+        videoRef.current?.pause();
+        set({ autoPlay: false });
+      } else {
+        videoRef.current?.play();
+        set({ autoPlay: true });
+      }
+    }}>
 
       <video loop={autoPlay && autoPlaySetting} onPause={() => {
         setIsPlay(false);
@@ -119,14 +142,13 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
         setIsPlay(true);
       }} onEnded={() => {
         setIsPlay(false);
-      }} ref={videoRef} playsInline webkit-playsinline className={className} autoPlay={autoPlay} style={style}>
+      }} ref={videoRef} playsInline webkit-playsinline className={className} style={style}>
         <source src={src} type={`video/${type}`} />
       </video>
       {
         (autoPlay && !isPlay) && (
           <div onClick={() => {
-            videoRef.current?.play();
-            set({ autoPlay: true });
+            
           }} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '68px', height: '68px', background: 'rgba(0, 0, 0, 0.5)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
             <svg width="19" height="22" viewBox="0 0 19 22" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18 9.26795C19.3333 10.0377 19.3333 11.9623 18 12.7321L3 21.3923C1.66667 22.1621 -1.05781e-06 21.1999 -9.90511e-07 19.6603L-2.33408e-07 2.33975C-1.6611e-07 0.800144 1.66667 -0.162106 3 0.607695L18 9.26795Z" fill="white" />
@@ -140,3 +162,5 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
 }
 
 //preload={autoPlay ? "auto" : "none"} 
+
+

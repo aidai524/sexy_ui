@@ -37,14 +37,14 @@ export default function Actions({
           <Like
             isLiked={token.isLike}
             like={token.like}
-            onClick={async () => {
+            onClick={() => {
               if (token.isLike || disabled) return;
               if (!window.sexAddress) {
                 window.connect();
                 return;
               }
-              const result = await actionLikeTrigger(token, showShare);
-              if (result) onSuccess("like");
+              onSuccess("like");
+              actionLikeTrigger(token, showShare);
             }}
             id={isCurrent ? "guid-tour-like" : ""}
           />

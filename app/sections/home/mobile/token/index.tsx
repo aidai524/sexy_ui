@@ -126,7 +126,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                   token.isLike = true;
                   token.like = token.like + 1;
                 }
-                onUpdate(token);
+                if (type === "share") {
+                  token.share_num = token.share_num + 1;
+                }
+                onUpdate(token, type);
               }}
               isCurrent={isCurrent}
             />

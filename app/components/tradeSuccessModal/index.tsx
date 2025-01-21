@@ -45,11 +45,16 @@ export default function TradeSuccessModal({
           />
         </div>
 
-        <div className={style.nameContent}>
-          <div className={style.name}>{token.tokenName}</div>
-          <div className="text-overflow" style={{ width: 250 }}>
+        <div className={`${style.nameContent}`}>
+          <span
+            className={`${style.name} text-overflow`}
+            style={{ width: "50%" }}
+          >
+            {token.tokenName}
+          </span>
+          <span className="text-overflow" style={{ width: "50%" }}>
             / Ticker: {token.ticker}
-          </div>
+          </span>
         </div>
         <div className={style.contentBox}>
           <div className={style.successText}>You’ve {typeText[type]} </div>
