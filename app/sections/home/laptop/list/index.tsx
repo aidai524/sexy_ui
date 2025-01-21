@@ -12,6 +12,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 import Big from "big.js";
+import { useDebounceFn, useThrottleFn } from "ahooks";
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/detail")
@@ -43,6 +44,8 @@ export default function List({ type, isCurrentTab }: any) {
   const tokenPanelStatusStore: any = useTokenPanelStatus();
   const { innerHeight, innerWidth } = useUserAgent();
   const listRef = useRef<any>();
+  const containerRef = useRef<any>();
+  const startY = useRef<number>(0);
 
   useEffect(() => {
     if (list.length && index > list.length) {
@@ -70,9 +73,43 @@ export default function List({ type, isCurrentTab }: any) {
     return getProjectById(type, id);
   }, [index, list, refresher]);
 
+  const { run } = useDebounceFn(
+    (ev: any) => {
+      const diff = ev.deltaY - startY.current;
+      startY.current = 0;
+
+      if (Math.abs(diff) < 100) return;
+
+      if (diff < 0 && index < list.length) {
+        onChangeIndex(index + 1);
+        return;
+      }
+      if (diff > 0 && index > 0) onChangeIndex(index - 1);
+    },
+    { wait: 1000 }
+  );
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const wheel = (ev: any) => {
+      if (!isCurrentTab) return;
+      if (startY.current === 0) {
+        startY.current = ev.deltaY;
+        return;
+      }
+      run(ev);
+    };
+    containerRef.current.addEventListener("wheel", wheel);
+
+    return () => {
+      containerRef.current.removeEventListener("wheel", wheel);
+    };
+  }, []);
+
   return (
     <div
       id={`${type}-list`}
+      ref={containerRef}
       className={styles.Container}
       style={{
         height: innerHeight,
