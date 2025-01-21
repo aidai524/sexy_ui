@@ -65,14 +65,10 @@ export const useCopyTrade = () => {
               signature: serializedTx,
             });
   
-            if (!sendResponse.ok) {
-              throw new Error(`Transaction signing failed: ${sendResponse.message}`);
-            }
-  
             if (!sendResponse.data?.signature) {
               throw new Error('No transaction signature returned');
             }
-  
+            success("Copy trade success", {maskStyle: {zIndex: 1001}});
           } catch (signError: any) {
             fail(`Transaction signing failed: ${signError.message}`, {maskStyle: {zIndex: 1001}});
             return false;

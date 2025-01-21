@@ -8,7 +8,6 @@ export default function useSolBalance(refresher?: number) {
   const { connection } = useConnection();
   const [solBalance, setSolBalance] = useState("0");
   const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
     if (!publicKey || !connection) return;
     setIsLoading(true);

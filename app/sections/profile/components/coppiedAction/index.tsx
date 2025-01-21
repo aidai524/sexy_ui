@@ -31,7 +31,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   const [minCopyAmountTips, setMinCopyAmountTips] = useState<boolean>(false);
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { solBalance } = useSolBalance(Number(show));
+  const { solBalance } = useSolBalance(Number(show) + (isLoading ? 1 : 0));
   const { solPrice } = useSolPrice();
   const resetForm = () => {
     setMinCopyAmountTips(false);
@@ -39,6 +39,17 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     setCopyTimes("10");
     setCopyAmount("");
     setIsManualCopyTimes(false);
+  };
+  const commonButtonStyle = {
+    height: "50px",
+    borderRadius: "30px",
+    fontSize: "16px",
+    fontWeight: "500",
+    lineHeight: "normal",
+    border: "2px solid #FBCA04",
+    background: "#FBCA04",
+    color: "#000",
+    marginTop: "24px"
   };
 
   useEffect(() => {
@@ -122,6 +133,10 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   };
 
   const handleCopyTradeClick = async () => {
+    if (!window.sexAddress) {
+      window.connect();
+      return;
+    }
     await handleCopyTrade({
       walletAddress: currentUserInfo.address,
       copiedAddress: copiedInfo.address,
@@ -223,24 +238,21 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
         </div>
 
         {/* copy button */}
-        <MainBtn
-          isDisabled={!validateOnceCopyAmount}
-          isLoading={isLoading}
-          style={{
-            height: "50px",
-            borderRadius: "30px",
-            fontSize: "16px",
-            fontWeight: "500",
-            lineHeight: "normal",
-            border: "2px solid #FBCA04",
-            background: "#FBCA04",
-            color: "#000",
-            marginTop: "24px"
-          }}
-          onClick={handleCopyTradeClick}
-        >
-          Copy Trade
-        </MainBtn>
+        {
+          window.sexAddress ? (
+            <MainBtn
+            isDisabled={!validateOnceCopyAmount}
+            isLoading={isLoading}
+            style={commonButtonStyle}
+            onClick={handleCopyTradeClick}
+          >
+            Copy Trade
+          </MainBtn>
+          ) : 
+          <MainBtn style={commonButtonStyle} onClick={() => window.connect()}>
+            Connect Wallet
+          </MainBtn>
+        }
       </div>
       {minCopyAmountTips && (
         <Warning warning="Min copy amount must greater or equal to 0.1 Sol" />
