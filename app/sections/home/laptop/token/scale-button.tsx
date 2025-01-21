@@ -8,13 +8,6 @@ export default function ScaleButton({ onClick }: any) {
       fill="none"
       className="button"
       onClick={onClick}
-      style={{
-        marginBottom: 20,
-        position: "absolute",
-        top: 0,
-        right: -50,
-        zIndex: 35
-      }}
     >
       <path
         d="M42 21C42 32.598 32.598 42 21 42C9.40202 42 0 32.598 0 21C0 9.40202 9.40202 0 21 0C32.598 0 42 9.40202 42 21Z"
