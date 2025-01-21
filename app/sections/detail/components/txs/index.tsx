@@ -10,6 +10,7 @@ import { useAuth } from "@/app/context/auth";
 import { Switch } from "antd-mobile";
 import { useAccount } from "@/app/hooks/useAccount";
 import Level from "@/app/components/level/simple";
+import { usePair } from "../hooks/usePair";
 
 const addressReg = /(\w{2}).+(\w{2})/;
 
@@ -77,7 +78,7 @@ export default function Txs({ from, data }: any) {
     }
   }, [data, filter]);
 
-  console.log("data:", data);
+  const { pair } = usePair({ token: data, type: data.status === 3 ? 2 : 0 });
 
   return (
     <div
@@ -87,7 +88,7 @@ export default function Txs({ from, data }: any) {
         borderRadius: from === "panel" ? "10px" : "15px 15px 0 0"
       }}
     >
-      <div className={styles.filter}>
+      {data.status === 1 && <div className={styles.filter}>
         <div
           className={styles.filterItem}
           style={{
@@ -168,20 +169,19 @@ export default function Txs({ from, data }: any) {
             </div>
           </div>
         )}
-      </div>
+      </div>}
+
 
       {data && (
         <div
-          className={`${styles.txContent} ${
-            from === "panel" ? styles.LaptopContent : ""
-          }`}
+          className={`${styles.txContent} ${from === "panel" ? styles.LaptopContent : ""
+            }`}
         >
           {data?.status === 1 && (
             <>
               <div
-                className={`${styles.txTtitles} ${
-                  from === "panel" ? styles.LaptopTitles : styles.MobileTitles
-                }`}
+                className={`${styles.txTtitles} ${from === "panel" ? styles.LaptopTitles : styles.MobileTitles
+                  }`}
               >
                 <div style={{ flex: 3 }} className={styles.titleItem}>
                   Account
@@ -203,11 +203,10 @@ export default function Txs({ from, data }: any) {
                   return (
                     <div key={item.tx_hash} className={`${styles.item}`}>
                       <div
-                        className={`${styles.account} ${
-                          from === "panel"
-                            ? styles.LaptopAccount
-                            : styles.MobileAccount
-                        } ${!isSelf && "button"}`}
+                        className={`${styles.account} ${from === "panel"
+                          ? styles.LaptopAccount
+                          : styles.MobileAccount
+                          } ${!isSelf && "button"}`}
                         onClick={() => {
                           if (!isSelf)
                             router.push(
@@ -288,7 +287,7 @@ export default function Txs({ from, data }: any) {
             </>
           )}
 
-          {data?.status === 3 && (
+          {/* {data?.status === 3 && (
             <iframe
               style={{
                 height: from === "panel" ? 296 : "calc(100vh - 210px)"
@@ -299,6 +298,18 @@ export default function Txs({ from, data }: any) {
               height="800"
               frameBorder="none"
               src={`https://dexscreener.com/near/refv1-4276?embed=1&theme=${"dark"}&info=0&trades=1&chart=0`}
+            ></iframe>
+          )} */}
+
+          {data?.status === 3 && pair && (
+            <iframe
+              style={{
+                height: from === "panel" ? 296 : "calc(100vh - 210px)"
+              }}
+              width="100%"
+              height="800"
+              frameBorder="none"
+              src={`https://dexscreener.com/solana/${pair}?embed=1&loadChartSettings=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15&chart=0`}
             ></iframe>
           )}
         </div>

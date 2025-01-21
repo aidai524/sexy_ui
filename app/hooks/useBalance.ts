@@ -44,7 +44,6 @@ export default function useBalance({ reFreshBalnace, mint, tokenDecimals }
                     undefined,
                     TOKEN_PROGRAM_ID
                 ).then(userToken => {
-                    console.log('userAccount:', userToken)
                     if (userToken && userToken.amount) {
                         const balance = new Big(Number(userToken.amount))
                                     .div(10 ** tokenDecimals)
