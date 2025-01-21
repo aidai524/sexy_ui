@@ -31,6 +31,8 @@ export default function Trends() {
     setTradeToken({});
   };
 
+  console.log('visible:', tradeToken)
+
   return (
     <>
       {isMobile ? (

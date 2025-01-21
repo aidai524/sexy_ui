@@ -58,20 +58,24 @@ export function useAirdrop(): Airdrop {
     // router.replace(`${window?.location?.origin}${window?.location?.pathname}`);
   };
 
-  const handleClaim = async () => {
-    if (!connected) {
+  const handleClaim = async (params?: { from?: string; }) => {
+    const { from } = params ?? {};
+    const isAirdropBefore = from === 'airdrop_before';
+
+    if (claiming) return;
+
+    if (!connected && !isAirdropBefore) {
       setConnectVisible(true);
       return;
     }
-    if (claiming) return;
     setClaiming(true);
-    if (Big(userData?.points ?? 0).lte(0)) {
+    if (Big(userData?.points ?? 0).lte(0) && !isAirdropBefore) {
       handleClose();
       setClaiming(false);
       setReferVisible(true);
       return;
     }
-    if (airdropData?.clime_pump) {
+    if (airdropData?.clime_pump && !isAirdropBefore) {
       handleClose();
       setClaiming(false);
       setMorePointsVisible(true);
@@ -84,9 +88,12 @@ export function useAirdrop(): Airdrop {
       return;
     }
     success('Claim points successful', { maskStyle: { zIndex: 2000 } });
-    setClaimPointsVisible(true);
-    handleClose();
+    if (!isAirdropBefore) {
+      setClaimPointsVisible(true);
+      handleClose();
+    }
     setClaiming(false);
+    return true;
   };
 
   const getList = async () => {
@@ -219,7 +226,7 @@ export interface Airdrop {
   setShareImageVisible: Dispatch<SetStateAction<boolean>>;
   userHasPoints: boolean;
 
-  handleClaim(): Promise<void>;
+  handleClaim(params?: { from?: string; }): Promise<void | boolean>;
   handleBind(): Promise<void>;
   getList(): Promise<void>;
   getUserData(): Promise<void>;

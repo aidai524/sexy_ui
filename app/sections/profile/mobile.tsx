@@ -44,17 +44,17 @@ export default function Profile({
         title=""
         theme="light"
         from="profile"
-        rightActions={(
+        rightActions={
           !isOther && (
             <button
               type="button"
               className={styles.SettingButton}
               onClick={() => {
-                router.push('/profile/setting');
+                router.push("/profile/setting");
               }}
             />
           )
-        )}
+        }
         isOther={isOther}
       />
       <AirdropEntry />
@@ -97,15 +97,15 @@ export default function Profile({
         </div>
       </div>
 
-      {isOther && SHOW_COPY_TRADE && 
-        <Summaries 
-            address={address} 
-            isFollower={isFollower} 
-            setRefreshNum={setRefreshNum} 
-            refreshNum={refreshNum} 
-            userInfo={userInfo}
+      {isOther && SHOW_COPY_TRADE && (
+        <Summaries
+          address={address}
+          isFollower={isFollower}
+          setRefreshNum={setRefreshNum}
+          refreshNum={refreshNum}
+          userInfo={userInfo}
         />
-      }
+      )}
 
       <Tabs
         address={address}

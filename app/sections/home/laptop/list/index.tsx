@@ -11,6 +11,7 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useTokenPanelStatus } from "@/app/store/use-token-panel";
+import Big from "big.js";
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/detail")
@@ -29,6 +30,7 @@ export default function List({ type, isCurrentTab }: any) {
     getIndex,
     isLoading,
     list,
+    refresher,
     hasNext,
     onChangeIndex,
     updateProject,
@@ -66,10 +68,11 @@ export default function List({ type, isCurrentTab }: any) {
     const id = list[index];
     if (!id) return null;
     return getProjectById(type, id);
-  }, [index, list]);
+  }, [index, list, refresher]);
 
   return (
     <div
+      id={`${type}-list`}
       className={styles.Container}
       style={{
         height: innerHeight,
@@ -101,15 +104,16 @@ export default function List({ type, isCurrentTab }: any) {
               key={token?.address || item}
               token={token}
               isCurrent={index === i && isCurrentTab}
+              isNext={i - index === 1 && isCurrentTab}
               onUpdate={(token: any, action?: string) => {
                 updateProject(type, token);
+                if (action === "like") return;
                 if (action === "flip") {
                   setTimeout(() => {
                     queryAndUpdateDetail(type, token.address);
                   }, 2000);
-                } else {
-                  queryAndUpdateDetail(type, token.address);
                 }
+                queryAndUpdateDetail(type, token.address);
               }}
               opacity={index > i ? 0 : 1}
               showTrade={tokenPanelStatusStore.showTrade}
@@ -210,6 +214,11 @@ export default function List({ type, isCurrentTab }: any) {
                 currentToken.prePaid = currentToken.prePaid + 1;
                 currentToken.total_amount =
                   Number(currentToken.total_amount) + Number(amount);
+                currentToken.prePaidAmount = Big(
+                  currentToken.prePaidAmount || 0
+                )
+                  .add(Number(amount) * 1e9)
+                  .toString();
                 updateProject(type, currentToken);
                 tokenPanelStatusStore.setShow("showFlip", false);
                 setTimeout(() => {

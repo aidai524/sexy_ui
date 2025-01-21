@@ -14,7 +14,7 @@ import { Program } from "@coral-xyz/anchor";
 import idl from "@/app/hooks/meme_launchpad.json";
 import { useConnection } from "@solana/wallet-adapter-react";
 import dayjs from "dayjs";
-import Media from '@/app/components/thumbnail/media';
+import Media from "@/app/components/thumbnail/media";
 
 interface Props {
   data: Project;
@@ -182,6 +182,9 @@ export default function Token({
         padding: from === "page" ? 0 : "10px 15px",
         alignItems: from === "page" ? "flex-start" : "center"
       }}
+      onClick={() => {
+        router.push("/detail?address=" + data.address + "&from=profile");
+      }}
     >
       <div
         className={styles.tokenMag}
@@ -194,25 +197,21 @@ export default function Token({
           borderRadius: from === "page" ? 12 : 0
         }}
       >
-        <div
-          className={`${styles.tokenImgContent} button`}
-          onClick={() => {
-            router.push("/detail?address=" + data.address + "&from=profile");
-          }}
-        >
+        <div className={`${styles.tokenImgContent}`}>
           <Media
             data={data}
             imgHeight={84}
+            autoPlay={false}
             imgStyle={{
               width: 84,
-              height: 84,
+              height: 84
             }}
             style={{
-              overflow: "hidden",
+              overflow: "hidden"
             }}
             videoStyle={{
               height: "100%",
-              background: "#000",
+              background: "#000"
             }}
           />
           <LaunchTag type={data.status as number} />
@@ -282,6 +281,9 @@ export default function Token({
         className={styles.Bottom}
         style={{
           width: from === "page" ? "100%" : "auto"
+        }}
+        onClick={(ev) => {
+          ev.stopPropagation();
         }}
       >
         {from === "page" && (

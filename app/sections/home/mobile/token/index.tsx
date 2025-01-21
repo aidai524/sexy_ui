@@ -15,6 +15,8 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "../hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useHome } from "../context";
+import Big from "big.js";
 
 export default function Token({ isCurrent, token, onUpdate }: any) {
   const [imgHeight, setImgHeight] = useState("80%");
@@ -23,6 +25,7 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
   const [showFlipModal, setShowFlipModal] = useState(false);
   const [showTradeModal, setShowTradeModal] = useState(false);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
+  const { goDetail } = useHome();
 
   const { total: totalHolders } = useHolders(token);
 
@@ -102,6 +105,10 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
                   setShowCommentsModal(true);
                   return;
                 }
+                if (type === "detail") {
+                  goDetail(token);
+                  return;
+                }
                 if (!window.sexAddress) {
                   window.connect();
                   return;
@@ -115,11 +122,14 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
               }}
               totalHolders={totalHolders}
               onSuccess={(type: string) => {
-                // if (type === "like") {
-                //   token.isLike = true;
-                //   token.like = token.like + 1;
-                // }
-                onUpdate(token);
+                if (type === "like") {
+                  token.isLike = true;
+                  token.like = token.like + 1;
+                }
+                if (type === "share") {
+                  token.share_num = token.share_num + 1;
+                }
+                onUpdate(token, type);
               }}
               isCurrent={isCurrent}
             />
@@ -134,6 +144,9 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
             token.isSuperLike = true;
             token.prePaid = token.prePaid + 1;
             token.total_amount = Number(token.total_amount) + Number(amount);
+            token.prePaidAmount = Big(token.prePaidAmount || 0)
+              .add(Number(amount) * 1e9)
+              .toString();
             token.isLike = true;
             token.like = token.like + 1;
             onUpdate(token, "flip");

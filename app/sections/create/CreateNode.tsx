@@ -21,7 +21,7 @@ interface Props {
   show: boolean;
 }
 
-const name_reg = /^[a-zA-Z0-9]{1,16}$/;
+const name_reg = /^[a-zA-Z0-9]{1,10}$/;
 
 export default forwardRef(function CreateNode(
   { onAddDataFill, show }: Props,
@@ -44,7 +44,7 @@ export default forwardRef(function CreateNode(
 
   const validateName = useCallback(async (tokenName: string) => {
     if (!name_reg.test(tokenName)) {
-      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 16";
+      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 10";
     }
 
     const tokenInUse = await httpGet(
@@ -262,7 +262,9 @@ export default forwardRef(function CreateNode(
               const nameError = await validateName(tokenName);
               if (nameError) {
                 setInvaldVasl({ ...inValidVals, tokenName: nameError });
-              }
+              } else {
+                setInvaldVasl({ ...inValidVals, tokenName: "" });
+              } 
             }}
             className={`${
               isMobile ? styles.inputText : styles.laptopInputText
@@ -294,6 +296,8 @@ export default forwardRef(function CreateNode(
               const tickerError = validateTicker(ticker);
               if (tickerError) {
                 setInvaldVasl({ ...inValidVals, ticker: tickerError });
+              } else {
+                setInvaldVasl({ ...inValidVals, ticker: "" });
               }
             }}
             className={`${
@@ -389,6 +393,8 @@ export default forwardRef(function CreateNode(
               const aboutError = validateAbout(about);
               if (aboutError) {
                 setInvaldVasl({ ...inValidVals, about: aboutError });
+              } else {
+                setInvaldVasl({ ...inValidVals, about: "" });
               }
             }}
             className={`${styles.inputText} ${
@@ -414,6 +420,8 @@ export default forwardRef(function CreateNode(
               const websiteError = validateWebsite(website);
               if (websiteError) {
                 setInvaldVasl({ ...inValidVals, website: websiteError });
+              } else {
+                setInvaldVasl({ ...inValidVals, website: "" });
               }
             }}
           />
@@ -446,6 +454,8 @@ export default forwardRef(function CreateNode(
                 const xError = validateTwitter(x);
                 if (xError) {
                   setInvaldVasl({ ...inValidVals, x: xError });
+                } else {
+                  setInvaldVasl({ ...inValidVals, x: "" });
                 }
               }}
               type="X"
@@ -468,6 +478,8 @@ export default forwardRef(function CreateNode(
                 const tgError = validateTelegram(tg);
                 if (tgError) {
                   setInvaldVasl({ ...inValidVals, tg: tgError });
+                } else {
+                  setInvaldVasl({ ...inValidVals, tg: "" });
                 }
               }}  
               type="Telegram"
@@ -490,6 +502,8 @@ export default forwardRef(function CreateNode(
                 const discordError = validateDiscord(discord);
                 if (discordError) {
                   setInvaldVasl({ ...inValidVals, discord: discordError });
+                } else {
+                  setInvaldVasl({ ...inValidVals, discord: "" });
                 }
               }}
               type="Discord"

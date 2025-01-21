@@ -9,6 +9,7 @@ import Empty from "../empty";
 import { useAuth } from "@/app/context/auth";
 import { Modal } from "antd-mobile";
 import MainBtn from "../mainBtn";
+import { fail } from '@/app/utils/toast';
 
 export default function CommentComp({
   id,
@@ -150,6 +151,8 @@ export default function CommentComp({
                   setCommentText("");
                   setShowEdit(false);
                   onSuccess?.();
+                } else {
+                  fail(`Post comment failed${val.message ? ': ' + val.message : ''}.`);
                 }
 
                 setIsSubmiting(false);

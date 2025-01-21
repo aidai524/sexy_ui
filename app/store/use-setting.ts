@@ -5,6 +5,8 @@ export const useSetting = create(
   persist(
     (set, get: any) => ({
       menuExpand: true,
+      autoPlay: false,
+      flipMax: 1,
       set: (params: any) => set(() => ({ ...params }))
     }),
     {

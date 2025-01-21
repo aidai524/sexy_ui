@@ -271,7 +271,7 @@ const StatusSelect = (props: any) => {
     >
       <Popover
         ref={popoverRef}
-        placement={PopoverPlacement.Bottom}
+        placement={PopoverPlacement.BottomRight}
         trigger={PopoverTrigger.Click}
         content={
           <div className={styles.SelectDropdown}>

@@ -4,20 +4,27 @@ import TotalPanel from "./mobile/total-panel";
 import EarnAndInvite from "./mobile/earn-invite";
 import Others from "./mobile/others";
 import RankPanel from "./component/rank";
+import Level from "@/app/components/level";
+import { useAuth } from "@/app/context/auth";
 
-export default function Laptop({ info, infoLoading }: any) {
+export default function Laptop({ info, infoLoading, rate, rateLoading }: any) {
+  const { userInfo } = useAuth();
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className={styles.Wrapper}
     >
-      <div className={styles.TitleWrapper}>Reward</div>
+      <div className={styles.TitleWrapper}>
+        <span>Reward</span>
+        <Level level={userInfo.level} />
+      </div>
       <div className={styles.Container}>
         <div className={styles.Content}>
           <TotalPanel info={info} />
           <div style={{ height: 20 }} />
-          <EarnAndInvite info={info} />
+          <EarnAndInvite info={info} rate={rate} rateLoading={rateLoading} />
           <div style={{ height: 36 }} />
           <Others info={info} />
         </div>

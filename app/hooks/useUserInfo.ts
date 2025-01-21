@@ -1,22 +1,34 @@
-import type { UserInfo } from "@/app/type";
-import { httpAuthGet, httpAuthPost, httpAuthPut } from "@/app/utils";
-import { fail, success } from "@/app/utils/toast";
-import { useCallback, useEffect, useState } from "react";
+import type { UserInfo } from '@/app/type';
+import { httpAuthGet, httpAuthPost } from '@/app/utils';
+import { fail, success } from '@/app/utils/toast';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useReferStore } from '@/app/store/use-user-info';
 
 export default function useUserInfo(
   address: string | undefined,
   isSelf = false,
   accountRefresher?: number
 ) {
+  const { info, setInfo } = useReferStore();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isLoading, setIsLoading] = useState(true);
+
+  const userInfoShown = useMemo(() => {
+    if (userInfo) return userInfo;
+    return info[address || 'default'];
+  }, [info, userInfo]);
+
+  const handleUserInfo = (_userInfo: UserInfo) => {
+    setUserInfo(_userInfo);
+    setInfo(address, _userInfo);
+  };
 
   const onQueryInfo = useCallback(async () => {
     if (address) {
       setIsLoading(true);
-      const userInfo = await fecthUserInfo(address);
-      if (userInfo) {
-        setUserInfo(userInfo);
+      const _userInfo = await fecthUserInfo(address);
+      if (_userInfo) {
+        handleUserInfo(_userInfo);
       }
       setIsLoading(false);
     }
@@ -25,7 +37,7 @@ export default function useUserInfo(
   const fecthUserInfo = async (address: string) => {
     return httpAuthGet("/account", { address: address }).then((res) => {
       if (res.code === 0 && res.data) {
-        const userInfo = {
+        return {
           name: res.data.name,
           address: res.data.address,
           icon: res.data.icon,
@@ -46,8 +58,6 @@ export default function useUserInfo(
           referralFee: res.data.referral_fee,
           level: res.data.level,
         };
-
-        return userInfo;
       }
 
       return null;
@@ -93,11 +103,11 @@ export default function useUserInfo(
   }
 
   return {
-    userInfo,
+    userInfo: userInfoShown,
     isLoading,
     saveUserInfo,
     fecthUserInfo,
     onQueryInfo,
-    setUserInfo
+    setUserInfo: handleUserInfo
   };
 }

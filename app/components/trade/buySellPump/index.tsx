@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import { useDebounce } from "ahooks";
-import { BN } from "@coral-xyz/anchor";
 import Big from "big.js";
 import styles from "../trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
@@ -39,7 +38,7 @@ export const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.0001, 0.0005, 0.001];
+const SOL_PERCENT_LIST = [0.1, 0.5, 1];
 
 export default function BuySellPump({
   token,
@@ -51,7 +50,9 @@ export default function BuySellPump({
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
   const { slip, set: setSlip }: any = useSlip();
-  const tokenUri = token.tokenIcon || token.tokenImg;
+  const tokenUri =
+    token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
+  const slippageTextRef = useRef<any>();
 
   const desToken: Token = {
     tokenName,
@@ -65,6 +66,7 @@ export default function BuySellPump({
   const [currentToken, setCurrentToken] = useState<Token>(SOL);
   const [errorMsg, setErrorMsg] = useState("");
   const [isError, setIsError] = useState(false);
+  const [] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
   const [successMoalShow, setSuccessMoalShow] = useState(true);
@@ -296,9 +298,11 @@ export default function BuySellPump({
         >
           <div
             className={styles.inputArea}
-            style={{
-              width: from === "panel" ? 335 : "100%"
-            }}
+            style={
+              {
+                // width: from === "panel" ? 335 : "100%"
+              }
+            }
           >
             <div className={styles.actionArea}>
               {/* {activeIndex === 0 ? (
@@ -326,12 +330,15 @@ export default function BuySellPump({
 
               <div></div>
               <div
-                onClick={() => {
+                onClick={(ev) => {
+                  ev.stopPropagation();
+                  ev.nativeEvent.stopImmediatePropagation();
                   setShowSlip(true);
                 }}
-                className={`${styles.slippage} button`}
+                className={`${styles.slippage}`}
+                ref={slippageTextRef}
               >
-                Set max slippage
+                <span className="button">Set max slippage</span>
               </div>
             </div>
 
@@ -423,7 +430,7 @@ export default function BuySellPump({
                 </div>
               ) : (
                 <div className={styles.paid}>
-                  <div>Maximum Payment</div>
+                  <div>Payment</div>
                   <div>{buyInSol && buyInSol} SOL</div>
                 </div>
               ))}
@@ -467,16 +474,16 @@ export default function BuySellPump({
             )}
           </div>
 
-          <div>
+          <div
+            className={
+              from === "panel"
+                ? styles.receiveAmountWrapper
+                : styles.receiveAmountWrapperMobile
+            }
+          >
             {activeIndex === 0 && tokenType === 1 && (
-              <div
-                style={{
-                  marginTop: 30,
-                  flexDirection: from === "panel" ? "column" : "row"
-                }}
-                className={styles.receiveTokenAmount}
-              >
-                <div className={styles.receiveTitle}></div>
+              <div className={styles.receiveTokenAmount}>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
                     ? new Big(buyIn)
@@ -487,22 +494,24 @@ export default function BuySellPump({
                 </div>
               </div>
             )}
+
+            {activeIndex === 0 && tokenType === 0 && (
+              <div className={styles.paid}>
+                <div>Payment</div>
+                <div>{buyInSol && buyInSol} SOL</div>
+              </div>
+            )}
+
             {activeIndex === 1 && (
-              <div
-                style={{
-                  marginTop: 30,
-                  flexDirection: from === "panel" ? "column" : "row"
-                }}
-                className={styles.receiveTokenAmount}
-              >
-                <div className={styles.receiveTitle}>Minimum Received</div>
+              <div className={styles.receiveTokenAmount}>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && sellOutSol} SOL
                 </div>
               </div>
             )}
 
-            <div style={{ marginTop: 18 }}>
+            <div style={{ marginTop: from === "panel" ? 0 : 18 }}>
               <MainBtn
                 isLoading={isLoading}
                 isDisabled={isError}
@@ -600,6 +609,7 @@ export default function BuySellPump({
         show={showSlip}
         slipData={slip}
         token={token}
+        textRef={slippageTextRef}
         onSlipDataChange={(val: any) => {
           setSlip({
             slip: val

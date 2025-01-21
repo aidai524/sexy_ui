@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import { getVideoExt, videoReg, imgReg } from "../../upload";
 import VideoPlayer from "../../video";
 
-export default function Media({ imgHeight, data, imgStyle, videoStyle, style }: any) {
+export default function Media({ imgHeight, data, imgStyle, videoStyle, style, autoPlay }: any) {
   return (
     <div className={styles.imgList}>
       <div
@@ -20,9 +20,11 @@ export default function Media({ imgHeight, data, imgStyle, videoStyle, style }: 
             type={getVideoExt(data.tokenImg)}
             className={styles.tokenImg}
             style={videoStyle}
+            autoPlay={autoPlay}
+            token={data}
           />
         }
-        {imgReg.test(data.tokenImg) && (
+        {(imgReg.test(data.tokenImg) || !data.tokenImg) && (
           <LazyLoadImage
             effect="blur"
             className={styles.tokenImg}

@@ -9,7 +9,7 @@ export default function CommnentList({ token, style = {}, onSuccess }: any) {
     <div className={styles.main} style={style}>
       <CommentComp
         usePanel={false}
-        id={token.id}
+        id={token?.id}
         {...comments}
         token={token}
         onSuccess={onSuccess}

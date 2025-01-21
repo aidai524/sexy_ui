@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import { useDebounce } from "ahooks";
 import { BN } from "@coral-xyz/anchor";
 import Big from "big.js";
@@ -38,7 +38,7 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.0005, 0.001];
+const SOL_PERCENT_LIST = [0.1, 0.5, 1];
 
 export default function BuySell({
   from,
@@ -49,10 +49,10 @@ export default function BuySell({
 }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
-  // const [slip, setSlip] = useState(3);
   const { slip, set: setSlip }: any = useSlip();
-
-  const tokenUri = token.tokenIcon || token.tokenImg;
+  const slippageTextRef = useRef<any>();
+  const tokenUri =
+    token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
 
   const desToken: Token = {
     tokenName,
@@ -69,6 +69,7 @@ export default function BuySell({
 
   const [isLoading, setIsLoading] = useState(false);
   const [successMoalShow, setSuccessMoalShow] = useState(true);
+  const [buyTokenType, setBuyTokenType] = useState(1);
 
   const [solPercent, setSolPercent] = useState(0);
   const [tokenPercent, setTokenPercent] = useState(1);
@@ -177,7 +178,9 @@ export default function BuySell({
               .toFixed(0)
           }).then((res: any) => {
             setIsLoading(false);
-            buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
+            buyInSol = new Big(res)
+              .mul(1 + slip / 100)
+              .toFixed(0);
             if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
               setBuyInSol(buyInSol);
               setIsError(true);
@@ -227,7 +230,9 @@ export default function BuySell({
               .toFixed(0)
           }).then((res: any) => {
             setIsLoading(false);
-            sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
+            sellSolOut = new Big(res)
+              .mul(1 - slip / 100)
+              .toFixed(0);
 
             if (Number(debounceVal) > Number(tokenBalance)) {
               setIsError(true);
@@ -258,6 +263,7 @@ export default function BuySell({
     }
   }, [debounceVal, tokenType, slip, currentToken]);
 
+
   return (
     <>
       <div className={[styles.cationArea].join(" ")}>
@@ -283,6 +289,11 @@ export default function BuySell({
                 setTokenType(0);
                 setTokenPercent(0);
               }
+
+              if (index === 0) {
+                setTokenType(buyTokenType);
+                setCurrentToken(buyTokenType === 1 ? SOL : desToken);
+              }
             }}
           />
         ) : (
@@ -291,6 +302,9 @@ export default function BuySell({
               onClick={() => {
                 setActiveIndex(0);
                 setValInput("");
+                
+                setTokenType(buyTokenType);
+                setCurrentToken(buyTokenType === 1 ? SOL : desToken);
               }}
               className={[
                 styles.tab,
@@ -307,6 +321,8 @@ export default function BuySell({
                 setTokenType(0);
                 setValInput("");
                 setTokenPercent(0);
+
+                
               }}
               className={[
                 styles.tab,
@@ -323,9 +339,6 @@ export default function BuySell({
         >
           <div
             className={styles.inputArea}
-            style={{
-              width: from === "panel" ? 325 : "100%"
-            }}
           >
             <div className={styles.actionArea}>
               {activeIndex === 0 ? (
@@ -335,9 +348,15 @@ export default function BuySell({
                     if (tokenType === 0) {
                       setCurrentToken(SOL);
                       setTokenType(1);
+                      if (activeIndex === 0) {
+                        setBuyTokenType(1);
+                      }
                     } else {
                       setCurrentToken(desToken);
                       setTokenType(0);
+                      if (activeIndex === 0) {
+                        setBuyTokenType(0);
+                      }
                     }
                     setValInput("");
                     setSolPercent(0);
@@ -353,12 +372,15 @@ export default function BuySell({
               )}
 
               <div
-                onClick={() => {
+                onClick={(ev) => {
+                  ev.stopPropagation();
+                  ev.nativeEvent.stopImmediatePropagation();
                   setShowSlip(true);
                 }}
-                className={`${styles.slippage} button`}
+                className={`${styles.slippage}`}
+                ref={slippageTextRef}
               >
-                Set max slippage
+                <span className="button">Set max slippage</span>
               </div>
             </div>
 
@@ -411,55 +433,43 @@ export default function BuySell({
               </div>
             </div>
 
-            {activeIndex === 0 &&
-              (tokenType === 1 ? (
-                <div className={styles.tokenPercent}>
-                  <div
-                    onClick={() => {
-                      setSolPercent(0);
-                      setValInput("");
-                    }}
-                    className={`${
-                      from === "panel"
-                        ? styles.PanelPercentTag
-                        : styles.percentTag
-                    } button`}
-                  >
-                    Reset
-                  </div>
-                  {SOL_PERCENT_LIST.map((item) => {
-                    return (
-                      <div
-                        onClick={() => {
-                          setSolPercent(item);
-                          setValInput(getFullNum(item));
-                        }}
-                        key={item}
-                        className={[
-                          from === "panel"
-                            ? styles.PanelPercentTag
-                            : styles.percentTag,
-                          item === solPercent ? styles.tagActive : "",
-                          "button"
-                        ].join(" ")}
-                      >
-                        {getFullNum(item)}SOL
-                      </div>
-                    );
-                  })}
+            {activeIndex === 0 && tokenType === 1 && (
+              <div className={styles.tokenPercent}>
+                <div
+                  onClick={() => {
+                    setSolPercent(0);
+                    setValInput("");
+                  }}
+                  className={`${
+                    from === "panel"
+                      ? styles.PanelPercentTag
+                      : styles.percentTag
+                  } button`}
+                >
+                  Reset
                 </div>
-              ) : (
-                <div className={styles.paid}>
-                  <div>Maximum Payment</div>
-                  <div>
-                    {buyInSol &&
-                      new Big(buyInSol)
-                        .div(10 ** SOL.tokenDecimals)
-                        .toFixed()}{" "}
-                    SOL
-                  </div>
-                </div>
-              ))}
+                {SOL_PERCENT_LIST.map((item) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        setSolPercent(item);
+                        setValInput(getFullNum(item));
+                      }}
+                      key={item}
+                      className={[
+                        from === "panel"
+                          ? styles.PanelPercentTag
+                          : styles.percentTag,
+                        item === solPercent ? styles.tagActive : "",
+                        "button"
+                      ].join(" ")}
+                    >
+                      {getFullNum(item)}SOL
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
             {activeIndex === 1 && (
               <div className={styles.tokenPercent}>
@@ -500,19 +510,22 @@ export default function BuySell({
             )}
           </div>
 
-          <div>
+          <div
+            className={
+              from === "panel"
+                ? styles.receiveAmountWrapper
+                : styles.receiveAmountWrapperMobile
+            }
+          >
             {activeIndex === 0 && tokenType === 1 && (
               <div
-                style={{
-                  marginTop: 30,
-                  flexDirection: from === "panel" ? "column" : "row"
-                }}
                 className={styles.receiveTokenAmount}
               >
-                <div className={styles.receiveTitle}>Minimum Received</div>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
                     ? new Big(buyIn)
+                        .div(1 - slip / 100)
                         .div(10 ** token.tokenDecimals!)
                         .toFixed(token.tokenDecimals)
                     : ""}{" "}
@@ -521,18 +534,29 @@ export default function BuySell({
               </div>
             )}
 
+            {activeIndex === 0 && tokenType === 0 && (
+              <div className={styles.paid}>
+                <div>Payment</div>
+                <div>
+                  {buyInSol &&
+                    new Big(buyInSol)
+                      .div(1 + slip / 100)
+                      .div(10 ** SOL.tokenDecimals)
+                      .toFixed(SOL.tokenDecimals)}{" "}
+                  SOL
+                </div>
+              </div>
+            )}
+
             {activeIndex === 1 && (
               <div
-                style={{
-                  marginTop: 30,
-                  flexDirection: from === "panel" ? "column" : "row"
-                }}
                 className={styles.receiveTokenAmount}
               >
-                <div className={styles.receiveTitle}>Minimum Received</div>
+                <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && Number(sellOutSol) > 0
                     ? new Big(sellOutSol)
+                        .div(1 - slip / 100)
                         .div(10 ** SOL.tokenDecimals)
                         .toFixed(SOL.tokenDecimals)
                     : 0}{" "}
@@ -541,7 +565,7 @@ export default function BuySell({
               </div>
             )}
 
-            <div style={{ marginTop: 18 }}>
+            <div style={{ marginTop: from === "panel" ? 0 : 18 }}>
               <MainBtn
                 isLoading={isLoading}
                 isDisabled={isError}
@@ -644,6 +668,7 @@ export default function BuySell({
         show={showSlip}
         slipData={slip}
         token={token}
+        textRef={slippageTextRef}
         onSlipDataChange={(val: any) => {
           setSlip({
             slip: val
