@@ -51,7 +51,7 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
         </div>
       </div>
       <div className={styles.AirdropShareInfoCardFooter}>
-        <QRCodeCom size={32} url={shareLink} />
+        <QRCodeCom size={42} url={shareLink} />
         <img src="/img/airdrop/icon-logo-qr.svg" alt="" className={styles.AirdropShareInfoCardQrLogo} />
       </div>
     </div>
