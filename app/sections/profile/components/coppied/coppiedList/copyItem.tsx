@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import styles from './index.module.css'
 import { defaultAvatar } from "@/app/utils/config";
 import { RingChart } from '../copyAmountPie';
@@ -12,6 +12,22 @@ import Big from 'big.js';
 export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading}: any) {
     const { connection } = useConnection();
     const { userInfo: copyUserInfo } = useUserInfo(itemInfo?.from);
+    const [tokensInfo, setTokensInfo] = useState<any[]>([]);
+
+    useEffect(() => {
+        const loadTokensInfo = async () => {
+            if (!itemInfo?.tokens) return;
+            
+            const tokenInfoPromises = itemInfo.tokens.slice(0, 5).map((item: any) => 
+                getTokenInfo(item.token)
+            );
+            const results = await Promise.all(tokenInfoPromises);
+            setTokensInfo(results);
+        };
+
+        loadTokensInfo();
+    }, [itemInfo?.tokens]);
+
     const getTokenInfo = async (address: string) => {
         try {
             if (process.env.NEXT_PUBLIC_NET === "Devnet") {
@@ -114,17 +130,19 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
         <div className={styles.CoppiedTokens}>
             <div className={styles.TitlePubStyle}>{itemInfo?.tokens?.length || 0} Coppied Tokens</div>
             <div className={styles.TokenIconBox}>
-               {
-                (itemInfo?.tokens || [])?.slice(0, 5).map((item: any, index: number) => {
-                    const tokenInfo:any = getTokenInfo(item.token);
+               {tokensInfo.map((tokenInfo, index) => {
                     if (index === 4) {
                         return <div key={index} className={styles.MoreTokens}>...</div>
                     }
                     if (index < 4) {
-                        return <img key={index} src={tokenInfo?.icon || defaultAvatar} alt={tokenInfo?.symbol || 'token'} />
+                        return <img 
+                            key={index} 
+                            src={tokenInfo.icon || defaultAvatar} 
+                            alt={tokenInfo.symbol || 'token'} 
+                            title={tokenInfo.symbol || 'token'}
+                        />
                     }
-                })
-               }
+                })}
             </div>
         </div>
       </div>
