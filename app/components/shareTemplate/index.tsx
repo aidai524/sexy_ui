@@ -176,8 +176,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
         border: 0
       }}
       closeStyle={{
-        top: 55,
-        display: "none"
+        top: -10,
       }}
       maskClose={true}
     >
@@ -354,12 +353,14 @@ function Card({ token, show, onClose }: Props, ref: any) {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <button className={styles.saveButton} style={{ opacity: shareUrl && canvasRef.current && !isSharing ? 1 : 0.5 }} onClick={() => {
-            if (shareUrl && canvasRef.current && !isSharing) {
+          <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
+            if (shareUrl) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;
               link.href = canvasRef.current.toDataURL('image/png');
+              document.body.appendChild(link);
               link.click();
+              document.body.removeChild(link);
             } else {
               fail("Wait for a while");
             }
