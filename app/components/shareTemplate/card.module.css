@@ -46,7 +46,6 @@
 
 .tokenImg {
     height: 100%;
-    width: 100%;
     /* object-fit: cover; */
 }
 
@@ -133,13 +132,16 @@
     box-shadow: 3px 3px 0px 0px #0000004D;
     transform: rotate(-5.4deg);
     border-radius: 12px;
+    position: relative;
     /* overflow: hidden; */
 }
 
 .tokenImage img {
     width: 100%;
-    height: 100%;
-    border-radius: 12px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .tokenBadge {
