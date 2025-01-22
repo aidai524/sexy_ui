@@ -60,7 +60,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
     console.log(token, containerRef.current, qrcodeCanvas)
     if (token && containerRef.current && qrcodeCanvas) {
       console.log(111)
-      const canvas = await html2canvas(containerRef.current, { useCORS: true, scale: 5 });
+      const canvas = await html2canvas(containerRef.current, { useCORS: true, scale: 5, backgroundColor: '#000000' });
       canvasRef.current = canvas;
       // const base64Url = canvas.toDataURL("image/webp");
       // const newFileName = generateRandomString(10);
