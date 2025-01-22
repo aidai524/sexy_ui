@@ -1,0 +1,161 @@
+.main {
+    width: 375px;
+    /* min-height: 680px; */
+    background-color: #252328;
+    padding: 23px 20px;
+    position: relative;
+  }
+  .title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    text-align: left;
+    height: 40px;
+    border-bottom: 1px solid #3b3b3b;
+  }
+  .copyiedInfo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px; 
+    margin-bottom: 50px;
+    margin-top: 60px;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #000;
+  }
+  .userName {
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+  }
+  
+  .public {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 300;
+  }
+  
+  .amount {
+    margin-top: 27px;
+  }
+  
+  .amountInput {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid rgba(146, 144, 177, 0.6);
+    background-color: rgba(146, 144, 177, 0.1);
+    border-radius: 8px;
+    padding: 12px 10px;
+    margin-top: 12px;
+    margin-bottom: 10px;
+  }
+  
+  .amountInputBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+  }
+  
+  .amountInputBox input {
+    width: 95%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+  }
+  
+  .amountIcon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .amountLevel {
+    composes: public;
+  }
+  
+  .amountLevelSeparator {
+    margin: 0 4px;
+    cursor: pointer;
+  }
+  
+  .amountDetail {
+    composes: public;
+  }
+  
+  .min {
+    composes: public;
+    justify-content: flex-start;
+  }
+  
+  .setBtn {
+    cursor: pointer;
+    border: 1px solid rgba(146, 144, 177, 0.4);
+    border-radius: 30px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 300;
+    margin-left: 10px;
+  }
+  
+  .yourCoppies {
+    margin-top: 30px;
+    margin-bottom: 16px;
+  }
+  
+  .yourCoppies input {
+    text-align: right;
+  }
+  
+  .textWhite {
+    color: #fff;
+  }
+  .textWhite07 {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .SolnaIcon {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+  }
+  
+
+  .Container {
+    width: 375px;
+    background-color: #252328;
+    border: 1px solid #3b3b3b;
+    flex-shrink: 0;
+    position: absolute;
+    border-radius: 30px 30px 0px 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 30;
+    padding: 20px 0px;
+    height: 680px;
+  }
+  
+  .Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 12px;
+    padding-left: 12px;
+    border-bottom: 1px solid #3b3b3b;
+  }
+  
+  .Content {
+    /* height: calc(100% - 40px); */
+  }
+  

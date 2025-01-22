@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from './index.module.css'
 import { defaultAvatar } from "@/app/utils/config"
 import Empty from '@/app/components/empty'
-import CoppiedAction from '@/app/sections/profile/components/coppiedAction'
+import CoppiedModal from '@/app/sections/profile/components/coppiedModal'
 import { SHOW_COPY_TRADE } from '@/app/utils/config'
 import { fetchMockTraders } from '../trade'
 
@@ -132,7 +132,7 @@ export default function TopTradersMobile() {
       </div>
 
       {SHOW_COPY_TRADE && (
-        <CoppiedAction
+        <CoppiedModal
           copiedInfo={currentTrader}
           show={showModal}
           onClose={() => setShowModal(false)}

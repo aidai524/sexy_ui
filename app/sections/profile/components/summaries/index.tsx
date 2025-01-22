@@ -2,14 +2,15 @@ import { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import { numberFormatter } from "@/app/utils/common";
 import FollowBtn from "../followBtn";
-import CoppiedAction from "../coppiedAction";
+import CoppiedModal from "../coppiedModal";
 import { SHOW_COPY_TRADE } from "@/app/utils/config";
 import CopyTrade from '@/app/services/copyTrade';
 import { SmartMoneyAddress } from '@/app/services/copyTrade';
-
+import { useUserAgent } from "@/app/context/user-agent";
 const Summaries = (props: any) => {
+  const { isMobile } = useUserAgent();
   const CopyTradeService = new CopyTrade();
-  const { address, isFollower, setRefreshNum, refreshNum, userInfo } = props;
+  const { address, isFollower, setRefreshNum, refreshNum, userInfo, isOther } = props;
   const [showModal, setShowModal] = useState(false);
   const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
 
@@ -23,8 +24,31 @@ const Summaries = (props: any) => {
   }, [address]);
 
   return (
-    <div className={styles.Container}>
-      <div className={styles.Inner}>
+    <div className={isMobile ? styles.Container : styles.ContainerPc}>
+       {!isMobile && isOther && (
+        <div className={styles.BtnGroupPc}>
+          <div></div>
+          <div></div>
+          <FollowBtn
+            useAnotherClassName={true}
+            address={address}
+            isFollower={isFollower}
+            onSuccess={() => {
+            setRefreshNum(refreshNum + 1);
+            }}
+        />
+
+        <button
+          className={styles.CopyBtn}
+          onClick={() => {
+            setShowModal(true);
+          }}
+        >
+          Copy Trade
+          </button>
+        </div>
+      )}
+      <div className={isMobile ? styles.Inner : styles.InnerPc}>
         <div className={styles.Summary}>
           <div className={styles.SummaryLabel}>7D PNL</div>
           <div
@@ -52,11 +76,12 @@ const Summaries = (props: any) => {
           </div>
         </div>
       </div>
-      <div className={styles.BtnGroup}>
-        <FollowBtn
-          useAnotherClassName={true}
-          address={address}
-          isFollower={isFollower}
+      {isMobile && isOther && (
+        <div className={styles.BtnGroup}>
+          <FollowBtn
+            useAnotherClassName={true}
+            address={address}
+            isFollower={isFollower}
           onSuccess={() => {
             setRefreshNum(refreshNum + 1);
           }}
@@ -69,10 +94,11 @@ const Summaries = (props: any) => {
           }}
         >
           Copy Trade
-        </button>
-      </div>
+          </button>
+        </div>
+      )}
       {SHOW_COPY_TRADE && (
-        <CoppiedAction
+        <CoppiedModal
           copiedInfo={userInfo}
           show={showModal}
           onClose={() => {

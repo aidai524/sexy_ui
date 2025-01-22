@@ -1,24 +1,17 @@
-.ListContainer {
-  background-color:rgba(255, 255, 255, 0.12);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px 10px;
-}
-
-.ListContainerPc {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px 10px;
-}
 
 .ItemBox {
   width: 100%;
-  height: 131px;
-  background-color: rgba(255, 255, 255, 0.08);
+  height: 85px;
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   padding: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ItemBox:hover {
+  background-color: rgba(255, 255, 255, 0.10);
+  cursor: pointer;
 }
 
 .PersonalTradeInfoBox {
@@ -29,8 +22,19 @@
 .PersonalInfo {
     display: flex;
     align-items: center;
+    gap: 12px;
+}
+.publicBox {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
+.publicBox p {
+    font-size: 12px;
+    color: #9290B1;
+    font-weight: 300;
+}
+
 .Name {
     font-size: 14px;
     color: #fff;
@@ -42,8 +46,8 @@
 }
 
 .Avatar {
-    width: 36px;
-    height: 36px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -106,11 +110,21 @@
     margin-top: 16px;
 }
 
+.TokenIconBoxWrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
 .TokenIconBox {
     display: flex;
     align-items: center;
-    margin-top: 8px;
     justify-content: flex-end;    
+}
+.CopyAmountLength {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
 }
 
 .TokenIconBox img {

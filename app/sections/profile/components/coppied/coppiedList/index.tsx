@@ -1,25 +1,20 @@
 import React from 'react'
 import styles from './index.module.css'
 import CopyItem from './copyItem'
+import CopyItemPc from './copyItemPc'
+import { useUserAgent } from '@/app/context/user-agent'
 
 interface CopyListProps {
   copyTradeList: any[];
-  hasMore: boolean;
-  loading: boolean;
-  onLoadMore: () => void;
 }
 
-export default function CopyList({ copyTradeList, hasMore, loading, onLoadMore }: CopyListProps) {
+export default function CopyList({ copyTradeList}: CopyListProps) {
+  const { isMobile } = useUserAgent();
   return (
-    <div className={styles.ListContainer}>
+    <div className={isMobile ? styles.ListContainer : styles.ListContainerPc}>
       {copyTradeList?.map((item: any, index: number) => (
-        <CopyItem key={index} itemInfo={item} />
+        isMobile ? <CopyItem key={index} itemInfo={item} /> : <CopyItemPc key={index} itemInfo={item} />
       ))}
-      {hasMore && !loading && (
-        <div className={styles.LoadMore} onClick={onLoadMore}>
-          Load More
-        </div>
-      )}
     </div>
   )
 }

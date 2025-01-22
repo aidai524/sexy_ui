@@ -5,6 +5,7 @@ import CopyTrade from "@/app/services/copyTrade";
 import { useAuth } from "@/app/context/auth";
 import { fail } from "@/app/utils/toast";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 
 export default function Coppied({ isOther }: any) {
   const CopyTradeService = new CopyTrade();
@@ -23,7 +24,7 @@ export default function Coppied({ isOther }: any) {
     if (
       !userInfo?.address ||
       isOther ||
-      homeTabStore?.profileTabName !== "Held"
+      homeTabStore?.profileTabName !== "Coppied"
     ) {
       setHasMore(false);
       return;
@@ -59,20 +60,20 @@ export default function Coppied({ isOther }: any) {
 
   // init
   useEffect(() => {
+    setPageIndex(1);
     if (
       !userInfo?.address ||
       isOther ||
-      homeTabStore?.profileTabName !== "Held"
+      homeTabStore?.profileTabName !== "Coppied"
     )
       return;
 
     //
     setCopyTradeMap({ items: [], total: 0 });
-    setPageIndex(1);
     setHasMore(true);
     loadMore();
   }, [userInfo?.address, homeTabStore?.profileTabName]);
-
+  
   if (isLoading && pageIndex === 1) {
     return (
       <div style={{ paddingTop: 116 }}>
@@ -80,7 +81,7 @@ export default function Coppied({ isOther }: any) {
       </div>
     );
   }
-
+  
   if (copyTradeMap?.items?.length === 0) {
     return (
       <div style={{ paddingTop: 116 }}>
@@ -88,13 +89,15 @@ export default function Coppied({ isOther }: any) {
       </div>
     );
   }
-
   return (
+    <>
     <CopyList
       copyTradeList={copyTradeMap?.items}
-      hasMore={hasMore}
-      loading={isLoading}
-      onLoadMore={loadMore}
     />
+    <SexInfiniteScroll 
+      loadMore={loadMore} 
+      hasMore={hasMore}
+    />
+  </>
   );
 }

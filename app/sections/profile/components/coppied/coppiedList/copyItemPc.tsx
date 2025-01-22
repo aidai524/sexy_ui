@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import styles from './index.module.css'
+import styles from './pc.module.css'
 import { defaultAvatar } from "@/app/utils/config";
 import { RingChart } from '../copyAmountPie';
 import Popover, { PopoverPlacement, PopoverTrigger } from '@/app/components/popover';
@@ -45,13 +45,17 @@ export default function CopyItem({itemInfo}: any) {
     <div className={styles.ItemBox}>
       
       {/* personal trade info */}
-      <div className={styles.PersonalTradeInfoBox}>
-        {/* personal info */}
         <div className={styles.PersonalInfo}>
             <img className={styles.Avatar} src={copyUserInfo?.icon  || defaultAvatar} alt="avatar" />
-            <div className={styles.Name}>@{copyUserInfo?.name || itemInfo?.from  || 'Flip'}</div>
+            <div className={styles.publicBox}>
+                <p>Trader</p>
+                <div className={styles.Name}>@{copyUserInfo?.name || itemInfo?.from  || 'Flip'}</div>
+            </div>
         </div>
-        {/* copy info */}
+       
+     {/* copy info */}
+     <div className={styles.publicBox}>
+        <p>Investment</p>
         <div className={styles.CopyInfo}>
         <Popover
               content={
@@ -89,45 +93,49 @@ export default function CopyItem({itemInfo}: any) {
                 </p>
                 <SolIconWithoutBg />
             </div>
-            </Popover>
-              <div>
-                <RingChart data={[
-                        { value: 
+        </Popover>
+        <RingChart 
+            data={[
+                    { value: 
                             new Big(itemInfo?.netWorth).minus(itemInfo?.balance).gte(0) ? 
                             new Big(itemInfo?.netWorth).minus(itemInfo?.balance).toNumber() : 0, 
                             color: '#C9FF5D', name: 'USED' 
                         },
-                        { value: itemInfo?.balance || 0, color: '#515B63', name: 'BALANCE' },
-                ]} />
-              </div>
-        </div>
-      </div>
-      
-      <div className={styles.TradeInfoBox}>
-        {/* trade earn */}
-        <div className={styles.TradeEarn}>
-            <div className={styles.TitlePubStyle}>Coppied ROI (PNL) </div>
-            <div className={styles.PNLValuePercent}>{itemInfo?.roi * 100 || 0}%</div>
-            <div className={styles.PNLValueUSD}>${itemInfo?.pnl || 0}</div>
-        </div>
-        {/* coppied tokens */}
-        <div className={styles.CoppiedTokens}>
-            <div className={styles.TitlePubStyle}>{itemInfo?.tokens?.length || 0} Coppied Tokens</div>
-            <div className={styles.TokenIconBox}>
-               {
-                (itemInfo?.tokens || [])?.slice(0, 5).map((item: any, index: number) => {
-                    const tokenInfo:any = getTokenInfo(item.token);
-                    if (index === 4) {
-                        return <div key={index} className={styles.MoreTokens}>...</div>
-                    }
-                    if (index < 4) {
-                        return <img key={index} src={tokenInfo?.icon || defaultAvatar} alt={tokenInfo?.symbol || 'token'} />
-                    }
-                })
-               }
+                  { value: itemInfo?.balance || 0, color: '#515B63', name: 'BALANCE' },
+        ]} />      
+        </div>      
+     </div>
+
+       {/* trade earn */}
+       <div className={styles.publicBox}>
+            <p>Coppied ROI (PNL) </p>
+           <div>
+           <div className={styles.PNLValuePercent}>{itemInfo?.roi * 100 || 0}%</div>
+           <div className={styles.PNLValueUSD}>${itemInfo?.pnl || 0}</div>
+           </div>
+        </div>  
+      {/* coppied tokens */}
+      <div className={styles.publicBox}>
+            <p>Coppied Tokens</p>
+            <div className={styles.TokenIconBoxWrapper}>
+                <div className={styles.CopyAmountLength}>
+                {itemInfo?.tokens?.length || 0}
+                </div>
+                <div className={styles.TokenIconBox}>
+                {
+                    (itemInfo?.tokens || [])?.slice(0, 5).map((item: any, index: number) => {
+                        const tokenInfo:any = getTokenInfo(item.token);
+                        if (index === 4) {
+                            return <div key={index} className={styles.MoreTokens}>...</div>
+                        }
+                        if (index < 4) {
+                            return <img key={index} src={tokenInfo?.icon || defaultAvatar} alt={tokenInfo?.symbol || 'token'} />
+                        }
+                    })
+                }
+                </div>
             </div>
         </div>
-      </div>
     </div>
   )
 }
