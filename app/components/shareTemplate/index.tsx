@@ -200,7 +200,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
           </div>
 
           {/* Main Card Content */}
-          {/* <div className={styles.mainCard}>
+          <div className={styles.mainCard}>
             {
               token?.status === 0 && (
                 <div className={styles.stats}>
@@ -287,9 +287,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
               }
 
             </div>
-          </div> */}
+          </div>
 
-          {/* <div className={styles.tokenInfo}>
+          <div className={styles.tokenInfo}>
             <div className={styles.tokenIcon}>
               <img crossOrigin="anonymous" src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
             </div>
@@ -316,7 +316,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
             </div>
 
             <img src="/img/share/tie.png" alt="Flip" className={styles.tie} />
-          </div> */}
+          </div>
 
           {/* Footer with QR Code */}
           <div className={styles.footer}>

@@ -5,7 +5,7 @@
 .cardContainer {
     width: 375px;
     height: 625px;
-    /* background: #FBCA04 url('/img/share/light-bg.svg') no-repeat center center; */
+    background: #FBCA04 url('/img/share/light-bg.png') no-repeat center center;
     border-radius: 20px;
     border: 1px solid #000;
     padding: 20px;
