@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useUserAgent } from "@/app/context/user-agent";
 
 export default function TotalPanel({ info }: any) {
-  const { set }: any = useHomeTab();
+  const homeTabStore: any = useHomeTab();
   const router = useRouter();
   const { isMobile } = useUserAgent();
   return (
@@ -104,7 +104,10 @@ export default function TotalPanel({ info }: any) {
             }}
             onClick={() => {
               if (!info?.liked) return;
-              set({ profileTabName: "Liked" });
+              homeTabStore.set({
+                currentSummary: { label: "All", amount: 0, value: "" },
+                profileTabName: "Liked"
+              });
               router.push("/profile");
             }}
           >

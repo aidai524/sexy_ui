@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { useUserAgent } from "@/app/context/user-agent";
-import { useLaptop } from "@/app/context/laptop";
 import { useAccount } from "@/app/hooks/useAccount";
 import Coppied from "@/app/sections/profile/components/coppied";
 import { SHOW_COPY_TRADE } from "@/app/utils/config";
@@ -25,7 +24,6 @@ export default function Tabs({
 }: any) {
   const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
-  const { likedListKey, flipListKey, createListKey } = useLaptop();
   const { isMobile } = useUserAgent();
   // base tab
   const createTabContent = (type: string, tabName: string) => ({
@@ -37,13 +35,7 @@ export default function Tabs({
         isOther={isOther}
         prepaidWithdrawDelayTime={prepaidDelayTime}
         from={from}
-        refresher={
-          type === "created"
-            ? createListKey
-            : type === "flipped"
-            ? flipListKey
-            : likedListKey
-        }
+        refresher={0}
         isCurrent={homeTabStore.profileTabName === tabName}
       />
     )

@@ -36,12 +36,7 @@ export default function Rank({ rank, list = [], loading }: any) {
               <Avatar rank={index + 1} src={item.account_data?.icon} />
               <div style={{ width: 120 }}>
                 <div className={styles.NameWrapper}>
-                  <button
-                    className={`${styles.ItemTitle}`}
-                    style={{
-                      cursor: item.account_data ? "pointer" : "inherit"
-                    }}
-                  >
+                  <button className={`${styles.ItemTitle}`}>
                     {item.account_data?.name
                       ? item.account_data.name
                       : item.address
