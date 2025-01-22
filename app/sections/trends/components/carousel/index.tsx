@@ -13,6 +13,15 @@ export default function Carousel() {
         top: isMobile ? "-56px" : "150px"
       }}
     >
+      {
+        isMobile && (
+          <img
+            src="/img/trends/crown.svg"
+            alt=""
+            className={styles.TopCrown}
+          />
+        )
+      }
       <div
         className={styles.Carousel}
         style={{

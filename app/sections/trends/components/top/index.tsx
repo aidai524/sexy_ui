@@ -122,16 +122,15 @@ export default function Top(props: Props) {
               />
             )}
           </div>
-          <img
-            src="/img/trends/crown.svg"
-            alt=""
-            className={styles.TopCrown}
-            style={
-              isMobile
-                ? { right: -24 }
-                : { left: -24, transform: "rotate(-60deg)" }
-            }
-          />
+          {
+            !isMobile && (
+              <img
+                src="/img/trends/crown.svg"
+                alt=""
+                className={styles.TopCrown}
+              />
+            )
+          }
         </div>
       </div>
       <div className={styles.TopInfo}>
