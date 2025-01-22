@@ -76,7 +76,12 @@ export default function Panel({ show }: any) {
 
             <div className={styles.Links}>
               {Links.map((link: any) => (
-                <a className="button" href={link.href} key={link.icon}>
+                <a
+                  className="button"
+                  href={link.href}
+                  target="_blank"
+                  key={link.icon}
+                >
                   <img src={link.icon} />
                 </a>
               ))}

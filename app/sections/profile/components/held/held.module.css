@@ -21,6 +21,8 @@
         font-size: 14px;
       }
       .viewCoin {
+        flex-shrink: 0;
+        white-space: nowrap;
         color: rgba(126, 138, 147, 1);
         font-size: 10px;
         font-weight: 300;

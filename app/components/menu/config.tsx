@@ -42,14 +42,14 @@ export default [
 export const Links = [
   {
     icon: "/img/community/x.svg",
-    href: ""
+    href: "https://x.com/flipndotfun"
   },
   {
     icon: "/img/community/telegram.svg",
-    href: ""
-  },
-  {
-    icon: "/img/community/discard.svg",
-    href: ""
+    href: "https://t.me/Flip_N"
   }
+  // {
+  //   icon: "/img/community/discard.svg",
+  //   href: ""
+  // }
 ];
