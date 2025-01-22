@@ -171,7 +171,7 @@ const AirdropList = (props: any) => {
                   cursor: btnLoading ? 'not-allowed' : 'pointer',
                 }}
                 onClick={() => handleClaim?.()}
-                disabled={btnLoading || (!isClaimed && isEnded)}
+                disabled={btnLoading || isEnded}
               >
                 {
                   btnLoading && (
