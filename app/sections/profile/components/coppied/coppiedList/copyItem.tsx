@@ -9,7 +9,7 @@ import { useConnection } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
 import Big from 'big.js';
 
-export default function CopyItem({itemInfo}: any) {
+export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading}: any) {
     const { connection } = useConnection();
     const { userInfo: copyUserInfo } = useUserInfo(itemInfo?.from);
     const getTokenInfo = async (address: string) => {
@@ -43,7 +43,7 @@ export default function CopyItem({itemInfo}: any) {
 
   return (
     <div className={styles.ItemBox}>
-      
+      <div className={styles.ItemBoxContent}>
       {/* personal trade info */}
       <div className={styles.PersonalTradeInfoBox}>
         {/* personal info */}
@@ -107,8 +107,8 @@ export default function CopyItem({itemInfo}: any) {
         {/* trade earn */}
         <div className={styles.TradeEarn}>
             <div className={styles.TitlePubStyle}>Coppied ROI (PNL) </div>
-            <div className={styles.PNLValuePercent}>{itemInfo?.roi * 100 || 0}%</div>
-            <div className={styles.PNLValueUSD}>${itemInfo?.pnl || 0}</div>
+            <div className={styles.PNLValuePercent}>{Big(itemInfo?.roi).times(100).toString() || 0}%</div>
+            <div className={styles.PNLValueUSD}>${Big(itemInfo?.pnl).toString() || 0}</div>
         </div>
         {/* coppied tokens */}
         <div className={styles.CoppiedTokens}>
@@ -127,6 +127,18 @@ export default function CopyItem({itemInfo}: any) {
                }
             </div>
         </div>
+      </div>
+      </div>
+
+      {/* actions */}
+      <div className={styles.ActionButtonBox}>
+           <button className={styles.ActionButton}
+            disabled={itemInfo?.state === 5}
+            onClick={()=> {
+                handleCloseCopyTrade(itemInfo);
+            }}>
+                {itemInfo?.state === 5 ? "Closing" : "Close"}
+            </button>
       </div>
     </div>
   )

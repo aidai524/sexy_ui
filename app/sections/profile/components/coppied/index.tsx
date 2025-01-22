@@ -6,9 +6,12 @@ import { useAuth } from "@/app/context/auth";
 import { fail } from "@/app/utils/toast";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
+import {useCloseCopyTrade} from '@/app/sections/profile/hooks/useCloseCopyTrade';
+
 
 export default function Coppied({ isOther }: any) {
   const CopyTradeService = new CopyTrade();
+  const { isLoading: isCloseCopyTradeLoading, handleCloseCopyTrade } = useCloseCopyTrade();
   const homeTabStore: any = useHomeTab();
   const { userInfo } = useAuth();
   const [copyTradeMap, setCopyTradeMap] = useState<any>({
@@ -68,11 +71,21 @@ export default function Coppied({ isOther }: any) {
     )
       return;
 
-    //
     setCopyTradeMap({ items: [], total: 0 });
     setHasMore(true);
-    loadMore();
   }, [userInfo?.address, homeTabStore?.profileTabName]);
+
+  // 合并两个 useEffect，只在必要时加载数据
+  useEffect(() => {
+    if (
+      userInfo?.address &&
+      !isOther &&
+      homeTabStore?.profileTabName === "Coppied" &&
+      !isCloseCopyTradeLoading
+    ) {
+      loadMore();
+    }
+  }, [userInfo?.address, homeTabStore?.profileTabName, isCloseCopyTradeLoading]);
   
   if (isLoading && pageIndex === 1) {
     return (
@@ -89,10 +102,22 @@ export default function Coppied({ isOther }: any) {
       </div>
     );
   }
+
+  const handleClose = (item: any) => {
+    if (item?.tokens?.length > 0) {
+      console.log(item);
+      // handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 2});
+    } else {
+      handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
+    }
+  };
+
   return (
     <>
     <CopyList
       copyTradeList={copyTradeMap?.items}
+      handleCloseCopyTrade={handleClose}
+      isCloseCopyTradeLoading={isCloseCopyTradeLoading}
     />
     <SexInfiniteScroll 
       loadMore={loadMore} 

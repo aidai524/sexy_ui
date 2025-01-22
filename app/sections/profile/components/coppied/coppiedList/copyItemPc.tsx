@@ -8,10 +8,13 @@ import { getTokenMeta } from '@/app/utils/solanaScanApi';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
 import Big from 'big.js';
+import { useAuth } from '@/app/context/auth';
 
-export default function CopyItem({itemInfo}: any) {
+
+export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading}: any) {
     const { connection } = useConnection();
     const { userInfo: copyUserInfo } = useUserInfo(itemInfo?.from);
+    const { userInfo } = useAuth();
     const getTokenInfo = async (address: string) => {
         try {
             if (process.env.NEXT_PUBLIC_NET === "Devnet") {
@@ -54,7 +57,7 @@ export default function CopyItem({itemInfo}: any) {
         </div>
        
      {/* copy info */}
-     <div className={styles.publicBox}>
+     <div className={styles.publicBox + " " + styles.CopyInfoBox}>
         <p>Investment</p>
         <div className={styles.CopyInfo}>
         <Popover
@@ -110,8 +113,8 @@ export default function CopyItem({itemInfo}: any) {
        <div className={styles.publicBox}>
             <p>Coppied ROI (PNL) </p>
            <div>
-           <div className={styles.PNLValuePercent}>{itemInfo?.roi * 100 || 0}%</div>
-           <div className={styles.PNLValueUSD}>${itemInfo?.pnl || 0}</div>
+           <div className={styles.PNLValuePercent}>{Big(itemInfo?.roi).times(100).toString() || 0}%</div>
+           <div className={styles.PNLValueUSD}>${Big(itemInfo?.pnl).toString() || 0}</div>
            </div>
         </div>  
       {/* coppied tokens */}
@@ -135,6 +138,22 @@ export default function CopyItem({itemInfo}: any) {
                 }
                 </div>
             </div>
+        </div>
+        {/* actions */}
+        <div className={styles.publicBox}>
+            <p>Action</p>
+           <div className={styles.ActionButtonWrapper}>
+           <button className={styles.ActionButton}
+            disabled={itemInfo?.state === 5}
+            onClick={()=> {
+                handleCloseCopyTrade(itemInfo);
+            }}>
+                {itemInfo?.state === 5 ? "Closing" : "Close"}
+            </button>
+            {/* <button className={styles.ActionButton}>
+               Withdraw
+            </button> */}
+           </div>
         </div>
     </div>
   )

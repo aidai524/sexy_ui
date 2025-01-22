@@ -10,13 +10,13 @@ export interface SmartMoneyAddress {
     trades7D: number;
     winRate7D: string;
   }
-
+ 
 class CopyTrade {
   private baseURL: string;
   private headers: Record<string, string>;
 
   constructor() {
-    this.baseURL = process.env.API_BASE_URL || 'https://api.dumpdump.fun/api/v1';
+    this.baseURL = process.env.NEXT_PUBLIC_API || 'https://api.dumpdump.fun/api/v1';
     this.headers = {
       'Content-Type': 'application/json',
     };
@@ -69,6 +69,7 @@ class CopyTrade {
   session: string;
   publicKey: string;
   signature: string;
+  type: number;
  }) {
     try {
         const sendResponse = await fetch(`${this.baseURL}/copy_trade/send_transactions`, {
@@ -78,7 +79,7 @@ class CopyTrade {
               walletAddress: params.publicKey.toString(),
               chain: 'solana',
               messageData: params.signature,
-              type: 1,
+              type: params.type,
               session: params.session,
             })
           });
@@ -113,6 +114,26 @@ class CopyTrade {
       return error;
     }
   }
+
+  // 
+  async closeCopyTrade(params: {
+    walletAddress: string;
+    chain: string;
+    state: number;
+    id: string;
+  }) {
+    try {
+      const response = await fetch(`${this.baseURL}/copy_trade/state`, {
+        method: 'PUT',
+        headers: this.headers,
+        body: JSON.stringify(params)
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  } 
 
 }
 

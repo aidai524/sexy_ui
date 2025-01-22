@@ -13,7 +13,9 @@
   background-color: rgba(255, 255, 255, 0.10);
   cursor: pointer;
 }
-
+.CopyInfoBox {
+  min-width: 220px;
+}
 .PersonalTradeInfoBox {
   display: flex;
   justify-content: space-between;
@@ -166,4 +168,36 @@
     font-size: 14px;
     color:#9290B1;
     margin-left: -8px;
+}
+
+
+.ActionButtonWrapper {
+    display: flex;
+    gap: 16px;
+}
+
+.ActionButton {
+    background: transparent;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-family: Unbounded;
+    font-size: 12px;
+    font-weight: 300;
+    border: 1px solid #FBCA04;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+.ActionButton:hover {
+    background: #FBCA04;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-family: Unbounded;
+    font-size: 12px;
+    font-weight: 300;
+    border: 1px solid transparent;
+    cursor: pointer;
 }
