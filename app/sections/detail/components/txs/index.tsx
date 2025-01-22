@@ -49,6 +49,8 @@ function SexSwitch({ checked, onChange }: any) {
   );
 }
 
+const isDevnet = process.env.NEXT_PUBLIC_NET === 'Devnet'
+
 export default function Txs({ from, data }: any) {
   const [list, setList] = useState([]);
   const router = useRouter();
@@ -248,7 +250,7 @@ export default function Txs({ from, data }: any) {
                         style={{ textAlign: "right" }}
                         onClick={() => {
                           window.open(
-                            `https://solscan.io/tx/${item.tx_hash}?cluster=devnet`
+                            `https://solscan.io/tx/${item.tx_hash}${isDevnet ? '?cluster=devnet' : ''}`
                           );
                         }}
                       >

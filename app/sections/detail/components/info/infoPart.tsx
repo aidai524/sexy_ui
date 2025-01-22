@@ -131,14 +131,14 @@ export default function InfoPart({
             <div className={styles.authorDesc}>
               {specialTime
                 ? specialTime
-                : timeAgo(data.DApp === "pump" ? data.createdAt : data.time)}
+                : timeAgo(data.DApp === "pump" ? data.time : data.createdAt )}
             </div>
           </div>
           {data.DApp === "pump" && (
             <div className={styles.author}>
               <div className={styles.authorTitle}>{"Import time"}:</div>
               <div className={styles.authorDesc}>
-                {specialTime ? specialTime : timeAgo(data.time)}
+                {specialTime ? specialTime : timeAgo(data.createdAt)}
               </div>
             </div>
           )}
@@ -254,11 +254,11 @@ export default function InfoPart({
               <div className={styles.progressTitle}>
                 King of the hill progress
               </div>
-              <div className={styles.progressPercent}>{data.kingProgress}%</div>
+              <div className={styles.progressPercent}>{data.kingProgress && Number(data.kingProgress) >= 99.9 ? 100 : data.kingProgress}%</div>
             </div>
 
             <ProgressBar
-              percent={data.kingProgress}
+              percent={data.kingProgress && Number(data.kingProgress) >= 99.99 ? 100 : data.kingProgress}
               style={{
                 "--track-width": "14px",
                 "--fill-color": "#BF66FF",
