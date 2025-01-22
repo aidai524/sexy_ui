@@ -15,6 +15,7 @@ import TokenTags from "@/app/components/tokenTags";
 import { getVideoExt, imgReg, videoReg } from "@/app/components/upload";
 import VideoPlayer from "@/app/components/video";
 import Empty from "@/app/components/empty";
+import { useTrendsStore } from "@/app/store/useTrends";
 
 interface Props {
   data: Project;
@@ -41,6 +42,9 @@ export default function InfoPart({
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
+  const {
+    top1,
+  } = useTrendsStore();
   const { mc: pumpMc } = useMc({
     tokenAddress: data?.address,
     disable: (data?.DApp === "sexy" && data?.status === 1) || data?.status! < 1
@@ -66,6 +70,8 @@ export default function InfoPart({
   if (!data) {
     return <Empty text="No info" />;
   }
+
+  console.log('top1', top1);
 
   return (
     <div>
@@ -254,11 +260,11 @@ export default function InfoPart({
               <div className={styles.progressTitle}>
                 King of the hill progress
               </div>
-              <div className={styles.progressPercent}>{data.kingProgress && Number(data.kingProgress) >= 99.9 ? 100 : data.kingProgress}%</div>
+              <div className={styles.progressPercent}>{data.kingProgress && top1?.address === data.address ? 100 : data.kingProgress}%</div>
             </div>
 
             <ProgressBar
-              percent={data.kingProgress && Number(data.kingProgress) >= 99.99 ? 100 : data.kingProgress}
+              percent={data.kingProgress && top1?.address === data.address ? 100 : data.kingProgress}
               style={{
                 "--track-width": "14px",
                 "--fill-color": "#BF66FF",
