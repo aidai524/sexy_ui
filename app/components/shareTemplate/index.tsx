@@ -95,9 +95,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
           scaledHeight
         );
 
-
         const base64Url = canvas2.toDataURL("image/webp");
+        console.log('base64Url:', base64Url)
         const bloBData = base64ToBlob(base64Url);
+        console.log('bloBData:', bloBData)
         const url = await postUpload(bloBData[0], token.address!, bloBData[1]);
         console.log("url:", url);
       }
@@ -354,7 +355,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
         </div>
         <div className={styles.buttonContainer}>
           <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
-            if (shareUrl) {
+            if (canvasRef.current) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;
               link.href = canvasRef.current.toDataURL('image/png');
