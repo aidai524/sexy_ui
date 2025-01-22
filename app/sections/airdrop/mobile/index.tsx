@@ -1,16 +1,20 @@
 import styles from './index.module.css';
-import { useWallet } from '@solana/wallet-adapter-react';
 import AirdropInfo from '@/app/sections/airdrop/components/info';
 import AirdropConnect from '@/app/sections/airdrop/components/connect';
+import { useAccount } from '@/app/hooks/useAccount';
+import { useAuth } from '@/app/context/auth';
 
 const AirdropMobile = () => {
-  const { connected } = useWallet();
+  const { address } = useAccount();
+  const { accountRefresher } = useAuth();
+
+  const isConnected = address && accountRefresher;
 
   return (
     <div className={styles.AirdropContainer}>
       <div className={styles.AirdropWrapper}>
         {
-          connected ? (
+          isConnected ? (
             <AirdropInfo />
           ) : (
             <AirdropConnect />
