@@ -66,9 +66,22 @@ export default function Txs({ from, data }: any) {
   });
 
   useEffect(() => {
-    if (data && data.tokenName && data.status === 1) {
+    if (data && data.tokenName && data.status === 1 && data.DApp === 'sexy') {
       httpGet(
         `/project/trade/list?limit=100&token_name=${data.address}&greater=${filter[1]}&my_following=${filter[2]}&my_trades=${filter[3]}`
+      ).then((res) => {
+        if (res.code === 0) {
+          setList(res.data.list || []);
+          setTotalGreater(res.data.total_greater || 0);
+          setTotalMyFollowing(res.data.total_my_following || 0);
+          setTotalMyTrades(res.data.total_my_trades || 0);
+        }
+      });
+    }
+
+    if (data && data.tokenName && data.status === 1 && data.DApp === 'pump') {
+      httpGet(
+        `/project/trade_pump/list?limit=100&token_name=${data.address}&greater=${filter[1]}&my_following=${filter[2]}&my_trades=${filter[3]}`
       ).then((res) => {
         if (res.code === 0) {
           setList(res.data.list || []);

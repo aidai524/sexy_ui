@@ -1,6 +1,6 @@
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
-import { formatAddress, simplifyNum, timeAgo } from "@/app/utils";
+import { formatAddress, formatDateEn, simplifyNum, timeAgo } from "@/app/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -273,9 +273,9 @@ export default function InfoPart({
             />
 
             {
-              data.isKing && (
+              data.isKing && data.lastKingTime && (
                 <div className={styles.progressDesc} style={{ color: "#BF66FF" }}>
-                  Crowned king of the hill on 1/6/2025, 8:50:03 PM
+                  Crowned king of the hill on { data.lastKingTime ? formatDateEn(data.lastKingTime): '-' }
                 </div>
               )
             }
