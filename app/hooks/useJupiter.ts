@@ -94,7 +94,7 @@ export default function useJupiter({ tokenAddress }: Params) {
 }
 
 // Step 1: Fetch swap info
-async function fetchSwapInfo(
+export async function fetchSwapInfo(
   inputMint: string,
   outputMint: string,
   amount: string,
@@ -112,7 +112,7 @@ async function fetchSwapInfo(
 }
 
 // Step 2: Fetch the swap transaction
-async function fetchSwapTransaction(
+export async function fetchSwapTransaction(
   userWalletPublicKey: string,
   slip: number,
   swapInfo: any

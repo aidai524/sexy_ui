@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { TradingViewChart } from "@/app/components/chart";
-import TradingViewWidget from "./tradingViewWidget";
 import type { Project } from "@/app/type";
+import { fetchSwapInfo } from "@/app/hooks/useJupiter";  
+import { usePair } from "../hooks/usePair";
 
 interface Props {
   token: Project;
@@ -10,25 +11,26 @@ interface Props {
 
 export default function Chart({ token, style = {} }: Props) {
   const tvRef = useRef<any>();
-
   const type = useMemo(() => {
-    if (!token) return void 0;
+    if (!token) return 0;
     if (token.status === 1) {
       return 1;
     }
 
-    if (token.status && token.status >= 1) {
+    if (token.status === 3) {
       return 2;
     }
 
-    return 3;
+    return 0;
   }, [token]);
+
+  const { pair } = usePair({ token, type });
 
   if (!token) return <div />;
 
   return (
     <div style={{ paddingTop: 10, height: "400px", ...style }}>
-      {/* {type === 2 && (
+      {type === 2 && pair && (
         // <iframe
         //   style={{ height: "100%" }}
         //   id="dextools-widget"
@@ -38,10 +40,16 @@ export default function Chart({ token, style = {} }: Props) {
         //   src="https://dexscreener.com/near/refv1-4276?embed=1&theme=dark&info=0&trades=0"
         // ></iframe>
 
-        // <iframe style={{ height: "100%", width: '100%' }} frameBorder="none" src={`https://dexscreener.com/solana/${data.address}?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15`}></iframe>
-        // <TradingViewWidget />
+        <iframe 
+        width="100%"
+        frameBorder="none"
+        src={`https://dexscreener.com/solana/${pair}?embed=1&loadChartSettings=0&trades=0&info=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15`}
+        style={{ height: "100%" }}
+        ></iframe>
 
-      )} */}
+        // <iframe style={{ height: "100%", width: '100%' }} frameBorder="none" src={`https://dexscreener.com/solana/${data.address}?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15`}></iframe>
+
+      )}
       {type === 1 && (
         <TradingViewChart
           style={{ height: "100%" }}
