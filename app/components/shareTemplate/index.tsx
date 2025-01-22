@@ -310,7 +310,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
             <div className={styles.tokenIcon}>
               <img src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
             </div>
-            <div>
+            <div style={{ flex: 1 }}>
               <div className={styles.tokenName}>{token.tokenName}</div>
 
               <div className={styles.tokenTicker}>
