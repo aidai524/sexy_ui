@@ -1067,14 +1067,13 @@ export function useTokenTrade({
   useEffect(() => {
     if (connection && loadData && walletProvider.publicKey) {
       connection.getBalance(walletProvider.publicKey!).then((res) => {
-        alert(res);
         if (res) {
           setSolBalance(new Big(res).div(10 ** 9).toString());
         } else {
           setSolBalance("0");
         }
       }).catch((e) => {
-        alert(e.message);
+        console.log(e.message);
       });
     }
   }, [connection, walletProvider, reFreshBalnace, loadData]);
