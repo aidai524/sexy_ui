@@ -60,7 +60,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
     console.log(token, containerRef.current, qrcodeCanvas)
     if (token && containerRef.current && qrcodeCanvas) {
       console.log(111)
-      const canvas = await html2canvas(containerRef.current, { useCORS: true, scale: 5 });
+      const canvas = await html2canvas(containerRef.current, { useCORS: true, scale: 5, backgroundColor: '#000000' });
       canvasRef.current = canvas;
       // const base64Url = canvas.toDataURL("image/webp");
       // const newFileName = generateRandomString(10);
@@ -283,7 +283,13 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
             <div className={styles.tokenImage}>
               {
-                (checkFileType(token.tokenImg) === 'image' || !token.tokenImg) && (
+                checkFileType(token.tokenImg) === 'video' ? (
+                  <img
+                    src={token.tokenIcon || '/img/token-placeholder.png'}
+                    alt={token.tokenName}
+                    className={styles.tokenImg}
+                  />
+                ) : (
                   <img
                     src={token.tokenImg || token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
@@ -292,17 +298,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
                 )
               }
 
-              {
-                checkFileType(token.tokenImg) === 'video' && (
-                  <img
-                    src={token.tokenIcon || '/img/token-placeholder.png'}
-                    alt={token.tokenName}
-                    className={styles.tokenImg}
-                  />
-                )
-              }
-
-
             </div>
           </div>
 
@@ -310,7 +305,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
             <div className={styles.tokenIcon}>
               <img src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
             </div>
-            <div>
+            <div style={{ flex: 1 }}>
               <div className={styles.tokenName}>{token.tokenName}</div>
 
               <div className={styles.tokenTicker}>

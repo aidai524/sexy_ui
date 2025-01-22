@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import ReactDOM from "react-dom";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -47,7 +48,8 @@ export default function TourGuid() {
     }, 2000);
   }, []);
   return (
-    step > 0 && (
+    step > 0 &&
+    ReactDOM.createPortal(
       <div
         className={styles.Container}
         onClick={() => {
@@ -64,7 +66,7 @@ export default function TourGuid() {
         {/* step 1 */}
         {step === 1 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <img
+            <Image
               src="/img/home/guid-step-1.png"
               width={177}
               height={192}
@@ -150,7 +152,8 @@ export default function TourGuid() {
             />
           </motion.div>
         )}
-      </div>
+      </div>,
+      document.body
     )
   );
 }

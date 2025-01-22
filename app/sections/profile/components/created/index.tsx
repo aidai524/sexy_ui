@@ -51,7 +51,8 @@ export default function Created({
 }: any) {
   const popoverRef = useRef<any>();
   const homeTabStore: any = useHomeTab();
-  const [summaries, setSummaries] = useState<Record<string, Summary[]>>(SUMMARIES_DEFAULT);
+  const [summaries, setSummaries] =
+    useState<Record<string, Summary[]>>(SUMMARIES_DEFAULT);
   const [list, setList] = useState<Project[]>([]);
   const [refresh, setRefresh] = useState<number>(1);
   const [hasMore, setHasMore] = useState(false);
@@ -91,7 +92,7 @@ export default function Created({
         };
 
         let _summary: any = homeTabStore.currentSummary?.value;
-        if (typeof opts?.status !== 'undefined') {
+        if (typeof opts?.status !== "undefined") {
           _summary = opts?.status;
         }
         if (type === "liked" && typeof _summary !== "undefined") {
@@ -143,9 +144,7 @@ export default function Created({
           });
           let _currentSummary: Summary | undefined;
           if (typeof _summary === "number") {
-            _currentSummary = _summaries.find(
-              (s) => s.value === _summary
-            );
+            _currentSummary = _summaries.find((s) => s.value === _summary);
           }
           if (!_currentSummary) {
             _currentSummary = _summaries[0];
@@ -159,10 +158,10 @@ export default function Created({
         }
       } catch (err) {
         console.log(
-          '%cLoad <%s> list failed: %o',
-          'background: #FF2BA0;color:#fff;font-size:16px;',
+          "%cLoad <%s> list failed: %o",
+          "background: #FF2BA0;color:#fff;font-size:16px;",
           urls[type],
-          err,
+          err
         );
         setList([]);
       }
@@ -264,7 +263,9 @@ const StatusSelect = (props: any) => {
 
   return (
     <div
-      className={isMobile ? styles.SelectContainerMobile : styles.SelectContainer}
+      className={
+        isMobile ? styles.SelectContainerMobile : styles.SelectContainer
+      }
       style={{
         backgroundColor: isMobile ? "rgba(255, 255, 255, 0.08)" : "transparent"
       }}

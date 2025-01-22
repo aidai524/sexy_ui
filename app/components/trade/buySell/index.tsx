@@ -119,10 +119,11 @@ export default function BuySell({
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
   useEffect(() => {
-    if (debounceVal) {
-      setIsError(false);
-      setIsLoading(true);
-      if (activeIndex === 0) {
+    try {
+      if (debounceVal) {
+        setIsError(false);
+        setIsLoading(true);
+        if (activeIndex === 0) {
         let buyInSol = "";
         if (tokenType === 1) {
           if (Number(debounceVal) <= 0) {
@@ -256,6 +257,11 @@ export default function BuySell({
       setSellOutSol("");
       setIsError(true);
       setErrorMsg("Enter a amount");
+      }
+    } catch (e) {
+      setIsLoading(false);
+      setIsError(true);
+      setErrorMsg("Invalid value");
     }
   }, [debounceVal, tokenType, slip, currentToken]);
 
