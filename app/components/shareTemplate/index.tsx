@@ -283,7 +283,13 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
             <div className={styles.tokenImage}>
               {
-                (checkFileType(token.tokenImg) === 'image' || !token.tokenImg) && (
+                checkFileType(token.tokenImg) === 'video' ? (
+                  <img
+                    src={token.tokenIcon || '/img/token-placeholder.png'}
+                    alt={token.tokenName}
+                    className={styles.tokenImg}
+                  />
+                ) : (
                   <img
                     src={token.tokenImg || token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
@@ -291,17 +297,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
                   />
                 )
               }
-
-              {
-                checkFileType(token.tokenImg) === 'video' && (
-                  <img
-                    src={token.tokenIcon || '/img/token-placeholder.png'}
-                    alt={token.tokenName}
-                    className={styles.tokenImg}
-                  />
-                )
-              }
-
 
             </div>
           </div>
