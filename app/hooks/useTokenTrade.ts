@@ -33,7 +33,6 @@ import {
   //   referral_address,
   total_supply
 } from "../utils/config";
-import { useSolPriceStore } from "../store/useSolPrice";
 import { useReferralStore } from "../store/useReferral";
 import { useConfig } from "../store/useConfig";
 
@@ -1047,8 +1046,6 @@ export function useTokenTrade({
             .div(10 ** tokenDecimals)
             .toString();
 
-          console.log("balance:", balance);
-
           setTokenBalance(balance);
           return;
         }
@@ -1070,11 +1067,14 @@ export function useTokenTrade({
   useEffect(() => {
     if (connection && loadData && walletProvider.publicKey) {
       connection.getBalance(walletProvider.publicKey!).then((res) => {
+        alert(res);
         if (res) {
           setSolBalance(new Big(res).div(10 ** 9).toString());
         } else {
           setSolBalance("0");
         }
+      }).catch((e) => {
+        alert(e.message);
       });
     }
   }, [connection, walletProvider, reFreshBalnace, loadData]);
