@@ -15,6 +15,7 @@ import { WalletModalProvider } from "@/app/libs/solana/wallet-adapter/modal";
 import { clusterApiUrl } from "@solana/web3.js";
 import { OkxWalletAdapter } from "@/app/libs/solana/wallet-adapter/okx";
 import { OkxWalletUIAdapter } from "@/app/libs/solana/wallet-adapter/okx/ui";
+import { HotWalletAdapter } from 'hot-wallet-sdk/adapter/solana';
 import {
   WalletConnectWalletAdapter,
   WalletConnectWalletAdapterConfig
@@ -68,6 +69,7 @@ export default function WalletConnect({
             // new PhantomWalletAdapter(),
             // new SolflareWalletAdapter(),
             new OkxWalletUIAdapter(),
+            new HotWalletAdapter(),
             new WalletConnectWalletAdapter({
               network,
               options: WALLET_CONNECT_OPTIONS

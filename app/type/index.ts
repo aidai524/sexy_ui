@@ -33,6 +33,7 @@ export interface Project {
     bondingProgress?: number;
     kingProgress?: number;
     isKing?: boolean;
+    lastKingTime?: number;
 }
 
 export interface Comment {

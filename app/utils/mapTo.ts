@@ -35,6 +35,7 @@ export function mapDataToProject(currentToken: any): Project {
     bondingProgress: currentToken.bonding_progress,
     kingProgress: currentToken.king_progress,
     isKing: currentToken.is_king,
+    lastKingTime: currentToken.last_king_time,
     ...currentToken
   };
 }
