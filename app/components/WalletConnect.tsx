@@ -45,8 +45,8 @@ const netType = WalletAdapterNetwork[process.env.NEXT_PUBLIC_NET || 'Devnet']
 
 function getEndpoint(netType: WalletAdapterNetwork) {
   if (netType === WalletAdapterNetwork.Mainnet) {
-    return 'https://swr.xnftdata.com/rpc-proxy/'
-    // return process.env.NEXT_PUBLIC_ENDPOINT || "https://solana-mainnet.core.chainstack.com/26539386617197b730ed9e3c81b611df"
+    // return 'https://swr.xnftdata.com/rpc-proxy/'
+    return process.env.NEXT_PUBLIC_ENDPOINT || "https://solana-mainnet.core.chainstack.com/26539386617197b730ed9e3c81b611df"
     // return "https://pump-fe.helius-rpc.com/?api-key=1b8db865-a5a1-4535-9aec-01061440523b";
   }
 
