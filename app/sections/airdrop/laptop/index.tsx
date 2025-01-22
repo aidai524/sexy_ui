@@ -1,17 +1,21 @@
 import styles from './index.module.css';
 import AirdropTitle from '@/app/sections/airdrop/components/title';
 import AirdropConnect from '@/app/sections/airdrop/components/connect';
-import { useWallet } from '@solana/wallet-adapter-react';
 import AirdropInfo from '@/app/sections/airdrop/components/info';
 import ExpandPanelLinks from '@/app/components/layout/laptop/menu/expand-panel/links';
+import { useAccount } from '@/app/hooks/useAccount';
+import { useAuth } from '@/app/context/auth';
 
 const AirdropLaptop = () => {
-  const { connected } = useWallet();
+  const { address } = useAccount();
+  const { accountRefresher } = useAuth();
+
+  const isConnected = address && accountRefresher;
 
   return (
     <div className={styles.AirdropContainer}>
       <div className={styles.AirdropInner}>
-        <div className={connected ? styles.AirdropLeftConnected : styles.AirdropLeft}>
+        <div className={isConnected ? styles.AirdropLeftConnected : styles.AirdropLeft}>
           <AirdropTitle />
           <img
             src="/img/airdrop/slogan.png"
@@ -19,7 +23,7 @@ const AirdropLaptop = () => {
             className={styles.AirdropSlogan}
           />
           {
-            connected ? (
+            isConnected ? (
               <AirdropInfo />
             ) : (
               <AirdropConnect />
