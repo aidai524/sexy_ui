@@ -1,0 +1,36 @@
+.Container {
+  position: absolute;
+  left: 0px;
+  top: 46px;
+  width: 100%;
+  background-color: #000;
+  height: 346px;
+  overflow-y: auto;
+}
+
+.Item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 10px;
+}
+
+.ItemLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.LoadingWrapper {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
