@@ -15,7 +15,7 @@ interface TrendsState {
   setAllListLoading: (loading: boolean) => void;
 }
 
-export const useTrendsStore = create<TrendsState>((set) => ({
+export const useTrendsStore = create(persist<TrendsState>((set) => ({
   allListLoading: false,
   allList: [],
   hottestList: [],
@@ -26,6 +26,13 @@ export const useTrendsStore = create<TrendsState>((set) => ({
   setTableList: (list: Trend[]) => set((state) => ({ ...state, tableList: list })),
   setTop1: (top1: Trend) => set((state) => ({ ...state, top1 })),
   setAllListLoading: (loading) => set((state) => ({ ...state, allListLoading: loading }))
+}), {
+  name: "trends_list",
+  version: 0.1,
+  storage: createJSONStorage(() => sessionStorage),
+  partialize: (state) => ({
+    top1: state.top1,
+  } as any)
 }));
 
 export const useTrendsBannerStore = create(
