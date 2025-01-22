@@ -61,7 +61,7 @@ export default function Token({
             <div
               className={styles.Labels}
               style={{
-                right: showTrade ? 120 : 0
+                right: showTrade ? 70 : 0
               }}
             >
               {token.isSuperLike && (
