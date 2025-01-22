@@ -1,13 +1,13 @@
-import styles from './index.module.css';
-import { Links } from '@/app/components/menu/config';
+import styles from "./index.module.css";
+import { Links } from "@/app/components/menu/config";
 
 const ExpandPanelLinks = (props: any) => {
   const { className } = props;
 
   return (
-    <div className={[styles.Links, className].join(' ')}>
+    <div className={[styles.Links, className].join(" ")}>
       {Links.map((link: any) => (
-        <a className="button" href={link.href} key={link.icon}>
+        <a className="button" href={link.href} target="_blank" key={link.icon}>
           <img src={link.icon} className={styles.LinkIcon} />
         </a>
       ))}

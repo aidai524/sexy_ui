@@ -58,7 +58,12 @@ export default function Token({
             }}
           >
             <Media imgHeight={imgHeight} data={token} />
-            <div className={styles.Labels}>
+            <div
+              className={styles.Labels}
+              style={{
+                right: showTrade ? 120 : 0
+              }}
+            >
               {token.isSuperLike && (
                 <motion.img
                   initial={{ opacity: 0 }}
