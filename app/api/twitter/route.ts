@@ -3,20 +3,21 @@ import fetch from "node-fetch";
 import { URL } from "url";
 import { NextRequest } from "next/server";
 
-
 export async function GET(request: Request | NextRequest) {
-    const parsedUrl = new URL(request.url as string);
-    const imgUrl = parsedUrl.searchParams.get("imgUrl");
-    const tokenName = parsedUrl.searchParams.get("tokenName");
-    const about = parsedUrl.searchParams.get("about");
-    const tokenAddress = parsedUrl.searchParams.get("address");
-    const referral = parsedUrl.searchParams.get("referral");
-    const domain = process.env.NEXT_PUBLIC_DOMAIN || 'https://stage.flipn.fun'
-    const s3Domain = process.env.NEXT_PUBLIC_S3_URL_PREFIX || 'https://flipn.s3.us-east-1.amazonaws.com'
-    const s3Dir = process.env.NEXT_PUBLIC_S3_DIR || 'flipn/stg/'
+  const parsedUrl = new URL(request.url as string);
+  const imgUrl = parsedUrl.searchParams.get("imgUrl");
+  const tokenName = parsedUrl.searchParams.get("tokenName");
+  const about = parsedUrl.searchParams.get("about");
+  const tokenAddress = parsedUrl.searchParams.get("address");
+  const referral = parsedUrl.searchParams.get("referral");
+  const domain = process.env.NEXT_PUBLIC_DOMAIN || "https://stage.flipn.fun";
+  const s3Domain =
+    process.env.NEXT_PUBLIC_S3_URL_PREFIX ||
+    "https://flipn.s3.us-east-1.amazonaws.com";
+  const s3Dir = process.env.NEXT_PUBLIC_S3_DIR || "flipn/stg/";
 
-    const res = new Response(
-        `<!DOCTYPE html>
+  const res = new Response(
+    `<!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
@@ -36,21 +37,23 @@ export async function GET(request: Request | NextRequest) {
         
         </body>
         </html>`,
-        {
-            status: 200
-        }
-    );
-
-    res.headers.set("Content-Type", "text/html");
-
-
-    if (referral) {
-        res.headers.set("Set-Cookie", [
-            `referral=${referral};Path=/; Max-Age=31536000;`,
-            `referral_upload_user=${referral};Path=/; Max-Age=31536000;`,
-            `referral_upload_project=${tokenAddress};Path=/; Max-Age=31536000;`
-        ].join(", "));
+    {
+      status: 200
     }
+  );
 
-    return res;
+  res.headers.set("Content-Type", "text/html");
+
+  if (referral) {
+    res.headers.set(
+      "Set-Cookie",
+      [
+        `referral=${referral};Path=/; Max-Age=31536000;`,
+        `referral_upload_user=${referral};Path=/; Max-Age=31536000;`,
+        `referral_upload_project=${tokenAddress};Path=/; Max-Age=31536000;`
+      ].join(", ")
+    );
+  }
+
+  return res;
 }

@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import GoBack from "@/app/components/back/laptop";
 import { TokenStatusModal } from "@/app/components/status2Alert";
+import { useDetailStatus } from "@/app/store/use-detail-status";
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/detail")
@@ -24,25 +25,14 @@ const FlipPanel = dynamic(
 
 export default function Laptop(props: any) {
   const { infoData, isLoading, getDetailInfo } = useTokenDetail({});
-  const [currentToken, setCurrentToken] = useState(infoData);
-  const [showDetail, setShowDetail] = useState(false);
-  const [showComments, setShowComments] = useState(false);
-  const [showFlip, setShowFlip] = useState(false);
-  const [showTrade, setShowTrade] = useState(false);
-  const [tradeTab, setTradeTab] = useState("chart");
-  const { innerHeight, innerWidth } = useUserAgent();
+  const detailStatusStore: any = useDetailStatus();
+  const { innerWidth } = useUserAgent();
   const search = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
-    setCurrentToken(infoData);
+    detailStatusStore.setToken(infoData);
   }, [infoData]);
-
-  useEffect(() => {
-    if (search.get("details")) {
-      setShowDetail(true);
-    }
-  }, [search]);
 
   return (
     <motion.div
@@ -60,7 +50,7 @@ export default function Laptop(props: any) {
         <div
           style={{
             transform: `translateX(${
-              showDetail || showComments || showFlip || showTrade
+              detailStatusStore.hasShow()
                 ? "calc(50vw - 600px)"
                 : "calc(50vw - 300px)"
             })`,
@@ -68,31 +58,24 @@ export default function Laptop(props: any) {
           }}
         >
           <Token
-            token={currentToken}
+            token={detailStatusStore.token}
             isCurrent={true}
             onUpdate={(token: any) => {
-              setCurrentToken(JSON.parse(JSON.stringify(token)));
+              detailStatusStore.setToken(JSON.parse(JSON.stringify(token)));
             }}
             opacity={1}
-            showTrade={showTrade}
-            tradeTab={tradeTab}
-            onUpdateTradeTab={setTradeTab}
+            showTrade={detailStatusStore.showTrade}
+            tradeTab={detailStatusStore.tab}
+            onUpdateTradeTab={detailStatusStore.setTab}
             onOpenPanel={(type: string) => {
               if (type === "showDetail") {
-                const _showDetail = !showDetail;
-                setShowDetail(_showDetail);
-                setShowComments(false);
-                setShowFlip(false);
-                setShowTrade(false);
+                detailStatusStore.setShow(
+                  "showDetail",
+                  !detailStatusStore.showDetail
+                );
                 const { origin, pathname, search } = location;
                 const _search = new URLSearchParams(search);
-                if (_showDetail) {
-                  if (!_search.get("details")) {
-                    _search.set("details", "1");
-                  }
-                } else {
-                  _search.delete("details");
-                }
+
                 router.replace(
                   new URL(
                     origin + pathname + "?" + _search.toString()
@@ -101,36 +84,36 @@ export default function Laptop(props: any) {
                 return;
               }
               if (type === "showComments") {
-                setShowComments(!showComments);
-                setShowDetail(false);
-                setShowFlip(false);
-                setShowTrade(false);
+                detailStatusStore.setShow(
+                  "showComments",
+                  !detailStatusStore.showComments
+                );
                 return;
               }
               if (type === "showFlip") {
-                setShowFlip(!showFlip);
-                setShowDetail(false);
-                setShowComments(false);
-                setShowTrade(false);
+                detailStatusStore.setShow(
+                  "showFlip",
+                  !detailStatusStore.showFlip
+                );
                 return;
               }
               if (type === "showTrade") {
-                setShowTrade(!showTrade);
-                setShowFlip(false);
-                setShowDetail(false);
-                setShowComments(false);
+                detailStatusStore.setShow(
+                  "showTrade",
+                  !detailStatusStore.showTrade
+                );
                 return;
               }
             }}
           />
         </div>
-        {currentToken && (
+        {detailStatusStore.token && (
           <AnimatePresence mode="wait">
-            {showDetail && (
+            {detailStatusStore.showDetail && (
               <DetailPanel
-                token={currentToken}
+                token={detailStatusStore.token}
                 onClose={() => {
-                  setShowDetail(false);
+                  detailStatusStore.setShow("showDetail", false);
                   const { origin, pathname, search } = location;
                   const _search = new URLSearchParams(search);
                   _search.delete("details");
@@ -142,30 +125,36 @@ export default function Laptop(props: any) {
                 }}
               />
             )}
-            {showComments && (
+            {detailStatusStore.showComments && (
               <CommentsPanel
-                token={currentToken}
+                token={detailStatusStore.token}
                 onClose={() => {
-                  setShowComments(false);
+                  detailStatusStore.setShow("showComments", false);
                 }}
                 onSuccess={() => {
-                  currentToken.comment = currentToken.comment + 1;
-                  setCurrentToken(JSON.parse(JSON.stringify(currentToken)));
+                  detailStatusStore.token.comment =
+                    detailStatusStore.token.comment + 1;
+                  detailStatusStore.setToken(
+                    JSON.parse(JSON.stringify(detailStatusStore.token))
+                  );
                 }}
               />
             )}
-            {showFlip && (
+            {detailStatusStore.showFlip && (
               <FlipPanel
-                token={currentToken}
+                token={detailStatusStore.token}
                 onClose={() => {
-                  setShowFlip(false);
+                  detailStatusStore.setShow("showFlip", false);
                 }}
                 onSuccess={(amount: string) => {
-                  currentToken.isSuperLike = true;
-                  currentToken.prePaid = currentToken.prePaid + 1;
-                  currentToken.total_amount = amount;
-                  setCurrentToken(JSON.parse(JSON.stringify(currentToken)));
-                  setShowFlip(false);
+                  detailStatusStore.token.isSuperLike = true;
+                  detailStatusStore.token.prePaid =
+                    detailStatusStore.token.prePaid + 1;
+                  detailStatusStore.token.total_amount = amount;
+                  detailStatusStore.setToken(
+                    JSON.parse(JSON.stringify(detailStatusStore.token))
+                  );
+                  detailStatusStore.setShow("showFlip", false);
                 }}
               />
             )}
@@ -173,10 +162,12 @@ export default function Laptop(props: any) {
         )}
       </div>
 
-      <TokenStatusModal status={infoData?.status} onClose={() => {
-        getDetailInfo();
-      }} />
-      
+      <TokenStatusModal
+        status={infoData?.status}
+        onClose={() => {
+          getDetailInfo();
+        }}
+      />
     </motion.div>
   );
 }

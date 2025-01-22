@@ -43,7 +43,7 @@ export default function InfoPart({
   const router = useRouter();
   const { mc: pumpMc } = useMc({
     tokenAddress: data?.address,
-    disable: data?.DApp !== "pump"
+    disable: (data?.DApp === "sexy" && data?.status === 1) || data?.status! < 1
   });
   const userName = useMemo(() => {
     if (data?.creater) {
@@ -71,20 +71,18 @@ export default function InfoPart({
     <div>
       <div className={styles.detailAvatar}>
         <div className={styles.tokenImgWrapper}>
-          {videoReg.test(data.tokenImg || "") && (
+          {videoReg.test(data.tokenImg || "") ? (
             <VideoPlayer
               src={data.tokenImg}
               playManually={true}
               type={getVideoExt(data.tokenImg)}
               className={styles.tokenImg}
-            />
-          )}
-          {(imgReg.test(data.tokenImg || "") || !data.tokenImg) && (
-            <img
-              className={styles.tokenImg}
-              src={data.tokenImg || "/img/token-placeholder.png"}
-            />
-          )}
+            /> 
+          ) : <img
+          className={styles.tokenImg}
+          src={data.tokenImg || "/img/token-placeholder.png"}
+        />}
+          
         </div>
 
         <div className={styles.detailInfo}>
@@ -146,8 +144,8 @@ export default function InfoPart({
           )}
           <div className={styles.author}>
             <div className={styles.authorTitle}>Market cap:</div>
-            {data.DApp === "sexy" && (
-              <div className={styles.authorDesc}>
+            {data.DApp === "sexy" && data.status === 1 && (
+              <div className={styles.authorDesc} key={data.address}>
                 {mc === 0 || mc === "0" || mc === "-" ? (
                   <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
                 ) : (
@@ -158,8 +156,8 @@ export default function InfoPart({
               </div>
             )}
 
-            {data.DApp === "pump" && (
-              <div className={styles.authorDesc} style={{ color: "#6fff00" }}>
+            {((data.status === 1 && data.DApp === "pump") || (data.status! > 1)) && (
+              <div className={styles.authorDesc} key={data.address} style={{ color: "#6fff00" }}>
                 {pumpMc === 0 ? (
                   <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
                 ) : (

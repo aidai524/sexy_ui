@@ -6,18 +6,25 @@ import { useAuth } from "@/app/context/auth";
 import { fail } from "@/app/utils/toast";
 import { useHomeTab } from "@/app/store/useHomeTab";
 
-export default function Coppied({isOther}: any) {
+export default function Coppied({ isOther }: any) {
   const CopyTradeService = new CopyTrade();
   const homeTabStore: any = useHomeTab();
   const { userInfo } = useAuth();
-  const [copyTradeMap, setCopyTradeMap] = useState<any>({ items: [], total: 0 });
+  const [copyTradeMap, setCopyTradeMap] = useState<any>({
+    items: [],
+    total: 0
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const pageSize = 10;
 
   const loadMore = useCallback(async () => {
-    if (!userInfo?.address || isOther || homeTabStore?.profileTabIndex !== 0) {
+    if (
+      !userInfo?.address ||
+      isOther ||
+      homeTabStore?.profileTabName !== "Held"
+    ) {
       setHasMore(false);
       return;
     }
@@ -48,18 +55,23 @@ export default function Coppied({isOther}: any) {
     } finally {
       setIsLoading(false);
     }
-  }, [userInfo?.address, isOther, homeTabStore?.profileTabIndex, pageIndex]);
+  }, [userInfo?.address, isOther, homeTabStore?.profileTabName, pageIndex]);
 
   // init
   useEffect(() => {
-    if (!userInfo?.address || isOther || homeTabStore?.profileTabIndex !== 0) return;
-    
-    // 
+    if (
+      !userInfo?.address ||
+      isOther ||
+      homeTabStore?.profileTabName !== "Held"
+    )
+      return;
+
+    //
     setCopyTradeMap({ items: [], total: 0 });
     setPageIndex(1);
     setHasMore(true);
     loadMore();
-  }, [userInfo?.address, homeTabStore?.profileTabIndex]);
+  }, [userInfo?.address, homeTabStore?.profileTabName]);
 
   if (isLoading && pageIndex === 1) {
     return (
@@ -78,7 +90,7 @@ export default function Coppied({isOther}: any) {
   }
 
   return (
-    <CopyList 
+    <CopyList
       copyTradeList={copyTradeMap?.items}
       hasMore={hasMore}
       loading={isLoading}

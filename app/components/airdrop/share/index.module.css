@@ -70,7 +70,7 @@
   align-items: center;
   gap: 10px;
   position: absolute;
-  bottom: 13px;
+  bottom: 10px;
   left: 14px;
 }
 .AirdropShareInfoCardTip {
@@ -95,17 +95,10 @@
 .AirdropShareInfoCardFooter {
   flex-shrink: 0;
   margin-left: 13px;
-  width: 42px;
-  height: 42px;
   flex-shrink: 0;
   border-radius: 6px;
   position: relative;
   background: rgba(255, 255, 255, 0.90);
-}
-.AirdropShareInfoCardFooter canvas {
-  width: 42px !important;
-  height: 42px !important;
-  border-radius: 6px;
 }
 .AirdropShareInfoCardInfoInviterLabel {
   width: 100%;

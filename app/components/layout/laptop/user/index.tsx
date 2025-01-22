@@ -18,7 +18,7 @@ export default function User({ address, userInfo, onQueryInfo, logout }: any) {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [followModalType, setFollowModalType] = useState("");
   const [openVipModal, setOpenVipModal] = useState(false);
-  const { profileTabIndex, set: setProfileTabIndex }: any = useHomeTab();
+  const { profileTabName }: any = useHomeTab();
 
   return (
     <div className={styles.Container}>
@@ -58,7 +58,7 @@ export default function User({ address, userInfo, onQueryInfo, logout }: any) {
           <Tabs
             address={address}
             showHot={true}
-            defaultIndex={profileTabIndex}
+            defaultIndex={profileTabName}
             tabContentStyle={{
               height: userInfo?.name
                 ? "calc(100vh - 390px)"

@@ -18,26 +18,42 @@ export default function useMc({ tokenAddress, disable = true }: Props) {
 
   useEffect(() => {
     if (tokenAddress && !disable) {
-      Promise.all([
-        getMint(connection, new PublicKey(tokenAddress)),
-        fetch(`https://api.jup.ag/price/v2?ids=${tokenAddress},${wsol}`).then(
-          (res) => res.json()
-        )
-      ])
-        .then(([mintInfo, priceInfo]) => {
-          // console.log(mintInfo, priceInfo)
-
-          const mc =
-            (Number(mintInfo.supply) *
-              Number(priceInfo.data[tokenAddress].price)) /
-            10 ** mintInfo.decimals;
-          setMc(mc);
+      fetch(`https://fe-api.jup.ag/api/v1/tokens/${tokenAddress}?quote_address=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.totalSupply && data.priceUsd) {
+          setMc(data.totalSupply * data.priceUsd);
+          } else {
+            setMc(0);
+          }
         })
         .catch((e) => {
           setMc(0);
         });
+
+
+      // Promise.all([
+      //   getMint(connection, new PublicKey(tokenAddress)),
+      //   fetch(`https://api.jup.ag/price/v2?ids=${tokenAddress},${wsol}`).then(
+      //     (res) => res.json()
+      //   )
+      // ])
+      //   .then(([mintInfo, priceInfo]) => {
+      //     // console.log(mintInfo, priceInfo)
+
+      //     const mc =
+      //       (Number(mintInfo.supply) *
+      //         Number(priceInfo.data[tokenAddress].price)) /
+      //       10 ** mintInfo.decimals;
+      //     setMc(mc);
+      //   })
+      //   .catch((e) => {
+      //     setMc(0);
+      //   });
     }
   }, [tokenAddress, disable]);
+
+  
 
   return {
     mc

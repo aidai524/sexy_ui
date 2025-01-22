@@ -10,9 +10,11 @@ import {
   fetchLastData,
   getGranularityByResolution
 } from "../fetch-data";
+import addPriceMarker from "./add-price-marker";
 
 let page = 0;
 let hasNext = true;
+let lastPrice = 0;
 let pullingQueryPriceTimer: any = null;
 let kChartSubscriberList: Record<string, number> = {};
 let currentSymbolInfo: SymbolInfo | null = null;
@@ -50,8 +52,9 @@ const configurationData: DatafeedConfiguration = {
 };
 
 const datafeed: (
-  address: string
-) => ChartingLibraryWidgetOptions["datafeed"] = (address) => ({
+  address: string,
+  tvWidgetRef: any
+) => ChartingLibraryWidgetOptions["datafeed"] = (address, tvWidgetRef) => ({
   onReady: (callback) => {
     setTimeout(() => callback(configurationData));
   },
@@ -104,6 +107,7 @@ const datafeed: (
         getGranularityByResolution(resolution),
         page
       );
+      lastPrice = data[data.length - 1][1];
       hasNext = hasNextPage;
       const bars = data.map((item: any) => ({
         time: item[6],
@@ -141,16 +145,18 @@ const datafeed: (
       if (!currentSymbolInfo?.name) return;
       const item = await fetchLastData(address, resolution);
       if (!item) return;
+
       const bar = {
-        time: Date.now(),
+        time: item[6],
         low: item[3],
         high: item[2],
         open: item[1],
         close: item[4],
         volume: item[5]
       };
-
+      addPriceMarker({ price: item[1], lastPrice, time: item[6], tvWidgetRef });
       onRealtimeCallback(bar);
+      lastPrice = item[1];
       pullingQueryPriceTimer = setTimeout(fetchPrice, 5000);
     };
     clearTimeout(pullingQueryPriceTimer);

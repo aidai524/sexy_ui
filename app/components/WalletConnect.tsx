@@ -30,7 +30,7 @@ const WALLET_CONNECT_METADATA = {
 };
 
 const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig["options"] = {
-  projectId: "3df9d49016708f3be47fcba48de15b86",
+  projectId: "669d1b9f59163a92d90a3c1ff78a7326",
   metadata: WALLET_CONNECT_METADATA,
   features: {
     analytics: false,
@@ -65,8 +65,8 @@ export default function WalletConnect({
       if (typeof window === "undefined") return [];
       return getDeviceType().mobile
         ? [
-            new PhantomWalletAdapter(),
-            new SolflareWalletAdapter(),
+            // new PhantomWalletAdapter(),
+            // new SolflareWalletAdapter(),
             new OkxWalletUIAdapter(),
             new WalletConnectWalletAdapter({
               network,
