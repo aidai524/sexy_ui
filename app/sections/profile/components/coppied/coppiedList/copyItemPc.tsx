@@ -161,11 +161,18 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
         <div className={styles.publicBox}>
             <p>Action</p>
            <div className={styles.ActionButtonWrapper}>
-           <button className={styles.ActionButton}
-            disabled={itemInfo?.state === 5}
-            onClick={()=> {
-                handleCloseCopyTrade(itemInfo);
-            }}>
+           <button 
+            className={styles.ActionButton}
+            disabled={itemInfo?.state === 5 || (isCloseCopyTradeLoading && itemInfo?.isClosing)}
+            onClick={async () => {
+                itemInfo.isClosing = true;
+                try {
+                    await handleCloseCopyTrade(itemInfo);
+                } finally {
+                    itemInfo.isClosing = false;
+                }
+            }}
+           >
                 {itemInfo?.state === 5 ? "Closing" : "Close"}
             </button>
             {/* <button className={styles.ActionButton}>

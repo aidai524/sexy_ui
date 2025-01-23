@@ -201,3 +201,15 @@
     border: 1px solid transparent;
     cursor: pointer;
 }
+
+.ActionButton:disabled {
+    opacity: 0.1;
+    cursor: not-allowed;
+}
+
+.ActionButton:disabled:hover {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #FBCA04;
+    cursor: not-allowed;
+}

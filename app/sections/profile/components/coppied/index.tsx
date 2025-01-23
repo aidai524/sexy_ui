@@ -61,32 +61,20 @@ export default function Coppied({ isOther }: any) {
     }
   }, [userInfo?.address, isOther, homeTabStore?.profileTabName, pageIndex]);
 
-  // init
   useEffect(() => {
-    setPageIndex(1);
-    if (
-      !userInfo?.address ||
-      isOther ||
-      homeTabStore?.profileTabName !== "Coppied"
-    )
+    if (!userInfo?.address || isOther || homeTabStore?.profileTabName !== "Coppied") {
       return;
-
+    }
+    
+    // Reset states
+    setPageIndex(1);
     setCopyTradeMap({ items: [], total: 0 });
     setHasMore(true);
+    
+    // Load initial data
+    loadMore();
   }, [userInfo?.address, homeTabStore?.profileTabName]);
 
-  // 合并两个 useEffect，只在必要时加载数据
-  useEffect(() => {
-    if (
-      userInfo?.address &&
-      !isOther &&
-      homeTabStore?.profileTabName === "Coppied" &&
-      !isCloseCopyTradeLoading
-    ) {
-      loadMore();
-    }
-  }, [userInfo?.address, homeTabStore?.profileTabName, isCloseCopyTradeLoading]);
-  
   if (isLoading && pageIndex === 1) {
     return (
       <div style={{ paddingTop: 116 }}>
@@ -103,12 +91,15 @@ export default function Coppied({ isOther }: any) {
     );
   }
 
-  const handleClose = (item: any) => {
+  const handleClose = async (item: any) => {
     if (item?.tokens?.length > 0) {
       console.log(item);
       // handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 2});
     } else {
-      handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
+      const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
+      if (res) {
+        loadMore();
+      }
     }
   };
 

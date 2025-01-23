@@ -181,3 +181,15 @@
     border: 1px solid #FBCA04;
     font-family: Unbounded;
 }
+
+.ActionButton:disabled {
+    opacity: 0.1;
+    cursor: not-allowed;
+}   
+
+.ActionButton:disabled:hover {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #FBCA04;
+    cursor: not-allowed;
+}

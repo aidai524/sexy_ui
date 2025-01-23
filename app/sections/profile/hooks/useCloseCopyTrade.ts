@@ -62,6 +62,7 @@ export const useCloseCopyTrade = () => {
             });
   
             success("Close copy trade success", {maskStyle: {zIndex: 1001}});
+            return true;
           } catch (signError: any) {
             fail(`Transaction signing failed: ${signError.message}`, {maskStyle: {zIndex: 1001}});
             return false;
