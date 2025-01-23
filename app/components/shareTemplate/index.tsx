@@ -98,11 +98,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
         );
 
         const base64Url = canvas2.toDataURL("image/webp");
-        console.log('base64Url:', base64Url)
         const bloBData = base64ToBlob(base64Url);
-        console.log('bloBData:', bloBData)
         const url = await postUpload(bloBData[0], token.address!, bloBData[1]);
-        console.log("url:", url);
       }
 
       return token.address!;
@@ -137,10 +134,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
           token.address!
         )}&address=${token.address}&referral=${userInfo.address}`;
 
-        console.log('longUrl:', longUrl)
-
         const shareUrl = await getShortUrl(longUrl);
-        console.log('shareUrl:', shareUrl)
         setShareUrl(shareUrl);
       }
     })();
@@ -165,8 +159,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
   }, [token]);
 
   if (!token || !show) return null;
-
-  console.log('token:', userInforData, userInfo)
 
   return (
     <Modal
@@ -360,7 +352,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
         </div>
         <div className={styles.buttonContainer}>
           <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
-            console.log('canvasRef.current:', canvasRef.current)
             if (canvasRef.current) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;

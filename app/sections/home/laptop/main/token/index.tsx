@@ -59,8 +59,6 @@ export default function Token({
       infoData2?.status === 1
     ) {
       getMC().then((res) => {
-        console.log("mc:", mc);
-
         setMC(res as number);
       });
     } else {

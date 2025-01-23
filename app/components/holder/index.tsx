@@ -40,7 +40,6 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
             new PublicKey(address),
             "confirmed"
           );
-          console.log("tokenAccounts", tokenAccounts);
 
           const result: any = {
             items: []
@@ -49,7 +48,6 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
           const accounts = await connection.getMultipleParsedAccounts(
             tokenAccounts.value.map((item: any) => item.address)
           );
-          console.log("accounts", accounts);
 
           for (let i = 0; i < tokenAccounts.value.length; i++) {
             const item = tokenAccounts.value[i];

@@ -1,10 +1,11 @@
 .cardWrapper {
     width: 375px;
+    max-width: 96vw;
 }
 
 .cardContainer {
-    width: 375px;
     height: 625px;
+    max-height: 86vh;
     background: #FBCA04 url('/img/share/light-bg.png') no-repeat center center;
     border-radius: 20px;
     border: 1px solid #000;

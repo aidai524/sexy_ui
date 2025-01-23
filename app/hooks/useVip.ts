@@ -32,7 +32,6 @@ export function useVip() {
         } else if (type === 'vip') {
             val = {"type":"AddVip"}
         } else if (type === 'launching') {
-            console.log('tokenAddress', tokenAddress)
             val = {"type":"AddLaunching", "token": tokenAddress}
             lamports = 100000000
         }

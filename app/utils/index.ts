@@ -449,7 +449,6 @@ export async function upload(
 ) {
   let _file: any = file;
 
-  console.log("file111", file, isImage);
 
   if (isImage) {
     const url = await new Promise<string | void>((resolve) => {
@@ -530,8 +529,6 @@ export async function upload(
   }
 
   const newFileName = generateRandomString(10) + fileName;
-
-  console.log("newFileName", newFileName);
 
   return postUpload(_file, newFileName, file.type);
 }
@@ -720,8 +717,6 @@ export async function getTransaction(
     const postToken = postTokenBalances?.find(
       (item) => item.mint === toeknAddress && item.owner === userAddress
     );
-
-    console.log("preToken:", preToken, postToken);
 
     if (postToken) {
       const preAmount = preToken ? preToken.uiTokenAmount.amount : 0;

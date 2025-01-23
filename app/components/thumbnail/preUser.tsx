@@ -18,7 +18,6 @@ export default function PreUser({ token, from }: Props) {
 
   useEffect(() => {
     if (token) {
-      console.log(token);
       httpGet(
         "/project/like/accounts?project_id=" + token.id + "&limit=100"
       ).then((v) => {

@@ -50,7 +50,6 @@ export default function Upload({
   const input = useRef<ImageUploaderRef>(null);
 
   const uploadImg = useCallback(async (file: File) => {
-    console.log("file", file);
     if (file.size > 50 * 1024 * 1024) {
       fail("File size too large");
       return {
@@ -129,8 +128,6 @@ export default function Upload({
           maxCount={1}
           value={fileList}
           onChange={(files) => {
-            console.log("files:", files);
-
             setDefaultFileList(files);
             setFileList(files);
           }}

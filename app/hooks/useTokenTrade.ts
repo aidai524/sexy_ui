@@ -155,12 +155,6 @@ export function useTokenTrade({
   );
 
   const getKeys = useCallback(async () => {
-    console.log({
-      tokenName,
-      tokenSymbol,
-      pool,
-      tokenInfo
-    });
     if (!tokenName || !tokenSymbol || !pool || !tokenInfo) return null;
 
     const instructions = [];
@@ -245,8 +239,6 @@ export function useTokenTrade({
       console.log(e);
     }
 
-    console.log("referral:", referral.toBase58());
-
     const referralFeeRateRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("referral_fee_rate_record"),
@@ -264,8 +256,6 @@ export function useTokenTrade({
       wsol,
       proxy
     );
-
-    console.log(referralSolAccount, proxySolAccount);
 
     if (!referralSolAccount || !proxySolAccount) {
       return null;
@@ -405,8 +395,6 @@ export function useTokenTrade({
 
       const { keys, instructions, referral } = keysAndIns;
 
-      console.log(keys);
-
       const instruction1 = SystemProgram.transfer({
         fromPubkey: walletProvider.publicKey!,
         toPubkey: keys.userWsolAccount,
@@ -420,8 +408,6 @@ export function useTokenTrade({
       const transaction = new Transaction();
 
       const program = new Program<any>(idl, programId, walletProvider as any);
-
-      console.log("maxWsolAmount:", maxWsolAmount, outputAmount);
 
       const buyInstruction = await program.methods
         .buyToken({
@@ -441,11 +427,7 @@ export function useTokenTrade({
 
       transaction.add(instruction1).add(instruction2).add(buyInstruction);
 
-      console.log("transaction:", transaction);
-
       const hash = await walletProvider.signAndSendTransaction(transaction);
-
-      console.log("hash:", hash);
 
       return hash;
     },
@@ -461,8 +443,6 @@ export function useTokenTrade({
       }
 
       const { keys, instructions, referral } = keysAndIns;
-
-      console.log(keys);
 
       const instruction1 = SystemProgram.transfer({
         fromPubkey: walletProvider.publicKey!,
@@ -496,11 +476,7 @@ export function useTokenTrade({
 
       transaction.add(instruction1).add(instruction2).add(buyInstruction);
 
-      console.log("transaction:", transaction);
-
       const hash = await walletProvider.signAndSendTransaction(transaction);
-
-      console.log("hash:", hash);
 
       return hash;
     },
@@ -550,7 +526,6 @@ export function useTokenTrade({
       transaction.add(closeUseSolIns);
 
       const hash = await walletProvider.signAndSendTransaction(transaction);
-      console.log("hash:", hash);
       return hash;
     },
     [connection, walletProvider, programId]
@@ -749,7 +724,6 @@ export function useTokenTrade({
       if (amount && Number(amount) > 0) {
         const prepaidInstructions = await prePaid(amount, true);
         if (prepaidInstructions) {
-          console.log("prepaidInstructions:", prepaidInstructions);
           transaction.add(prepaidInstructions as any);
         }
       }
@@ -759,8 +733,6 @@ export function useTokenTrade({
         confirmationStrategy
       );
 
-      console.log("v3:", v3);
-
       return v3;
     },
     [connection, walletProvider, programId, wsol]
@@ -769,7 +741,6 @@ export function useTokenTrade({
   const prePaid = useCallback(
     async (amount: number | string, justTransaction: boolean = false) => {
       const keysAndIns = await getKeys();
-      console.log("keysAndIns", keysAndIns);
       if (!keysAndIns) {
         return;
       }
@@ -849,8 +820,6 @@ export function useTokenTrade({
     if (!keysAndIns) {
       return;
     }
-
-    console.log("keys:", keysAndIns);
 
     const { keys, instructions } = keysAndIns;
 
@@ -996,7 +965,6 @@ export function useTokenTrade({
 
     try {
       const stateData: any = await program.account.launchpad.fetch(state[0]);
-      console.log("stateData:", stateData);
 
       return stateData;
     } catch (e) {

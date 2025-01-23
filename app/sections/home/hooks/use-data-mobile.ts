@@ -98,7 +98,7 @@ export default function useData(launchType: Type) {
     async (type: Type, address: number) => {
       const res = await httpGet(`/project?address=${address}`);
       if (res.code !== 0 || !res.data || !res.data.length) return;
-      projectsStore.updateProject(type, res.data[0]);
+      projectsStore.updateProject(type, mapDataToProject(res.data[0]));
       setRefresher(refresher + 1);
     },
     [projectsStore, refresher]
