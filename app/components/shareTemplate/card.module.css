@@ -1,11 +1,19 @@
 .cardWrapper {
     width: 375px;
-    max-width: 96vw;
+    /* max-width: 96vw; */
 }
+
+@media screen and (max-width: 375px) {
+  .cardWrapper {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+}
+
 
 .cardContainer {
     height: 625px;
-    max-height: 86vh;
+    /* max-height: 86vh; */
     background: #FBCA04 url('/img/share/light-bg.png') no-repeat center center;
     border-radius: 20px;
     border: 1px solid #000;
