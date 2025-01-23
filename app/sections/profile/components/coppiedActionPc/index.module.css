@@ -11,7 +11,9 @@
     color: #fff;
     text-align: left;
     height: 40px;
-    border-bottom: 1px solid #3b3b3b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .copyiedInfo {
     display: flex;
@@ -146,7 +148,7 @@
     right: 0px;
     bottom: 0px;
     z-index: 30;
-    padding: 20px 0px;
+    padding: 0px 0px 20px;
     height: 680px;
   }
   
@@ -157,6 +159,7 @@
     padding-right: 12px;
     padding-left: 12px;
     border-bottom: 1px solid #3b3b3b;
+    height: 60px;
   }
   
   .Content {

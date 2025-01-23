@@ -122,6 +122,9 @@
   font-weight: 500;
   line-height: normal;
   border: 2px solid #FBCA04;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .FollowBtn {
@@ -133,4 +136,7 @@
   background: #FBCA04;
   color: #000;
   padding: 10px 24px;
+}
+.CopyBtn:hover {
+  opacity: 0.8;
 }

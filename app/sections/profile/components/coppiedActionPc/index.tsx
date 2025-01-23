@@ -166,7 +166,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
           }}
         >
           <div className={styles.Header}>
-          <div className={styles.title}>Copy Trade</div>
+           <div className={styles.title}>Copy Trade</div>
             <button className="button" onClick={onClose}>
               <ModalClose size={34} />
             </button>
