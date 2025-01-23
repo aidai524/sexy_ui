@@ -8,7 +8,6 @@ import Empty from "@/app/components/empty";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Panel({
   list = [],
@@ -25,7 +24,6 @@ export default function Panel({
 }: any) {
   const router = useRouter();
   const isFirstPage = useMemo(() => pageRef.current === 1, [pageRef.current]);
-  const { isMobile } = useUserAgent();
 
   return (
     (!!searchText || cachedList.length > 0) && (
@@ -34,12 +32,6 @@ export default function Panel({
         animate={{ opacity: 1, height: 346 }}
         exit={{ opacity: 0, height: 0 }}
         className={styles.Container}
-        style={{
-          backgroundColor: isMobile ? "#000" : "#1B1B1B",
-          border: isMobile ? "none" : "1px solid #323232",
-          borderRadius: isMobile ? "0px" : "0px 0px 20px 20px",
-          borderTop: "none"
-        }}
       >
         {!searchText &&
           cachedList.map((text: any, i: number) => (
@@ -58,6 +50,7 @@ export default function Panel({
               <ItemCloseIcon
                 onClick={(ev: any) => {
                   ev.stopPropagation();
+                  ev.nativeEvent.stopImmediatePropagation();
                   removeCachedItem(i);
                 }}
               />

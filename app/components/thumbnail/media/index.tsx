@@ -22,6 +22,7 @@ export default function Media({
       >
         {videoReg.test(data.tokenImg || "") ? (
           <VideoPlayer
+            key={data.tokenImg}
             src={data.tokenImg}
             type={getVideoExt(data.tokenImg)}
             className={styles.tokenImg}
