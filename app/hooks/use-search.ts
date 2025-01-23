@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { httpAuthGet } from "../utils";
 
-const LIMIT = 50;
+const LIMIT = 10;
 export default function useSearch() {
   const [isLoading, setIsLoading] = useState(false);
   const [list, setList] = useState<any>([]);
