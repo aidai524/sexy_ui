@@ -43,40 +43,43 @@ export const useSwapCopyTokens = () => {
           tokens,
           id
         });
-        const {messageData, session} = res.data;
-        
         if (res.code == 200) {
-          if (!signTransaction || !publicKey) {
-            fail("Wallet not connected");
-            return false;
-          }
-  
-          try {
-            const decodedMessage = bs58.decode(messageData);
-            const messageUint8Array = new Uint8Array(decodedMessage);
-            const versionedMessage = VersionedMessage.deserialize(messageUint8Array);
-            const transaction = new VersionedTransaction(versionedMessage);
-            
-            const signedTx = await signTransaction(transaction);
-            const serializedTx = bs58.encode(signedTx.serialize());
-            
-            const sendResponse = await CopyTradeService.sendTransaction({
-              session,
-              publicKey: publicKey.toString(),
-              signature: serializedTx,
-              type: 2,
-            });
-            console.log(sendResponse)
-            success("Swap tokens success", {maskStyle: {zIndex: 1001}});
             return true;
-          } catch (signError: any) {
-            fail(`Transaction signing failed: ${signError.message}`, {maskStyle: {zIndex: 1001}});
-            return false;
-          }
-        } else {
-          fail(res?.message, { maskStyle: { zIndex: 1001} });
-          return false;
         }
+        // if (res.code == 200) {
+        // const {messageData, session} = res.data;
+
+        //   if (!signTransaction || !publicKey) {
+        //     fail("Wallet not connected");
+        //     return false;
+        //   }
+  
+        //   try {
+        //     const decodedMessage = bs58.decode(messageData);
+        //     const messageUint8Array = new Uint8Array(decodedMessage);
+        //     const versionedMessage = VersionedMessage.deserialize(messageUint8Array);
+        //     const transaction = new VersionedTransaction(versionedMessage);
+            
+        //     const signedTx = await signTransaction(transaction);
+        //     const serializedTx = bs58.encode(signedTx.serialize());
+            
+        //     const sendResponse = await CopyTradeService.sendTransaction({
+        //       session,
+        //       publicKey: publicKey.toString(),
+        //       signature: serializedTx,
+        //       type: 2,
+        //     });
+        //     console.log(sendResponse)
+        //     success("Swap tokens success", {maskStyle: {zIndex: 1001}});
+        //     return true;
+        //   } catch (signError: any) {
+        //     fail(`Transaction signing failed: ${signError.message}`, {maskStyle: {zIndex: 1001}});
+        //     return false;
+        //   }
+        // } else {
+        //   fail(res?.message, { maskStyle: { zIndex: 1001} });
+        //   return false;
+        // }
       } catch (e: any) {
         fail(e?.message || "Swap tokens failed", {maskStyle: {zIndex: 1001}});
         return false;

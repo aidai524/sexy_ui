@@ -11,7 +11,7 @@ import Big from 'big.js';
 import { useAuth } from '@/app/context/auth';
 
 
-export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading}: any) {
+export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading, handleCloseAndSell, handleClose}: any) {
     const { connection } = useConnection();
     const { userInfo: copyUserInfo } = useUserInfo(itemInfo?.from);
     const { userInfo } = useAuth();
@@ -161,23 +161,49 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
         <div className={styles.publicBox}>
             <p>Action</p>
            <div className={styles.ActionButtonWrapper}>
-           <button 
-            className={styles.ActionButton}
-            disabled={itemInfo?.state === 5 || (isCloseCopyTradeLoading && itemInfo?.isClosing)}
-            onClick={async () => {
-                itemInfo.isClosing = true;
-                try {
-                    await handleCloseCopyTrade(itemInfo);
-                } finally {
-                    itemInfo.isClosing = false;
-                }
-            }}
-           >
+           {
+            !itemInfo?.tokens || itemInfo?.tokens?.length === 0 ?
+                <button 
+                className={styles.ActionButton}
+                disabled={itemInfo?.state === 5 || (isCloseCopyTradeLoading && itemInfo?.isClosing)}
+                onClick={async () => {
+                    itemInfo.isClosing = true;
+                        try {
+                            await handleClose(itemInfo);
+                        } finally {
+                            itemInfo.isClosing = false;
+                    }
+                }}
+            >
+                    {itemInfo?.state === 5 ? "Closing" : "Close"}
+                </button>
+            : 
+            <Popover
+            content={
+                <div className={styles.ClosePopoverContent}>
+                    <h3>You're going to close the copy trade,do you want to sell the tokens you copied?</h3>
+                    <div className={styles.ClosePopoverButtons}>
+                        <button onClick={() => {
+                            handleCloseAndSell(itemInfo);
+                        }}>Close and Sell</button>
+                        <button onClick={() => {
+                            handleClose(itemInfo);
+                        }}>Just Close</button>
+                    </div>
+                </div>
+            }
+            placement={PopoverPlacement.BottomRight}
+            trigger={PopoverTrigger.Click}
+        >
+            <button 
+                className={styles.ActionButton}
+                disabled={itemInfo?.state === 5 || (isCloseCopyTradeLoading && itemInfo?.isClosing)}
+            >
                 {itemInfo?.state === 5 ? "Closing" : "Close"}
             </button>
-            {/* <button className={styles.ActionButton}>
-               Withdraw
-            </button> */}
+            </Popover>
+           
+            }   
            </div>
         </div>
     </div>

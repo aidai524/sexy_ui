@@ -10,6 +10,17 @@ export interface SmartMoneyAddress {
     trades7D: number;
     winRate7D: string;
   }
+
+  export interface CopyTraderAddress {
+      copied: number;
+      copyTrades: number;
+      tradeInfo: {
+          buys: number;
+          pnl7D: string;
+          sells: number;
+          winRate7D: number;
+    }
+}
  
 class CopyTrade {
   private baseURL: string;
@@ -26,7 +37,7 @@ class CopyTrade {
     return await response.json();
   }
   // copy traders userInfo
-  async getCopyTradersUserInfo({address, chain}: {address: string, chain: string}): Promise<{data: SmartMoneyAddress | null}> {
+  async getCopyTradersUserInfo({address, chain}: {address: string, chain: string}): Promise<{data: CopyTraderAddress | null}> {
     try {
       const queryParams = new URLSearchParams({ address, chain }).toString();
       const response = await fetch(`${this.baseURL}/copy_trade/users?${queryParams}`, {

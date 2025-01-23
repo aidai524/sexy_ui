@@ -5,7 +5,7 @@ import FollowBtn from "../followBtn";
 import CoppiedModal from "../coppiedModal";
 import { SHOW_COPY_TRADE } from "@/app/utils/config";
 import CopyTrade from '@/app/services/copyTrade';
-import { SmartMoneyAddress } from '@/app/services/copyTrade';
+import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
 import { useUserAgent } from "@/app/context/user-agent";
 const Summaries = (props: any) => {
   const { isMobile } = useUserAgent();
@@ -13,7 +13,7 @@ const Summaries = (props: any) => {
   const { address, isFollower, setRefreshNum, refreshNum, userInfo, isOther } = props;
   const [showModal, setShowModal] = useState(false);
   const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
-  const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<SmartMoneyAddress | null>(null);
+  const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<CopyTraderAddress | null>(null);
   const getCopyTradeDetails = async () => {
     const { data } = await CopyTradeService.getCopyTradersUserInfo({address, chain: 'solana'});
     setCopyTradersUserInfo(data);
@@ -54,24 +54,24 @@ const Summaries = (props: any) => {
           <div
             className={[styles.SummaryValue, styles.SummaryValueBuy].join(" ")}
           >
-            +{numberFormatter(copyTradersUserInfo?.pnl7D, 2, true, { prefix: "$", isShort: true })}
+            +{numberFormatter(copyTradersUserInfo?.tradeInfo?.pnl7D, 2, true, { prefix: "$", isShort: true })}
           </div>
         </div>
         <div className={styles.Summary}>
           <div className={styles.SummaryLabel}>7D Win Rate</div>
           <div className={[styles.SummaryValue].join(" ")}>
-            {numberFormatter(copyTradersUserInfo?.winRate7D, 1, true, { isShort: true })}%
+            {numberFormatter(copyTradersUserInfo?.tradeInfo?.winRate7D, 1, true, { isShort: true })}%
           </div>
         </div>
         <div className={styles.Summary}>
           <div className={styles.SummaryLabel}>Buy/Sell</div>
           <div className={[styles.SummaryValue].join(" ")}>
             <div className={[styles.SummaryValueBuy].join(" ")}>
-              {numberFormatter(copyTradersUserInfo?.buys7D, 0, true, { isShort: true })}
+              {numberFormatter(copyTradersUserInfo?.tradeInfo?.buys, 0, true, { isShort: true })}
             </div>
             <div className={[].join(" ")}>/</div>
             <div className={[styles.SummaryValueSell].join(" ")}>
-              {numberFormatter(copyTradersUserInfo?.sells7D, 0, true, { isShort: true })}
+              {numberFormatter(copyTradersUserInfo?.tradeInfo?.sells, 0, true, { isShort: true })}
             </div>
           </div>
         </div>

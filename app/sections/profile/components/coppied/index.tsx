@@ -8,9 +8,12 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import {useCloseCopyTrade} from '@/app/sections/profile/hooks/useCloseCopyTrade';
 import {useSwapCopyTokens} from '@/app/sections/profile/hooks/useSwapCopyTokens';
+import { useUserAgent } from "@/app/context/user-agent";
+import CloseCopyTips from "./closeCopyTips";
 
 export default function Coppied({ isOther }: any) {
   const CopyTradeService = new CopyTrade();
+  const { isMobile } = useUserAgent();
   const { isLoading: isCloseCopyTradeLoading, handleCloseCopyTrade } = useCloseCopyTrade();
   const { isLoading: isSwapCopyTokensLoading, handleSwapCopyTokens } = useSwapCopyTokens();
   const homeTabStore: any = useHomeTab();
@@ -22,6 +25,8 @@ export default function Coppied({ isOther }: any) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [showCloseCopyTips, setShowCloseCopyTips] = useState<boolean>(false);
+  const [copiedInfo, setCopiedInfo] = useState<any>(null);
   const pageSize = 10;
 
   const loadMore = useCallback(async () => {
@@ -44,8 +49,8 @@ export default function Coppied({ isOther }: any) {
       });
 
       setCopyTradeMap((prev: any) => ({
-        items: [...prev.items, ...(res.data.items || [])],
-        total: res.data.total || 0
+        items: [...prev?.items, ...(res?.data?.items || [])],
+        total: res?.data?.total || 0
       }));
 
       // update page
@@ -93,36 +98,59 @@ export default function Coppied({ isOther }: any) {
   }
 
   const handleClose = async (item: any) => {
-    if (item?.tokens?.length > 0) {
-      console.log(item);
-      // handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 2});
+      const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
+      if (res) {
+        setPageIndex(1);
+        setCopyTradeMap({ items: [], total: 0 });
+        setHasMore(true);
+        loadMore();
+      }
+  };
+
+  const handleCloseAndSell = async (item: any) => {
      const swapRes = await handleSwapCopyTokens({id: item?.id, sellAll: true, tokens: [],type:2, walletAddress: userInfo?.address, chain: "solana"});
-     console.log(swapRes)
      if (swapRes) {
       const closeRes = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
       if (closeRes) {
+        setPageIndex(1);
+        setCopyTradeMap({ items: [], total: 0 });
+        setHasMore(true);
         loadMore();
       }
      }
+  }
+
+  const handleCloseType = (item: any) => {
+    if (item?.tokens?.length > 0) {
+      setShowCloseCopyTips(true);
+      setCopiedInfo(item);
     } else {
-      const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
-      if (res) {
-        loadMore();
-      }
+      handleClose(item);
     }
-  };
+  }
+
 
   return (
     <>
     <CopyList
       copyTradeList={copyTradeMap?.items}
-      handleCloseCopyTrade={handleClose}
+      handleCloseCopyTrade={handleCloseType}
+      handleCloseAndSell={handleCloseAndSell}
+      handleClose={handleClose}
       isCloseCopyTradeLoading={isCloseCopyTradeLoading}
     />
     <SexInfiniteScroll 
       loadMore={loadMore} 
       hasMore={hasMore}
     />
+    {isMobile && <CloseCopyTips 
+      handleCloseAndSell={handleCloseAndSell}
+      handleClose={handleClose}
+      show={showCloseCopyTips} 
+      onClose={() => setShowCloseCopyTips(false)} 
+      copiedInfo={copiedInfo} 
+    />}
   </>
   );
 }
+

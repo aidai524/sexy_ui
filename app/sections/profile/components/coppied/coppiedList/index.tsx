@@ -8,16 +8,18 @@ interface CopyListProps {
   copyTradeList: any[];
   handleCloseCopyTrade: (item: any) => void;
   isCloseCopyTradeLoading: boolean;
+  handleCloseAndSell: (item: any) => void;
+  handleClose: (item: any) => void;
 }
 
-export default function CopyList({ copyTradeList, handleCloseCopyTrade, isCloseCopyTradeLoading}: CopyListProps) {
+export default function CopyList({ copyTradeList, handleCloseCopyTrade, isCloseCopyTradeLoading,handleCloseAndSell, handleClose }: CopyListProps) {
   const { isMobile } = useUserAgent();
   return (
     <div className={isMobile ? styles.ListContainer : styles.ListContainerPc}>
       {copyTradeList?.map((item: any, index: number) => (
         isMobile ? 
         <CopyItem key={index} itemInfo={item} handleCloseCopyTrade={handleCloseCopyTrade} isCloseCopyTradeLoading={isCloseCopyTradeLoading} /> : 
-        <CopyItemPc key={index} itemInfo={item} handleCloseCopyTrade={handleCloseCopyTrade} isCloseCopyTradeLoading={isCloseCopyTradeLoading} />
+        <CopyItemPc key={index} itemInfo={item} handleCloseCopyTrade={handleCloseCopyTrade} isCloseCopyTradeLoading={isCloseCopyTradeLoading} handleCloseAndSell={handleCloseAndSell} handleClose={handleClose} />
       ))}
     </div>
   )
