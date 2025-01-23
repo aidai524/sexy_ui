@@ -262,3 +262,24 @@ export function getCookie(name: string) {
 export function deleteCookie(name: string) {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
 }
+
+const storage = storageStore('telegram');
+export function isTelegram() {
+  if (typeof window === 'undefined') return false;
+
+  const currentTgId = (window.Telegram as any)?.WebApp?.initDataUnsafe?.user?.id;
+  const storedTgId = storage?.get<number>('userId');
+
+  if (currentTgId && storedTgId && currentTgId !== storedTgId) {
+    storage?.clearAll();
+  }
+
+  const storedTgFlag = storage?.get<boolean>('isTelegramWebApp');
+  const isTg = !!(currentTgId || window.location.hash?.startsWith('#tgWebAppData') || storedTgFlag);
+
+  if (isTg) {
+    storage?.set('isTelegramWebApp', true);
+  }
+
+  return isTg;
+}
