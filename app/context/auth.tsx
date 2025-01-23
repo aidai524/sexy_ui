@@ -3,11 +3,11 @@ import { useDebounceFn } from "ahooks";
 import { useUser } from "@/app/store/useUser";
 import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { redirect } from "next/navigation";
 import { initAuthorization, logOut } from "@/app/utils";
 import LoginModal from "@/app/components/loginModal";
+import Modal from "../components/modal";
 import type { ReactNode } from "react";
 import { useShare } from "../hooks/use-share";
 
@@ -22,7 +22,7 @@ export const AuthProvider: React.FC<{
   const userStore: any = useUser();
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const [showSignatureModal, setShowSignatureModal] = useState(false);
   useShare();
   const [accountRefresher, setAccountRefresher] = useState(0);
   const { onQueryInfo, setUserInfo, fecthUserInfo } = useUserInfo(
@@ -42,9 +42,11 @@ export const AuthProvider: React.FC<{
         return;
       }
 
-      await initAuthorization();
-      await updateCurrentUserInfo();
-      setAccountRefresher(accountRefresher + 1);
+      // TODO
+      setShowSignatureModal(true);
+      // await updateCurrentUserInfo();
+      // await initAuthorization();
+      // setAccountRefresher(accountRefresher + 1);
     },
     { wait: 800 }
   );
@@ -110,6 +112,30 @@ export const AuthProvider: React.FC<{
           setShowLoginModal(false);
         }}
       />
+      <Modal open={showSignatureModal}>
+        <div
+          style={{
+            width: 300,
+            height: 300,
+            background: "green",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <button
+            style={{ fontSize: 28 }}
+            onClick={async () => {
+              await updateCurrentUserInfo();
+              await initAuthorization();
+              setAccountRefresher(accountRefresher + 1);
+              setShowSignatureModal(false);
+            }}
+          >
+            Sign Signature
+          </button>
+        </div>
+      </Modal>
     </AuthContext.Provider>
   );
 };
