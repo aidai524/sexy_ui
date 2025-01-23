@@ -65,22 +65,24 @@ export default function useData(launchType: Type) {
     async (isNext?: boolean) => {
       if (!isNext) setIsLoading(true);
       await queryList();
-      const list = projectsStore.getProjectsByType(launchType) || [];
-      setList(list);
+      const _list =
+        projectsStore.getProjectsByType(launchType, list.length === 0) || [];
+      setList(_list);
       setIsLoading(false);
     },
     [launchType, userInfo]
   );
 
   const initList = () => {
-    let list = projectsStore.getProjectsByType(launchType) || [];
-    if (list.length === 0) {
+    let _list =
+      projectsStore.getProjectsByType(launchType, list.length === 0) || [];
+    if (_list.length === 0) {
       handleList(false);
       return;
     }
     setList(list);
 
-    if (list.length - projectsStore.getIndex(launchType) > left_num) {
+    if (_list.length - projectsStore.getIndex(launchType) > left_num) {
       setIsLoading(false);
       return;
     }
