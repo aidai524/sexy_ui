@@ -253,6 +253,7 @@ export interface Trend {
   project_creator: string;
   creator_name: string;
   initiative_launching: boolean;
+  is_king: boolean;
 
   // front-end attributes
   created2Now?: string;
