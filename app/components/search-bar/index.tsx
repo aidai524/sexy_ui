@@ -64,7 +64,7 @@ export default function SearchBar() {
           <motion.div
             key="search-bar"
             initial={{ opacity: 0, width: 30 }}
-            animate={{ opacity: 1, width: isMobile ? "100vw" : "375px" }}
+            animate={{ opacity: 1, width: isMobile ? "100vw" : "584px" }}
             exit={{ opacity: 0, width: 30 }}
             className={styles.Container}
             onClick={(ev) => {
@@ -73,11 +73,14 @@ export default function SearchBar() {
             }}
             style={
               isMobile
-                ? { left: 0, top: 0, position: "fixed" }
+                ? { left: 0, top: 0, backgroundColor: "#000" }
                 : {
-                    right: 0,
-                    top: 0,
-                    position: "absolute"
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    top: 6,
+                    backgroundColor: "#1B1B1B",
+                    border: "1px solid #323232",
+                    borderRadius: "20px 20px 0px 0px"
                   }
             }
           >
@@ -119,17 +122,15 @@ export default function SearchBar() {
                 </button>
               </div>
             </div>
-            {isMobile && (
-              <div
-                className={`${styles.Cancel} button`}
-                onClick={() => {
-                  onClear();
-                  setExpand(false);
-                }}
-              >
-                Cancel
-              </div>
-            )}
+            <div
+              className={`${styles.Cancel} button`}
+              onClick={() => {
+                onClear();
+                setExpand(false);
+              }}
+            >
+              Cancel
+            </div>
             <Panel
               {...{
                 list,

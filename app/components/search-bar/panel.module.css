@@ -1,9 +1,8 @@
 .Container {
   position: absolute;
-  left: 0px;
+  left: -1px;
   top: 46px;
-  width: 100%;
-  background-color: #000;
+  width: calc(100% + 2px);
   height: 346px;
   overflow-y: auto;
 }
