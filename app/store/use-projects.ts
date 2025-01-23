@@ -92,8 +92,8 @@ export const useProjects = create(
             {}
           );
           type === "preLaunch"
-            ? set({ preProjects: mapList, preIndex: 0 })
-            : set({ launchProjects: mapList, launchIndex: 0 });
+            ? set({ preProjects: mapList })
+            : set({ launchProjects: mapList });
         }
 
         return filteredProjects
@@ -137,7 +137,7 @@ export const useProjects = create(
     }),
     {
       name: "_projects",
-      version: 0.11,
+      version: 0.1,
       storage: createJSONStorage(() => localStorage)
     }
   )
