@@ -271,9 +271,9 @@ export default function InfoPart({
             />
 
             {
-              data.isKing && data.lastKingTime && (
+              data.lastKingTime !== 0 && (
                 <div className={styles.progressDesc} style={{ color: "#BF66FF" }}>
-                  Crowned king of the hill on { data.lastKingTime ? formatDateEn(data.lastKingTime): '-' }
+                  Crowned king of the hill on { data.lastKingTime ? formatDateEn(data.lastKingTime, 'MMM D, YYYY HH:mm:ss'): '-' }
                 </div>
               )
             }

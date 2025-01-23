@@ -610,10 +610,12 @@ export function timeAgo(time?: number, currentTime?: number) {
   return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
 }
 
-export function formatDateEn(time: number) {
+export function formatDateEn(time: number, format: string = "MMM D, YYYY") {
   const date = dayjs(time);
-  return date.format("MMM D, YYYY");
+  return date.format(format);
 }
+
+
 
 export function getDeviceType() {
   if (typeof window === "undefined")
