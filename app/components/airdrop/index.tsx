@@ -167,8 +167,8 @@ const AirdropList = (props: any) => {
                   alignItems: 'center',
                   gap: 8,
                   transition: 'opacity 0.3s ease-in-out',
-                  opacity: btnLoading ? 0.3 : 1,
-                  cursor: btnLoading ? 'not-allowed' : 'pointer',
+                  opacity: (btnLoading || isEnded) ? 0.3 : 1,
+                  cursor: (btnLoading || isEnded) ? 'not-allowed' : 'pointer',
                 }}
                 onClick={() => handleClaim?.()}
                 disabled={btnLoading || isEnded}
