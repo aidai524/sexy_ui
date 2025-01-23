@@ -3,12 +3,12 @@
     /* max-width: 96vw; */
 }
 
-@media screen and (max-width: 400px) {
+/* @media screen and (max-width: 400px) {
   .cardWrapper {
     transform: scale(0.85);
     transform-origin: center;
   }
-}
+} */
 
 
 .cardContainer {
