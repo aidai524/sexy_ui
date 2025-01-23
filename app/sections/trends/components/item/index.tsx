@@ -32,13 +32,23 @@ export default function Item(props: Props) {
             width: 86,
             objectFit: 'cover',
             objectPosition: 'center',
+            borderRadius: 8,
           }}
         />
+        {
+          props.index === 0 && (
+            <img
+              src="/img/trends/crown-second.svg"
+              alt=""
+              className={styles.secondaryTrendIcon}
+            />
+          )
+        }
       </div>
 
       <div className={styles.ItemContent}>
         <div className={styles.ItemHead}>
-          <div className={styles.ItemHeadInfo}>
+        <div className={styles.ItemHeadInfo}>
             <div
               className={styles.ItemHeadName}
               title={name}
@@ -110,5 +120,6 @@ export default function Item(props: Props) {
 
 interface Props {
   trend?: Trend;
+  index?: number;
   onBuy?(): void;
 }

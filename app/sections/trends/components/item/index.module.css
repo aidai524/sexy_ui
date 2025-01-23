@@ -28,6 +28,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  position: relative;
 }
 .ItemContent {
   flex: 1;
@@ -146,5 +147,12 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+.secondaryTrendIcon {
+  width: 28px;
+  height: 25px;
+  position: absolute;
+  right: 7px;
+  bottom: 3px;
 }
 /*#endregion*/
