@@ -5,9 +5,9 @@ import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 import { usePathname, useRouter } from "next/navigation";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { initAuthorization, logOut } from "@/app/utils";
+import { logOut } from "@/app/utils";
 import LoginModal from "@/app/components/loginModal";
-import Modal from "../components/modal";
+import SignatureModal from "../components/signature-modal";
 import type { ReactNode } from "react";
 import { useShare } from "../hooks/use-share";
 
@@ -42,11 +42,7 @@ export const AuthProvider: React.FC<{
         return;
       }
 
-      // TODO
       setShowSignatureModal(true);
-      // await updateCurrentUserInfo();
-      // await initAuthorization();
-      // setAccountRefresher(accountRefresher + 1);
     },
     { wait: 800 }
   );
@@ -112,30 +108,15 @@ export const AuthProvider: React.FC<{
           setShowLoginModal(false);
         }}
       />
-      <Modal open={showSignatureModal}>
-        <div
-          style={{
-            width: 300,
-            height: 300,
-            background: "green",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <button
-            style={{ fontSize: 28 }}
-            onClick={async () => {
-              updateCurrentUserInfo();
-              await initAuthorization();
-              setAccountRefresher(accountRefresher + 1);
-              setShowSignatureModal(false);
-            }}
-          >
-            Sign Signature
-          </button>
-        </div>
-      </Modal>
+      <SignatureModal
+        {...{
+          showSignatureModal,
+          updateCurrentUserInfo,
+          setAccountRefresher,
+          setShowSignatureModal,
+          accountRefresher
+        }}
+      />
     </AuthContext.Provider>
   );
 };
