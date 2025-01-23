@@ -18,4 +18,4 @@ export const PUMP_FUN_PROGRAM = new PublicKey("6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ1
 export const PUMP_FUN_ACCOUNT = new PublicKey("Ce6TQqeHC9p8KetsN6JsjHK7UTZk7nasjjnr7XxXp9F1");
 export const SYSTEM_PROGRAM_ID = SystemProgram.programId;
 
-export const SHOW_COPY_TRADE = true;
+export const SHOW_COPY_TRADE = false;
