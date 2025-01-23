@@ -36,7 +36,7 @@ export default function Item(props: Props) {
           }}
         />
         {
-          props.index === 0 && (
+          trend?.is_king && (
             <img
               src="/img/trends/crown-second.svg"
               alt=""
