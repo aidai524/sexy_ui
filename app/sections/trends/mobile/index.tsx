@@ -30,11 +30,12 @@ export default function Mobile(props: any) {
           <TrendsLoading />
         ) : (
           <>
-            {[...hottestList, ...tableList].map((item) => (
+            {[...hottestList, ...tableList].map((item, index) => (
               <Item
                 key={item.id}
                 onBuy={() => handleBuy(item)}
                 trend={item}
+                index={index}
               />
             ))}
           </>

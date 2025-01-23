@@ -213,10 +213,10 @@ export default function Txs({ from, data }: any) {
               </div>
 
               <div className={styles.txList}>
-                {list.map((item: any) => {
+                {list.map((item: any, index: number) => {
                   const isSelf = item.address === userInfo?.address;
                   return (
-                    <div key={item.tx_hash} className={`${styles.item}`}>
+                    <div key={item.tx_hash + index} className={`${styles.item}`}>
                       <div
                         className={`${styles.account} ${from === "panel"
                           ? styles.LaptopAccount

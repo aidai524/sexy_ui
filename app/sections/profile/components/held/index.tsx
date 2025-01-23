@@ -8,6 +8,7 @@ import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import Empty from "@/app/components/empty";
 import { useRouter } from "next/navigation";
 import { numberFormatter } from '@/app/utils/common';
+import Media from '@/app/components/thumbnail/media';
 
 const pageSize = 40;
 
@@ -92,9 +93,26 @@ export default function Held({ from, address }: any) {
             key={item.token_address}
           >
             <div className={styles.tokenMsg}>
-              <img
-                className={styles.tokenImg}
-                src={tokenInfo[item.token_address].token_icon}
+              <Media
+                data={{
+                  tokenImg: tokenInfo[item.token_address].token_icon,
+                }}
+                imgHeight={46}
+                autoPlay={false}
+                imgStyle={{
+                  width: 46,
+                  height: 46,
+                  borderRadius: 23,
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                }}
+                style={{
+                  overflow: "hidden"
+                }}
+                videoStyle={{
+                  height: "100%",
+                  background: "#000"
+                }}
               />
               <div className={styles.tokenNames}>
                 <div className={styles.name}>

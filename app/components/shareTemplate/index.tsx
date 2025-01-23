@@ -47,7 +47,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const [shareUrl, setShareUrl] = useState("");
   const { total: totalHolders } = useHolders(token);
   const pumpMc = useMcWithPump(token);
-  const [newFileName] = useState(generateRandomString(10))
   const canvasRef = useRef<any>(null);
   const [qrcodeCanvas, setQrcodeCanvas] = useState<any>(null);
   const [shareCopy, setShareCopy] = useState("");
@@ -56,10 +55,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
     getShareImg
   }));
 
+
   const getShareImg = useCallback(async () => {
-    console.log(token, containerRef.current, qrcodeCanvas)
     if (token && containerRef.current && qrcodeCanvas) {
-      console.log(111)
       const canvas = await html2canvas(containerRef.current, { useCORS: true, scale: 5, backgroundColor: '#000000' });
       canvasRef.current = canvas;
       // const base64Url = canvas.toDataURL("image/webp");
@@ -97,15 +95,16 @@ function Card({ token, show, onClose }: Props, ref: any) {
           scaledHeight
         );
 
+
         const base64Url = canvas2.toDataURL("image/webp");
         const bloBData = base64ToBlob(base64Url);
-        const url = await postUpload(bloBData[0], newFileName, bloBData[1]);
+        const url = await postUpload(bloBData[0], token.address!, bloBData[1]);
         console.log("url:", url);
       }
 
-      return newFileName;
+      return token.address!;
     }
-  }, [token, newFileName, qrcodeCanvas]);
+  }, [token, qrcodeCanvas]);
 
   useEffect(() => {
     (async () => {
@@ -121,28 +120,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
           setIsSharing(false);
           return;
         }
-
-        // const longUrl = `${domain}/api/twitter?tokenName=${encodeURIComponent(
-        //   token.tokenName
-        // )}&about=${encodeURIComponent(token.about)}&imgUrl=${encodeURIComponent(
-        //   newFileName
-        // )}&address=${token.address}&referral=${userInfo.address}`;
-
-        // try {
-        //   const shareUrl = await getShortUrl(longUrl);
-        //   console.log("shareUrl:", shareUrl);
-        //   setShareUrl(shareUrl);
-        //   // shareToX(token.tokenName, shareUrl);
-        // } catch (e) {
-        //   fail("Share fail");
-        //   setIsSharing(false);
-        //   return;
-        // }
-
         setIsSharing(false);
       }
     })();
-  }, [token, shareUrl, qrcodeCanvas]);
+  }, [token, qrcodeCanvas]);
 
   useEffect(() => {
     (async () => {
@@ -150,13 +131,17 @@ function Card({ token, show, onClose }: Props, ref: any) {
         const longUrl = `${domain}/api/twitter?tokenName=${encodeURIComponent(
           token.tokenName
         )}&about=${encodeURIComponent(token.about)}&imgUrl=${encodeURIComponent(
-          newFileName
+          token.address!
         )}&address=${token.address}&referral=${userInfo.address}`;
+
+        console.log('longUrl:', longUrl)
+
         const shareUrl = await getShortUrl(longUrl);
+        console.log('shareUrl:', shareUrl)
         setShareUrl(shareUrl);
       }
     })();
-  }, [token, newFileName]);
+  }, [token]);
 
 
   useEffect(() => {
@@ -184,6 +169,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
       open={show}
       onClose={() => {
         onClose();
+        setShareUrl('');
       }}
       closeIcon={<></>}
       mainStyle={{
@@ -368,8 +354,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
-            if (canvasRef.current) {
+          <button className={styles.saveButton} style={{ opacity: shareUrl && canvasRef.current && !isSharing ? 1 : 0.5 }} onClick={() => {
+            if (shareUrl && canvasRef.current && !isSharing) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;
               link.href = canvasRef.current.toDataURL('image/png');
@@ -378,8 +364,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
               fail("Wait for a while");
             }
           }}>Save image</button>
-          <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current ? 1 : 0.5 }} onClick={async () => {
-            if (shareUrl) {
+          <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current && !isSharing ? 1 : 0.5 }} onClick={async () => {
+            if (shareUrl && canvasRef.current && !isSharing) {
               shareToX(shareCopy, shareUrl);
               onClose();
             }

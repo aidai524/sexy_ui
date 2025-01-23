@@ -42,4 +42,12 @@
   align-items: center;
   white-space: nowrap;
 }
+.TopCrown {
+  position: absolute;
+  width: 60px;
+  flex-shrink: 0;
+  z-index: 1;
+  top: 26px;
+  right: 55px;
+}
 /*#endregion*/
