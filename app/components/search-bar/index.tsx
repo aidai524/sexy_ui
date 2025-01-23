@@ -75,15 +75,12 @@ export default function SearchBar() {
               isMobile
                 ? {
                     left: 0,
-                    top: 0,
-                    backgroundColor: "#000"
+                    top: 0
                   }
                 : {
                     left: "50%",
-                    transform: "translateX(-50%)",
                     top: 6,
-                    backgroundColor: "#1B1B1B",
-                    border: "1px solid #323232",
+                    transform: "translateX(-50%)",
                     borderRadius: "20px 20px 0px 0px"
                   }
             }

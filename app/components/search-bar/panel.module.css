@@ -5,6 +5,10 @@
   width: calc(100% + 2px);
   height: 346px;
   overflow-y: auto;
+  background-color: #1b1b1b;
+  border: 1px solid #323232;
+  border-radius: 0px 0px 20px 20px;
+  border-top: none;
 }
 
 .Item {
