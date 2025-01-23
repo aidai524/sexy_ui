@@ -3,9 +3,9 @@
     /* max-width: 96vw; */
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 400px) {
   .cardWrapper {
-    transform: scale(0.9);
+    transform: scale(0.85);
     transform-origin: center;
   }
 }
