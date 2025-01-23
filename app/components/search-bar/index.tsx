@@ -73,7 +73,11 @@ export default function SearchBar() {
             }}
             style={
               isMobile
-                ? { left: 0, top: 0, backgroundColor: "#000" }
+                ? {
+                    left: 0,
+                    top: 0,
+                    backgroundColor: "#000"
+                  }
                 : {
                     left: "50%",
                     transform: "translateX(-50%)",
@@ -92,7 +96,7 @@ export default function SearchBar() {
                 type="text"
                 className={styles.Input}
                 value={searchText}
-                placeholder="Search project / ticker / CA"
+                placeholder="Search project name or address"
                 onChange={(ev) => {
                   setSearchText(ev.target.value);
                   if (ev.target.value) {

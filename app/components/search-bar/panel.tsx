@@ -58,6 +58,7 @@ export default function Panel({
               <ItemCloseIcon
                 onClick={(ev: any) => {
                   ev.stopPropagation();
+                  ev.nativeEvent.stopImmediatePropagation();
                   removeCachedItem(i);
                 }}
               />
