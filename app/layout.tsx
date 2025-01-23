@@ -6,6 +6,7 @@ import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
 import { UserAgentProvider } from "@/app/context/user-agent";
 import { Suspense, useEffect } from "react";
+import TGProvider from "./context/TGProvider";
 
 export default function RootLayout({
   children
@@ -42,13 +43,15 @@ export default function RootLayout({
         <script async src="/libs/add_to_homescreen/index.js" />
       </head>
       <body>
-        <WalletConnect>
-          <UserAgentProvider>
-            <Suspense>
+        <TGProvider>
+          <WalletConnect>
+            <UserAgentProvider>
+              <Suspense>
               <Layout>{children}</Layout>
             </Suspense>
-          </UserAgentProvider>
-        </WalletConnect>
+            </UserAgentProvider>
+          </WalletConnect>
+        </TGProvider>
       </body>
     </html>
   );

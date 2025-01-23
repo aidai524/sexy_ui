@@ -18,7 +18,7 @@ interface ProjectsState {
     hasMore: boolean,
     address?: string
   ) => void;
-  getProjectsByType: (type: Type) => any[];
+  getProjectsByType: (type: Type, isEmpty: boolean) => any[];
   updateProject: (type: Type, item: any) => void;
   clear: (type: Type) => void;
   getProjectById: (type: Type, id: number) => any;
@@ -77,15 +77,26 @@ export const useProjects = create(
           });
         }
       },
-      getProjectsByType: (type: Type) => {
+      getProjectsByType: (type: Type, isEmpty: boolean) => {
         const currentProjects = Object.values(
           type === "preLaunch" ? get().preProjects : get().launchProjects
         );
 
-        return currentProjects
-          .filter(
-            (project: any) => Date.now() - project.fetched_time < TIME_DURATION
-          )
+        const filteredProjects = currentProjects.filter(
+          (project: any) => Date.now() - project.fetched_time < TIME_DURATION
+        );
+
+        if (isEmpty) {
+          const mapList: any = filteredProjects.reduce(
+            (acc: any, curr: any) => ({ ...acc, [curr.id]: curr }),
+            {}
+          );
+          type === "preLaunch"
+            ? set({ preProjects: mapList })
+            : set({ launchProjects: mapList });
+        }
+
+        return filteredProjects
           .sort((a: any, b: any) => a.fetched_time - b.fetched_time)
           .map((project: any) => project.id);
       },
