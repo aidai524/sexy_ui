@@ -89,7 +89,6 @@ export default function Fullscreen({
     splitIndex.current = 4;
     setData([null, null, ...list.slice(0, 4)]);
   }, [list]);
-  console.log("data", data);
   return (
     <motion.div
       initial={{ opacity: 0 }}

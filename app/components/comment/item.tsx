@@ -75,8 +75,6 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
             }
             setisLoading(true);
 
-            console.log("item", item);
-
             const method = item.isLike ? httpAuthDelete : httpAuthPost;
             if (item.isUnlike && !item.isLike) {
               item.isUnlike = false;

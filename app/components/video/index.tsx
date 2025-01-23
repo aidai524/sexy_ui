@@ -56,7 +56,6 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
                 rect.right <= (window.innerWidth || document.documentElement.clientWidth);
               setIsShow(isInViewport)
               if (autoPlay && autoPlaySetting && !playManually) {
-                console.log('play')
                 videoRef.current?.play();
               }
             } else {

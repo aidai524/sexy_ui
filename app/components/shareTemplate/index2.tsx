@@ -57,7 +57,6 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
       const bloBData = base64ToBlob(base64Url);
       const newFileName = generateRandomString(10);
       const url = await postUpload(bloBData[0], newFileName, bloBData[1]);
-      console.log("url:", url);
 
       return newFileName;
     }
@@ -236,7 +235,6 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
 
               try {
                 const shreUrl = await getShortUrl(longUrl);
-                console.log("shreUrl:", shreUrl);
 
                 shareToX(token.tokenName, shreUrl);
               } catch (e) {

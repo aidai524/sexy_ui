@@ -164,7 +164,6 @@ export default function BuySellPump({
               slip / 100
             )
               .then((res) => {
-                console.log("res:", res, debounceVal);
 
                 setBuyIn(debounceVal);
                 setBuyInSol(new Big(res).div(10 ** SOL.tokenDecimals).toString());
@@ -530,8 +529,6 @@ export default function BuySellPump({
                       setIsLoading(true);
                     } else if (activeIndex === 1) {
                       setIsLoading(true);
-
-                      console.log("sellOut:", sellOut);
 
                       hash = await sell(Number(sellOut), slip / 100);
                     }

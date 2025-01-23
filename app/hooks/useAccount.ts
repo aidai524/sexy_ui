@@ -80,8 +80,6 @@ export function useAccount() {
               maxSupportedTransactionVersion: 0
             });
 
-            console.log("transactionDetails:", transactionDetails);
-
             if (transactionDetails && !transactionDetails.meta?.err) {
               done = true;
             } else {

@@ -30,6 +30,8 @@ import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import Big from "big.js";
 import Media from "../thumbnail/media";
+import { useUser } from "@/app/store/useUser";
+import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   token: Project | undefined;
@@ -43,6 +45,7 @@ const domain = process.env.NEXT_PUBLIC_DOMAIN || "https://stage.flipn.fun";
 function Card({ token, show, onClose }: Props, ref: any) {
   const containerRef = useRef(null);
   const { userInfo } = useAuth();
+  const { userInfo:  userInforData } = useUser();
   const [isSharing, setIsSharing] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
   const { total: totalHolders } = useHolders(token);
@@ -50,6 +53,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const canvasRef = useRef<any>(null);
   const [qrcodeCanvas, setQrcodeCanvas] = useState<any>(null);
   const [shareCopy, setShareCopy] = useState("");
+  const { innerWidth } = useUserAgent();
+  const [style, setStyle] = useState<any>({});
 
   useImperativeHandle(ref, () => ({
     getShareImg
@@ -99,7 +104,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
         const base64Url = canvas2.toDataURL("image/webp");
         const bloBData = base64ToBlob(base64Url);
         const url = await postUpload(bloBData[0], token.address!, bloBData[1]);
-        console.log("url:", url);
       }
 
       return token.address!;
@@ -134,8 +138,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
           token.address!
         )}&address=${token.address}&referral=${userInfo.address}`;
 
-        console.log('longUrl:', longUrl)
-
         const shareUrl = await getShortUrl(longUrl);
         console.log('shareUrl:', shareUrl)
         setShareUrl(shareUrl);
@@ -161,8 +163,17 @@ function Card({ token, show, onClose }: Props, ref: any) {
     getShareCopy();
   }, [token]);
 
-  if (!token || !show) return null;
+  useEffect(() => {
+    console.log('innerWidth', innerWidth)
+    if (innerWidth < 400) {
+      setStyle({
+        transform: 'scale(0.85)',
+        transformOrigin: 'center',
+      })
+    }
+  }, [innerWidth])
 
+  if (!token || !show) return null;
 
   return (
     <Modal
@@ -173,11 +184,11 @@ function Card({ token, show, onClose }: Props, ref: any) {
       }}
       closeIcon={<></>}
       mainStyle={{
-        border: 0
+        border: 0,
+        ...style,
       }}
       closeStyle={{
-        top: 55,
-        display: "none"
+        top: -10,
       }}
       maskClose={true}
     >
@@ -271,12 +282,14 @@ function Card({ token, show, onClose }: Props, ref: any) {
               {
                 checkFileType(token.tokenImg) === 'video' ? (
                   <img
+                    crossOrigin="anonymous"
                     src={token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
                     className={styles.tokenImg}
                   />
                 ) : (
                   <img
+                    crossOrigin="anonymous"
                     src={token.tokenImg || token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
                     className={styles.tokenImg}
@@ -289,7 +302,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
           <div className={styles.tokenInfo}>
             <div className={styles.tokenIcon}>
-              <img src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
+              <img crossOrigin="anonymous" src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
             </div>
             <div style={{ flex: 1 }}>
               <div className={styles.tokenName}>{token.tokenName}</div>
@@ -321,8 +334,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
             <div className={styles.inviteBox}>
               <div>
                 <img
-                  src={userInfo?.icon || "/img/share/invite.png"}
-                  alt="Flip"
+                  crossOrigin="anonymous"
+                  src={userInforData?.icon || "/img/share/invite.png"}
                   className={styles.invite}
                 />
               </div>
@@ -359,7 +372,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;
               link.href = canvasRef.current.toDataURL('image/png');
+              document.body.appendChild(link);
               link.click();
+              document.body.removeChild(link);
             } else {
               fail("Wait for a while");
             }

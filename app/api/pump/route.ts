@@ -17,8 +17,6 @@ export async function GET(request: Request | NextRequest) {
 
     const token = parsedUrl.searchParams.get('token')
 
-    console.log('token:', token)
-
     const v = await fetch(prefix + token, params)
 
     // console.log('v:', await v.json())

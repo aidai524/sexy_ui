@@ -51,8 +51,6 @@ export default function useJupiter({ tokenAddress }: Params) {
         const outToken = type === "buy" ? tokenAddress : wsol;
         const swapInfo = await fetchSwapInfo(inputToken, outToken, amount, 0);
 
-        console.log("swapInfo:", swapInfo);
-
         return swapInfo;
       }
       return null;
