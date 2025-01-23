@@ -30,6 +30,7 @@ import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import Big from "big.js";
 import Media from "../thumbnail/media";
+import { useUser } from "@/app/store/useUser";
 
 interface Props {
   token: Project | undefined;
@@ -43,6 +44,7 @@ const domain = process.env.NEXT_PUBLIC_DOMAIN || "https://stage.flipn.fun";
 function Card({ token, show, onClose }: Props, ref: any) {
   const containerRef = useRef(null);
   const { userInfo } = useAuth();
+  const { userInfo:  userInforData } = useUser();
   const [isSharing, setIsSharing] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
   const { total: totalHolders } = useHolders(token);
@@ -164,6 +166,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
   if (!token || !show) return null;
 
+  console.log('token:', userInforData, userInfo)
 
   return (
     <Modal
@@ -324,8 +327,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               <div>
                 <img
                   crossOrigin="anonymous"
-                  src={userInfo?.icon || "/img/share/invite.png"}
-                  alt="Flip"
+                  src={userInforData?.icon || "/img/share/invite.png"}
                   className={styles.invite}
                 />
               </div>
