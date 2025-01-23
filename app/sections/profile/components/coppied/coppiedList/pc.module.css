@@ -241,29 +241,4 @@
     justify-content: center;
 }
 
-.ClosePopoverButtons button {
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-    font-size: 12px;
-    height: 34px;
-    flex: 1;
-    font-weight: 500;
-    font-family: Unbounded;
-}
 
-.ClosePopoverButtons button:hover {
-    opacity: 0.8;
-}
-
-.ClosePopoverButtons button:first-child {
-    background: transparent;
-    color: white;
-    border: 1px solid #FBCA04;
-}
-
-.ClosePopoverButtons button:last-child {
-    background: #FFD84D;
-    color: #000;
-    border: 1px solid transparent;
-}

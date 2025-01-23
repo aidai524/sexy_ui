@@ -4,58 +4,13 @@ import { defaultAvatar } from "@/app/utils/config";
 import { RingChart } from '../copyAmountPie';
 import Popover, { PopoverPlacement, PopoverTrigger } from '@/app/components/popover';
 import useUserInfo from '@/app/hooks/useUserInfo';
-import { getTokenMeta } from '@/app/utils/solanaScanApi';
-import { useConnection } from '@solana/wallet-adapter-react';
-import { PublicKey } from '@solana/web3.js';
 import Big from 'big.js';
+import { useCopyTokenInfos } from '@/app/sections/profile/hooks/useCopyTokenInfos';
 
 export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading}: any) {
-    const { connection } = useConnection();
     const { userInfo: copyUserInfo } = useUserInfo(itemInfo?.from);
-    const [tokensInfo, setTokensInfo] = useState<any[]>([]);
+    const tokensInfo = useCopyTokenInfos(itemInfo?.tokens);
 
-    useEffect(() => {
-        const loadTokensInfo = async () => {
-            if (!itemInfo?.tokens) return;
-            
-            const tokenInfoPromises = itemInfo.tokens.slice(0, 5).map((item: any) => 
-                getTokenInfo(item.token)
-            );
-            const results = await Promise.all(tokenInfoPromises);
-            setTokensInfo(results);
-        };
-
-        loadTokensInfo();
-    }, [itemInfo?.tokens]);
-
-    const getTokenInfo = async (address: string) => {
-        try {
-            if (process.env.NEXT_PUBLIC_NET === "Devnet") {
-                const tokenSupply = await connection.getTokenSupply(
-                    new PublicKey(address),
-                    "confirmed"
-                );
-                return {
-                    supply: tokenSupply.value.uiAmount || 0,
-                    icon: defaultAvatar,
-                    symbol: 'token'
-                };
-            } else {
-                const tokenInfo = await getTokenMeta(address);
-                return {
-                    supply: tokenInfo.data.supply,
-                    icon: tokenInfo.data.icon || defaultAvatar,
-                    symbol: tokenInfo.data.symbol || 'token'
-                };
-            }
-        } catch (error) {
-            return {
-                supply: 0,
-                icon: defaultAvatar,
-                symbol: 'token'
-            };
-        }
-    };
 
   return (
     <div className={styles.ItemBox}>
@@ -130,7 +85,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
         <div className={styles.CoppiedTokens}>
             <div className={styles.TitlePubStyle}>{itemInfo?.tokens?.length || 0} Coppied Tokens</div>
             <div className={styles.TokenIconBox}>
-               {tokensInfo.map((tokenInfo, index) => {
+               {tokensInfo.map((tokenInfo:any, index:number) => {
                     if (index === 4) {
                         return <div key={index} className={styles.MoreTokens}>...</div>
                     }

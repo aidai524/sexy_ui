@@ -4,62 +4,14 @@ import Modal from "@/app/components/modal";
 import { formatAddress } from "@/app/utils";
 import { defaultAvatar } from "@/app/utils/config";
 import useUserInfo from "@/app/hooks/useUserInfo";
-import { getTokenMeta } from "@/app/utils/solanaScanApi";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
+import { useCopyTokenInfos } from "@/app/sections/profile/hooks/useCopyTokenInfos";
 
 
 
 export default function CloseCopyTips({ show, onClose, copiedInfo, handleCloseAndSell, handleClose }: any) {
     const { userInfo: copyUserInfo } = useUserInfo(copiedInfo?.from);
-    console.log(copiedInfo)
-    console.log(copyUserInfo)
+    const tokensInfo = useCopyTokenInfos(copiedInfo?.tokens);
 
-    const [tokensInfo, setTokensInfo] = useState<any[]>([]);
-    const { connection } = useConnection();
-
-    useEffect(() => {
-        const loadTokensInfo = async () => {
-            if (!copiedInfo?.tokens) return;
-            
-            const tokenInfoPromises = copiedInfo.tokens.slice(0, 5).map((item: any) => 
-                getTokenInfo(item.token)
-            );
-            const results = await Promise.all(tokenInfoPromises);
-            setTokensInfo(results);
-        };
-
-        loadTokensInfo();
-    }, [copiedInfo?.tokens]);
-
-    const getTokenInfo = async (address: string) => {
-        try {
-            if (process.env.NEXT_PUBLIC_NET === "Devnet") {
-                const tokenSupply = await connection.getTokenSupply(
-                    new PublicKey(address),
-                    "confirmed"
-                );
-                return {
-                    supply: tokenSupply.value.uiAmount || 0,
-                    icon: defaultAvatar,
-                    symbol: 'token'
-                };
-            } else {
-                const tokenInfo = await getTokenMeta(address);
-                return {
-                    supply: tokenInfo.data.supply,
-                    icon: tokenInfo.data.icon || defaultAvatar,
-                    symbol: tokenInfo.data.symbol || 'token'
-                };
-            }
-        } catch (error) {
-            return {
-                supply: 0,
-                icon: defaultAvatar,
-                symbol: 'token'
-            };
-        }
-    };
   return (
     <Modal
       open={show}
@@ -86,7 +38,7 @@ export default function CloseCopyTips({ show, onClose, copiedInfo, handleCloseAn
         <div className={styles.CoppiedTokens}>
             <div className={styles.TitlePubStyle}>Coppied Tokens</div>
             <div className={styles.TokenIconBox}>
-               {tokensInfo.map((tokenInfo, index) => {
+               {tokensInfo.map((tokenInfo:any, index:number) => {
                     if (index === 4) {
                         return <div key={index} className={styles.MoreTokens}>...</div>
                     }

@@ -4,61 +4,30 @@ import { defaultAvatar } from "@/app/utils/config";
 import { RingChart } from '../copyAmountPie';
 import Popover, { PopoverPlacement, PopoverTrigger } from '@/app/components/popover';
 import useUserInfo from '@/app/hooks/useUserInfo';
-import { getTokenMeta } from '@/app/utils/solanaScanApi';
-import { useConnection } from '@solana/wallet-adapter-react';
-import { PublicKey } from '@solana/web3.js';
 import Big from 'big.js';
-import { useAuth } from '@/app/context/auth';
+import { useCopyTokenInfos } from '@/app/sections/profile/hooks/useCopyTokenInfos';
+import MainBtn from '@/app/components/mainBtn';
 
 
 export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading, handleCloseAndSell, handleClose}: any) {
-    const { connection } = useConnection();
     const { userInfo: copyUserInfo } = useUserInfo(itemInfo?.from);
-    const { userInfo } = useAuth();
-    const [tokenInfos, setTokenInfos] = useState<{[key: string]: any}>({});
-
-   useEffect(() => {
-        const fetchTokenInfos = async () => {
-            if (itemInfo?.tokens) {
-                const infos: {[key: string]: any} = {};
-                for (const item of itemInfo.tokens) {
-                    infos[item.token] = await getTokenInfo(item.token);
-                }
-                setTokenInfos(infos);
-            }
-        };
-        fetchTokenInfos();
-    }, [itemInfo?.tokens]);
-
-    const getTokenInfo = async (address: string) => {
-        try {
-            if (process.env.NEXT_PUBLIC_NET === "Devnet") {
-                const tokenSupply = await connection.getTokenSupply(
-                    new PublicKey(address),
-                    "confirmed"
-                );
-                return {
-                    supply: tokenSupply.value.uiAmount || 0,
-                    icon: defaultAvatar,
-                    symbol: 'token'
-                };
-            } else {
-                const tokenInfo = await getTokenMeta(address);
-                return {
-                    supply: tokenInfo.data.supply,
-                    icon: tokenInfo.data.icon || defaultAvatar,
-                    symbol: tokenInfo.data.symbol || 'token'
-                };
-            }
-        } catch (error) {
-            return {
-                supply: 0,
-                icon: defaultAvatar,
-                symbol: 'token'
-            };
-        }
-    };
-
+    const tokenInfos = useCopyTokenInfos(itemInfo?.tokens);
+    const commonStyles = {
+        borderRadius: '30px',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: '12px',
+        height: '34px',
+        flex: '1',
+        fontWeight: '500',
+        fontFamily: 'Unbounded',
+    }
+    const commonStyles2 = {
+        background: 'transparent',
+        color: '#fff',
+        border: '1px solid #FBCA04',
+    }
+    
   return (
     <div className={styles.ItemBox}>
       
@@ -183,12 +152,14 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
                 <div className={styles.ClosePopoverContent}>
                     <h3>You're going to close the copy trade,do you want to sell the tokens you copied?</h3>
                     <div className={styles.ClosePopoverButtons}>
-                        <button onClick={() => {
+                       
+                        <MainBtn onClick={() => {
                             handleCloseAndSell(itemInfo);
-                        }}>Close and Sell</button>
-                        <button onClick={() => {
+                        }} style={Object.assign({}, commonStyles, commonStyles2)}>Close and Sell</MainBtn>
+                        
+                        <MainBtn onClick={() => {
                             handleClose(itemInfo);
-                        }}>Just Close</button>
+                        }} style={commonStyles}>Just Close</MainBtn>
                     </div>
                 </div>
             }
