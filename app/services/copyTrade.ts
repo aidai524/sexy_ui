@@ -25,6 +25,19 @@ class CopyTrade {
   private async handleResponse(response: Response) {
     return await response.json();
   }
+  // copy traders userInfo
+  async getCopyTradersUserInfo({address, chain}: {address: string, chain: string}): Promise<{data: SmartMoneyAddress | null}> {
+    try {
+      const queryParams = new URLSearchParams({ address, chain }).toString();
+      const response = await fetch(`${this.baseURL}/copy_trade/users?${queryParams}`, {
+        method: 'GET',
+        headers: this.headers,
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      return {data: null};
+    }
+  }
 
   // 
   async getSmartMoniesAddress({address, chain}: {address: string, chain: string}): Promise<{data: SmartMoneyAddress | null}> {
@@ -135,6 +148,27 @@ class CopyTrade {
     }
   } 
 
+  // swap copy tokens
+  async swapCopyTokens(params: {
+    walletAddress: string;
+    chain: string;
+    type: number;
+    sellAll: boolean;
+    tokens: string[];
+    id: string;
+  }) {
+    try {
+      const response = await fetch(`${this.baseURL}/copy_trade/swap_tokens`, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify(params)
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
 }
 
 export default CopyTrade;

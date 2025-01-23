@@ -7,11 +7,12 @@ import { fail } from "@/app/utils/toast";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import {useCloseCopyTrade} from '@/app/sections/profile/hooks/useCloseCopyTrade';
-
+import {useSwapCopyTokens} from '@/app/sections/profile/hooks/useSwapCopyTokens';
 
 export default function Coppied({ isOther }: any) {
   const CopyTradeService = new CopyTrade();
   const { isLoading: isCloseCopyTradeLoading, handleCloseCopyTrade } = useCloseCopyTrade();
+  const { isLoading: isSwapCopyTokensLoading, handleSwapCopyTokens } = useSwapCopyTokens();
   const homeTabStore: any = useHomeTab();
   const { userInfo } = useAuth();
   const [copyTradeMap, setCopyTradeMap] = useState<any>({
@@ -95,6 +96,14 @@ export default function Coppied({ isOther }: any) {
     if (item?.tokens?.length > 0) {
       console.log(item);
       // handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 2});
+     const swapRes = await handleSwapCopyTokens({id: item?.id, sellAll: true, tokens: [],type:2, walletAddress: userInfo?.address, chain: "solana"});
+     console.log(swapRes)
+     if (swapRes) {
+      const closeRes = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
+      if (closeRes) {
+        loadMore();
+      }
+     }
     } else {
       const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
       if (res) {

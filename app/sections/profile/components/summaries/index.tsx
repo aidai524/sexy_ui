@@ -13,10 +13,10 @@ const Summaries = (props: any) => {
   const { address, isFollower, setRefreshNum, refreshNum, userInfo, isOther } = props;
   const [showModal, setShowModal] = useState(false);
   const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
-
+  const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<SmartMoneyAddress | null>(null);
   const getCopyTradeDetails = async () => {
-    const { data } = await CopyTradeService.getSmartMoniesAddress({address, chain: 'solana'});
-    setSmartMoniesInfo(data);
+    const { data } = await CopyTradeService.getCopyTradersUserInfo({address, chain: 'solana'});
+    setCopyTradersUserInfo(data);
   }
 
   useEffect(() => {
@@ -54,24 +54,24 @@ const Summaries = (props: any) => {
           <div
             className={[styles.SummaryValue, styles.SummaryValueBuy].join(" ")}
           >
-            +{numberFormatter(smartMoniesInfo?.pnl7D, 2, true, { prefix: "$", isShort: true })}
+            +{numberFormatter(copyTradersUserInfo?.pnl7D, 2, true, { prefix: "$", isShort: true })}
           </div>
         </div>
         <div className={styles.Summary}>
           <div className={styles.SummaryLabel}>7D Win Rate</div>
           <div className={[styles.SummaryValue].join(" ")}>
-            {numberFormatter(smartMoniesInfo?.winRate7D, 1, true, { isShort: true })}%
+            {numberFormatter(copyTradersUserInfo?.winRate7D, 1, true, { isShort: true })}%
           </div>
         </div>
         <div className={styles.Summary}>
           <div className={styles.SummaryLabel}>Buy/Sell</div>
           <div className={[styles.SummaryValue].join(" ")}>
             <div className={[styles.SummaryValueBuy].join(" ")}>
-              {numberFormatter(smartMoniesInfo?.buys7D, 0, true, { isShort: true })}
+              {numberFormatter(copyTradersUserInfo?.buys7D, 0, true, { isShort: true })}
             </div>
             <div className={[].join(" ")}>/</div>
             <div className={[styles.SummaryValueSell].join(" ")}>
-              {numberFormatter(smartMoniesInfo?.sells7D, 0, true, { isShort: true })}
+              {numberFormatter(copyTradersUserInfo?.sells7D, 0, true, { isShort: true })}
             </div>
           </div>
         </div>
