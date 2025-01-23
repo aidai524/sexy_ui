@@ -31,6 +31,7 @@ import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import Big from "big.js";
 import Media from "../thumbnail/media";
 import { useUser } from "@/app/store/useUser";
+import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   token: Project | undefined;
@@ -52,6 +53,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const canvasRef = useRef<any>(null);
   const [qrcodeCanvas, setQrcodeCanvas] = useState<any>(null);
   const [shareCopy, setShareCopy] = useState("");
+  const { innerWidth } = useUserAgent();
+  const [style, setStyle] = useState<any>({});
 
   useImperativeHandle(ref, () => ({
     getShareImg
@@ -158,6 +161,16 @@ function Card({ token, show, onClose }: Props, ref: any) {
     getShareCopy();
   }, [token]);
 
+  useEffect(() => {
+    console.log('innerWidth', innerWidth)
+    if (innerWidth < 400) {
+      setStyle({
+        transform: 'scale(0.85)',
+        transformOrigin: 'center',
+      })
+    }
+  }, [innerWidth])
+
   if (!token || !show) return null;
 
   return (
@@ -169,7 +182,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
       }}
       closeIcon={<></>}
       mainStyle={{
-        border: 0
+        border: 0,
+        ...style,
       }}
       closeStyle={{
         top: -10,
