@@ -42,9 +42,9 @@ export const useCopyTrade = () => {
             errorToleranceRatio: 0.1
           }
         });
-        const {messageData, session} = res.data;
         
         if (res.code == 200) {
+          const {messageData, session} = res.data;
           if (!signTransaction || !publicKey) {
             fail("Wallet not connected");
             return false;
