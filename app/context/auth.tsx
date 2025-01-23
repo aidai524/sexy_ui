@@ -126,7 +126,7 @@ export const AuthProvider: React.FC<{
           <button
             style={{ fontSize: 28 }}
             onClick={async () => {
-              await updateCurrentUserInfo();
+              updateCurrentUserInfo();
               await initAuthorization();
               setAccountRefresher(accountRefresher + 1);
               setShowSignatureModal(false);

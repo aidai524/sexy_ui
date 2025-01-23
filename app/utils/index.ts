@@ -215,8 +215,7 @@ export async function bufferToBase64(buffer: Uint8Array) {
   return base64url.slice(base64url.indexOf(",") + 1);
 }
 
-let isInitingAuthorization = false,
-  authorization: string | undefined;
+let authorization: string | undefined;
 const watingQuene: any[] = [];
 
 // const rejectDuration = 1000 * 30;
@@ -226,7 +225,7 @@ export async function getAuthorization() {
   authorization = getAuthorizationByLocal();
 
   if (!authorization) {
-    if (isInitingAuthorization) {
+    if (window?.isInitingAuthorization) {
       return new Promise((resolve, reject) => {
         watingQuene.push(resolve);
       });
@@ -268,7 +267,7 @@ export async function initAuthorization() {
   //   return;
   // }
 
-  if (isInitingAuthorization) {
+  if (window?.isInitingAuthorization) {
     return;
   }
   // @ts-ignore
@@ -279,7 +278,7 @@ export async function initAuthorization() {
     return;
   }
 
-  isInitingAuthorization = true;
+  window.isInitingAuthorization = true;
 
   const now = Date.now();
   const text = `login FlipN,time:${now}`;
@@ -316,7 +315,7 @@ export async function initAuthorization() {
     logOut();
   }
 
-  isInitingAuthorization = false;
+  window.isInitingAuthorization = false;
 }
 
 export function logOut() {
@@ -448,7 +447,6 @@ export async function upload(
   scala = 2
 ) {
   let _file: any = file;
-
 
   if (isImage) {
     const url = await new Promise<string | void>((resolve) => {
@@ -739,21 +737,20 @@ export async function getPointByVolume(volume: string, type: "sexy" | "pump") {
 }
 
 export function formatNumberWithCommas(num: string | number) {
-  if (typeof num === 'number') {
+  if (typeof num === "number") {
     num = num.toString();
   }
-  
-  const parts = num.split('.');
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  return parts.join('.');
+
+  const parts = num.split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return parts.join(".");
 }
 
-
-export function checkFileType(file: string): 'image' | 'video' | null {
+export function checkFileType(file: string): "image" | "video" | null {
   if (videoReg.test(file)) {
-    return 'video';
+    return "video";
   } else if (imgReg.test(file)) {
-    return 'image';
+    return "image";
   }
   return null;
 }
