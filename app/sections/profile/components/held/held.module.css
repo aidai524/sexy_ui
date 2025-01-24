@@ -1,4 +1,6 @@
 .main {
+  height: 100%;
+  overflow: auto;
   .heldToken {
     display: flex;
     align-items: center;
@@ -19,6 +21,7 @@
       .name {
         color: #fff;
         font-size: 14px;
+        white-space: nowrap;
       }
       .viewCoin {
         flex-shrink: 0;
