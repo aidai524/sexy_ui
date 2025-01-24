@@ -47,6 +47,11 @@ export function useWhitelist() {
     async () => {
       // Whitelist stage
       if (AIRDROP_STAGE.WHITELIST.isStage) {
+        if (!address) {
+          redirect2Airdrop();
+          return;
+        }
+
         const isWhitelist = await checkWhiteList();
         if (!isWhitelist) {
           redirect2Whitelist();
