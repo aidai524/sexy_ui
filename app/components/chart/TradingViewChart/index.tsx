@@ -52,10 +52,15 @@ function TradingViewChart(
   const fullscreenRef = useRef<any>();
   const containerRef = useRef<any>();
   const tvWidgetRef = useRef<IChartingLibraryWidget>();
+  const pageRef = useRef(0);
+  const hasNextRef = useRef(true);
 
   const [loading, setLoading] = useState(false);
 
-  const datafeed = useMemo(() => datafeedFn(address, tvWidgetRef), [address]);
+  const datafeed = useMemo(
+    () => datafeedFn(address, tvWidgetRef, pageRef, hasNextRef),
+    [address]
+  );
 
   const { run } = useDebounceFn(
     () => {

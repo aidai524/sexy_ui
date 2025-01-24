@@ -12,8 +12,6 @@ import {
 } from "../fetch-data";
 import addPriceMarker from "./add-price-marker";
 
-let page = 0;
-let hasNext = true;
 let lastPrice = 0;
 let pullingQueryPriceTimer: any = null;
 let kChartSubscriberList: Record<string, number> = {};
@@ -53,8 +51,15 @@ const configurationData: DatafeedConfiguration = {
 
 const datafeed: (
   address: string,
-  tvWidgetRef: any
-) => ChartingLibraryWidgetOptions["datafeed"] = (address, tvWidgetRef) => ({
+  tvWidgetRef: any,
+  pageRef: any,
+  hasNextRef: any
+) => ChartingLibraryWidgetOptions["datafeed"] = (
+  address,
+  tvWidgetRef,
+  pageRef,
+  hasNextRef
+) => ({
   onReady: (callback) => {
     setTimeout(() => callback(configurationData));
   },
@@ -96,19 +101,20 @@ const datafeed: (
     onErrorCallback
   ) => {
     try {
-      if (!hasNext) {
+      if (!hasNextRef.current) {
         onHistoryCallback([], { noData: true });
         return;
       }
-      page++;
+      pageRef.current = pageRef.current + 1;
 
       const { data, hasNextPage } = await fetchData(
         address,
         getGranularityByResolution(resolution),
-        page
+        pageRef.current
       );
       lastPrice = data[data.length - 1][1];
-      hasNext = hasNextPage;
+
+      hasNextRef.current = hasNextPage;
       const bars = data.map((item: any) => ({
         time: item[6],
         low: item[3],
