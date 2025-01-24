@@ -4,11 +4,11 @@ import React, { useMemo } from "react";
 import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
-  TorusWalletAdapter,
+  TorusWalletAdapter
 } from "@solana/wallet-adapter-wallets";
 import {
   ConnectionProvider,
-  WalletProvider,
+  WalletProvider
 } from "@solana/wallet-adapter-react";
 import { Adapter, WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletModalProvider } from "@/app/libs/solana/wallet-adapter/modal";
@@ -18,7 +18,7 @@ import { OkxWalletUIAdapter } from "@/app/libs/solana/wallet-adapter/okx/ui";
 import { HotWalletAdapter } from "hot-wallet-sdk/adapter/solana";
 import {
   WalletConnectWalletAdapter,
-  WalletConnectWalletAdapterConfig,
+  WalletConnectWalletAdapterConfig
 } from "@/app/libs/solana/wallet-adapter/walletconnect";
 import "@/app/libs/solana/wallet-adapter/modal/index.css";
 import { getDeviceType } from "../utils";
@@ -27,7 +27,7 @@ const WALLET_CONNECT_METADATA = {
   name: "FlipN",
   description: "FlipN",
   url: "https://app.flipn.fun",
-  icons: ["https://app.flipn.fun/favicon.ico"],
+  icons: ["https://app.flipn.fun/favicon.ico"]
 };
 
 const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig["options"] = {
@@ -37,8 +37,8 @@ const WALLET_CONNECT_OPTIONS: WalletConnectWalletAdapterConfig["options"] = {
     analytics: false,
     email: false,
     socials: false,
-    emailShowWallets: false,
-  },
+    emailShowWallets: false
+  }
 };
 
 // @ts-ignore
@@ -58,7 +58,7 @@ function getEndpoint(netType: WalletAdapterNetwork) {
 }
 
 export default function WalletConnect({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
@@ -70,14 +70,14 @@ export default function WalletConnect({
     return (
       getDeviceType().mobile
         ? [
-            // new PhantomWalletAdapter(),
-            // new SolflareWalletAdapter(),
+            new PhantomWalletAdapter(),
+            new SolflareWalletAdapter(),
             new OkxWalletUIAdapter(),
-            new HotWalletAdapter(),
+            // new HotWalletAdapter(),
             new WalletConnectWalletAdapter({
               network,
-              options: WALLET_CONNECT_OPTIONS,
-            }),
+              options: WALLET_CONNECT_OPTIONS
+            })
           ]
         : [
             new OkxWalletAdapter(),
@@ -85,8 +85,8 @@ export default function WalletConnect({
             new SolflareWalletAdapter(),
             new WalletConnectWalletAdapter({
               network,
-              options: WALLET_CONNECT_OPTIONS,
-            }),
+              options: WALLET_CONNECT_OPTIONS
+            })
           ]
     ) as Adapter[];
   }, [network]);
