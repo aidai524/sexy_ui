@@ -1,6 +1,7 @@
 import styles from "./index.module.css";
 import CopyTrade from '@/app/services/copyTrade'
 import React,{ useState, useEffect } from 'react';
+import { SHOW_COPY_TRADE } from '@/app/config/copyTrade';
 
 
 export default function FollowerActions({ userInfo, style, onItemClick }: any) {
@@ -35,10 +36,12 @@ export default function FollowerActions({ userInfo, style, onItemClick }: any) {
         <span className={styles.follwerAmount}>{userInfo?.following || 0}</span>
         <span>Following</span>
       </div>
-      {/*<div className={styles.follwerItem}>
-        <span className={styles.follwerAmount}>{userInfo?.likeNum}</span>
-        <span>Coppied</span>
-      </div>*/}
+      {SHOW_COPY_TRADE && (
+        <div className={styles.follwerItem}>
+          <span className={styles.follwerAmount}>{copyTradersUserInfo?.copied}</span>
+          <span>Coppied</span>
+        </div>
+      )}
     </div>
   );
 }
