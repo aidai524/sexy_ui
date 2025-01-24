@@ -5,8 +5,12 @@
 }
 
 .Container {
-  padding-top: calc(50vh - 360px);
   padding-right: 400px;
+  height: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
 }
 
 .Content {

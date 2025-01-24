@@ -13,15 +13,9 @@ export default function Carousel() {
         top: isMobile ? "-56px" : "150px"
       }}
     >
-      {
-        isMobile && (
-          <img
-            src="/img/trends/crown.svg"
-            alt=""
-            className={styles.TopCrown}
-          />
-        )
-      }
+      {isMobile && (
+        <img src="/img/trends/crown.svg" alt="" className={styles.TopCrown} />
+      )}
       <div
         className={styles.Carousel}
         style={{
@@ -36,7 +30,7 @@ export default function Carousel() {
           transition={{
             repeat: Infinity,
             ease: "linear",
-            duration: 5
+            duration: 2
           }}
           style={{
             height: isMobile ? 33 : 18,
