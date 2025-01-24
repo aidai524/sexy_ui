@@ -150,7 +150,7 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
             <Popover
             content={
                 <div className={styles.ClosePopoverContent}>
-                    <h3>You're going to close the copy trade,do you want to sell the tokens you copied?</h3>
+                    <h3>You&apos;re going to close the copy trade,do you want to sell the tokens you copied?</h3>
                     <div className={styles.ClosePopoverButtons}>
                        
                         <MainBtn onClick={() => {
