@@ -92,8 +92,8 @@ export const useProjects = create(
             {}
           );
           type === "preLaunch"
-            ? set({ preProjects: mapList, preIndex: 0 })
-            : set({ launchProjects: mapList, launchIndex: 0 });
+            ? set({ preProjects: mapList })
+            : set({ launchProjects: mapList });
         }
 
         return filteredProjects

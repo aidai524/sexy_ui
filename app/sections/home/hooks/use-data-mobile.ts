@@ -80,7 +80,8 @@ export default function useData(launchType: Type) {
       handleList(false);
       return;
     }
-    setList(list);
+
+    setList(_list);
 
     if (_list.length - projectsStore.getIndex(launchType) > left_num) {
       setIsLoading(false);
