@@ -1,7 +1,7 @@
 import styles from "./index.module.css";
 import CopyTrade from '@/app/services/copyTrade'
 import React,{ useState, useEffect } from 'react';
-import { SHOW_COPY_TRADE } from '@/app/config/copyTrade';
+import { SHOW_COPY_TRADE } from '@/app/utils/config';
 
 
 export default function FollowerActions({ userInfo, style, onItemClick }: any) {
