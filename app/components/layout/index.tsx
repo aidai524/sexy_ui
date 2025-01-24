@@ -31,7 +31,6 @@ export default function Layout(props: any) {
   useEffect(() => {
     httpGet("/config").then((res) => {
       if (res.code === 0) {
-        res.data.AirdropStartTime = new Date("2025-01-25 20:00").getTime();
         const showAirdropEntry =
           res.data.AirdropStartTime &&
           Date.now() + AIRDROP_STAGE.PREVIEW.endTime >
