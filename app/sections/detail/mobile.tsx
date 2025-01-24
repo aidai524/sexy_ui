@@ -70,6 +70,16 @@ export default function Detail({ token, onBack, onSuccess }: any) {
     }
   }, [onBack, token]);
 
+  useEffect(() => {
+    const prevent = function (e: any) {
+      e.preventDefault();
+    };
+    document.body.addEventListener("touchmove", prevent);
+    return () => {
+      document.body.removeEventListener("touchmove", prevent);
+    };
+  }, []);
+
   if (isLoading) {
     return (
       <div className={styles.loadingBox}>
