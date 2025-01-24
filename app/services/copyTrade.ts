@@ -180,6 +180,29 @@ class CopyTrade {
       return error;
     }
   }
+
+  // top traders
+  async getSmartMonies(params: {
+    chain: string;
+    page: number;
+    pageSize: number;
+  }) {
+    try {
+      const queryParams = new URLSearchParams({
+        chain: params.chain,
+        page: params.page.toString(),
+        pageSize: params.pageSize.toString()
+      }).toString();
+      const response = await fetch(`${this.baseURL}/copy_trade/smart_monies?${queryParams}`, {
+        method: 'GET',
+        headers: this.headers
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
 }
 
 export default CopyTrade;
