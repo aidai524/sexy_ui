@@ -76,6 +76,15 @@ export function useWhitelist() {
 
         const diff = StartTime.diff(CurrentTime);
 
+        // Whitelist stage
+        if (diff > AIRDROP_STAGE.WHITELIST.endTime) {
+          const isWhitelist = await checkWhiteList();
+          if (!isWhitelist) {
+            redirect2Whitelist();
+          }
+          return;
+        }
+
         // preview stage
         if (diff > AIRDROP_STAGE.PREVIEW.endTime) {
           redirect2Airdrop();
