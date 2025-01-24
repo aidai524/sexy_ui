@@ -50,14 +50,10 @@ export function useWhitelist() {
       const CurrentTime = dayjs();
       const StartTime = dayjs(AirdropStartTime);
       const isBeforeAirdrop = dayjs(CurrentTime).isBefore(StartTime);
-      const diff = StartTime.diff(CurrentTime);
 
       // airdrop not started
       if (isBeforeAirdrop) {
         if (!address) {
-          if (diff < AIRDROP_STAGE.PREVIEW.endTime) {
-            redirect2Airdrop();
-          }
           return;
         }
 
