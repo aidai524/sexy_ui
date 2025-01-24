@@ -1,8 +1,10 @@
 import bs58 from "bs58";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { sleep } from "../utils";
-import { ComputeBudgetProgram, Transaction } from "@solana/web3.js";
+import { ComputeBudgetProgram, PublicKey, Transaction, TransactionMessage, VersionedTransaction } from "@solana/web3.js";
 import Big from "big.js";
+
+const lookupTableAddress = new PublicKey('2ATmQ41kVt7tpxWkyv82CGcVg6CWVWjp7GPuexoXTonR')
 
 export function useAccount() {
   const {
@@ -38,6 +40,9 @@ export function useAccount() {
           preflightCommitment: "finalized"
         };
 
+
+        let _transaction: any = transaction
+
         if (!isVersionedTransaction) {
           const latestBlockhash = await connection?.getLatestBlockhash();
           transaction.feePayer = publicKey;
@@ -56,9 +61,27 @@ export function useAccount() {
               microLamports: microLamports
             })
           );
+
+          if (process.env.NEXT_PUBLIC_NET === 'Mainnet') {
+            const lookupTableAccount = (
+              await connection.getAddressLookupTable(lookupTableAddress)
+            ).value;
+
+            const message = new TransactionMessage({
+              payerKey: publicKey!, // Public key of the account paying for the transaction
+              recentBlockhash: latestBlockhash.blockhash, // Blockhash of the most recent block
+              instructions: transaction.instructions, // Instructions to be included in the transaction
+            }).compileToV0Message([lookupTableAccount!])
+
+        
+            const versionedTransaction = new VersionedTransaction(message)
+
+            _transaction = versionedTransaction
+          }
+
         }
 
-        const tx = await sendTransaction(transaction, connection, {
+        const tx = await sendTransaction(_transaction, connection, {
           ...confirmationStrategy,
           ...sendOptions
         });
