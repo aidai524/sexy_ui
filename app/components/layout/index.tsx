@@ -31,8 +31,19 @@ export default function Layout(props: any) {
   useEffect(() => {
     httpGet("/config").then((res) => {
       if (res.code === 0) {
+        const showAirdropEntry =
+          res.data.AirdropStartTime &&
+          Date.now() + AIRDROP_STAGE.PREVIEW.endTime >
+            res.data.AirdropStartTime;
+
+        const airdropReady = Date.now() > res.data.AirdropStartTime;
+
         configStore.set({
-          config: res.data
+          config: {
+            ...res.data,
+            showAirdropEntry,
+            airdropReady
+          }
         });
       }
     });
@@ -55,7 +66,7 @@ export default function Layout(props: any) {
           ) : (
             <Laptop {...props} />
           )}
-          {AIRDROP_STAGE.PREVIEW.isStage && (
+          {configStore.config.showAirdropEntry && (
             <AirdropEntry isMobile={isMobile} />
           )}
         </MessageContextProvider>
