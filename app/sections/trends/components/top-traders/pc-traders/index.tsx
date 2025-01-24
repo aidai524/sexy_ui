@@ -5,6 +5,7 @@ import { defaultAvatar } from "@/app/utils/config";
 import CoppiedModal from '@/app/sections/profile/components/coppiedModal';
 import { SHOW_COPY_TRADE } from '@/app/utils/config';
 import { formatAddress } from '@/app/utils';
+import { fecthUserInfo } from '@/app/utils/getUserInfo';
 interface Trader {
   avatar: string
   name: string
@@ -64,37 +65,13 @@ export default function TopTradersPC({list}: {list: any[]}) {
       </div>
 
       <div className={styles.traderList}>
-        { list.map((trader, index) => (
-            <div key={index} className={styles.traderItem}>
-              <div className={styles.traderInfo}>
-                <div className={styles.avatar}>
-                  <Image src={trader.avatar || defaultAvatar} alt={trader.name} width={36} height={36} />
-                </div>
-                <div className={styles.nameWrapper}>
-                  <div className={styles.name}>{formatAddress(trader.address)}</div>
-                  <div className={styles.followers}>{trader?.followers} followers</div>
-                </div>
-              </div>
-              
-              
-              <div className={styles.pnl}>
-                {trader.pnl7D}%
-                {/* <span className={styles.profit}>+${trader?.pnl7D}</span> */}
-              </div>
-              
-              {/* <div className={styles.pnl}>
-                {trader.pnl7D}%
-                <span className={styles.profit}>+${trader?.pnl7D}</span>
-              </div>
-              
-              <div className={styles.pnl}>
-                {trader.pnl7D}%
-                <span className={styles.profit}>+${trader?.pnl7D}</span>
-              </div> */}
-
-              <button className={styles.copyButton} onClick={() => handleCopyTradeClick(trader)}>Copy</button>
-            </div>
-          ))}
+        {list.map((trader, index) => (
+          <TraderItem 
+            key={index}
+            trader={trader}
+            onCopyTradeClick={handleCopyTradeClick}
+          />
+        ))}
       </div>
       {SHOW_COPY_TRADE && (
         <CoppiedModal
@@ -109,6 +86,40 @@ export default function TopTradersPC({list}: {list: any[]}) {
 
   )
 }
+
+
+const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClick: (trader: any) => void }) => {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userInfo = await fecthUserInfo(trader.address);
+      setUser(userInfo);
+    };
+    fetchUser();
+  }, [trader.address]);
+
+  return (
+    <div className={styles.traderItem}>
+      <div className={styles.traderInfo}>
+        <div className={styles.avatar}>
+          <Image src={user?.icon || defaultAvatar} alt={trader.name} width={36} height={36} />
+        </div>
+        <div className={styles.nameWrapper}>
+          <div className={styles.name}>{formatAddress(trader.address)}</div>
+          <div className={styles.followers}>{user?.followers || 0} followers</div>
+        </div>
+      </div>
+      
+      <div className={styles.pnl}>
+        {trader.pnl7D}%
+      </div>
+
+      <button className={styles.copyButton} onClick={() => onCopyTradeClick(trader)}>Copy</button>
+    </div>
+  );
+};
+
 
 export function TriangleIcon({ direction, highlight }: { direction?: 'asc' | 'desc', highlight?: boolean }) {
   const fillColor = highlight ? '#9290B1' : 'rgba(146, 144, 177, 0.3)';
