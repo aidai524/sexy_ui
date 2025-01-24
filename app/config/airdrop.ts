@@ -6,6 +6,7 @@ export const AIRDROP_STAGE = {
     path: "https://waitlist.flipn.fun"
   },
   PREVIEW: {
+    isStage: false,
     endTime: 0,
     path: "/airdrop"
   }

@@ -21,7 +21,7 @@ export function useWhitelist() {
         address
       });
       const _isWhitelist = !(res.code !== 0 || !res.data || !res.data.address);
-      if (_isWhitelist) {
+      if (_isWhitelist && pathname === AIRDROP_STAGE.PREVIEW.path) {
         router.replace("/");
       }
       return _isWhitelist;
@@ -48,7 +48,7 @@ export function useWhitelist() {
       // Whitelist stage
       if (AIRDROP_STAGE.WHITELIST.isStage) {
         if (!address) {
-          redirect2Airdrop();
+          router.replace("/");
           return;
         }
 

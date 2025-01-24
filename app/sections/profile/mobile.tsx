@@ -8,6 +8,7 @@ import { useAuth } from "@/app/context/auth";
 import AirdropEntry from "@/app/components/airdrop/entry";
 import PageHeader from "@/app/components/page-header/mobile";
 import Summaries from "@/app/sections/profile/components/summaries";
+import { AIRDROP_STAGE } from "@/app/config/airdrop";
 import { SHOW_COPY_TRADE } from "@/app/utils/config";
 
 export default function Profile({
@@ -57,7 +58,7 @@ export default function Profile({
         }
         isOther={isOther}
       />
-      <AirdropEntry />
+      {AIRDROP_STAGE.PREVIEW.isStage && <AirdropEntry />}
       <div style={backgroundImgStyle1} className={styles.avatarBox}>
         {/*<div className={styles.Points}>
           <PointsLabel reverse={true} bg="transparent" />

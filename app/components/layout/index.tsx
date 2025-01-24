@@ -9,10 +9,10 @@ import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { AuthProvider } from "@/app/context/auth";
 import { MessageProvider } from "@/app/context/messages";
 import { MessageContextProvider } from "@/app/context/messageContext";
-import AirdropEntry from '@/app/components/airdrop/entry';
-import { usePathname } from 'next/navigation';
-import { useWhitelist } from '@/app/components/airdrop/hooks/use-whitelist';
-import { AIRDROP_STAGE } from '@/app/config/airdrop';
+import AirdropEntry from "@/app/components/airdrop/entry";
+import { usePathname } from "next/navigation";
+import { useWhitelist } from "@/app/components/airdrop/hooks/use-whitelist";
+import { AIRDROP_STAGE } from "@/app/config/airdrop";
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
@@ -48,18 +48,16 @@ export default function Layout(props: any) {
     <AuthProvider>
       <MessageProvider>
         <MessageContextProvider>
-          {
-            isMobile ? (
-              <Mobile {...props} />
-            ) : (
-              [AIRDROP_STAGE.PREVIEW.path].includes(pathname) ? (
-                props.children
-              ) : (
-                <Laptop {...props} />
-              )
-            )
-          }
-          <AirdropEntry isMobile={isMobile} />
+          {isMobile ? (
+            <Mobile {...props} />
+          ) : [AIRDROP_STAGE.PREVIEW.path].includes(pathname) ? (
+            props.children
+          ) : (
+            <Laptop {...props} />
+          )}
+          {AIRDROP_STAGE.PREVIEW.isStage && (
+            <AirdropEntry isMobile={isMobile} />
+          )}
         </MessageContextProvider>
       </MessageProvider>
     </AuthProvider>
