@@ -526,7 +526,9 @@ export async function upload(
     _file = bloBData[0];
   }
 
-  const newFileName = generateRandomString(10) + fileName;
+  const newFileName = generateRandomString(5) + (fileName?.length > 10 ? fileName.slice(-10) : fileName);
+
+  console.log('newFileName', newFileName);
 
   return postUpload(_file, newFileName, file.type);
 }
@@ -614,8 +616,6 @@ export function formatDateEn(time: number, format: string = "MMM D, YYYY") {
   const date = dayjs(time);
   return date.format(format);
 }
-
-
 
 export function getDeviceType() {
   if (typeof window === "undefined")
