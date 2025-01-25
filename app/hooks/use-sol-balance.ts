@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@/app/hooks/use-wallet";
 import Big from "big.js";
 
 export default function useSolBalance(refresher?: number) {

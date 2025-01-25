@@ -16,6 +16,7 @@ interface ModalProps {
   closeStyle?: React.CSSProperties;
   maskClose?: boolean;
   animation?: string;
+  forceNoCloseIcon?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -27,7 +28,8 @@ const Modal: React.FC<ModalProps> = ({
   mainStyle,
   closeStyle,
   maskClose = true,
-  animation = "modal"
+  animation = "modal",
+  forceNoCloseIcon
 }) => {
   useEffect(() => {
     if (open) {
@@ -75,7 +77,7 @@ const Modal: React.FC<ModalProps> = ({
                 e.stopPropagation();
               }}
             >
-              {closeIcon || onClose ? (
+              {!forceNoCloseIcon && (closeIcon || onClose) ? (
                 <button
                   onClick={onClose}
                   className={styles.CloseButton}

@@ -1,4 +1,4 @@
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@/app/hooks/use-wallet";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReadAvatar } from "@/app/sections/messages/avatar";
 import InfoIcon from "../../icons/info";
