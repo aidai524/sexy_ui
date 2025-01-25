@@ -6,20 +6,6 @@ import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 export function useTrade() {
   const [tradeToken, setTradeToken] = useState<any>({});
 
-  const { getPool } = useTokenTrade({
-    tokenName: tradeToken.tokenName,
-    tokenSymbol: tradeToken.tokenSymbol,
-    tokenDecimals: tradeToken.tokenDecimals,
-    loadData: false
-  });
-
-  useEffect(() => {
-    if (tradeToken) {
-      getPool();
-    }
-    
-  }, [getPool, tradeToken]);
-
   const onTrade = (token: Trend) => {
     if (!token) return;
 
@@ -32,7 +18,7 @@ export function useTrade() {
       tokenDecimals: token?.token_decimals,
       tickerAvatar: "",
       address: token?.address,
-      status: token?.status || 1,
+      status: token?.status || (token as any)?.stats || 1,
     });
   };
 

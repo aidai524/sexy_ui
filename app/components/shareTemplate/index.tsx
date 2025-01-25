@@ -55,10 +55,18 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const [shareCopy, setShareCopy] = useState("");
   const { innerWidth } = useUserAgent();
   const [style, setStyle] = useState<any>({});
+  const [isNoHead, setIsNoHead] = useState(false);
 
   useImperativeHandle(ref, () => ({
     getShareImg
   }));
+
+  useEffect(() => {
+    console.log('navigator.userAgent', navigator.userAgent);
+    if (navigator.userAgent.toLowerCase().includes('phantom') || navigator.userAgent.toLowerCase().includes('solflare')) {
+      setIsNoHead(true);
+    }
+  }, []);
 
 
   const getShareImg = useCallback(async () => {
@@ -366,6 +374,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
         </div>
         <div className={styles.buttonContainer}>
           <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
+            if (isNoHead) {
+              fail("Not supported");
+              return;
+            }
             if (canvasRef.current) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;
@@ -378,6 +390,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
             }
           }}>Save image</button>
           <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current && !isSharing ? 1 : 0.5 }} onClick={async () => {
+            if (isNoHead) { 
+              fail("Not supported");
+              return;
+            }
             if (shareUrl && canvasRef.current && !isSharing) {
               shareToX(shareCopy, shareUrl);
               onClose();
