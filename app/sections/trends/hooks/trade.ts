@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Trend } from "@/app/sections/trends/hooks/index";
 import { add } from "lodash-es";
+import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 
 export function useTrade() {
   const [tradeToken, setTradeToken] = useState<any>({});
+
+  const { getPool } = useTokenTrade({
+    tokenName: tradeToken.tokenName,
+    tokenSymbol: tradeToken.tokenSymbol,
+    tokenDecimals: tradeToken.tokenDecimals,
+    loadData: false
+  });
+
+  useEffect(() => {
+    if (tradeToken) {
+      getPool();
+    }
+    
+  }, [getPool, tradeToken]);
 
   const onTrade = (token: Trend) => {
     if (!token) return;

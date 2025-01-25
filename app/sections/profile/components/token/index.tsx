@@ -138,7 +138,7 @@ export default function Token({
   ]);
 
   useEffect(() => {
-    if (pool && pool.length && showWithdraw) {
+    if (pool && pool.length && (showWithdraw || (Number(prepaidRealAmount) > 0 && Number(data?.status || 0) > 0))) {
       const program = new Program<any>(idl, programId, {
         connection: connection
       } as any);
@@ -154,6 +154,7 @@ export default function Token({
             .times(prepaidBoughtTokenAmount)
             .div(10 ** (data?.tokenDecimals || 6));
           setTokenAmount(_tokenAmount);
+
           // console.log(
           //   '%c[TokenAmount - %o] prepaidRealAmount: %o, prepaidAmount: %o, prepaidBoughtTokenAmount: %o, _tokenAmount: %o',
           //   'background:#ff5f00;color:#fff;',
@@ -171,7 +172,7 @@ export default function Token({
       return;
     }
     setTokenAmount(Big(0));
-  }, [pool, data?.tokenDecimals, prepaidRealAmount, showWithdraw]);
+  }, [pool, data, data?.tokenDecimals, prepaidRealAmount, showWithdraw]);
 
   return (
     <div

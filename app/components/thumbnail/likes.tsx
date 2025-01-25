@@ -58,7 +58,7 @@ export default function Likes({ data, showShare = true, likeNumsStyle, style, li
 
         {
           data.DApp === "sexy" && data.initiativeLaunching && <div className={[styles.superLikes, styles.likeCustom].join(" ")}>
-            Paid
+            Fast pass
           </div>
         }
 
