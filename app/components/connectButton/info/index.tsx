@@ -15,6 +15,7 @@ export default function Info({ logout }: any) {
   const [showHowItWork, setShowHowItWork] = useState(false);
   const { userInfo } = useAuth();
   const { solBalance } = useSolBalance(Number(expand));
+
   useEffect(() => {
     const close = () => {
       setExpand(false);
@@ -79,10 +80,10 @@ export default function Info({ logout }: any) {
             <div className={styles.BalanceWrapper}>
               <div className={styles.Wallet}>
                 <img
-                  src={wallet.adapter.icon}
+                  src={(wallet as any).meta?.icon || (wallet as any).adapter?.icon}
                   className={`${styles.WalletIcon}`}
                 />
-                <span>{wallet.adapter.name}</span>
+                <span>{(wallet as any).meta?.name || (wallet as any).adapter?.name}</span>
               </div>
               <div className={styles.PanelSol}>
                 <img src="/img/home/solana.png" className={styles.SolnaIcon} />
