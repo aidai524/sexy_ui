@@ -62,8 +62,8 @@ function Card({ token, show, onClose }: Props, ref: any) {
   }));
 
   useEffect(() => {
-    console.log('navigator.userAgent', navigator.userAgent);
-    if (navigator.userAgent.toLowerCase().includes('phantom') || navigator.userAgent.toLowerCase().includes('solflare')) {
+    console.log('navigator.userAgent', navigator.userAgent, navigator.userAgent.toLowerCase().indexOf('phantom') > -1)
+    if (navigator.userAgent.toLowerCase().indexOf('phantom') > -1 || navigator.userAgent.toLowerCase().indexOf('solflare') > -1) {
       setIsNoHead(true);
     }
   }, []);
