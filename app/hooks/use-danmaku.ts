@@ -41,7 +41,7 @@ export default function useDanmaku({ id, limit = 10 }: any) {
             text = "shared";
           }
           if (item.type === "flip") {
-            text = `flipped ${item.content_1} SOL`;
+            text = `flipped ${numberFormatter(item.content_1, 4, true)} SOL`;
           }
           return {
             text,
