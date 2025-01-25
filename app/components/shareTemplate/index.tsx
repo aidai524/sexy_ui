@@ -32,6 +32,7 @@ import Big from "big.js";
 import Media from "../thumbnail/media";
 import { useUser } from "@/app/store/useUser";
 import { useUserAgent } from "@/app/context/user-agent";
+import { on } from "events";
 
 interface Props {
   token: Project | undefined;
@@ -178,6 +179,14 @@ function Card({ token, show, onClose }: Props, ref: any) {
       })
     }
   }, [innerWidth])
+
+  const showError = useCallback(() => {
+    fail("This feature is unavailable in the wallet's browser. ", {
+      maskStyle: {
+        zIndex: 9999
+      }
+    });
+  }, []);
 
   if (!token || !show) return null;
 
@@ -375,7 +384,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
         <div className={styles.buttonContainer}>
           <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
             if (isNoHead) {
-              fail("Not supported");
+              showError()
               return;
             }
             if (canvasRef.current) {
@@ -391,7 +400,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
           }}>Save image</button>
           <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current && !isSharing ? 1 : 0.5 }} onClick={async () => {
             if (isNoHead) { 
-              fail("Not supported");
+              showError();
               return;
             }
             if (shareUrl && canvasRef.current && !isSharing) {
