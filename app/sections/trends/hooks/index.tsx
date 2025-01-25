@@ -133,6 +133,8 @@ export function useTrends(props?: { isPolling?: boolean; }) {
         text: '',
         order: '',
       });
+      console.log('res.data.list', res.data.list)
+
       const _all_list = await formatList(res.data.list);
       const _top1 = _all_list[0];
       const _hottestList = _all_list.slice(1, 7);
@@ -256,6 +258,7 @@ export interface Trend {
   is_king: boolean;
 
   // front-end attributes
+  status?: number;
   created2Now?: string;
   progress?: string;
   poolAmount?: Big.Big;

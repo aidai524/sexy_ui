@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Trend } from "@/app/sections/trends/hooks/index";
+import { add } from "lodash-es";
 
 export function useTrade() {
   const [tradeToken, setTradeToken] = useState<any>({});
@@ -15,7 +16,8 @@ export function useTrade() {
       ticker: token?.ticker,
       tokenDecimals: token?.token_decimals,
       tickerAvatar: "",
-      status: 1
+      address: token?.address,
+      status: token?.status || 1,
     });
   };
 
