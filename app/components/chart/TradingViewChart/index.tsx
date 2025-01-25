@@ -54,11 +54,12 @@ function TradingViewChart(
   const tvWidgetRef = useRef<IChartingLibraryWidget>();
   const pageRef = useRef(0);
   const hasNextRef = useRef(true);
+  const resolutionRef = useRef("");
 
   const [loading, setLoading] = useState(false);
 
   const datafeed = useMemo(
-    () => datafeedFn(address, tvWidgetRef, pageRef, hasNextRef),
+    () => datafeedFn(address, tvWidgetRef, pageRef, hasNextRef, resolutionRef),
     [address]
   );
 
@@ -148,9 +149,7 @@ function TradingViewChart(
           tvStorage?.set("interval", interval);
         });
       widget.chart().setChartType(1); // 1: Candles 10: Baseline
-      widget
-        .activeChart()
-        .createStudy("Volume", true, false, { id: "volume", visible: true });
+
       widget?.headerReady().then(() => {
         const button = widget.createButton({
           align: "right",

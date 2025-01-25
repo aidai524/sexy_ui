@@ -53,12 +53,14 @@ const datafeed: (
   address: string,
   tvWidgetRef: any,
   pageRef: any,
-  hasNextRef: any
+  hasNextRef: any,
+  resolutionRef: any
 ) => ChartingLibraryWidgetOptions["datafeed"] = (
   address,
   tvWidgetRef,
   pageRef,
-  hasNextRef
+  hasNextRef,
+  resolutionRef
 ) => ({
   onReady: (callback) => {
     setTimeout(() => callback(configurationData));
@@ -80,7 +82,7 @@ const datafeed: (
       session: "24x7",
       timezone: "Etc/UTC",
       minmov: 1,
-      pricescale: 10 ** 8,
+      pricescale: 10 ** 10,
       has_intraday: true,
       visible_plots_set: "ohlc",
       has_weekly_and_monthly: true,
@@ -101,6 +103,10 @@ const datafeed: (
     onErrorCallback
   ) => {
     try {
+      if (resolution !== resolutionRef.current) {
+        hasNextRef.current = true;
+        pageRef.current = 0;
+      }
       if (!hasNextRef.current) {
         onHistoryCallback([], { noData: true });
         return;
@@ -113,8 +119,9 @@ const datafeed: (
         pageRef.current
       );
       lastPrice = data[data.length - 1][1];
-
+      resolutionRef.current = resolution;
       hasNextRef.current = hasNextPage;
+      resolutionRef.current = resolution;
       const bars = data.map((item: any) => ({
         time: item[6],
         low: item[3],
