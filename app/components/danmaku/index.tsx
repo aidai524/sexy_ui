@@ -12,9 +12,9 @@ export default function DanmakuComp({ token }: any) {
         <motion.div
           className={styles.List}
           initial={{ y: 144 }}
-          animate={{ y: "-100%" }}
+          animate={{ y: -36 * list.length }}
           transition={{
-            duration: list.length * 1 + 5,
+            duration: list.length * 1 + (list.length <= 10 ? 5 : -2),
             ease: "linear"
           }}
         >

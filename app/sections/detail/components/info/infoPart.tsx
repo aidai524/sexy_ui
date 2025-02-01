@@ -212,12 +212,11 @@ export default function InfoPart({
               </div>
               <div className={styles.progressPercent}>
                 {data.prePaidAmount
-                  ? new Big(data.prePaidAmount || 0).div(10 ** 9).toString()
+                  ? new Big(data.prePaidAmount || 0).div(10 ** 9).toFixed(4).toString()
                   : 0}
                 SOL
               </div>
             </div>
-
 
               <div className={styles.progressDesc} style={{ color: "#D9D9D9" }}>
                 {

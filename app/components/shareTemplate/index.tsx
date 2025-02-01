@@ -32,6 +32,7 @@ import Big from "big.js";
 import Media from "../thumbnail/media";
 import { useUser } from "@/app/store/useUser";
 import { useUserAgent } from "@/app/context/user-agent";
+import { on } from "events";
 
 interface Props {
   token: Project | undefined;
@@ -55,10 +56,18 @@ function Card({ token, show, onClose }: Props, ref: any) {
   const [shareCopy, setShareCopy] = useState("");
   const { innerWidth } = useUserAgent();
   const [style, setStyle] = useState<any>({});
+  const [isNoHead, setIsNoHead] = useState(false);
 
   useImperativeHandle(ref, () => ({
     getShareImg
   }));
+
+  useEffect(() => {
+    console.log('navigator.userAgent', navigator.userAgent, navigator.userAgent.toLowerCase().indexOf('phantom') > -1)
+    if (navigator.userAgent.toLowerCase().indexOf('phantom') > -1 || navigator.userAgent.toLowerCase().indexOf('solflare') > -1) {
+      setIsNoHead(true);
+    }
+  }, []);
 
 
   const getShareImg = useCallback(async () => {
@@ -171,6 +180,14 @@ function Card({ token, show, onClose }: Props, ref: any) {
     }
   }, [innerWidth])
 
+  const showError = useCallback(() => {
+    fail("This feature is unavailable in the wallet's browser. ", {
+      maskStyle: {
+        zIndex: 9999
+      }
+    });
+  }, []);
+
   if (!token || !show) return null;
 
   return (
@@ -280,14 +297,14 @@ function Card({ token, show, onClose }: Props, ref: any) {
               {
                 checkFileType(token.tokenImg) === 'video' ? (
                   <img
-                    crossOrigin="anonymous"
+                    // crossOrigin="anonymous"
                     src={token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
                     className={styles.tokenImg}
                   />
                 ) : (
                   <img
-                    crossOrigin="anonymous"
+                    // crossOrigin="anonymous"
                     src={token.tokenImg || token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
                     className={styles.tokenImg}
@@ -366,6 +383,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
         </div>
         <div className={styles.buttonContainer}>
           <button className={styles.saveButton} style={{ opacity: canvasRef.current ? 1 : 0.5 }} onClick={() => {
+            if (isNoHead) {
+              showError()
+              return;
+            }
             if (canvasRef.current) {
               const link = document.createElement('a');
               link.download = `${token?.tokenName || 'flip'}.png`;
@@ -378,6 +399,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
             }
           }}>Save image</button>
           <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current && !isSharing ? 1 : 0.5 }} onClick={async () => {
+            if (isNoHead) { 
+              showError();
+              return;
+            }
             if (shareUrl && canvasRef.current && !isSharing) {
               shareToX(shareCopy, shareUrl);
               onClose();

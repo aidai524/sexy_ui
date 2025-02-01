@@ -16,6 +16,7 @@ export default function Claim(props: any) {
     setVisible(true);
   };
 
+
   return (
     <>
       {

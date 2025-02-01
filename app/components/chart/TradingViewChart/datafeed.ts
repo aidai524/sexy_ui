@@ -12,8 +12,6 @@ import {
 } from "../fetch-data";
 import addPriceMarker from "./add-price-marker";
 
-let page = 0;
-let hasNext = true;
 let lastPrice = 0;
 let pullingQueryPriceTimer: any = null;
 let kChartSubscriberList: Record<string, number> = {};
@@ -53,8 +51,17 @@ const configurationData: DatafeedConfiguration = {
 
 const datafeed: (
   address: string,
-  tvWidgetRef: any
-) => ChartingLibraryWidgetOptions["datafeed"] = (address, tvWidgetRef) => ({
+  tvWidgetRef: any,
+  pageRef: any,
+  hasNextRef: any,
+  resolutionRef: any
+) => ChartingLibraryWidgetOptions["datafeed"] = (
+  address,
+  tvWidgetRef,
+  pageRef,
+  hasNextRef,
+  resolutionRef
+) => ({
   onReady: (callback) => {
     setTimeout(() => callback(configurationData));
   },
@@ -75,7 +82,7 @@ const datafeed: (
       session: "24x7",
       timezone: "Etc/UTC",
       minmov: 1,
-      pricescale: 10 ** 8,
+      pricescale: 10 ** 10,
       has_intraday: true,
       visible_plots_set: "ohlc",
       has_weekly_and_monthly: true,
@@ -96,19 +103,25 @@ const datafeed: (
     onErrorCallback
   ) => {
     try {
-      if (!hasNext) {
+      if (resolution !== resolutionRef.current) {
+        hasNextRef.current = true;
+        pageRef.current = 0;
+      }
+      if (!hasNextRef.current) {
         onHistoryCallback([], { noData: true });
         return;
       }
-      page++;
+      pageRef.current = pageRef.current + 1;
 
       const { data, hasNextPage } = await fetchData(
         address,
         getGranularityByResolution(resolution),
-        page
+        pageRef.current
       );
       lastPrice = data[data.length - 1][1];
-      hasNext = hasNextPage;
+      resolutionRef.current = resolution;
+      hasNextRef.current = hasNextPage;
+      resolutionRef.current = resolution;
       const bars = data.map((item: any) => ({
         time: item[6],
         low: item[3],
