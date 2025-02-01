@@ -206,6 +206,8 @@ export default function Create({
 
                 setIsLoading(true);
 
+                console.log('token:', token)
+
                 const hash = await createToken({
                   name: tokenName,
                   symbol: tokenSymbol,
