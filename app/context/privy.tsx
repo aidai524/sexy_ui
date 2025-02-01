@@ -60,7 +60,17 @@ function CreatePrivyWallet(props: any) {
   const { ready, wallets: solanaWallets, createWallet } = useSolanaWallets();
 
   const wallet = useMemo(() => {
-    return solanaWallets.find((it) => it.connectorType === 'embedded' && it.type === 'solana' && it.walletClientType === 'privy');
+    const _wallet = solanaWallets.find((it) => it.connectorType === 'embedded' && it.type === 'solana' && it.walletClientType === 'privy');
+    if (_wallet) {
+      return {
+        ..._wallet,
+        meta: {
+          ..._wallet.meta,
+          icon: '/img/privy-logo.svg',
+        },
+      };
+    }
+    return {} as any;
   }, [solanaWallets]);
 
   console.log('%c>>>>> privy wallet: %o', 'background:#fbca04;color:#fff;', wallet);
