@@ -8,11 +8,13 @@ export default function useDanmaku({ id, limit = 10 }: any) {
   const [show, setShow] = useState(false);
   const offset = useRef(0);
   const timer = useRef<any>();
+  const cachedId = useRef<string>();
   const cachedList = useRef<any>([]);
 
   const loadMore = async () => {
     if (!id) return;
     clearTimeout(timer.current);
+    cachedId.current = id;
     try {
       const res = await httpGet("/project/dan_mu/list", {
         limit: 10,
@@ -66,14 +68,13 @@ export default function useDanmaku({ id, limit = 10 }: any) {
       offset.current = _more ? newList.length : 0;
       cachedList.current = newList;
       setList(newList);
-
-      timer.current = setTimeout(() => {
-        loadMore();
-      }, 10000);
     } catch (err) {
-      timer.current = setTimeout(() => {
-        loadMore();
-      }, 10000);
+    } finally {
+      if (cachedId.current === id) {
+        timer.current = setTimeout(() => {
+          loadMore();
+        }, 10000);
+      }
     }
   };
 
@@ -85,7 +86,7 @@ export default function useDanmaku({ id, limit = 10 }: any) {
         loadMore();
       }
     },
-    { wait: 500 }
+    { wait: 1000 }
   );
 
   useEffect(() => {
