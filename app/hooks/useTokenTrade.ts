@@ -920,7 +920,11 @@ export function useTokenTrade({
 
   const checkPrePayed = useCallback(async () => {
     if (!pool) {
-      return false;
+      return 0;
+    }
+
+    if (!walletProvider.publicKey) {
+      return 0;
     }
 
     const prePaidRecord = PublicKey.findProgramAddressSync(

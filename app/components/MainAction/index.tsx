@@ -41,12 +41,13 @@ export default function MainAction({
           if (likeTrigger) {
             return;
           }
+
           setLikeTrigger(true);
           onLike();
 
-          // setTimeout(() => {
-          //   setLikeTrigger(false);
-          // }, 1600);
+          setTimeout(() => {
+            setLikeTrigger(false);
+          }, 1000);
         }}
         className={[styles.actionIcon, styles.likeIcon, "button"].join(" ")}
         style={{
