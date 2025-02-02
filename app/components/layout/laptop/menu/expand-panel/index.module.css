@@ -45,6 +45,11 @@
 
 .ItemIcon {
   transform: scale(0.74);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Bottom {
