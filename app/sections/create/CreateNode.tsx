@@ -354,7 +354,7 @@ export default forwardRef(function CreateNode(
             onCheckChange={(isChecked) => {
               if (tokenImg && tokenImg.length > 0) {
                 const url = tokenImg[0].url;
-                if (videoReg.test(url)) {
+                if (videoReg.test(url) || /.gif$/.test(url)) {
                   setShowTokenSymbol(true);
                   return
                 }
