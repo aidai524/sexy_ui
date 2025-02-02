@@ -25,8 +25,6 @@ export const PrivyWalletContext = React.createContext<Partial<IPrivyWalletContex
 function PrivyWalletProvider(props: { children: React.ReactNode; }) {
   const { children } = props;
 
-  console.log('%c>>>>> detected privy appid: %o', 'background:#fbca04;color:#fff;', process.env.NEXT_PUBLIC_PRIVY_APP_ID);
-
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
