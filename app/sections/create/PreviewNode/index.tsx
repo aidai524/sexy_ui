@@ -122,7 +122,7 @@ export default forwardRef(function PreviewNode(
 
           let times = 0,
             val;
-          while (true && times < 50) {
+          while (times < 50) {
             val = await httpAuthPost(`/project?${queryStr}`, {});
             if (val.code === 100000) {
               times++;

@@ -57,6 +57,10 @@ export function useWhitelist() {
           return;
         }
 
+        if (process.env.NEXT_PUBLIC_NET === 'Devnet') {
+          return
+        }
+
         const isWhitelist = await checkWhiteList();
 
         if (!isWhitelist) {

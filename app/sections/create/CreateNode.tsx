@@ -97,8 +97,8 @@ export default forwardRef(function CreateNode(
       return "About icon cannot be empty";
     }
 
-    if (about.length > 200) {
-      return "About cannot be length than 200";
+    if (about.length > 1000) {
+      return "About cannot be length than 1000";
     }
 
     return "";
