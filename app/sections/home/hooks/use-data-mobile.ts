@@ -44,9 +44,9 @@ export default function useData(launchType: Type) {
       const icons = res.data?.list.map((token: any) => token.icon);
       preloadImages(icons);
 
-      const projects = res.data?.list.map((item: any) => ({
+      const projects = res.data?.list.map((item: any, i: number) => ({
         ...mapDataToProject(item),
-        fetched_time: Date.now()
+        fetched_time: Date.now() + i
       }));
 
       projectsStore.setProjects(
@@ -102,6 +102,13 @@ export default function useData(launchType: Type) {
     async (type: Type, address: number) => {
       const res = await httpGet(`/project?address=${address}`);
       if (res.code !== 0 || !res.data || !res.data.length) return;
+      if (type === "preLaunch" && res.data[0].status !== 0) {
+        const findIndex = list.findIndex((item) => item === res.data[0].id);
+        if (findIndex !== -1) {
+          list.splice(findIndex, 1);
+          setList(JSON.parse(JSON.stringify(list)));
+        }
+      }
       projectsStore.updateProject(type, mapDataToProject(res.data[0]));
       setRefresher(refresher + 1);
     },

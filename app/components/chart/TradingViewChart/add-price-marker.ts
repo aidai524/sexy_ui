@@ -13,7 +13,7 @@ export default function updatePriceMarker({
 }) {
   const chart = tvWidgetRef.current?.activeChart();
 
-  if (!chart) return;
+  if (!chart || price === lastPrice) return;
 
   if (priceMarkerId) {
     chart.removeEntity(priceMarkerId);
