@@ -31,6 +31,7 @@ export default function Media({
             token={data}
           />
         ) : (
+          // @ts-ignore
           <LazyLoadImage
             effect="blur"
             className={styles.tokenImg}
