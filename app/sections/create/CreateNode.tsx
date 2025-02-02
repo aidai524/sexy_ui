@@ -85,7 +85,7 @@ export default forwardRef(function CreateNode(
     }
 
     const tokenImgObj = tokenImg[0];
-    if ((videoReg.test(tokenImgObj.url) || showTokenSymbol) && tokenIcon.length === 0) {
+    if ((videoReg.test(tokenImgObj.url) || /.gif$/.test(tokenImgObj.url) || showTokenSymbol) && tokenIcon.length === 0) {
       return "Token icon cannot be empty";
     }
 
