@@ -236,6 +236,7 @@ export default function Created({
               from={from}
               data={{ ...item, isSuperLike }}
               isOther={isOther}
+              type={type}
               key={item.id}
               hideHot={hideHot}
               prepaidWithdrawDelayTime={prepaidWithdrawDelayTime}
