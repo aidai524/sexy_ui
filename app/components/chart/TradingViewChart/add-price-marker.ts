@@ -13,7 +13,7 @@ export default function updatePriceMarker({
 }) {
   const chart = tvWidgetRef.current?.activeChart();
 
-  if (!chart) return;
+  if (!chart || price === lastPrice) return;
 
   if (priceMarkerId) {
     chart.removeEntity(priceMarkerId);
@@ -23,7 +23,7 @@ export default function updatePriceMarker({
   const res = chart.createShape(
     { time, price },
     {
-      shape: price >= lastPrice ? "arrow_up" : "arrow_down",
+      shape: price > lastPrice ? "arrow_up" : "arrow_down",
       lock: true,
       disableSelection: true,
       disableSave: true,
