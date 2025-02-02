@@ -25,7 +25,7 @@ export function useAccount() {
   const { authenticated, user, logout } = usePrivy();
   const { wallet: privyWallet, disconnect: privyDisconnect } = useContext(PrivyWalletContext);
 
-  if (authenticated && privyWallet) {
+  if (authenticated && privyWallet?.address) {
     const privyPublicKey = new PublicKey(privyWallet.address);
     return {
       connected: true,
