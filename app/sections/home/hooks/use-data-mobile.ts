@@ -44,9 +44,9 @@ export default function useData(launchType: Type) {
       const icons = res.data?.list.map((token: any) => token.icon);
       preloadImages(icons);
 
-      const projects = res.data?.list.map((item: any) => ({
+      const projects = res.data?.list.map((item: any, i: number) => ({
         ...mapDataToProject(item),
-        fetched_time: Date.now()
+        fetched_time: Date.now() + i
       }));
 
       projectsStore.setProjects(
