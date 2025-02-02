@@ -23,7 +23,7 @@ export default function updatePriceMarker({
   const res = chart.createShape(
     { time, price },
     {
-      shape: price > lastPrice ? "arrow_up" : "arrow_down",
+      shape: price >= lastPrice ? "arrow_up" : "arrow_down",
       lock: true,
       disableSelection: true,
       disableSave: true,
