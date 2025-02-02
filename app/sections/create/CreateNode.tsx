@@ -42,33 +42,42 @@ export default forwardRef(function CreateNode(
   const [canValid, setCanValid] = useState(false);
   const [inValidVals, setInvaldVasl] = useState<any>({});
 
-  const validateName = useCallback(async (tokenName: string) => {
-    if (!name_reg.test(tokenName)) {
-      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 10";
-    }
-
+  const validateSameName = useCallback(async () => {
     const tokenInUse = await httpGet(
-      `/project?token_name=${tokenName}&token_symbol=${tokenName.toUpperCase()}`
+      `/project?token_name=${tokenName}&token_symbol=${ticker.toUpperCase()}`
     );
 
     if (tokenInUse.code === 0 && tokenInUse.data?.length > 0) {
       return "Token name already in use";
     }
 
+    return '';
+  }, [tokenName, ticker])
+
+  const validateName = useCallback((tokenName: string) => {
+    if (!tokenName) {
+      return "Token name cannot be empty";
+    }
+
+    if (tokenName.length > 50) {
+      return "Token name cannot exceed 50";
+    }
+
     return "";
-  }, []);
+  }, [ticker]);
 
   const validateTicker = useCallback((ticker: string) => {
     if (!ticker) {
       return "Ticker cannot be empty";
     }
 
-    if (ticker.length > 80) {
-      return "Ticker cannot be length than 80";
+    if (!name_reg.test(ticker)) {
+      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 10";
     }
 
+
     return "";
-  }, []);
+  }, [tokenName]);
 
   const validateImages = useCallback((tokenImg: ImageUploadItem[], tokenIcon: ImageUploadItem[], showTokenSymbol: boolean) => {
     if (tokenImg.length === 0) {
@@ -189,7 +198,7 @@ export default forwardRef(function CreateNode(
       ticker,
       about,
       tokenImg: tokenImg[0].url,
-      tokenSymbol: tokenName.toUpperCase(),
+      tokenSymbol: ticker.toUpperCase(),
       tokenIcon: tokenIcon.length > 0 ? tokenIcon[0].url : tokenImg[0].url,
       website,
       x,
@@ -259,10 +268,14 @@ export default forwardRef(function CreateNode(
               setTokenName(e.target.value);
             }}
             onBlur={async () => {
-              const nameError = await validateName(tokenName);
+              let nameError = validateName(tokenName);
+              if (!nameError) {
+                nameError = await validateSameName()
+              }
               if (nameError) {
                 setInvaldVasl({ ...inValidVals, tokenName: nameError });
               } else {
+                
                 setInvaldVasl({ ...inValidVals, tokenName: "" });
               } 
             }}
@@ -292,8 +305,11 @@ export default forwardRef(function CreateNode(
             onChange={(e) => {
               setTicker(e.target.value);
             }}
-            onBlur={() => {
-              const tickerError = validateTicker(ticker);
+            onBlur={async () => {
+              let tickerError = validateTicker(ticker);
+              // if (!tickerError) {
+              //   tickerError = await validateSameName()
+              // }
               if (tickerError) {
                 setInvaldVasl({ ...inValidVals, ticker: tickerError });
               } else {

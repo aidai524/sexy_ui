@@ -68,7 +68,7 @@ export default function Laptop() {
           show={showCreateModal}
           token={{
             tokenName: dataAdd.tokenName,
-            tokenSymbol: dataAdd.tokenName.toUpperCase(),
+            tokenSymbol: dataAdd.tokenSymbol,
             tokenDecimals: 2,
             tokenUri: dataAdd.tokenImg
           }}
@@ -84,7 +84,7 @@ export default function Laptop() {
               tg: dataAdd.tg,
               ticker: dataAdd.ticker,
               token_name: dataAdd.tokenName,
-              token_symbol: dataAdd.tokenName.toUpperCase(),
+              token_symbol: dataAdd.tokenSymbol,
               video: dataAdd.tokenImg,
               website: dataAdd.website,
               x: dataAdd.x
