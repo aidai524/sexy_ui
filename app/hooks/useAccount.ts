@@ -53,6 +53,8 @@ export function useAccount() {
             connection.rpcEndpoint
           );
 
+          // await fetchPriorityFeeEstimate(transaction)
+
           transaction.add(
             ComputeBudgetProgram.setComputeUnitLimit({
               units: 500000
@@ -73,7 +75,7 @@ export function useAccount() {
               instructions: transaction.instructions, // Instructions to be included in the transaction
             }).compileToV0Message([lookupTableAccount!])
 
-        
+
             const versionedTransaction = new VersionedTransaction(message)
 
             _transaction = versionedTransaction
@@ -138,11 +140,10 @@ export function useAccount() {
           if (!status.value || status.value?.err) {
             throw new Error(
               status.value?.err
-                ? `send transaction failed: ${
-                    typeof status.value.err === "string"
-                      ? status.value.err
-                      : JSON.stringify(status.value.err)
-                  }`
+                ? `send transaction failed: ${typeof status.value.err === "string"
+                  ? status.value.err
+                  : JSON.stringify(status.value.err)
+                }`
                 : `send transaction failed, please try again later`
             );
           }
@@ -162,7 +163,7 @@ async function getPriorityFeeEstimate(
   const defaultPriorityFee = 300000;
   const multiplier = 10;
   try {
-    if (process.env.NEXT_PUBLIC_NETWORK !== "mainnet")
+    if (process.env.NEXT_PUBLIC_NET !== "Mainnet")
       return defaultPriorityFee;
 
     const res = await fetch(rpcEndpoint, {
@@ -185,9 +186,43 @@ async function getPriorityFeeEstimate(
       .mul(multiplier)
       .round(0)
       .toNumber();
+
+    console.log('priorityFee:', priorityFee)
+
     return Math.min(priorityFee ?? defaultPriorityFee, defaultPriorityFee);
   } catch (error) {
     console.error(error);
     return defaultPriorityFee;
   }
 }
+
+
+const fetchPriorityFeeEstimate = async (transaction: Transaction) => {
+  const heliusRpcUrl = "https://mainnet.helius-rpc.com/?api-key=88a744d8-9b40-4c38-bb22-5ff967f522a3";
+
+  const requestBody = {
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getPriorityFeeEstimate",
+    params: [
+      {
+        transaction: bs58.encode(
+          transaction.serialize({ verifySignatures: false })
+        ),
+      }
+    ]
+  };
+
+  try {
+    const response = await fetch(heliusRpcUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody)
+    });
+
+    const data = await response.json();
+    console.log("Priority Fee Estimate:", data.result);
+  } catch (error) {
+    console.error("Error fetching priority fee estimate:", error);
+  }
+};
