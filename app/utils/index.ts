@@ -528,8 +528,6 @@ export async function upload(
 
   const newFileName = generateRandomString(5) + (fileName?.length > 10 ? fileName.slice(-10) : fileName);
 
-  console.log('newFileName', newFileName);
-
   return postUpload(_file, newFileName, file.type);
 }
 
@@ -557,6 +555,8 @@ export async function postUpload(
         fail("Upload fail");
         return null;
       }
+
+      console.log(`${process.env.NEXT_PUBLIC_S3_URL_PREFIX}/${s3_dir}${newFileName}`)
 
       return `${process.env.NEXT_PUBLIC_S3_URL_PREFIX}/${s3_dir}${newFileName}`;
     }

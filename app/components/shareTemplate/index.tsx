@@ -295,7 +295,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
             <div className={styles.tokenImage}>
               {
-                checkFileType(token.tokenImg) === 'video' ? (
+                checkFileType(token.tokenImg) === 'video' || /.gif$/.test(token.tokenImg) ? (
                   <img
                     // crossOrigin="anonymous"
                     src={token.tokenIcon || '/img/token-placeholder.png'}

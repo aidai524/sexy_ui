@@ -238,7 +238,7 @@ export default forwardRef(function CreateNode(
   useEffect(() => {
     if (tokenImg && tokenImg.length > 0) {
       const url = tokenImg[0].url;
-      if (videoReg.test(url)) {
+      if (videoReg.test(url) || /.gif$/.test(url)) {
         setShowTokenSymbol(true);
       }
     }
@@ -339,7 +339,7 @@ export default forwardRef(function CreateNode(
           }
         >
           <Upload
-            percent={0}
+            percent={1}
             type="token"
             accept="image/*, video/mp4"
             fileList={tokenImg}
@@ -383,6 +383,7 @@ export default forwardRef(function CreateNode(
               <Upload
                 percent={1}
                 type="avatar"
+                accept="image/png, image/jpg, image/jpeg, image/svg"
                 fileList={tokenIcon}
                 setFileList={setTokenIcon}
               />
