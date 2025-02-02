@@ -102,6 +102,13 @@ export const useProjects = create(
         const currentProjects =
           type === "preLaunch" ? get().preProjects : get().launchProjects;
         if (!currentProjects[item.id]) return;
+
+        if (type === "preLaunch" && item.status !== 0) {
+          delete currentProjects[item.id];
+          set({ preProjects: currentProjects });
+          return;
+        }
+
         currentProjects[item.id] = {
           ...mapDataToProject(item),
           fetched_time: currentProjects[item.id].fetched_time
