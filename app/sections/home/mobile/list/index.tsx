@@ -3,11 +3,12 @@ import Empty from "@/app/components/empty";
 import Loading from "../loading";
 import TourGuid from "../tour-guid";
 import useData from "@/app/sections/home/hooks/use-data-mobile";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import useDanmaku from "@/app/hooks/use-danmaku";
 
 let startY = 0;
 let startX = 0;
@@ -29,6 +30,17 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   const { innerHeight, innerWidth } = useUserAgent();
   const guidingTourStore = useGuidingTour();
   const listRef = useRef<any>();
+
+  const currentToken = useMemo(() => {
+    const id = list[index];
+    if (!id) return null;
+    return getProjectById(type, id);
+  }, [index, list]);
+
+  const { list: danmakus, show: danmakuShow } = useDanmaku({
+    id: currentToken?.id,
+    isCurrentTab
+  });
 
   useEffect(() => {
     const prevent = function (e: any) {
@@ -139,6 +151,8 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                 key={token?.address || item}
                 token={token}
                 isCurrent={index === i && isCurrentTab}
+                danmakus={danmakus}
+                danmakuShow={danmakuShow}
                 onUpdate={(token: any, action?: string) => {
                   updateProject(type, token);
                   if (action && ["share"].includes(action)) return;

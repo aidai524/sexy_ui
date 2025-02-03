@@ -3,18 +3,18 @@ import { httpGet } from "@/app/utils";
 import { useDebounceFn } from "ahooks";
 import { numberFormatter } from "@/app/utils/common";
 
-export default function useDanmaku({ id, limit = 10 }: any) {
+export default function useDanmaku({ id, isCurrentTab }: any) {
   const [list, setList] = useState<any[]>([]);
   const [show, setShow] = useState(false);
   const offset = useRef(0);
   const timer = useRef<any>();
-  const cachedId = useRef<string>();
+
   const cachedList = useRef<any>([]);
 
   const loadMore = async () => {
     if (!id) return;
     clearTimeout(timer.current);
-    cachedId.current = id;
+
     try {
       const res = await httpGet("/project/dan_mu/list", {
         limit: 10,
@@ -70,11 +70,9 @@ export default function useDanmaku({ id, limit = 10 }: any) {
       setList(newList);
     } catch (err) {
     } finally {
-      if (cachedId.current === id) {
-        timer.current = setTimeout(() => {
-          loadMore();
-        }, 10000);
-      }
+      timer.current = setTimeout(() => {
+        loadMore();
+      }, 10000);
     }
   };
 
@@ -83,6 +81,7 @@ export default function useDanmaku({ id, limit = 10 }: any) {
       if (!id) {
         setList([]);
       } else {
+        offset.current = 0;
         loadMore();
       }
     },
@@ -90,8 +89,9 @@ export default function useDanmaku({ id, limit = 10 }: any) {
   );
 
   useEffect(() => {
+    if (!isCurrentTab) return;
     loadData();
-  }, [id]);
+  }, [id, isCurrentTab]);
 
   useEffect(() => {
     return () => {
