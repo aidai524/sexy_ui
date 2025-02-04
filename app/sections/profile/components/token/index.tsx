@@ -215,8 +215,7 @@ export default function Token({
             imgHeight={84}
             autoPlay={false}
             imgStyle={{
-              width: 84,
-              height: 84
+              width: 84
             }}
             style={{
               overflow: "hidden"
