@@ -247,7 +247,7 @@ export default function InfoPart({
             />
 
             <div className={styles.progressDesc}>
-              Graduate this coin to Orca at $40,560 market cap. There will be
+              Graduate this coin to Meteora at $40,560 market cap. There will be
               40.56 SOL in the bonding curve.
             </div>
           </div>
