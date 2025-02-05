@@ -16,7 +16,7 @@ interface ProjectsState {
     hasMore: boolean,
     address?: string
   ) => void;
-  getProjectsByType: (type: Type, isEmpty: boolean) => any[];
+  getProjectsByType: (type: Type) => any[];
   updateProject: (type: Type, item: any) => void;
   clear: (type: Type) => void;
   getProjectById: (type: Type, id: number) => any;
@@ -45,6 +45,7 @@ export const useProjects = create(
         hasMore: boolean,
         address?: string
       ) => {
+        if (!_projects.length) return;
         const currentProjects =
           type === "preLaunch" ? get().preProjects : get().launchProjects;
 
@@ -58,9 +59,16 @@ export const useProjects = create(
           prev = hasMore ? { ...currentProjects } : {};
         }
 
+        const projects = _projects
+          .filter((item: any) => !currentProjects[item.id])
+          .map((item: any, i: number) => ({
+            ...mapDataToProject(item),
+            fetched_time: Date.now() + i
+          }));
+
         const list = {
           ...prev,
-          ..._projects.reduce(
+          ...projects.reduce(
             (acc: any, curr: any) => ({ ...acc, [curr.id]: curr }),
             {}
           )
@@ -75,24 +83,10 @@ export const useProjects = create(
           });
         }
       },
-      getProjectsByType: (type: Type, isEmpty: boolean) => {
+      getProjectsByType: (type: Type) => {
         const currentProjects = Object.values(
           type === "preLaunch" ? get().preProjects : get().launchProjects
         );
-
-        // const filteredProjects = currentProjects.filter(
-        //   (project: any) => Date.now() - project.fetched_time < TIME_DURATION
-        // );
-
-        if (isEmpty) {
-          const mapList: any = currentProjects.reduce(
-            (acc: any, curr: any) => ({ ...acc, [curr.id]: curr }),
-            {}
-          );
-          type === "preLaunch"
-            ? set({ preProjects: mapList })
-            : set({ launchProjects: mapList });
-        }
 
         return currentProjects
           .sort((a: any, b: any) => a.fetched_time - b.fetched_time)
