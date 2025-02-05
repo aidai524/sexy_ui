@@ -15,6 +15,7 @@ import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
 import { fail } from "@/app/utils/toast";
 import { useInterval } from "ahooks";
+import Loading from "../icons/loading";
 
 const pageSize = 20;
 
@@ -33,7 +34,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
       if (!address) return;
       const _page = typeof page === "number" ? page : pageIndex;
 
-      if (_page === 1) setIsLoading(true);
+      // if (_page === 1) setIsLoading(true);
       try {
         let res = null;
         if (process.env.NEXT_PUBLIC_NET === "Devnet") {
@@ -150,6 +151,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
   );
 
   useEffect(() => {
+    setIsLoading(true)
     loadData();
   }, [address]);
 
@@ -167,6 +169,16 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
       {from !== "panel" && (
         <div className={styles.distributionTitle}>Holder Distribution</div>
       )}
+
+      {
+        isLoading && (
+          <div className={styles.loading}>
+            <Loading size={28}/>
+          </div>
+        )
+      }
+
+      
       <div
         className={`${styles.list}`}
         style={{ paddingTop: from === "panel" ? 0 : 10 }}

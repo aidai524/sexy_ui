@@ -60,3 +60,10 @@
     color: #9290b1;
   }
 }
+
+.loading {
+  display: flex;  
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+}
