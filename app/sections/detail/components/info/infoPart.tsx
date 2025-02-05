@@ -24,6 +24,7 @@ interface Props {
   showProgress?: boolean;
   showHolders?: boolean;
   showAddress?: boolean;
+  showMedia?: boolean;
   theme?: string;
   mc?: string | number;
   withoutFlip?: boolean;
@@ -37,14 +38,13 @@ export default function InfoPart({
   showProgress = true,
   showHolders = true,
   showAddress = true,
+  showMedia = true,
   mc,
   withoutFlip
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
-  const {
-    top1,
-  } = useTrendsStore();
+  const { top1 } = useTrendsStore();
   const { mc: pumpMc } = useMc({
     tokenAddress: data?.address,
     disable: (data?.DApp === "sexy" && data?.status === 1) || data?.status! < 1
@@ -74,20 +74,23 @@ export default function InfoPart({
   return (
     <div>
       <div className={styles.detailAvatar}>
-        <div className={styles.tokenImgWrapper}>
-          {videoReg.test(data.tokenImg || "") ? (
-            <VideoPlayer
-              src={data.tokenImg}
-              playManually={true}
-              type={getVideoExt(data.tokenImg)}
-              className={styles.tokenImg}
-            /> 
-          ) : <img
-          className={styles.tokenImg}
-          src={data.tokenImg || "/img/token-placeholder.png"}
-        />}
-          
-        </div>
+        {showMedia && (
+          <div className={styles.tokenImgWrapper}>
+            {videoReg.test(data.tokenImg || "") ? (
+              <VideoPlayer
+                src={data.tokenImg}
+                playManually={true}
+                type={getVideoExt(data.tokenImg)}
+                className={styles.tokenImg}
+              />
+            ) : (
+              <img
+                className={styles.tokenImg}
+                src={data.tokenImg || "/img/token-placeholder.png"}
+              />
+            )}
+          </div>
+        )}
 
         <div className={styles.detailInfo}>
           <div className={styles.nameWrapper}>
@@ -135,7 +138,7 @@ export default function InfoPart({
             <div className={styles.authorDesc}>
               {specialTime
                 ? specialTime
-                : timeAgo(data.DApp === "pump" ? data.time : data.createdAt )}
+                : timeAgo(data.DApp === "pump" ? data.time : data.createdAt)}
             </div>
           </div>
           {data.DApp === "pump" && (
@@ -160,8 +163,13 @@ export default function InfoPart({
               </div>
             )}
 
-            {((data.status === 1 && data.DApp === "pump") || (data.status! > 1)) && (
-              <div className={styles.authorDesc} key={data.address} style={{ color: "#6fff00" }}>
+            {((data.status === 1 && data.DApp === "pump") ||
+              data.status! > 1) && (
+              <div
+                className={styles.authorDesc}
+                key={data.address}
+                style={{ color: "#6fff00" }}
+              >
                 {pumpMc === 0 ? (
                   <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
                 ) : (
@@ -212,17 +220,20 @@ export default function InfoPart({
               </div>
               <div className={styles.progressPercent}>
                 {data.prePaidAmount
-                  ? new Big(data.prePaidAmount || 0).div(10 ** 9).toFixed(4).toString()
+                  ? new Big(data.prePaidAmount || 0)
+                      .div(10 ** 9)
+                      .toFixed(4)
+                      .toString()
                   : 0}
                 SOL
               </div>
             </div>
 
-              <div className={styles.progressDesc} style={{ color: "#D9D9D9" }}>
-                {
-                  "‘Flip’ means ‘pre-buy’, users will auto-buy in at the average price when this meme launching."
-                }
-              </div>
+            <div className={styles.progressDesc} style={{ color: "#D9D9D9" }}>
+              {
+                "‘Flip’ means ‘pre-buy’, users will auto-buy in at the average price when this meme launching."
+              }
+            </div>
           </div>
         </div>
       )}
@@ -257,11 +268,20 @@ export default function InfoPart({
               <div className={styles.progressTitle}>
                 King of the hill progress
               </div>
-              <div className={styles.progressPercent}>{data.kingProgress && top1?.address === data.address ? 100 : data.kingProgress}%</div>
+              <div className={styles.progressPercent}>
+                {data.kingProgress && top1?.address === data.address
+                  ? 100
+                  : data.kingProgress}
+                %
+              </div>
             </div>
 
             <ProgressBar
-              percent={data.kingProgress && top1?.address === data.address ? 100 : data.kingProgress}
+              percent={
+                data.kingProgress && top1?.address === data.address
+                  ? 100
+                  : data.kingProgress
+              }
               style={{
                 "--track-width": "14px",
                 "--fill-color": "#BF66FF",
@@ -269,14 +289,14 @@ export default function InfoPart({
               }}
             />
 
-            {
-              data.lastKingTime !== 0 && (
-                <div className={styles.progressDesc} style={{ color: "#BF66FF" }}>
-                  Crowned king of the hill on { data.lastKingTime ? formatDateEn(data.lastKingTime, 'MMM D, YYYY HH:mm:ss'): '-' }
-                </div>
-              )
-            }
-            
+            {data.lastKingTime !== 0 && (
+              <div className={styles.progressDesc} style={{ color: "#BF66FF" }}>
+                Crowned king of the hill on{" "}
+                {data.lastKingTime
+                  ? formatDateEn(data.lastKingTime, "MMM D, YYYY HH:mm:ss")
+                  : "-"}
+              </div>
+            )}
           </div>
         </div>
       )}
