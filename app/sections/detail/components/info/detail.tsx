@@ -7,6 +7,7 @@ interface Props {
   mc?: string | number;
   showHodler?: boolean;
   showAddress?: boolean;
+  showMedia?: boolean;
   onUpdate: (type?: string) => void;
 }
 

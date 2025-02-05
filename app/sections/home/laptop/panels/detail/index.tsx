@@ -38,6 +38,7 @@ export default function DetailPanel({ token, onClose, from }: any) {
         <Info
           mc={mc}
           data={token}
+          showMedia={false}
           showHodler={false}
           onUpdate={() => {}}
           showAddress={from !== "create"}

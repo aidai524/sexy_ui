@@ -48,7 +48,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  /* width: 160px; */
+  max-width: 160px;
   text-align: left;
 }
 
