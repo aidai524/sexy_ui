@@ -35,7 +35,7 @@ export default function Chart({ token, style = {} }: Props) {
         width="100%"
         frameBorder="none"
         src={`https://dexscreener.com/solana/${pair}?embed=1&loadChartSettings=0&trades=0&info=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=3`}
-        style={{ height: "100%" }}
+        style={{ height: "100%", width: "100%" }}
         ></iframe>
       )}
       {type === 1 && (
