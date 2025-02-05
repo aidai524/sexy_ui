@@ -52,7 +52,6 @@
 .About {
   width: calc(100% - 60px);
   max-height: 36px;
-  word-break: break-all;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;

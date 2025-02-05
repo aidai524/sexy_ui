@@ -26,8 +26,8 @@ export const useDetailStatus = create(
         return (
           params.showDetail ||
           params.showComments ||
-          (params.showFlip && params.status === 0) ||
-          (params.showTrade && params.status !== 0)
+          (params.showFlip && params.token?.status === 0) ||
+          (params.showTrade && params.token?.status !== 0)
         );
       },
       setTab(tab: string) {
