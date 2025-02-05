@@ -7,6 +7,7 @@ import WalletConnect from "./components/WalletConnect";
 import { UserAgentProvider } from "@/app/context/user-agent";
 import { Suspense, useEffect } from "react";
 import TGProvider from "./context/TGProvider";
+import PrivyWalletProvider from '@/app/context/privy';
 
 export default function RootLayout({
   children
@@ -44,13 +45,15 @@ export default function RootLayout({
       </head>
       <body>
         <TGProvider>
-          <WalletConnect>
-            <UserAgentProvider>
-              <Suspense>
-              <Layout>{children}</Layout>
-            </Suspense>
-            </UserAgentProvider>
-          </WalletConnect>
+          <PrivyWalletProvider>
+            <WalletConnect>
+              <UserAgentProvider>
+                <Suspense>
+                  <Layout>{children}</Layout>
+                </Suspense>
+              </UserAgentProvider>
+            </WalletConnect>
+          </PrivyWalletProvider>
         </TGProvider>
       </body>
     </html>
