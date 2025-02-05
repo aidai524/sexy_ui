@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import styles from "./index.module.css";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@/app/hooks/use-wallet";
 import { formatSortAddress } from "@/app/utils";
 
 export default function ConnectButton() {

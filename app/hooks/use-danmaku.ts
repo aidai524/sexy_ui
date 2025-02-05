@@ -79,11 +79,10 @@ export default function useDanmaku({ id, isCurrentTab }: any) {
   const { run: loadData } = useDebounceFn(
     (args: any = {}) => {
       if (!id) {
-        setList([]);
-      } else {
-        offset.current = 0;
-        loadMore();
+        return;
       }
+      offset.current = 0;
+      loadMore();
     },
     { wait: 1000 }
   );
@@ -93,6 +92,7 @@ export default function useDanmaku({ id, isCurrentTab }: any) {
     if (!isCurrentTab) {
       return;
     }
+    setList([]);
     loadData();
   }, [id, isCurrentTab]);
 
