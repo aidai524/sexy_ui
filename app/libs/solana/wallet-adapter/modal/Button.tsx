@@ -9,6 +9,7 @@ export type ButtonProps = PropsWithChildren<{
   startIcon?: ReactElement;
   style?: CSSProperties;
   tabIndex?: number;
+  isPrivy?: boolean;
 }>;
 
 export const Button: FC<ButtonProps> = (props) => {
