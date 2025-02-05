@@ -297,14 +297,12 @@ function Card({ token, show, onClose }: Props, ref: any) {
               {
                 checkFileType(token.tokenImg) === 'video' || /.gif$/.test(token.tokenImg) ? (
                   <img
-                    // crossOrigin="anonymous"
                     src={token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
                     className={styles.tokenImg}
                   />
                 ) : (
                   <img
-                    // crossOrigin="anonymous"
                     src={token.tokenImg || token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
                     className={styles.tokenImg}
@@ -317,7 +315,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
           <div className={styles.tokenInfo}>
             <div className={styles.tokenIcon}>
-              <img crossOrigin="anonymous" src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
+              <img src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
             </div>
             <div style={{ flex: 1 }}>
               <div className={styles.tokenName}>{token.tokenName}</div>
@@ -349,7 +347,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
             <div className={styles.inviteBox}>
               <div>
                 <img
-                  crossOrigin="anonymous"
                   src={userInforData?.icon || "/img/share/invite.png"}
                   className={styles.invite}
                 />

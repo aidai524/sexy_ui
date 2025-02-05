@@ -23,6 +23,8 @@ export default function Token({
   opacity,
   showTrade,
   tradeTab,
+  danmakus,
+  danmakuShow,
   onUpdate,
   onOpenPanel,
   onUpdateTradeTab
@@ -83,7 +85,7 @@ export default function Token({
               )}
             </div>
             <div className={styles.Bottom}>
-              {isCurrent && <Danmaku token={token} />}
+              {isCurrent && <Danmaku show={danmakuShow} list={danmakus} />}
 
               {token.status === 0 ? (
                 !token.isSuperLike ? (

@@ -12,7 +12,8 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 import Big from "big.js";
-import { useDebounceFn, useThrottleFn } from "ahooks";
+import { useDebounceFn } from "ahooks";
+import useDanmaku from "@/app/hooks/use-danmaku";
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/detail")
@@ -72,6 +73,11 @@ export default function List({ type, isCurrentTab }: any) {
     if (!id) return null;
     return getProjectById(type, id);
   }, [index, list, refresher]);
+
+  const { list: danmakus, show: danmakuShow } = useDanmaku({
+    id: currentToken?.id,
+    isCurrentTab
+  });
 
   const { run } = useDebounceFn(
     (ev: any) => {
@@ -141,6 +147,8 @@ export default function List({ type, isCurrentTab }: any) {
               token={token}
               isCurrent={index === i && isCurrentTab}
               isNext={i - 1 === index && type === "launching"}
+              danmakus={danmakus}
+              danmakuShow={danmakuShow}
               onUpdate={(token: any, action?: string) => {
                 updateProject(type, token);
                 if (action && ["like", "share"].includes(action)) return;
