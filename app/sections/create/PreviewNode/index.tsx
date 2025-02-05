@@ -96,7 +96,7 @@ export default forwardRef(function PreviewNode(
           tokenName: data.tokenName,
           tokenSymbol: data.tokenSymbol,
           tokenDecimals: 6,
-          tokenUri: data.tokenImg
+          tokenUri: data.tokenIcon || data.tokenImg
         }}
         data={data}
         onHide={() => {

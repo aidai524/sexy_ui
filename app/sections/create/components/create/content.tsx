@@ -36,6 +36,8 @@ export default function Create({
   setShowSuccessModal,
   width
 }: any) {
+  console.log('token:', token)
+
   const { tokenName, tokenSymbol, tokenUri } = token;
 
   const { isMobile } = useUserAgent();
