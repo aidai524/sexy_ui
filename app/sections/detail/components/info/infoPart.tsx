@@ -221,13 +221,13 @@ export default function InfoPart({
                 {data.prePaid || 0} Flipped
               </div>
               <div className={styles.progressPercent}>
-                {data.prePaidAmount
+                {data.prePaidAmount && data.prePaid 
                   ? new Big(data.prePaidAmount || 0)
                       .div(10 ** 9)
                       .toFixed(4)
                       .toString()
-                  : 0}
-                SOL
+                  : 0} 
+                 SOL
               </div>
             </div>
 
