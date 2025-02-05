@@ -34,7 +34,9 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
           <div
             className={styles.avtar}
             onClick={() => {
-              router.push("/profile/user?account=" + item.address + "&from=detail");
+              router.push(
+                "/profile/user?account=" + item.address + "&from=detail"
+              );
             }}
           >
             <img
@@ -45,7 +47,9 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
           <div
             onClick={() => {
               if (isSelf) return;
-              router.push("/profile/user?account=" + item.address + "&from=detail");
+              router.push(
+                "/profile/user?account=" + item.address + "&from=detail"
+              );
             }}
             className={`${styles.NameWrapper} ${!isSelf && "button"}`}
           >
@@ -58,7 +62,7 @@ export default function CommentItem({ item, onSuccess, onSuccessNow }: any) {
               >
                 {userName}
               </div>
-              <div> {isSelf && ` (Self)`}</div>
+              <div style={{ color: "#FBCA04" }}> {isSelf && ` (Self)`}</div>
             </div>
             <Level level={item.level} />
           </div>

@@ -14,7 +14,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
 import { fail } from "@/app/utils/toast";
-import { useInterval } from 'ahooks';
+import { useInterval } from "ahooks";
 
 const pageSize = 20;
 
@@ -190,7 +190,9 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                     <div className={styles.nameLevel}>
                       <span>
                         {formatAddress(item.owner)}
-                        {item.owner === authAddress ? "(Self)" : ""}
+                        {item.owner === authAddress && (
+                          <span style={{ color: "#FBCA04" }}>(Self)</span>
+                        )}
                       </span>
                       {item.flipUser && <Level level={item.flipUser?.level} />}
                     </div>
@@ -217,7 +219,9 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                   <div className={styles.UserName}>
                     <span>
                       {formatAddress(item.owner)}
-                      {item.owner === authAddress ? "(Self)" : ""}
+                      {item.owner === authAddress && (
+                        <span style={{ color: "#FBCA04" }}>(Self)</span>
+                      )}
                     </span>
                     {item.flipUser && <Level level={item.flipUser?.level} />}
                   </div>

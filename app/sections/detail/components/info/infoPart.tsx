@@ -94,14 +94,19 @@ export default function InfoPart({
           </div>
         )}
 
-        <div className={styles.detailInfo}>
+        <div
+          style={{
+            width: showMedia ? "calc(100% - 100px)" : "100%"
+          }}
+        >
           <div className={styles.nameWrapper}>
             <div className={styles.name}>{data.tokenName}</div>
             <div className={styles.tickerWrapper}>
-              <div className={styles.ticker}>
-                Ticker:<span className={styles.des}>{data.ticker}</span>
+              <div className={styles.ticker}>Ticker:</div>
+              <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
+                <span className={styles.des}>{data.ticker}</span>
+                <TokenTags token={data} />
               </div>
-              <TokenTags token={data} />
             </div>
           </div>
 
@@ -122,7 +127,9 @@ export default function InfoPart({
               ].join(" ")}
             >
               {userName}
-              {address === data.account && "(Self)"}
+              {address === data.account && (
+                <span style={{ color: "#FBCA04" }}>(Self)</span>
+              )}
             </div>
           </div>
           {data.creater && data.creater.education && (

@@ -20,10 +20,6 @@
   }
 }
 
-.detailInfo {
-  width: calc(100% - 100px);
-}
-
 .detailAvatar {
   display: flex;
   align-items: stretch;
@@ -58,6 +54,7 @@
     margin-top: 10px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
     flex-wrap: wrap;
     .ticker {
