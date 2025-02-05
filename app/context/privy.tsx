@@ -9,14 +9,16 @@ import {
 } from '@privy-io/react-auth';
 import {toSolanaWalletConnectors} from '@privy-io/react-auth/solana';
 import React, { MouseEvent, useContext, useEffect, useMemo, useState } from 'react';
-import { fail } from '@/app/utils/toast';
+import { fail, success } from '@/app/utils/toast';
 
 const solanaConnectors = toSolanaWalletConnectors();
 
 interface IPrivyWalletContext {
   wallet: ConnectedSolanaWallet;
   creatingWallet: boolean;
+  privyVisible: boolean;
   setCreatingWallet: React.Dispatch<React.SetStateAction<boolean>>;
+  setPrivyVisible: React.Dispatch<React.SetStateAction<boolean>>;
   disconnect: () => Promise<void>;
 }
 
@@ -55,6 +57,7 @@ function CreatePrivyWallet(props: any) {
   const { children } = props;
 
   const [creatingWallet, setCreatingWallet] = useState<boolean>(false);
+  const [privyVisible, setPrivyVisible] = useState<boolean>(false);
   const { authenticated, user, logout } = usePrivy();
   const { state } = useLoginWithEmail();
   const { ready, wallets: solanaWallets, createWallet } = useSolanaWallets();
@@ -91,7 +94,19 @@ function CreatePrivyWallet(props: any) {
     console.log('>>>>> creating wallet...');
     setCreatingWallet?.(true);
     createWallet?.().then((wallet) => {
-      console.log('>>>>>> wallet: %o', wallet);
+      console.log('>>>>>> new wallet: %o', wallet);
+      try {
+        navigator.clipboard
+          .writeText(wallet?.address)
+          .then(() => {
+            success("Your wallet address has been copied to the clipboard!", { maskStyle: { zIndex: 2000 } });
+          })
+          .catch((err) => {
+            console.log('wallet address copied failed: %o', err);
+          });
+      } catch (err: any) {
+        console.log('wallet address copied failed: %o', err);
+      }
     }).catch((err) => {
       console.log(err);
       fail('Create wallet failed' + (err?.message ? ': ' + err.message : ''), { maskStyle: { zIndex: 2000 } });
@@ -103,6 +118,8 @@ function CreatePrivyWallet(props: any) {
   return (
     <PrivyWalletContext.Provider
       value={{
+        privyVisible,
+        setPrivyVisible,
         wallet,
         creatingWallet,
         setCreatingWallet,
