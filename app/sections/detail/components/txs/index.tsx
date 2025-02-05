@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CA from "../ca";
 import styles from "./txs.module.css";
 import { formatAddressLast, httpGet, simplifyNum } from "@/app/utils";
@@ -8,6 +8,7 @@ import { defaultAvatar } from "@/app/utils/config";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
 import { Switch } from "antd-mobile";
+import { useInterval } from 'ahooks';
 import { useAccount } from "@/app/hooks/useAccount";
 import Level from "@/app/components/level/simple";
 import { usePair } from "../hooks/usePair";
@@ -65,7 +66,7 @@ export default function Txs({ from, data }: any) {
     3: false
   });
 
-  useEffect(() => {
+  const getData = useCallback(() => {
     if (data && data.tokenName && data.status === 1 && data.DApp === 'sexy') {
       httpGet(
         `/project/trade/list?limit=100&token_name=${data.address}&greater=${filter[1]}&my_following=${filter[2]}&my_trades=${filter[3]}`
@@ -91,7 +92,16 @@ export default function Txs({ from, data }: any) {
         }
       });
     }
+  }, [data, filter])
+
+  useEffect(() => {
+    getData();
   }, [data, filter]);
+
+  useInterval(() => {
+    getData();
+  }, 3000);
+
 
   const { pair } = usePair({ token: data, type: data.status === 3 ? 2 : 0 });
 
@@ -324,7 +334,7 @@ export default function Txs({ from, data }: any) {
               width="100%"
               height="800"
               frameBorder="none"
-              src={`https://dexscreener.com/solana/${pair}?embed=1&loadChartSettings=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15&chart=0`}
+              src={`https://dexscreener.com/solana/${pair}?embed=1&loadChartSettings=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=3&chart=0`}
             ></iframe>
           )}
         </div>
