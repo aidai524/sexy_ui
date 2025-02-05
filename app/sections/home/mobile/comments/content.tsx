@@ -9,8 +9,13 @@ import useComment from "@/app/hooks/use-comment";
 import useCommentList from "@/app/hooks/use-comment-list";
 
 export default function Content({ id, onSuccess, total, from, onClose }: any) {
-  const { isCommentLoading, commentHasMore, loadMoreComment, commentList, update } =
-    useCommentList({ id });
+  const {
+    isCommentLoading,
+    commentHasMore,
+    loadMoreComment,
+    commentList,
+    update
+  } = useCommentList({ id });
   const { isLoading, commentText, setCommentText, onPostComment } = useComment(
     id,
     () => {
@@ -40,6 +45,9 @@ export default function Content({ id, onSuccess, total, from, onClose }: any) {
             width={176}
             height={95}
             alt="Comments"
+            style={{
+              userSelect: "none"
+            }}
           />
           {from === "panel" && (
             <div className={styles.Nums}>{total || 0} comments</div>
@@ -63,9 +71,13 @@ export default function Content({ id, onSuccess, total, from, onClose }: any) {
         }}
       >
         {commentList.map((comment: any) => (
-          <CommentItem onSuccess={(item: any) => {
-            update && update()
-          }} key={comment.id} item={comment} />
+          <CommentItem
+            onSuccess={(item: any) => {
+              update && update();
+            }}
+            key={comment.id}
+            item={comment}
+          />
         ))}
         {commentList.length === 0 && !isCommentLoading && (
           <div
