@@ -89,7 +89,10 @@ export default function useDanmaku({ id, isCurrentTab }: any) {
   );
 
   useEffect(() => {
-    if (!isCurrentTab) return;
+    clearTimeout(timer.current);
+    if (!isCurrentTab) {
+      return;
+    }
     loadData();
   }, [id, isCurrentTab]);
 
