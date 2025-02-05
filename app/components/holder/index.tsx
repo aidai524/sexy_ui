@@ -14,8 +14,9 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
 import { fail } from "@/app/utils/toast";
+import { useInterval } from 'ahooks';
 
-const pageSize = 40;
+const pageSize = 20;
 
 export default function Holder({ from, address, showAvatar, style = {} }: any) {
   const [list, setList] = useState<any[]>([]);
@@ -89,7 +90,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
           if (res.items.length < pageSize) {
             setHasMore(false);
           } else {
-            setPageIndex(_page + 1);
+            // setPageIndex(_page + 1);
             setHasMore(true);
           }
         }
@@ -151,6 +152,10 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
   useEffect(() => {
     loadData();
   }, [address]);
+
+  useInterval(() => {
+    loadData();
+  }, 3000);
 
   return (
     <div
@@ -244,7 +249,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
           <Empty height={from === "panel" ? 300 : "auto"} text="No holders" />
         </div>
       )}
-      <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+      {/* <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} /> */}
     </div>
   );
 }

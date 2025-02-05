@@ -164,7 +164,7 @@ export default function Trade({
         <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
           {isPrePayd ? (
             <div className={styles.receiveTitle}>
-              You have bought this meme. You can view it on your account page。
+              You have bought this meme. You can view it on your account page.
             </div>
           ) : (
             <div className={styles.receiveTitle}>

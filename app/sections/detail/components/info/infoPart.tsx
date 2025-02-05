@@ -78,6 +78,7 @@ export default function InfoPart({
           <div className={styles.tokenImgWrapper}>
             {videoReg.test(data.tokenImg || "") ? (
               <VideoPlayer
+                key={data.tokenImg}
                 src={data.tokenImg}
                 playManually={true}
                 type={getVideoExt(data.tokenImg)}
@@ -85,6 +86,7 @@ export default function InfoPart({
               />
             ) : (
               <img
+                key={data.tokenImg}
                 className={styles.tokenImg}
                 src={data.tokenImg || "/img/token-placeholder.png"}
               />
