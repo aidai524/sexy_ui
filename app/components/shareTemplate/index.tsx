@@ -19,7 +19,7 @@ import {
   simplifyNum,
   httpGet,
 } from "@/app/utils";
-import QRCode from "../qrcode";
+import QRCode, { QRCodeImage } from "../qrcode";
 import TokenTags from "../tokenTags";
 import { useAuth } from "@/app/context/auth";
 import Level from "../level";
@@ -46,7 +46,7 @@ const domain = process.env.NEXT_PUBLIC_DOMAIN || "https://stage.flipn.fun";
 function Card({ token, show, onClose }: Props, ref: any) {
   const containerRef = useRef(null);
   const { userInfo } = useAuth();
-  const { userInfo:  userInforData } = useUser();
+  const { userInfo: userInforData } = useUser();
   const [isSharing, setIsSharing] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
   const { total: totalHolders } = useHolders(token);
@@ -63,7 +63,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
   }));
 
   useEffect(() => {
-    console.log('navigator.userAgent', navigator.userAgent, navigator.userAgent.toLowerCase().indexOf('phantom') > -1)
     if (navigator.userAgent.toLowerCase().indexOf('phantom') > -1 || navigator.userAgent.toLowerCase().indexOf('solflare') > -1) {
       setIsNoHead(true);
     }
@@ -171,7 +170,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
   }, [token]);
 
   useEffect(() => {
-    console.log('innerWidth', innerWidth)
     if (innerWidth < 400) {
       setStyle({
         transform: 'scale(0.85)',
@@ -194,8 +192,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
     <Modal
       open={show}
       onClose={() => {
-        onClose();
         setShareUrl('');
+        canvasRef.current = null;
+        onClose();
       }}
       closeIcon={<></>}
       mainStyle={{
@@ -215,11 +214,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
           }}
         >
-          <img src="/img/share/logo.png" alt="Flip" className={styles.logo} />
+          <img src="/img/share/logo.png" className={styles.logo} />
           <div className={styles.header}>
             <img
               src="/img/share/subTitle.png"
-              alt="Flip"
               className={styles.subTitle}
             />
 
@@ -265,7 +263,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               token?.status !== 0 && (
                 <div className={styles.statsLaunches}>
                   <div className={styles.statsBuyMe}>
-                    <img src="/img/share/buy.png" alt="Flip" className={styles.buyMe} />
+                    <img src="/img/share/buy.png" className={styles.buyMe} />
                   </div>
                   <div className={styles.statsFlip}>
                     <div className={styles.statsFlipText}>
@@ -296,26 +294,28 @@ function Card({ token, show, onClose }: Props, ref: any) {
             <div className={styles.tokenImage}>
               {
                 checkFileType(token.tokenImg) === 'video' || /.gif$/.test(token.tokenImg) ? (
-                  <img
-                    src={token.tokenIcon || '/img/token-placeholder.png'}
-                    alt={token.tokenName}
-                    className={styles.tokenImg}
-                  />
+                  <>
+                    <img
+                      src={(token.tokenIcon || '/img/token-placeholder.png').replace(process.env.NEXT_PUBLIC_S3_URL_PREFIX!, '/s3/img')}
+                      className={styles.tokenImg}
+                    />
+                  </>
                 ) : (
-                  <img
-                    src={token.tokenImg || token.tokenIcon || '/img/token-placeholder.png'}
-                    alt={token.tokenName}
-                    className={styles.tokenImg}
-                  />
+                  <>
+                    <img
+                      src={(token.tokenImg || token.tokenIcon || '/img/token-placeholder.png').replace(process.env.NEXT_PUBLIC_S3_URL_PREFIX!, '/s3/img')}
+                      className={styles.tokenImg}
+                    />
+                  </>
                 )
               }
-
             </div>
           </div>
 
           <div className={styles.tokenInfo}>
             <div className={styles.tokenIcon}>
-              <img src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
+              <img src={(token.tokenIcon || '/img/token-icon-placeholder.svg').replace(process.env.NEXT_PUBLIC_S3_URL_PREFIX!, '/s3/img')}
+                className={styles.badge} />
             </div>
             <div style={{ flex: 1 }}>
               <div className={styles.tokenName}>{token.tokenName}</div>
@@ -339,15 +339,15 @@ function Card({ token, show, onClose }: Props, ref: any) {
               </div>
             </div>
 
-            <img src="/img/share/tie.png" alt="Flip" className={styles.tie} />
+            <img src="/img/share/tie.png" className={styles.tie} />
           </div>
 
           {/* Footer with QR Code */}
           <div className={styles.footer}>
             <div className={styles.inviteBox}>
-              <div>
+              <div className={styles.inviteIcon}>
                 <img
-                  src={userInforData?.icon || "/img/share/invite.png"}
+                  src={(userInforData?.icon || "/img/share/invite.png").replace(process.env.NEXT_PUBLIC_S3_URL_PREFIX!, '/s3/img')}
                   className={styles.invite}
                 />
               </div>
@@ -365,7 +365,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               </div>
             </div>
             <div className={styles.qrcode1}>
-              <QRCode
+              <QRCodeImage
                 url={shareUrl}
                 size={60}
                 onSuccess={(canvas: any) => {
@@ -375,7 +375,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               {/*<img src="/img/share/qr-logo.png" alt="Flip" className={styles.qrLogo} />*/}
             </div>
 
-            <img src="/img/share/scan.png" alt="Flip" className={styles.scan} />
+            <img src="/img/share/scan.png" className={styles.scan} />
           </div>
         </div>
         <div className={styles.buttonContainer}>
@@ -396,7 +396,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
             }
           }}>Save image</button>
           <button className={styles.shareButton} style={{ opacity: shareUrl && canvasRef.current && !isSharing ? 1 : 0.5 }} onClick={async () => {
-            if (isNoHead) { 
+            if (isNoHead) {
               showError();
               return;
             }

@@ -1,6 +1,6 @@
 import Media from "@/app/components/thumbnail/media";
 import styles from "./held.module.css";
-import { httpGet, simplifyNum } from "@/app/utils";
+import { checkFileType, httpGet, simplifyNum } from "@/app/utils";
 import Big from "big.js";
 import { numberFormatter } from "@/app/utils/common";
 import { useRouter } from "next/navigation";
@@ -12,11 +12,16 @@ export default function HoldItem(props: any) {
     const [icon, setIcon] = useState('');
 
     useEffect(() => {
-        httpGet("/project", { address: item.token_address }).then((res) => {
-            if (res.code === 0 && res.data && res.data.length) {
-                setIcon(res.data[0].icon);
-            }
-        })
+        const type = checkFileType(tokenInfo[item.token_address].token_icon);
+        if (type === 'image') {
+            setIcon(tokenInfo[item.token_address].token_icon);
+        } else {
+            httpGet("/project", { address: item.token_address }).then((res) => {
+                if (res.code === 0 && res.data && res.data.length) {
+                    setIcon(res.data[0].icon);
+                }
+            })
+        }
     }, [item])
 
     return <div
@@ -34,7 +39,7 @@ export default function HoldItem(props: any) {
         <div className={styles.tokenMsg}>
             <Media
                 data={{
-                    tokenImg: icon ||tokenInfo[item.token_address].token_icon
+                    tokenImg: icon || tokenInfo[item.token_address].token_icon
                 }}
                 imgHeight={46}
                 autoPlay={false}
