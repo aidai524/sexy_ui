@@ -40,6 +40,7 @@ export const WalletModal: FC<WalletModalProps> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
   const { wallets, select, connect } = useWallet();
   const { setVisible } = useWalletModal();
+  const { privyVisible } = useContext(PrivyWalletContext);
 
   const [expanded, setExpanded] = useState(true);
   const [fadeIn, setFadeIn] = useState(false);
@@ -191,7 +192,11 @@ export const WalletModal: FC<WalletModalProps> = (props) => {
             <h2 className="wallet-adapter-modal-sub-title">
               You need to connect a solana wallet.
             </h2>
-            <PrivyEmail {...props} onClose={handleClose} />
+            {
+              privyVisible && (
+                <PrivyEmail {...props} onClose={handleClose} />
+              )
+            }
             {listedWallets.length ? (
               <>
                 <div className="wallet-adapter-modal-label">Recently Used</div>
