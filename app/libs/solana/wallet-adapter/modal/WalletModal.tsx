@@ -2,7 +2,7 @@ import type { Adapter } from "@solana/wallet-adapter-base";
 import { WalletReadyState } from "@solana/wallet-adapter-base";
 import type { Wallet } from "@solana/wallet-adapter-react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import type { FC, MouseEvent } from "react";
+import { FC, MouseEvent, useContext, useEffect } from 'react';
 import React, {
   useCallback,
   useLayoutEffect,
@@ -16,6 +16,11 @@ import { WalletListItem } from "./WalletListItem";
 import { WalletSVG } from "./WalletSVG";
 import { useWalletModal } from "./useWalletModal";
 import { getDeviceType, sleep } from "@/app/utils";
+import { usePrivy, useLoginWithEmail, useSolanaWallets } from '@privy-io/react-auth';
+import Loading from '@/app/components/icons/loading';
+import { fail, success } from '@/app/utils/toast';
+import Modal from '@/app/components/modal';
+import { PrivyWalletContext } from '@/app/context/privy';
 
 export interface WalletModalProps {
   className?: string;
@@ -24,15 +29,18 @@ export interface WalletModalProps {
   disabledWallets?: string[];
 }
 
-export const WalletModal: FC<WalletModalProps> = ({
-  className = "",
-  container = "body",
-  sortedWallets = [],
-  disabledWallets = []
-}) => {
+export const WalletModal: FC<WalletModalProps> = (props) => {
+  const {
+    className = "",
+    container = "body",
+    sortedWallets = [],
+    disabledWallets = []
+  } = props;
+
   const ref = useRef<HTMLDivElement>(null);
   const { wallets, select, connect } = useWallet();
   const { setVisible } = useWalletModal();
+
   const [expanded, setExpanded] = useState(true);
   const [fadeIn, setFadeIn] = useState(false);
   const [portal, setPortal] = useState<Element | null>(null);
@@ -73,7 +81,7 @@ export const WalletModal: FC<WalletModalProps> = ({
 
   const handleClose = useCallback(
     (event: MouseEvent) => {
-      event.preventDefault();
+      event?.preventDefault?.();
       hideModal();
     },
     [hideModal]
@@ -183,6 +191,7 @@ export const WalletModal: FC<WalletModalProps> = ({
             <h2 className="wallet-adapter-modal-sub-title">
               You need to connect a solana wallet.
             </h2>
+            <PrivyEmail {...props} onClose={handleClose} />
             {listedWallets.length ? (
               <>
                 <div className="wallet-adapter-modal-label">Recently Used</div>
@@ -198,26 +207,12 @@ export const WalletModal: FC<WalletModalProps> = ({
                   ))}
                   <div className="wallet-adapter-modal-label wallet-adapter-modal-list-more">
                     <span>{expanded ? "Less " : "More "}Wallets</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="15"
-                      height="9"
-                      viewBox="0 0 15 9"
-                      fill="none"
-                      className={`button ${
-                        expanded
-                          ? "wallet-adapter-modal-list-more-icon-rotate"
-                          : ""
-                      }`}
+                    <Arrow
+                      style={{
+                        transform: expanded ? 'rotate(180deg)' : '',
+                      }}
                       onClick={handleCollapseClick}
-                    >
-                      <path
-                        d="M14 1L7.5 7L1 0.999999"
-                        stroke="white"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
+                    />
                   </div>
                   {collapsedWallets.length ? (
                     <Collapse
@@ -310,5 +305,233 @@ export const WalletModal: FC<WalletModalProps> = ({
       </div>,
       portal
     )
+  );
+};
+
+const PrivyEmail = (props: any) => {
+  const { onClose } = props;
+
+  const { creatingWallet } = useContext(PrivyWalletContext);
+
+  const { ready, authenticated, user } = usePrivy();
+  const { sendCode, loginWithCode } = useLoginWithEmail();
+  const { wallets: solanaWallets } = useSolanaWallets();
+
+  const [email, setEmail] = useState<string>('');
+  const [code, setCode] = useState<string>('');
+  const [sendingCode, setSendingCode] = useState<boolean>(false);
+  const [logging, setLogging] = useState<boolean>(false);
+  const [sentCode, setSentCode] = useState<boolean>(false);
+
+  const handleEmailChange = (e: any) => {
+    const val = e.target.value;
+    setEmail(val);
+  };
+
+  const handleCodeChange = (e: any) => {
+    const val = e.target.value;
+    setCode(val);
+  };
+
+  const handleSendCode = async () => {
+    if (sendingCode || !email) return;
+    if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/.test(email)) {
+      fail('Please enter a valid email address', { maskStyle: { zIndex: 2000 } });
+      return;
+    }
+    setSendingCode(true);
+    sendCode({ email }).then((res) => {
+      success('The verification code has been sent to your email', { maskStyle: { zIndex: 2000 } });
+      setSentCode(true);
+    }).catch((err) => {
+      fail('Please enter a valid email address', { maskStyle: { zIndex: 2000 } });
+    }).finally(() => {
+      setSendingCode(false);
+    });
+  };
+
+  const handleLogIn = () => {
+    if (logging|| !code) return;
+    setLogging(true);
+    loginWithCode({ code }).then((res) => {
+      // Success
+      success('Successfully logged in', { maskStyle: { zIndex: 2000 } });
+      setSentCode(false);
+      onClose();
+      setCode('');
+      setEmail('');
+    }).catch((err) => {
+      console.log(err);
+      fail('Invalid code' + (err?.message ? ': ' + err.message : ''), { maskStyle: { zIndex: 2000 } });
+    }).finally(() => {
+      setLogging(false);
+    });
+  };
+
+  return (
+    <div className="privy-wallet-email-container">
+      <div className="privy-wallet-email-label">
+        <div>Log in or sign up</div>
+      </div>
+      <PrivyEmailControl
+        onSubmit={handleSendCode}
+        onChange={handleEmailChange}
+        value={email}
+        loading={logging}
+        disabled={sendingCode || !ready}
+        icon="/img/icon-email.svg"
+        placeholder="your@email.com"
+        buttonText="Submit"
+        inputType="email"
+      />
+      {/*<button
+        type="button"
+        style={{ color: '#fff', width: '100%', padding: '10px', border: '1px solid #ededed', marginBottom: 10 }}
+        onClick={async () => {
+          logout();
+          const privyEmbeddedWallet = solanaWallets.find((it) => it.walletClientType === 'privy');
+          privyEmbeddedWallet?.disconnect?.();
+        }}
+      >
+        LogOut
+      </button>*/}
+      <PrivyEmailCodeModal
+        visible={sentCode}
+        onClose={() => {
+          setSentCode(false);
+          setCode('');
+        }}
+        handleLogIn={handleLogIn}
+        logging={logging}
+        handleCodeChange={handleCodeChange}
+        code={code}
+        creatingWallet={creatingWallet}
+        ready={ready}
+        email={email}
+        handleSendCode={handleSendCode}
+        sendingCode={sendingCode}
+      />
+    </div>
+  );
+};
+
+const PrivyEmailControl = (props: any) => {
+  const { value, onSubmit, loading, icon, disabled, buttonText, placeholder, inputType, onChange } = props;
+
+  return (
+    <div className="privy-wallet-email-control-container">
+      <img src={icon} alt="" className="privy-wallet-email-control-icon" />
+      <input
+        type={inputType}
+        value={value}
+        className="privy-wallet-email-control"
+        placeholder={placeholder}
+        disabled={disabled}
+        onChange={onChange}
+        onKeyUp={(e) => {
+          if (e.code === 'Enter') {
+            onSubmit();
+          }
+        }}
+      />
+      <button
+        type="button"
+        className="privy-wallet-email-control-addon"
+        disabled={disabled}
+        onClick={onSubmit}
+      >
+        {
+          loading && (
+            <Loading size={14} />
+          )
+        }
+        <span>{buttonText}</span>
+      </button>
+    </div>
+  );
+};
+
+const Arrow = (props: any) => {
+  const { style, onClick } = props;
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="9"
+      viewBox="0 0 15 9"
+      fill="none"
+      style={style}
+      onClick={onClick}
+    >
+      <path
+        d="M14 1L7.5 7L1 0.999999"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
+
+const PrivyEmailCodeModal = (props: any) => {
+  const {
+    visible,
+    onClose,
+    handleLogIn,
+    logging,
+    handleCodeChange,
+    code,
+    creatingWallet,
+    ready,
+    email,
+    handleSendCode,
+    sendingCode,
+  } = props;
+
+  return (
+    <Modal
+      open={visible}
+      onClose={onClose}
+      style={{
+        zIndex: 1041,
+      }}
+      forceNoCloseIcon={true}
+    >
+      <div className="privy-wallet-email-code-card">
+        <div className="privy-wallet-email-code-header">
+          <button type="button" className="privy-wallet-email-code-back" onClick={onClose}>
+            <Arrow
+              style={{
+                transform: 'rotate(90deg)',
+              }}
+            />
+          </button>
+          <div className="privy-wallet-email-code-title">
+            Enter confirmation code
+          </div>
+        </div>
+        <div className="privy-wallet-email-code-desc">
+          Please check <span style={{ textDecoration: 'underline' }}>{email}</span> for an email from privy.io and enter your code below.
+        </div>
+        <PrivyEmailControl
+          onSubmit={handleLogIn}
+          onChange={handleCodeChange}
+          value={code}
+          loading={logging || creatingWallet}
+          disabled={logging || !ready || creatingWallet}
+          icon="/img/icon-email.svg"
+          placeholder="Your code"
+          buttonText="Log in"
+          inputType="text"
+        />
+        <div className="privy-wallet-email-code-foot">
+          <div className="">
+            Didn&#39;t get an email? <button type="button" className="privy-wallet-email-code-resend" onClick={handleSendCode} disabled={sendingCode}>
+            Resend code</button>
+          </div>
+        </div>
+      </div>
+    </Modal>
   );
 };

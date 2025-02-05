@@ -23,9 +23,9 @@ export default function EditContent({ onSuccess, onClose }: any) {
   const { isMobile } = useUserAgent();
 
   const iaInValid = useMemo(() => {
-    if (!name || avatar.length === 0) {
-      return true;
-    }
+    // if (!name || avatar.length === 0) {
+    //   return true;
+    // }
     return false;
   }, [name, avatar, banner]);
 
@@ -64,7 +64,7 @@ export default function EditContent({ onSuccess, onClose }: any) {
     <>
       <div className={styles.group}>
         <div className={styles.groupTitle}>
-          <span className={styles.require}>*</span>Username
+          Username
         </div>
         <div className={styles.groupContent} style={{ marginTop: 12 }}>
           <input
@@ -92,7 +92,7 @@ export default function EditContent({ onSuccess, onClose }: any) {
 
       <div className={styles.group} style={{ paddingTop: 8 }}>
         <div className={styles.groupTitle}>
-          <span className={styles.require}>*</span>Profile Photo
+          Profile Photo
         </div>
         <div
           className={styles.groupContent}
@@ -116,7 +116,7 @@ export default function EditContent({ onSuccess, onClose }: any) {
 
       <div className={styles.group}>
         <div className={styles.groupTitle} style={{ marginBottom: 10 }}>
-          <span className={styles.require}>*</span>Head Banner
+          Head Banner
         </div>
         <div
           className={styles.groupContent}
@@ -155,34 +155,32 @@ export default function EditContent({ onSuccess, onClose }: any) {
         <MainBtn
           isDisabled={iaInValid}
           onClick={async () => {
-            if (name) {
-              let icon = "",
-                bannerImg = "";
-              if (avatar.length) {
-                icon = avatar[0].url;
-              }
-
-              if (banner.length) {
-                bannerImg = banner[0].url;
-              } else {
-                bannerImg = defaultBannerImg;
-              }
-
-              const isSuccess = await saveUserInfo(
-                bannerImg,
-                icon,
-                name,
-                education
-              );
-
-              if (isSuccess) {
-                success("Edit profile success");
-                onSuccess();
-                updateCurrentUserInfo();
-              } else {
-                fail("Edit profile fail");
-              }
+            let icon = "", bannerImg = "";
+            if (avatar.length) {
+              icon = avatar[0].url;
             }
+
+            if (banner.length) {
+              bannerImg = banner[0].url;
+            } else {
+              bannerImg = defaultBannerImg;
+            }
+
+            const isSuccess = await saveUserInfo(
+              bannerImg,
+              icon,
+              name || '',
+              education || ''
+            );
+
+            if (isSuccess) {
+              success("Edit profile success");
+              onSuccess();
+              updateCurrentUserInfo();
+            } else {
+              fail("Edit profile fail");
+            }
+
           }}
           style={{ flex: 1, color: "#000" }}
         >

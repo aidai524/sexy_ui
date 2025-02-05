@@ -128,7 +128,8 @@ export default function Held({ from, address }: any) {
                 </div>
                 <div
                   className={styles.viewCoin}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation()
                     window.open(
                       "https://solscan.io/account/" + item.token_account
                     );
