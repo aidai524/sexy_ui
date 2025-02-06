@@ -57,7 +57,7 @@ export default function TopTraders() {
 
   if (smartMoniesLoading && pageIndex === 1) {
     return <div style={{ paddingTop: 116 }}>
-      <Empty text="Loading..." />
+      <Empty text="Loading" showLoading={true} />
     </div>
   }
 

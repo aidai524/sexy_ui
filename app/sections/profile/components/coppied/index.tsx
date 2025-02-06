@@ -84,7 +84,7 @@ export default function Coppied({ isOther }: any) {
   if (isLoading && pageIndex === 1) {
     return (
       <div style={{ paddingTop: 116 }}>
-        <Empty text="Loading..." />
+        <Empty text="Loading" showLoading={true} />
       </div>
     );
   }
