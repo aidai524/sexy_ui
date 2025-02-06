@@ -6,15 +6,20 @@ import { getTokenMeta } from '@/app/utils/solanaScanApi';
 
 export function useCopyTokenInfos(tokens: any[] | undefined) {
     const { connection } = useConnection();
-    const [tokenInfos, setTokenInfos] = useState<{[key: string]: any}>({});
+    const [tokenInfos, setTokenInfos] = useState<any[]>([]);
 
     useEffect(() => {
         const fetchTokenInfos = async () => {
             if (tokens) {
-                const infos: {[key: string]: any} = {};
-                for (const item of tokens) {
-                    infos[item.token] = await getTokenInfo(item.token);
-                }
+                const infos = await Promise.all(
+                    tokens.map(async (item) => {
+                        const info = await getTokenInfo(item.token);
+                        return {
+                            ...info,
+                            address: item.token
+                        };
+                    })
+                );
                 setTokenInfos(infos);
             }
         };
