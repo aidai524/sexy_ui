@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import GoBack from "@/app/components/back/laptop";
 import { TokenStatusModal } from "@/app/components/status2Alert";
+import useDanmaku from "@/app/hooks/use-danmaku";
 import { useDetailStatus } from "@/app/store/use-detail-status";
 
 const DetailPanel = dynamic(
@@ -29,6 +30,10 @@ export default function Laptop(props: any) {
   const { innerWidth } = useUserAgent();
   const search = useSearchParams();
   const router = useRouter();
+  const { list: danmakus, show: danmakuShow } = useDanmaku({
+    id: infoData?.id,
+    isCurrentTab: true
+  });
 
   useEffect(() => {
     detailStatusStore.setToken(infoData);
@@ -105,6 +110,8 @@ export default function Laptop(props: any) {
                 return;
               }
             }}
+            danmakus={danmakus}
+            danmakuShow={danmakuShow}
           />
         </div>
         {detailStatusStore.token && (

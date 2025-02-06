@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useProjects, type Type } from "@/app/store/use-projects";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";
+import { usePathname } from "next/navigation";
 import { mapDataToProject } from "@/app/utils/mapTo";
 
 const limit = 10;
@@ -25,13 +26,17 @@ export default function useData(launchType: Type) {
   const projectsStore = useProjects();
   const mountedRef = useRef(false);
   const fetchingRef = useRef(false);
+  const pathname = usePathname();
 
   const queryList = async () => {
     if (fetchingRef.current) return;
     try {
       fetchingRef.current = true;
+      const cachedList = projectsStore.getProjectsByType(launchType) || [];
       const res = await httpGet(
-        `/project/list?limit=${limit}&launchType=${launchType}`
+        `/project/list?limit=${limit}&launchType=${launchType}&deleteCache=${
+          cachedList.length === 0
+        }`
       );
 
       const _hasNext = res.data?.list && res.data?.list.length === limit;
@@ -109,7 +114,20 @@ export default function useData(launchType: Type) {
     [projectsStore, refresher]
   );
 
+  const checkedFetchedTime = () => {
+    const time =
+      launchType === "preLaunch"
+        ? projectsStore.preTime
+        : projectsStore.launchTime;
+    if (time + 1000 * 60 * 60 > Date.now()) return false;
+    projectsStore.clear(launchType);
+    handleList(false);
+    return true;
+  };
+
   const onChangeIndex = (currentIndex: number) => {
+    const res = checkedFetchedTime();
+    if (res) return;
     projectsStore.setIndex(launchType, currentIndex);
     if (list.length - projectsStore.getIndex(launchType) > left_num) {
       return;
@@ -146,6 +164,10 @@ export default function useData(launchType: Type) {
   useEffect(() => {
     debounceList();
   }, [accountRefresher]);
+
+  useEffect(() => {
+    checkedFetchedTime();
+  }, [pathname]);
 
   return {
     getIndex: projectsStore.getIndex,

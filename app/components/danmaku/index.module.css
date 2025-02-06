@@ -42,7 +42,9 @@
   font-weight: 400;
   line-height: normal;
   max-width: 200px;
-  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .Like {

@@ -10,6 +10,8 @@ interface ProjectsState {
   preIndex: number;
   launchIndex: number;
   address: string;
+  preTime: number;
+  launchTime: number;
   setProjects: (
     projects: any,
     type: Type,
@@ -32,6 +34,8 @@ export const useProjects = create(
       preIndex: 0,
       launchIndex: 0,
       address: "",
+      preTime: 0,
+      launchTime: 0,
       clear: (type: Type) => {
         if (type === "preLaunch") {
           set({ preProjects: {}, preIndex: 0 });
@@ -75,11 +79,16 @@ export const useProjects = create(
         };
 
         if (type === "preLaunch") {
-          set({ preProjects: list, address: address || "" });
+          set({
+            preProjects: list,
+            address: address || "",
+            preTime: Date.now()
+          });
         } else {
           set({
             launchProjects: list,
-            address: address || ""
+            address: address || "",
+            launchTime: Date.now()
           });
         }
       },

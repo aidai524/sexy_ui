@@ -1,12 +1,12 @@
 import { httpGet } from "@/app/utils";
 import { useAccount } from "@/app/hooks/useAccount";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 import { useConfig } from "@/app/store/useConfig";
 import dayjs from "dayjs";
 import { usePathname, useRouter } from "next/navigation";
 import { AIRDROP_STAGE } from "@/app/config/airdrop";
 import { useDebounceFn } from "ahooks";
-import { success } from '@/app/utils/toast';
+import { success } from "@/app/utils/toast";
 
 export function useWhitelist() {
   const { address } = useAccount();
@@ -26,7 +26,7 @@ export function useWhitelist() {
 
       return _isWhitelist;
     } catch (err: any) {
-      err.log(err);
+      // err.log(err);
     }
     return false;
   };
@@ -41,20 +41,22 @@ export function useWhitelist() {
     return new Promise((resolve) => {
       try {
         navigator.clipboard
-          .writeText(address || '')
+          .writeText(address || "")
           .then(() => {
-            success("Your wallet address has been copied to the clipboard!", { maskStyle: { zIndex: 2000 } });
+            success("Your wallet address has been copied to the clipboard!", {
+              maskStyle: { zIndex: 2000 }
+            });
             timer.current = setTimeout(() => {
               clearInterval(timer.current);
               resolve(true);
             }, 2000);
           })
           .catch((err) => {
-            console.log('wallet address copied failed: %o', err);
+            console.log("wallet address copied failed: %o", err);
             resolve(false);
           });
       } catch (err: any) {
-        console.log('wallet address copied failed: %o', err);
+        console.log("wallet address copied failed: %o", err);
         resolve(false);
       }
     });
@@ -63,7 +65,7 @@ export function useWhitelist() {
   const redirect2Whitelist = async () => {
     if (pathname !== AIRDROP_STAGE.WHITELIST.path) {
       await copyUserAddress();
-      router.replace(AIRDROP_STAGE.WHITELIST.path + '?address=' + address);
+      router.replace(AIRDROP_STAGE.WHITELIST.path + "?address=" + address);
     }
   };
 
@@ -83,8 +85,8 @@ export function useWhitelist() {
           return;
         }
 
-        if (process.env.NEXT_PUBLIC_NET === 'Devnet') {
-          return
+        if (process.env.NEXT_PUBLIC_NET === "Devnet") {
+          return;
         }
 
         const isWhitelist = await checkWhiteList();
