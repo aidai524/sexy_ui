@@ -12,6 +12,7 @@ export default function TopTraders() {
   const pageSize = 10;
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const [tradersList, setTradersList] = useState<{items: any[], total: number}>({
     items: [],
     total: 0
@@ -31,12 +32,16 @@ export default function TopTraders() {
       });
 
       setHasMore(smartMonies.items.length >= pageSize);
+      setIsLoadingMore(false);
     }
   }, [smartMonies]);
 
   const loadMore = useCallback(() => {
-    setPageIndex(prev => prev + 1);
-  }, []);
+    if (!isLoadingMore && !smartMoniesLoading) {
+      setIsLoadingMore(true);
+      setPageIndex(prev => prev + 1);
+    }
+  }, [isLoadingMore, smartMoniesLoading]);
 
   if (smartMoniesLoading && pageIndex === 1) {
     return <div style={{ paddingTop: 116 }}>
