@@ -17,11 +17,13 @@ export default function TopTraders() {
     items: [],
     total: 0
   });
+  const [orderBy, setOrderBy] = useState<string>('pnl7D')
   
   const { smartMonies, smartMoniesLoading } = useGetSmartMonies({ 
     chain: 'solana', 
     page: pageIndex, 
-    pageSize 
+    pageSize,
+    orderBy 
   });
 
   useEffect(() => {
@@ -43,6 +45,16 @@ export default function TopTraders() {
     }
   }, [isLoadingMore, smartMoniesLoading]);
 
+  const handleOrderByChange = (newOrderBy: string) => {
+    setOrderBy(newOrderBy);
+    setPageIndex(1);
+    setTradersList({
+      items: [],
+      total: 0
+    });
+    setHasMore(true);
+  };
+
   if (smartMoniesLoading && pageIndex === 1) {
     return <div style={{ paddingTop: 116 }}>
       <Empty text="Loading..." />
@@ -59,8 +71,8 @@ export default function TopTraders() {
     <>
       <div className={styles.topTraders}>
         {isMobile ? 
-          <TopTradersMobile list={tradersList.items}/> : 
-          <TopTradersPC list={tradersList.items}/>
+          <TopTradersMobile list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy}/> : 
+          <TopTradersPC list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy}/>
         }
       </div>
       <SexInfiniteScroll 

@@ -14,9 +14,9 @@ interface Trader {
   followers: number
   roi: number
   pnl: {
-    '1d': number
-    '7d': number
-    '30d': number
+    'pnl1D': number
+    'pnl7D': number
+    'pnl30D': number
   }
   profit: {
     '1d': string
@@ -25,7 +25,7 @@ interface Trader {
   }
 }
 
-const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClick: (trader: any) => void }) => {
+const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCopyTradeClick: (trader: any) => void, activeTab: string }) => {
   const { fecthUserInfo } = useUserInfo(undefined);
   const [user, setUser] = useState<any>(null);
 
@@ -36,6 +36,19 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
     };
     fetchUser();
   }, [trader.address]);
+
+  const getPnlValue = () => {
+    switch (activeTab) {
+      case 'pnl1D':
+        return trader.pnl1D;
+      case 'pnl7D':
+        return trader.pnl7D;
+      case 'pnl30D':
+        return trader.pnl30D;
+      default:
+        return trader.pnl7D;
+    }
+  };
 
   return (
     <div className={styles.traderCard} onClick={() => onCopyTradeClick(trader)}>
@@ -53,25 +66,31 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         </div>
       </div>
       <div className={styles.metrics}>
-        <div className={styles.percentage}>{trader.pnl7D}%</div>
+        <div className={styles.percentage}>{getPnlValue()}%</div>
       </div>
     </div>
   );
 };
 
-export default function TopTradersMobile({list}: {list: any[]}) {
-  const [activeTab, setActiveTab] = useState<'roi' | '1d' | '7d' | '30d'>('7d')
+export default function TopTradersMobile({list, setOrderBy, orderBy}: {list: any[], setOrderBy: any, orderBy: string}) {
+  const [activeTab, setActiveTab] = useState<'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D'>(orderBy as any || 'pnl7D')
   const [currentTrader, setCurrentTrader] = useState<any>(null)
   const [showModal, setShowModal] = useState(false)
 
   const tabs = [
-    { id: '7d', label: '7D PnL' },
+    { id: 'pnl1D', label: '1D PnL' },
+    { id: 'pnl7D', label: '7D PnL' },
+    { id: 'pnl30D', label: '30D PnL' },
   ]
 
   const handleCopyTradeClick = (trader: Trader) => {
     setShowModal(true)
     setCurrentTrader(trader)
   }
+
+  useEffect(() => {
+    setActiveTab(orderBy as 'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D');
+  }, [orderBy]);
 
   return (
     <div className={styles.container}>
@@ -80,7 +99,10 @@ export default function TopTradersMobile({list}: {list: any[]}) {
           <button
             key={tab.id}
             className={`${styles.tab} ${activeTab === tab.id ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab(tab.id as 'roi' | '1d' | '7d' | '30d')}
+            onClick={() => {
+              setActiveTab(tab.id as 'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D')
+              setOrderBy(tab.id as 'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D')
+            }}
           >
             {tab.label}
           </button>
@@ -93,6 +115,7 @@ export default function TopTradersMobile({list}: {list: any[]}) {
             key={index}
             trader={trader}
             onCopyTradeClick={handleCopyTradeClick}
+            activeTab={activeTab}
           />
         ))}
       </div>

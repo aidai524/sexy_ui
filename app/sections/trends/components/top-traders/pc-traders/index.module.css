@@ -6,7 +6,7 @@
   
   .header {
     display: grid;
-    grid-template-columns: 1fr 1fr 100px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 100px;
     padding: 12px 16px;
     color: #9290B1;
     font-size: 14px;
@@ -28,7 +28,7 @@
   
   .traderItem {
     display: grid;
-    grid-template-columns: 1fr 1fr 100px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 100px;
     padding: 16px;
     align-items: center;
     background: #242424;

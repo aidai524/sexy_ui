@@ -186,12 +186,14 @@ class CopyTrade {
     chain: string;
     page: number;
     pageSize: number;
+    orderBy: string;
   }) {
     try {
       const queryParams = new URLSearchParams({
         chain: params.chain,
         page: params.page.toString(),
-        pageSize: params.pageSize.toString()
+        pageSize: params.pageSize.toString(),
+        orderBy: params.orderBy
       }).toString();
       const response = await fetch(`${this.baseURL}/copy_trade/smart_monies?${queryParams}`, {
         method: 'GET',

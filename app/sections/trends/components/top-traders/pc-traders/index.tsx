@@ -12,9 +12,9 @@ interface Trader {
   followers: number
   roi: number
   pnl: {
-    '1d': number
-    '7d': number
-    '30d': number
+    'pnl1D': number
+    'pnl7D': number
+    'pnl30D': number
   }
   profit: {
     '1d': string
@@ -23,23 +23,13 @@ interface Trader {
   }
 }
 
-export default function TopTradersPC({list}: {list: any[]}) {
-  const [sortField, setSortField] = useState<'roi' | '7d' | '30d' | '1d'>('roi');
+export default function TopTradersPC({list,setOrderBy,orderBy}: {list: any[], setOrderBy: any,orderBy: string}) {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [currentTrader, setCurrentTrader] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    // fetchTraders(sortField, sortDirection);
-  }, [sortField, sortDirection]);
-
-  const handleSort = (field: 'roi' | '7d' | '30d' | '1d') => {
-    if (sortField === field) {
-      setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
-    } else {
-      setSortField(field);
-      setSortDirection('desc');
-    }
+  const handleSort = (field: 'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D') => {
+    setOrderBy(field)
   };
 
   const handleCopyTradeClick = (trader: Trader) => {
@@ -52,15 +42,15 @@ export default function TopTradersPC({list}: {list: any[]}) {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.headerItem}>Trader</div>
-        {/* <div className={styles.headerItem} onClick={() => handleSort('1d')}>
-          1D PnL <TriangleIcon direction={sortField === '1d' ? sortDirection : undefined} highlight={sortField === '1d'} />
-        </div> */}
-        <div className={styles.headerItem} onClick={() => handleSort('7d')}>
-          7D PnL <TriangleIcon direction={sortField === '7d' ? sortDirection : undefined} highlight={sortField === '7d'} />
+        <div className={styles.headerItem} onClick={() => handleSort('pnl1D')}>
+          1D PnL <TriangleIcon direction={orderBy === 'pnl1D' ? sortDirection : undefined} highlight={orderBy === 'pnl1D'} />
         </div>
-        {/* <div className={styles.headerItem} onClick={() => handleSort('30d')}>
-          30D PnL <TriangleIcon direction={sortField === '30d' ? sortDirection : undefined} highlight={sortField === '30d'} />
-        </div> */}
+        <div className={styles.headerItem} onClick={() => handleSort('pnl7D')}>
+          7D PnL <TriangleIcon direction={orderBy === 'pnl7D' ? sortDirection : undefined} highlight={orderBy === 'pnl7D'} />
+        </div>
+        <div className={styles.headerItem} onClick={() => handleSort('pnl30D')}>
+          30D PnL <TriangleIcon direction={orderBy === 'pnl30D' ? sortDirection : undefined} highlight={orderBy === 'pnl30D'} />
+        </div>
         <div className={styles.headerItem}></div>
       </div>
 
@@ -110,9 +100,14 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
           <div className={styles.followers}>{user?.followers || 0} followers</div>
         </div>
       </div>
-      
+      <div className={styles.pnl}>
+        {trader.pnl1D}%
+      </div>
       <div className={styles.pnl}>
         {trader.pnl7D}%
+      </div>
+      <div className={styles.pnl}>
+        {trader.pnl30D}%
       </div>
 
       <button className={styles.copyButton} onClick={() => onCopyTradeClick(trader)}>Copy</button>
