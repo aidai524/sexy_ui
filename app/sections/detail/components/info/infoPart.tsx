@@ -71,6 +71,8 @@ export default function InfoPart({
     return <Empty text="No info" />;
   }
 
+  console.log('top1', top1);
+
   return (
     <div>
       <div className={styles.detailAvatar}>

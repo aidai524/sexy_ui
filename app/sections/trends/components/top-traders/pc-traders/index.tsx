@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from './index.module.css'
 import { defaultAvatar } from "@/app/utils/config";
-import Empty from '@/app/components/empty';
-import CoppiedAction from '@/app/sections/profile/components/coppiedAction';
+import CoppiedModal from '@/app/sections/profile/components/coppiedModal';
 import { SHOW_COPY_TRADE } from '@/app/utils/config';
-import {fetchMockTraders} from '../trade';
-
+import { formatAddress } from '@/app/utils';
+import { fecthUserInfo } from '@/app/utils/getUserInfo';
 interface Trader {
   avatar: string
   name: string
@@ -24,55 +23,15 @@ interface Trader {
   }
 }
 
-export default function TopTradersPC() {
+export default function TopTradersPC({list}: {list: any[]}) {
   const [sortField, setSortField] = useState<'roi' | '7d' | '30d' | '1d'>('roi');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [traders, setTraders] = useState<Trader[]>([]);
-  const [currentTrader, setCurrentTrader] = useState<Trader | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [currentTrader, setCurrentTrader] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
 
-  const fetchTraders = async (field: string, direction: string) => {
-    setLoading(true);
-    try {
-      const data = await fetchMockTraders(field, 'desc')
-    //   if (!response.ok) throw new Error('Failed to fetch traders');
-    //   const data = await response.json();
-      setTraders(data as Trader[]);
-    } catch (error) {
-      console.error('Error fetching traders:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchTraders(sortField, sortDirection);
+    // fetchTraders(sortField, sortDirection);
   }, [sortField, sortDirection]);
-
-  // 模拟数据
-  useEffect(() => {
-    const mockData: Trader[] = [
-      {
-        avatar: '',
-        name: 'Trader One',
-        followers: 1500,
-        roi: 12.5,
-        pnl: { '1d': 1.2, '7d': 5.6, '30d': 10.1 },
-        profit: { '1d': '120', '7d': '560', '30d': '1010' }
-      },
-      {
-        avatar: '',
-        name: 'Trader Two',
-        followers: 2300,
-        roi: 15.3,
-        pnl: { '1d': 2.3, '7d': 6.7, '30d': 12.4 },
-        profit: { '1d': '230', '7d': '670', '30d': '1240' }
-      }
-    ];
-
-    setTraders(mockData);
-  }, []);
 
   const handleSort = (field: 'roi' | '7d' | '30d' | '1d') => {
     if (sortField === field) {
@@ -93,70 +52,29 @@ export default function TopTradersPC() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.headerItem}>Trader</div>
-        <div className={styles.headerItem} onClick={() => handleSort('roi')}>
-          ROI <TriangleIcon direction={sortField === 'roi' ? sortDirection : undefined} highlight={sortField === 'roi'} />
-        </div>
-        <div className={styles.headerItem} onClick={() => handleSort('1d')}>
+        {/* <div className={styles.headerItem} onClick={() => handleSort('1d')}>
           1D PnL <TriangleIcon direction={sortField === '1d' ? sortDirection : undefined} highlight={sortField === '1d'} />
-        </div>
+        </div> */}
         <div className={styles.headerItem} onClick={() => handleSort('7d')}>
           7D PnL <TriangleIcon direction={sortField === '7d' ? sortDirection : undefined} highlight={sortField === '7d'} />
         </div>
-        <div className={styles.headerItem} onClick={() => handleSort('30d')}>
+        {/* <div className={styles.headerItem} onClick={() => handleSort('30d')}>
           30D PnL <TriangleIcon direction={sortField === '30d' ? sortDirection : undefined} highlight={sortField === '30d'} />
-        </div>
+        </div> */}
         <div className={styles.headerItem}></div>
       </div>
 
       <div className={styles.traderList}>
-        {loading ? (
-          <div style={{ paddingTop: 116 }}>
-            <Empty text="Loading..." />
-          </div>
-        ) : traders.length === 0 ? (
-          <div style={{ paddingTop: 116 }}>
-            <Empty text="No traders yet" />
-          </div>
-        ) : (
-          traders.map((trader, index) => (
-            <div key={index} className={styles.traderItem}>
-              <div className={styles.traderInfo}>
-                <div className={styles.avatar}>
-                  <Image src={trader.avatar || defaultAvatar} alt={trader.name} width={36} height={36} />
-                </div>
-                <div className={styles.nameWrapper}>
-                  <div className={styles.name}>{trader.name}</div>
-                  <div className={styles.followers}>{trader.followers} followers</div>
-                </div>
-              </div>
-              
-              <div className={styles.roi}>
-                {trader.roi}%
-                <span className={styles.profit}>+${trader.profit['1d']}</span>
-              </div>
-              
-              <div className={styles.pnl}>
-                {trader.pnl['1d']}%
-                <span className={styles.profit}>+${trader.profit['1d']}</span>
-              </div>
-              
-              <div className={styles.pnl}>
-                {trader.pnl['7d']}%
-                <span className={styles.profit}>+${trader.profit['7d']}</span>
-              </div>
-              
-              <div className={styles.pnl}>
-                {trader.pnl['30d']}%
-                <span className={styles.profit}>+${trader.profit['30d']}</span>
-              </div>
-
-              <button className={styles.copyButton} onClick={() => handleCopyTradeClick(trader)}>Copy</button>
-            </div>
-          ))
-        )}
+        {list.map((trader, index) => (
+          <TraderItem 
+            key={index}
+            trader={trader}
+            onCopyTradeClick={handleCopyTradeClick}
+          />
+        ))}
       </div>
       {SHOW_COPY_TRADE && (
-        <CoppiedAction
+        <CoppiedModal
           copiedInfo={currentTrader}
           show={showModal}
           onClose={() => {
@@ -168,6 +86,40 @@ export default function TopTradersPC() {
 
   )
 }
+
+
+const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClick: (trader: any) => void }) => {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userInfo = await fecthUserInfo(trader.address);
+      setUser(userInfo);
+    };
+    fetchUser();
+  }, [trader.address]);
+
+  return (
+    <div className={styles.traderItem}>
+      <div className={styles.traderInfo}>
+        <div className={styles.avatar}>
+          <Image src={user?.icon || defaultAvatar} alt={trader.name} width={36} height={36} />
+        </div>
+        <div className={styles.nameWrapper}>
+          <div className={styles.name}>{formatAddress(trader.address)}</div>
+          <div className={styles.followers}>{user?.followers || 0} followers</div>
+        </div>
+      </div>
+      
+      <div className={styles.pnl}>
+        {trader.pnl7D}%
+      </div>
+
+      <button className={styles.copyButton} onClick={() => onCopyTradeClick(trader)}>Copy</button>
+    </div>
+  );
+};
+
 
 export function TriangleIcon({ direction, highlight }: { direction?: 'asc' | 'desc', highlight?: boolean }) {
   const fillColor = highlight ? '#9290B1' : 'rgba(146, 144, 177, 0.3)';

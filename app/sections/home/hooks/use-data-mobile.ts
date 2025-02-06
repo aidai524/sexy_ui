@@ -76,7 +76,6 @@ export default function useData(launchType: Type) {
   const initList = () => {
     let _list =
       projectsStore.getProjectsByType(launchType, list.length === 0) || [];
-
     if (_list.length === 0) {
       handleList(false);
       return;

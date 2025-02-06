@@ -617,6 +617,8 @@ export function formatDateEn(time: number, format: string = "MMM D, YYYY") {
   return date.format(format);
 }
 
+
+
 export function getDeviceType() {
   if (typeof window === "undefined")
     return { pc: true, ios: false, android: false, mobile: false };

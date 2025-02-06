@@ -98,13 +98,14 @@ export default function Profile({
         </div>
       </div>
 
-      {isOther && SHOW_COPY_TRADE && (
+      {SHOW_COPY_TRADE && (
         <Summaries
           address={address}
           isFollower={isFollower}
           setRefreshNum={setRefreshNum}
           refreshNum={refreshNum}
           userInfo={userInfo}
+          isOther={isOther}
         />
       )}
 

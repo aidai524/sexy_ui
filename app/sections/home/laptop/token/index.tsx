@@ -55,7 +55,7 @@ export default function Token({
           <div
             className={styles.Token}
             style={{
-              width: innerWidth,
+              width: showTrade && isNext ? 968 : innerWidth,
               height: innerHeight
             }}
           >

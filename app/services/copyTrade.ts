@@ -11,12 +11,23 @@ export interface SmartMoneyAddress {
     winRate7D: string;
   }
 
+  export interface CopyTraderAddress {
+      copied: number;
+      copyTrades: number;
+      tradeInfo: {
+          buys: number;
+          pnl7D: string;
+          sells: number;
+          winRate7D: number;
+    }
+}
+ 
 class CopyTrade {
   private baseURL: string;
   private headers: Record<string, string>;
 
   constructor() {
-    this.baseURL = process.env.API_BASE_URL || 'https://api.dumpdump.fun/api/v1';
+    this.baseURL = process.env.NEXT_PUBLIC_API || 'https://api.dumpdump.fun/api/v1';
     this.headers = {
       'Content-Type': 'application/json',
     };
@@ -24,6 +35,19 @@ class CopyTrade {
 
   private async handleResponse(response: Response) {
     return await response.json();
+  }
+  // copy traders userInfo
+  async getCopyTradersUserInfo({address, chain}: {address: string, chain: string}): Promise<{data: CopyTraderAddress | null}> {
+    try {
+      const queryParams = new URLSearchParams({ address, chain }).toString();
+      const response = await fetch(`${this.baseURL}/copy_trade/users?${queryParams}`, {
+        method: 'GET',
+        headers: this.headers,
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      return {data: null};
+    }
   }
 
   // 
@@ -69,6 +93,7 @@ class CopyTrade {
   session: string;
   publicKey: string;
   signature: string;
+  type: number;
  }) {
     try {
         const sendResponse = await fetch(`${this.baseURL}/copy_trade/send_transactions`, {
@@ -78,7 +103,7 @@ class CopyTrade {
               walletAddress: params.publicKey.toString(),
               chain: 'solana',
               messageData: params.signature,
-              type: 1,
+              type: params.type,
               session: params.session,
             })
           });
@@ -114,6 +139,70 @@ class CopyTrade {
     }
   }
 
+  // 
+  async closeCopyTrade(params: {
+    walletAddress: string;
+    chain: string;
+    state: number;
+    id: string;
+  }) {
+    try {
+      const response = await fetch(`${this.baseURL}/copy_trade/state`, {
+        method: 'PUT',
+        headers: this.headers,
+        body: JSON.stringify(params)
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  } 
+
+  // swap copy tokens
+  async swapCopyTokens(params: {
+    walletAddress: string;
+    chain: string;
+    type: number;
+    sellAll: boolean;
+    tokens: string[];
+    id: string;
+  }) {
+    try {
+      const response = await fetch(`${this.baseURL}/copy_trade/swap_tokens`, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify(params)
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
+
+  // top traders
+  async getSmartMonies(params: {
+    chain: string;
+    page: number;
+    pageSize: number;
+  }) {
+    try {
+      const queryParams = new URLSearchParams({
+        chain: params.chain,
+        page: params.page.toString(),
+        pageSize: params.pageSize.toString()
+      }).toString();
+      const response = await fetch(`${this.baseURL}/copy_trade/smart_monies?${queryParams}`, {
+        method: 'GET',
+        headers: this.headers
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
 }
 
 export default CopyTrade;

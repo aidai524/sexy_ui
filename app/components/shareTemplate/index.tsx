@@ -109,6 +109,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
           scaledHeight
         );
 
+
         const base64Url = canvas2.toDataURL("image/webp");
         const bloBData = base64ToBlob(base64Url);
         const url = await postUpload(bloBData[0], token.address!, bloBData[1]);
@@ -147,6 +148,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
         )}&address=${token.address}&referral=${userInfo.address}`;
 
         const shareUrl = await getShortUrl(longUrl);
+        console.log('shareUrl:', shareUrl)
         setShareUrl(shareUrl);
       }
     })();
@@ -303,7 +305,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
                   />
                 ) : (
                   <img
-                    src={token.tokenImg || token.tokenIcon || '/img/token-placeholder.png'}
+                    src={token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
                     className={styles.tokenImg}
                   />
@@ -315,7 +317,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
           <div className={styles.tokenInfo}>
             <div className={styles.tokenIcon}>
-              <img src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
+              <img crossOrigin="anonymous" src={token.tokenIcon || '/img/token-icon-placeholder.svg'} alt="Flip" className={styles.badge} />
             </div>
             <div style={{ flex: 1 }}>
               <div className={styles.tokenName}>{token.tokenName}</div>

@@ -61,7 +61,7 @@ export default function Tabs({
   ];
 
   const tabs =
-    isOther || !SHOW_COPY_TRADE || !isMobile
+    isOther || !SHOW_COPY_TRADE
       ? baseTabs
       : [
           {
