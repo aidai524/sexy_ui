@@ -63,7 +63,7 @@ export function useWhitelist() {
   const redirect2Whitelist = async () => {
     if (pathname !== AIRDROP_STAGE.WHITELIST.path) {
       await copyUserAddress();
-      router.replace(AIRDROP_STAGE.WHITELIST.path);
+      router.replace(AIRDROP_STAGE.WHITELIST.path + '?address=' + address);
     }
   };
 
