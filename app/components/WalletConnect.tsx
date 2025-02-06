@@ -70,10 +70,10 @@ export default function WalletConnect({
     return (
       getDeviceType().mobile
         ? [
-            // new PhantomWalletAdapter(),
-            // new SolflareWalletAdapter(),
+            new PhantomWalletAdapter(),
+            new SolflareWalletAdapter(),
             new OkxWalletUIAdapter(),
-            new HotWalletAdapter(),
+            // new HotWalletAdapter(),
             new WalletConnectWalletAdapter({
               network,
               options: WALLET_CONNECT_OPTIONS,
@@ -85,8 +85,8 @@ export default function WalletConnect({
             new SolflareWalletAdapter(),
             new WalletConnectWalletAdapter({
               network,
-              options: WALLET_CONNECT_OPTIONS,
-            }),
+              options: WALLET_CONNECT_OPTIONS
+            })
           ]
     ) as Adapter[];
   }, [network]);

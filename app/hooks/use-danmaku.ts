@@ -3,16 +3,18 @@ import { httpGet } from "@/app/utils";
 import { useDebounceFn } from "ahooks";
 import { numberFormatter } from "@/app/utils/common";
 
-export default function useDanmaku({ id, limit = 10 }: any) {
+export default function useDanmaku({ id, isCurrentTab }: any) {
   const [list, setList] = useState<any[]>([]);
   const [show, setShow] = useState(false);
   const offset = useRef(0);
   const timer = useRef<any>();
+
   const cachedList = useRef<any>([]);
 
   const loadMore = async () => {
     if (!id) return;
     clearTimeout(timer.current);
+
     try {
       const res = await httpGet("/project/dan_mu/list", {
         limit: 10,
@@ -41,7 +43,7 @@ export default function useDanmaku({ id, limit = 10 }: any) {
             text = "shared";
           }
           if (item.type === "flip") {
-            text = `flipped ${item.content_1} SOL`;
+            text = `flipped ${numberFormatter(item.content_1, 4, true)} SOL`;
           }
           return {
             text,
@@ -66,11 +68,8 @@ export default function useDanmaku({ id, limit = 10 }: any) {
       offset.current = _more ? newList.length : 0;
       cachedList.current = newList;
       setList(newList);
-
-      timer.current = setTimeout(() => {
-        loadMore();
-      }, 10000);
     } catch (err) {
+    } finally {
       timer.current = setTimeout(() => {
         loadMore();
       }, 10000);
@@ -80,17 +79,22 @@ export default function useDanmaku({ id, limit = 10 }: any) {
   const { run: loadData } = useDebounceFn(
     (args: any = {}) => {
       if (!id) {
-        setList([]);
-      } else {
-        loadMore();
+        return;
       }
+      offset.current = 0;
+      loadMore();
     },
-    { wait: 500 }
+    { wait: 1000 }
   );
 
   useEffect(() => {
+    clearTimeout(timer.current);
+    if (!isCurrentTab) {
+      return;
+    }
+    setList([]);
     loadData();
-  }, [id]);
+  }, [id, isCurrentTab]);
 
   useEffect(() => {
     return () => {

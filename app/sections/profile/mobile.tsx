@@ -8,7 +8,9 @@ import { useAuth } from "@/app/context/auth";
 import AirdropEntry from "@/app/components/airdrop/entry";
 import PageHeader from "@/app/components/page-header/mobile";
 import Summaries from "@/app/sections/profile/components/summaries";
+import { AIRDROP_STAGE } from "@/app/config/airdrop";
 import { SHOW_COPY_TRADE } from "@/app/utils/config";
+import { useConfig } from "@/app/store/useConfig";
 
 export default function Profile({
   userInfo,
@@ -22,8 +24,7 @@ export default function Profile({
   showHot = true,
   isOther = false
 }: any) {
-  const store = useReferStore();
-  const { logout } = useAuth();
+  const configStore: any = useConfig();
   const userInfoBanner = userInfo?.banner;
   const backgroundImgStyle = userInfoBanner
     ? {
@@ -57,7 +58,7 @@ export default function Profile({
         }
         isOther={isOther}
       />
-      <AirdropEntry />
+      {configStore.config.showAirdropEntry && <AirdropEntry />}
       <div style={backgroundImgStyle1} className={styles.avatarBox}>
         {/*<div className={styles.Points}>
           <PointsLabel reverse={true} bg="transparent" />

@@ -7,8 +7,8 @@ import { httpGet, simplifyNum } from "@/app/utils";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import Empty from "@/app/components/empty";
 import { useRouter } from "next/navigation";
-import { numberFormatter } from '@/app/utils/common';
-import Media from '@/app/components/thumbnail/media';
+import { numberFormatter } from "@/app/utils/common";
+import Media from "@/app/components/thumbnail/media";
 
 const pageSize = 40;
 
@@ -21,15 +21,21 @@ export default function Held({ from, address }: any) {
   const [tokenInfo, setTokenInfo] = useState<any>({});
   const [tokenPrice, setTokenPrice] = useState<any>({});
 
-  const getTokenPrice = useCallback(async (address: string[]) => {
-     const v = await httpGet(`/token/price/list?token_list=${encodeURIComponent(address.join(','))}`)
-     if (v.code === 0 && v.data) {
-      setTokenPrice({
-        ...tokenPrice,
-        ...v.data
-      })
-     }
-  }, [tokenPrice])
+  const getTokenPrice = useCallback(
+    async (address: string[]) => {
+      if (!address?.length) return;
+      const v = await httpGet(
+        `/token/price/list?token_list=${encodeURIComponent(address.join(","))}`
+      );
+      if (v.code === 0 && v.data) {
+        setTokenPrice({
+          ...tokenPrice,
+          ...v.data
+        });
+      }
+    },
+    [tokenPrice]
+  );
 
   const loadMore = useCallback(async () => {
     if (address) {
@@ -42,7 +48,7 @@ export default function Held({ from, address }: any) {
         };
         setTokenInfo(newTokenInfo);
 
-        getTokenPrice(newList.map(item => item.token_address))
+        getTokenPrice(newList.map((item) => item.token_address));
 
         if (res.data) {
           if (res.data.length < pageSize) {
@@ -69,7 +75,7 @@ export default function Held({ from, address }: any) {
     );
   }
 
-  console.log('tokenPrice', tokenPrice)
+  console.log("tokenPrice", tokenPrice);
 
   return (
     <div
@@ -87,7 +93,9 @@ export default function Held({ from, address }: any) {
             }`}
             onClick={() => {
               // console.log(item)
-              router.push("/detail?address=" + item.token_address + "&from=profile");
+              router.push(
+                "/detail?address=" + item.token_address + "&from=profile"
+              );
               // window.open('https://solscan.io/account/' + item.token_account)
             }}
             key={item.token_address}
@@ -95,7 +103,7 @@ export default function Held({ from, address }: any) {
             <div className={styles.tokenMsg}>
               <Media
                 data={{
-                  tokenImg: tokenInfo[item.token_address].token_icon,
+                  tokenImg: tokenInfo[item.token_address].token_icon
                 }}
                 imgHeight={46}
                 autoPlay={false}
@@ -103,8 +111,8 @@ export default function Held({ from, address }: any) {
                   width: 46,
                   height: 46,
                   borderRadius: 23,
-                  objectFit: 'cover',
-                  objectPosition: 'center',
+                  objectFit: "cover",
+                  objectPosition: "center"
                 }}
                 style={{
                   overflow: "hidden"
@@ -153,11 +161,16 @@ export default function Held({ from, address }: any) {
                 )}
               </div>
               <div className={styles.solPrice}>
-                {
-                  tokenPrice[item.token_address]
-                    ? numberFormatter(Big(tokenPrice[item.token_address]).times(Big(item.amount).div(10 ** item.token_decimals)), 4, true)
-                    : '~'
-                } SOL
+                {tokenPrice[item.token_address]
+                  ? numberFormatter(
+                      Big(tokenPrice[item.token_address]).times(
+                        Big(item.amount).div(10 ** item.token_decimals)
+                      ),
+                      4,
+                      true
+                    )
+                  : "~"}{" "}
+                SOL
               </div>
             </div>
           </div>

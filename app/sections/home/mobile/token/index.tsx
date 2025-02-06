@@ -18,7 +18,13 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { useHome } from "../context";
 import Big from "big.js";
 
-export default function Token({ isCurrent, token, onUpdate }: any) {
+export default function Token({
+  isCurrent,
+  token,
+  danmakus,
+  danmakuShow,
+  onUpdate
+}: any) {
   const [imgHeight, setImgHeight] = useState("80%");
   const { innerHeight } = useUserAgent();
   const descContentRef = useRef<any>();
@@ -60,7 +66,9 @@ export default function Token({ isCurrent, token, onUpdate }: any) {
               )}
             </div>
             <div className={styles.Bottom}>
-              {isCurrent && <Danmaku token={token} />}
+              {isCurrent && (
+                <Danmaku token={token} show={danmakuShow} list={danmakus} />
+              )}
 
               {token.status === 0 ? (
                 !token.isSuperLike ? (

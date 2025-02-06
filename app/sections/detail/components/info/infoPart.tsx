@@ -214,12 +214,11 @@ export default function InfoPart({
               </div>
               <div className={styles.progressPercent}>
                 {data.prePaidAmount
-                  ? new Big(data.prePaidAmount || 0).div(10 ** 9).toString()
+                  ? new Big(data.prePaidAmount || 0).div(10 ** 9).toFixed(4).toString()
                   : 0}
                 SOL
               </div>
             </div>
-
 
               <div className={styles.progressDesc} style={{ color: "#D9D9D9" }}>
                 {
@@ -250,7 +249,7 @@ export default function InfoPart({
             />
 
             <div className={styles.progressDesc}>
-              Graduate this coin to Orca at $40,560 market cap. There will be
+              Graduate this coin to Meteora at $40,560 market cap. There will be
               40.56 SOL in the bonding curve.
             </div>
           </div>

@@ -42,13 +42,9 @@ export default forwardRef(function CreateNode(
   const [canValid, setCanValid] = useState(false);
   const [inValidVals, setInvaldVasl] = useState<any>({});
 
-  const validateName = useCallback(async (tokenName: string) => {
-    if (!name_reg.test(tokenName)) {
-      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 10";
-    }
-
+  const validateSameName = useCallback(async () => {
     const tokenInUse = await httpGet(
-      `/project?token_name=${tokenName}&token_symbol=${tokenName.toUpperCase()}`
+      `/project?token_name=${tokenName}&token_symbol=${ticker.toUpperCase()}`
     );
 
     if (tokenInUse.code === 0 && tokenInUse.data?.length > 0) {
@@ -56,40 +52,70 @@ export default forwardRef(function CreateNode(
     }
 
     return "";
-  }, []);
+  }, [tokenName, ticker]);
 
-  const validateTicker = useCallback((ticker: string) => {
-    if (!ticker) {
-      return "Ticker cannot be empty";
-    }
+  const validateName = useCallback(
+    (tokenName: string) => {
+      if (!tokenName) {
+        return "Token name cannot be empty";
+      }
 
-    if (ticker.length > 80) {
-      return "Ticker cannot be length than 80";
-    }
+      if (tokenName.length > 50) {
+        return "Token name cannot exceed 50";
+      }
 
-    return "";
-  }, []);
+      return "";
+    },
+    [ticker]
+  );
 
-  const validateImages = useCallback((tokenImg: ImageUploadItem[], tokenIcon: ImageUploadItem[], showTokenSymbol: boolean) => {
-    if (tokenImg.length === 0) {
-      return "Token image cannot be empty";
-    }
+  const validateTicker = useCallback(
+    (ticker: string) => {
+      if (!ticker) {
+        return "Ticker cannot be empty";
+      }
 
-    const tokenImgObj = tokenImg[0];
-    if ((videoReg.test(tokenImgObj.url) || showTokenSymbol) && tokenIcon.length === 0) {
-      return "Token icon cannot be empty";
-    }
+      if (!name_reg.test(ticker)) {
+        return "Only uppercase and lowercase letters and numbers are supported and the length is less than 10";
+      }
 
-    return "";
-  }, []);
+      return "";
+    },
+    [tokenName]
+  );
+
+  const validateImages = useCallback(
+    (
+      tokenImg: ImageUploadItem[],
+      tokenIcon: ImageUploadItem[],
+      showTokenSymbol: boolean
+    ) => {
+      if (tokenImg.length === 0) {
+        return "Token image cannot be empty";
+      }
+
+      const tokenImgObj = tokenImg[0];
+      if (
+        (videoReg.test(tokenImgObj.url) ||
+          /.gif$/.test(tokenImgObj.url) ||
+          showTokenSymbol) &&
+        tokenIcon.length === 0
+      ) {
+        return "Token icon cannot be empty";
+      }
+
+      return "";
+    },
+    []
+  );
 
   const validateAbout = useCallback((about: string) => {
     if (!about) {
       return "About icon cannot be empty";
     }
 
-    if (about.length > 200) {
-      return "About cannot be length than 200";
+    if (about.length > 1000) {
+      return "About cannot be length than 1000";
     }
 
     return "";
@@ -141,7 +167,8 @@ export default forwardRef(function CreateNode(
 
     const imagesError = validateImages(tokenImg, tokenIcon, showTokenSymbol);
     if (imagesError) {
-      inValidVals[imagesError.includes("icon") ? "tokenIcon" : "tokenImg"] = imagesError;
+      inValidVals[imagesError.includes("icon") ? "tokenIcon" : "tokenImg"] =
+        imagesError;
       isValid = true;
     }
 
@@ -189,7 +216,7 @@ export default forwardRef(function CreateNode(
       ticker,
       about,
       tokenImg: tokenImg[0].url,
-      tokenSymbol: tokenName.toUpperCase(),
+      tokenSymbol: ticker.toUpperCase(),
       tokenIcon: tokenIcon.length > 0 ? tokenIcon[0].url : tokenImg[0].url,
       website,
       x,
@@ -229,7 +256,7 @@ export default forwardRef(function CreateNode(
   useEffect(() => {
     if (tokenImg && tokenImg.length > 0) {
       const url = tokenImg[0].url;
-      if (videoReg.test(url)) {
+      if (videoReg.test(url) || /.gif$/.test(url)) {
         setShowTokenSymbol(true);
       }
     }
@@ -259,12 +286,15 @@ export default forwardRef(function CreateNode(
               setTokenName(e.target.value);
             }}
             onBlur={async () => {
-              const nameError = await validateName(tokenName);
+              let nameError = validateName(tokenName);
+              if (!nameError) {
+                nameError = await validateSameName();
+              }
               if (nameError) {
                 setInvaldVasl({ ...inValidVals, tokenName: nameError });
               } else {
                 setInvaldVasl({ ...inValidVals, tokenName: "" });
-              } 
+              }
             }}
             className={`${
               isMobile ? styles.inputText : styles.laptopInputText
@@ -292,8 +322,11 @@ export default forwardRef(function CreateNode(
             onChange={(e) => {
               setTicker(e.target.value);
             }}
-            onBlur={() => {
-              const tickerError = validateTicker(ticker);
+            onBlur={async () => {
+              let tickerError = validateTicker(ticker);
+              // if (!tickerError) {
+              //   tickerError = await validateSameName()
+              // }
               if (tickerError) {
                 setInvaldVasl({ ...inValidVals, ticker: tickerError });
               } else {
@@ -323,7 +356,7 @@ export default forwardRef(function CreateNode(
           }
         >
           <Upload
-            percent={0}
+            percent={1}
             type="token"
             accept="image/*, video/mp4"
             fileList={tokenImg}
@@ -338,9 +371,9 @@ export default forwardRef(function CreateNode(
             onCheckChange={(isChecked) => {
               if (tokenImg && tokenImg.length > 0) {
                 const url = tokenImg[0].url;
-                if (videoReg.test(url)) {
+                if (videoReg.test(url) || /.gif$/.test(url)) {
                   setShowTokenSymbol(true);
-                  return
+                  return;
                 }
               }
               setShowTokenSymbol(isChecked);
@@ -367,6 +400,7 @@ export default forwardRef(function CreateNode(
               <Upload
                 percent={1}
                 type="avatar"
+                accept="image/png, image/jpg, image/jpeg, image/svg"
                 fileList={tokenIcon}
                 setFileList={setTokenIcon}
               />
@@ -481,7 +515,7 @@ export default forwardRef(function CreateNode(
                 } else {
                   setInvaldVasl({ ...inValidVals, tg: "" });
                 }
-              }}  
+              }}
               type="Telegram"
               img="/img/community/telegram.svg"
             />

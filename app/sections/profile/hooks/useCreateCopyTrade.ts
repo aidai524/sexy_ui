@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import CopyTrade from "@/app/services/copyTrade";
 import { success, fail } from "@/app/utils/toast";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { useWallet } from "@/app/hooks/use-wallet";
 import { VersionedTransaction, VersionedMessage } from '@solana/web3.js';
 import bs58 from 'bs58';
 

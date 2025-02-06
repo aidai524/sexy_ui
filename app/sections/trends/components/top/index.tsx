@@ -8,8 +8,8 @@ import { motion } from "framer-motion";
 import Likes from "@/app/components/thumbnail/likes";
 import Carousel from "@/app/sections/trends/components/carousel";
 import AvatarBg from "./avatar-bg";
-import useHolders from '@/app/sections/home/mobile/hooks/use-holders';
-import Media from '@/app/components/thumbnail/media';
+import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
+import Media from "@/app/components/thumbnail/media";
 
 export default function Top(props: Props) {
   const { onBuy, trend, isMobile, loading } = props;
@@ -75,9 +75,9 @@ export default function Top(props: Props) {
             imgStyle={{
               height: 210,
               width: 210,
-              objectFit: 'cover',
-              objectPosition: 'center',
-              borderRadius: 20,
+              objectFit: "cover",
+              objectPosition: "center",
+              borderRadius: 20
             }}
           />
           {!isMobile && (
@@ -122,15 +122,13 @@ export default function Top(props: Props) {
               />
             )}
           </div>
-          {
-            !isMobile && (
-              <img
-                src="/img/trends/crown.svg"
-                alt=""
-                className={styles.TopCrown}
-              />
-            )
-          }
+          {!isMobile && (
+            <img
+              src="/img/trends/crown.svg"
+              alt=""
+              className={styles.TopCrown}
+            />
+          )}
         </div>
       </div>
       <div className={styles.TopInfo}>
@@ -178,7 +176,11 @@ export default function Top(props: Props) {
             Created in {trend?.created2Now?.replace?.(/ago$/, "")}
           </div>
           <div
-            className={[styles.Badge, styles.TopBadge, styles.TopBadgeClickable].join(" ")}
+            className={[
+              styles.Badge,
+              styles.TopBadge,
+              styles.TopBadgeClickable
+            ].join(" ")}
             onClick={() => {
               creator.onClick(trend?.project_creator);
             }}

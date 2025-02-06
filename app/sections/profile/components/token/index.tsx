@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import TokenAction from "../tokenAction";
 import useMc from "@/app/hooks/useMc";
-import { formatLongText, numberFormatter } from '@/app/utils/common';
+import { formatLongText, numberFormatter } from "@/app/utils/common";
 import Big from "big.js";
 import { SOL } from "@/app/components/trade/buySellPump";
 import { useUser } from "@/app/store/useUser";
@@ -15,7 +15,7 @@ import idl from "@/app/hooks/meme_launchpad.json";
 import { useConnection } from "@solana/wallet-adapter-react";
 import dayjs from "dayjs";
 import Media from "@/app/components/thumbnail/media";
-import { useUserAgent } from '@/app/context/user-agent';
+import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   data: Project;
@@ -23,6 +23,7 @@ interface Props {
   prepaidWithdrawDelayTime: number;
   hideHot?: boolean;
   from?: string;
+  type?: string;
   isOther: boolean;
   onWithdrawSuccess?(): void;
 }
@@ -32,6 +33,7 @@ export default function Token({
   update,
   prepaidWithdrawDelayTime,
   hideHot,
+  type,
   from,
   isOther,
   onWithdrawSuccess
@@ -129,6 +131,7 @@ export default function Token({
       setPrepaidAmount(Big(_amount).div(0.985));
     });
   }, [
+    type,
     isOther,
     data?.tokenName,
     data?.tokenSymbol,
@@ -138,7 +141,12 @@ export default function Token({
   ]);
 
   useEffect(() => {
-    if (pool && pool.length && showWithdraw) {
+    if (
+      pool &&
+      pool.length &&
+      (showWithdraw ||
+        (Number(prepaidRealAmount) > 0 && Number(data?.status || 0) > 0))
+    ) {
       const program = new Program<any>(idl, programId, {
         connection: connection
       } as any);
@@ -154,6 +162,7 @@ export default function Token({
             .times(prepaidBoughtTokenAmount)
             .div(10 ** (data?.tokenDecimals || 6));
           setTokenAmount(_tokenAmount);
+
           // console.log(
           //   '%c[TokenAmount - %o] prepaidRealAmount: %o, prepaidAmount: %o, prepaidBoughtTokenAmount: %o, _tokenAmount: %o',
           //   'background:#ff5f00;color:#fff;',
@@ -171,7 +180,7 @@ export default function Token({
       return;
     }
     setTokenAmount(Big(0));
-  }, [pool, data?.tokenDecimals, prepaidRealAmount, showWithdraw]);
+  }, [pool, data, data?.tokenDecimals, prepaidRealAmount, showWithdraw]);
 
   return (
     <div
@@ -206,8 +215,7 @@ export default function Token({
             imgHeight={84}
             autoPlay={false}
             imgStyle={{
-              width: 84,
-              height: 84
+              width: 84
             }}
             style={{
               overflow: "hidden"
@@ -220,8 +228,12 @@ export default function Token({
           <LaunchTag type={data.status as number} />
         </div>
 
-        <div className={isMobile ? styles.nameContent : styles.nameContentLaptop}>
-          <div className={styles.name}>{formatLongText(data.tokenName, 15, 4)}</div>
+        <div
+          className={isMobile ? styles.nameContent : styles.nameContentLaptop}
+        >
+          <div className={styles.name}>
+            {formatLongText(data.tokenName, 15, 4)}
+          </div>
           <div className={styles.trikerContent}>
             <div className={styles.tickerName}>
               <div className={styles.tickerNameText}>Ticker: {data.ticker}</div>

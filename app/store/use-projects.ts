@@ -2,8 +2,6 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { mapDataToProject } from "../utils/mapTo";
 
-const TIME_DURATION = 1000 * 60 * 60;
-
 export type Type = "preLaunch" | "launching";
 
 interface ProjectsState {
@@ -82,12 +80,12 @@ export const useProjects = create(
           type === "preLaunch" ? get().preProjects : get().launchProjects
         );
 
-        const filteredProjects = currentProjects.filter(
-          (project: any) => Date.now() - project.fetched_time < TIME_DURATION
-        );
+        // const filteredProjects = currentProjects.filter(
+        //   (project: any) => Date.now() - project.fetched_time < TIME_DURATION
+        // );
 
         if (isEmpty) {
-          const mapList: any = filteredProjects.reduce(
+          const mapList: any = currentProjects.reduce(
             (acc: any, curr: any) => ({ ...acc, [curr.id]: curr }),
             {}
           );
@@ -96,7 +94,7 @@ export const useProjects = create(
             : set({ launchProjects: mapList });
         }
 
-        return filteredProjects
+        return currentProjects
           .sort((a: any, b: any) => a.fetched_time - b.fetched_time)
           .map((project: any) => project.id);
       },
@@ -104,6 +102,13 @@ export const useProjects = create(
         const currentProjects =
           type === "preLaunch" ? get().preProjects : get().launchProjects;
         if (!currentProjects[item.id]) return;
+
+        if (type === "preLaunch" && item.status !== 0) {
+          delete currentProjects[item.id];
+          set({ preProjects: currentProjects });
+          return;
+        }
+
         currentProjects[item.id] = {
           ...mapDataToProject(item),
           fetched_time: currentProjects[item.id].fetched_time
@@ -137,8 +142,8 @@ export const useProjects = create(
     }),
     {
       name: "_projects",
-      version: 0.11,
-      storage: createJSONStorage(() => localStorage)
+      version: 0.1,
+      storage: createJSONStorage(() => sessionStorage)
     }
   )
 );

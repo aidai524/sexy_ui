@@ -94,8 +94,8 @@ export default forwardRef(function PreviewNode(
         show={showCreate}
         token={{
           tokenName: data.tokenName,
-          tokenSymbol: data.tokenName.toUpperCase(),
-          tokenDecimals: 2,
+          tokenSymbol: data.tokenSymbol,
+          tokenDecimals: 6,
           tokenUri: data.tokenImg
         }}
         data={data}
@@ -110,7 +110,7 @@ export default forwardRef(function PreviewNode(
             tg: data.tg,
             ticker: data.ticker,
             token_name: data.tokenName,
-            token_symbol: data.tokenName.toUpperCase(),
+            token_symbol: data.tokenSymbol,
             video: data.tokenImg,
             website: data.website,
             x: data.x
@@ -122,7 +122,7 @@ export default forwardRef(function PreviewNode(
 
           let times = 0,
             val;
-          while (true && times < 50) {
+          while (times < 50) {
             val = await httpAuthPost(`/project?${queryStr}`, {});
             if (val.code === 100000) {
               times++;

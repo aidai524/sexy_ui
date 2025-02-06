@@ -66,6 +66,18 @@ export default function Create({
     loadData: false
   });
 
+  const validateSameName = useCallback(async () => {
+    const tokenInUse = await httpGet(
+      `/project?token_name=${tokenName}&token_symbol=${tokenSymbol.toUpperCase()}`
+    );
+
+    if (tokenInUse.code === 0 && tokenInUse.data?.length > 0) {
+      return "Token name already in use";
+    }
+
+    return "";
+  }, [tokenName, tokenSymbol]);
+
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
   useEffect(() => {
@@ -205,6 +217,13 @@ export default function Create({
                 }
 
                 setIsLoading(true);
+
+                const sameNameRes = await validateSameName();
+
+                if (sameNameRes) {
+                  setIsLoading(false);
+                  fail(sameNameRes);
+                }
 
                 const hash = await createToken({
                   name: tokenName,

@@ -9,17 +9,17 @@ import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
 import { AuthProvider } from "@/app/context/auth";
 import { MessageProvider } from "@/app/context/messages";
 import { MessageContextProvider } from "@/app/context/messageContext";
-import AirdropEntry from '@/app/components/airdrop/entry';
-import { usePathname } from 'next/navigation';
-import { useWhitelist } from '@/app/components/airdrop/hooks/use-whitelist';
-import { AIRDROP_STAGE } from '@/app/config/airdrop';
+import AirdropEntry from "@/app/components/airdrop/entry";
+import { usePathname } from "next/navigation";
+import { useWhitelist } from "@/app/components/airdrop/hooks/use-whitelist";
+import { AIRDROP_STAGE } from "@/app/config/airdrop";
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
   const configStore: any = useConfig();
   const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
   const pathname = usePathname();
-  useWhitelist();
+  // useWhitelist();
 
   const { getConfig } = useTokenTrade({
     tokenName: "",
@@ -31,8 +31,19 @@ export default function Layout(props: any) {
   useEffect(() => {
     httpGet("/config").then((res) => {
       if (res.code === 0) {
+        const showAirdropEntry =
+          res.data.AirdropStartTime &&
+          Date.now() + AIRDROP_STAGE.PREVIEW.endTime >
+            res.data.AirdropStartTime;
+
+        const airdropReady = Date.now() > res.data.AirdropStartTime;
+
         configStore.set({
-          config: res.data
+          config: {
+            ...res.data,
+            showAirdropEntry,
+            airdropReady
+          }
         });
       }
     });
@@ -48,18 +59,16 @@ export default function Layout(props: any) {
     <AuthProvider>
       <MessageProvider>
         <MessageContextProvider>
-          {
-            isMobile ? (
-              <Mobile {...props} />
-            ) : (
-              [AIRDROP_STAGE.PREVIEW.path].includes(pathname) ? (
-                props.children
-              ) : (
-                <Laptop {...props} />
-              )
-            )
-          }
-          <AirdropEntry isMobile={isMobile} />
+          {isMobile ? (
+            <Mobile {...props} />
+          ) : [AIRDROP_STAGE.PREVIEW.path].includes(pathname) ? (
+            props.children
+          ) : (
+            <Laptop {...props} />
+          )}
+          {configStore.config.showAirdropEntry && (
+            <AirdropEntry isMobile={isMobile} />
+          )}
         </MessageContextProvider>
       </MessageProvider>
     </AuthProvider>

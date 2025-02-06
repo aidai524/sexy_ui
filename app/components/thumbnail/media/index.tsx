@@ -31,11 +31,9 @@ export default function Media({
             token={data}
           />
         ) : (
-          <LazyLoadImage
-            effect="blur"
+          <img
             className={styles.tokenImg}
             src={data.tokenImg || "/img/token-placeholder.png"}
-            placeholderSrc="/img/token-placeholder.png"
             style={imgStyle}
           />
         )}

@@ -920,7 +920,11 @@ export function useTokenTrade({
 
   const checkPrePayed = useCallback(async () => {
     if (!pool) {
-      return false;
+      return 0;
+    }
+
+    if (!walletProvider.publicKey) {
+      return 0;
     }
 
     const prePaidRecord = PublicKey.findProgramAddressSync(
@@ -945,6 +949,18 @@ export function useTokenTrade({
 
     return 0;
   }, [walletProvider, programId, connection, pool]);
+
+  const getPool = useCallback(async () => {
+    if (!pool || !pool.length) return;
+    const program = new Program<any>(idl, programId, {
+      connection: connection
+    } as any);
+    const poolData: any = await program.account.pool.fetch(pool[0]);
+
+    console.log('poolData', poolData);
+
+    return poolData;  
+  }, [pool]);
 
   const getRate = useCallback(
     async (amountParam: { solAmount?: string; tokenAmount?: string }) => {
@@ -1065,7 +1081,8 @@ export function useTokenTrade({
     getMC,
     pool,
     tokenInfo,
-    programId
+    programId,
+    getPool
   };
 }
 

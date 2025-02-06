@@ -90,7 +90,7 @@ export default function ActionList(props: Props) {
         </>
       )}
 
-      {[1, 2, 3].includes(Number(token.status)) && !isOther && (
+      {[1, 2, 3].includes(Number(token.status)) && isPrepaid && !isOther && (
         <Claim
           {...props}
           isClaimed={isClaimed}

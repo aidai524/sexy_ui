@@ -22,10 +22,10 @@ import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { useMessage } from "@/app/context/messageContext";
 import { useDebounceFn } from "ahooks";
 import { useProjects } from "@/app/store/use-projects";
-import { Modal } from "antd-mobile";
+import { useRouter, useSearchParams } from "next/navigation";
 import { TokenStatusModal } from "@/app/components/status2Alert";
 
-export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
+export default function Detail({ token, onBack, onSuccess }: any) {
   const [activeKey, setActiveKey] = useState("Info");
   const {
     infoData: queryedInfoData,
@@ -34,11 +34,11 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
   } = useTokenDetail({ token });
   const projectsStore = useProjects();
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
+  const router = useRouter();
+  const search = useSearchParams();
   const { showShare } = useMessage();
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(60);
-
- 
 
   const infoData = useMemo(
     () => queryedInfoData || token,
@@ -90,7 +90,23 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
             <div className={styles.header} ref={headerRef}>
               <div className={styles.backWrapper}>
                 <div style={{ marginTop: 8 }}>
-                  <Back onBack={onBack} />
+                  <Back
+                    onBack={() => {
+                      if (onBack) {
+                        onBack();
+                        return;
+                      }
+                      if (
+                        ["profile", "trends", "messages"].includes(
+                          search.get("from") || ""
+                        )
+                      ) {
+                        router.back();
+                        return;
+                      }
+                      router.push("/");
+                    }}
+                  />
                 </div>
                 <AvatarDetail token={infoData} mc={mc} />
               </div>
@@ -211,9 +227,12 @@ export default function Detail({ token, onBack, onSuccess, onUpdate }: any) {
         </div>
       </SexPullToRefresh>
 
-      <TokenStatusModal status={infoData?.status} onClose={() => {
-        getDetailInfo();
-      }} />
+      <TokenStatusModal
+        status={infoData?.status}
+        onClose={() => {
+          getDetailInfo();
+        }}
+      />
     </div>
   );
 }

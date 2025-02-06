@@ -4,7 +4,7 @@ import { useUser } from "@/app/store/useUser";
 import useUserInfo from "@/app/hooks/useUserInfo";
 import { useAccount } from "@/app/hooks/useAccount";
 import { usePathname, useRouter } from "next/navigation";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@/app/hooks/use-wallet";
 import { logOut } from "@/app/utils";
 import LoginModal from "@/app/components/loginModal";
 import SignatureModal from "../components/signature-modal";

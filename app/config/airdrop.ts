@@ -1,12 +1,9 @@
 export const AIRDROP_STAGE = {
   WHITELIST: {
-    isStage: true,
-    // 3 days
-    endTime: 259200000,
-    path: "https://waitlist.flipn.fun"
+    path: "https://flipn.fun"
   },
   PREVIEW: {
-    endTime: 0,
+    endTime: 259200000,
     path: "/airdrop"
   }
 };

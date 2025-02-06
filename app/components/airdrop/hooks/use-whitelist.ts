@@ -21,9 +21,6 @@ export function useWhitelist() {
         address
       });
       const _isWhitelist = !(res.code !== 0 || !res.data || !res.data.address);
-      if (_isWhitelist) {
-        router.replace("/");
-      }
       return _isWhitelist;
     } catch (err: any) {
       err.log(err);
@@ -45,20 +42,6 @@ export function useWhitelist() {
 
   const { run: checkAirdrop, cancel: checkAirdropCancel } = useDebounceFn(
     async () => {
-      // Whitelist stage
-      if (AIRDROP_STAGE.WHITELIST.isStage) {
-        if (!address) {
-          redirect2Airdrop();
-          return;
-        }
-
-        const isWhitelist = await checkWhiteList();
-        if (!isWhitelist) {
-          redirect2Whitelist();
-        }
-        return;
-      }
-
       if (!AirdropStartTime) {
         return;
       }
@@ -70,24 +53,18 @@ export function useWhitelist() {
       // airdrop not started
       if (isBeforeAirdrop) {
         if (!address) {
-          redirect2Airdrop();
           return;
         }
 
-        const diff = StartTime.diff(CurrentTime);
-
-        // Whitelist stage
-        if (diff > AIRDROP_STAGE.WHITELIST.endTime) {
-          const isWhitelist = await checkWhiteList();
-          if (!isWhitelist) {
-            redirect2Whitelist();
-          }
-          return;
+        if (process.env.NEXT_PUBLIC_NET === 'Devnet') {
+          return
         }
 
-        // preview stage
-        if (diff > AIRDROP_STAGE.PREVIEW.endTime) {
-          redirect2Airdrop();
+        const isWhitelist = await checkWhiteList();
+
+        if (!isWhitelist) {
+          redirect2Whitelist();
+          return;
         }
       }
     },
