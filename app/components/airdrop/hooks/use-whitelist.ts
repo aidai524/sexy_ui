@@ -1,17 +1,19 @@
 import { httpGet } from "@/app/utils";
 import { useAccount } from "@/app/hooks/useAccount";
-import { useEffect } from "react";
+import { useEffect, useRef } from 'react';
 import { useConfig } from "@/app/store/useConfig";
 import dayjs from "dayjs";
 import { usePathname, useRouter } from "next/navigation";
 import { AIRDROP_STAGE } from "@/app/config/airdrop";
 import { useDebounceFn } from "ahooks";
+import { success } from '@/app/utils/toast';
 
 export function useWhitelist() {
   const { address } = useAccount();
   const { config }: any = useConfig();
   const router = useRouter();
   const pathname = usePathname();
+  const timer = useRef<any>(0);
 
   const { AirdropStartTime } = config || {};
 
@@ -35,8 +37,32 @@ export function useWhitelist() {
     }
   };
 
-  const redirect2Whitelist = () => {
+  const copyUserAddress = () => {
+    return new Promise((resolve) => {
+      try {
+        navigator.clipboard
+          .writeText(address || '')
+          .then(() => {
+            success("Your wallet address has been copied to the clipboard!", { maskStyle: { zIndex: 2000 } });
+            timer.current = setTimeout(() => {
+              clearInterval(timer.current);
+              resolve(true);
+            }, 2000);
+          })
+          .catch((err) => {
+            console.log('wallet address copied failed: %o', err);
+            resolve(false);
+          });
+      } catch (err: any) {
+        console.log('wallet address copied failed: %o', err);
+        resolve(false);
+      }
+    });
+  };
+
+  const redirect2Whitelist = async () => {
     if (pathname !== AIRDROP_STAGE.WHITELIST.path) {
+      await copyUserAddress();
       router.replace(AIRDROP_STAGE.WHITELIST.path);
     }
   };
@@ -72,6 +98,12 @@ export function useWhitelist() {
     checkAirdropCancel();
     checkAirdrop();
   }, [address, AirdropStartTime, pathname]);
+
+  useEffect(() => {
+    return () => {
+      clearInterval(timer.current);
+    };
+  }, []);
 
   return {
     checkWhiteList
