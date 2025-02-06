@@ -32,7 +32,7 @@ export default function TopTraders() {
 
       setHasMore(smartMonies.items.length >= pageSize);
     }
-  }, [smartMonies, pageIndex, pageSize]);
+  }, [smartMonies]);
 
   const loadMore = useCallback(() => {
     setPageIndex(prev => prev + 1);
