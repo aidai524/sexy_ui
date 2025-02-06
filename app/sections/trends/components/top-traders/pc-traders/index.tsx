@@ -106,7 +106,7 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
           <Image src={user?.icon || defaultAvatar} alt={trader.name} width={36} height={36} />
         </div>
         <div className={styles.nameWrapper}>
-          <div className={styles.name}>{formatAddress(trader.address)}</div>
+          <div className={styles.name}>{formatAddress(trader.address) || formatAddress(user?.address)}</div>
           <div className={styles.followers}>{user?.followers || 0} followers</div>
         </div>
       </div>

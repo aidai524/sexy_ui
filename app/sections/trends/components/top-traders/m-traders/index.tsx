@@ -7,6 +7,7 @@ import CoppiedModal from '@/app/sections/profile/components/coppiedModal'
 import { SHOW_COPY_TRADE } from '@/app/utils/config'
 import useUserInfo from '@/app/hooks/useUserInfo'
 import { formatAddress } from '@/app/utils'
+
 interface Trader {
   avatar: string
   name: string
@@ -24,9 +25,42 @@ interface Trader {
   }
 }
 
-export default function TopTradersMobile({list}: {list: any[]}) {
+const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClick: (trader: any) => void }) => {
   const { fecthUserInfo } = useUserInfo(undefined);
-  const [activeTab, setActiveTab] = useState<'roi' | '1d' | '7d' | '30d'>('1d')
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userInfo = await fecthUserInfo(trader.address);
+      setUser(userInfo);
+    };
+    fetchUser();
+  }, [trader.address]);
+
+  return (
+    <div className={styles.traderCard} onClick={() => onCopyTradeClick(trader)}>
+      <div className={styles.traderInfo}>
+        <Image 
+          src={user?.icon || defaultAvatar} 
+          alt={trader.name} 
+          width={40} 
+          height={40} 
+          className={styles.avatar}
+        />
+        <div className={styles.nameContainer}>
+          <div className={styles.name}>{formatAddress(trader.address) || formatAddress(user?.address)}</div>
+          <div className={styles.followers}>{user?.followers || 0} followers</div>
+        </div>
+      </div>
+      <div className={styles.metrics}>
+        <div className={styles.percentage}>{trader.pnl7D}%</div>
+      </div>
+    </div>
+  );
+};
+
+export default function TopTradersMobile({list}: {list: any[]}) {
+  const [activeTab, setActiveTab] = useState<'roi' | '1d' | '7d' | '30d'>('7d')
   const [currentTrader, setCurrentTrader] = useState<any>(null)
   const [showModal, setShowModal] = useState(false)
 
@@ -54,29 +88,13 @@ export default function TopTradersMobile({list}: {list: any[]}) {
       </div>
 
       <div className={styles.traderList}>
-        {
-           list.map((trader, index) => (
-            <div key={index} className={styles.traderCard} onClick={() => handleCopyTradeClick(trader)}>
-              <div className={styles.traderInfo}>
-                <Image 
-                  src={trader.avatar || defaultAvatar} 
-                  alt={trader.name} 
-                  width={40} 
-                  height={40} 
-                  className={styles.avatar}
-                />
-                <div className={styles.nameContainer}>
-                  <div className={styles.name}>{formatAddress(trader.address)}</div>
-                  <div className={styles.followers}>{trader.followers} followers</div>
-                </div>
-              </div>
-              <div className={styles.metrics}>
-                <div className={styles.percentage}>{trader.pnl7D}%</div>
-                {/* <div className={styles.profit}>{getProfit(trader)}</div> */}
-              </div>
-            </div>
-          ))
-        }
+        {list.map((trader, index) => (
+          <TraderItem 
+            key={index}
+            trader={trader}
+            onCopyTradeClick={handleCopyTradeClick}
+          />
+        ))}
       </div>
 
       {SHOW_COPY_TRADE && (
