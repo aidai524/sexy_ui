@@ -111,7 +111,7 @@ export default forwardRef(function CreateNode(
 
   const validateAbout = useCallback((about: string) => {
     if (!about) {
-      return "About icon cannot be empty";
+      return "About cannot be empty";
     }
 
     if (about.length > 1000) {

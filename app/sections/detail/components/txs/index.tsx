@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CA from "../ca";
 import styles from "./txs.module.css";
 import { formatAddressLast, httpGet, simplifyNum } from "@/app/utils";
@@ -8,6 +8,7 @@ import { defaultAvatar } from "@/app/utils/config";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
 import { Switch } from "antd-mobile";
+import { useInterval } from "ahooks";
 import { useAccount } from "@/app/hooks/useAccount";
 import Level from "@/app/components/level/simple";
 import { usePair } from "../hooks/usePair";
@@ -49,7 +50,7 @@ function SexSwitch({ checked, onChange }: any) {
   );
 }
 
-const isDevnet = process.env.NEXT_PUBLIC_NET === 'Devnet'
+const isDevnet = process.env.NEXT_PUBLIC_NET === "Devnet";
 
 export default function Txs({ from, data }: any) {
   const [list, setList] = useState([]);
@@ -65,8 +66,8 @@ export default function Txs({ from, data }: any) {
     3: false
   });
 
-  useEffect(() => {
-    if (data && data.tokenName && data.status === 1 && data.DApp === 'sexy') {
+  const getData = useCallback(() => {
+    if (data && data.tokenName && data.status === 1 && data.DApp === "sexy") {
       httpGet(
         `/project/trade/list?limit=100&token_name=${data.address}&greater=${filter[1]}&my_following=${filter[2]}&my_trades=${filter[3]}`
       ).then((res) => {
@@ -79,7 +80,7 @@ export default function Txs({ from, data }: any) {
       });
     }
 
-    if (data && data.tokenName && data.status === 1 && data.DApp === 'pump') {
+    if (data && data.tokenName && data.status === 1 && data.DApp === "pump") {
       httpGet(
         `/project/trade_pump/list?limit=100&token_name=${data.address}&greater=${filter[1]}&my_following=${filter[2]}&my_trades=${filter[3]}`
       ).then((res) => {
@@ -93,6 +94,14 @@ export default function Txs({ from, data }: any) {
     }
   }, [data, filter]);
 
+  useEffect(() => {
+    getData();
+  }, [data, filter]);
+
+  useInterval(() => {
+    getData();
+  }, 3000);
+
   const { pair } = usePair({ token: data, type: data.status === 3 ? 2 : 0 });
 
   return (
@@ -103,100 +112,104 @@ export default function Txs({ from, data }: any) {
         borderRadius: from === "panel" ? "10px" : "15px 15px 0 0"
       }}
     >
-      {data.status === 1 && <div className={styles.filter}>
-        <div
-          className={styles.filterItem}
-          style={{
-            justifyContent: from === "panel" ? "flex-start" : "space-between"
-          }}
-        >
+      {data.status === 1 && (
+        <div className={styles.filter}>
           <div
-            className={styles.filterText}
+            className={styles.filterItem}
             style={{
-              fontSize: from === "panel" ? 10 : 12
+              justifyContent: from === "panel" ? "flex-start" : "space-between"
             }}
           >
-            Filter by size
-            <img style={{ width: "26px" }} src="/img/home/solana.png" /> 0.05 (
-            {totalGreater} trade{totalGreater > 1 ? "s" : ""})
+            <div
+              className={styles.filterText}
+              style={{
+                fontSize: from === "panel" ? 10 : 12
+              }}
+            >
+              Filter by size
+              <img style={{ width: "26px" }} src="/img/home/solana.png" /> 0.05
+              ({totalGreater} trade{totalGreater > 1 ? "s" : ""})
+            </div>
+            <SexSwitch
+              checked={filter[1]}
+              onChange={() => {
+                setFilter({
+                  ...filter,
+                  1: !filter[1]
+                });
+              }}
+            />
           </div>
-          <SexSwitch
-            checked={filter[1]}
-            onChange={() => {
-              setFilter({
-                ...filter,
-                1: !filter[1]
-              });
-            }}
-          />
+
+          {address && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: from === "panel" ? "row" : "column",
+                justifyContent:
+                  from === "panel" ? "space-between" : "flex-start"
+              }}
+            >
+              <div className={styles.filterItem}>
+                <div
+                  className={styles.filterText}
+                  style={{
+                    fontSize: from === "panel" ? 10 : 12
+                  }}
+                >
+                  Filter by my following ({totalMyFollowing} trade
+                  {totalMyFollowing > 1 ? "s" : ""})
+                </div>
+                <SexSwitch
+                  checked={filter[2]}
+                  onChange={() => {
+                    setFilter({
+                      ...filter,
+                      2: !filter[2],
+                      3: false
+                    });
+                  }}
+                />
+              </div>
+
+              <div className={styles.filterItem}>
+                <div
+                  className={styles.filterText}
+                  style={{
+                    fontSize: from === "panel" ? 10 : 12
+                  }}
+                >
+                  Filter by own trades ({totalMyTrades} trade
+                  {totalMyTrades > 1 ? "s" : ""})
+                </div>
+                <SexSwitch
+                  checked={filter[3]}
+                  onChange={() => {
+                    setFilter({
+                      ...filter,
+                      3: !filter[3],
+                      2: false
+                    });
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
-
-        {address && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: from === "panel" ? "row" : "column",
-              justifyContent: from === "panel" ? "space-between" : "flex-start"
-            }}
-          >
-            <div className={styles.filterItem}>
-              <div
-                className={styles.filterText}
-                style={{
-                  fontSize: from === "panel" ? 10 : 12
-                }}
-              >
-                Filter by my following ({totalMyFollowing} trade
-                {totalMyFollowing > 1 ? "s" : ""})
-              </div>
-              <SexSwitch
-                checked={filter[2]}
-                onChange={() => {
-                  setFilter({
-                    ...filter,
-                    2: !filter[2],
-                    3: false
-                  });
-                }}
-              />
-            </div>
-
-            <div className={styles.filterItem}>
-              <div
-                className={styles.filterText}
-                style={{
-                  fontSize: from === "panel" ? 10 : 12
-                }}
-              >
-                Filter by own trades ({totalMyTrades} trade
-                {totalMyTrades > 1 ? "s" : ""})
-              </div>
-              <SexSwitch
-                checked={filter[3]}
-                onChange={() => {
-                  setFilter({
-                    ...filter,
-                    3: !filter[3],
-                    2: false
-                  });
-                }}
-              />
-            </div>
-          </div>
-        )}
-      </div>}
-
+      )}
 
       {data && (
         <div
-          className={`${styles.txContent} ${from === "panel" ? styles.LaptopContent : ""
-            }`}
+          className={`${styles.txContent} ${
+            from === "panel" ? styles.LaptopContent : ""
+          }`}
         >
           {data?.status === 1 && (
             <>
               <div
-                className={`${styles.txTtitles} ${from === "panel" ? styles.LaptopTitles : styles.MobileTitles
-                  }`}
+                className={`${styles.txTtitles} ${
+                  from === "panel" ? styles.LaptopTitles : styles.MobileTitles
+                }`}
               >
                 <div style={{ flex: 3 }} className={styles.titleItem}>
                   Account
@@ -216,12 +229,16 @@ export default function Txs({ from, data }: any) {
                 {list.map((item: any, index: number) => {
                   const isSelf = item.address === userInfo?.address;
                   return (
-                    <div key={item.tx_hash + index} className={`${styles.item}`}>
+                    <div
+                      key={item.tx_hash + index}
+                      className={`${styles.item}`}
+                    >
                       <div
-                        className={`${styles.account} ${from === "panel"
-                          ? styles.LaptopAccount
-                          : styles.MobileAccount
-                          } ${!isSelf && "button"}`}
+                        className={`${styles.account} ${
+                          from === "panel"
+                            ? styles.LaptopAccount
+                            : styles.MobileAccount
+                        } ${!isSelf && "button"}`}
                         onClick={() => {
                           if (!isSelf)
                             router.push(
@@ -235,7 +252,9 @@ export default function Txs({ from, data }: any) {
                         />
                         <span>
                           {formatAddress(item.address)}
-                          {isSelf && "(Self)"}
+                          {isSelf && (
+                            <span style={{ color: "#FBCA04" }}>(Self)</span>
+                          )}
                         </span>
                         <Level level={item.level} />
                       </div>
@@ -263,7 +282,9 @@ export default function Txs({ from, data }: any) {
                         style={{ textAlign: "right" }}
                         onClick={() => {
                           window.open(
-                            `https://solscan.io/tx/${item.tx_hash}${isDevnet ? '?cluster=devnet' : ''}`
+                            `https://solscan.io/tx/${item.tx_hash}${
+                              isDevnet ? "?cluster=devnet" : ""
+                            }`
                           );
                         }}
                       >
@@ -324,7 +345,7 @@ export default function Txs({ from, data }: any) {
               width="100%"
               height="800"
               frameBorder="none"
-              src={`https://dexscreener.com/solana/${pair}?embed=1&loadChartSettings=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15&chart=0`}
+              src={`https://dexscreener.com/solana/${pair}?embed=1&loadChartSettings=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=3&chart=0`}
             ></iframe>
           )}
         </div>

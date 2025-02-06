@@ -1,12 +1,10 @@
 import LaunchTag from "../tag/status";
 import styles from "./avatar-box.module.css";
 
-
-
 export default function AvatarBox({ data, showLaunchType }: any) {
   return (
     <div className={styles.avatarBox}>
-      <div className={styles.tokenImgBox} >
+      <div className={styles.tokenImgBox}>
         <img
           style={{ opacity: data.tokenIcon ? 0.3 : 1 }}
           className={styles.tokenImg}

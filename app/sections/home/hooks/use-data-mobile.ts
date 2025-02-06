@@ -44,13 +44,8 @@ export default function useData(launchType: Type) {
       const icons = res.data?.list.map((token: any) => token.icon);
       preloadImages(icons);
 
-      const projects = res.data?.list.map((item: any, i: number) => ({
-        ...mapDataToProject(item),
-        fetched_time: Date.now() + i
-      }));
-
       projectsStore.setProjects(
-        projects,
+        res.data?.list,
         launchType,
         _hasNext,
         userInfo?.address
@@ -65,8 +60,8 @@ export default function useData(launchType: Type) {
     async (isNext?: boolean) => {
       if (!isNext) setIsLoading(true);
       await queryList();
-      const _list =
-        projectsStore.getProjectsByType(launchType, list.length === 0) || [];
+      const _list = projectsStore.getProjectsByType(launchType) || [];
+
       setList(_list);
       setIsLoading(false);
     },
@@ -74,8 +69,8 @@ export default function useData(launchType: Type) {
   );
 
   const initList = () => {
-    let _list =
-      projectsStore.getProjectsByType(launchType, list.length === 0) || [];
+    let _list = projectsStore.getProjectsByType(launchType) || [];
+
     if (_list.length === 0) {
       handleList(false);
       return;

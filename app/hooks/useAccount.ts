@@ -308,7 +308,7 @@ async function getPriorityFeeEstimate(
     if (process.env.NEXT_PUBLIC_NET !== "Mainnet")
       return defaultPriorityFee;
 
-    const res = await fetch(rpcEndpoint, {
+    const res = await fetch('https://estimate.minirpc.top', {
       method: "POST",
       body: JSON.stringify({
         jsonrpc: "2.0",

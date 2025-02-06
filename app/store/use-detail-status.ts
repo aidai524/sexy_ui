@@ -26,15 +26,22 @@ export const useDetailStatus = create(
         return (
           params.showDetail ||
           params.showComments ||
-          (params.showFlip && params.status === 0) ||
-          (params.showTrade && params.status !== 0)
+          (params.showFlip && params.token?.status === 0) ||
+          (params.showTrade && params.token?.status !== 0)
         );
       },
       setTab(tab: string) {
         set({ tab });
       },
       setToken(token: any) {
-        set({ token });
+        const params: any = {};
+        if (token?.status !== 0) {
+          params.showFlip = false;
+        }
+        if (token?.status === 0) {
+          params.showTrade = false;
+        }
+        set({ token, ...params });
       }
     }),
     {

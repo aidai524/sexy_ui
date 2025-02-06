@@ -31,6 +31,9 @@ export default function FlipPanel({ from, token, onClose, onSuccess }: any) {
           width={120}
           height={73}
           alt="Flip"
+          style={{
+            userSelect: "none"
+          }}
         />
         <button className="button" onClick={onClose}>
           <ModalClose size={34} />

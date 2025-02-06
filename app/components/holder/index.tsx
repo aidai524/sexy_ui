@@ -14,8 +14,10 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
 import { fail } from "@/app/utils/toast";
+import { useInterval } from "ahooks";
+import Loading from "../icons/loading";
 
-const pageSize = 40;
+const pageSize = 20;
 
 export default function Holder({ from, address, showAvatar, style = {} }: any) {
   const [list, setList] = useState<any[]>([]);
@@ -32,7 +34,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
       if (!address) return;
       const _page = typeof page === "number" ? page : pageIndex;
 
-      if (_page === 1) setIsLoading(true);
+      // if (_page === 1) setIsLoading(true);
       try {
         let res = null;
         if (process.env.NEXT_PUBLIC_NET === "Devnet") {
@@ -89,7 +91,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
           if (res.items.length < pageSize) {
             setHasMore(false);
           } else {
-            setPageIndex(_page + 1);
+            // setPageIndex(_page + 1);
             setHasMore(true);
           }
         }
@@ -149,8 +151,13 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
   );
 
   useEffect(() => {
+    setIsLoading(true)
     loadData();
   }, [address]);
+
+  useInterval(() => {
+    loadData();
+  }, 3000);
 
   return (
     <div
@@ -162,6 +169,16 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
       {from !== "panel" && (
         <div className={styles.distributionTitle}>Holder Distribution</div>
       )}
+
+      {
+        isLoading && (
+          <div className={styles.loading}>
+            <Loading size={28}/>
+          </div>
+        )
+      }
+
+      
       <div
         className={`${styles.list}`}
         style={{ paddingTop: from === "panel" ? 0 : 10 }}
@@ -185,7 +202,9 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                     <div className={styles.nameLevel}>
                       <span>
                         {formatAddress(item.owner)}
-                        {item.owner === authAddress ? "(Self)" : ""}
+                        {item.owner === authAddress && (
+                          <span style={{ color: "#FBCA04" }}>(Self)</span>
+                        )}
                       </span>
                       {item.flipUser && <Level level={item.flipUser?.level} />}
                     </div>
@@ -212,7 +231,9 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                   <div className={styles.UserName}>
                     <span>
                       {formatAddress(item.owner)}
-                      {item.owner === authAddress ? "(Self)" : ""}
+                      {item.owner === authAddress && (
+                        <span style={{ color: "#FBCA04" }}>(Self)</span>
+                      )}
                     </span>
                     {item.flipUser && <Level level={item.flipUser?.level} />}
                   </div>
@@ -244,7 +265,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
           <Empty height={from === "panel" ? 300 : "auto"} text="No holders" />
         </div>
       )}
-      <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+      {/* <SexInfiniteScroll loadMore={loadMore} hasMore={hasMore} /> */}
     </div>
   );
 }

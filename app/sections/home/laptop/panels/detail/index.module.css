@@ -8,6 +8,7 @@
   right: 100px;
   top: 50%;
   transform: translateY(-50%);
+  overflow: hidden;
 }
 
 .Header {
@@ -22,4 +23,5 @@
 .Content {
   height: calc(100% - 62px);
   overflow-y: auto;
+  padding-bottom: 10px;
 }

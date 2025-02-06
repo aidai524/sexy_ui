@@ -29,6 +29,9 @@ export default function DetailPanel({ token, onClose, from }: any) {
           width={112}
           height={68}
           alt="Details"
+          style={{
+            userSelect: "none"
+          }}
         />
         <button className="button" onClick={onClose}>
           <ModalClose size={34} />
@@ -38,6 +41,7 @@ export default function DetailPanel({ token, onClose, from }: any) {
         <Info
           mc={mc}
           data={token}
+          showMedia={false}
           showHodler={false}
           onUpdate={() => {}}
           showAddress={from !== "create"}

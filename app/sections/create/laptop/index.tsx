@@ -69,8 +69,8 @@ export default function Laptop() {
           token={{
             tokenName: dataAdd.tokenName,
             tokenSymbol: dataAdd.tokenSymbol,
-            tokenDecimals: 2,
-            tokenUri: dataAdd.tokenImg
+            tokenDecimals: 6,
+            tokenUri: dataAdd.tokenIcon || dataAdd.tokenImg
           }}
           data={dataAdd}
           onHide={() => {
