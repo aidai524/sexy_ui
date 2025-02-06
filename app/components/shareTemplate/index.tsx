@@ -306,13 +306,6 @@ function Card({ token, show, onClose }: Props, ref: any) {
                 ) : (
                   <img
                     crossOrigin="anonymous"
-                    src={token.tokenIcon || '/img/token-placeholder.png'}
-                    alt={token.tokenName}
-                    className={styles.tokenImg}
-                  />
-                ) : (
-                  <img
-                    crossOrigin="anonymous"
                     src={token.tokenImg || token.tokenIcon || '/img/token-placeholder.png'}
                     alt={token.tokenName}
                     className={styles.tokenImg}

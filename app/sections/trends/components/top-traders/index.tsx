@@ -25,10 +25,15 @@ export default function TopTraders() {
 
   useEffect(() => {
     if (smartMonies?.items) {
-      setTradersList(prev => ({
-        items: pageIndex === 1 ? smartMonies.items : [...prev.items, ...smartMonies.items],
-        total: smartMonies.total
-      }));
+      setTradersList(prev => {
+        if (pageIndex === 1 && prev.items.length > 0) {
+          return prev;
+        }
+        return {
+          items: pageIndex === 1 ? smartMonies.items : [...prev.items, ...smartMonies.items],
+          total: smartMonies.total
+        };
+      });
 
       setHasMore(smartMonies.items.length >= pageSize);
     }
