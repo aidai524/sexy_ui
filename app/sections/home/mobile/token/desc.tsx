@@ -15,6 +15,7 @@ export default function Desc({ token }: any) {
     tokenAddress: token.address,
     disable: token.status! < 1
   });
+
   const creator = useMemo(() => {
     if (token.creater) {
       if (token.creater.name) {
@@ -49,7 +50,6 @@ export default function Desc({ token }: any) {
     }
   }, [token]);
 
-
   return (
     <div
       className={styles.Container}
@@ -73,7 +73,7 @@ export default function Desc({ token }: any) {
           <TokenTags token={token} />
         </div>
       </div>
-      {(token.DApp === "sexy" && token.status === 1) && (
+      {token.DApp === "sexy" && token.status === 1 && (
         <div className={styles.MC}>
           Market Cap: ${mc > 0 ? simplifyNum(mc, 2) : "-"}
         </div>
@@ -94,7 +94,16 @@ export default function Desc({ token }: any) {
         </span>
         <span> {timeAgo(token.time)}</span>
       </div>
-      {token.status === 0 && <div className={styles.About}>{token.about}</div>}
+      {token.status === 0 && (
+        <div
+          className={styles.About}
+          style={{
+            width: isMobile ? "calc(100% - 60px)" : "100%"
+          }}
+        >
+          {token.about}
+        </div>
+      )}
     </div>
   );
 }

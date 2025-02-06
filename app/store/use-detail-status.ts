@@ -34,7 +34,14 @@ export const useDetailStatus = create(
         set({ tab });
       },
       setToken(token: any) {
-        set({ token });
+        const params: any = {};
+        if (token?.status !== 0) {
+          params.showFlip = false;
+        }
+        if (token?.status === 0) {
+          params.showTrade = false;
+        }
+        set({ token, ...params });
       }
     }),
     {
