@@ -29,8 +29,8 @@ export default function SignatureModal({
         <button
           className={`${styles.Button} button`}
           onClick={async () => {
-            updateCurrentUserInfo();
             await initAuthorization();
+            updateCurrentUserInfo();
             setAccountRefresher(accountRefresher + 1);
             setShowSignatureModal(false);
           }}

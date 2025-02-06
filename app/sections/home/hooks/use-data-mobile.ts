@@ -4,6 +4,7 @@ import { useProjects, type Type } from "@/app/store/use-projects";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";
 import { usePathname } from "next/navigation";
+import { useAccount } from "@/app/hooks/useAccount";
 import { mapDataToProject } from "@/app/utils/mapTo";
 
 const limit = 10;
@@ -22,11 +23,12 @@ export default function useData(launchType: Type) {
   const [hasNext, setHasNext] = useState<boolean>(true);
   const [list, setList] = useState<number[]>([]);
   const [refresher, setRefresher] = useState(0);
-  const { accountRefresher, userInfo } = useAuth();
+  const { accountRefresher } = useAuth();
   const projectsStore = useProjects();
   const mountedRef = useRef(false);
   const fetchingRef = useRef(false);
   const pathname = usePathname();
+  const { address } = useAccount();
 
   const queryList = async () => {
     if (fetchingRef.current) return;
@@ -49,29 +51,21 @@ export default function useData(launchType: Type) {
       const icons = res.data?.list.map((token: any) => token.icon);
       preloadImages(icons);
 
-      projectsStore.setProjects(
-        res.data?.list,
-        launchType,
-        _hasNext,
-        userInfo?.address
-      );
+      projectsStore.setProjects(res.data?.list, launchType, _hasNext, address);
     } catch (err) {
     } finally {
       fetchingRef.current = false;
     }
   };
 
-  const handleList = useCallback(
-    async (isNext?: boolean) => {
-      if (!isNext) setIsLoading(true);
-      await queryList();
-      const _list = projectsStore.getProjectsByType(launchType) || [];
+  const handleList = async (isNext?: boolean) => {
+    if (!isNext) setIsLoading(true);
+    await queryList();
+    const _list = projectsStore.getProjectsByType(launchType) || [];
 
-      setList(_list);
-      setIsLoading(false);
-    },
-    [launchType, userInfo]
-  );
+    setList(_list);
+    setIsLoading(false);
+  };
 
   const initList = () => {
     let _list = projectsStore.getProjectsByType(launchType) || [];
@@ -144,7 +138,9 @@ export default function useData(launchType: Type) {
 
   const { run: debounceList } = useDebounceFn(
     () => {
-      if (projectsStore.address !== (userInfo?.address || "")) {
+      console.log("projectsStore.address", projectsStore.address);
+      console.log("address", address);
+      if (projectsStore.address !== (address || "")) {
         projectsStore.clear(launchType);
         projectsStore.setIndex(launchType, 0);
         setList([]);
@@ -158,6 +154,8 @@ export default function useData(launchType: Type) {
 
   useEffect(() => {
     if (!mountedRef.current) return;
+    const res = checkedFetchedTime();
+    if (res) return;
     initList();
   }, [launchType]);
 
