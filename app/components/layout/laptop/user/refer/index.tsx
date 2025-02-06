@@ -7,6 +7,7 @@ import ReferModal from "@/app/components/layout/laptop/user/refer/modal";
 import { useAccount } from "@/app/hooks/useAccount";
 import { usePathname } from "next/navigation";
 import { WalletModalButton } from '@/app/libs/solana/wallet-adapter/modal';
+import { useAuth } from '@/app/context/auth';
 
 const Refer = (props: any) => {
   const { isMobile } = props;
@@ -98,11 +99,13 @@ export default Refer;
 const ReferContent = (props: any) => {
   const { handleOpen, handleEntryClose, isMobile } = props;
 
+  const { userInfo } = useAuth();
+
   return (
     <>
       <div className={isMobile ? styles.CardInnerMobile : styles.CardInner}>
         <div className={styles.Title}>
-          Invite frenz and <WalletModalButton
+          Invite frenz and {(userInfo?.address ? 'Earn' : (<WalletModalButton
           style={{
             cursor: 'default',
             width: 'unset',
@@ -116,7 +119,7 @@ const ReferContent = (props: any) => {
             fontSize: 14,
           }}
           isPrivy
-        >Earn</WalletModalButton> up to
+        >Earn</WalletModalButton>))} up to
         </div>
         <div className={styles.Content}>
           <div className={styles.Rebates}>
