@@ -95,18 +95,6 @@ function CreatePrivyWallet(props: any) {
     setCreatingWallet?.(true);
     createWallet?.().then((wallet) => {
       console.log('>>>>>> new wallet: %o', wallet);
-      try {
-        navigator.clipboard
-          .writeText(wallet?.address)
-          .then(() => {
-            success("Your wallet address has been copied to the clipboard!", { maskStyle: { zIndex: 2000 } });
-          })
-          .catch((err) => {
-            console.log('wallet address copied failed: %o', err);
-          });
-      } catch (err: any) {
-        console.log('wallet address copied failed: %o', err);
-      }
     }).catch((err) => {
       console.log(err);
       fail('Create wallet failed' + (err?.message ? ': ' + err.message : ''), { maskStyle: { zIndex: 2000 } });
