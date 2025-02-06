@@ -25,7 +25,7 @@ export default function Media({
             key={data.tokenImg}
             src={data.tokenImg}
             type={getVideoExt(data.tokenImg)}
-            className={styles.tokenImg}
+            className={styles.Video}
             style={videoStyle}
             autoPlay={autoPlay}
             token={data}
