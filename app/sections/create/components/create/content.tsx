@@ -77,8 +77,8 @@ export default function Create({
       return "Token name already in use";
     }
 
-    return '';
-  }, [tokenName, tokenSymbol])
+    return "";
+  }, [tokenName, tokenSymbol]);
 
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
@@ -220,11 +220,11 @@ export default function Create({
 
                 setIsLoading(true);
 
-                const sameNameRes = await validateSameName()
+                const sameNameRes = await validateSameName();
 
                 if (sameNameRes) {
                   setIsLoading(false);
-                  fail(sameNameRes)
+                  fail(sameNameRes);
                 }
 
                 const hash = await createToken({

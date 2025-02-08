@@ -1,0 +1,97 @@
+.main {
+    width: 100vw;
+    height: 280px;
+    background-color: #252328;
+    border-radius: 16px;
+    border: 1px solid #3B3B3B;
+    padding: 16px;
+}
+.titleText {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 16px;
+}
+.personInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.userName {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+}
+.tipsText {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 300;
+    font-family: 'Unbounded';
+    margin: 20px 0;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+}
+
+.CoppiedTokens {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.TitlePubStyle {
+    font-size: 12px;
+    color: #9290B1;
+    font-weight: 300;
+}
+
+
+.TokenIconBox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;    
+}
+
+.TokenIconBox img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-left: -8px;
+}
+
+.ButtonBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 23px;
+}
+
+.Button {
+    flex: 1;
+    height: 40px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Unbounded';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.SellButton {
+    border: 1px solid #FBCA04;
+    color: #fff;
+    background-color: transparent;
+}
+.CloseButton {
+    background-color: #FBCA04;
+    color: #000;
+    border: 1px solid transparent;
+}

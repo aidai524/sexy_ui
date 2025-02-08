@@ -15,6 +15,8 @@ import { formatLongText } from "@/app/utils/common";
 import { formatAddress } from "@/app/utils";
 import { useSearchParams } from "next/navigation";
 import GoBack from "@/app/components/back/laptop";
+import Summaries from "../components/summaries";
+import { SHOW_COPY_TRADE } from "@/app/utils/config";
 
 export default function Laptop({
   userInfo,
@@ -52,50 +54,63 @@ export default function Laptop({
                 src={userInfo.icon || defaultAvatar}
                 className={styles.Avatar}
               />
-              <div className={styles.Desc}>
-                <div className={styles.NameTop}>
-                  <div className={styles.NameWrapper}>
-                    <div>
-                      {formatLongText(userInfo?.name, 9, 4) ||
-                        formatAddress(userInfo?.address) ||
-                        "FlipN"}
+              <div className={styles.DescWrapper}>
+                <div className={styles.Desc}>
+                  <div className={styles.NameTop}>
+                    <div className={styles.NameWrapper}>
+                      <div>
+                        {formatLongText(userInfo?.name, 9, 4) ||
+                          formatAddress(userInfo?.address) ||
+                          "FlipN"}
+                      </div>
+                      <Level level={userInfo.level} style={{ marginLeft: 24 }} />
+                      {!isOther && (
+                        <EditButton
+                          onClick={() => {
+                            setShowEdit(true);
+                          }}
+                        />
+                      )}
                     </div>
-                    <Level level={userInfo.level} style={{ marginLeft: 24 }} />
-                    {!isOther && (
-                      <EditButton
-                        onClick={() => {
-                          setShowEdit(true);
-                        }}
-                      />
+                    {isOther && !SHOW_COPY_TRADE && (
+                      <div className={styles.Buttons}>
+                        <FollowBtn
+                          address={address}
+                          isFollower={isFollower}
+                          onSuccess={async () => {
+                            setRefreshNum(refreshNum + 1);
+                            onQueryInfo();
+                          }}
+                        />
+                      </div>
                     )}
                   </div>
-                  {isOther && (
-                    <div className={styles.Buttons}>
-                      <FollowBtn
-                        address={address}
-                        isFollower={isFollower}
-                        onSuccess={async () => {
-                          setRefreshNum(refreshNum + 1);
-                          onQueryInfo();
-                        }}
-                      />
-                    </div>
-                  )}
+                  <FollowerActions
+                    userInfo={userInfo}
+                    onItemClick={(action: string) => {
+                      setFollowModalType(action);
+                      setShowFollowers(true);
+                    }}
+                    style={{
+                      padding: "0px",
+                      gap: "30px",
+                      justifyContent: "start",
+                      marginTop: "10px",
+                      width: 200
+                    }}
+                  />
                 </div>
-                <FollowerActions
-                  userInfo={userInfo}
-                  onItemClick={(action: string) => {
-                    setFollowModalType(action);
-                    setShowFollowers(true);
-                  }}
-                  style={{
-                    padding: "0px",
-                    gap: "30px",
-                    justifyContent: "start",
-                    marginTop: "10px",
-                    width: 200
-                  }}
-                />
+
+              {SHOW_COPY_TRADE && (
+                    <Summaries
+                      address={address}
+                      isFollower={isFollower}
+                      setRefreshNum={setRefreshNum}
+                      refreshNum={refreshNum}
+                      userInfo={userInfo}
+                      isOther={isOther}
+                    />
+                  )}
               </div>
             </div>
             <Tabs

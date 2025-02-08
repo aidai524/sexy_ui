@@ -44,9 +44,20 @@
   border: 4px solid rgba(255, 255, 255, 0.55);
 }
 
+
+.DescWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
+
 .Desc {
   flex-grow: 1;
   padding-right: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .NameTop {

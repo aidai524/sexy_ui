@@ -27,7 +27,7 @@ export async function GET(request: Request | NextRequest) {
             <meta name="twitter:title" content="${tokenName}">
             <meta name="twitter:description" content="${about}">
             <meta name="twitter:image" content="${s3Domain}/${s3Dir}${imgUrl}"> <!-- Image URL for sharing -->
-            <meta http-equiv="refresh" content="0; url=${domain}/detail?address=${tokenAddress}">
+            <meta http-equiv="refresh" content="0; url=${domain}/detail?address=${tokenAddress}&a=DcTcE9wSsKk8okrwk3fCxKnvMK3nQ4WGnfh23YKJauvV">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta property="og:image:width" content="375">
             <meta property="og:image:height" content="625">

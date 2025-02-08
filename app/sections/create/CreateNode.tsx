@@ -51,46 +51,63 @@ export default forwardRef(function CreateNode(
       return "Token name already in use";
     }
 
-    return '';
-  }, [tokenName, ticker])
-
-  const validateName = useCallback((tokenName: string) => {
-    if (!tokenName) {
-      return "Token name cannot be empty";
-    }
-
-    if (tokenName.length > 50) {
-      return "Token name cannot exceed 50";
-    }
-
     return "";
-  }, [ticker]);
+  }, [tokenName, ticker]);
 
-  const validateTicker = useCallback((ticker: string) => {
-    if (!ticker) {
-      return "Ticker cannot be empty";
-    }
+  const validateName = useCallback(
+    (tokenName: string) => {
+      if (!tokenName) {
+        return "Token name cannot be empty";
+      }
 
-    if (!name_reg.test(ticker)) {
-      return "Only uppercase and lowercase letters and numbers are supported and the length is less than 10";
-    }
+      if (tokenName.length > 50) {
+        return "Token name cannot exceed 50";
+      }
 
+      return "";
+    },
+    [ticker]
+  );
 
-    return "";
-  }, [tokenName]);
+  const validateTicker = useCallback(
+    (ticker: string) => {
+      if (!ticker) {
+        return "Ticker cannot be empty";
+      }
 
-  const validateImages = useCallback((tokenImg: ImageUploadItem[], tokenIcon: ImageUploadItem[], showTokenSymbol: boolean) => {
-    if (tokenImg.length === 0) {
-      return "Token image cannot be empty";
-    }
+      if (!name_reg.test(ticker)) {
+        return "Only uppercase and lowercase letters and numbers are supported and the length is less than 10";
+      }
 
-    const tokenImgObj = tokenImg[0];
-    if ((videoReg.test(tokenImgObj.url) || /.gif$/.test(tokenImgObj.url) || showTokenSymbol) && tokenIcon.length === 0) {
-      return "Token icon cannot be empty";
-    }
+      return "";
+    },
+    [tokenName]
+  );
 
-    return "";
-  }, []);
+  const validateImages = useCallback(
+    (
+      tokenImg: ImageUploadItem[],
+      tokenIcon: ImageUploadItem[],
+      showTokenSymbol: boolean
+    ) => {
+      if (tokenImg.length === 0) {
+        return "Token image cannot be empty";
+      }
+
+      const tokenImgObj = tokenImg[0];
+      if (
+        (videoReg.test(tokenImgObj.url) ||
+          /.gif$/.test(tokenImgObj.url) ||
+          showTokenSymbol) &&
+        tokenIcon.length === 0
+      ) {
+        return "Token icon cannot be empty";
+      }
+
+      return "";
+    },
+    []
+  );
 
   const validateAbout = useCallback((about: string) => {
     if (!about) {
@@ -150,7 +167,8 @@ export default forwardRef(function CreateNode(
 
     const imagesError = validateImages(tokenImg, tokenIcon, showTokenSymbol);
     if (imagesError) {
-      inValidVals[imagesError.includes("icon") ? "tokenIcon" : "tokenImg"] = imagesError;
+      inValidVals[imagesError.includes("icon") ? "tokenIcon" : "tokenImg"] =
+        imagesError;
       isValid = true;
     }
 
@@ -270,14 +288,13 @@ export default forwardRef(function CreateNode(
             onBlur={async () => {
               let nameError = validateName(tokenName);
               if (!nameError) {
-                nameError = await validateSameName()
+                nameError = await validateSameName();
               }
               if (nameError) {
                 setInvaldVasl({ ...inValidVals, tokenName: nameError });
               } else {
-                
                 setInvaldVasl({ ...inValidVals, tokenName: "" });
-              } 
+              }
             }}
             className={`${
               isMobile ? styles.inputText : styles.laptopInputText
@@ -356,7 +373,7 @@ export default forwardRef(function CreateNode(
                 const url = tokenImg[0].url;
                 if (videoReg.test(url) || /.gif$/.test(url)) {
                   setShowTokenSymbol(true);
-                  return
+                  return;
                 }
               }
               setShowTokenSymbol(isChecked);
@@ -498,7 +515,7 @@ export default forwardRef(function CreateNode(
                 } else {
                   setInvaldVasl({ ...inValidVals, tg: "" });
                 }
-              }}  
+              }}
               type="Telegram"
               img="/img/community/telegram.svg"
             />

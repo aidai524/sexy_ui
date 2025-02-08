@@ -59,7 +59,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["picsum.photos"],
+    domains: ["picsum.photos", "flipn.s3.us-east-1.amazonaws.com"],
     minimumCacheTTL: 60,
     formats: ["image/webp"],
     remotePatterns: [

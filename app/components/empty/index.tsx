@@ -1,5 +1,6 @@
 import styles from "./index.module.css";
 import EmptyIcon from "./empty-icon";
+import { DotLoading } from "antd-mobile";
 
 export default function Empty({
   style,
@@ -7,7 +8,8 @@ export default function Empty({
   text,
   iconSize = 200,
   textStyle,
-  id
+  id,
+  showLoading = false
 }: any) {
   return (
     <div className={styles.Container} style={{ height, ...style }}>
@@ -15,6 +17,7 @@ export default function Empty({
       {text && (
         <div className={styles.Text} style={textStyle}>
           {text}
+          {showLoading && <DotLoading />} 
         </div>
       )}
     </div>

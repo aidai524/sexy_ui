@@ -1,19 +1,18 @@
 import { useState } from 'react';
 import CopyTrade from "@/app/services/copyTrade";
 import { success, fail } from "@/app/utils/toast";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { useWallet } from "@/app/hooks/use-wallet";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { VersionedTransaction, VersionedMessage } from '@solana/web3.js';
 import bs58 from 'bs58';
 
 
 interface CopyTradeParams {
   walletAddress: string;
-  copiedAddress: string;
-  copyAmount: string;
-  onceCopyAmount: string;
+  id: string;
+  chain: string;
+  state: number;
 }
-export const useCopyTrade = () => {
+export const useCloseCopyTrade = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const CopyTradeService = new CopyTrade();
     const {
@@ -24,28 +23,23 @@ export const useCopyTrade = () => {
     } = useWallet();
     const { connection } = useConnection();
   
-    const handleCopyTrade = async ({
+    const handleCloseCopyTrade = async ({
       walletAddress,
-      copiedAddress,
-      copyAmount,
-      onceCopyAmount
+      id,
+      chain,
+      state
     }: CopyTradeParams) => {
       try {
         setIsLoading(true);
-        const res = await CopyTradeService.createCopyTrade({
+        const res = await CopyTradeService.closeCopyTrade({
           walletAddress,
           chain: "solana",
-          from: copiedAddress,
-          investment: +copyAmount,
-          setting: {
-            buyAmount: +onceCopyAmount,
-            slippage: 0.5,
-            errorToleranceRatio: 0.1
-          }
+          state: state,
+          id,
         });
+        const {messageData, session} = res.data;
         
         if (res.code == 200) {
-          const {messageData, session} = res.data;
           if (!signTransaction || !publicKey) {
             fail("Wallet not connected");
             return false;
@@ -64,13 +58,11 @@ export const useCopyTrade = () => {
               session,
               publicKey: publicKey.toString(),
               signature: serializedTx,
-              type: 1,
+              type: 2,
             });
   
-            if (!sendResponse.data?.signature) {
-              throw new Error('No transaction signature returned');
-            }
-            success("Copy trade success", {maskStyle: {zIndex: 1001}});
+            success("Close copy trade success", {maskStyle: {zIndex: 1001}});
+            return true;
           } catch (signError: any) {
             fail(`Transaction signing failed: ${signError.message}`, {maskStyle: {zIndex: 1001}});
             return false;
@@ -80,7 +72,7 @@ export const useCopyTrade = () => {
           return false;
         }
       } catch (e: any) {
-        fail(e?.message || "Copy trade failed", {maskStyle: {zIndex: 1001}});
+        fail(e?.message || "Close Copy trade failed", {maskStyle: {zIndex: 1001}});
         return false;
       } finally {
         setIsLoading(false);
@@ -89,6 +81,6 @@ export const useCopyTrade = () => {
   
     return {
       isLoading,
-      handleCopyTrade
+      handleCloseCopyTrade
     };
   };

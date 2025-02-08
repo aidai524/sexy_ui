@@ -1,35 +1,21 @@
-.ListContainer {
-  background-color:rgba(255, 255, 255, 0.12);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px 10px;
-}
-
-.ListContainerPc {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px 10px;
-}
 
 .ItemBox {
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  height: 85px;
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  background-color: #292929;
-  overflow: hidden;
+  padding: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.ItemBoxContent {
-    height: 131px;
-    padding: 13px;
-    background-color: rgba(255, 255, 255, 0.08);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.ItemBox:hover {
+  background-color: rgba(255, 255, 255, 0.10);
+  cursor: pointer;
 }
-
+.CopyInfoBox {
+  min-width: 220px;
+}
 .PersonalTradeInfoBox {
   display: flex;
   justify-content: space-between;
@@ -38,8 +24,19 @@
 .PersonalInfo {
     display: flex;
     align-items: center;
+    gap: 12px;
+}
+.publicBox {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
+.publicBox p {
+    font-size: 12px;
+    color: #9290B1;
+    font-weight: 300;
+}
+
 .Name {
     font-size: 14px;
     color: #fff;
@@ -47,12 +44,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 120px;
+    max-width: 150px;
 }
 
 .Avatar {
-    width: 36px;
-    height: 36px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -115,11 +112,21 @@
     margin-top: 16px;
 }
 
+.TokenIconBoxWrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
 .TokenIconBox {
     display: flex;
     align-items: center;
-    margin-top: 8px;
     justify-content: flex-end;    
+}
+.CopyAmountLength {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
 }
 
 .TokenIconBox img {
@@ -163,29 +170,42 @@
     margin-left: -8px;
 }
 
-.ActionButtonBox {
+
+.ActionButtonWrapper {
     display: flex;
-    justify-content: flex-end;
-    height: 49px;
-    align-items: center;
-    padding: 0 13px;
+    gap: 16px;
 }
 
 .ActionButton {
-    background-color: transparent;
+    background: transparent;
     color: #fff;
-    padding: 9px 19px;
+    padding: 4px 12px;
     border-radius: 30px;
-    font-size: 12px;
-    font-weight: 500;
-    border: 1px solid #FBCA04;
     font-family: Unbounded;
+    font-size: 12px;
+    font-weight: 300;
+    border: 1px solid #FBCA04;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+.ActionButton:hover {
+    background: #FBCA04;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-family: Unbounded;
+    font-size: 12px;
+    font-weight: 300;
+    border: 1px solid transparent;
+    cursor: pointer;
 }
 
 .ActionButton:disabled {
     opacity: 0.1;
     cursor: not-allowed;
-}   
+}
 
 .ActionButton:disabled:hover {
     background: transparent;
@@ -193,3 +213,32 @@
     border: 1px solid #FBCA04;
     cursor: not-allowed;
 }
+
+
+.ClosePopoverContent {
+    padding: 24px;
+    text-align: center;
+    background-color: #252328;
+    border-radius: 20px;
+    border: 1px solid #3B3B3B;
+    width: 332px;
+    height: 150px;
+}
+
+.ClosePopoverContent h3 {
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: 300;
+    line-height: 21px;
+    font-size: 14px;
+    font-family: 'Unbounded';
+    text-align: left;
+}
+
+.ClosePopoverButtons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+

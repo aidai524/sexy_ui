@@ -23,7 +23,6 @@ export function useWhitelist() {
         address
       });
       const _isWhitelist = !(res.code !== 0 || !res.data || !res.data.address);
-
       return _isWhitelist;
     } catch (err: any) {
       // err.log(err);
