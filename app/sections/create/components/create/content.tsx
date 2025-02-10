@@ -33,6 +33,7 @@ export default function Create({
   data,
   onHide,
   onCreateTokenSuccess,
+  onBeforeCreate,
   setShowSuccessModal,
   width
 }: any) {
@@ -226,6 +227,8 @@ export default function Create({
                   setIsLoading(false);
                   fail(sameNameRes);
                 }
+
+                await onBeforeCreate()
 
                 const hash = await createToken({
                   name: tokenName,

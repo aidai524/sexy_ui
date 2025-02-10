@@ -2,7 +2,7 @@ import styles from "./preview.module.css";
 import Create from "../components/create";
 
 import type { Project } from "@/app/type";
-import { forwardRef, useEffect, useState, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useState, useImperativeHandle, useMemo } from "react";
 import { httpAuthPost, sleep } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import MobileInfo from "./mobile-info";
@@ -51,6 +51,27 @@ export default forwardRef(function PreviewNode(
     }),
     []
   );
+
+  const query = useMemo(() => {
+    const query: any = {
+      about_us: data.about,
+      discord: data.discord,
+      icon: data.tokenIcon,
+      tg: data.tg,
+      ticker: data.ticker,
+      token_name: data.tokenName,
+      token_symbol: data.tokenSymbol,
+      video: data.tokenImg,
+      website: data.website,
+      x: data.x
+    };
+
+    const queryStr = Object.keys(query)
+      .map((key) => `${key}=${encodeURIComponent(query[key])}`)
+      .join("&");
+
+    return queryStr;
+  }, [data]);
 
   return (
     <div
@@ -102,28 +123,16 @@ export default forwardRef(function PreviewNode(
         onHide={() => {
           setShowCreate(false);
         }}
+        onBeforeCreate={async () => {
+          const val = await httpAuthPost(`/project/data?${query}`, {});
+          return val.code === 0;
+        }}
         onCreateTokenSuccess={async () => {
-          const query: any = {
-            about_us: data.about,
-            discord: data.discord,
-            icon: data.tokenIcon,
-            tg: data.tg,
-            ticker: data.ticker,
-            token_name: data.tokenName,
-            token_symbol: data.tokenSymbol,
-            video: data.tokenImg,
-            website: data.website,
-            x: data.x
-          };
-
-          const queryStr = Object.keys(query)
-            .map((key) => `${key}=${encodeURIComponent(query[key])}`)
-            .join("&");
 
           let times = 0,
             val;
           while (times < 50) {
-            val = await httpAuthPost(`/project?${queryStr}`, {});
+            val = await httpAuthPost(`/project?${query}`, {});
             if (val.code === 100000) {
               times++;
               await sleep(5000);
