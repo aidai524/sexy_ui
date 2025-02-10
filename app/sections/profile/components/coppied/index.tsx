@@ -33,7 +33,7 @@ export default function Coppied({ isOther }: any) {
     if (
       !userInfo?.address ||
       isOther ||
-      homeTabStore?.profileTabName !== "Coppied"
+      homeTabStore?.profileTabName !== "Copied"
     ) {
       setHasMore(false);
       return;
@@ -68,7 +68,7 @@ export default function Coppied({ isOther }: any) {
   }, [userInfo?.address, isOther, homeTabStore?.profileTabName, pageIndex]);
 
   useEffect(() => {
-    if (!userInfo?.address || isOther || homeTabStore?.profileTabName !== "Coppied") {
+    if (!userInfo?.address || isOther || homeTabStore?.profileTabName !== "Copied") {
       return;
     }
     

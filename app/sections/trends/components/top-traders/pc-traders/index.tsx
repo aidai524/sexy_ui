@@ -6,6 +6,7 @@ import CoppiedModal from '@/app/sections/profile/components/coppiedModal';
 import { SHOW_COPY_TRADE } from '@/app/utils/config';
 import { formatAddress } from '@/app/utils';
 import { fecthUserInfo } from '@/app/utils/getUserInfo';
+import { numberFormatter } from '@/app/utils/common';
 interface Trader {
   avatar: string
   name: string
@@ -101,13 +102,13 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         </div>
       </div>
       <div className={styles.pnl}>
-        {trader.pnl1D}%
+        {numberFormatter(trader.pnl1D, 4, true)}%
       </div>
       <div className={styles.pnl}>
-        {trader.pnl7D}%
+        {numberFormatter(trader.pnl7D, 4, true)}%
       </div>
       <div className={styles.pnl}>
-        {trader.pnl30D}%
+        {numberFormatter(trader.pnl30D, 4, true)}%
       </div>
 
       <button className={styles.copyButton} onClick={() => onCopyTradeClick(trader)}>Copy</button>

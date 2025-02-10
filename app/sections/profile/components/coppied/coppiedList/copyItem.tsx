@@ -6,11 +6,11 @@ import Popover, { PopoverPlacement, PopoverTrigger } from '@/app/components/popo
 import useUserInfo from '@/app/hooks/useUserInfo';
 import Big from 'big.js';
 import { useCopyTokenInfos } from '@/app/sections/profile/hooks/useCopyTokenInfos';
+import { numberFormatter } from '@/app/utils/common';
 
 export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading}: any) {
     const { userInfo: copyUserInfo } = useUserInfo(itemInfo?.from);
     const tokensInfo = useCopyTokenInfos(itemInfo?.tokens);
-
 
   return (
     <div className={styles.ItemBox}>
@@ -30,21 +30,21 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
                   <p className={styles.TooltipItem}>
                     <span>You deposit</span> 
                     <span className={styles.TooltipItemValue}>
-                      {itemInfo?.investment || 0}
+                      {numberFormatter(itemInfo?.investment || 0, 4, true)}
                       <SolIconWithoutBg />
                     </span>
                   </p>
                   <p className={styles.TooltipItem}>
-                    <span>Coppied</span> 
+                    <span>Copied</span> 
                     <span className={styles.TooltipItemValue}>
-                      {new Big(itemInfo?.netWorth).minus(itemInfo?.balance).toNumber() || 0}
+                      {numberFormatter(new Big(itemInfo?.investment).add(0.00089088).minus(itemInfo?.balance).toNumber() || 0, 4, true)}
                       <SolIconWithoutBg />
                     </span>
                   </p>
                   <p className={styles.TooltipItem}>
                     <span>Balance</span> 
                     <span className={styles.TooltipItemValue}>
-                      {itemInfo?.balance || 0}
+                      {numberFormatter(new Big(itemInfo?.balance).minus(0.00089088).toNumber() || 0, 4, true)}
                       <SolIconWithoutBg />
                     </span>
                   </p>
@@ -77,13 +77,15 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
       <div className={styles.TradeInfoBox}>
         {/* trade earn */}
         <div className={styles.TradeEarn}>
-            <div className={styles.TitlePubStyle}>Coppied ROI (PNL) </div>
+            <div className={styles.TitlePubStyle}>Copied ROI (PNL) </div>
             <div className={styles.PNLValuePercent}>{Big(itemInfo?.roi).times(100).toString() || 0}%</div>
-            <div className={styles.PNLValueUSD}>${Big(itemInfo?.pnl).toString() || 0}</div>
+            <div className={styles.PNLValueUSD}>
+              <span style={{color: !itemInfo?.pnl.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{(Big(itemInfo?.pnl).toString() || '0')}</span>
+            </div>
         </div>
         {/* coppied tokens */}
         <div className={styles.CoppiedTokens}>
-            <div className={styles.TitlePubStyle}>{itemInfo?.tokens?.length || 0} Coppied Tokens</div>
+            <div className={styles.TitlePubStyle}>{itemInfo?.tokens?.length || 0} Copied Tokens</div>
             <div className={styles.TokenIconBox}>
                {tokensInfo.map((tokenInfo:any, index:number) => {
                     if (index === 4) {

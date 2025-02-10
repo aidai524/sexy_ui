@@ -71,6 +71,7 @@ export const useCopyTrade = () => {
               throw new Error('No transaction signature returned');
             }
             success("Copy trade success", {maskStyle: {zIndex: 1001}});
+            return true;
           } catch (signError: any) {
             fail(`Transaction signing failed: ${signError.message}`, {maskStyle: {zIndex: 1001}});
             return false;

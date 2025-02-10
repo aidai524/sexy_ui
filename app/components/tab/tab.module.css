@@ -39,3 +39,41 @@
         }
     }
 }
+
+
+
+.tabsExtra {
+    .tabHeaders {
+        display: flex;
+        font-size: 20px;
+        height: 66px;
+        font-size: 14px;
+        margin: 0 auto;
+        justify-content: center;
+        gap: 80px;
+        .tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 1);
+            position: relative;
+            font-weight: 600;
+            cursor: pointer;
+            &.active {
+                color: var(--part-bg);
+            }
+        }
+        .tab.active::after {
+            content: ' ';
+            display: block;
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background-color: var(--part-bg);
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 1000px;
+            bottom: 20%;
+        }
+    }
+}

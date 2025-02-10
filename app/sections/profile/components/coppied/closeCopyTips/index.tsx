@@ -36,7 +36,7 @@ export default function CloseCopyTips({ show, onClose, copiedInfo, handleCloseAn
         </div>
         
         <div className={styles.CoppiedTokens}>
-            <div className={styles.TitlePubStyle}>Coppied Tokens</div>
+            <div className={styles.TitlePubStyle}>Copied Tokens</div>
             <div className={styles.TokenIconBox}>
                {tokensInfo.map((tokenInfo:any, index:number) => {
                     if (index === 4) {

@@ -10,12 +10,14 @@ interface Props {
     nodes: Node[];
     activeNode?: string;
     onTabChange?: (nodeName: string) => void;
+    useExtraClass?: boolean;
 }
 
 export default function Tab({
     nodes,
     activeNode,
     onTabChange,
+    useExtraClass = false
 }: Props) {
     const [tabIndex, setTabIndex] = useState(0)
 
@@ -33,7 +35,7 @@ export default function Tab({
         }
     }, [activeNode, onTabChange, nodes])
 
-    return <motion.div className={styles.tabs}>
+    return <motion.div className={ useExtraClass ? styles.tabsExtra : styles.tabs}>
         <div className={styles.tabHeaders}>
             {
                 nodes.map((node, index) => {
