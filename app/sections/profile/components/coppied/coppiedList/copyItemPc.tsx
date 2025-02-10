@@ -79,8 +79,8 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
             >
             <div className={styles.CopyAmount}>
                 <p className={styles.CopyAmountText}>
-                    <span className={styles.CopyAmountTextUseAmount}>{new Big(itemInfo?.netWorth).minus(itemInfo?.balance).toNumber() || 0}</span>
-                    <span className={styles.CopyAmountTextTotal}>/{(+itemInfo?.balance || 0).toFixed(6)}</span>
+                    <span className={styles.CopyAmountTextUseAmount}>{numberFormatter(new Big(itemInfo?.investment).add(0.00089088).minus(itemInfo?.balance).toNumber() || 0, 4, true)}</span>
+                    <span className={styles.CopyAmountTextTotal}>/ {numberFormatter(itemInfo?.investment || 0, 4, true)}</span>
                 </p>
                 <SolIconWithoutBg />
             </div>
@@ -109,12 +109,12 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
         </div>  
       {/* coppied tokens */}
       <div className={styles.publicBox}>
-            <p>Copied Tokens</p>
+            <p style={{paddingTop: '8px'}}>Copied Tokens</p>
             <Popover
               content={
                 <div className={styles.Tooltip}>
                       {tokenInfos.map((tokenInfo:any, index:number) => {
-                  return  <p className={styles.TooltipItem}>
+                  return  <p className={styles.TooltipItem} key={index}>
                             <span className={styles.TooltipItemIcon}>
                                 <img 
                                     key={index} 
@@ -157,7 +157,7 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
         </div>
         {/* actions */}
         <div className={styles.publicBox}>
-            <p>Action</p>
+            <p style={{paddingTop: '8px'}}>Action</p>
            <div className={styles.ActionButtonWrapper}>
            {
             !itemInfo?.tokens || itemInfo?.tokens?.length === 0 ?
