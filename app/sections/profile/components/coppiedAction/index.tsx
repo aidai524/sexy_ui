@@ -67,7 +67,8 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
         setCopyTimes(cpTimes.toString());
         setOnceCopyAmount(solBalanceBig.div(cpTimes).toString());
       }
-      setCopyAmount(solBalanceBig.toString());
+      const roundedAmount = new Big(Math.floor(solBalanceBig.div(0.1).toNumber())).mul(0.1).toString();
+      setCopyAmount(roundedAmount);
     }
   }, [solBalance, show]);
 
@@ -85,9 +86,11 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   }, [copyTimes]);
 
   useEffect(() => {
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
     if (!show) {
       resetForm();
     }
+    viewportMeta?.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no');
   }, [show]);
 
   const onceCopyAmountMap = useMemo(() => {
@@ -137,12 +140,15 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
       window.connect();
       return;
     }
-    await handleCopyTrade({
+   const res = await handleCopyTrade({
       walletAddress: currentUserInfo.address,
       copiedAddress: copiedInfo.address,
       copyAmount,
       onceCopyAmount
     });
+    if (res) {
+      onClose();
+    }
   };
   return (
     <Modal
@@ -193,6 +199,10 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
               placeholder="Enter the amount"
               value={copyAmount}
               onChange={handleCopyAmountChange}
+              style={{
+               fontSize: '16px',
+               transform: 'scale(1)',
+              }}
             />
             <span className={styles.amountIcon}>
               <span>SOL</span>{" "}
@@ -200,7 +210,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
             </span>
           </div>
           <p className={`${styles.amountDetail}  ${styles.textWhite07}`}>
-            <span>${new Big(solPrice || 0).mul(copyAmount || 0).toString()}</span>
+            <span>~${new Big(solPrice || 0).mul(copyAmount || 0).toString()}</span>
             <span>Bal: {solBalance} SOL</span>
           </p>
         </div>
@@ -208,7 +218,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
         {/* min */}
         <div className={`${styles.min} ${styles.textWhite07}`}>
           <span>Min:&nbsp;</span>
-          <div>0.1 SOL</div>
+          <div>0.1 SOL / copy</div>
         </div>
 
         {/* your coppies */}
@@ -216,7 +226,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
           className={`${styles.yourCoppies} ${styles.public} ${styles.textWhite07}`}
         >
           <div className={`${styles.public} ${styles.textWhite07}`}>
-            <span>Your Coppies</span>
+            <span>Your Copies</span>
             <div className={styles.setBtn} onClick={handleSetClick}>set</div>
           </div>
           <input
@@ -225,6 +235,9 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
             value={copyTimes}
             onChange={handleCopyTimesChange}
             disabled={isInputDisabled}
+            style={{
+              color: isInputDisabled ? 'rgba(255,255,255,0.7)' : '#fff',
+            }}
           />
         </div>
 
@@ -233,7 +246,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
         <div className={`${styles.public} ${styles.textWhite07}`}>
           <span>Amount / copy</span>
           <div className={styles.textWhite}>
-            {onceCopyAmountMap.integer + onceCopyAmountMap.decimal} SOL / copy
+            {onceCopyAmountMap.integer + onceCopyAmountMap.decimal} SOL
           </div>
         </div>
 

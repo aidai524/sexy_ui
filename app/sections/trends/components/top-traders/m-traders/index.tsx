@@ -7,6 +7,7 @@ import CoppiedModal from '@/app/sections/profile/components/coppiedModal'
 import { SHOW_COPY_TRADE } from '@/app/utils/config'
 import useUserInfo from '@/app/hooks/useUserInfo'
 import { formatAddress } from '@/app/utils'
+import { numberFormatter } from '@/app/utils/common'
 
 interface Trader {
   avatar: string
@@ -66,7 +67,7 @@ const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCo
         </div>
       </div>
       <div className={styles.metrics}>
-        <div className={styles.percentage}>{getPnlValue()}%</div>
+        <div className={styles.percentage}>{numberFormatter(getPnlValue(), 4, true)}</div>
       </div>
     </div>
   );

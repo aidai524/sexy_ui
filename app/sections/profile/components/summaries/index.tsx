@@ -54,24 +54,24 @@ const Summaries = (props: any) => {
           <div
             className={[styles.SummaryValue, styles.SummaryValueBuy].join(" ")}
           >
-            +{numberFormatter(copyTradersUserInfo?.tradeInfo?.pnl7D, 2, true, { prefix: "$", isShort: true })}
+            <span style={{color: !copyTradersUserInfo?.tradeInfo?.pnl7D.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{ copyTradersUserInfo?.tradeInfo?.pnl7D != '0' ? copyTradersUserInfo?.tradeInfo?.pnl7D : '-'}</span>
           </div>
         </div>
         <div className={styles.Summary}>
           <div className={styles.SummaryLabel}>7D Win Rate</div>
           <div className={[styles.SummaryValue].join(" ")}>
-            {numberFormatter(copyTradersUserInfo?.tradeInfo?.winRate7D, 1, true, { isShort: true })}%
+            { copyTradersUserInfo?.tradeInfo?.winRate7D ? numberFormatter(copyTradersUserInfo?.tradeInfo?.winRate7D, 1, true, { isShort: true }) : '-'}%
           </div>
         </div>
         <div className={styles.Summary}>
           <div className={styles.SummaryLabel}>Buy/Sell</div>
           <div className={[styles.SummaryValue].join(" ")}>
             <div className={[styles.SummaryValueBuy].join(" ")}>
-              {numberFormatter(copyTradersUserInfo?.tradeInfo?.buys, 0, true, { isShort: true })}
+              {copyTradersUserInfo?.tradeInfo?.buys ? numberFormatter(copyTradersUserInfo?.tradeInfo?.buys, 0, true, { isShort: true }) : '-'}
             </div>
             <div className={[].join(" ")}>/</div>
             <div className={[styles.SummaryValueSell].join(" ")}>
-              {numberFormatter(copyTradersUserInfo?.tradeInfo?.sells, 0, true, { isShort: true })}
+              {copyTradersUserInfo?.tradeInfo?.sells ? numberFormatter(copyTradersUserInfo?.tradeInfo?.sells, 0, true, { isShort: true }) : '-'}
             </div>
           </div>
         </div>
@@ -92,6 +92,7 @@ const Summaries = (props: any) => {
           onClick={() => {
             setShowModal(true);
           }}
+          style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
         >
           Copy Trade
           </button>

@@ -7,6 +7,7 @@ import useUserInfo from '@/app/hooks/useUserInfo';
 import Big from 'big.js';
 import { useCopyTokenInfos } from '@/app/sections/profile/hooks/useCopyTokenInfos';
 import MainBtn from '@/app/components/mainBtn';
+import { numberFormatter} from '@/app/utils/common';
 
 
 export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading, handleCloseAndSell, handleClose}: any) {
@@ -26,6 +27,9 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
         background: 'transparent',
         color: '#fff',
         border: '1px solid #FBCA04',
+    }
+    const commonStyles3 = {
+        color: '#000',
     }
     
   return (
@@ -50,21 +54,21 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
                   <p className={styles.TooltipItem}>
                     <span>You deposit</span> 
                     <span className={styles.TooltipItemValue}>
-                      {itemInfo?.investment || 0}
+                      {numberFormatter(itemInfo?.investment || 0, 4, true)}
                       <SolIconWithoutBg />
                     </span>
                   </p>
                   <p className={styles.TooltipItem}>
-                    <span>Coppied</span> 
+                    <span>Copied</span> 
                     <span className={styles.TooltipItemValue}>
-                      {new Big(itemInfo?.netWorth).minus(itemInfo?.balance).toNumber() || 0}
+                    {numberFormatter(new Big(itemInfo?.investment).add(0.00089088).minus(itemInfo?.balance).toNumber() || 0, 4, true)}
                       <SolIconWithoutBg />
                     </span>
                   </p>
                   <p className={styles.TooltipItem}>
                     <span>Balance</span> 
                     <span className={styles.TooltipItemValue}>
-                      {itemInfo?.balance || 0}
+                      {numberFormatter(new Big(itemInfo?.balance).minus(0.00089088).toNumber() || 0, 4, true)}
                       <SolIconWithoutBg />
                     </span>
                   </p>
@@ -95,36 +99,61 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
 
        {/* trade earn */}
        <div className={styles.publicBox}>
-            <p>Coppied ROI (PNL) </p>
+            <p style={{paddingTop: '18px'}}>Copied ROI (PNL) </p>
            <div>
            <div className={styles.PNLValuePercent}>{Big(itemInfo?.roi).times(100).toString() || 0}%</div>
-           <div className={styles.PNLValueUSD}>${Big(itemInfo?.pnl).toString() || 0}</div>
+           <div className={styles.PNLValueUSD}>
+            <span style={{color: !itemInfo?.pnl.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{(Big(itemInfo?.pnl).toString() || '0')}</span>
+           </div>
            </div>
         </div>  
       {/* coppied tokens */}
       <div className={styles.publicBox}>
-            <p>Coppied Tokens</p>
+            <p>Copied Tokens</p>
+            <Popover
+              content={
+                <div className={styles.Tooltip}>
+                      {tokenInfos.map((tokenInfo:any, index:number) => {
+                  return  <p className={styles.TooltipItem}>
+                            <span className={styles.TooltipItemIcon}>
+                                <img 
+                                    key={index} 
+                                    src={tokenInfo.icon || defaultAvatar} 
+                                    alt={tokenInfo.symbol || 'token'} 
+                                    title={tokenInfo.symbol || 'token'}
+                                />
+                            <span style={{fontSize: '12px'}}>{tokenInfo.symbol || 'token'}</span>
+                            </span>
+                            <span style={{color: '#fff',marginLeft: '12px', fontSize: '12px'}}>{numberFormatter(tokenInfo.balance || 0, 4, true)}</span>
+                         </p>
+                })}
+                 
+                </div>
+              }
+              placement={PopoverPlacement.TopLeft}
+              trigger={PopoverTrigger.Hover}
+            >
             <div className={styles.TokenIconBoxWrapper}>
                 <div className={styles.CopyAmountLength}>
                 {itemInfo?.tokens?.length || 0}
                 </div>
                 <div className={styles.TokenIconBox}>
-                {
-                    (itemInfo?.tokens || [])?.slice(0, 5).map((item: any, index: number) => {
-                        if (index === 4) {
-                            return <div key={index} className={styles.MoreTokens}>...</div>
-                        }
-                        if (index < 4) {
-                            const tokenInfo = tokenInfos[item.token] || {
-                                icon: defaultAvatar,
-                                symbol: 'token'
-                            };
-                            return <img key={index} src={tokenInfo.icon || defaultAvatar} alt={tokenInfo.symbol || 'token'} title={tokenInfo.symbol || 'token'}/>
-                        }
-                    })
-                }
+                {tokenInfos.map((tokenInfo:any, index:number) => {
+                    if (index === 4) {
+                        return <div key={index} className={styles.MoreTokens}>...</div>
+                    }
+                    if (index < 4) {
+                        return <img 
+                            key={index} 
+                            src={tokenInfo.icon || defaultAvatar} 
+                            alt={tokenInfo.symbol || 'token'} 
+                            title={tokenInfo.symbol || 'token'}
+                        />
+                    }
+                })}
                 </div>
             </div>
+            </Popover>
         </div>
         {/* actions */}
         <div className={styles.publicBox}>
@@ -159,7 +188,7 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
                         
                         <MainBtn onClick={() => {
                             handleClose(itemInfo);
-                        }} style={commonStyles}>Just Close</MainBtn>
+                        }} style={Object.assign({}, commonStyles, commonStyles3)}>Just Close</MainBtn>
                     </div>
                 </div>
             }

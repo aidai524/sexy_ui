@@ -64,7 +64,7 @@ export default function Mobile(props: any) {
     <div className={styles.Container}>
       <Header />
       <div style={{ marginTop: 40 }}>
-        {SHOW_COPY_TRADE ? <Tab nodes={tabNotes} activeNode={tabNotes[0].name} /> : hotMemesContent}
+        {SHOW_COPY_TRADE ? <Tab nodes={tabNotes} activeNode={tabNotes[0].name} useExtraClass={true} /> : hotMemesContent}
       </div>
     </div>
   );

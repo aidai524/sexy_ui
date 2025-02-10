@@ -71,7 +71,7 @@ export default function Mobile(props: any) {
       <div className={styles.TitleWrapper}>
         <span>Trends</span>
       </div>
-      {SHOW_COPY_TRADE ? <Tab nodes={tabNotes} activeNode={tabNotes[0].name}/> : hotMemesContent}
+      {SHOW_COPY_TRADE ? <Tab nodes={tabNotes} activeNode={tabNotes[0].name} useExtraClass={true} /> : hotMemesContent}
     </motion.div>
   );
 }

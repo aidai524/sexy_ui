@@ -29,12 +29,12 @@ export const RingChart: React.FC<RingChartProps> = ({ data, size = 20 }) => {
           type: 'pie',
           radius: ["60%", "80%"], // 
           avoidLabelOverlap: false,
+          emphasis: {
+            disabled: true,
+            scale: false
+          },
           itemStyle: {
-            borderRadius: 0,
-            emphasis: {
-              scale: false,
-              disabled: true
-            }
+            borderRadius: 0
           },
           label: {
             show: false,

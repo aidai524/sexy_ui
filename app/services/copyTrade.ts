@@ -205,6 +205,27 @@ class CopyTrade {
       return error;
     }
   }
+
+  // withdraw
+  async withdrawTokens(params: {
+    walletAddress: string;
+    chain: string;
+    tokens: string[];
+    id: string;
+    withdrawAll: boolean
+  }) {
+    try {
+      const response = await fetch(`${this.baseURL}/copy_trade/withdraw_tokens`, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify(params)
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
 }
 
 export default CopyTrade;
