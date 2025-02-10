@@ -16,7 +16,8 @@ export function useCopyTokenInfos(tokens: any[] | undefined) {
                         const info = await getTokenInfo(item.token);
                         return {
                             ...info,
-                            address: item.token
+                            address: item.token,
+                            balance: item.balance
                         };
                     })
                 );

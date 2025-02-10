@@ -86,6 +86,29 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
         {/* coppied tokens */}
         <div className={styles.CoppiedTokens}>
             <div className={styles.TitlePubStyle}>{itemInfo?.tokens?.length || 0} Copied Tokens</div>
+            <Popover
+              content={
+                <div className={styles.Tooltip}>
+                      {tokensInfo.map((tokenInfo:any, index:number) => {
+                  return  <p className={styles.TooltipItem}>
+                            <span className={styles.TooltipItemIcon}>
+                                <img 
+                                    key={index} 
+                                    src={tokenInfo.icon || defaultAvatar} 
+                                    alt={tokenInfo.symbol || 'token'} 
+                                    title={tokenInfo.symbol || 'token'}
+                                />
+                            <span style={{fontSize: '12px'}}>{tokenInfo.symbol || 'token'}</span>
+                            </span>
+                            <span style={{color: '#fff',marginLeft: '12px', fontSize: '12px'}}>{numberFormatter(tokenInfo.balance || 0, 4, true)}</span>
+                         </p>
+                })}
+                 
+                </div>
+              }
+              placement={PopoverPlacement.TopLeft}
+              trigger={PopoverTrigger.Click}
+            >
             <div className={styles.TokenIconBox}>
                {tokensInfo.map((tokenInfo:any, index:number) => {
                     if (index === 4) {
@@ -101,6 +124,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
                     }
                 })}
             </div>
+            </Popover>
         </div>
       </div>
       </div>

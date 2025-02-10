@@ -110,6 +110,29 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
       {/* coppied tokens */}
       <div className={styles.publicBox}>
             <p>Copied Tokens</p>
+            <Popover
+              content={
+                <div className={styles.Tooltip}>
+                      {tokenInfos.map((tokenInfo:any, index:number) => {
+                  return  <p className={styles.TooltipItem}>
+                            <span className={styles.TooltipItemIcon}>
+                                <img 
+                                    key={index} 
+                                    src={tokenInfo.icon || defaultAvatar} 
+                                    alt={tokenInfo.symbol || 'token'} 
+                                    title={tokenInfo.symbol || 'token'}
+                                />
+                            <span style={{fontSize: '12px'}}>{tokenInfo.symbol || 'token'}</span>
+                            </span>
+                            <span style={{color: '#fff',marginLeft: '12px', fontSize: '12px'}}>{numberFormatter(tokenInfo.balance || 0, 4, true)}</span>
+                         </p>
+                })}
+                 
+                </div>
+              }
+              placement={PopoverPlacement.TopLeft}
+              trigger={PopoverTrigger.Hover}
+            >
             <div className={styles.TokenIconBoxWrapper}>
                 <div className={styles.CopyAmountLength}>
                 {itemInfo?.tokens?.length || 0}
@@ -130,6 +153,7 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
                 })}
                 </div>
             </div>
+            </Popover>
         </div>
         {/* actions */}
         <div className={styles.publicBox}>

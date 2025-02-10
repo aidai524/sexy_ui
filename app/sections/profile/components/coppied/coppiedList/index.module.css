@@ -94,6 +94,8 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
+    max-height: 230px;
+    overflow-y: auto;
 }
 
 .TooltipItem {
@@ -101,6 +103,18 @@
     justify-content: space-between;
     align-items: center;
 }
+.TooltipItem img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.TooltipItemIcon {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .TooltipItemValue {
     color: #fff;
     gap: 4px;
