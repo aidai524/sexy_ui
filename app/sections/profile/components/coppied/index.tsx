@@ -98,12 +98,18 @@ export default function Coppied({ isOther }: any) {
   }
 
   const handleClose = async (item: any) => {
-      const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
+    //  let waitWithdrawTokens:any = []
+    //   if (item?.tokens?.length > 0) {
+    //     item?.tokens.map((it:any)=>{
+    //       waitWithdrawTokens.push(it.token)
+    //     })
+    //   }
+      const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4, isWithdraw: item?.tokens?.length > 0});
       if (res) {
         setPageIndex(1);
         setCopyTradeMap({ items: [], total: 0 });
         setHasMore(true);
-        loadMore();
+        loadMore(); 
       }
   };
 
