@@ -33,7 +33,8 @@ export default function Tab({
 
             setTabIndex(tabIndex)
         }
-    }, [activeNode, onTabChange, nodes])
+    }, [activeNode,onTabChange]) 
+    //remove onTabChange and nodes def
 
     return <motion.div className={ useExtraClass ? styles.tabsExtra : styles.tabs}>
         <div className={styles.tabHeaders}>
