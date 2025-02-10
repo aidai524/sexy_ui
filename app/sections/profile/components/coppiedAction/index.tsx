@@ -86,9 +86,11 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   }, [copyTimes]);
 
   useEffect(() => {
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
     if (!show) {
       resetForm();
     }
+    viewportMeta?.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no');
   }, [show]);
 
   const onceCopyAmountMap = useMemo(() => {
@@ -235,6 +237,8 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
             disabled={isInputDisabled}
             style={{
               color: isInputDisabled ? 'rgba(255,255,255,0.7)' : '#fff',
+              fontSize: '16px',
+              transform: 'scale(1)',
             }}
           />
         </div>
