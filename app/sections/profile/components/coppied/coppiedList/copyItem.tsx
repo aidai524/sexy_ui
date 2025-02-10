@@ -51,7 +51,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
                 </div>
               }
               placement={PopoverPlacement.TopLeft}
-              trigger={PopoverTrigger.Hover}
+              trigger={PopoverTrigger.Click}
             >
             <div className={styles.CopyAmount}>
                 <p className={styles.CopyAmountText}>
