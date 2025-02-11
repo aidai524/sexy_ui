@@ -98,6 +98,7 @@ export default function Laptop({
                       marginTop: "10px",
                       width: 200
                     }}
+                    refreshNum={refreshNum}
                   />
                 </div>
 

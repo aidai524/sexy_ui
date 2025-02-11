@@ -4,7 +4,7 @@ import React,{ useState, useEffect } from 'react';
 import { SHOW_COPY_TRADE } from '@/app/utils/config';
 
 
-export default function FollowerActions({ userInfo, style, onItemClick }: any) {
+export default function FollowerActions({ userInfo, style, onItemClick, refreshNum }: any) {
   const CopyTradeService = new CopyTrade();
   const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<any>(null);
   const getCopyTradeDetails = async () => {
@@ -14,7 +14,7 @@ export default function FollowerActions({ userInfo, style, onItemClick }: any) {
 
   useEffect(() => {
     getCopyTradeDetails();
-  }, [userInfo?.address]);
+  }, [userInfo?.address, refreshNum]);
 
   return (
     <div className={styles.follwerActions} style={style}>

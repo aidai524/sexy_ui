@@ -104,6 +104,7 @@ const Summaries = (props: any) => {
           show={showModal}
           onClose={() => {
             setShowModal(false);
+            setRefreshNum(refreshNum + 1);
           }}
         />
       )}
