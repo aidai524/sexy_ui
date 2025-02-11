@@ -94,6 +94,7 @@ export default function Profile({
             style={{
               width: "100%"
             }}
+            refreshNum={refreshNum}
           />
         </div>
       </div>
