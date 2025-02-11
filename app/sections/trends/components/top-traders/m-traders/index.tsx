@@ -9,6 +9,7 @@ import useUserInfo from '@/app/hooks/useUserInfo'
 import { formatAddress } from '@/app/utils'
 import { numberFormatter } from '@/app/utils/common'
 import SexInfiniteScroll from '@/app/components/sexInfiniteScroll'
+import { useRouter } from 'next/navigation'
 
 interface Trader {
   avatar: string
@@ -30,7 +31,7 @@ interface Trader {
 const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCopyTradeClick: (trader: any) => void, activeTab: string }) => {
   const { fecthUserInfo } = useUserInfo(undefined);
   const [user, setUser] = useState<any>(null);
-
+  const router = useRouter()
   useEffect(() => {
     const fetchUser = async () => {
       const userInfo = await fecthUserInfo(trader.address);
@@ -53,7 +54,9 @@ const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCo
   };
 
   return (
-    <div className={styles.traderCard} onClick={() => onCopyTradeClick(trader)}>
+    <div className={styles.traderCard} onClick={() => {
+      router.push("/profile/user?account=" + trader.address + "&from=detail");
+    }}>
       <div className={styles.traderInfo}>
         <Image 
           src={user?.icon || defaultAvatar} 
@@ -70,6 +73,13 @@ const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCo
       <div className={styles.metrics}>
         <div className={styles.percentage}>{numberFormatter(getPnlValue(), 4, true)} SOL</div>
       </div>
+
+      <button className={styles.copyButton} 
+          onClick={(e) => {
+            e.stopPropagation(); 
+            onCopyTradeClick(trader);
+          }}
+      >Copy</button>
     </div>
   );
 };

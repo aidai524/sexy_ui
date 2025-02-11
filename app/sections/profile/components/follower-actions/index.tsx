@@ -38,7 +38,7 @@ export default function FollowerActions({ userInfo, style, onItemClick, refreshN
       </div>
       {SHOW_COPY_TRADE && (
         <div className={styles.follwerItem}>
-          <span className={styles.follwerAmount}>{copyTradersUserInfo?.copied}</span>
+          <span className={styles.follwerAmount}>{copyTradersUserInfo?.copied || 0}</span>
           <span>Copier</span>
         </div>
       )}

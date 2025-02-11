@@ -100,3 +100,18 @@
     padding-top: 80px;
     text-align: center;
   }
+
+  .copyButton {
+    background: transparent;
+    color: #FFFFFF;
+    border: 2px solid #D6A409;
+    border-radius: 30px;
+    padding:4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: Unbounded;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    
+  }
