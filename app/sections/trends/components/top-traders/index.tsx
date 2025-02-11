@@ -5,7 +5,6 @@ import { useUserAgent } from '@/app/context/user-agent'
 import styles from './index.module.css'
 import { useGetSmartMonies } from '../../hooks/useGetSmartMonies';
 import Empty from '@/app/components/empty';
-import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 
 export default function TopTraders() {
   const { isMobile } = useUserAgent()
@@ -55,11 +54,11 @@ export default function TopTraders() {
     setHasMore(true);
   };
 
-  if (smartMoniesLoading && pageIndex === 1) {
-    return <div style={{ paddingTop: 116 }}>
-      <Empty text="Loading" showLoading={true} />
-    </div>
-  }
+  // if (smartMoniesLoading && tradersList.items.length === 0) {
+  //   return <div style={{ paddingTop: 116 }}>
+  //     <Empty text="Loading" showLoading={true} />
+  //   </div>
+  // }
 
   if (tradersList.items.length === 0 && !smartMoniesLoading) {
     return <div style={{ paddingTop: 116 }}>
@@ -71,14 +70,11 @@ export default function TopTraders() {
     <>
       <div className={styles.topTraders}>
         {isMobile ? 
-          <TopTradersMobile list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy}/> : 
-          <TopTradersPC list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy}/>
+          <TopTradersMobile list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} /> : 
+          <TopTradersPC list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} />
         }
       </div>
-      <SexInfiniteScroll 
-        loadMore={loadMore} 
-        hasMore={hasMore}
-      />
+    
     </>
   )
 }
