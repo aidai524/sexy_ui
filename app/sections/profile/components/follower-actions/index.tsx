@@ -4,14 +4,13 @@ import React,{ useState, useEffect } from 'react';
 import { SHOW_COPY_TRADE } from '@/app/utils/config';
 
 
-export default function FollowerActions({ userInfo, style, onItemClick, refreshNum }: any) {
+export default function FollowerActions({ userInfo, style, onItemClick, refreshNum, address }: any) {
   const CopyTradeService = new CopyTrade();
   const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<any>(null);
   const getCopyTradeDetails = async () => {
-    const { data } = await CopyTradeService.getCopyTradersUserInfo({address: userInfo?.address, chain: 'solana'});
+    const { data } = await CopyTradeService.getCopyTradersUserInfo({address: userInfo?.address || address, chain: 'solana'});
     setCopyTradersUserInfo(data);
   }
-
   useEffect(() => {
     getCopyTradeDetails();
   }, [userInfo?.address, refreshNum]);

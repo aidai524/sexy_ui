@@ -71,7 +71,11 @@ const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCo
         </div>
       </div>
       <div className={styles.metrics}>
-        <div className={styles.percentage}>{numberFormatter(getPnlValue(), 4, true)} SOL</div>
+        <div className={styles.percentage}>{
+          getPnlValue() >= 0 ? 
+          numberFormatter(getPnlValue(), 4, true) : 
+          '-' + numberFormatter(Math.abs(getPnlValue()), 4, true)
+        } SOL</div>
       </div>
 
       <button className={styles.copyButton} 

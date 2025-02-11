@@ -113,13 +113,25 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         </div>
       </div>
       <div className={styles.pnl}>
-        {numberFormatter(trader.pnl1D, 4, true)} SOL
+        {
+        trader.pnl1D >= 0 ? 
+        numberFormatter(trader.pnl1D, 4, true) : 
+        '-' + numberFormatter(Math.abs(trader.pnl1D), 4, true)
+        } SOL
       </div>
       <div className={styles.pnl}>
-        {numberFormatter(trader.pnl7D, 4, true)} SOL
+        {
+        trader.pnl7D >= 0 ? 
+        numberFormatter(trader.pnl7D, 4, true) : 
+        '-' + numberFormatter(Math.abs(trader.pnl7D), 4, true)
+        } SOL
       </div>
       <div className={styles.pnl}>
-        {numberFormatter(trader.pnl30D, 4, true)} SOL
+        {
+        trader.pnl30D >= 0 ? 
+        numberFormatter(trader.pnl30D, 4, true) : 
+        '-' + numberFormatter(Math.abs(trader.pnl30D), 4, true)
+        } SOL
       </div>
 
       <button className={styles.copyButton} 

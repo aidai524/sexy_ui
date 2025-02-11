@@ -99,6 +99,7 @@ export default function Laptop({
                       width: 200
                     }}
                     refreshNum={refreshNum}
+                    address={address}
                   />
                 </div>
 
