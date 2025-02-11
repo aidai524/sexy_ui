@@ -33,7 +33,6 @@ export default function Laptop({
   const [showFollowers, setShowFollowers] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const search = useSearchParams();
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -47,11 +46,11 @@ export default function Laptop({
         Profile
       </div>
       <div className={styles.Content}>
-        {userInfo ? (
+        {(
           <>
             <div className={styles.Top}>
               <img
-                src={userInfo.icon || defaultAvatar}
+                src={userInfo?.icon || defaultAvatar}
                 className={styles.Avatar}
               />
               <div className={styles.DescWrapper}>
@@ -61,9 +60,10 @@ export default function Laptop({
                       <div>
                         {formatLongText(userInfo?.name, 9, 4) ||
                           formatAddress(userInfo?.address) ||
+                          formatAddress(address) ||
                           "FlipN"}
                       </div>
-                      <Level level={userInfo.level} style={{ marginLeft: 24 }} />
+                      <Level level={userInfo?.level} style={{ marginLeft: 24 }} />
                       {!isOther && (
                         <EditButton
                           onClick={() => {
@@ -148,13 +148,14 @@ export default function Laptop({
               }}
             />
           </>
-        ) : isLoading ? (
+        )}
+         {/* : isLoading ? (
           <div className={styles.LoadingWrapper}>
             <CircleLoading size={40} />
           </div>
         ) : (
           <Empty text="No Data" height="600px" />
-        )}
+        )} */}
       </div>
       <AnimatePresence mode="wait">
         {showEdit && (

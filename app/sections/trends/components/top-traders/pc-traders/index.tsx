@@ -8,6 +8,7 @@ import { formatAddress } from '@/app/utils';
 import { fecthUserInfo } from '@/app/utils/getUserInfo';
 import { numberFormatter } from '@/app/utils/common';
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
+import { useRouter } from 'next/navigation';
 
 interface Trader {
   avatar: string
@@ -30,7 +31,7 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [currentTrader, setCurrentTrader] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
-
+  const router = useRouter()
   const handleSort = (field: 'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D') => {
     setOrderBy(field)
   };
@@ -88,6 +89,7 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
 
 const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClick: (trader: any) => void }) => {
   const [user, setUser] = useState<any>(null);
+  const router = useRouter()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -98,7 +100,9 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
   }, [trader.address]);
 
   return (
-    <div className={styles.traderItem}>
+    <div className={styles.traderItem} onClick={() => {
+      router.push("/profile/user?account=" + trader.address + '&from=detail');
+    }}>
       <div className={styles.traderInfo}>
         <div className={styles.avatar}>
           <Image src={user?.icon || defaultAvatar} alt={trader.name} width={36} height={36} />
@@ -118,7 +122,12 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         {numberFormatter(trader.pnl30D, 4, true)} SOL
       </div>
 
-      <button className={styles.copyButton} onClick={() => onCopyTradeClick(trader)}>Copy</button>
+      <button className={styles.copyButton} 
+          onClick={(e) => {
+            e.stopPropagation(); 
+            onCopyTradeClick(trader);
+          }}
+      >Copy</button>
     </div>
   );
 };

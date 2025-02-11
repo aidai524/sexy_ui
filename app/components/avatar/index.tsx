@@ -81,7 +81,7 @@ export default function Avatar({
       </AnimatePresence>
       <div className={styles.userName}>
         <div>
-          {formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || 'FlipN'}
+          {formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || formatAddress(address) || 'FlipN'}
         </div>
         <Level level={userInfo?.level} vipType={userInfo?.vipType} style={{ marginLeft: 20 }} />
         {isOther && (
