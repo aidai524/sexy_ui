@@ -35,8 +35,13 @@ export const useCloseCopyTrade = () => {
     }: CopyTradeParams) => {
       try {
         setIsLoading(true);
+        // let isSuccess = true;
         // if (isWithdraw) {
-        //  await handleWithdrawTokens({walletAddress, id})
+        //   isSuccess = await handleWithdrawTokens({walletAddress, id})
+        // }
+        // if (!isSuccess) {
+        //   fail("Withdraw tokens failed", {maskStyle: {zIndex: 1001}});
+        //   return false;
         // }
         const res = await CopyTradeService.closeCopyTrade({
           walletAddress,
@@ -92,7 +97,6 @@ export const useCloseCopyTrade = () => {
       id,
     }: any) => {
       try {
-        setIsLoading(true);
         
         const res = await CopyTradeService.withdrawTokens({
             walletAddress,
@@ -102,46 +106,9 @@ export const useCloseCopyTrade = () => {
             withdrawAll: true
           });
         
-       
-        const {messageData, session} = res.data;
-        
-        if (res.code == 200) {
-          if (!signTransaction || !publicKey) {
-            fail("Wallet not connected");
-            return false;
-          }
-  
-          try {
-            const decodedMessage = bs58.decode(messageData);
-            const messageUint8Array = new Uint8Array(decodedMessage);
-            const versionedMessage = VersionedMessage.deserialize(messageUint8Array);
-            const transaction = new VersionedTransaction(versionedMessage);
-            
-            const signedTx = await signTransaction(transaction);
-            const serializedTx = bs58.encode(signedTx.serialize());
-            
-            const sendResponse = await CopyTradeService.sendTransaction({
-              session,
-              publicKey: publicKey.toString(),
-              signature: serializedTx,
-              type: 2,
-            });
-  
-            success("Withdraw tokens success", {maskStyle: {zIndex: 1001}});
-            return true;
-          } catch (signError: any) {
-            fail(`Withdraw tokens failed: ${signError.message}`, {maskStyle: {zIndex: 1001}});
-            return false;
-          }
-        } else {
-          fail(res?.message, { maskStyle: { zIndex: 1001} });
-          return false;
-        }
+        return res.code == 200;
       } catch (e: any) {
-        fail(e?.message || "Withdraw tokens failed", {maskStyle: {zIndex: 1001}});
         return false;
-      } finally {
-        setIsLoading(false);
       }
     };
 
