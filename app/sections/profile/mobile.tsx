@@ -95,6 +95,7 @@ export default function Profile({
               width: "100%"
             }}
             refreshNum={refreshNum}
+            address={address}
           />
         </div>
       </div>

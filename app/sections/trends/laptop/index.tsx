@@ -10,9 +10,11 @@ import TrendsLoading from "@/app/sections/trends/components/loading";
 import Tab from "@/app/components/tab";
 import TopTraders from "@/app/sections/trends/components/top-traders";
 import { SHOW_COPY_TRADE } from "@/app/utils/config";
+import { useTrendsTab } from "@/app/store/useTrendsTab";
 
 export default function Mobile(props: any) {
   const { handleBuy } = props;
+  const trendsTabStore: any = useTrendsTab();
 
   const { hottestList, tableList, top1, getAllList, allListLoading } =
     useTrends();
@@ -71,7 +73,14 @@ export default function Mobile(props: any) {
       <div className={styles.TitleWrapper}>
         <span>Trends</span>
       </div>
-      {SHOW_COPY_TRADE ? <Tab nodes={tabNotes} activeNode={tabNotes[0].name} useExtraClass={true} /> : hotMemesContent}
+      {SHOW_COPY_TRADE ? <Tab 
+       onTabChange={(nodeName: string) => {
+        trendsTabStore.set({
+          profileTabName: nodeName
+        });
+      }}
+      activeNode={trendsTabStore.profileTabName}
+      nodes={tabNotes} useExtraClass={true} /> : hotMemesContent}
     </motion.div>
   );
 }

@@ -37,7 +37,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
                   <p className={styles.TooltipItem}>
                     <span>Copied</span> 
                     <span className={styles.TooltipItemValue}>
-                      {numberFormatter(new Big(itemInfo?.investment).add(0.00089088).minus(itemInfo?.balance).toNumber() || 0, 4, true)}
+                      {numberFormatter(new Big(itemInfo?.netWorth).minus(itemInfo?.balance).toNumber() || 0, 4, true)}
                       <SolIconWithoutBg />
                     </span>
                   </p>
@@ -56,8 +56,8 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
             <div className={styles.CopyAmount}>
                 <p className={styles.CopyAmountText}>
                     <span className={styles.CopyAmountTextUseAmount}
-                        style={{textDecoration: new Big(itemInfo?.investment).add(0.00089088).minus(itemInfo?.balance).toNumber() > 0 ? 'line-through' : 'none'}}
-                    >{numberFormatter(new Big(itemInfo?.investment).add(0.00089088).minus(itemInfo?.balance).toNumber() || 0, 4, true)}</span>
+                        style={{textDecoration: new Big(itemInfo?.netWorth).minus(itemInfo?.balance).toNumber() > 0 ? 'line-through' : 'none'}}
+                    >{numberFormatter(new Big(itemInfo?.netWorth).minus(itemInfo?.balance).toNumber() || 0, 4, true)}</span>
                     <span className={styles.CopyAmountTextTotal}>/{numberFormatter(itemInfo?.investment || 0, 4, true)}</span>
                 </p>
                 <SolIconWithoutBg />

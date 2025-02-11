@@ -9,6 +9,7 @@ import { fecthUserInfo } from '@/app/utils/getUserInfo';
 import { numberFormatter } from '@/app/utils/common';
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { useRouter } from 'next/navigation';
+import Big from 'big.js';
 
 interface Trader {
   avatar: string
@@ -46,6 +47,9 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.headerItem}>Trader</div>
+        <div className={styles.headerItem} onClick={() => handleSort('pnl1D')}>
+          7D Win Rate 
+        </div>
         <div className={styles.headerItem} onClick={() => handleSort('pnl1D')}>
           1D PnL <TriangleIcon direction={orderBy === 'pnl1D' ? sortDirection : undefined} highlight={orderBy === 'pnl1D'} />
         </div>
@@ -113,13 +117,30 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         </div>
       </div>
       <div className={styles.pnl}>
-        {numberFormatter(trader.pnl1D, 4, true)} SOL
+        {
+        new Big(trader.winRate7D).times(100).toFixed(2)
+        }%
       </div>
       <div className={styles.pnl}>
-        {numberFormatter(trader.pnl7D, 4, true)} SOL
+        {
+        trader.pnl1D >= 0 ? 
+        numberFormatter(trader.pnl1D, 4, true) : 
+        '-' + numberFormatter(Math.abs(trader.pnl1D), 4, true)
+        } SOL
       </div>
       <div className={styles.pnl}>
-        {numberFormatter(trader.pnl30D, 4, true)} SOL
+        {
+        trader.pnl7D >= 0 ? 
+        numberFormatter(trader.pnl7D, 4, true) : 
+        '-' + numberFormatter(Math.abs(trader.pnl7D), 4, true)
+        } SOL
+      </div>
+      <div className={styles.pnl}>
+        {
+        trader.pnl30D >= 0 ? 
+        numberFormatter(trader.pnl30D, 4, true) : 
+        '-' + numberFormatter(Math.abs(trader.pnl30D), 4, true)
+        } SOL
       </div>
 
       <button className={styles.copyButton} 
