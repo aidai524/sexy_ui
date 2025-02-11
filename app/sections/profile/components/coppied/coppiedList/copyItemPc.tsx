@@ -79,7 +79,11 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
             >
             <div className={styles.CopyAmount}>
                 <p className={styles.CopyAmountText}>
-                    <span className={styles.CopyAmountTextUseAmount}>{numberFormatter(new Big(itemInfo?.investment).add(0.00089088).minus(itemInfo?.balance).toNumber() || 0, 4, true)}</span>
+                    <span className={styles.CopyAmountTextUseAmount}
+                        style={{textDecoration: new Big(itemInfo?.investment).add(0.00089088).minus(itemInfo?.balance).toNumber() > 0 ? 'line-through' : 'none'}}
+                    >
+                        {numberFormatter(new Big(itemInfo?.investment).add(0.00089088).minus(itemInfo?.balance).toNumber() || 0, 4, true)}
+                    </span>
                     <span className={styles.CopyAmountTextTotal}>/ {numberFormatter(itemInfo?.investment || 0, 4, true)}</span>
                 </p>
                 <SolIconWithoutBg />
@@ -103,7 +107,7 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
            <div>
            <div className={styles.PNLValuePercent}>{Big(itemInfo?.roi).times(100).toString() || 0}%</div>
            <div className={styles.PNLValueUSD}>
-            <span style={{color: !itemInfo?.pnl.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{(Big(itemInfo?.pnl).toString() || '0')}</span>
+            <span style={{color: !itemInfo?.pnl.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{(numberFormatter(Big(itemInfo?.pnl).toString() || 0, 4, true) || '0')} SOL</span>
            </div>
            </div>
         </div>  
@@ -131,7 +135,7 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
                 </div>
               }
               placement={PopoverPlacement.TopLeft}
-              trigger={PopoverTrigger.Hover}
+              trigger={tokenInfos?.length > 0 ? PopoverTrigger.Hover : undefined}
             >
             <div className={styles.TokenIconBoxWrapper}>
                 <div className={styles.CopyAmountLength}>

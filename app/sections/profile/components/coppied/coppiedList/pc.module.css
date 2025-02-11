@@ -66,7 +66,7 @@
     font-size: 12px;
     color: #fff;
     font-weight: 300;
-    text-decoration: line-through;
+    /* text-decoration: line-through; */
 }
 .CopyAmountTextTotal {
     font-size: 12px;

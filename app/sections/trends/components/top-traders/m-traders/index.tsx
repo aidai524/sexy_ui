@@ -8,6 +8,7 @@ import { SHOW_COPY_TRADE } from '@/app/utils/config'
 import useUserInfo from '@/app/hooks/useUserInfo'
 import { formatAddress } from '@/app/utils'
 import { numberFormatter } from '@/app/utils/common'
+import SexInfiniteScroll from '@/app/components/sexInfiniteScroll'
 
 interface Trader {
   avatar: string
@@ -73,7 +74,7 @@ const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCo
   );
 };
 
-export default function TopTradersMobile({list, setOrderBy, orderBy}: {list: any[], setOrderBy: any, orderBy: string}) {
+export default function TopTradersMobile({list, setOrderBy, orderBy, loadMore, hasMore, isLoadingMore}: {list: any[], setOrderBy: any, orderBy: string, loadMore: any, hasMore: any, isLoadingMore: any}) {
   const [activeTab, setActiveTab] = useState<'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D'>(orderBy as any || 'pnl7D')
   const [currentTrader, setCurrentTrader] = useState<any>(null)
   const [showModal, setShowModal] = useState(false)
@@ -119,6 +120,11 @@ export default function TopTradersMobile({list, setOrderBy, orderBy}: {list: any
             activeTab={activeTab}
           />
         ))}
+         <SexInfiniteScroll 
+          loadMore={loadMore} 
+          hasMore={hasMore}
+          isLoadingMore={isLoadingMore}
+        />
       </div>
 
       {SHOW_COPY_TRADE && (

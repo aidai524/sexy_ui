@@ -54,7 +54,7 @@ const Summaries = (props: any) => {
           <div
             className={[styles.SummaryValue, styles.SummaryValueBuy].join(" ")}
           >
-            <span style={{color: !copyTradersUserInfo?.tradeInfo?.pnl7D.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{ copyTradersUserInfo?.tradeInfo?.pnl7D != '0' ? copyTradersUserInfo?.tradeInfo?.pnl7D : '-'}</span>
+            <span style={{color: !copyTradersUserInfo?.tradeInfo?.pnl7D.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{ copyTradersUserInfo?.tradeInfo?.pnl7D != '0' ? numberFormatter(copyTradersUserInfo?.tradeInfo?.pnl7D, 4, true) + ' SOL' : '-'}</span>
           </div>
         </div>
         <div className={styles.Summary}>

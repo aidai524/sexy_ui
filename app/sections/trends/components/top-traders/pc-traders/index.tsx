@@ -7,6 +7,8 @@ import { SHOW_COPY_TRADE } from '@/app/utils/config';
 import { formatAddress } from '@/app/utils';
 import { fecthUserInfo } from '@/app/utils/getUserInfo';
 import { numberFormatter } from '@/app/utils/common';
+import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
+
 interface Trader {
   avatar: string
   name: string
@@ -24,7 +26,7 @@ interface Trader {
   }
 }
 
-export default function TopTradersPC({list,setOrderBy,orderBy}: {list: any[], setOrderBy: any,orderBy: string}) {
+export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,isLoadingMore}: {list: any[], setOrderBy: any,orderBy: string,loadMore: any,hasMore: any,isLoadingMore: any}) {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [currentTrader, setCurrentTrader] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
@@ -63,6 +65,11 @@ export default function TopTradersPC({list,setOrderBy,orderBy}: {list: any[], se
             onCopyTradeClick={handleCopyTradeClick}
           />
         ))}
+           <SexInfiniteScroll 
+          loadMore={loadMore} 
+          hasMore={hasMore}
+          isLoadingMore={isLoadingMore}
+        />
       </div>
       {SHOW_COPY_TRADE && (
         <CoppiedModal
@@ -73,8 +80,8 @@ export default function TopTradersPC({list,setOrderBy,orderBy}: {list: any[], se
           }}
         />
       )}
+     
     </div> 
-
   )
 }
 
