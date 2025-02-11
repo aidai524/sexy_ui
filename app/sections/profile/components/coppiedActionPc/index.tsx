@@ -187,7 +187,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
             />
             <div className={styles.userName}>
               Copy @
-              {copiedInfo?.name || formatAddress(copiedInfo?.address) || "FlipN"}
+              {formatAddress(copiedInfo?.name || copiedInfo?.address || "FlipN")}
             </div>
           </div>
   
