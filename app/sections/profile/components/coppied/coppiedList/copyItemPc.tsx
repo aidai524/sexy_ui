@@ -59,7 +59,7 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
                     </span>
                   </p>
                   <p className={styles.TooltipItem}>
-                    <span>Copied</span> 
+                    <span>Copying</span> 
                     <span className={styles.TooltipItemValue}>
                     {numberFormatter(new Big(itemInfo?.netWorth).minus(itemInfo?.balance).toNumber() || 0, 4, true)}
                       <SolIconWithoutBg />
