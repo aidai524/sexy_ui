@@ -70,6 +70,12 @@ export default memo(function Home(props: any) {
     getAccountFollower();
   }, [address, isOther, refreshNum]);
 
+  useEffect(() => {
+    if (address) {
+      onQueryInfo();
+    }
+  }, [refreshNum, address, onQueryInfo]);
+
   const getAccountFollower = useCallback(() => {
     if (address && isOther) {
       httpAuthGet("/follower/account", { address: address }).then((res) => {
