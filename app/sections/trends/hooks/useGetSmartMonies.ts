@@ -8,9 +8,14 @@ export const useGetSmartMonies = ({chain, page, pageSize, orderBy}: {chain: stri
 
   const fetchSmartMonies = async () => {
     setSmartMoniesLoading(true);
-    const res = await copyTradeService.getSmartMonies({ chain, page, pageSize, orderBy });
-    setSmartMonies(res?.data || {items: [], total: 0});
-    setSmartMoniesLoading(false);
+    try {
+      const res = await copyTradeService.getSmartMonies({ chain, page, pageSize, orderBy });
+      setSmartMonies(res?.data || {items: [], total: 0});
+    } catch (error) {
+      setSmartMonies({items: [], total: 0});
+    } finally {
+      setSmartMoniesLoading(false);
+    }
   };
 
   useEffect(() => {
