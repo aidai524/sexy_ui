@@ -66,7 +66,7 @@ const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCo
           className={styles.avatar}
         />
         <div className={styles.nameContainer}>
-          <div className={styles.name}>{formatAddress(trader.address) || formatAddress(user?.address)}</div>
+          <div className={styles.name}>{formatAddress(trader?.address) || formatAddress(user?.address)}</div>
           <div className={styles.followers}>{user?.followers || 0} followers</div>
         </div>
       </div>

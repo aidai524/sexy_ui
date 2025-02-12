@@ -141,8 +141,8 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
       return;
     }
    const res = await handleCopyTrade({
-      walletAddress: currentUserInfo.address,
-      copiedAddress: copiedInfo.address,
+      walletAddress: currentUserInfo?.address,
+      copiedAddress: copiedInfo?.address,
       copyAmount,
       onceCopyAmount
     });
@@ -166,7 +166,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
         />
         <div className={styles.userName}>
           Copy @
-          {formatAddress(copiedInfo?.name || copiedInfo?.address || "FlipN")}
+          { copiedInfo?.name  || formatAddress(copiedInfo?.address) || "FlipN"}
         </div>
 
         {/* amount */}
