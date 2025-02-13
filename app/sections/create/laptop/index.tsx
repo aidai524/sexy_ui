@@ -3,17 +3,40 @@ import PreviewNode from "./preview";
 import Actions from "./actions";
 import CreateModal from "@/app/sections/create/components/create";
 import { motion } from "framer-motion";
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { fail } from "@/app/utils/toast";
 import { httpAuthPost, sleep } from "@/app/utils";
 import type { Project } from "@/app/type";
 import styles from "./index.module.css";
+
+
 
 export default function Laptop() {
   const [step, setStep] = useState("edit");
   const [dataAdd, setDataAdd] = useState<Project>();
   const createRef = useRef<any>();
   const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const query = useMemo(() => {
+    const query: any = {
+      about_us: dataAdd?.about,
+      discord: dataAdd?.discord,
+      icon: dataAdd?.tokenIcon,
+      tg: dataAdd?.tg,
+      ticker: dataAdd?.ticker,
+      token_name: dataAdd?.tokenName,
+      token_symbol: dataAdd?.tokenSymbol,
+      video: dataAdd?.tokenImg,
+      website: dataAdd?.website,
+      x: dataAdd?.x
+    };
+  
+    const queryStr = Object.keys(query)
+      .map((key) => `${key}=${encodeURIComponent(query[key])}`)
+      .join("&");
+  
+    return queryStr;
+  }, [dataAdd]);
 
   return (
     <>
@@ -76,28 +99,16 @@ export default function Laptop() {
           onHide={() => {
             setShowCreateModal(false);
           }}
+          onBeforeCreate={async () => {
+            const val = await httpAuthPost(`/project/data?${query}`, {});
+            return val.code === 0;
+          }}
           onCreateTokenSuccess={async () => {
-            const query: any = {
-              about_us: dataAdd.about,
-              discord: dataAdd.discord,
-              icon: dataAdd.tokenIcon,
-              tg: dataAdd.tg,
-              ticker: dataAdd.ticker,
-              token_name: dataAdd.tokenName,
-              token_symbol: dataAdd.tokenSymbol,
-              video: dataAdd.tokenImg,
-              website: dataAdd.website,
-              x: dataAdd.x
-            };
-
-            const queryStr = Object.keys(query)
-              .map((key) => `${key}=${encodeURIComponent(query[key])}`)
-              .join("&");
 
             let times = 0,
               val;
             while (true && times < 50) {
-              val = await httpAuthPost(`/project?${queryStr}`, {});
+              val = await httpAuthPost(`/project?${query}`, {});
               if (val.code === 100000) {
                 times++;
                 await sleep(5000);
