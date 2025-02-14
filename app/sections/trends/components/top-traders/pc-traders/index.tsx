@@ -151,7 +151,7 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         {
         trader.pnl1D >= 0 ? 
         numberFormatter(trader.pnl1D, 2, true, { isShort: true, isShortUppercase: true }) : 
-        '-' + numberFormatter(Math.abs(trader.pnl1D), 4, true)
+        '-' + numberFormatter(Math.abs(trader.pnl1D), 2, true, { isShort: true, isShortUppercase: true })
         } SOL
 
         <div className={styles.winRate}>
@@ -164,7 +164,7 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         {
         trader.pnl7D >= 0 ? 
         numberFormatter(trader.pnl7D, 2, true, { isShort: true, isShortUppercase: true }) : 
-        '-' + numberFormatter(Math.abs(trader.pnl7D), 4, true)
+        '-' + numberFormatter(Math.abs(trader.pnl7D), 2, true, { isShort: true, isShortUppercase: true })
         } SOL
 
         <div className={styles.winRate}>
@@ -177,7 +177,7 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         {
         trader.pnl30D >= 0 ? 
         numberFormatter(trader.pnl30D, 2, true, { isShort: true, isShortUppercase: true }) : 
-        '-' + numberFormatter(Math.abs(trader.pnl30D), 4, true)
+        '-' + numberFormatter(Math.abs(trader.pnl30D), 2, true, { isShort: true, isShortUppercase: true })
         } SOL
 
         <div className={styles.winRate}>
