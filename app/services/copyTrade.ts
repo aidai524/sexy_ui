@@ -8,7 +8,7 @@ export interface SmartMoneyAddress {
     pnl7D: string;
     sells7D: number;
     trades7D: number;
-    winRate7D: string;
+    winRate7D: string | number;
   }
 
   export interface CopyTraderAddress {
@@ -16,7 +16,7 @@ export interface SmartMoneyAddress {
       copyTrades: number;
       tradeInfo: {
           buys: number;
-          pnl7D: string;
+          pnl7D: string ;
           sells: number;
           winRate7D: number;
     }
@@ -187,13 +187,15 @@ class CopyTrade {
     page: number;
     pageSize: number;
     orderBy: string;
+    walletAddress: string;
   }) {
     try {
       const queryParams = new URLSearchParams({
         chain: params.chain,
         page: params.page.toString(),
         pageSize: params.pageSize.toString(),
-        orderBy: params.orderBy
+        orderBy: params.orderBy,
+        walletAddress: params.walletAddress
       }).toString();
       const response = await fetch(`${this.baseURL}/copy_trade/smart_monies?${queryParams}`, {
         method: 'GET',

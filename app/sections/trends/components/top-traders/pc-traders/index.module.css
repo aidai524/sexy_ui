@@ -1,16 +1,16 @@
 .container {
-    width: 1150px;
+    width: 1200px;
     border-radius: 12px;
     margin: 0 auto;
   }
   
   .header {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 100px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 80px;
     padding: 12px 16px;
     color: #9290B1;
     font-size: 14px;
-    margin-bottom: 16px;
+    margin-bottom: 6px;
   }
 
   .headerItem {
@@ -30,7 +30,7 @@
   
   .traderItem {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 100px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 80px;
     padding: 16px;
     align-items: center;
     background: #242424;
@@ -49,10 +49,12 @@
   }
   
   .avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    overflow: hidden;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-direction: column;
+   width: 60px;
+   position: relative;
   }
   
 .nameWrapper {
@@ -79,6 +81,10 @@
     flex-direction: column;
     gap: 6px;
   }
+  .winRate {
+    color: #9290B1;
+    font-size: 12px;
+  }
   
   .profit {
     color: #9290B1;
@@ -88,7 +94,7 @@
   .copyButton {
     background: transparent;
     color: #FFFFFF;
-    border: 2px solid #D6A409;
+    border: 1px solid #D6A409;
     border-radius: 30px;
     padding: 10px 22px;
     cursor: pointer;
@@ -105,3 +111,52 @@
     color: #000000;
     border: 2px solid transparent;
   }
+
+  .copingContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+  .coping {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #1f1f1f;
+    padding: 2px 4px;
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .copingIcon {
+    width: 3px;
+    height: 3px;
+    background: #D6A409;
+    border-radius: 50%;
+  }
+  .copingText {
+    color: #D6A409;
+    font-size: 12px;
+    font-weight: 400;
+    scale: 0.8;
+  }
+
+  .filterItem {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  
+.SolnaIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+}
+
+.filterItemContent {
+  color: #FBCA04;
+}

@@ -5,6 +5,7 @@ import { useUserAgent } from '@/app/context/user-agent'
 import styles from './index.module.css'
 import { useGetSmartMonies } from '../../hooks/useGetSmartMonies';
 import Empty from '@/app/components/empty';
+import { useAccount } from '@/app/hooks/useAccount';
 
 export default function TopTraders() {
   const { isMobile } = useUserAgent()
@@ -16,13 +17,15 @@ export default function TopTraders() {
     items: [],
     total: 0
   });
+  const { address: walletAddress } = useAccount();
   const [orderBy, setOrderBy] = useState<string>('pnl7D')
   
   const { smartMonies, smartMoniesLoading } = useGetSmartMonies({ 
     chain: 'solana', 
     page: pageIndex, 
     pageSize,
-    orderBy 
+    orderBy,
+    walletAddress: walletAddress || ''
   });
 
   useEffect(() => {
@@ -70,7 +73,7 @@ export default function TopTraders() {
     <>
       <div className={styles.topTraders}>
         {isMobile ? 
-          <TopTradersMobile list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} /> : 
+          <TopTradersMobile list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} smartMoniesLoading={smartMoniesLoading}/> : 
           <TopTradersPC list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} />
         }
       </div>
