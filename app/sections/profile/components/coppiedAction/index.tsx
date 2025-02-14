@@ -13,6 +13,7 @@ import { useAuth } from "@/app/context/auth";
 import MainBtn from "@/app/components/mainBtn";
 import { fail, success } from "@/app/utils/toast";
 import { useCopyTrade } from "@/app/sections/profile/hooks/useCreateCopyTrade";
+import { useCopyTimes } from "@/app/store/useCopyTimes";
 
 const AmountLevelList = [
   { key: 0.25 },
@@ -22,6 +23,7 @@ const AmountLevelList = [
 ];
 
 export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
+  const copyTimesStore: any = useCopyTimes();
   const { isLoading, handleCopyTrade } = useCopyTrade();
   const { userInfo: currentUserInfo } = useAuth();
   const [copyAmount, setCopyAmount] = useState<string>("");
@@ -89,6 +91,12 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     const viewportMeta = document.querySelector('meta[name="viewport"]');
     if (!show) {
       resetForm();
+    } else {
+      const cachedCopyTimes = copyTimesStore.copyTimes;
+      if (cachedCopyTimes) {
+        setCopyTimes(cachedCopyTimes);
+        setIsManualCopyTimes(true);
+      }
     }
     viewportMeta?.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no');
   }, [show]);
@@ -147,6 +155,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
       onceCopyAmount
     });
     if (res) {
+      copyTimesStore.set({ copyTimes: copyTimes });
       onClose();
     }
   };

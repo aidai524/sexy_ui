@@ -17,6 +17,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import ModalClose from "@/app/components/icons/modal-close";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useCopyTimes } from "@/app/store/useCopyTimes";
 
 const AmountLevelList = [
   { key: 0.25 },
@@ -26,6 +27,7 @@ const AmountLevelList = [
 ];
 
 export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
+  const copyTimesStore: any = useCopyTimes();
   const { innerHeight } = useUserAgent();
   const { isLoading, handleCopyTrade } = useCopyTrade();
   const { userInfo: currentUserInfo } = useAuth();
@@ -93,6 +95,12 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   useEffect(() => {
     if (!show) {
       resetForm();
+    } else {
+      const cachedCopyTimes = copyTimesStore.copyTimes;
+      if (cachedCopyTimes) {
+        setCopyTimes(cachedCopyTimes);
+        setIsManualCopyTimes(true);
+      }
     }
   }, [show]);
 
@@ -150,6 +158,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
       onceCopyAmount
     });
     if (res) {
+      copyTimesStore.set({ copyTimes: copyTimes });
       onClose();
     }
   };
