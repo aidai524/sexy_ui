@@ -72,7 +72,7 @@ export default function Laptop({
                         />
                       )}
                     </div>
-                    {isOther && !SHOW_COPY_TRADE && (
+                    {isOther &&  (
                       <div className={styles.Buttons}>
                         <FollowBtn
                           address={address}
@@ -102,8 +102,10 @@ export default function Laptop({
                     address={address}
                   />
                 </div>
-
-              {SHOW_COPY_TRADE && (
+              </div>
+            
+            </div>
+            {SHOW_COPY_TRADE && (
                     <Summaries
                       address={address}
                       isFollower={isFollower}
@@ -113,8 +115,6 @@ export default function Laptop({
                       isOther={isOther}
                     />
                   )}
-              </div>
-            </div>
             <Tabs
               address={address}
               showHot={showHot}

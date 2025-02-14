@@ -3,12 +3,20 @@
   padding: 0 10px;
 }
 .ContainerPc {
-  width: 398px;
+  width: 100%;
   padding: 0 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  margin-top: 20px;
+}
+
+.SummaryContainerPC {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
 .Inner {
@@ -38,7 +46,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 13px 30px 11px 30px;
+  padding: 14px 20px;
   width: 100%;
 }
 
@@ -77,62 +85,20 @@
   line-height: normal;
 }
 
-.BtnGroup {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 0 0 10px 10px;
-  padding: 13px 20px 11px 12px;
-  margin: 0 auto;
-  width: 100%;
-  gap: 16px;
-  .CopyBtn {
-    background: #FBCA04;
-    color: #000;
-  }
-}
-
-.BtnGroup button {
-  height: 34px;
-  border-radius: 30px;
-  font-family: Unbounded;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  border: 2px solid #FBCA04;
-}
-
-.BtnGroupPc {
-  display: grid;
-  grid-template-columns: 0.5fr 0.5fr 1.5fr 2fr;
-  width: 100%;
-  margin-bottom: 10px;
-  gap: 10px;
-  cursor: pointer;
-}
 
 
-.BtnGroupPc button {
-  height: 34px;
-  border-radius: 30px;
-  font-family: Unbounded;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  border: 2px solid #FBCA04;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.FollowBtn {
-  background: transparent;
-  color: #fff;
-  padding: 10px 24px;
-}
+
+
 .CopyBtn {
+  height: 34px;
+  border-radius: 30px;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border: 2px solid #FBCA04;
   background: #FBCA04;
   color: #000;
   padding: 10px 24px;
