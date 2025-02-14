@@ -532,8 +532,6 @@ export async function upload(
     const base64Url = canvas.toDataURL("image/webp");
     const bloBData = base64ToBlob(base64Url);
     _file = bloBData[0];
-
-
   }
 
   const newFileName =

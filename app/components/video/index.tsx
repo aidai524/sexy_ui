@@ -56,7 +56,11 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
                 rect.right <= (window.innerWidth || document.documentElement.clientWidth);
               setIsShow(isInViewport)
               if (autoPlay && autoPlaySetting && !playManually) {
-                videoRef.current?.play();
+                const outDom = document.getElementById(`${token?.status === 0 ? 'preLaunch' : 'launching'}-list`);
+                console.log(outDom)
+                if (outDom?.style.opacity === '1') {
+                  videoRef.current?.play();
+                }
               }
             } else {
               setIsShow(false)
@@ -134,7 +138,6 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
         set({ autoPlay: true });
       }
     }}>
-
       <video loop={autoPlay && autoPlaySetting} onPause={() => {
         setIsPlay(false);
       }} onPlay={() => {
