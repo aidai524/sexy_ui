@@ -25,30 +25,52 @@ const Summaries = (props: any) => {
 
   return (
     <div className={isMobile ? styles.Container : styles.ContainerPc}>
-       {!isMobile && isOther && (
-        <div className={styles.BtnGroupPc}>
-          <div></div>
-          <div></div>
-          <FollowBtn
-            useAnotherClassName={true}
-            address={address}
-            isFollower={isFollower}
-            onSuccess={() => {
-            setRefreshNum(refreshNum + 1);
-            }}
-        />
+      
+      {/* PC */}
+      <div className={styles.SummaryContainerPC}>
+        <div className={styles.InnerPc}>
 
-        <button
-          className={styles.CopyBtn}
-          onClick={() => {
-            setShowModal(true);
-          }}
-        >
-          Copy Trade
-          </button>
+          {isOther &&  (
+
+            <button
+              className={styles.CopyBtn}
+              onClick={() => {
+                setShowModal(true);
+              }}
+              style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+            >
+              Copy Trade
+              </button>
+          )}
+          <div className={styles.Summary}>
+            <div className={styles.SummaryLabel}>7D PNL</div>
+            <div
+              className={[styles.SummaryValue, styles.SummaryValueBuy].join(" ")}
+            >
+              <span style={{color: !copyTradersUserInfo?.tradeInfo?.pnl7D.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{ copyTradersUserInfo?.tradeInfo?.pnl7D != '0' ? numberFormatter(copyTradersUserInfo?.tradeInfo?.pnl7D, 4, true) + ' SOL' : '-'}</span>
+            </div>
+          </div>
+          <div className={styles.Summary}>
+            <div className={styles.SummaryLabel}>7D Win Rate</div>
+            <div className={[styles.SummaryValue].join(" ")}>
+              { copyTradersUserInfo?.tradeInfo?.winRate7D ? numberFormatter(copyTradersUserInfo?.tradeInfo?.winRate7D, 1, true, { isShort: true }) : '-'}%
+            </div>
+          </div>
+          <div className={styles.Summary}>
+            <div className={styles.SummaryLabel}>Buy/Sell</div>
+            <div className={[styles.SummaryValue].join(" ")}>
+              <div className={[styles.SummaryValueBuy].join(" ")}>
+                {copyTradersUserInfo?.tradeInfo?.buys ? numberFormatter(copyTradersUserInfo?.tradeInfo?.buys, 0, true, { isShort: true }) : '-'}
+              </div>
+              <div className={[].join(" ")}>/</div>
+              <div className={[styles.SummaryValueSell].join(" ")}>
+                {copyTradersUserInfo?.tradeInfo?.sells ? numberFormatter(copyTradersUserInfo?.tradeInfo?.sells, 0, true, { isShort: true }) : '-'}
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-      <div className={isMobile ? styles.Inner : styles.InnerPc}>
+
+        <div className={styles.InnerPc}>
         <div className={styles.Summary}>
           <div className={styles.SummaryLabel}>7D PNL</div>
           <div
@@ -76,28 +98,12 @@ const Summaries = (props: any) => {
           </div>
         </div>
       </div>
-      {isMobile && isOther && (
-        <div className={styles.BtnGroup}>
-          <FollowBtn
-            useAnotherClassName={true}
-            address={address}
-            isFollower={isFollower}
-          onSuccess={() => {
-            setRefreshNum(refreshNum + 1);
-          }}
-        />
+      </div>
 
-        <button
-          className={styles.CopyBtn}
-          onClick={() => {
-            setShowModal(true);
-          }}
-          style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
-        >
-          Copy Trade
-          </button>
-        </div>
-      )}
+      {/* mobile */}
+     
+
+
       {SHOW_COPY_TRADE && (
         <CoppiedModal
           copiedInfo={userInfo}

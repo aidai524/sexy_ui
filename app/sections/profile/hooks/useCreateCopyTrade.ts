@@ -39,7 +39,7 @@ export const useCopyTrade = () => {
           investment: +copyAmount,
           setting: {
             buyAmount: +onceCopyAmount,
-            slippage: 0.5,
+            slippage: 0.1,
             errorToleranceRatio: 0.1
           }
         });
