@@ -1,6 +1,6 @@
 .container {
     width: 100%;
-    padding: 0px 9px;
+    padding: 0px 0px 0 9px;
   }
   
   .tabContainer {
@@ -11,6 +11,7 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding-bottom: 8px;
+    -ms-overflow-style: none; 
     
   }
   
@@ -28,9 +29,10 @@
     white-space: nowrap;
   }
   
+  
   .activeTab {
-    color: #C9FF5D;
-    border: 1px solid #C9FF5D;
+    color: #FBCA04;
+    border: 1px solid #FBCA04;
     background: transparent;
   }
   
@@ -41,13 +43,25 @@
     max-height: calc(100vh - 240px);
     overflow-y: auto;
   }
-  
+  .traderCardContainer {
+    display: grid;
+    grid-template-columns: 1fr 38px;
+    gap: 6px;
+  }
+  .copyIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+  }
+
   .traderCard {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px;
-    background: rgba(146, 144, 177, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 12px;
   }
   
@@ -58,7 +72,12 @@
   }
   
   .avatar {
-    border-radius: 50%;
+    display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-direction: column;
+   width: 60px;
+   position: relative;
   }
   
   .nameContainer {
@@ -71,6 +90,9 @@
     color: #fff;
     font-size: 14px;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
   
   .followers {
@@ -104,14 +126,46 @@
   .copyButton {
     background: transparent;
     color: #FFFFFF;
-    border: 2px solid #D6A409;
+    border: 1px solid #D6A409;
     border-radius: 30px;
-    padding:4px 8px;
+    padding:0 12px;
     cursor: pointer;
     font-size: 12px;
     font-family: Unbounded;
     font-style: normal;
     font-weight: 300;
-    line-height: normal;
-    
+    height: 24px;
+  }
+
+  .metricsContainer {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .coping {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #1f1f1f;
+    padding: 2px 4px;
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .copingIcon {
+    width: 6px;
+    height: 6px;
+    background: #D6A409;
+    border-radius: 50%;
+  }
+  .copingText {
+    color: #D6A409;
+    font-size: 12px;
+    font-weight: 400;
+    scale: 0.8;
   }
