@@ -12,7 +12,7 @@ export default function DetailButton(props: any) {
     </TipsButton>
   );
 }
-function Button({ onClick }: any) {
+function Button({ onClick, style = {} }: any) {
   const { isMobile } = useUserAgent();
   const theme = isMobile ? "dark" : "light";
   return (
@@ -27,7 +27,8 @@ function Button({ onClick }: any) {
         backgroundColor: theme === "light" ? "#ffffff1a" : "#fff",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        ...style
       }}
     >
       <svg
