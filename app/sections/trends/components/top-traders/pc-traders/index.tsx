@@ -20,6 +20,9 @@ interface Trader {
     'pnl1D': number
     'pnl7D': number
     'pnl30D': number
+    'winRate1D': string
+    'winRate7D': string
+    'winRate30D': string
   }
   profit: {
     '1d': string
@@ -33,7 +36,7 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
   const [currentTrader, setCurrentTrader] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
   const router = useRouter()
-  const handleSort = (field: 'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D') => {
+  const handleSort = (field: 'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D' | 'winRate1D' | 'winRate7D' | 'winRate30D') => {
     setOrderBy(field)
   };
 
@@ -47,19 +50,38 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.headerItem}>Trader</div>
-        <div className={styles.headerItem} onClick={() => handleSort('pnl1D')}>
-          7D Win Rate 
-        </div>
-        <div className={styles.headerItem} onClick={() => handleSort('pnl1D')}>
-          1D PnL <TriangleIcon direction={orderBy === 'pnl1D' ? sortDirection : undefined} highlight={orderBy === 'pnl1D'} />
-        </div>
-        <div className={styles.headerItem} onClick={() => handleSort('pnl7D')}>
-          7D PnL <TriangleIcon direction={orderBy === 'pnl7D' ? sortDirection : undefined} highlight={orderBy === 'pnl7D'} />
-        </div>
-        <div className={styles.headerItem} onClick={() => handleSort('pnl30D')}>
-          30D PnL <TriangleIcon direction={orderBy === 'pnl30D' ? sortDirection : undefined} highlight={orderBy === 'pnl30D'} />
-        </div>
-        <div className={styles.headerItem}></div>
+        {/*  */}
+       <div className={styles.filterItem}>
+        
+            <div className={styles.headerItem + ' ' + (orderBy === 'pnl1D' ? styles.filterItemContent : '')} onClick={() => handleSort('pnl1D')}>
+            <div>1D</div> PnL <SolIconWithoutBg highlight={orderBy === 'pnl1D'} /> 
+            </div>
+            <span>/</span>
+           <div className={styles.headerItem + ' ' + (orderBy === 'winRate1D' ? styles.filterItemContent : '')} onClick={() => handleSort('winRate1D')}>
+              Win Rate <TriangleIcon direction={orderBy === 'winRate1D' ? sortDirection : undefined} highlight={orderBy === 'winRate1D'} />
+            </div>
+       </div>
+       {/*  */}
+       <div className={styles.filterItem}>
+            <div className={styles.headerItem + ' ' + (orderBy === 'pnl7D' ? styles.filterItemContent : '')} onClick={() => handleSort('pnl7D')}>
+            <div>7D</div> PnL <SolIconWithoutBg highlight={orderBy === 'pnl7D'} /> 
+            </div>
+            <span>/</span>
+           <div className={styles.headerItem + ' ' + (orderBy === 'winRate7D' ? styles.filterItemContent : '')} onClick={() => handleSort('winRate7D')}>
+              Win Rate <TriangleIcon direction={orderBy === 'winRate7D' ? sortDirection : undefined} highlight={orderBy === 'winRate7D'} />
+            </div>
+       </div>
+       {/*  */}
+       <div className={styles.filterItem}>
+        
+          <div className={styles.headerItem + ' ' + (orderBy === 'pnl30D' ? styles.filterItemContent : '')} onClick={() => handleSort('pnl30D')}>
+          <div>30D</div>  PnL <SolIconWithoutBg highlight={orderBy === 'pnl30D'} /> 
+            </div>
+            <span>/</span>
+           <div className={styles.headerItem + ' ' + (orderBy === 'winRate30D' ? styles.filterItemContent : '')} onClick={() => handleSort('winRate30D')}>
+              Win Rate <TriangleIcon direction={orderBy === 'winRate30D' ? sortDirection : undefined} highlight={orderBy === 'winRate30D'} />
+            </div>
+       </div>
       </div>
 
       <div className={styles.traderList}>
@@ -109,7 +131,16 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
     }}>
       <div className={styles.traderInfo}>
         <div className={styles.avatar}>
-          <Image src={user?.icon || defaultAvatar} alt={trader.name} width={36} height={36} />
+          <Image src={user?.icon || defaultAvatar} alt={trader.name} width={40} height={40} />
+          {
+              trader?.copied ?
+              <div className={styles.coping}>
+                <div className={styles.copingIcon}></div>
+                <span className={styles.copingText}>Copying</span>
+              </div>
+              :
+             null
+            }
         </div>
         <div className={styles.nameWrapper}>
           <div className={styles.name}>{formatAddress(trader.address) || formatAddress(user?.address)}</div>
@@ -118,48 +149,76 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
       </div>
       <div className={styles.pnl}>
         {
-        new Big(trader.winRate7D).times(100).toFixed(2)
+        trader.pnl1D >= 0 ? 
+        numberFormatter(trader.pnl1D, 2, true, { isShort: true, isShortUppercase: true }) : 
+        '-' + numberFormatter(Math.abs(trader.pnl1D), 2, true, { isShort: true, isShortUppercase: true })
+        } SOL
+
+        <div className={styles.winRate}>
+        {
+        new Big(trader.winRate1D).times(100).toFixed(1)
         }%
       </div>
-      <div className={styles.pnl}>
-        {
-        trader.pnl1D >= 0 ? 
-        numberFormatter(trader.pnl1D, 4, true) : 
-        '-' + numberFormatter(Math.abs(trader.pnl1D), 4, true)
-        } SOL
       </div>
       <div className={styles.pnl}>
         {
         trader.pnl7D >= 0 ? 
-        numberFormatter(trader.pnl7D, 4, true) : 
-        '-' + numberFormatter(Math.abs(trader.pnl7D), 4, true)
+        numberFormatter(trader.pnl7D, 2, true, { isShort: true, isShortUppercase: true }) : 
+        '-' + numberFormatter(Math.abs(trader.pnl7D), 2, true, { isShort: true, isShortUppercase: true })
         } SOL
+
+        <div className={styles.winRate}>
+        {
+        new Big(trader.winRate7D).times(100).toFixed(1)
+        }%
+      </div>
       </div>
       <div className={styles.pnl}>
         {
         trader.pnl30D >= 0 ? 
-        numberFormatter(trader.pnl30D, 4, true) : 
-        '-' + numberFormatter(Math.abs(trader.pnl30D), 4, true)
+        numberFormatter(trader.pnl30D, 2, true, { isShort: true, isShortUppercase: true }) : 
+        '-' + numberFormatter(Math.abs(trader.pnl30D), 2, true, { isShort: true, isShortUppercase: true })
         } SOL
-      </div>
 
-      <button className={styles.copyButton} 
-          onClick={(e) => {
-            e.stopPropagation(); 
-            onCopyTradeClick(trader);
-          }}
-      >Copy</button>
+        <div className={styles.winRate}>
+        {
+        new Big(trader.winRate30D).times(100).toFixed(1)
+        }%
+      </div>
+      </div>
+      <div className={styles.copingContainer}>
+
+            <button 
+                className={styles.copyButton} 
+                onClick={(e) => {
+                    e.stopPropagation(); 
+                    onCopyTradeClick(trader);
+                  }}
+              >Copy
+            </button>
+        </div>
+
+     
     </div>
   );
 };
 
 
 export function TriangleIcon({ direction, highlight }: { direction?: 'asc' | 'desc', highlight?: boolean }) {
-  const fillColor = highlight ? '#9290B1' : 'rgba(146, 144, 177, 0.3)';
+  const fillColor = highlight ? '#FBCA04' : 'rgba(146, 144, 177, 0.3)';
 
   return (
     <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M6.16533 9.73501C6.56057 10.334 7.43943 10.334 7.83467 9.73501L12.905 2.05074C13.3437 1.38589 12.8668 0.5 12.0703 0.5H1.9297C1.13315 0.5 0.65633 1.38589 1.09502 2.05074L6.16533 9.73501Z" fill={fillColor}/>
     </svg>
   );
+}
+
+
+const SolIconWithoutBg = ({ highlight }: { highlight?: boolean }) => {
+  const fillColor = highlight ? '#FBCA04' : '#9290B1';
+  return (
+      <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fillRule="evenodd" clipRule="evenodd" d="M1.875 0H11.25L9.375 2.5H0L1.875 0ZM1.875 7.5H11.25L9.375 10H0L1.875 7.5ZM11.25 6.25H1.875L0 3.75H9.375L11.25 6.25Z" fill={fillColor}/>
+   </svg> )   
 }
