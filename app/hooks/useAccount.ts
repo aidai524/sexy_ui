@@ -1,11 +1,12 @@
 import bs58 from "bs58";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { sleep } from "../utils";
-import { ComputeBudgetProgram, PublicKey, Transaction, TransactionMessage, VersionedTransaction } from "@solana/web3.js";
+import { ComputeBudgetProgram, PublicKey, SystemProgram, Transaction, TransactionMessage, VersionedTransaction } from "@solana/web3.js";
 import Big from "big.js";
 import { useContext } from 'react';
 import { PrivyWalletContext } from '@/app/context/privy';
 import { usePrivy } from '@privy-io/react-auth';
+import JitoJsonRpcClient from '@/app/utils/jito';
 
 const lookupTableAddress = new PublicKey('2ATmQ41kVt7tpxWkyv82CGcVg6CWVWjp7GPuexoXTonR')
 
@@ -34,6 +35,7 @@ export function useAccount() {
       disconnect: privyDisconnect,
       address: privyWallet.address,
       publicKey: privyPublicKey,
+      isPrivyWallet: true,
       walletProvider: {
         publicKey: privyPublicKey,
         signAndSendTransaction: async (
@@ -69,24 +71,25 @@ export function useAccount() {
               })
             );
 
-            if (process.env.NEXT_PUBLIC_NET === 'Mainnet') {
-              const lookupTableAccount = (
-                await connection.getAddressLookupTable(lookupTableAddress)
-              ).value;
+            // if (process.env.NEXT_PUBLIC_NET === 'Mainnet') {
+            //   const lookupTableAccount = (
+            //     await connection.getAddressLookupTable(lookupTableAddress)
+            //   ).value;
 
-              const message = new TransactionMessage({
-                payerKey: privyPublicKey!, // Public key of the account paying for the transaction
-                recentBlockhash: latestBlockhash.blockhash, // Blockhash of the most recent block
-                instructions: transaction.instructions, // Instructions to be included in the transaction
-              }).compileToV0Message([lookupTableAccount!])
+            //   const message = new TransactionMessage({
+            //     payerKey: privyPublicKey!, // Public key of the account paying for the transaction
+            //     recentBlockhash: latestBlockhash.blockhash, // Blockhash of the most recent block
+            //     instructions: transaction.instructions, // Instructions to be included in the transaction
+            //   }).compileToV0Message([lookupTableAccount!])
 
 
-              const versionedTransaction = new VersionedTransaction(message)
+            //   const versionedTransaction = new VersionedTransaction(message)
 
-              _transaction = versionedTransaction
-            }
+            //   _transaction = versionedTransaction
+            // }
 
           }
+
 
           const tx = await privyWallet.sendTransaction(_transaction, connection, {
             ...confirmationStrategy,
@@ -169,12 +172,14 @@ export function useAccount() {
     disconnect,
     address: publicKey?.toString(),
     publicKey,
+    isPrivyWallet: false,
     walletProvider: {
       publicKey,
       signAndSendTransaction: async (
         transaction: any,
         sendOptions: any = {},
-        isVersionedTransaction: boolean = false
+        isVersionedTransaction: boolean = false,
+        isJito: boolean = false
       ) => {
         const confirmationStrategy: any = {
           skipPreflight: true,
@@ -184,8 +189,20 @@ export function useAccount() {
 
 
         let _transaction: any = transaction
-
+        const jitoClient = new JitoJsonRpcClient('https://mainnet.block-engine.jito.wtf/api/v1', "");
         if (!isVersionedTransaction) {
+          if (isJito) {
+            const jitoTipAccounts = await jitoClient.getTipAccounts();
+            console.log(jitoTipAccounts)
+            transaction.add(
+              SystemProgram.transfer({
+                fromPubkey: publicKey!,
+                toPubkey: new PublicKey(jitoTipAccounts[0]),
+                lamports: 1000,
+              }),
+            )
+          }
+          
           const latestBlockhash = await connection?.getLatestBlockhash();
           transaction.feePayer = publicKey;
           transaction.recentBlockhash = latestBlockhash!.blockhash;
@@ -195,8 +212,6 @@ export function useAccount() {
             connection.rpcEndpoint
           );
 
-          // await fetchPriorityFeeEstimate(transaction)
-
           transaction.add(
             ComputeBudgetProgram.setComputeUnitLimit({
               units: 500000
@@ -205,6 +220,8 @@ export function useAccount() {
               microLamports: microLamports
             })
           );
+
+         
 
           if (process.env.NEXT_PUBLIC_NET === 'Mainnet') {
             const lookupTableAccount = (
@@ -222,13 +239,23 @@ export function useAccount() {
 
             _transaction = versionedTransaction
           }
-
         }
 
-        const tx = await sendTransaction(_transaction, connection, {
-          ...confirmationStrategy,
-          ...sendOptions
-        });
+        let tx
+        if (isJito) { 
+          const signedTransaction = await signTransaction!(_transaction)
+          const serializedTransaction = signedTransaction.serialize();
+          const base58Transaction = bs58.encode(serializedTransaction);
+          tx = await jitoClient.sendTxn([base58Transaction], false);
+        } else {
+          tx = await sendTransaction(_transaction, connection, {
+            ...confirmationStrategy,
+            ...sendOptions
+          });
+        }
+
+        console.log('tx:', tx)
+
 
         // console.log(tx)
         // const tx = await connection.sendTransaction(transaction, [payer], {
