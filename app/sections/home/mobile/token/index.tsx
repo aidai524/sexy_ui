@@ -46,8 +46,14 @@ export default function Token({
       <div className={styles.Container} style={{ height: innerHeight }}>
         <div className={styles.TopBg} />
         <div className={styles.BottomBg} />
+        {token?.icon && (
+          <div
+            className={styles.Bg}
+            style={{ backgroundImage: `url(${token.icon})` }}
+          />
+        )}
         {token?.id && (
-          <>
+          <div className={styles.Content}>
             <Media imgHeight={imgHeight} data={token} />
             <div className={styles.Labels}>
               {token.isSuperLike && (
@@ -143,7 +149,7 @@ export default function Token({
               }}
               isCurrent={isCurrent}
             />
-          </>
+          </div>
         )}
       </div>
       {showFlipModal && (
