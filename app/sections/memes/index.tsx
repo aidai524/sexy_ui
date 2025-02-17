@@ -2,6 +2,7 @@
 
 import MemesTitle from '@/app/sections/memes/components/title';
 import Carousel from '@/app/sections/memes/components/carousel';
+import MemesTabs from '@/app/sections/memes/components/tabs';
 
 const MemesView = (props: any) => {
   const {} = props;
@@ -10,6 +11,7 @@ const MemesView = (props: any) => {
     <div className="">
       <MemesTitle />
       <Carousel data={list} />
+      <MemesTabs />
     </div>
   );
 };
