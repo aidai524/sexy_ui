@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { formatLongText, numberFormatter } from '@/app/utils/common';
 import SummaryItem from '@/app/sections/memes/components/summary-item';
+import Emoji from '@/app/sections/memes/components/emoji';
 
 interface CarouselProps {
   className?: string;
@@ -70,6 +71,8 @@ const MediaItem = ({ item, onLoad }: { item: any; onLoad: () => void }) => {
 };
 
 const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }) => {
+  const isProgress = true;
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isMediaLoaded, setIsMediaLoaded] = useState(false);
@@ -157,14 +160,14 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
                 </div>
               </div>
               <div className={styles.CarouselTokenName}>
-                {formatLongText(currentItem.token_name, 6, 12)}
+                {formatLongText(currentItem.token_name, 6, 6)}
               </div>
               <div className={styles.CarouselSummaries}>
                 <SummaryItem type="rocket" value={2} />
                 <SummaryItem type="user" value={1234} />
                 <SummaryItem type="plane" value={1234} />
               </div>
-              <div className={styles.CarouselMarketCap}>
+              <div className={clsx(styles.CarouselMarketCap, !isProgress && styles.CarouselMarketCapWithChart)}>
                 <div className={styles.CarouselMarketCapTop}>
                   <div className={styles.CarouselMarketCapValue}>
                     <div>
@@ -174,19 +177,38 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
                       {numberFormatter('10000', 1, true, { prefix: '+', isShort: true, isShortUppercase: false })}
                     </div>
                   </div>
-                  <div className={styles.CarouselProgressValue}>
-                    65%
-                  </div>
+                  {
+                    isProgress ? (
+                      <div className={styles.CarouselProgressValue}>
+                        65%
+                      </div>
+                    ) : (
+                      <div className={styles.CarouselChart}>
+                        <svg width="132" height="49" viewBox="0 0 132 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 48C1 48 13.1307 48 21.953 48C31.9392 48 47.6179 48 53.1318 39.6042C57.3388 33.1984 60.5792 21.2749 66.0645 21.2749C72.6812 21.2749 73.3902 48 82.6135 48C91.8368 48 92.4026 1 99.32 1C106.238 1 113.898 58.4618 126 18.3158" stroke="#C9FF5D" stroke-linecap="round"/>
+                          <circle opacity="0.3" cx="126" cy="17" r="6" fill="#C9FF5D"/>
+                          <circle cx="126" cy="16.9996" r="3.00057" fill="#C9FF5D"/>
+                        </svg>
+                      </div>
+                    )
+                  }
                 </div>
-                <div className={styles.CarouselTokenProgress}>
-                  <motion.div
-                    className={styles.CarouselTokenProgressInner}
-                    initial={{ x: '-100%' }}
-                    animate={{ x: `-${100 - 65}%` }}
-                    transition={{ duration: 0.6, ease: 'linear' }}
-                  />
-                </div>
+                {
+                  isProgress && (
+                    <div className={styles.CarouselTokenProgress}>
+                      <motion.div
+                        className={styles.CarouselTokenProgressInner}
+                        initial={{ x: '-100%' }}
+                        animate={{ x: `-${100 - 65}%` }}
+                        transition={{ duration: 0.6, ease: 'linear' }}
+                      />
+                    </div>
+                  )
+                }
               </div>
+              {/*<Emoji content="🚀️" />*/}
+              <Emoji content="✈️" />
+              <Emoji content="💰" placement="right" />
             </div>
           </motion.div>
         </AnimatePresence>
