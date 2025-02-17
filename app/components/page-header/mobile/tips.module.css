@@ -1,0 +1,44 @@
+.Container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 24px;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.Type {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  gap: 3px;
+  border-radius: 10px;
+  color: #000;
+}
+
+.Token {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 10px;
+}
+
+.TokenIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.TokenName {
+  width: 69px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

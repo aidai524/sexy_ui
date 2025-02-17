@@ -3,7 +3,7 @@
 import Header from "./header";
 import List from "./list";
 import styles from "./home.module.css";
-import King from "@/app/sections/trends/components/king-mobile";
+import PageHeader from "@/app/components/page-header/mobile";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useUserAgent } from "@/app/context/user-agent";
 
@@ -16,13 +16,7 @@ export default function HomeMobile() {
       className={styles.Container}
       style={{ height: innerHeight, width: innerWidth }}
     >
-      <Header
-        currentTab={homeTabStore.homeTabIndex}
-        onChangeTab={(tab: number) => {
-          homeTabStore.set({ homeTabIndex: tab });
-        }}
-      />
-      <King />
+      <PageHeader from="home" />
       <div
         className={styles.ListWrapper}
         style={{

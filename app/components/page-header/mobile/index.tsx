@@ -1,6 +1,8 @@
 import styles from "./index.module.css";
-import Menu from "../../menu";
-import Level from "../../level";
+import SimpleAvatar from "../../avatar/simple";
+import MessagesAlarm from "@/app/components/messages";
+import SearchBar from "@/app/components/search-bar";
+import Tips from "./tips";
 import { useAuth } from "@/app/context/auth";
 
 export default function PageHeader({
@@ -10,7 +12,6 @@ export default function PageHeader({
   className,
   from,
   style,
-  rightActions,
   isOther
 }: any) {
   const { userInfo } = useAuth();
@@ -47,19 +48,26 @@ export default function PageHeader({
           </svg>
         </button>
       )}
-      {!isOther && ["trends", "reward", "profile"].includes(from) && (
-        <Menu theme={theme} />
+      {["trends", "reward", "home", "smart"].includes(from) && (
+        <SimpleAvatar icon={userInfo?.icon} />
       )}
-      <div
-        className={styles.Title}
-        style={{
-          color: theme === "dark" ? "#000" : "#fff"
-        }}
-      >
-        <span>{title}</span>
-        {from === "reward" && <Level level={userInfo?.level} />}
-      </div>
-      <div className={styles.Right}>{rightActions}</div>
+      {["trends", "reward", "home", "smart"].includes(from) && <Tips />}
+      {["setting", "create", "messages"].includes(from) && (
+        <div
+          className={styles.Title}
+          style={{
+            color: theme === "dark" ? "#000" : "#fff"
+          }}
+        >
+          <span>{title}</span>
+        </div>
+      )}
+      {["home", "reward", "smart"].includes(from) && (
+        <div className={styles.Right}>
+          <SearchBar />
+          <MessagesAlarm />
+        </div>
+      )}
     </div>
   );
 }
