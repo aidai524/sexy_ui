@@ -1,0 +1,25 @@
+.MemesTitleContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  left: 19px;
+  top: 17px;
+}
+
+.MemesTitleIcon {
+  color: #FFF;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.MemesTitle {
+  width: 94px;
+  height: 12px;
+  transform: translateY(2px);
+}
