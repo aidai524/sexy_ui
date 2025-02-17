@@ -11,36 +11,20 @@
   font-weight: 400;
   line-height: normal;
   margin-top: 2px;
-}
-
-.Bar {
-  width: 12px;
-  height: 180px;
-  border-radius: 32px;
-  background: rgba(0, 0, 0, 0.6);
-  position: relative;
-}
-
-.BarInner {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  margin: 2px;
-  width: 8px;
-  border-radius: 14px;
+  text-align: center;
 }
 
 .Heart {
-  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: 0.3s;
+  position: relative;
+  z-index: 2;
 }
 
-.HeartBg {
+.HeartGif {
   position: absolute;
-  z-index: 1;
 }
 
 .HeartRocket {
@@ -48,13 +32,9 @@
   z-index: 2;
 }
 
-.HeartNum {
+.LikedLabel {
   position: absolute;
-  z-index: 3;
-  text-align: center;
-  font-family: Unbounded;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+  z-index: 5;
+  right: -18px;
+  top: -17px;
 }

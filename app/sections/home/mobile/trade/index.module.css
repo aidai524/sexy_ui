@@ -1,54 +1,75 @@
 .Container {
   position: relative;
-  width: 247px;
-  height: 68px;
-}
-
-.Bg {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
+  height: 52px;
   flex-shrink: 0;
-}
-
-.Content {
-  position: relative;
-  z-index: 1;
-  padding: 12px;
-  height: 44px;
-  display: flex;
-  gap: 13px;
+  padding: 10px;
+  display: inline-flex;
+  gap: 10px;
   align-items: center;
-  top: 17px;
-  left: 5px;
-}
-
-.Avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 60px;
-  border: 3px solid #000;
-  object-fit: cover;
-  object-position: center;
-}
-
-.Title {
-  color: #000;
+  border-radius: 12px;
+  background: rgba(60, 60, 60, 0.5);
+  backdrop-filter: blur(5px);
+  margin-left: 12px;
+  color: #fff;
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   font-family: Unbounded;
-  font-size: 20px;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 15px */
+}
+
+.McWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Mc {
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  font-family: Unbounded;
+  font-size: 18px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
 }
 
-.Desc {
-  color: #000;
+.McBox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.Progress {
+  width: 199px;
+  height: 6px;
+  border-radius: 32px;
+  background: rgba(0, 0, 0, 0.5);
+  position: relative;
+  margin-top: 6px;
+}
+
+.ProgressInner {
+  height: 6px;
+  border-radius: 32px;
+  background: #c9ff5d;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.Button {
+  width: 76px;
+  height: 32px;
+  border-radius: 32px;
+  color: #1e1e1e;
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-top: 3px;
+  font-weight: 500;
+  line-height: 150%; /* 18px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
 }

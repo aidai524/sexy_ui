@@ -54,24 +54,6 @@ export default function Token({
         {token?.id && (
           <div className={styles.Content}>
             <Media imgHeight={imgHeight} data={token} />
-            <div className={styles.Labels}>
-              {token.isSuperLike && (
-                <motion.img
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={styles.FlippedLabel}
-                  src="/img/home/flipped.png"
-                />
-              )}
-              {token.isLike && (
-                <motion.img
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={styles.LikedLabel}
-                  src="/img/home/liked.png"
-                />
-              )}
-            </div>
             <div className={styles.Bottom}>
               {isCurrent && (
                 <Danmaku token={token} show={danmakuShow} list={danmakus} />
@@ -100,6 +82,7 @@ export default function Token({
                 <Trade
                   token={token}
                   totalHolders={totalHolders}
+                  isCurrent={isCurrent}
                   onClick={() => {
                     if (!window.sexAddress) {
                       window.connect();

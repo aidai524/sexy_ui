@@ -1,27 +1,14 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import styles from "./like.module.css";
+import LikedLabel from "./liked-label";
 import { useState } from "react";
 
 export default function Like(props: any) {
   const { like } = props;
   return (
     <div className={styles.Like}>
-      <div className={styles.Bar}>
-        <div
-          className={styles.BarInner}
-          style={{
-            height: like + "%",
-            background:
-              like > 80
-                ? "linear-gradient(180deg, #ff5563 0%, #fbca04 100%)"
-                : like > 50
-                ? "linear-gradient(180deg, #FF95DF 0%, #FFE88A 100%)"
-                : "#F0E5CD"
-          }}
-        />
-        <Heart {...props} />
-      </div>
+      <Heart {...props} />
       <div className={styles.LikeNum} id={props.id}>
         {like}
       </div>
@@ -29,24 +16,20 @@ export default function Like(props: any) {
   );
 }
 
-export const Heart = ({
-  isLiked,
-  like,
-  onClick = () => {},
-  style = {}
-}: any) => {
+export const Heart = ({ isLiked, onClick = () => {} }: any) => {
   const [showAnimation, setShowAnimation] = useState(false);
   return (
     <>
+      {isLiked && <LikedLabel className={styles.LikedLabel} />}
       <Image
         src="/img/home/liked.gif"
         width={124}
         height={124}
         alt="Liked"
-        className={styles.Heart}
+        className={styles.HeartGif}
         style={{
-          left: -55,
-          bottom: (like / 100) * 180 - 44,
+          left: -45,
+          bottom: -30,
           opacity: showAnimation ? 1 : 0
         }}
       />
@@ -54,13 +37,6 @@ export const Heart = ({
         initial={{ opacity: showAnimation ? 1 : 0 }}
         animate={{ opacity: showAnimation ? 0 : 1 }}
         className={`${styles.Heart} button`}
-        style={{
-          left: -22,
-          width: 57,
-          height: 47,
-          bottom: (like / 100) * 180 - 6,
-          ...style
-        }}
         onClick={() => {
           onClick();
           setShowAnimation(true);
@@ -71,40 +47,19 @@ export const Heart = ({
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="42"
-          height="36"
-          viewBox="0 0 42 36"
+          width="32"
+          height="28"
+          viewBox="0 0 32 28"
           fill="none"
           className={styles.HeartBg}
         >
-          <path
-            d="M1.54603 8.75946C-1.43825 20.6396 15.1641 33.0773 21.0005 35.0224C30.7277 31.1318 42.9664 18.7542 40.4549 8.75925C37.5 -3.00022 25.3777 0.977277 21.0005 6.32704C18.0823 1.46334 4.5 -3 1.54603 8.75946Z"
-            fill={isLiked ? "#FF045C" : "#FFFFFF"}
-            stroke="black"
-            strokeWidth="1.2"
-          />
+          <g filter="url(#filter0_d_8184_79)">
+            <path
+              d="M4.21564 8.50936C2.40685 15.5166 12.4697 22.8527 16.0071 24C21.9029 21.7052 29.3209 14.4045 27.7986 8.50924C26.0076 1.57316 18.6602 3.9192 16.0071 7.07465C14.2384 4.2059 6.00607 1.57329 4.21564 8.50936Z"
+              fill={isLiked ? "#FF2681" : "#fff"}
+            />
+          </g>
         </svg>
-        {/* <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="27"
-        height="27"
-        viewBox="0 0 27 27"
-        fill="none"
-        className={styles.HeartRocket}
-      >
-        <path
-          d="M8.2044 19.0897C9.94739 20.8612 10.1491 22.7655 8.21714 24.729C7.02015 25.9447 5.08215 26.6752 2.41516 26.988C2.27716 27.0045 2.13766 27.0037 1.99891 26.9872C1.06141 26.8732 0.37666 26.04 0.42166 25.0882L0.43141 24.9637L0.46966 24.6487C0.796659 22.1062 1.50466 20.2447 2.65441 19.0762C4.5864 17.1134 6.46065 17.3189 8.2044 19.0897ZM24.1726 0.479792L24.4741 0.572043L24.7689 0.670294C25.1317 0.7975 25.4607 1.00563 25.7312 1.27891C26.0016 1.55218 26.2062 1.88344 26.3296 2.24756C27.5049 5.68108 27.1314 9.15961 25.2369 12.6081C24.4561 14.0286 23.4571 15.3734 22.2414 16.6417L21.9046 16.9859L21.5859 17.2979L21.5769 17.3947C21.3556 19.4602 19.7889 22.1917 16.9021 25.7235L16.6516 26.0287L16.1904 26.58C15.6684 27.1995 14.6964 27.027 14.3919 26.295L14.3559 26.1967L12.7419 21.0457L12.5956 20.9444C11.6887 20.2984 10.8249 19.5939 10.0096 18.8354L9.60839 18.4529L9.21539 18.0629C8.05458 16.8817 7.0098 15.5917 6.0954 14.2109L6.00615 14.0721L0.750159 12.3726C0.0106605 12.1326 -0.227839 11.2184 0.24166 10.6439L0.30391 10.5734L0.37141 10.5104C4.6944 6.73334 7.88415 4.86057 10.1686 5.01658L10.3156 5.02933L10.4011 5.03983L10.5939 4.84482C11.6304 3.81432 12.7156 2.93756 13.8504 2.21681L14.2299 1.98205L14.5786 1.77805C17.7451 -0.0174618 20.9596 -0.459215 24.1726 0.480542V0.479792ZM14.4834 7.7331C13.1686 9.04861 13.1731 11.1854 14.4939 12.5061C15.8146 13.8269 17.9514 13.8314 19.2669 12.5166C20.5816 11.2011 20.5771 9.06436 19.2564 7.7436C17.9356 6.42284 15.7989 6.41834 14.4834 7.7331Z"
-          fill={isLiked ? "#00000033" : "#FBCA04"}
-        />
-      </svg> */}
-        <span
-          style={{
-            color: isLiked ? "#FFFBFB" : "#000000"
-          }}
-          className={styles.HeartNum}
-        >
-          {like}%
-        </span>
       </motion.div>
     </>
   );

@@ -3,10 +3,15 @@ import Like from "./like";
 import HomeIcon from "@/app/components/icons/home";
 import CommentIcon from "@/app/components/icons/comment";
 import ShareIcon from "./share-icon";
-import DetailButton from "../../laptop/token/detail-button";
+import HolderIcon from "./holder-icon";
+import TokenIcon from "./token-icon";
+import TxIcon from "./tx-icon";
+import RocketIcon from "./rocket-icon";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import { useUserAgent } from "@/app/context/user-agent";
+import { numberFormatter } from "@/app/utils/common";
+import Timer from "./timer";
 
 export default function Actions({
   token,
@@ -27,14 +32,13 @@ export default function Actions({
         opacity: disabled ? 0.3 : 1
       }}
     >
-      <DetailButton
+      <TokenIcon
+        token={token}
         onClick={() => {
           onClick("detail");
         }}
-        style={{
-          boxShadow: "0px 0px 2px 2px rgba(0,0,0,0.1)"
-        }}
       />
+      {token.status === 0 && <Timer time={token.created_at} />}
       {token.status === 0 ? (
         <>
           <Like
@@ -51,6 +55,7 @@ export default function Actions({
             }}
             id={isCurrent ? "guid-tour-like" : ""}
           />
+
           <div
             className={styles.Item}
             onClick={() => {
@@ -64,7 +69,7 @@ export default function Actions({
               }`}
             >
               <HomeIcon
-                size={30}
+                size={22}
                 type={token.isSuperLike ? "primary" : "normal"}
               />
             </button>
@@ -84,28 +89,59 @@ export default function Actions({
                 !isMobile && styles.PcItem
               }`}
             >
-              <img src="/img/home/holder-icon.png" style={{ width: 34 }} />
+              <RocketIcon isActive={false} />
             </button>
-
+            <span>{0}</span>
+          </div>
+          <div
+            className={styles.Item}
+            onClick={() => {
+              if (!disabled) onClick("trade");
+            }}
+          >
+            <button
+              className={`${!disabled ? "button" : ""} ${
+                !isMobile && styles.PcItem
+              }`}
+            >
+              <HolderIcon />
+            </button>
             <span>{totalHolders}</span>
+          </div>
+          <div
+            className={styles.Item}
+            onClick={() => {
+              if (!disabled) onClick("trade");
+            }}
+          >
+            <button
+              className={`${!disabled ? "button" : ""} ${
+                !isMobile && styles.PcItem
+              }`}
+            >
+              <TxIcon />
+            </button>
+            <span>{0}</span>
           </div>
         </>
       )}
-      <div
-        className={styles.Item}
-        onClick={() => {
-          if (!disabled) onClick("comments");
-        }}
-      >
-        <button
-          className={`${!disabled ? "button" : ""} ${
-            !isMobile && styles.PcItem
-          }`}
+      {token.status === 0 && (
+        <div
+          className={styles.Item}
+          onClick={() => {
+            if (!disabled) onClick("comments");
+          }}
         >
-          <CommentIcon />
-        </button>
-        <span>{token.comment || 0}</span>
-      </div>
+          <button
+            className={`${!disabled ? "button" : ""} ${
+              !isMobile && styles.PcItem
+            }`}
+          >
+            <CommentIcon size={26} />
+          </button>
+          <span>{token.comment || 0}</span>
+        </div>
+      )}
       <div
         className={styles.Item}
         onClick={() => {
@@ -123,9 +159,14 @@ export default function Actions({
             !isMobile && styles.PcItem
           }`}
         >
-          <ShareIcon />
+          <ShareIcon size={24} />
         </button>
-        <span>{token.share_num || 0}</span>
+        <span>
+          {numberFormatter(token.share_num, 1, true, {
+            isShort: true,
+            isShortUppercase: true
+          }) || 0}
+        </span>
       </div>
     </div>
   );

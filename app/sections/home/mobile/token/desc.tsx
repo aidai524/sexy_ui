@@ -1,20 +1,13 @@
 import styles from "./desc.module.css";
-import { formatAddress, timeAgo, simplifyNum } from "@/app/utils";
-import { useMemo, useState, useEffect } from "react";
-import useMc from "@/app/hooks/useMc";
-import { useTokenTrade } from "@/app/hooks/useTokenTrade";
+import { formatAddress, timeAgo } from "@/app/utils";
+import { useMemo } from "react";
 import { useHome } from "../context";
 import { useUserAgent } from "@/app/context/user-agent";
 import TokenTags from "@/app/components/tokenTags";
 
 export default function Desc({ token }: any) {
-  const [mc, setMc] = useState(0);
   const { goDetail } = useHome();
   const { isMobile } = useUserAgent();
-  const { mc: pumpMc } = useMc({
-    tokenAddress: token.address,
-    disable: token.status! < 1
-  });
 
   const creator = useMemo(() => {
     if (token.creater) {
@@ -33,28 +26,10 @@ export default function Desc({ token }: any) {
     return "-";
   }, [token]);
 
-  const { getMC } = useTokenTrade({
-    tokenName: token.tokenName,
-    tokenSymbol: token.tokenSymbol as string,
-    tokenDecimals: token.tokenDecimals as number,
-    loadData: false
-  });
-
-  useEffect(() => {
-    if (token && token.DApp === "sexy" && token.status === 1) {
-      getMC().then((res) => {
-        if (!isNaN(Number(res))) {
-          setMc(Number(res));
-        }
-      });
-    }
-  }, [token]);
-
   return (
     <div
       className={styles.Container}
       onClick={() => {
-        // router.push(`/detail?address=${token.address}`);
         if (isMobile) goDetail(token);
       }}
     >
@@ -73,16 +48,7 @@ export default function Desc({ token }: any) {
           <TokenTags token={token} />
         </div>
       </div>
-      {token.DApp === "sexy" && token.status === 1 && (
-        <div className={styles.MC}>
-          Market Cap: ${mc > 0 ? simplifyNum(mc, 2) : "-"}
-        </div>
-      )}
-      {(token.DApp === "pump" || token.status > 1) && (
-        <div className={styles.MC}>
-          Market Cap: ${pumpMc > 0 ? simplifyNum(pumpMc, 2) : "-"}
-        </div>
-      )}
+
       <div className={styles.Create}>
         <span>Created by</span>
         <span
