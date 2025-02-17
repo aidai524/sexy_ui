@@ -1,5 +1,5 @@
 .Container {
-  padding: 12px;
+  padding: 10px;
   box-sizing: border-box;
   color: #fff;
 }
@@ -59,7 +59,7 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  color: #d9d9d9;
+  color: #fff;
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;
@@ -69,7 +69,7 @@
 }
 
 .Create {
-  color: #d9d9d9;
+  color: #fff;
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;

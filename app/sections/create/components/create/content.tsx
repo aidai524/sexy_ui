@@ -33,11 +33,10 @@ export default function Create({
   data,
   onHide,
   onCreateTokenSuccess,
+  onBeforeCreate,
   setShowSuccessModal,
   width
 }: any) {
-  console.log('token:', token)
-
   const { tokenName, tokenSymbol, tokenUri } = token;
 
   const { isMobile } = useUserAgent();
@@ -226,6 +225,8 @@ export default function Create({
                   setIsLoading(false);
                   fail(sameNameRes);
                 }
+
+                await onBeforeCreate()
 
                 const hash = await createToken({
                   name: tokenName,

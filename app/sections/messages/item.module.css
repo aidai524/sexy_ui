@@ -10,7 +10,7 @@
 .ItemTop {
   display: flex;
   gap: 12px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .ItemTitle {

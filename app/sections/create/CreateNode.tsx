@@ -356,7 +356,7 @@ export default forwardRef(function CreateNode(
           }
         >
           <Upload
-            percent={1}
+            percent={-1}
             type="token"
             accept="image/*, video/mp4"
             fileList={tokenImg}

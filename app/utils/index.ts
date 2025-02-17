@@ -489,7 +489,7 @@ export async function upload(
       let y = (canvasHeight - newHeight) / 2;
 
       ctx.drawImage(img, x, y, newWidth, newHeight);
-    } else {
+    } else if (percent > 0) {
       const targetAspectRatio = 1 / percent;
       let cropWidth, cropHeight;
 
@@ -519,6 +519,14 @@ export async function upload(
         canvasWidth,
         canvasHeight
       );
+    } else {
+      const scale = Math.min(800 / img.width, 800 / img.height)
+      const newWidth = img.width * scale
+      const newHeight = img.height * scale
+      canvas.width = newWidth
+      canvas.height = newHeight
+
+      ctx.drawImage(img, 0, 0, newWidth, newHeight)
     }
 
     const base64Url = canvas.toDataURL("image/webp");

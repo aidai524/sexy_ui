@@ -1,7 +1,6 @@
-import { useSetting } from '@/app/store/use-setting';
-import type { Project } from '@/app/type';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { useSetting } from "@/app/store/use-setting";
+import type { Project } from "@/app/type";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface VideoPlayerProps {
   src: string;
@@ -13,7 +12,15 @@ interface VideoPlayerProps {
   playManually?: boolean;
 }
 
-export default function VideoPlayer({ src, type, className, style = {}, autoPlay = true, token, playManually = false }: VideoPlayerProps) {
+export default function VideoPlayer({
+  src,
+  type,
+  className,
+  style = {},
+  autoPlay = true,
+  token,
+  playManually = false
+}: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isShow, setIsShow] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -52,18 +59,27 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
               const isInViewport =
                 rect.top >= 0 &&
                 rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth);
-              setIsShow(isInViewport)
+                rect.bottom <=
+                  (window.innerHeight ||
+                    document.documentElement.clientHeight) &&
+                rect.right <=
+                  (window.innerWidth || document.documentElement.clientWidth);
+              setIsShow(isInViewport);
               if (autoPlay && autoPlaySetting && !playManually) {
-                videoRef.current?.play();
+                const outDom = document.getElementById(
+                  `${token?.status === 0 ? "preLaunch" : "launching"}-list`
+                );
+                console.log(outDom);
+                if (outDom?.style.opacity === "1") {
+                  videoRef.current?.play();
+                }
               }
             } else {
-              setIsShow(false)
+              setIsShow(false);
               videoRef.current?.pause();
             }
           } else {
-            setIsShow(false)
+            setIsShow(false);
             videoRef.current?.pause();
           }
         });
@@ -75,11 +91,11 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
       mutations.forEach((mutation) => {
         if (mutation.target instanceof HTMLElement) {
           const opacity = mutation.target.style.opacity;
-          if (opacity === '0') {
+          if (opacity === "0") {
             videoRef.current?.pause();
             setIsVisible(false);
           } else {
-            setIsVisible(true)
+            setIsVisible(true);
             if (autoPlay && autoPlaySetting) {
               // videoRef.current?.play();
             }
@@ -89,11 +105,13 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
     });
 
     if (videoRef.current) {
-      const outDom = document.getElementById(`${token?.status === 0 ? 'preLaunch' : 'launching'}-list`);
+      const outDom = document.getElementById(
+        `${token?.status === 0 ? "preLaunch" : "launching"}-list`
+      );
       if (outDom) {
         mutationObserver.observe(outDom, {
           attributes: true,
-          attributeFilter: ['style']
+          attributeFilter: ["style"]
         });
       }
       if (videoRef.current) {
@@ -104,62 +122,91 @@ export default function VideoPlayer({ src, type, className, style = {}, autoPlay
     return () => {
       if (videoRef.current) {
         observer.unobserve(videoRef.current);
-        
+
         mutationObserver.disconnect();
       }
     };
   }, [videoRef, autoPlay, autoPlaySetting, token]);
 
-
-
   const allStyle = useMemo(() => {
     return {
       ...style,
-      position: 'relative',
-    }
+      position: "relative"
+    };
   }, [style]);
 
-
   return (
-    <div className={className} style={allStyle as React.CSSProperties} onClick={() => {
-      if (!autoPlay) {
-        return;
-      }
+    <div
+      className={className}
+      style={allStyle as React.CSSProperties}
+      onClick={() => {
+        if (!autoPlay) {
+          return;
+        }
 
-      if (isPlay) {
-        videoRef.current?.pause();
-        set({ autoPlay: false });
-      } else {
-        videoRef.current?.play();
-        set({ autoPlay: true });
-      }
-    }}>
-
-      <video loop={autoPlay && autoPlaySetting} onPause={() => {
-        setIsPlay(false);
-      }} onPlay={() => {
-        setIsPlay(true);
-      }} onEnded={() => {
-        setIsPlay(false);
-      }} ref={videoRef} playsInline webkit-playsinline className={className} style={style}>
+        if (isPlay) {
+          videoRef.current?.pause();
+          set({ autoPlay: false });
+        } else {
+          videoRef.current?.play();
+          set({ autoPlay: true });
+        }
+      }}
+    >
+      <video
+        loop={autoPlay && autoPlaySetting}
+        onPause={() => {
+          setIsPlay(false);
+        }}
+        onPlay={() => {
+          setIsPlay(true);
+        }}
+        onEnded={() => {
+          setIsPlay(false);
+        }}
+        ref={videoRef}
+        playsInline
+        webkit-playsinline
+        className={className}
+        style={style}
+      >
         <source src={src} type={`video/${type}`} />
       </video>
-      {
-        (autoPlay && !isPlay) && (
-          <div onClick={() => {
-            
-          }} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '68px', height: '68px', background: 'rgba(0, 0, 0, 0.5)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-            <svg width="19" height="22" viewBox="0 0 19 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 9.26795C19.3333 10.0377 19.3333 11.9623 18 12.7321L3 21.3923C1.66667 22.1621 -1.05781e-06 21.1999 -9.90511e-07 19.6603L-2.33408e-07 2.33975C-1.6611e-07 0.800144 1.66667 -0.162106 3 0.607695L18 9.26795Z" fill="white" />
-            </svg>
-          </div>
-        )
-      }
+      {autoPlay && !isPlay && (
+        <div
+          onClick={() => {}}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "68px",
+            height: "68px",
+            background: "rgba(0, 0, 0, 0.5)",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer"
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="80"
+            height="80"
+            viewBox="0 0 80 80"
+            fill="none"
+          >
+            <circle cx="40" cy="40" r="40" fill="black" fillOpacity="0.3" />
+            <path
+              d="M51 33.0718C56.3333 36.151 59 37.6906 59 40C59 42.3094 56.3333 43.849 51 46.9282L40.5 52.9904C35.1667 56.0696 32.5 57.6092 30.5 56.4545C28.5 55.2998 28.5 52.2206 28.5 46.0622L28.5 33.9378C28.5 27.7794 28.5 24.7002 30.5 23.5455C32.5 22.3908 35.1667 23.9304 40.5 27.0096L51 33.0718Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+      )}
     </div>
-
   );
 }
 
-//preload={autoPlay ? "auto" : "none"} 
-
-
+//preload={autoPlay ? "auto" : "none"}

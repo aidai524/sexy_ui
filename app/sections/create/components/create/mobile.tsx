@@ -5,6 +5,7 @@ export default function Create({
   show,
   onHide,
   setShowSuccessModal,
+  onBeforeCreate,
   ...rest
 }: any) {
   return (
@@ -16,7 +17,7 @@ export default function Create({
         display: "none"
       }}
     >
-      <Content {...{ onHide, setShowSuccessModal, ...rest }} width="100vw" />
+      <Content {...{ onHide, setShowSuccessModal, onBeforeCreate, ...rest }} width="100vw" />
     </Modal>
   );
 }
