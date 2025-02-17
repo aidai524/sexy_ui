@@ -44,7 +44,6 @@ export default function Token({
   return (
     <>
       <div className={styles.Container} style={{ height: innerHeight }}>
-        <div className={styles.TopBg} />
         <div className={styles.BottomBg} />
         {token?.icon && (
           <div

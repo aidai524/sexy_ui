@@ -38,16 +38,6 @@
   top: 76px;
 }
 
-.TopBg {
-  width: 100%;
-  height: 45px;
-  background: linear-gradient(to bottom, #000, rgba(0, 0, 0, 0));
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 1;
-}
-
 .BottomBg {
   width: 100%;
   height: 175px;

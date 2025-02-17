@@ -10,7 +10,7 @@ import LaunchedActions from "@/app/components/action/launched";
 import PointsLabel from "@/app/components/points-label";
 import Empty from "@/app/components/empty/prelaunch";
 import ConnectButton from "@/app/components/connectButton";
-import TypesTabs from "@/app/sections/home/tabs";
+import TypesTabs from "@/app/sections/home/mobile/tabs";
 import Refer from "@/app/components/layout/laptop/user/refer";
 import { shareToX } from "@/app/utils/share";
 import styles from "./index.module.css";

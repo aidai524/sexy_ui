@@ -1,20 +1,12 @@
 import { useUserAgent } from "@/app/context/user-agent";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
+import tabs from "./config";
+import { useHomeTab } from "@/app/store/useHomeTab";
 
-const TABS = [
-  {
-    label: "Pre-Launch",
-    key: 0
-  },
-  {
-    label: "Launches",
-    key: 1
-  }
-];
-
-export default function Tabs({ launchIndex, setLaunchIndex }: any) {
+export default function Tabs() {
   const { isMobile } = useUserAgent();
+  const homeTabStore: any = useHomeTab();
   return (
     <div
       className={styles.launchPadTab}
@@ -22,19 +14,23 @@ export default function Tabs({ launchIndex, setLaunchIndex }: any) {
         gap: isMobile ? 20 : 146
       }}
     >
-      {TABS.map((tab: any, i: number) => (
+      {tabs.map((tab: any, i: number) => (
         <div
           key={tab.key}
           onClick={() => {
-            setLaunchIndex(tab.key);
+            homeTabStore.set({
+              homeTabIndex: i
+            });
           }}
           className={[
             styles.launchPadTabTitle,
-            launchIndex === tab.key ? styles.launchPadTabTitleActive : ""
+            homeTabStore.homeTabIndex === i
+              ? styles.launchPadTabTitleActive
+              : ""
           ].join(" ")}
         >
           <span>{tab.label}</span>
-          {launchIndex === tab.key && (
+          {homeTabStore.homeTabIndex === i && (
             <motion.div
               initial="hidden"
               animate="show"

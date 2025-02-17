@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import Tabs from "@/app/components/tabs";
 import ShareIcon from "@/app/components/icons/share";
 import ZoomOutIcon from "@/app/components/icons/zoom-out";
-import TypesTabs from "@/app/sections/home/tabs";
+import TypesTabs from "@/app/sections/home/mobile/tabs";
 import styles from "./index.module.css";
 import { addSearchParam } from "@/app/utils/search-params";
 import { useMessage } from "@/app/context/messageContext";
