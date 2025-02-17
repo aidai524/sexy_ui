@@ -11,6 +11,7 @@ import { numberFormatter } from '@/app/utils/common'
 import SexInfiniteScroll from '@/app/components/sexInfiniteScroll'
 import { useRouter } from 'next/navigation'
 import Big from 'big.js'
+import PageHeader from '@/app/components/page-header/mobile'
 interface Trader {
   avatar: string
   name: string
@@ -144,6 +145,14 @@ export default function TopTradersMobile({list, setOrderBy, orderBy, loadMore, h
 
   return (
     <div className={styles.container}>
+        <PageHeader
+        title="Top Traders"
+        theme="light"
+        from="smart"
+        style={{
+          background: "#000"
+        }}
+      />
       <div className={styles.tabContainer} ref={tabContainerRef}>
         {tabs.map(tab => (
           <button
