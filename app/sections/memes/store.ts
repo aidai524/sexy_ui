@@ -1,19 +1,23 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { TABS } from '@/app/sections/memes/config';
+import { Filter, Tab, TABS } from '@/app/sections/memes/config';
 
 interface MemesState {
-  currentTab: number;
-  prevTab: number;
-  setCurrentTab: (tab: number) => void;
-  setPrevTab: (tab: number) => void;
+  currentTab: Tab;
+  prevTab: Tab;
+  currentFilter?: Filter;
+  setCurrentTab: (tab: Tab) => void;
+  setPrevTab: (tab: Tab) => void;
+  setCurrentFilter: (filter?: Filter) => void;
 }
 
 export const useMemesStore = create(persist<MemesState>((set) => ({
-  currentTab: TABS[0].value,
-  prevTab: TABS[0].value,
+  currentTab: TABS[0],
+  prevTab: TABS[0],
+  currentFilter: TABS[0].filters?.[0],
   setCurrentTab: (tab) => set((state) => ({ ...state, currentTab: tab })),
   setPrevTab: (tab) => set((state) => ({ ...state, prevTab: tab })),
+  setCurrentFilter: (filter) => set((state) => ({ ...state, currentFilter: filter })),
 }), {
   name: '_memes_tab',
   version: 0.1,
@@ -21,5 +25,6 @@ export const useMemesStore = create(persist<MemesState>((set) => ({
   partialize: (state) => ({
     currentTab: state.currentTab,
     prevTab: state.prevTab,
+    currentFilter: state.currentFilter,
   } as any)
 }));
