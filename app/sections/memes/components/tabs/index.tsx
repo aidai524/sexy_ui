@@ -1,13 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import styles from './index.module.css';
 import clsx from 'clsx';
 import { Filter, Tab, TABS } from '@/app/sections/memes/config';
 import { useMemesStore } from '@/app/sections/memes/store';
 import { AnimatePresence, motion } from 'framer-motion';
 import TokenItem from '@/app/sections/memes/components/token-item';
+import { MemesContext } from '@/app/sections/memes/context';
 
 const MemesTabs = (props: any) => {
-  const { className, data } = props;
+  const { className } = props;
+  const { allList: data = [] } = useContext(MemesContext);
   const {
     currentTab,
     setCurrentTab,
