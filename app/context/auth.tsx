@@ -98,7 +98,12 @@ export const AuthProvider: React.FC<{
         accountRefresher,
         onQueryInfo,
         logout,
-        updateCurrentUserInfo
+        updateCurrentUserInfo,
+        updateUserLikeNum(num: number) {
+          userStore.set({
+            userInfo: { ...userStore.userInfo, using_like_num: num }
+          });
+        }
       }}
     >
       {children}

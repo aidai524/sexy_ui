@@ -10,6 +10,7 @@ import RocketIcon from "./rocket-icon";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useAuth } from "@/app/context/auth";
 import { numberFormatter } from "@/app/utils/common";
 import Timer from "./timer";
 
@@ -23,6 +24,7 @@ export default function Actions({
 }: any) {
   const { showShare } = useMessage();
   const { isMobile } = useUserAgent();
+  const { updateUserLikeNum } = useAuth();
   return (
     <div
       className={`${styles.Actions} ${
@@ -50,7 +52,12 @@ export default function Actions({
                 window.connect();
                 return;
               }
-              await actionLikeTrigger(token, showShare);
+
+              await actionLikeTrigger({
+                data: token,
+                onShare: showShare,
+                onSuccess: updateUserLikeNum
+              });
               onSuccess("like");
             }}
             id={isCurrent ? "guid-tour-like" : ""}

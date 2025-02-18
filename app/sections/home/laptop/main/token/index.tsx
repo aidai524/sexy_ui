@@ -33,7 +33,7 @@ export default function Token({
   list
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
-  const { userInfo } = useAuth();
+  const { userInfo, updateUserLikeNum } = useAuth();
   const [mc, setMC] = useState<string | number>("-");
   const router = useRouter();
   const comments = useCommentList({ id: infoData2?.id });
@@ -76,7 +76,12 @@ export default function Token({
 
   const like = async () => {
     next();
-    await actionLikeTrigger(infoData2, showShare);
+
+    await actionLikeTrigger({
+      data: infoData2,
+      onShare: showShare,
+      onSuccess: updateUserLikeNum
+    });
   };
 
   const hate = () => {
