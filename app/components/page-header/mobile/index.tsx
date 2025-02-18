@@ -82,6 +82,7 @@ export default function PageHeader({
           </div>
         )
       )}
+      {from === "create" && <div />}
     </div>
   );
 }
