@@ -1,4 +1,3 @@
-import Fullscreen from "../../fullscreen";
 import useData from "../../../hooks/use-data-laptop";
 import { useEffect, useMemo, useState } from "react";
 import { useFullScreen } from "@/app/store/use-full-screen";
@@ -39,33 +38,19 @@ export default function Content() {
 
   return (
     <div className={styles.Container}>
-      {fullScreenStore?.isFull ? (
-        <Fullscreen
-          {...{
-            list: fullList,
-            isLoading,
-            getnext,
-            type: tab,
-            onExit(index: number) {
-              fullScreenStore.set({ isFull: false });
-            }
-          }}
-        />
-      ) : (
-        <Token
-          {...{
-            infoData2,
-            getnext,
-            type: tab,
-            isLoading,
-            isFull: fullScreenStore.isFull,
-            onOpenFull() {
-              fullScreenStore.set({ isFull: true });
-            },
-            list: list.current
-          }}
-        />
-      )}
+      <Token
+        {...{
+          infoData2,
+          getnext,
+          type: tab,
+          isLoading,
+          isFull: fullScreenStore.isFull,
+          onOpenFull() {
+            fullScreenStore.set({ isFull: true });
+          },
+          list: list.current
+        }}
+      />
     </div>
   );
 }

@@ -15,7 +15,6 @@ import {
 } from "@/app/components/timesLike/ActionTrigger";
 import { useState, useMemo, useEffect } from "react";
 import Loading from "@/app/components/icons/loading";
-import NextButton from "../../fullscreen/next-button";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useAuth } from "@/app/context/auth";
 import useMc from "@/app/hooks/useMc";
@@ -192,23 +191,6 @@ export default function Token({
         }}
         onBoost={next}
       />
-
-      {!isFull && infoData2 && from !== "detail" && !!type && (
-        <NextButton
-          onClick={() => {
-            if (type === 0) {
-              hate();
-            } else {
-              if (!userInfo?.address) {
-                // @ts-ignore
-                window.connect();
-                return;
-              }
-              next();
-            }
-          }}
-        />
-      )}
     </div>
   );
 }

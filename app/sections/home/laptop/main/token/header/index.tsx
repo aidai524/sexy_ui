@@ -20,16 +20,7 @@ export default function Header({
 
   return (
     <div className={styles.Container}>
-      {from !== "detail" ? (
-        <TypesTabs
-          launchIndex={type}
-          setLaunchIndex={(launchType: any) => {
-            router.push("/?" + addSearchParam("launchType", launchType));
-          }}
-        />
-      ) : (
-        <div />
-      )}
+      {from !== "detail" ? <TypesTabs /> : <div />}
       <div className={styles.Actions}>
         {[1, 2, 3].includes(tokenInfo?.status) && (
           <Tabs currentTab={currentTab} onChangeTab={setCurrentTab} />
