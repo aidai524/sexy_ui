@@ -12,6 +12,8 @@ import SexInfiniteScroll from '@/app/components/sexInfiniteScroll'
 import { useRouter } from 'next/navigation'
 import Big from 'big.js'
 import PageHeader from '@/app/components/page-header/mobile'
+import { CopyierIconWithBg,CrownIcon } from '../icon'
+import CardContainer from '@/app/sections/smart/components/cardContainer'
 interface Trader {
   avatar: string
   name: string
@@ -82,7 +84,7 @@ const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCo
               {formatAddress(trader?.address) || formatAddress(user?.address)} 
             </div>
           </div>
-          <div className={styles.followers}>{user?.followers || 0} followers</div>
+          <div className={styles.followers}><CopyierIconWithBg/> {user?.followers || 0}</div>
         </div>
       </div>
       <div className={styles.metricsContainer}>
@@ -153,6 +155,12 @@ export default function TopTradersMobile({list, setOrderBy, orderBy, loadMore, h
           background: "#000"
         }}
       />
+      {/* card container */}
+      <CardContainer />
+
+      <div className={styles.crownContainer}>
+        <CrownIcon /> <span className={styles.crownTextContainer}>TOP <span className={styles.crownText}>Trader</span></span>
+      </div>
       <div className={styles.tabContainer} ref={tabContainerRef}>
         {tabs.map(tab => (
           <button
@@ -208,7 +216,7 @@ const CopyIcon = ()=>{
 
 
 const SolIconWithoutBg = ({ highlight }: { highlight?: boolean }) => {
-  const fillColor = highlight ? '#FBCA04' : '#9290B1';
+  const fillColor = highlight ? '#fff' : '#fff';
   return (
       <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fillRule="evenodd" clipRule="evenodd" d="M1.875 0H11.25L9.375 2.5H0L1.875 0ZM1.875 7.5H11.25L9.375 10H0L1.875 7.5ZM11.25 6.25H1.875L0 3.75H9.375L11.25 6.25Z" fill={fillColor}/>
