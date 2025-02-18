@@ -10,12 +10,7 @@ export default function Laptop() {
   return (
     <div className={styles.Container}>
       <div className={styles.TabsWrapper}>
-        <TypesTabs
-          launchIndex={homeTabStore.homeTabIndex}
-          setLaunchIndex={(tab: number) => {
-            homeTabStore.set({ homeTabIndex: tab });
-          }}
-        />
+        <TypesTabs />
       </div>
       <div className={styles.TrendBanner}>
         <TrendBanner />

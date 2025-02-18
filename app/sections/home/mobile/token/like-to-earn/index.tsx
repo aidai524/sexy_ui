@@ -1,8 +1,15 @@
 import styles from "./index.module.css";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { useAuth } from "@/app/context/auth";
+import { useMemo } from "react";
 
 export default function LikeToEarn() {
   const homeTabStore: any = useHomeTab();
+  const { userInfo } = useAuth();
+  const remainingNum = useMemo(
+    () => userInfo.like_num - userInfo.using_like_num,
+    [userInfo]
+  );
   if (homeTabStore.homeTabIndex === 0)
     return (
       <div
@@ -16,7 +23,7 @@ export default function LikeToEarn() {
         <div>
           <div className={styles.Like}>
             <Heart />
-            <div>82 left today</div>
+            <div>{remainingNum} left today</div>
           </div>
           <div className={styles.Desc}>Like to Earn</div>
         </div>
@@ -48,7 +55,7 @@ export default function LikeToEarn() {
       <div className={`${styles.Container} ${styles.Genesis}`}>
         <div className={styles.Like}>
           <Heart />
-          <div>82 left today</div>
+          <div>{remainingNum} left today</div>
         </div>
       </div>
     );

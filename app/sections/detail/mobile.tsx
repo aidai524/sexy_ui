@@ -21,7 +21,7 @@ import {
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { useMessage } from "@/app/context/messageContext";
 import { useDebounceFn } from "ahooks";
-import { useProjects } from "@/app/store/use-projects";
+import { useAuth } from "@/app/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TokenStatusModal } from "@/app/components/status2Alert";
 
@@ -32,7 +32,7 @@ export default function Detail({ token, onBack, onSuccess }: any) {
     isLoading,
     getDetailInfo
   } = useTokenDetail({ token });
-  const projectsStore = useProjects();
+  const { updateUserLikeNum } = useAuth();
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
   const router = useRouter();
   const search = useSearchParams();
@@ -192,7 +192,11 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                   token={infoData}
                   canFlip={false}
                   onLike={async () => {
-                    const res = await actionLikeTrigger(infoData, showShare);
+                    const res = await actionLikeTrigger({
+                      data: infoData,
+                      onShare: showShare,
+                      onSuccess: updateUserLikeNum
+                    });
                     if (res) {
                       onSuccess?.({
                         isLike: true,

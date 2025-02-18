@@ -51,8 +51,11 @@ const onHate = async (data: Project) => {
   } catch {}
 };
 
-export async function actionLikeTrigger(data: Project, onShare: (data: Project) => void) {
+export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
   const { likeNum, projectLikeNum } = await onLike(data);
+
+  onSuccess(likeNum);
+
   if (projectLikeNum === 100) {
     const timeLikeHandler = Modal.show({
       content: (
@@ -74,10 +77,10 @@ export async function actionLikeTrigger(data: Project, onShare: (data: Project) 
     if (data) {
       const timeLikeHandler = Modal.show({
         content: (
-            <FirstTimeLike
-              data={data}
-              onShare={onShare}
-              onClose={() => {
+          <FirstTimeLike
+            data={data}
+            onShare={onShare}
+            onClose={() => {
               timeLikeHandler.close();
             }}
           />
@@ -86,8 +89,7 @@ export async function actionLikeTrigger(data: Project, onShare: (data: Project) 
           backdropFilter: "none"
         },
         closeOnMaskClick: true,
-        className: "no-bg",
-        
+        className: "no-bg"
       });
     }
   }

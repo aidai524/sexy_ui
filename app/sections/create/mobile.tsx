@@ -17,7 +17,10 @@ export default function Create() {
         <div className={styles.header}>
           <PageHeader
             from="create"
-            style={{ position: "static" }}
+            style={{
+              position: "static",
+              backgroundColor: "#fbca04"
+            }}
             title="Create Token"
             theme="dark"
           />

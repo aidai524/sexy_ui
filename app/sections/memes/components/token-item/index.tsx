@@ -2,17 +2,18 @@ import styles from './index.module.css';
 import clsx from 'clsx';
 import TokenIcon from '@/app/components/avatar/token';
 import SummaryItem from '@/app/sections/memes/components/summary-item';
-import { formatLongText } from '@/app/utils/common';
+import { formatLongText, numberFormatter } from '@/app/utils/common';
 import Countdown from '@/app/sections/memes/components/countdown';
+import { Meme } from '@/app/sections/memes/store/meme';
 
-const TokenItem = (props: any) => {
+const TokenItem = (props: { className?: string; token: Meme; }) => {
   const { className, token } = props;
 
   return (
     <div className={clsx(styles.TokenItemContainer, className)}>
       <div className={styles.TokenItemLeft}>
         <TokenIcon
-          token={token}
+          token={{ ...token, is_king: false }}
         />
       </div>
       <div className={styles.TokenItemRight}>
@@ -30,7 +31,7 @@ const TokenItem = (props: any) => {
             }
           </div>
           <div className={styles.TokenItemMarketCap}>
-            MC $23.3K
+            MC {numberFormatter(token.market_cap, 2, true, { prefix: '$', isShort: true, isShortUppercase: true })}
           </div>
           {/*<Countdown />*/}
         </div>
@@ -63,7 +64,7 @@ const TokenItem = (props: any) => {
             />*/}
           </div>
           <div className={styles.TokenItemCreateAt}>
-            23 mins
+            {token.created2Now}
           </div>
         </div>
       </div>
