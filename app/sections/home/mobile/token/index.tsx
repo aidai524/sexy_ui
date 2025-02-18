@@ -11,7 +11,7 @@ import SmokePanel from "@/app/components/smokHot/smoke-panel";
 import Danmaku from "@/app/components/danmaku";
 import TradeModal from "@/app/components/trade-modal";
 import CommentsModal from "../comments";
-import { motion } from "framer-motion";
+import LikeToEarn from "./like-to-earn";
 import { useState, useRef, useEffect } from "react";
 import useHolders from "../hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -53,6 +53,7 @@ export default function Token({
         )}
         {token?.id && (
           <div className={styles.Content}>
+            {token.status === 0 && <LikeToEarn />}
             <Media imgHeight={imgHeight} data={token} />
             <div className={styles.Bottom}>
               {isCurrent && (

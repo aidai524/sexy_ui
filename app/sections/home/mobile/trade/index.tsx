@@ -4,7 +4,7 @@ import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { motion } from "framer-motion";
 
 const COLORS = ["#C9FF5D", "#4305FE", "#FE05D9"];
-const DIFF = 90;
+const DIFF = 45;
 
 export default function Trade({ token, isCurrent, onClick }: any) {
   const mc = useMcWithPump(token);
