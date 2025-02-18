@@ -4,9 +4,10 @@ import clsx from 'clsx';
 import { Filter, Tab, TABS } from '@/app/sections/memes/config';
 import { useMemesStore } from '@/app/sections/memes/store';
 import { AnimatePresence, motion } from 'framer-motion';
+import TokenItem from '@/app/sections/memes/components/token-item';
 
 const MemesTabs = (props: any) => {
-  const { className } = props;
+  const { className, data } = props;
   const {
     currentTab,
     setCurrentTab,
@@ -125,6 +126,13 @@ const MemesTabs = (props: any) => {
             </div>
           )
         }
+        <div className={styles.MemesTabsList}>
+          {
+            data.map((item: any, index: any) => (
+              <TokenItem key={index} token={item} />
+            ))
+          }
+        </div>
       </motion.div>
     </div>
   );

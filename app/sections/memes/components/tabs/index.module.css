@@ -111,3 +111,10 @@
   font-weight: 400;
   background: rgba(60, 60, 60, 0.50);
 }
+
+.MemesTabsList {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

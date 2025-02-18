@@ -11,7 +11,7 @@ const MemesView = (props: any) => {
     <div className="">
       <MemesTitle />
       <Carousel data={list} />
-      <MemesTabs />
+      <MemesTabs data={list} />
     </div>
   );
 };
@@ -92,8 +92,8 @@ const list = [
     "is_show": false,
     "concentrated_holdings": false,
     "initiative_launching": false,
-    "is_king": false,
-    "last_king_time": 0,
+    "is_king": true,
+    "last_king_time": 1737738734000,
     "share_num": 0,
     "total_amount": 0,
     "bonding_progress": 11.98,
@@ -173,7 +173,7 @@ const list = [
     "concentrated_holdings": false,
     "initiative_launching": false,
     "is_king": false,
-    "last_king_time": 0,
+    "last_king_time": 1737738734000,
     "share_num": 0,
     "total_amount": 0,
     "bonding_progress": 11.98,
