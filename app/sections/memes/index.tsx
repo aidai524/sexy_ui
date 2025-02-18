@@ -3,16 +3,20 @@
 import MemesTitle from '@/app/sections/memes/components/title';
 import Carousel from '@/app/sections/memes/components/carousel';
 import MemesTabs from '@/app/sections/memes/components/tabs';
+import { MemesContext } from '@/app/sections/memes/context';
+import { useMemes } from '@/app/sections/memes/hooks';
 
 const MemesView = (props: any) => {
   const {} = props;
 
+  const data = useMemes({ isPolling: true });
+
   return (
-    <div className="">
+    <MemesContext.Provider value={{ ...data }}>
       <MemesTitle />
       <Carousel data={list} />
       <MemesTabs />
-    </div>
+    </MemesContext.Provider>
   );
 };
 
@@ -92,8 +96,8 @@ const list = [
     "is_show": false,
     "concentrated_holdings": false,
     "initiative_launching": false,
-    "is_king": false,
-    "last_king_time": 0,
+    "is_king": true,
+    "last_king_time": 1737738734000,
     "share_num": 0,
     "total_amount": 0,
     "bonding_progress": 11.98,
@@ -173,7 +177,7 @@ const list = [
     "concentrated_holdings": false,
     "initiative_launching": false,
     "is_king": false,
-    "last_king_time": 0,
+    "last_king_time": 1737738734000,
     "share_num": 0,
     "total_amount": 0,
     "bonding_progress": 11.98,

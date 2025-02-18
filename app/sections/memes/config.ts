@@ -1,4 +1,4 @@
-export const TABS = [
+export const TABS: Tab[] = [
   {
     value: 1,
     label: 'Hot',
@@ -33,3 +33,17 @@ export const TABS = [
     iconSize: 12,
   },
 ];
+
+export interface Filter {
+  value: string;
+  label: string;
+  sort: string;
+}
+
+export interface Tab {
+  value: number;
+  label: string;
+  filters?: Filter[];
+  icon?: string;
+  iconSize?: number;
+}

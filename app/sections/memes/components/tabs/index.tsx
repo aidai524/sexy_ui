@@ -1,24 +1,43 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import styles from './index.module.css';
 import clsx from 'clsx';
-import { TABS } from '@/app/sections/memes/config';
+import { Filter, Tab, TABS } from '@/app/sections/memes/config';
 import { useMemesStore } from '@/app/sections/memes/store';
 import { AnimatePresence, motion } from 'framer-motion';
+import TokenItem from '@/app/sections/memes/components/token-item';
+import { MemesContext } from '@/app/sections/memes/context';
 
 const MemesTabs = (props: any) => {
   const { className } = props;
-  const { currentTab, setCurrentTab, prevTab, setPrevTab } = useMemesStore();
+  const { allList: data = [] } = useContext(MemesContext);
+  const {
+    currentTab,
+    setCurrentTab,
+    prevTab,
+    setPrevTab,
+    currentFilter,
+    setCurrentFilter,
+  } = useMemesStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleTabClick = (tab: number) => {
+  const handleTabClick = (tab: Tab) => {
     setPrevTab(currentTab);
     setCurrentTab(tab);
+    if (tab.filters?.length) {
+      setCurrentFilter(tab.filters[0]);
+    } else {
+      setCurrentFilter(void 0);
+    }
+  };
+
+  const handleFilter = (filter: Filter) => {
+    setCurrentFilter(filter);
   };
 
   useEffect(() => {
     const container = scrollContainerRef.current;
-    const activeTab = container?.querySelector(`[data-tab="${currentTab}"]`) as HTMLElement;
+    const activeTab = container?.querySelector(`[data-tab="${currentTab.value}"]`) as HTMLElement;
 
     if (container && activeTab) {
       const containerWidth = container.offsetWidth;
@@ -45,15 +64,15 @@ const MemesTabs = (props: any) => {
           className={styles.tabsInner}
         >
           {TABS.map((tab, index) => {
-            const isActive = currentTab === tab.value;
-            const direction = Number(currentTab) > Number(prevTab) ? 1 : -1;
+            const isActive = currentTab.value === tab.value;
+            const direction = Number(currentTab.value) > Number(prevTab.value) ? 1 : -1;
 
             return (
               <div
                 key={tab.value}
                 data-tab={tab.value}
-                className={clsx(styles.tab, currentTab === tab.value && styles.tabActive)}
-                onClick={() => handleTabClick(tab.value)}
+                className={clsx(styles.tab, isActive && styles.tabActive)}
+                onClick={() => handleTabClick(tab)}
               >
                 <div className={styles.tabInner}>
                   {tab.icon && (
@@ -87,6 +106,34 @@ const MemesTabs = (props: any) => {
               </div>
             );
           })}
+        </div>
+      </motion.div>
+      <motion.div
+        className={clsx(styles.MemesTabsContent)}
+      >
+        {
+          !!currentTab.filters?.length && (
+            <div className={styles.MemesTabsFilters}>
+              {
+                currentTab.filters.map((f) => (
+                  <div
+                    className={clsx(currentFilter?.value === f.value ? styles.MemesTabsFilterActive : styles.MemesTabsFilter)}
+                    key={f.value}
+                    onClick={() => handleFilter(f)}
+                  >
+                    {f.label}
+                  </div>
+                ))
+              }
+            </div>
+          )
+        }
+        <div className={styles.MemesTabsList}>
+          {
+            data.map((item: any, index: any) => (
+              <TokenItem key={index} token={item} />
+            ))
+          }
         </div>
       </motion.div>
     </div>
