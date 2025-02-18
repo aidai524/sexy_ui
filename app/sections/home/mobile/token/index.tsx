@@ -23,7 +23,8 @@ export default function Token({
   token,
   danmakus,
   danmakuShow,
-  onUpdate
+  onUpdate,
+  isPreview = false
 }: any) {
   const [imgHeight, setImgHeight] = useState("80%");
   const { innerHeight } = useUserAgent();
@@ -37,13 +38,20 @@ export default function Token({
 
   useEffect(() => {
     if (descContentRef.current) {
-      setImgHeight(`${innerHeight - descContentRef.current.clientHeight}px`);
+      setImgHeight(
+        `${
+          innerHeight - (isPreview ? 0 : descContentRef.current.clientHeight)
+        }px`
+      );
     }
   }, []);
 
   return (
     <>
-      <div className={styles.Container} style={{ height: innerHeight }}>
+      <div
+        className={styles.Container}
+        style={{ height: isPreview ? innerHeight - 60 : innerHeight }}
+      >
         <div className={styles.BottomBg} />
         {token?.icon && (
           <div
@@ -53,7 +61,7 @@ export default function Token({
         )}
         {token?.id && (
           <div className={styles.Content}>
-            {token.status === 0 && <LikeToEarn />}
+            {token.status === 0 && !isPreview && <LikeToEarn />}
             <Media imgHeight={imgHeight} data={token} />
             <div className={styles.Bottom}>
               {isCurrent && (
@@ -65,9 +73,10 @@ export default function Token({
                   <Flip
                     token={token}
                     onSuccess={(params: any) => {
-                      onUpdate({ ...token, ...params }, "flip");
+                      onUpdate?.({ ...token, ...params }, "flip");
                     }}
                     onClick={() => {
+                      if (isPreview) return;
                       if (!window.sexAddress) {
                         window.connect();
                         return;
@@ -85,10 +94,12 @@ export default function Token({
                   totalHolders={totalHolders}
                   isCurrent={isCurrent}
                   onClick={() => {
+                    if (isPreview) return;
                     if (!window.sexAddress) {
                       window.connect();
                       return;
                     }
+
                     setShowTradeModal(true);
                   }}
                 />
@@ -100,6 +111,7 @@ export default function Token({
             <Actions
               token={token}
               onClick={(type: any) => {
+                if (isPreview) return;
                 if (type === "comments") {
                   setShowCommentsModal(true);
                   return;
@@ -128,56 +140,62 @@ export default function Token({
                 if (type === "share") {
                   // token.share_num = token.share_num + 1;
                 }
-                onUpdate(token, type);
+                onUpdate?.(token, type);
               }}
               isCurrent={isCurrent}
+              isPreview={isPreview}
             />
           </div>
         )}
       </div>
-      {showFlipModal && (
-        <SmokePanel
-          token={token}
-          show={showFlipModal}
-          onSuccess={(amount: string) => {
-            token.isSuperLike = true;
-            token.prePaid = token.prePaid + 1;
-            token.total_amount = Number(token.total_amount) + Number(amount);
-            token.prePaidAmount = Big(token.prePaidAmount || 0)
-              .add(Number(amount) * 1e9)
-              .toString();
-            token.isLike = true;
-            token.like = token.like + 1;
-            onUpdate(token, "flip");
-            setShowFlipModal(false);
-          }}
-          onHide={() => {
-            setShowFlipModal(false);
-          }}
-        />
-      )}
-      {showTradeModal && (
-        <TradeModal
-          show={showTradeModal}
-          onClose={() => {
-            setShowTradeModal(false);
-          }}
-          data={token}
-        />
-      )}
-      {showCommentsModal && (
-        <CommentsModal
-          show={showCommentsModal}
-          onClose={() => {
-            setShowCommentsModal(false);
-          }}
-          id={token.id}
-          onSuccess={() => {
-            token.comment = token.comment + 1;
-            onUpdate(token);
-          }}
-          total={token.comment}
-        />
+      {!isPreview && (
+        <>
+          {showFlipModal && (
+            <SmokePanel
+              token={token}
+              show={showFlipModal}
+              onSuccess={(amount: string) => {
+                token.isSuperLike = true;
+                token.prePaid = token.prePaid + 1;
+                token.total_amount =
+                  Number(token.total_amount) + Number(amount);
+                token.prePaidAmount = Big(token.prePaidAmount || 0)
+                  .add(Number(amount) * 1e9)
+                  .toString();
+                token.isLike = true;
+                token.like = token.like + 1;
+                onUpdate?.(token, "flip");
+                setShowFlipModal(false);
+              }}
+              onHide={() => {
+                setShowFlipModal(false);
+              }}
+            />
+          )}
+          {showTradeModal && (
+            <TradeModal
+              show={showTradeModal}
+              onClose={() => {
+                setShowTradeModal(false);
+              }}
+              data={token}
+            />
+          )}
+          {showCommentsModal && (
+            <CommentsModal
+              show={showCommentsModal}
+              onClose={() => {
+                setShowCommentsModal(false);
+              }}
+              id={token.id}
+              onSuccess={() => {
+                token.comment = token.comment + 1;
+                onUpdate?.(token);
+              }}
+              total={token.comment}
+            />
+          )}
+        </>
       )}
     </>
   );

@@ -20,7 +20,8 @@ export default function Actions({
   onClick = () => {},
   onSuccess,
   isCurrent,
-  disabled
+  disabled,
+  isPreview
 }: any) {
   const { showShare } = useMessage();
   const { isMobile } = useUserAgent();
@@ -40,7 +41,9 @@ export default function Actions({
           onClick("detail");
         }}
       />
-      {token.status === 0 && <Timer time={token.created_at} />}
+      {token.status === 0 && (
+        <Timer time={token.created_at} isPreview={isPreview} />
+      )}
       {token.status === 0 ? (
         <>
           <Like
