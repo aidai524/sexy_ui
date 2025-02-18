@@ -4,7 +4,7 @@ import HomeIcon from "@/app/components/icons/home";
 import CommentIcon from "@/app/components/icons/comment";
 import ShareIcon from "./share-icon";
 import HolderIcon from "./holder-icon";
-import TokenIcon from "./token-icon";
+import TokenIcon from "@/app/components/avatar/token";
 import TxIcon from "./tx-icon";
 import RocketIcon from "./rocket-icon";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";

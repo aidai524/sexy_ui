@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import styles from "./token-icon.module.css";
+import styles from "./index.module.css";
 
-export default function TokenIcon({ token, onClick }: any) {
+export default function TokenIcon({ token, onClick = () => {} }: any) {
   const progress = useMemo(() => {
     if (token.status === 0) {
       return (token.like / 100) * 138.23;
