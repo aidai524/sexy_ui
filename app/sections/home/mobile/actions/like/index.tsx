@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
-import styles from "./like.module.css";
-import LikedLabel from "./liked-label";
+import styles from "./index.module.css";
+import LikedLabel from "../liked-label";
+import FloatingHearts from "./hearts";
 import { useState } from "react";
 
 export default function Like(props: any) {
@@ -18,9 +19,11 @@ export default function Like(props: any) {
 
 export const Heart = ({ isLiked, onClick = () => {} }: any) => {
   const [showAnimation, setShowAnimation] = useState(false);
+  const [showHearts, setShowHearts] = useState(false);
   return (
     <>
       {isLiked && <LikedLabel className={styles.LikedLabel} />}
+      {showHearts && <FloatingHearts />}
       <Image
         src="/img/home/liked.gif"
         width={124}
@@ -40,6 +43,7 @@ export const Heart = ({ isLiked, onClick = () => {} }: any) => {
         onClick={() => {
           onClick();
           setShowAnimation(true);
+          setShowHearts(true);
           setTimeout(() => {
             setShowAnimation(false);
           }, 1000);
