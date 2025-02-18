@@ -3,6 +3,7 @@ import SimpleAvatar from "../../avatar/simple";
 import MessagesAlarm from "@/app/components/messages";
 import SearchBar from "@/app/components/search-bar";
 import Tips from "./tips";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
 
 export default function PageHeader({
@@ -12,11 +13,14 @@ export default function PageHeader({
   className,
   from,
   style,
-  isOther
+  isOther,
+  rightActions
 }: any) {
   const { userInfo } = useAuth();
+  const router = useRouter();
   return (
     <div className={`${styles.Container} ${className}`} style={style}>
+      {from === "profile" && <div />}
       {(isOther || ["setting", "create", "messages"].includes(from)) && (
         <button
           className="button"
@@ -49,7 +53,12 @@ export default function PageHeader({
         </button>
       )}
       {["trends", "reward", "home", "smart"].includes(from) && (
-        <SimpleAvatar icon={userInfo?.icon} />
+        <SimpleAvatar
+          icon={userInfo?.icon}
+          onClick={() => {
+            router.push("/profile");
+          }}
+        />
       )}
       {["trends", "reward", "home", "smart"].includes(from) && <Tips />}
       {["setting", "create", "messages"].includes(from) && (
@@ -62,11 +71,16 @@ export default function PageHeader({
           <span>{title}</span>
         </div>
       )}
-      {["home", "reward", "smart"].includes(from) && (
-        <div className={styles.Right}>
-          <SearchBar />
-          <MessagesAlarm />
-        </div>
+
+      {rightActions ? (
+        <div className={styles.Right}>{rightActions}</div>
+      ) : (
+        ["home", "reward", "smart"].includes(from) && (
+          <div className={styles.Right}>
+            <SearchBar />
+            <MessagesAlarm />
+          </div>
+        )
       )}
     </div>
   );
