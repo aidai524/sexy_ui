@@ -5,4 +5,70 @@
     border-radius: 10px;
     padding: 16px;
     min-width: 85vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: space-between; 
+    width: 100%;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.copyDetails {
+    display: flex;
+    gap: 4px;
+    justify-content: space-between;
+    width: 90%;
+    align-items: center;
+}
+
+.totalPnl {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+}
+
+.openPosition {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+}
+
+.detailTitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.detailValueContainer {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.detailValue{
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.detailValueCurrent {
+    font-size: 14px;
+    font-weight: 500;
+    color: #C9FF5D;
+}
+
+.detailValueCurrency {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.5);
 }
