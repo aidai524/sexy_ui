@@ -17,7 +17,7 @@ export default function Trade({ token, isCurrent, onClick }: any) {
               <div
                 className={styles.Mc}
                 style={{
-                  color: token.isUp ? "#C9FF5D" : "#FF2681"
+                  color: token.market_cap_change < 0 ? "#FF2681" : "#C9FF5D"
                 }}
               >
                 ${Number(mc) > 0 ? simplifyNum(Number(mc), 2) : "-"}
@@ -41,7 +41,7 @@ export default function Trade({ token, isCurrent, onClick }: any) {
           <div
             className={styles.Mc}
             style={{
-              color: token.isUp ? "#C9FF5D" : "#FF2681"
+              color: token.market_cap_change < 0 ? "#FF2681" : "#C9FF5D"
             }}
           >
             ${Number(mc) > 0 ? simplifyNum(Number(mc), 2) : "-"}
