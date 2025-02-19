@@ -63,7 +63,7 @@ const TraderItem = ({ trader, onCopyTradeClick, activeTab }: { trader: any, onCo
   return (
     <div className={styles.traderCardContainer}>
     <div className={styles.traderCard} onClick={() => {
-      router.push("/profile/user?account=" + trader.address + "&from=detail");
+      router.push("/smartTopDetail?address=" + trader.address);
     }}>
       <div className={styles.traderInfo}>
       <div className={styles.avatar}>

@@ -65,3 +65,11 @@ export const ShareIcon = () => {
         </svg>        
     )
 }
+
+export const RightTopArrowIcon = () => {
+    return (
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.999996 0.25H8.25V7.5H6.75V2.81066L1.53033 8.03033L0.469666 6.96967L5.68934 1.75H0.999996V0.25Z" fill="#C9FF5D"/>
+        </svg>              
+    )
+}
