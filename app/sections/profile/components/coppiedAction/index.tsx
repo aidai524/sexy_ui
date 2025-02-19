@@ -7,21 +7,12 @@ import { formatLongText } from "@/app/utils/common";
 import useSolBalance from "@/app/hooks/use-sol-balance";
 import useSolPrice from "@/app/hooks/use-sol-price";
 import Big from "big.js";
-import { numberFormatter } from "@/app/utils/common";
-import Warning from "@/app/components/warning";
-import CopyTrade from "@/app/services/copyTrade";
 import { useAuth } from "@/app/context/auth";
 import MainBtn from "@/app/components/mainBtn";
-import { fail, success } from "@/app/utils/toast";
 import { useCopyTrade } from "@/app/sections/profile/hooks/useCreateCopyTrade";
 import { Switch } from "antd-mobile";
+import { LeftBackIcon, QuestionIcon } from "@/app/sections/trends/components/top-traders/icon";
 
-const AmountLevelList = [
-  { key: 0.25 },
-  { key: 0.5 },
-  { key: 0.75 },
-  { key: 1 }
-];
 
 export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   const { isLoading, handleCopyTrade } = useCopyTrade();
@@ -33,11 +24,26 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   const [minCopyAmountTips, setMinCopyAmountTips] = useState<boolean>(false);
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [errMsg, setErrMsg] = useState<string>('');
+  
   const inputRef = useRef<HTMLInputElement>(null);
   const { solBalance } = useSolBalance(Number(show) + (isLoading ? 1 : 0));
   const { solPrice } = useSolPrice();
+  const [isAdvancedModalOpen, setIsAdvancedModalOpen] = useState<boolean>(false);
+  const [amountLevelActive, setAmountLevelActive] = useState<string>('');
+  const AmountLevelList = +solBalance > 1 ? [
+    { key: 0.1, value: 0.1,id:'level1' },
+    { key: 0.5, value: 0.5,id:'level2' },
+    { key: 1, value: 1,id:'level3' },
+    { key: +solBalance, value: 'Max',id:'level4' }
+  ] : [
+    { key: 0.1, value: 0.1,id:'level1' },
+    { key: 0.5, value: 0.5,id:'level2' },
+    { key: 1, value: 1,id:'level3' },
+  ];
   const resetForm = () => {
     setMinCopyAmountTips(false);
+    setErrMsg('');
     setOnceCopyAmount("0.1");
     setCopyTimes("10");
     setCopyAmount("");
@@ -56,37 +62,28 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   };
 
   useEffect(() => {
-    if (!solBalance || solBalance === "0" || !show) return;
+    if (!show || !solBalance || solBalance === "0") return;
+    
     const solBalanceBig = new Big(solBalance);
-    if (solBalanceBig.gte(1)) {
-      setCopyAmount("1");
-      setOnceCopyAmount(new Big(1).div(copyTimes).toString());
-    } else if (solBalanceBig.gte(0)) {
-      const cpTimes = Math.floor(solBalanceBig.div(0.1).toNumber());
-      if (cpTimes <= 0) {
-        setCopyTimes("1");
-        setOnceCopyAmount(solBalanceBig.toString());
-      } else {
-        setCopyTimes(cpTimes.toString());
-        setOnceCopyAmount(solBalanceBig.div(cpTimes).toString());
-      }
-      const roundedAmount = new Big(Math.floor(solBalanceBig.div(0.1).toNumber())).mul(0.1).toString();
-      setCopyAmount(roundedAmount);
-    }
-  }, [solBalance, show]);
+    let newCopyAmount: string;
+    let newCopyTimes: string;
+    let newOnceCopyAmount: string;
 
-  useEffect(() => {
-    if (!copyAmount) return;
-    const copyAmountBig = new Big(copyAmount || 0);
-    setOnceCopyAmount(copyAmountBig.div(copyTimes).toString());
-    // const cpTimes = Math.floor(copyAmountBig.div(0.1).toNumber()) > 10 ? 10 : Math.floor(copyAmountBig.div(0.1).toNumber());
-    // if (cpTimes <= 0) {
-    //   setCopyTimes("1");
-    // } else {
-    //   setCopyTimes(cpTimes.toString());
-    // }
-    // setOnceCopyAmount(copyAmountBig.toString());
-  }, [copyAmount]);
+    if (solBalanceBig.gte(1)) {
+      newCopyAmount = "1";
+      newCopyTimes = "10";
+      newOnceCopyAmount = new Big(1).div(10).toString();
+    } else {
+      const cpTimes = Math.floor(solBalanceBig.div(0.1).toNumber());
+      newCopyTimes = cpTimes <= 0 ? "1" : cpTimes.toString();
+      newCopyAmount = new Big(Math.floor(solBalanceBig.div(0.1).toNumber())).mul(0.1).toString();
+      newOnceCopyAmount = cpTimes <= 0 ? solBalanceBig.toString() : solBalanceBig.div(cpTimes).toString();
+    }
+
+    setCopyAmount(newCopyAmount);
+    setCopyTimes(newCopyTimes);
+    setOnceCopyAmount(newOnceCopyAmount);
+  }, [solBalance, show]);
 
   useEffect(() => {
     if (isManualCopyTimes && copyTimes && copyTimes != "0") {
@@ -103,37 +100,103 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     viewportMeta?.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no');
   }, [show]);
 
-  const onceCopyAmountMap = useMemo(() => {
-    return numberFormatter(onceCopyAmount, 2);
-  }, [onceCopyAmount]);
+  useEffect(() => {
+    if (!copyAmount) {
+      setAmountLevelActive('');
+      return;
+    }
+    
+    const matchingLevel = AmountLevelList.find(item => 
+      item.key.toString() === copyAmount
+    );
+    
+    setAmountLevelActive(matchingLevel ? matchingLevel.id : '');
+  }, [copyAmount]);
 
   const validateOnceCopyAmount = useMemo(() => {
     const minAmount = 0.1;
-    const isAmountTooSmall = +onceCopyAmount < minAmount;
-    setMinCopyAmountTips(isAmountTooSmall);
+    const calculatedOnceCopyAmount = new Big(copyAmount || 0).div(new Big(copyTimes || 1));
+    
+    // 
+    const isAmountEmpty = !copyAmount || copyAmount === '0';
+    const isTimesEmpty = !copyTimes || copyTimes === '0';
+    const isAmountTooSmall = calculatedOnceCopyAmount.lt(minAmount);
+    const isBalanceInsufficient = new Big(copyAmount || 0).gt(new Big(solBalance || 0));
+    const isTimesTooSmall = +copyTimes < 1;
+    
+    let newErrMsg = '';
+    if (isAmountEmpty) {
+      newErrMsg = 'Please enter copy amount';
+    } else if (isTimesEmpty || isTimesTooSmall) {
+      newErrMsg = 'Copy times must be at least 1';
+    } else if (isAmountTooSmall) {
+      newErrMsg = 'Minimum amount is 0.1 SOL';
+    } else if (isBalanceInsufficient) {
+      newErrMsg = 'Insufficient balance';
+    }
+    
+    setErrMsg(newErrMsg);
 
-    return (
-      !isAmountTooSmall &&
-      +copyTimes >= 1 &&
-      +copyAmount > 0 &&
-      +copyAmount <= +solBalance &&
-      +solBalance > 0
-    );
+    return !newErrMsg; // 
   }, [onceCopyAmount, copyTimes, copyAmount, solBalance]);
 
   const handleCopyAmountChange = (e: any) => {
     const value = e.target.value;
-    if (/^\d*\.?\d*$/.test(value) || value === "") {
-      setCopyAmount(value);
+    
+    const sanitizedValue = value.replace(/[^\d.]/g, '');
+    
+    //
+    const parts = sanitizedValue.split('.');
+    const cleanValue = parts[0] + (parts.length > 1 ? '.' + parts[1] : '');
+    
+    // 
+    if (cleanValue !== '' && cleanValue !== '0' && cleanValue !== '0.') {
+      const num = parseFloat(cleanValue);
+      if (num === 0) return;
+    }
+
+    if (cleanValue === '' || /^\d*\.?\d*$/.test(cleanValue)) {
+      setCopyAmount(cleanValue);
+      
+      // 
+      if (cleanValue && cleanValue !== "." && cleanValue !== "0") {
+        const amount = new Big(cleanValue);
+        let calculatedTimes = Math.floor(amount.div(0.1).toNumber());
+        
+        calculatedTimes = Math.min(calculatedTimes, 10);
+        
+        if (amount.gt(0)) {
+          const perCopyAmount = amount.div(calculatedTimes);
+          if (perCopyAmount.gte(0.1)) {
+            setCopyTimes(calculatedTimes.toString());
+            setOnceCopyAmount(perCopyAmount.toString());
+          } else {
+            const minPossibleTimes = Math.floor(amount.div(0.1).toNumber());
+            setCopyTimes(minPossibleTimes > 0 ? minPossibleTimes.toString() : "1");
+            setOnceCopyAmount(amount.div(minPossibleTimes > 0 ? minPossibleTimes : 1).toString());
+          }
+        } else {
+          setCopyTimes("1");
+          setOnceCopyAmount("0");
+        }
+        setIsManualCopyTimes(false);
+      }
     }
   };
 
   const handleCopyTimesChange = (e: any) => {
-    const value = e.target.value;
-    if ((/^\d*$/.test(value) || value === "") && !/^0\d+/.test(value)) {
-      setCopyTimes(value);
-      setIsManualCopyTimes(true);
+    console.log(e.target.value);
+    const value = +e.target.value > 10 ? '10' : e.target.value;
+    const sanitizedValue = value.replace(/[^\d]/g, '');
+    
+    if (sanitizedValue !== '0') {
+      console.log(sanitizedValue);
+      const num = parseInt(sanitizedValue, 10);
+      if (num === 0) return;
     }
+    
+    setCopyTimes(sanitizedValue);
+    setIsManualCopyTimes(true);
   };
 
   const handleSetClick = () => {
@@ -162,9 +225,11 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
 
   const handleSwitchChange = (checked: boolean) => {
     setIsChecked(checked);
+    setIsAdvancedModalOpen(checked);
   };
 
   return (
+    <>
     <Modal
       open={show}
       onClose={onClose}
@@ -214,6 +279,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
               type="text"
               placeholder="0"
               value={copyAmount}
+              inputMode="decimal"
               onChange={handleCopyAmountChange}
               style={{
                fontSize: '36px',
@@ -234,34 +300,50 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
 
 
         {/* amount */}
-        <div
-          className={`${styles.amount} ${styles.public} ${styles.textWhite07}`}
-        >
-          <span>Amount</span>
+       
           <div className={styles.amountLevel}>
             {AmountLevelList.map((item, index) => (
               <div
                 key={"level" + item.key}
                 onClick={() => {
-                  setCopyAmount((item.key * +solBalance).toString());
+                  const newAmount = item.value.toString();
+                  setCopyAmount(newAmount);
+                  
+                  // Calculate copyTimes similar to handleCopyAmountChange logic
+                  if (newAmount && newAmount !== "0") {
+                    const amount = new Big(newAmount);
+                    let calculatedTimes = Math.floor(amount.div(0.1).toNumber());
+                    calculatedTimes = Math.min(calculatedTimes, 10);
+                    
+                    if (amount.gt(0)) {
+                      const perCopyAmount = amount.div(calculatedTimes);
+                      if (perCopyAmount.gte(0.1)) {
+                        setCopyTimes(calculatedTimes.toString());
+                        setOnceCopyAmount(perCopyAmount.toString());
+                      } else {
+                        const minPossibleTimes = Math.floor(amount.div(0.1).toNumber());
+                        setCopyTimes(minPossibleTimes > 0 ? minPossibleTimes.toString() : "1");
+                        setOnceCopyAmount(amount.div(minPossibleTimes > 0 ? minPossibleTimes : 1).toString());
+                      }
+                    }
+                    setIsManualCopyTimes(false);
+                  }
+
+                  setAmountLevelActive((prev) => {
+                    if (prev === item.id) {
+                      return '';
+                    }
+                    return item.id;
+                  });
                 }}
+                className={amountLevelActive === item.id ? styles.amountLevelActive : styles.amountLevelNotActive}
               >
-                {item.key * 100}%
-                {index < AmountLevelList.length - 1 && (
-                  <span className={styles.amountLevelSeparator}>|</span>
-                )}
+                {item.key}
               </div>
             ))}
           </div>
-        </div>
 
        
-
-        {/* min */}
-        <div className={`${styles.min} ${styles.textWhite07}`}>
-          <span>Min:&nbsp;</span>
-          <div>0.1 SOL / copy</div>
-        </div>
 
         {/* your coppies */}
         <div
@@ -285,18 +367,10 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
           />
         </div>
 
-        {/* amount / copy */}
-
-        <div className={`${styles.public} ${styles.textWhite07}`}>
-          <span>Amount / copy</span>
-          <div className={styles.textWhite}>
-            {onceCopyAmountMap.integer + onceCopyAmountMap.decimal} SOL
-          </div>
-        </div>
         
-        {minCopyAmountTips ? (
+        {errMsg ? (
         <div className={styles.minCopyAmountTips}>
-          Minimum amount is 0.1 SOL 
+          {errMsg}
         </div>
       ) : <div className={styles.minCopyAmountTips}></div>}
         {/* copy button */}
@@ -317,27 +391,113 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
         }
       </div>
     </Modal>
+
+    <AdvancedModal show={isAdvancedModalOpen} onClose={() => {setIsAdvancedModalOpen(false);handleSwitchChange(false)}} copyTimes={copyTimes} setCopyTimes={handleCopyTimesChange} />
+    </>
   );
 }
 
 
 
+export const AdvancedModal = ({show,onClose, copyTimes, setCopyTimes}:{show:boolean,onClose:()=>void, copyTimes:string, setCopyTimes:any})=>{
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const handleSwitchChange = (checked: boolean) => {
+    setIsChecked(checked);
+  };
+  const [isAutoCloseChecked, setIsAutoCloseChecked] = useState<boolean>(false);
+  const handleAutoCloseSwitchChange = (checked: boolean) => {
+    setIsAutoCloseChecked(checked);
+  };
+  const [profitValue, setProfitValue] = useState<number>(200);
+  const [lossValue, setLossValue] = useState<number>(200);
+  return <Modal
+    open={show}
+    onClose={onClose}
+    animation="popup"
+    closeStyle={{ display: "none" }}
+    maskClose={false}
+  >
+    <div className={styles.advancedModal}>
+      <div className={styles.advancedModalHeader}>
+       <div className={styles.advancedModalHeaderLeft}>
+        <span onClick={()=>{
+          onClose()
+          setIsChecked(false)
+        }}><LeftBackIcon /></span>
+        <span className={styles.advancedModalHeaderTitle}>Advanced Setting <QuestionIcon /></span>
+       </div>
+        <Switch  
+             style={{
+              '--height': '24px',
+              '--width': '44px',
+            }}
+            checked={isChecked}
+            onChange={handleSwitchChange}
+            className={isChecked ? styles.switchChecked : styles.switch}
+            ></Switch>
+      </div>  
 
+      <div className={styles.inputCopies}>
+        <div className={styles.inputCopiesTitle}>Number of Copies</div>
+        <input disabled={!isChecked} placeholder="0" className={styles.inputCopiesInput} type="text" value={copyTimes} onChange={(e)=>setCopyTimes(e)} />
+      </div>
+      
+      {/* auto close */}
+      <div className={styles.advancedModalHeader} style={{marginTop: '20px', marginBottom: '31px'}}>
+       <div className={styles.advancedModalHeaderLeft}>
+        <span className={styles.advancedModalHeaderTitle}>Auto Close</span>
+       </div>
+        <Switch  
+             style={{
+              '--height': '24px',
+              '--width': '44px',
+            }}
+            checked={isAutoCloseChecked}
+            onChange={handleAutoCloseSwitchChange}
+            className={isAutoCloseChecked ? styles.switchChecked : styles.switch}
+            ></Switch>
+      </div> 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      <div className={styles.profitAndLoss + ' ' + (!isAutoCloseChecked ? styles.profitAndLossChecked : styles.profitAndLossNotChecked)}>
+        <div className={styles.profit}>
+          <span className={styles.profitTitle}>Profit</span>
+          <span className={styles.profitValue}>
+            <input disabled={!isAutoCloseChecked} type="number" className={styles.profitInput} placeholder="200"
+            onChange={(e)=>{
+              const value = e.target.value;
+              if (value === '') {
+                setProfitValue(0);
+              } else {
+                setProfitValue(+value);
+              }
+            }}
+            value={profitValue}
+            />
+            <span className={styles.profitValueUnit}>%</span>
+          </span>
+        </div>
+        <div className={styles.loss}>
+          <span className={styles.lossTitle}>Loss</span>
+          <span className={styles.lossValue}>
+            <span className={styles.lossValuePrefix}>-</span>
+            <input disabled={!isAutoCloseChecked} type="number" className={styles.lossInput} placeholder="200"
+            onChange={(e)=>{
+              const value = e.target.value;
+              if (value === '') {
+                setLossValue(0);
+              } else {
+                setLossValue(+value);
+              }
+            }}
+            value={lossValue}
+            />
+            <span className={styles.lossValueUnit}>%</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </Modal>
+}
 
 
 

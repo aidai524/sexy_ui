@@ -191,8 +191,8 @@ export default function TopTraderDetailM() {
           </div>
           <div>
           {
-            satellites.map((item:any)=>{
-              return <img className={styles.copierTokenImg} alt='copier tokens' src={defaultAvatar} />
+            satellites.map((item:any, index:any)=>{
+              return <img key={'sate' + index} className={styles.copierTokenImg} alt='copier tokens' src={defaultAvatar} />
             })
           }
         </div>
