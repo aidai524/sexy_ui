@@ -147,7 +147,7 @@ export default function List({
           {list?.map((item: number, i: number) => {
             let token = null;
 
-            if (Math.abs(i - index) < 5 && item) {
+            if (Math.abs(i - index) < 30 && item) {
               token = getProjectById(item);
             }
 

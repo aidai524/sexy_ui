@@ -8,14 +8,6 @@ import { useAccount } from "@/app/hooks/useAccount";
 const limit = 10;
 const left_num = 5;
 
-function preloadImages(urls: string[]) {
-  urls.forEach((url) => {
-    if (!url) return;
-    const img = new Image();
-    img.src = url;
-  });
-}
-
 export default function useData(launchType: Type) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
