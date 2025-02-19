@@ -7,7 +7,7 @@ export default function LikeToEarn() {
   const homeTabStore: any = useHomeTab();
   const { userInfo } = useAuth();
   const remainingNum = useMemo(
-    () => userInfo.like_num - userInfo.using_like_num,
+    () => userInfo?.like_num - userInfo?.using_like_num,
     [userInfo]
   );
   if (homeTabStore.homeTabIndex === 0)
