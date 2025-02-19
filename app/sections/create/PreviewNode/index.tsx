@@ -11,15 +11,18 @@ import { useRouter } from "next/navigation";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useUser } from "@/app/store/useUser";
 import { useUserAgent } from "@/app/context/user-agent";
+import StepAction from "../components/stepAction";
 
 interface Props {
-  onAddDataCancel: () => void;
   show: boolean;
   data: Project;
+  step: number;
+  onNext: () => void;
+  onBack: () => void;
 }
 
 export default forwardRef(function PreviewNode(
-  { onAddDataCancel, show, data }: Props,
+  { show, data, step, onNext, onBack }: Props,
   ref: any
 ) {
   const router = useRouter();
@@ -44,7 +47,7 @@ export default forwardRef(function PreviewNode(
   useImperativeHandle(
     ref,
     () => ({
-      onEdit: onAddDataCancel,
+      onEdit: onBack,
       onCreate: () => {
         setShowCreate(true);
       }
@@ -90,11 +93,11 @@ export default forwardRef(function PreviewNode(
         )}
       </div>
 
-      {isMobile && (
+      {/* {isMobile && (
         <div className={styles.actionBtns}>
           <div
             onClick={() => {
-              onAddDataCancel();
+              onBack();
             }}
             className={styles.btn + " " + styles.edit}
           >
@@ -109,7 +112,20 @@ export default forwardRef(function PreviewNode(
             Create
           </div>
         </div>
-      )}
+      )} */}
+
+      <StepAction
+        step={step}
+        onBack={() => {
+          onBack();
+        }}
+        onNext={() => {
+          onNext();
+        }}
+        onPreview={() => {
+          return Promise.resolve(true);
+        }}
+      />
 
       <Create
         show={showCreate}

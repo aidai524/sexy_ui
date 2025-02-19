@@ -1,10 +1,13 @@
 import { ImageUploader, ImageUploadItem, ImageUploaderRef } from "antd-mobile";
+import "croppie/croppie.css";
+
 import styles from "./upload.module.css";
 import { upload } from "@/app/utils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircleLoading from "../icons/loading";
 import UploadBox from "./upload-box";
 import { fail } from "@/app/utils/toast";
+import ImgCopper from "./img-copper";
 
 interface Props {
   fileList: ImageUploadItem[];
@@ -14,6 +17,7 @@ interface Props {
   type: "avatar" | "banner" | "others" | "token";
   percent?: number;
   scala?: number;
+  cropper?: boolean;
 }
 
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
@@ -43,7 +47,8 @@ export default function Upload({
   accept = "image/*",
   type,
   percent = 1.5,
-  scala = 2
+  scala = 2,
+  cropper = false
 }: Props) {
   const [isUplaod, setIsUpload] = useState(false);
   const [fileList, setFileList] = useState<any>(defaultFileList || []);
@@ -64,16 +69,28 @@ export default function Upload({
       };
     }
 
+    let _file: any = file;
+    if (cropper && imgReg.test(file.name)) {
+      const blob = await ImgCopper({ file, });
+      if (!blob) {
+        return {
+          url: ""
+        };
+      }
+      _file = blob
+    }
+
     setIsUpload(true);
 
     const url = await upload(
       file.name,
-      file,
+      _file,
       imgReg.test(file.name) &&
         !svgReg.test(file.name) &&
         !gifReg.test(file.name),
       percent,
-      scala
+      scala,
+      cropper
     );
     setTimeout(() => {
       setIsUpload(false);
@@ -88,7 +105,7 @@ export default function Upload({
     return {
       url: ""
     };
-  }, []);
+  }, [cropper]);
 
   useEffect(() => {
     if (fileList.length === 0 && defaultFileList.length > 0)

@@ -15,16 +15,19 @@ import { useUserAgent } from "@/app/context/user-agent";
 import ErrMsg from "./components/errMsg";
 import type { Project } from "@/app/type";
 import { httpGet, isValidURL } from "@/app/utils";
+import StepAction from "./components/stepAction";
 
 interface Props {
   onAddDataFill: (value: Project) => void;
-  show: boolean;
+  step: number;
+  onNext: () => void;
+  onBack: () => void;
 }
 
 const name_reg = /^[a-zA-Z0-9]{1,10}$/;
 
 export default forwardRef(function CreateNode(
-  { onAddDataFill, show }: Props,
+  { onAddDataFill, step, onNext, onBack }: Props,
   ref: any
 ) {
   const [tokenImg, setTokenImg] = useState<ImageUploadItem[]>([]);
@@ -41,6 +44,85 @@ export default forwardRef(function CreateNode(
 
   const [canValid, setCanValid] = useState(false);
   const [inValidVals, setInvaldVasl] = useState<any>({});
+
+  const [links, setLinks] = useState<any>({
+    x: {
+      isLink: true,
+      value: x,
+      type: "X",
+      img: "/img/community/x.svg",
+      show: true,
+      onChange: (val: string) => {
+        setTwitter(val);
+        setLinks({ ...links, x: { ...links.x, value: val } });
+      },
+      onBlur: () => {
+        const xError = validateTwitter(x);
+        if (xError) {
+          setInvaldVasl({ ...inValidVals, x: xError });
+        } else {
+          setInvaldVasl({ ...inValidVals, x: "" });
+        }
+      }
+    },
+    website: {
+      isLink: false,
+      value: website,
+      type: "Website",
+      img: "/img/community/website.svg",
+      show: false,
+      onChange: (val: string) => {
+        setWebsite(val);
+        setLinks({ ...links, website: { ...links.website, value: val } });
+      },
+      onBlur: () => {
+        const websiteError = validateWebsite(website);
+        if (websiteError) {
+          setInvaldVasl({ ...inValidVals, website: websiteError });
+        } else {
+          setInvaldVasl({ ...inValidVals, website: "" });
+        }
+      }
+    },
+    tg: {
+      isLink: true,
+      value: tg,
+      type: "Telegram",
+      img: "/img/community/telegram.svg",
+      show: false,
+      onChange: (val: string) => {
+        setTelegram(val);
+        setLinks({ ...links, tg: { ...links.tg, value: val } });
+      },
+      onBlur: () => {
+        const tgError = validateTelegram(tg);
+        if (tgError) {
+          setInvaldVasl({ ...inValidVals, tg: tgError });
+        } else {
+          setInvaldVasl({ ...inValidVals, tg: "" });
+        }
+      }
+    },
+    discord: {
+      isLink: true,
+      value: discord,
+      type: "Discord",
+      img: "/img/community/discard.svg",
+      show: false,
+      onChange: (val: string) => {
+        setDiscord(val);
+        setLinks({ ...links, discord: { ...links.discord, value: val } });
+      },
+      onBlur: () => {
+        const discordError = validateDiscord(discord);
+        if (discordError) {
+          setInvaldVasl({ ...inValidVals, discord: discordError });
+        } else {
+          setInvaldVasl({ ...inValidVals, discord: "" });
+        }
+      }
+    }
+  })
 
   const validateSameName = useCallback(async () => {
     const tokenInUse = await httpGet(
@@ -84,24 +166,23 @@ export default forwardRef(function CreateNode(
     [tokenName]
   );
 
+  const validateIcon = useCallback(
+    (tokenIcon: ImageUploadItem[]) => {
+      if (tokenIcon.length === 0) {
+        return "Token icon cannot be empty";
+      }
+
+      return "";
+    },
+    [tokenName]
+  );
+
   const validateImages = useCallback(
     (
       tokenImg: ImageUploadItem[],
-      tokenIcon: ImageUploadItem[],
-      showTokenSymbol: boolean
     ) => {
       if (tokenImg.length === 0) {
         return "Token image cannot be empty";
-      }
-
-      const tokenImgObj = tokenImg[0];
-      if (
-        (videoReg.test(tokenImgObj.url) ||
-          /.gif$/.test(tokenImgObj.url) ||
-          showTokenSymbol) &&
-        tokenIcon.length === 0
-      ) {
-        return "Token icon cannot be empty";
       }
 
       return "";
@@ -111,11 +192,11 @@ export default forwardRef(function CreateNode(
 
   const validateAbout = useCallback((about: string) => {
     if (!about) {
-      return "About cannot be empty";
+      return "Discription cannot be empty";
     }
 
     if (about.length > 1000) {
-      return "About cannot be length than 1000";
+      return "Discription cannot be length than 1000";
     }
 
     return "";
@@ -149,9 +230,16 @@ export default forwardRef(function CreateNode(
     return "";
   }, []);
 
-  const onPreview = useCallback(async () => {
+  const onPreview = useCallback(async (type: number) => {
     const inValidVals: any = {};
     let isValid = false;
+
+
+    const iconError = validateIcon(tokenIcon);
+    if (iconError) {
+      inValidVals["tokenIcon"] = iconError;
+      isValid = true;
+    }
 
     const nameError = await validateName(tokenName);
     if (nameError) {
@@ -165,16 +253,21 @@ export default forwardRef(function CreateNode(
       isValid = true;
     }
 
-    const imagesError = validateImages(tokenImg, tokenIcon, showTokenSymbol);
-    if (imagesError) {
-      inValidVals[imagesError.includes("icon") ? "tokenIcon" : "tokenImg"] =
-        imagesError;
-      isValid = true;
-    }
-
     const aboutError = validateAbout(about);
     if (aboutError) {
       inValidVals["about"] = aboutError;
+      isValid = true;
+    }
+
+    setInvaldVasl(inValidVals);
+
+    if (type === 1) {
+      return isValid;
+    }
+
+    const imagesError = validateImages(tokenImg);
+    if (imagesError) {
+      inValidVals["tokenImg"] = imagesError;
       isValid = true;
     }
 
@@ -208,7 +301,7 @@ export default forwardRef(function CreateNode(
       window.scrollTo({
         top: 0
       });
-      return;
+      return isValid;
     }
 
     onAddDataFill({
@@ -224,6 +317,8 @@ export default forwardRef(function CreateNode(
       discord,
       status: 0
     });
+
+    return isValid;
   }, [
     tokenName,
     ticker,
@@ -265,296 +360,250 @@ export default forwardRef(function CreateNode(
   return (
     <div
       style={{
-        display: show ? "block" : "none",
-        paddingBottom: isMobile ? 100 : 20
+        display: step <= 2 ? "block" : "none",
+        paddingBottom: isMobile ? 150 : 20
       }}
     >
-      <div
-        className={styles.group}
-        style={{
-          width: isMobile ? "100%" : "calc(50% - 10px)"
-        }}
-      >
-        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
-          <span className={styles.require}>* </span>
-          Name
-        </div>
-        <div className={styles.groupContent}>
-          <input
-            value={tokenName}
-            onChange={(e) => {
-              setTokenName(e.target.value);
-            }}
-            onBlur={async () => {
-              let nameError = validateName(tokenName);
-              if (!nameError) {
-                nameError = await validateSameName();
-              }
-              if (nameError) {
-                setInvaldVasl({ ...inValidVals, tokenName: nameError });
-              } else {
-                setInvaldVasl({ ...inValidVals, tokenName: "" });
-              }
-            }}
-            className={`${
-              isMobile ? styles.inputText : styles.laptopInputText
-            } ${inValidVals["tokenName"] ? styles.inputError : ""}`}
-            placeholder="Meme name"
-          />
-        </div>
-        {inValidVals["tokenName"] && (
-          <ErrMsg>{inValidVals["tokenName"]}</ErrMsg>
-        )}
-      </div>
 
-      <div
-        className={styles.group}
-        style={{
-          width: isMobile ? "100%" : "calc(50% - 10px)"
-        }}
-      >
-        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
-          <span className={styles.require}>* </span>Ticker
-        </div>
-        <div className={styles.groupContent}>
-          <input
-            value={ticker}
-            onChange={(e) => {
-              setTicker(e.target.value);
-            }}
-            onBlur={async () => {
-              let tickerError = validateTicker(ticker);
-              // if (!tickerError) {
-              //   tickerError = await validateSameName()
-              // }
-              if (tickerError) {
-                setInvaldVasl({ ...inValidVals, ticker: tickerError });
-              } else {
-                setInvaldVasl({ ...inValidVals, ticker: "" });
-              }
-            }}
-            className={`${
-              isMobile ? styles.inputText : styles.laptopInputText
-            } ${inValidVals["ticker"] ? styles.inputError : ""}`}
-            placeholder="say something"
-          />
-        </div>
-        {inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>}
-      </div>
-
-      <div className={styles.group}>
-        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
-          <span className={styles.require}>* </span>Image or Video
-        </div>
-        <div
-          className={
-            styles.groupContent +
-            " " +
-            styles.uploadContent +
-            " " +
-            (inValidVals["tokenImg"] ? styles.uploadError : "")
-          }
-        >
-          <Upload
-            percent={-1}
-            type="token"
-            accept="image/*, video/mp4"
-            fileList={tokenImg}
-            setFileList={setTokenImg}
-          />
-          <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
-        </div>
-        {inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>}
-        <div className={styles.tokenSymbol}>
-          <CheckBox
-            checked={showTokenSymbol}
-            onCheckChange={(isChecked) => {
-              if (tokenImg && tokenImg.length > 0) {
-                const url = tokenImg[0].url;
-                if (videoReg.test(url) || /.gif$/.test(url)) {
-                  setShowTokenSymbol(true);
-                  return;
-                }
-              }
-              setShowTokenSymbol(isChecked);
-            }}
-          />
-          <div className={styles.tokenSymbolTitle}>
-            Another image for token symbol
+      {step === 1 && <>
+        <div>
+          <div
+            className={
+              styles.uploadContent +
+              " " +
+              styles.avatar +
+              " " +
+              (inValidVals["tokenIcon"] ? styles.uploadError : "")
+            }
+          >
+            <Upload
+              percent={1}
+              type="avatar"
+              cropper={true}
+              accept="image/png, image/jpg, image/jpeg, image/svg"
+              fileList={tokenIcon}
+              setFileList={setTokenIcon}
+            />
+            <div>
+              <div className={styles.uploadTitle}>Token icon</div>
+              <div className={styles.uploadTip}>Support jpg/png/svg/gif</div>
+            </div>
           </div>
+          {inValidVals["tokenIcon"] && (
+            <ErrMsg>{inValidVals["tokenIcon"]}</ErrMsg>
+          )}
         </div>
-        {showTokenSymbol && (
-          <>
+
+        <div
+          className={styles.group}
+          style={{
+            width: isMobile ? "100%" : "calc(50% - 10px)"
+          }}
+        >
+          <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+            <div>
+              <span className={styles.require}>* </span>
+              Name
+            </div>
+            <div className={styles.requireSize}>50</div>
+          </div>
+          <div className={styles.groupContent}>
+            <input
+              value={tokenName}
+              onChange={(e) => {
+                setTokenName(e.target.value);
+              }}
+              onBlur={async () => {
+                let nameError = validateName(tokenName);
+                if (!nameError) {
+                  nameError = await validateSameName();
+                }
+                if (nameError) {
+                  setInvaldVasl({ ...inValidVals, tokenName: nameError });
+                } else {
+                  setInvaldVasl({ ...inValidVals, tokenName: "" });
+                }
+              }}
+              className={`${isMobile ? styles.inputText : styles.laptopInputText
+                } ${inValidVals["tokenName"] ? styles.inputError : ""}`}
+              placeholder="Meme name"
+            />
+          </div>
+          {inValidVals["tokenName"] && (
+            <ErrMsg>{inValidVals["tokenName"]}</ErrMsg>
+          )}
+        </div>
+
+        <div
+          className={styles.group}
+          style={{
+            width: isMobile ? "100%" : "calc(50% - 10px)"
+          }}
+        >
+          <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+            <div>
+              <span className={styles.require}>* </span>
+              Ticker
+            </div>
+            <div className={styles.requireSize}>10</div>
+          </div>
+          <div className={styles.groupContent}>
+            <input
+              value={ticker}
+              onChange={(e) => {
+                setTicker(e.target.value);
+              }}
+              onBlur={async () => {
+                let tickerError = validateTicker(ticker);
+                // if (!tickerError) {
+                //   tickerError = await validateSameName()
+                // }
+                if (tickerError) {
+                  setInvaldVasl({ ...inValidVals, ticker: tickerError });
+                } else {
+                  setInvaldVasl({ ...inValidVals, ticker: "" });
+                }
+              }}
+              className={`${isMobile ? styles.inputText : styles.laptopInputText
+                } ${inValidVals["ticker"] ? styles.inputError : ""}`}
+              placeholder="say something"
+            />
+          </div>
+          {inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>}
+        </div>
+
+        <div className={styles.group}>
+          <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+            <div>
+              <span className={styles.require}>* </span>
+              Discription
+            </div>
+            <div className={styles.requireSize}>1000</div>
+          </div>
+          <div className={styles.groupContent}>
+            <textarea
+              value={about}
+              onChange={(e) => {
+                setAbout(e.target.value);
+              }}
+              onBlur={() => {
+                const aboutError = validateAbout(about);
+                if (aboutError) {
+                  setInvaldVasl({ ...inValidVals, about: aboutError });
+                } else {
+                  setInvaldVasl({ ...inValidVals, about: "" });
+                }
+              }}
+              style={{ height: 100, padding: 10 }}
+              className={`${styles.inputText} ${inValidVals["about"] ? styles.inputError : ""
+                } ${!isMobile && styles.laptopInputText}`}
+              placeholder="say something"
+            />
+          </div>
+          {inValidVals["about"] && <ErrMsg>{inValidVals["about"]}</ErrMsg>}
+        </div>
+      </>}
+
+      {
+        step === 2 && <>
+          <div className={styles.group}>
             <div
               className={
                 styles.groupContent +
                 " " +
                 styles.uploadContent +
                 " " +
-                styles.avatar +
-                " " +
-                (inValidVals["tokenIcon"] ? styles.uploadError : "")
+                (inValidVals["tokenImg"] ? styles.uploadError : "")
               }
-              style={{ paddingLeft: 15, paddingTop: 10 }}
             >
               <Upload
-                percent={1}
-                type="avatar"
-                accept="image/png, image/jpg, image/jpeg, image/svg"
-                fileList={tokenIcon}
-                setFileList={setTokenIcon}
+                percent={-1}
+                type="token"
+                accept="image/*, video/mp4"
+                fileList={tokenImg}
+                setFileList={setTokenImg}
               />
-              <div className={styles.uploadTip}>Support img/png/svg</div>
+              <div>
+                <div className={styles.uploadTitle}>Video or image</div>
+                <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
+              </div>
             </div>
-            {inValidVals["tokenIcon"] && (
-              <ErrMsg>{inValidVals["tokenIcon"]}</ErrMsg>
-            )}
-          </>
-        )}
-      </div>
+            {inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>}
+          </div>
 
-      <div className={styles.group}>
-        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
-          <span className={styles.require}>* </span>About us
-        </div>
-        <div className={styles.groupContent}>
-          <input
-            value={about}
-            onChange={(e) => {
-              setAbout(e.target.value);
-            }}
-            onBlur={() => {
-              const aboutError = validateAbout(about);
-              if (aboutError) {
-                setInvaldVasl({ ...inValidVals, about: aboutError });
-              } else {
-                setInvaldVasl({ ...inValidVals, about: "" });
+          <div className={styles.group}>
+            <div
+              className={styles.Flex}
+              style={{
+                columnGap: isMobile ? 0 : 20
+              }}
+            >
+              {
+                Object.keys(links).map((key: any) => {
+                  if (links[key].show) {
+                    return <div
+                      className={isMobile ? styles.groupContent : styles.LinkPc}
+                      style={{
+                        width: "100%"
+                      }}
+                      key={key}
+                    >
+                      <Link
+                        value={links[key].value}
+                        onChange={(val) => {
+                          links[key].onChange(val);
+                        }}
+                        onBlur={() => {
+                          links[key].onBlur();
+                        }}
+                        onDelete={() => {
+                          links[key].show = false;
+                          setLinks({ ...links });
+                        }}
+                        type={links[key].type}
+                        img={links[key].img}
+                        isLink={links[key].isLink}
+                        hideDelete={key === "x"}
+                      />
+                    </div>
+                  }
+                })
               }
-            }}
-            className={`${styles.inputText} ${
-              inValidVals["about"] ? styles.inputError : ""
-            } ${!isMobile && styles.laptopInputText}`}
-            placeholder="say something"
-          />
-        </div>
-        {inValidVals["about"] && <ErrMsg>{inValidVals["about"]}</ErrMsg>}
-      </div>
+            </div>
 
-      <div className={styles.group}>
-        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
-          Website
-        </div>
-        <div className={isMobile ? styles.Website : styles.LinkPc}>
-          <Link
-            value={website}
-            onChange={(val) => {
-              setWebsite(val);
-            }}
-            onBlur={() => {
-              const websiteError = validateWebsite(website);
-              if (websiteError) {
-                setInvaldVasl({ ...inValidVals, website: websiteError });
-              } else {
-                setInvaldVasl({ ...inValidVals, website: "" });
-              }
-            }}
-          />
-        </div>
-        {inValidVals["website"] && <ErrMsg>{inValidVals["website"]}</ErrMsg>}
-      </div>
+            {
+              Object.keys(links).some((key: any) => !links[key].show) && (
+                <div className={styles.linkActionGroup}>
+                  <div>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.16 9.816V0.856H5.76V9.816H4.16ZM0.48 6.136V4.536H9.44V6.136H0.48Z" fill="#9290B1" />
+                    </svg>
+                  </div>
 
-      <div className={styles.group}>
-        <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
-          Community
-        </div>
-        <div
-          className={styles.Flex}
-          style={{
-            columnGap: isMobile ? 0 : 20
-          }}
-        >
-          <div
-            className={styles.groupContent}
-            style={{
-              width: "100%"
-            }}
-          >
-            <Link
-              value={x}
-              onChange={(val) => {
-                setTwitter(val);
-              }}
-              onBlur={() => {
-                const xError = validateTwitter(x);
-                if (xError) {
-                  setInvaldVasl({ ...inValidVals, x: xError });
-                } else {
-                  setInvaldVasl({ ...inValidVals, x: "" });
-                }
-              }}
-              type="X"
-              img="/img/community/x.svg"
-            />
-            {inValidVals["x"] && <ErrMsg>{inValidVals["x"]}</ErrMsg>}
+                  {
+                    Object.keys(links).map((key: any) => {
+                      if (!links[key].show) {
+                        return <div className={styles.linkActionItem} key={key} onClick={() => {
+                          links[key].show = true;
+                          setLinks({ ...links });
+                        }}>
+                          <img src={links[key].img} alt={links[key].type} />
+                        </div>
+                      }
+                    })
+                  }
+                </div>
+              )
+            }
           </div>
-          <div
-            className={isMobile ? styles.groupContent : styles.LinkPc}
-            style={{
-              width: "100%"
-            }}
-          >
-            <Link
-              value={tg}
-              onChange={(val) => {
-                setTelegram(val);
-              }}
-              onBlur={() => {
-                const tgError = validateTelegram(tg);
-                if (tgError) {
-                  setInvaldVasl({ ...inValidVals, tg: tgError });
-                } else {
-                  setInvaldVasl({ ...inValidVals, tg: "" });
-                }
-              }}
-              type="Telegram"
-              img="/img/community/telegram.svg"
-            />
-            {inValidVals["tg"] && <ErrMsg>{inValidVals["tg"]}</ErrMsg>}
-          </div>
-          <div
-            className={isMobile ? styles.groupContent : styles.LinkPc}
-            style={{
-              width: "100%"
-            }}
-          >
-            <Link
-              value={discord}
-              onChange={(val) => {
-                setDiscord(val);
-              }}
-              onBlur={() => {
-                const discordError = validateDiscord(discord);
-                if (discordError) {
-                  setInvaldVasl({ ...inValidVals, discord: discordError });
-                } else {
-                  setInvaldVasl({ ...inValidVals, discord: "" });
-                }
-              }}
-              type="Discord"
-              img="/img/community/discard.svg"
-            />
-            {inValidVals["discord"] && (
-              <ErrMsg>{inValidVals["discord"]}</ErrMsg>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {isMobile && (
-        <div className={styles.btnWapper}>
-          <MainBtn onClick={onPreview}>Preview</MainBtn>
-        </div>
-      )}
+        </>
+      }
+      <StepAction
+        step={step}
+        onBack={onBack}
+        onNext={onNext}
+        onPreview={onPreview}
+      />
     </div>
   );
 });
