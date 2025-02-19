@@ -69,11 +69,11 @@ export default function Desc({ data, specialTime, mc, showHolders = true }: { da
                     <div className={styles.statsLabel}>
                         <div>
                             <div>Buys</div>
-                            <div className={ styles.tradeAmount }>$888</div>
+                            <div className={styles.tradeAmount}>$888</div>
                         </div>
                         <div>
                             <div>Sells</div>
-                            <div className={ styles.tradeAmount }>$888</div>
+                            <div className={styles.tradeAmount}>$888</div>
                         </div>
                     </div>
                     <div className={styles.statsValue}>
@@ -224,41 +224,44 @@ export default function Desc({ data, specialTime, mc, showHolders = true }: { da
             )}
         </div>
 
-        <div className={styles.singleProgress}>
-            <div className={styles.progressTitleWrapper}>
-                <div className={styles.progressTitle}>
-                    Crowned progress
-                </div>
-                <div className={styles.progressPercent}>
-                    {data.kingProgress && top1?.address === data.address
-                        ? 100
-                        : data.kingProgress}
-                    %
-                </div>
-            </div>
+        {
+            data.status! > 0 && (
+                <div className={styles.singleProgress}>
+                    <div className={styles.progressTitleWrapper}>
+                        <div className={styles.progressTitle}>
+                            Crowned progress
+                        </div>
+                        <div className={styles.progressPercent}>
+                            {data.kingProgress && top1?.address === data.address
+                                ? 100
+                                : data.kingProgress}
+                            %
+                        </div>
+                    </div>
 
-            <ProgressBar
-                percent={
-                    data.kingProgress && top1?.address === data.address
-                        ? 100
-                        : data.kingProgress
-                }
-                style={{
-                    "--track-width": "4px",
-                    "--fill-color": "#FCD743",
-                    "--track-color": "#3C3C3C80"
-                }}
-            />
+                    <ProgressBar
+                        percent={
+                            data.kingProgress && top1?.address === data.address
+                                ? 100
+                                : data.kingProgress
+                        }
+                        style={{
+                            "--track-width": "4px",
+                            "--fill-color": "#FCD743",
+                            "--track-color": "#3C3C3C80"
+                        }}
+                    />
 
-            {data.lastKingTime !== 0 && (
-                <div className={styles.progressDesc} style={{ color: "#FCD743" }}>
-                    Crowned king of the hill on{" "}
-                    {data.lastKingTime
-                        ? formatDateEn(data.lastKingTime, "MMM D, YYYY HH:mm:ss")
-                        : "-"}
+                    {data.lastKingTime !== 0 && (
+                        <div className={styles.progressDesc} style={{ color: "#FCD743" }}>
+                            Crowned king of the hill on{" "}
+                            {data.lastKingTime
+                                ? formatDateEn(data.lastKingTime, "MMM D, YYYY HH:mm:ss")
+                                : "-"}
+                        </div>
+                    )}
                 </div>
             )}
-        </div>
 
         {showHolders && data.status! > 0 && (
             <div className={styles.panel}>
