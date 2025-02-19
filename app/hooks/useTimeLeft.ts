@@ -1,38 +1,36 @@
-import { useCountDown } from "ahooks"
-import { useMemo } from "react"
+import { useCountDown } from "ahooks";
+import { useMemo } from "react";
 
 export default function useTimeLeft({ time }: any) {
-    const [countdown, { days, hours, minutes, seconds }] = useCountDown({
-        leftTime: time ? (time - Date.now() < 0 ? 0: time - Date.now()) : 0
-    })
+  const [countdown, { days, hours, minutes, seconds }] = useCountDown({
+    leftTime: time ? (time - Date.now() < 0 ? 0 : time - Date.now()) : 0
+  });
 
-    const timeFormat = useMemo(() => {
-        const _hours = days ? days * 24 + hours: hours
-        const timeList = [_hours, minutes, seconds]
-        const timeStr = timeList.reduce((pre, next) => {
-            if (!pre && Number(next) === 0) {
-                return ''
-            } else {
-                const val = next < 10 ? `0${next}` : `${next}`
-                if (!pre) {
-                    return val
-                } else {
-                    return `${pre}:${val}`
-                }
-            }
-        }, '')
+  const timeFormat = useMemo(() => {
+    const _hours = days ? days * 24 + hours : hours;
+    const timeList = [_hours, minutes, seconds];
+    const timeStr = timeList.reduce((pre, next) => {
+      if (!pre && Number(next) === 0) {
+        return "";
+      } else {
+        const val = next < 10 ? `0${next}` : `${next}`;
+        if (!pre) {
+          return val;
+        } else {
+          return `${pre}:${val}`;
+        }
+      }
+    }, "");
 
-        return timeStr
+    return timeStr;
+  }, [days, hours, minutes, seconds]);
 
-    }, [days, hours, minutes, seconds])
-
-    return {
-        timeFormat,
-        days,
-        hours,
-        minutes,
-        seconds,
-        countdown
-    }
-
+  return {
+    timeFormat,
+    days,
+    hours,
+    minutes,
+    seconds,
+    countdown
+  };
 }

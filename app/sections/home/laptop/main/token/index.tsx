@@ -15,7 +15,6 @@ import {
 } from "@/app/components/timesLike/ActionTrigger";
 import { useState, useMemo, useEffect } from "react";
 import Loading from "@/app/components/icons/loading";
-import NextButton from "../../fullscreen/next-button";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { useAuth } from "@/app/context/auth";
 import useMc from "@/app/hooks/useMc";
@@ -34,7 +33,7 @@ export default function Token({
   list
 }: any) {
   const [currentTab, setCurrentTab] = useState("info");
-  const { userInfo } = useAuth();
+  const { userInfo, updateUserLikeNum } = useAuth();
   const [mc, setMC] = useState<string | number>("-");
   const router = useRouter();
   const comments = useCommentList({ id: infoData2?.id });
@@ -77,7 +76,12 @@ export default function Token({
 
   const like = async () => {
     next();
-    await actionLikeTrigger(infoData2, showShare);
+
+    await actionLikeTrigger({
+      data: infoData2,
+      onShare: showShare,
+      onSuccess: updateUserLikeNum
+    });
   };
 
   const hate = () => {
@@ -192,23 +196,6 @@ export default function Token({
         }}
         onBoost={next}
       />
-
-      {!isFull && infoData2 && from !== "detail" && !!type && (
-        <NextButton
-          onClick={() => {
-            if (type === 0) {
-              hate();
-            } else {
-              if (!userInfo?.address) {
-                // @ts-ignore
-                window.connect();
-                return;
-              }
-              next();
-            }
-          }}
-        />
-      )}
     </div>
   );
 }

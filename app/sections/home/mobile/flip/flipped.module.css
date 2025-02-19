@@ -1,37 +1,38 @@
 .Container {
-  border-radius: 16px;
-  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
-  width: 311px;
-  height: 88px;
-  background-image: url(/img/home/flipped-bg.png);
-  background-size: cover;
-  box-sizing: border-box;
-  padding: 0px 0px 5px 24px;
+  margin-left: 12px;
+  position: relative;
+  width: 110px;
+  height: 29.5px;
+  flex-shrink: 0;
+  font-family: FingerPaint;
+  margin-bottom: 10px;
+  transform: rotate(-3deg);
+}
+
+.Content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
   display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-left: 10px;
 }
 
-.Label {
-  color: rgba(255, 255, 255, 0.6);
-  font-family: Unbounded;
-  font-size: 12px;
+.Bg {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.Star {
+  margin-top: 10px;
+  margin-left: 9px;
+}
+
+.Text {
+  color: #040404;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-}
-
-.Desc {
-  color: #fff;
-  font-family: Unbounded;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-top: 8px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 220px;
+  margin-top: 4px;
+  margin-left: 5px;
 }

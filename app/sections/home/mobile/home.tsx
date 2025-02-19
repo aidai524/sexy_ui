@@ -1,9 +1,9 @@
 "use client";
 
-import Header from "./header";
 import List from "./list";
 import styles from "./home.module.css";
 import PageHeader from "@/app/components/page-header/mobile";
+import Tabs from "./tabs";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useUserAgent } from "@/app/context/user-agent";
 
@@ -17,6 +17,7 @@ export default function HomeMobile() {
       style={{ height: innerHeight, width: innerWidth }}
     >
       <PageHeader from="home" />
+      <Tabs />
       <div
         className={styles.ListWrapper}
         style={{

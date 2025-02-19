@@ -15,8 +15,8 @@ export default [
   {
     icon: MemesIcon,
     label: "Memes",
-    key: ["/trends"],
-    path: "/trends",
+    key: ["/memes"],
+    path: "/memes",
     iconSize: 26
   },
   {

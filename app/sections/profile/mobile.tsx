@@ -56,6 +56,7 @@ export default function Profile({
             />
           )
         }
+        style={{ backgroundColor: "transparent" }}
         isOther={isOther}
       />
       {configStore.config.showAirdropEntry && <AirdropEntry />}
