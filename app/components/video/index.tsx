@@ -184,6 +184,7 @@ export default function VideoPlayer({
         webkit-playsinline
         className={className}
         style={style}
+        preload="auto"
       >
         <source src={src} type={`video/${type}`} />
       </video>
