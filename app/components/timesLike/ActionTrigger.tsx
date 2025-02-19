@@ -55,6 +55,8 @@ const onHate = async (data: Project) => {
 export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
   const { likeNum, likeNumToday, projectLikeNum } = await onLike(data);
 
+  if (data.status !== 0) return;
+
   onSuccess?.(likeNumToday);
 
   if (projectLikeNum === 100) {
