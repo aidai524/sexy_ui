@@ -1,11 +1,33 @@
 import React from 'react'
 import styles from './index.module.css'
+import { CopyierIconBlack, ClaimIcon } from '@/app/sections/trends/components/top-traders/icon'
+import RightArrowWrap from '@/app/sections/smart/components/RightArrowWrap'
 
 export default function CopyTradeCard() {
   return (
     <div className={styles.container}>
-        <span className={styles.title}>Copy Trade</span>
-        <span className={styles.copyierAmount}>1000</span>
+        <div className={styles.title}>
+            <span>Copied PRFM</span>
+            <RightArrowWrap />
+        </div>
+
+        <div className={styles.copyDetails}>
+            <div className={styles.totalPnl}>
+              <span className={styles.detailTitle}>Total PNL</span>
+              <span className={styles.detailValueContainer}>
+                <span className={styles.detailValue}>0</span>
+                <span className={styles.detailValueCurrency}>SOL</span>
+              </span>
+            </div>
+            <div className={styles.openPosition}>
+              <span className={styles.detailTitle}>Open Position</span>
+              <span className={styles.detailValueContainer}>
+                <span className={styles.detailValueCurrent}>0</span>
+                <span className={styles.detailValue}>/ 0</span>
+                <span className={styles.detailValueCurrency}>SOL</span>
+              </span>
+            </div>
+        </div>
     </div>
   )
 }
