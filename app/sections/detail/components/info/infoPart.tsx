@@ -16,6 +16,10 @@ import { getVideoExt, imgReg, videoReg } from "@/app/components/upload";
 import VideoPlayer from "@/app/components/video";
 import Empty from "@/app/components/empty";
 import { useTrendsStore } from "@/app/store/useTrends";
+import TokenIcon from "@/app/components/avatar/token";
+import VideoIcon from "@/app/components/icons/video";
+import HeartIcon from "@/app/components/icons/heart";
+import ClockIcon from "@/app/components/icons/clock";
 
 interface Props {
   data: Project;
@@ -44,207 +48,86 @@ export default function InfoPart({
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
-  const { top1 } = useTrendsStore();
-  const { mc: pumpMc } = useMc({
-    tokenAddress: data?.address,
-    disable: (data?.DApp === "sexy" && data?.status === 1) || data?.status! < 1
-  });
-  const userName = useMemo(() => {
-    if (data?.creater) {
-      if (data.creater.name) {
-        return data.creater.name;
-      }
-
-      if (data.creater.address) {
-        return formatAddress(data.creater.address);
-      }
-    }
-
-    if (data?.account) {
-      return formatAddress(data.account);
-    }
-    return "-";
-  }, [data]);
+  
+  
+  
   const { isMobile } = useUserAgent();
 
   if (!data) {
     return <Empty text="No info" />;
   }
 
-  console.log('top1', top1);
-
   return (
     <div>
-      <div className={styles.detailAvatar}>
-        {showMedia && (
-          <div className={styles.tokenImgWrapper}>
-            {videoReg.test(data.tokenImg || "") ? (
-              <VideoPlayer
-                key={data.tokenImg}
-                src={data.tokenImg}
-                playManually={true}
-                type={getVideoExt(data.tokenImg)}
-                className={styles.tokenImg}
-              />
-            ) : (
-              <img
-                key={data.tokenImg}
-                className={styles.tokenImg}
-                src={data.tokenImg || "/img/token-placeholder.png"}
-              />
-            )}
-          </div>
-        )}
-
-        <div
-          style={{
-            width: showMedia ? "calc(100% - 100px)" : "100%"
-          }}
-        >
-          <div className={styles.nameWrapper}>
-            <div className={styles.name}>{data.tokenName}</div>
-            <div className={styles.tickerWrapper}>
-              <div className={styles.ticker}>Ticker:</div>
-              <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
-                <span className={styles.des}>{data.ticker}</span>
+      <div className={styles.tokenSummary}>
+        <div className={styles.tokenSummaryContent}>
+          <TokenIcon token={data} />
+          <div className={styles.tokenSummaryInfo}>
+            <div className={styles.tokenSummaryTitle}>{data.tokenName}</div>
+            <div className={styles.tokenSummaryDesc}>
+              <div className={styles.tokenSummaryIcon}>
+                <VideoIcon />
+              </div>
+              <div className={styles.tokenSummaryDescText}>
                 <TokenTags token={data} />
               </div>
             </div>
           </div>
-
-          <div className={styles.author}>
-            <div className={styles.authorTitle}>Created by:</div>
-            <div
-              onClick={() => {
-                if (address !== data.account)
-                  router.push(
-                    "/profile/user?account=" + data.account + "&from=detail"
-                  );
-              }}
-              className={[
-                styles.authorDesc,
-                styles.authorDescEs,
-                "text-overflow",
-                "button"
-              ].join(" ")}
-            >
-              {userName}
-              {address === data.account && (
-                <span style={{ color: "#FBCA04" }}>(Self)</span>
-              )}
+        </div>
+        <div className={styles.tokenAddressWrapper}>
+          <div className={styles.tokenAddressContent}>
+            <div className={styles.tokenAddress}>
+              {formatAddress(data.address as string)}
             </div>
-          </div>
-          {data.creater && data.creater.education && (
-            <div className={styles.author}>
-              <div className={styles.authorTitle}>Education:</div>
-              <div
-                className={[styles.authorDesc, styles.authorDescEs].join(" ")}
-              >
-                {data.creater && data.creater.education}
-              </div>
-            </div>
-          )}
-          <div className={styles.author}>
-            <div className={styles.authorTitle}>Create time:</div>
-            <div className={styles.authorDesc}>
-              {specialTime
-                ? specialTime
-                : timeAgo(data.DApp === "pump" ? data.time : data.createdAt)}
-            </div>
-          </div>
-          {data.DApp === "pump" && (
-            <div className={styles.author}>
-              <div className={styles.authorTitle}>{"Import time"}:</div>
-              <div className={styles.authorDesc}>
-                {specialTime ? specialTime : timeAgo(data.createdAt)}
-              </div>
-            </div>
-          )}
-          <div className={styles.author}>
-            <div className={styles.authorTitle}>Market cap:</div>
-            {data.DApp === "sexy" && data.status === 1 && (
-              <div className={styles.authorDesc} key={data.address}>
-                {mc === 0 || mc === "0" || mc === "-" ? (
-                  <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
-                ) : (
-                  <div style={{ color: "#6fff00" }}>
-                    ${simplifyNum(mc as number, 2)}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {((data.status === 1 && data.DApp === "pump") ||
-              data.status! > 1) && (
-              <div
-                className={styles.authorDesc}
-                key={data.address}
-                style={{ color: "#6fff00" }}
-              >
-                {pumpMc === 0 ? (
-                  <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
-                ) : (
-                  <div style={{ color: "#6fff00" }}>
-                    ${simplifyNum(pumpMc as number, 2)}
-                  </div>
-                )}
-              </div>
-            )}
+            <Copyed value={data.address as string} />
           </div>
         </div>
       </div>
-
-      {!!data.about && (
-        <div className={styles.aboutUs}>
-          <div className={styles.abountDetail}>{data.about}</div>
-        </div>
-      )}
 
       {data.status === 0 && (
         <div className={styles.panel}>
           <div className={styles.singleProgress}>
             <div className={styles.progressTitleWrapper}>
               <div className={styles.progressTitle}>
-                Pre-launch progress (Likes)
+                <ClockIcon />
+                <div className={styles.progressTime}>0 : 23 : 12</div>
               </div>
-              <div className={styles.progressPercent}>{data.like || 0}/100</div>
+              <div className={styles.progressAmount}>
+                <div>{data.like || 0}/100 likes </div>
+                <HeartIcon />
+              </div>
             </div>
-
             <ProgressBar
               percent={data.like || 0}
               style={{
-                "--track-width": "14px",
-                "--fill-color": "#FFA8E8",
+                "--track-width": "6px",
+                "--fill-color": "#FF2681",
                 "--track-color": "#29242B"
               }}
             />
-
-            <div className={styles.progressDesc}>
-              It takes 100 likes to get into launching phase.
-            </div>
           </div>
 
-          <div className={styles.singleProgress} style={{ marginTop: 15 }}>
+          <div className={styles.singleProgress} style={{ marginTop: 15, paddingRight: 30 }}>
             <div className={styles.progressTitleWrapper}>
-              <div className={styles.progressTitle}>
-                {data.prePaid || 0} Flipped
-              </div>
+              
               <div className={styles.progressPercent}>
-                {data.prePaidAmount && data.prePaid 
-                  ? new Big(data.prePaidAmount || 0)
+                <div className={styles.progressTitleText}>Flipped (SOL)</div>
+                <div className={styles.progressTitleValue} style={{ color: "#FBCA04" }}>
+                  {data.prePaidAmount && data.prePaid
+                    ? new Big(data.prePaidAmount || 0)
                       .div(10 ** 9)
                       .toFixed(4)
                       .toString()
-                  : 0} 
-                 SOL
+                    : 0}
+                </div>
+              </div>
+
+              <div className={styles.progressPercent}>
+                <div className={styles.progressTitleText}>Flipped Account</div>
+                <div className={styles.progressTitleValue} style={{ color: "#fff" }}>{data.prePaid || 0}</div>
               </div>
             </div>
-
-            <div className={styles.progressDesc} style={{ color: "#D9D9D9" }}>
-              {
-                "‘Flip’ means ‘pre-buy’, users will auto-buy in at the average price when this meme launching."
-              }
-            </div>
+          
           </div>
         </div>
       )}
@@ -253,119 +136,35 @@ export default function InfoPart({
         <div className={styles.panel}>
           <div className={styles.singleProgress}>
             <div className={styles.progressTitleWrapper}>
-              <div className={styles.progressTitle}>Bonding curve progress</div>
               <div className={styles.progressPercent}>
                 {data.bondingProgress}%
+              </div>
+              <div className={styles.progressTitle}>
+              45.5 / <span style={{ color: "#9290B1" }}>535.6 SOL</span>
               </div>
             </div>
 
             <ProgressBar
               percent={data.bondingProgress}
               style={{
-                "--track-width": "14px",
-                "--fill-color": "#FBCA04",
-                "--track-color": "#29242B"
+                "--track-width": "6px",
+                "--fill-color": "#C9FF5D",
+                "--track-color": "#3C3C3C80"
               }}
             />
-
-            <div className={styles.progressDesc}>
-              Graduate this coin to Meteora at $40,560 market cap. There will be
-              40.56 SOL in the bonding curve.
-            </div>
           </div>
 
-          <div className={styles.singleProgress} style={{ marginTop: 15 }}>
-            <div className={styles.progressTitleWrapper}>
-              <div className={styles.progressTitle}>
-                King of the hill progress
+          <div className={styles.priceContent} style={{ marginTop: 15 }}>
+              <div className={styles.priceNums}>
+                <div className={styles.priceAmount}>$17.2K</div>
+                <div className={styles.priceUp}>+1.1K</div>
               </div>
-              <div className={styles.progressPercent}>
-                {data.kingProgress && top1?.address === data.address
-                  ? 100
-                  : data.kingProgress}
-                %
-              </div>
-            </div>
-
-            <ProgressBar
-              percent={
-                data.kingProgress && top1?.address === data.address
-                  ? 100
-                  : data.kingProgress
-              }
-              style={{
-                "--track-width": "14px",
-                "--fill-color": "#BF66FF",
-                "--track-color": "#29242B"
-              }}
-            />
-
-            {data.lastKingTime !== 0 && (
-              <div className={styles.progressDesc} style={{ color: "#BF66FF" }}>
-                Crowned king of the hill on{" "}
-                {data.lastKingTime
-                  ? formatDateEn(data.lastKingTime, "MMM D, YYYY HH:mm:ss")
-                  : "-"}
-              </div>
-            )}
+              <div className={styles.priceUnit}>$0.00356</div>
           </div>
         </div>
       )}
 
-      {showAddress && (
-        <div className={styles.panel}>
-          <div className={styles.tokenAddressWrapper}>
-            <div className={styles.tokenAddressTitle}>Contract address:</div>
-            <div className={styles.tokenAddressContent}>
-              <div className={styles.tokenAddress}>
-                {formatAddress(data.address as string)}
-              </div>
-              <Copyed value={data.address as string} />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {(data.x || data.tg || data.discord || data.website) && (
-        <div className={styles.panel}>
-          <div
-            className={styles.communityIcons}
-            style={{
-              gap: isMobile ? "15vw" : "60px"
-            }}
-          >
-            {data.website && (
-              <a className={styles.link} target="_blank" href={data.website}>
-                <img src="/img/community/website.svg" />
-              </a>
-            )}
-
-            {data.x && (
-              <a className={styles.link} target="_blank" href={data.x}>
-                <img src="/img/community/x.svg" />
-              </a>
-            )}
-
-            {data.tg && (
-              <a className={styles.link} target="_blank" href={data.tg}>
-                <img src="/img/community/telegram.svg" />
-              </a>
-            )}
-
-            {data.discord && (
-              <a className={styles.link} target="_blank" href={data.discord}>
-                <img src="/img/community/discard.svg" />
-              </a>
-            )}
-          </div>
-        </div>
-      )}
-
-      {showHolders && (
-        <div className={styles.panel}>
-          <Holder address={data.address} />
-        </div>
-      )}
+      
     </div>
   );
 }

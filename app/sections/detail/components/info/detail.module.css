@@ -1,6 +1,6 @@
 .main {
-  background-color: #252328;
-  border-radius: 15px 15px 0 0;
+  /* background-color: #252328;
+  border-radius: 15px 15px 0 0; */
 }
 .mainEmpty {
   composes: main;
@@ -19,6 +19,40 @@
     font-weight: 700;
   }
 }
+
+.tokenSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  padding: 10px 15px;
+} 
+
+.tokenSummaryContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tokenSummaryInfo {
+  margin-top: 5px;
+}
+
+.tokenSummaryDesc {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+} 
+
+.tokenSummaryIcon {
+  cursor: pointer;
+}
+
+.tokenSummaryTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+} 
 
 .detailAvatar {
   display: flex;
@@ -131,17 +165,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .tokenAddressTitle {
-    font-size: 14px;
-    color: #fff;
-  }
+  background-color: #3C3C3C80;
+  border-radius: 10px;
+  padding: 5px;
   .tokenAddressContent {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 10px;
+    font-size: 10px;
+    gap: 5px;
     .tokenAddress {
-      color: var(--part-bg);
+      color: #9290B1;
     }
   }
 }
@@ -151,9 +185,42 @@
   align-items: center;
   color: #fff;
   font-size: #ffffff;
-  font-size: 14px;
+  font-size: 12px;
   justify-content: space-between;
   margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.progressTitle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.progressTime {
+  color: #fff;
+  font-size: 10px;
+  background-color: #3C3C3C;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+.progressAmount {
+  font-size: 12px;  
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.progressTitleText {
+  color: #9290B1;
+}
+
+.progressTitleValue {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .progressDesc {
@@ -161,3 +228,37 @@
   font-size: 10px;
   margin-top: 10px;
 }
+
+.priceContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  
+}
+
+.priceNums {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 5px; 
+  color: #C9FF5D;
+} 
+
+.priceAmount {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.priceUp {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.priceUnit {
+  font-size: 12px;
+  color: #9290B1;
+}
+

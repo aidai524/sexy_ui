@@ -1,0 +1,103 @@
+.detailAvatar {
+  /* display: flex;
+  align-items: stretch;
+  padding: 15px;
+  gap: 10px; */
+  
+}
+.infoArea {
+  padding: 15px;
+  background-color: #FFFFFF14;
+}
+
+.nameWrapper {
+  .name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #9290B1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.ticker {
+  color: #9290B1;
+}
+
+.tickerContent {
+  color: var(--part-bg);
+}
+
+.des {
+  color: #fff;
+}
+
+
+.author {
+  display: flex;
+  font-size: 12px;
+  font-weight: 400;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  .authorTitle {
+    color: #d9d9d9;
+  }
+  .authorDesc {
+    color: #ffffff;
+    width: calc(100% - 100px);
+    text-align: right;
+    &.authorDescEs {
+      color: #ff37a3;
+    }
+  }
+}
+
+.nameWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;  
+  padding: 5px 0;
+}
+
+.communityIcons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15vw;
+  padding: 0 35px;
+}
+
+.panel {
+  background-color: #121719;
+  padding: 15px 15px;
+  margin-top: 10px;
+}
+
+.abountDetail {
+  color: #fff;
+}
+
+.aboutUs {
+  margin-top: 5px;
+}
+
+.singleProgress {
+  margin-top: 10px;
+  padding: 15px;
+  background-color: #FFFFFF14;
+}
+
+.progressTitleWrapper {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: #ffffff;
+  font-size: 12px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
