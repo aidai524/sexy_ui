@@ -1,6 +1,8 @@
 import { useSetting } from "@/app/store/use-setting";
 import type { Project } from "@/app/type";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useDebounceFn } from "ahooks";
+import ProgressBar from "./progress-bar";
 
 interface VideoPlayerProps {
   src: string;
@@ -10,6 +12,7 @@ interface VideoPlayerProps {
   autoPlay?: boolean;
   token?: Project;
   playManually?: boolean;
+  videoProgressStyle?: any;
 }
 
 export default function VideoPlayer({
@@ -19,13 +22,24 @@ export default function VideoPlayer({
   style = {},
   autoPlay = true,
   token,
-  playManually = false
+  playManually = false,
+  videoProgressStyle
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isShow, setIsShow] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isPlay, setIsPlay] = useState(false);
   const { autoPlay: autoPlaySetting, set }: any = useSetting();
+  const [progress, setProgress] = useState(0);
+
+  const { run: onTimeUpdate } = useDebounceFn(
+    () => {
+      if (videoRef.current?.currentTime && videoRef.current?.duration) {
+        setProgress(videoRef.current.currentTime / videoRef.current.duration);
+      }
+    },
+    { wait: 100 }
+  );
 
   const handleClick = useCallback(() => {
     if (!autoPlay || !autoPlaySetting || !playManually) {
@@ -69,7 +83,7 @@ export default function VideoPlayer({
                 const outDom = document.getElementById(
                   `${token?.status === 0 ? "preLaunch" : "launching"}-list`
                 );
-                console.log(outDom);
+
                 if (outDom?.style.opacity === "1") {
                   videoRef.current?.play();
                 }
@@ -164,11 +178,13 @@ export default function VideoPlayer({
         onEnded={() => {
           setIsPlay(false);
         }}
+        onTimeUpdate={onTimeUpdate}
         ref={videoRef}
         playsInline
         webkit-playsinline
         className={className}
         style={style}
+        preload="auto"
       >
         <source src={src} type={`video/${type}`} />
       </video>
@@ -204,6 +220,12 @@ export default function VideoPlayer({
             />
           </svg>
         </div>
+      )}
+      {videoProgressStyle && (
+        <ProgressBar
+          progress={progress}
+          videoProgressStyle={videoProgressStyle}
+        />
       )}
     </div>
   );

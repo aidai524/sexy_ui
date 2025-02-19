@@ -5,6 +5,7 @@ import styles from "./home.module.css";
 import PageHeader from "@/app/components/page-header/mobile";
 import Tabs from "./tabs";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { LaunchType } from "@/app/store/use-projects-new";
 import { useUserAgent } from "@/app/context/user-agent";
 
 export default function HomeMobile() {
@@ -26,20 +27,20 @@ export default function HomeMobile() {
           width: innerWidth
         }}
       >
-        <List
-          type="preLaunch"
-          onChangeTab={(tab: number) => {
-            homeTabStore.set({ homeTabIndex: tab });
-          }}
-          isCurrentTab={homeTabStore.homeTabIndex === 0}
-        />
-        <List
-          type="launching"
-          onChangeTab={(tab: number) => {
-            homeTabStore.set({ homeTabIndex: tab });
-          }}
-          isCurrentTab={homeTabStore.homeTabIndex === 1}
-        />
+        {Object.keys(LaunchType).map((item, i) => (
+          <List
+            type={item}
+            onChangeTab={(tab: number) => {
+              let _tab = tab;
+              if (tab < 0) _tab = 0;
+              const len = Object.keys(LaunchType).length;
+              if (tab > len - 1) _tab = len - 1;
+              homeTabStore.set({ homeTabIndex: _tab });
+            }}
+            tabIndex={i}
+            isCurrentTab={homeTabStore.homeTabIndex === i}
+          />
+        ))}
       </div>
     </div>
   );

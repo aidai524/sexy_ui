@@ -6,17 +6,17 @@ import ShareIcon from "./share-icon";
 import HolderIcon from "./holder-icon";
 import TokenIcon from "@/app/components/avatar/token";
 import TxIcon from "./tx-icon";
-import RocketIcon from "./rocket-icon";
+import LaunchesLike from "./launches-like";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useAuth } from "@/app/context/auth";
+import useHolders from "../hooks/use-holders";
 import { numberFormatter } from "@/app/utils/common";
 import Timer from "./timer";
 
 export default function Actions({
   token,
-  totalHolders,
   onClick = () => {},
   onSuccess,
   isCurrent,
@@ -26,6 +26,7 @@ export default function Actions({
   const { showShare } = useMessage();
   const { isMobile } = useUserAgent();
   const { updateUserLikeNum } = useAuth();
+  const { total: totalHolders } = useHolders(token);
   return (
     <div
       className={`${styles.Actions} ${
@@ -46,6 +47,7 @@ export default function Actions({
       )}
       {token.status === 0 ? (
         <>
+          <div style={{ height: 14 }} />
           <Like
             isLiked={token.isLike}
             like={token.like}
@@ -56,12 +58,13 @@ export default function Actions({
                 return;
               }
 
+              onSuccess("like");
+
               await actionLikeTrigger({
                 data: token,
                 onShare: showShare,
                 onSuccess: updateUserLikeNum
               });
-              onSuccess("like");
             }}
             id={isCurrent ? "guid-tour-like" : ""}
           />
@@ -88,21 +91,29 @@ export default function Actions({
         </>
       ) : (
         <>
-          <div
+          <LaunchesLike
             className={styles.Item}
-            onClick={() => {
-              if (!disabled) onClick("trade");
+            buttonClassName={`${!disabled ? "button" : ""} ${
+              !isMobile && styles.PcItem
+            }`}
+            onClick={async () => {
+              if (token.isLike || disabled) return;
+              if (!window.sexAddress) {
+                window.connect();
+                return;
+              }
+
+              onSuccess("like");
+
+              await actionLikeTrigger({
+                data: token,
+                onShare: showShare
+              });
             }}
-          >
-            <button
-              className={`${!disabled ? "button" : ""} ${
-                !isMobile && styles.PcItem
-              }`}
-            >
-              <RocketIcon isActive={false} />
-            </button>
-            <span>{0}</span>
-          </div>
+            isLiked={token.isLike}
+            like={token.like}
+          />
+
           <div
             className={styles.Item}
             onClick={() => {

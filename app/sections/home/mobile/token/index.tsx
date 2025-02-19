@@ -12,19 +12,17 @@ import Danmaku from "@/app/components/danmaku";
 import TradeModal from "@/app/components/trade-modal";
 import CommentsModal from "../comments";
 import LikeToEarn from "./like-to-earn";
-import { useState, useRef, useEffect } from "react";
-import useHolders from "../hooks/use-holders";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHome } from "../context";
 import Big from "big.js";
 
 export default function Token({
   isCurrent,
-  token,
-  danmakus,
-  danmakuShow,
   onUpdate,
-  isPreview = false
+  isPreview = false,
+  token,
+  dataAvailable
 }: any) {
   const [imgHeight, setImgHeight] = useState("80%");
   const { innerHeight } = useUserAgent();
@@ -33,8 +31,6 @@ export default function Token({
   const [showTradeModal, setShowTradeModal] = useState(false);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
   const { goDetail } = useHome();
-
-  const { total: totalHolders } = useHolders(token);
 
   useEffect(() => {
     if (descContentRef.current) {
@@ -62,11 +58,15 @@ export default function Token({
         {token?.id && (
           <div className={styles.Content}>
             {token.status === 0 && !isPreview && <LikeToEarn />}
-            <Media imgHeight={imgHeight} data={token} />
+            <Media
+              imgHeight={imgHeight}
+              data={token}
+              videoProgressStyle={
+                isCurrent ? { position: "fixed", left: 16, bottom: 72 } : null
+              }
+            />
             <div className={styles.Bottom}>
-              {isCurrent && (
-                <Danmaku token={token} show={danmakuShow} list={danmakus} />
-              )}
+              {isCurrent && <Danmaku id={token.id} />}
 
               {token.status === 0 ? (
                 !token.isSuperLike ? (
@@ -89,62 +89,64 @@ export default function Token({
                   <Flipped token={token} />
                 )
               ) : (
-                <Trade
-                  token={token}
-                  totalHolders={totalHolders}
-                  isCurrent={isCurrent}
-                  onClick={() => {
-                    if (isPreview) return;
-                    if (!window.sexAddress) {
-                      window.connect();
-                      return;
-                    }
+                dataAvailable && (
+                  <Trade
+                    token={token}
+                    isCurrent={isCurrent}
+                    onClick={() => {
+                      if (isPreview) return;
+                      if (!window.sexAddress) {
+                        window.connect();
+                        return;
+                      }
 
-                    setShowTradeModal(true);
-                  }}
-                />
+                      setShowTradeModal(true);
+                    }}
+                  />
+                )
               )}
               <div className={styles.Desc} ref={descContentRef}>
                 <Desc token={token} />
               </div>
             </div>
-            <Actions
-              token={token}
-              onClick={(type: any) => {
-                if (isPreview) return;
-                if (type === "comments") {
-                  setShowCommentsModal(true);
-                  return;
-                }
-                if (type === "detail") {
-                  goDetail(token);
-                  return;
-                }
-                if (!window.sexAddress) {
-                  window.connect();
-                  return;
-                }
-                if (type === "flip") {
-                  setShowFlipModal(true);
-                }
-                if (type === "trade") {
-                  setShowTradeModal(true);
-                }
-              }}
-              totalHolders={totalHolders}
-              onSuccess={(type: string) => {
-                if (type === "like") {
-                  token.isLike = true;
-                  token.like = token.like + 1;
-                }
-                if (type === "share") {
-                  // token.share_num = token.share_num + 1;
-                }
-                onUpdate?.(token, type);
-              }}
-              isCurrent={isCurrent}
-              isPreview={isPreview}
-            />
+            {dataAvailable && (
+              <Actions
+                token={token}
+                onClick={(type: any) => {
+                  if (isPreview) return;
+                  if (type === "comments") {
+                    setShowCommentsModal(true);
+                    return;
+                  }
+                  if (type === "detail") {
+                    goDetail(token);
+                    return;
+                  }
+                  if (!window.sexAddress) {
+                    window.connect();
+                    return;
+                  }
+                  if (type === "flip") {
+                    setShowFlipModal(true);
+                  }
+                  if (type === "trade") {
+                    setShowTradeModal(true);
+                  }
+                }}
+                onSuccess={(type: string) => {
+                  if (type === "like") {
+                    token.isLike = true;
+                    token.like = token.like + 1;
+                  }
+                  if (type === "share") {
+                    // token.share_num = token.share_num + 1;
+                  }
+                  onUpdate?.(token, type);
+                }}
+                isCurrent={isCurrent}
+                isPreview={isPreview}
+              />
+            )}
           </div>
         )}
       </div>

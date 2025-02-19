@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { HomeContext } from "./context";
 import styles from "./index.module.css";
 import { useState } from "react";
-import { useProjects } from "@/app/store/use-projects";
+import { useProjects } from "@/app/store/use-projects-new";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useUserAgent } from "@/app/context/user-agent";
 

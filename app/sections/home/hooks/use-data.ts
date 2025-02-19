@@ -1,202 +1,116 @@
-import { httpGet, httpAuthPost } from "@/app/utils";
+import { httpGet } from "@/app/utils";
 import { useEffect, useState, useRef, useCallback } from "react";
-import type { Project } from "@/app/type";
-import { getAll, setAll } from "@/app/utils/listStore";
-import { mapDataToProject } from "@/app/utils/mapTo";
+import { useProjects, type Type } from "@/app/store/use-projects-new";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";
+import { useAccount } from "@/app/hooks/useAccount";
 
 const limit = 10;
 const left_num = 5;
 
-export default function useData(launchType: string) {
-  const [infoData, setInfoData] = useState<Project>();
-  const [infoData2, setInfoData2] = useState<Project>();
-  const [renderIndex, setRenderIndex] = useState(0);
-  const [isLoading, setisLoading] = useState(true);
+export default function useData(launchType: Type) {
+  const [isLoading, setIsLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
-  const listRef = useRef<Project[]>();
-  const renderIndexRef = useRef<number>(0);
-  const { userInfo, accountRefresher } = useAuth();
+  const [list, setList] = useState<number[]>([]);
+  const [refresher, setRefresher] = useState(0);
+  const { accountRefresher } = useAuth();
+  const projectsStore = useProjects();
   const mountedRef = useRef(false);
+  const fetchingRef = useRef(false);
+  const { address } = useAccount();
 
-  const onQueryList = async (isInit: boolean) => {
-    await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`)
-      .then((res) => {
-        if (res.data?.has_next_page) {
-          setHasNext(true);
-        } else {
-          setHasNext(false);
-        }
+  const queryList = async () => {
+    if (fetchingRef.current) return;
+    try {
+      fetchingRef.current = true;
+      const cachedList = projectsStore.projects;
+      const res = await httpGet(
+        `/project/list?limit=${limit}&launchType=${
+          launchType === "other" ? "video" : launchType
+        }&deleteCache=${Object.keys(cachedList).length === 0}`
+      );
 
-        if (res.code !== 0 || !res.data?.list) {
-          setisLoading(false);
-          return;
-        }
-        // res.data.list = []
-        let _list: any = [];
-        if (isInit) {
-          _list = res.data?.list;
-          _list.forEach((item: any) => {
-            item.fetched_time = Date.now();
-          });
-          renderTwoSimple(res.data?.list);
-        } else {
-          const newVals: any = {};
-          if (listRef.current) {
-            listRef.current.forEach((item: any) => {
-              newVals[item.id] = item;
-            });
-          }
+      if (res.code !== 0 || !res.data?.list) {
+        return [];
+      }
 
-          if (res.data.list) {
-            res.data.list.forEach((item: any) => {
-              if (!newVals[item.id]) {
-                newVals[item.id] = item;
-              }
-              item.fetched_time = Date.now();
-            });
-          }
-          _list = Object.values(newVals);
-        }
-        _list.sort((a: any, b: any) => a.fetched_time - b.fetched_time);
-        listRef.current = _list;
-        setAll(listRef.current, launchType, userInfo.address);
+      projectsStore.setProjects(res.data?.list, address);
+      projectsStore.setList(
+        launchType,
+        res.data?.list.map((item: any) => item.id) || [],
+        launchType === "forYou" && !hasNext
+      );
 
-        if (isInit) {
-          setTimeout(() => {
-            setisLoading(false);
-          }, 10);
-        }
-      })
-      .catch(() => {
-        setisLoading(false);
-      });
+      const _hasNext = res.data?.list && res.data?.list.length === limit;
+      setHasNext(_hasNext);
+    } catch (err) {
+    } finally {
+      fetchingRef.current = false;
+    }
   };
 
-  const renderTwoSimple = (list: Project[]) => {
-    if (!list) {
+  const handleList = async (isNext?: boolean) => {
+    if (!isNext) setIsLoading(true);
+    await queryList();
+    const _list = projectsStore.getList(launchType) || [];
+
+    setList(_list);
+    setIsLoading(false);
+  };
+
+  const initList: any = () => {
+    let _list = projectsStore.getList(launchType) || [];
+
+    if (_list.length === 0) {
+      handleList(false);
       return;
     }
 
-    if (list.length > 0) {
-      const currentToken = list[0];
-      setInfoData2(mapDataToProject(currentToken));
-    }
+    setList(_list);
 
-    if (list.length > 1) {
-      const currentToken = list[1];
-      setInfoData(mapDataToProject(currentToken));
-    } else {
-      setInfoData(undefined);
-    }
-  };
-
-  const renderTwoItems = (list: Project[]) => {
-    if (!list) {
+    if (_list.length - projectsStore.getIndex(launchType) > left_num) {
+      setIsLoading(false);
       return;
     }
-
-    setTimeout(() => {
-      if (list.length > 0) {
-        if (list.length > 1) {
-          renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
-          setRenderIndex(renderIndexRef.current);
-          const currentToken = list[1];
-          if (renderIndexRef.current === 1) {
-            setInfoData2(mapDataToProject(currentToken));
-          } else {
-            setInfoData(mapDataToProject(currentToken));
-          }
-        }
-
-        if (list.length === 1) {
-          // renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
-          // setRenderIndex(renderIndexRef.current);
-          const currentToken = list[0];
-          if (renderIndexRef.current === 0) {
-            setInfoData2(mapDataToProject(currentToken));
-            setInfoData(undefined);
-          } else {
-            setInfoData2(undefined);
-            setInfoData(mapDataToProject(currentToken));
-          }
-        }
-      } else {
-        setInfoData(undefined);
-        setInfoData2(undefined);
-      }
-    }, 0);
-  };
-
-  const getnext = () => {
-    if (!listRef.current) return;
-    if (listRef.current.length) {
-      listRef.current.shift();
-      renderTwoItems(listRef.current);
-      setAll(listRef.current, launchType, userInfo.address);
+    if (launchType === "forYou") {
+      handleList(true);
+      return;
     }
-
-    if (listRef.current.length <= left_num) {
-      if (hasNext) {
-        onQueryList(false);
-      }
+    if (hasNext) {
+      handleList(true);
     }
   };
 
-  const updateCurrentToken = async (newTokenInfo: Project) => {
-    if (renderIndexRef.current === 0) {
-      setInfoData2(newTokenInfo);
-    } else {
-      setInfoData(newTokenInfo);
+  const queryAndUpdateDetail = useCallback(
+    async (address: number) => {
+      const res = await httpGet(`/project?address=${address}`);
+      if (res.code !== 0 || !res.data || !res.data.length) return;
+      projectsStore.updateProject(res.data[0]);
+      setRefresher(refresher + 1);
+    },
+    [projectsStore, refresher]
+  );
+
+  const onChangeIndex = (currentIndex: number) => {
+    projectsStore.setIndex(launchType, currentIndex);
+    if (list.length - projectsStore.getIndex(launchType) > left_num) {
+      return;
     }
-  };
-
-  const initList = async () => {
-    let list = getAll(launchType, userInfo?.address || "");
-
-    if (list && list.length > 0) {
-      if (launchType === "preLaunch") {
-        list = list.filter((item: any) => {
-          if (
-            item.status !== 0 ||
-            item.is_like ||
-            item.is_pre_paid ||
-            item.is_un_like
-          ) {
-            return false;
-          }
-          return true;
-        });
-        list = list || [];
-      }
+    if (launchType === "forYou") {
+      handleList(true);
+      return;
     }
-
-    if (list && list.length > 0) {
-      listRef.current = list;
-      if (list.length === 1) {
-        onQueryList(false).then(() => {
-          if (listRef.current) {
-            renderTwoSimple(listRef.current);
-          }
-        });
-      } else if (list.length <= left_num) {
-        listRef.current = list;
-        renderTwoSimple(list);
-        onQueryList(false);
-      } else {
-        renderTwoSimple(list);
-      }
-      setisLoading(false);
-    } else {
-      onQueryList(true);
-      setInfoData(undefined);
-      setInfoData2(undefined);
+    if (hasNext) {
+      handleList(true);
     }
   };
 
   const { run: debounceList } = useDebounceFn(
     () => {
+      if (projectsStore.address !== (address || "")) {
+        projectsStore.clear();
+      }
+
       initList();
       mountedRef.current = true;
     },
@@ -205,24 +119,23 @@ export default function useData(launchType: string) {
 
   useEffect(() => {
     if (!mountedRef.current) return;
-    setInfoData2(undefined);
+
     initList();
   }, [launchType]);
 
   useEffect(() => {
-    setInfoData2(undefined);
     debounceList();
   }, [accountRefresher]);
 
   return {
-    infoData,
-    infoData2,
-    renderIndex,
-    hasNext,
+    getIndex: projectsStore.getIndex,
     isLoading,
-    list: listRef,
-    renderIndexRef: renderIndexRef,
-    getnext,
-    updateCurrentToken
+    list,
+    hasNext,
+    refresher,
+    updateProject: projectsStore.updateProject,
+    onChangeIndex,
+    getProjectById: projectsStore.getProjectById,
+    queryAndUpdateDetail
   };
 }

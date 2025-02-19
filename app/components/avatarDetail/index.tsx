@@ -8,10 +8,9 @@ import TokenTags from "../tokenTags";
 
 interface Props {
   token: Project;
-  mc: number | string | undefined;
 }
 
-export default function AvatarDetail({ token, mc }: Props) {
+export default function AvatarDetail({ token }: Props) {
   if (!token) {
     return null;
   }
@@ -24,7 +23,7 @@ export default function AvatarDetail({ token, mc }: Props) {
           src={token.tokenIcon || "/img/token-icon-placeholder.svg"}
         />
       </div>
-      <div className={styles.InfoWrapper}>
+      {/* <div className={styles.InfoWrapper}>
         <div className={styles.nameWrapper}>
           <div className={styles.name}>{token.tokenName}</div>
           <TokenTags token={token} />
@@ -38,7 +37,7 @@ export default function AvatarDetail({ token, mc }: Props) {
             {mc === 0 || mc === "0" ? "-" : `$${simplifyNum(mc as number, 2)}`}
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

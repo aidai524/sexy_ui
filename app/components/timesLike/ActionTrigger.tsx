@@ -39,6 +39,7 @@ const onLike = async (data: any) => {
 
   return {
     likeNum: 0,
+    likeNumToday: 0,
     projectLikeNum: 0
   };
 };
@@ -52,9 +53,11 @@ const onHate = async (data: Project) => {
 };
 
 export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
-  const { likeNum, projectLikeNum } = await onLike(data);
+  const { likeNum, likeNumToday, projectLikeNum } = await onLike(data);
 
-  onSuccess(likeNum);
+  if (data.status !== 0) return;
+
+  onSuccess?.(likeNumToday);
 
   if (projectLikeNum === 100) {
     const timeLikeHandler = Modal.show({

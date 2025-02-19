@@ -33,3 +33,10 @@
   top: -7px;
   transform: rotate(45deg);
 }
+
+.KingAnimation {
+  position: absolute;
+  right: 0px;
+  top: 4px;
+  transform: rotate(-45deg);
+}

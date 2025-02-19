@@ -23,7 +23,7 @@ interface Props {
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
 export const svgReg = /(.+\.(svg))$/i;
 export const gifReg = /(.+\.(gif))$/i;
-export const videoReg = /(.+\.(mp4|webm))$/i;
+export const videoReg = /(.+\.(mp4|webm|mov))$/i;
 
 export const getVideoExt = (url: string) => {
   const match = url.match(videoReg);
@@ -31,7 +31,7 @@ export const getVideoExt = (url: string) => {
     if (match[2] === "mov") return "mp4";
     return match[2].toLowerCase();
   }
-  return "";
+  return "mp4";
 };
 
 const StyleMaps = {
@@ -54,58 +54,61 @@ export default function Upload({
   const [fileList, setFileList] = useState<any>(defaultFileList || []);
   const input = useRef<ImageUploaderRef>(null);
 
-  const uploadImg = useCallback(async (file: File) => {
-    if (file.size > 50 * 1024 * 1024) {
-      fail("File size too large");
-      return {
-        url: ""
-      };
-    }
-
-    if (!imgReg.test(file.name) && !videoReg.test(file.name)) {
-      fail("File type not supported");
-      return {
-        url: ""
-      };
-    }
-
-    let _file: any = file;
-    if (cropper && imgReg.test(file.name)) {
-      const blob = await ImgCopper({ file, });
-      if (!blob) {
+  const uploadImg = useCallback(
+    async (file: File) => {
+      if (file.size > 50 * 1024 * 1024) {
+        fail("File size too large");
         return {
           url: ""
         };
       }
-      _file = blob
-    }
 
-    setIsUpload(true);
+      if (!imgReg.test(file.name) && !videoReg.test(file.name)) {
+        fail("File type not supported");
+        return {
+          url: ""
+        };
+      }
 
-    const url = await upload(
-      file.name,
-      _file,
-      imgReg.test(file.name) &&
-        !svgReg.test(file.name) &&
-        !gifReg.test(file.name),
-      percent,
-      scala,
-      cropper
-    );
-    setTimeout(() => {
-      setIsUpload(false);
-    }, 100);
+      let _file: any = file;
+      if (cropper && imgReg.test(file.name)) {
+        const blob = await ImgCopper({ file });
+        if (!blob) {
+          return {
+            url: ""
+          };
+        }
+        _file = blob;
+      }
 
-    if (url) {
+      setIsUpload(true);
+
+      const url = await upload(
+        file.name,
+        _file,
+        imgReg.test(file.name) &&
+          !svgReg.test(file.name) &&
+          !gifReg.test(file.name),
+        percent,
+        scala,
+        cropper
+      );
+      setTimeout(() => {
+        setIsUpload(false);
+      }, 100);
+
+      if (url) {
+        return {
+          url
+        };
+      }
+
       return {
-        url
+        url: ""
       };
-    }
-
-    return {
-      url: ""
-    };
-  }, [cropper]);
+    },
+    [cropper]
+  );
 
   useEffect(() => {
     if (fileList.length === 0 && defaultFileList.length > 0)
