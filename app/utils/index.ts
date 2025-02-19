@@ -3,6 +3,9 @@ import type { Project } from "../type";
 import { fail } from "./toast";
 import { clearAll } from "./listStore";
 import { Connection } from "@solana/web3.js";
+// import Cropper from "cropperjs";
+// @ts-ignore
+import Croppie from "croppie";
 import Big from "big.js";
 import { deleteCookie } from "./common";
 import { imgReg, videoReg } from "../components/upload";
@@ -444,11 +447,12 @@ export async function upload(
   file: File,
   isImage: boolean = true,
   percent = 1.5,
-  scala = 2
+  scala = 2,
+  cropper = false
 ) {
   let _file: any = file;
 
-  if (isImage) {
+  if (isImage && !cropper) {
     const url = await new Promise<string | void>((resolve) => {
       const reader = new FileReader();
       reader.onload = () => {
@@ -469,6 +473,8 @@ export async function upload(
         img.src = url;
       }
     );
+
+  
 
     if (percent === 0) {
       const canvasWidth = 128 * scala;

@@ -16,20 +16,20 @@
 }
 
 .Avatar {
-  width: 120px;
-  height: 120px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  border: 1px dashed #9290b1;
   box-sizing: border-box;
   cursor: pointer;
+  background-color: #21252E;
 }
 
 .Token {
-  width: 120px;
-  height: 120px;
-  border-radius: 8px;
+  width: 90px;
+  height: 160px;
+  border-radius: 10px;
   cursor: pointer;
-  border: 1px dashed #9290b1;
+  background-color: #21252E;
 }
 
 .Banner {
@@ -68,8 +68,8 @@
 }
 
 .AvatarImg {
-  width: 106px;
-  height: 106px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
 }
 

@@ -1,0 +1,38 @@
+.stepContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px;
+}
+
+.numberBadge {
+  background-color: #1a1a1a;
+  color: #FBCA04;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  width: 32px;
+  height: 26px;
+  border: 2px solid #FBCA04;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.title {
+  font-weight: 500;
+}
+
+.optional {
+  color: #9290B1;
+  font-size: 12px;
+} 
