@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import styles from "./index.module.css";
+import Image from "next/image";
 
 export default function TokenIcon({ token, onClick = () => {} }: any) {
   const progress = useMemo(() => {
@@ -31,7 +32,18 @@ export default function TokenIcon({ token, onClick = () => {} }: any) {
         </svg>
       )}
       <img src={token?.icon} className={styles.Icon} />
-      {token.is_king && <div className={styles.King}>👑</div>}
+      {token.is_king && (
+        <div className={styles.King}>
+          👑
+          <Image
+            className={styles.KingAnimation}
+            src="/img/animation-king.gif"
+            width={20}
+            height={20}
+            alt="King Animation"
+          />
+        </div>
+      )}
     </div>
   );
 }
