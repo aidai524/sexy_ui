@@ -346,7 +346,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
        
 
         {/* your coppies */}
-        <div
+        {/* <div
           className={`${styles.yourCoppies} ${styles.public} ${styles.textWhite07}`}
         >
           <div className={`${styles.public} ${styles.textWhite07}`}>
@@ -365,7 +365,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
               transform: 'scale(1)',
             }}
           />
-        </div>
+        </div> */}
 
         
         {errMsg ? (
