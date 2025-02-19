@@ -5,7 +5,7 @@
   backdrop-filter: blur(5px);
   position: absolute;
   left: 50%;
-  top: 90px;
+  top: 100px;
   z-index: 5;
   transform: translateX(-50%);
 }
@@ -22,6 +22,9 @@
 .Genesis {
   width: 134px;
   height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .Like {
