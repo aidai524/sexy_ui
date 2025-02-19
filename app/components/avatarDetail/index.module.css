@@ -1,60 +1,22 @@
 .avatarBox {
     display: flex;
-    align-items: flex-start;
     gap: 10px;
-    width: 100%;
 }
 
 .tokenImgBox {
-    border: 1px dashed #fff;
-    border-radius: 46px;
     display: flex;
-    width: 32px;
-    height: 32px;
+    width: 25px;
+    height: 25px;
     align-items: center;
+    justify-content: center;
 }
 
 .tokenImg {
-    width: 30px;
-    height: 30px;
+    width: 25px;
     border-radius: 44px;
     object-fit: cover;
     object-position: center;
 }
 
-.nameWrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-    flex-wrap: wrap;
-    .name {
-        color: #fff;
-        font-size: 16px;
-        font-weight: 600;
-    }
-}
 
 
-.ticker {
-    color: #fff;
-    font-size: 13px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    text-align: left;
-}
-
-.dec {
-    color: #FBCA04;
-}
-
-.mc {
-    color: #6FFF00;
-    font-size: 12px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    text-align: left;
-    margin-top: 2px;
-}

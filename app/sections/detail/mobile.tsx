@@ -24,6 +24,9 @@ import { useDebounceFn } from "ahooks";
 import { useAuth } from "@/app/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TokenStatusModal } from "@/app/components/status2Alert";
+import Share from "@/app/components/share";
+import TokenIcon from "@/app/components/avatar/token";
+import Desc from "./components/desc";
 
 export default function Detail({ token, onBack, onSuccess }: any) {
   const [activeKey, setActiveKey] = useState("Info");
@@ -70,6 +73,19 @@ export default function Detail({ token, onBack, onSuccess }: any) {
     }
   }, [onBack, token]);
 
+  const tabs = useMemo(() => {
+    const vals = [
+      { name: "Details", content: <Desc data={infoData} mc={mc} /> },
+      { name: "Comments", content: <CommnentList token={infoData} /> },
+    ];
+
+    if (infoData?.status > 0) {
+      vals.push({ name: "Trades", content: <Txs mc={mc} data={infoData} /> });
+    }
+
+    return vals;
+  }, [infoData, mc]);
+
   if (isLoading) {
     return (
       <div className={styles.loadingBox}>
@@ -89,26 +105,26 @@ export default function Detail({ token, onBack, onSuccess }: any) {
           <div className={styles.Content}>
             <div className={styles.header} ref={headerRef}>
               <div className={styles.backWrapper}>
-                <div style={{ marginTop: 8 }}>
-                  <Back
-                    onBack={() => {
-                      if (onBack) {
-                        onBack();
-                        return;
-                      }
-                      if (
-                        ["profile", "trends", "messages"].includes(
-                          search.get("from") || ""
-                        )
-                      ) {
-                        router.back();
-                        return;
-                      }
-                      router.push("/");
-                    }}
-                  />
-                </div>
-                <AvatarDetail token={infoData} mc={mc} />
+                <Back
+                  onBack={() => {
+                    if (onBack) {
+                      onBack();
+                      return;
+                    }
+                    if (
+                      ["profile", "trends", "messages"].includes(
+                        search.get("from") || ""
+                      )
+                    ) {
+                      router.back();
+                      return;
+                    }
+                    router.push("/");
+                  }}
+                />
+                <AvatarDetail token={infoData} />
+
+                <Share token={infoData} />
               </div>
             </div>
 
@@ -119,71 +135,30 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                 paddingBottom: 100
               }}
             >
-              {infoData?.status === 0 && (
-                <div className={styles.commentWrapper}>
-                  <Info
-                    mc={mc}
-                    data={infoData}
-                    showHodler={false}
-                    onUpdate={() => {
-                      getDetailInfo();
-                    }}
-                  />
-                  <CommnentList
-                    style={{
-                      backgroundColor: "#121719",
-                      borderRadius: "10px",
-                      margin: "3px"
-                    }}
-                    token={infoData}
-                    onSuccess={() => {
-                      getDetailInfo({ isSkipLoading: true });
-                    }}
-                  />
-                </div>
-              )}
+              
+              <div className={styles.commentWrapper}>
+                <Info
+                  mc={mc}
+                  data={infoData}
+                  showHodler={false}
+                  onUpdate={() => {
+                    getDetailInfo();
+                  }}
+                />
+              </div>
+              
 
               {infoData?.status !== 0 && (
                 <Chart token={infoData} style={{ position: "relative" }} />
               )}
 
-              {infoData?.status !== 0 && (
-                <Tab
-                  activeNode={activeKey}
-                  onTabChange={(nodeName) => {
-                    setActiveKey(nodeName);
-                  }}
-                  nodes={[
-                    {
-                      name: "Info",
-                      content: (
-                        <Info
-                          mc={mc}
-                          data={infoData}
-                          onUpdate={() => {
-                            getDetailInfo();
-                          }}
-                        />
-                      )
-                    },
-                    {
-                      name: "Comments",
-                      content: (
-                        <CommnentList
-                          token={infoData}
-                          onSuccess={() => {
-                            getDetailInfo();
-                          }}
-                        />
-                      )
-                    },
-                    {
-                      name: "Trade",
-                      content: <Txs mc={mc} data={infoData} />
-                    }
-                  ]}
-                />
-              )}
+              <Tab
+                activeNode={activeKey}
+                onTabChange={(nodeName) => {
+                  setActiveKey(nodeName);
+                }}
+                nodes={tabs}
+              />
             </div>
 
             <div className={styles.action}>
