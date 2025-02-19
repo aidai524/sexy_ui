@@ -1,3 +1,5 @@
+
+
 .cationArea {
   .tradeTabs {
     padding: 20px 15px;
@@ -27,8 +29,7 @@
   }
 }
 
-.inputArea {
-  padding-top: 20px;
+
   .actionArea {
     display: flex;
     align-items: center;
@@ -45,13 +46,13 @@
   .inputArea {
     margin-top: 10px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    align-items: center;
     color: #fff;
     gap: 10px;
     height: 46px;
-    border: 1px solid rgba(146, 144, 177, 0.6);
-    border-radius: 8px;
     padding: 0 10px;
 
     .input {
@@ -62,6 +63,13 @@
       outline: none;
       color: #fff;
       font-size: 16px;
+      text-align: center;
+      font-size: 36px;
+      font-weight: 600;
+    }
+
+    .input::placeholder {
+      color: #fff;
     }
 
     .inputToken {
@@ -70,39 +78,27 @@
       justify-content: space-between;
       gap: 5px;
       font-size: 16px;
+    }
 
-      .tokenImg {
-        width: 30px;
-        height: 30px;
-        border-radius: 30px;
-        overflow: hidden;
-
-        .tiImg {
-          width: 100%;
-          height: 100%;
-        }
-      }
+    .inputPrice {
+      font-size: 10px;
+      color: #9290B1;
     }
   }
 
-  .tokenPercent {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 10px;
+.tokenPercent {
+  display: flex;
+  align-items: center;
 
-    .percentTag {
-      font-size: 12px;
-      font-weight: 300;
-      color: rgba(255, 255, 255, 0.7);
-      border: 1px solid rgba(146, 144, 177, 0.4);
-      border-radius: 30px;
-      padding: 5px 10px;
-
-      &.tagActive {
-        background-color: rgba(146, 144, 177, 0.4);
-        color: #fff;
-      }
+  .percentTag {
+    font-size: 12px;
+    font-weight: 300;
+    padding: 5px;
+    color: #fff;
+    border-radius: 6px;
+    &.tagActive {
+      background-color: #3C3C3C80;
+      
     }
   }
 }
@@ -170,6 +166,23 @@
 .Container {
   position: relative;
   padding: 20px 20px 20px;
-  background-color: #252328;
-  border: 1px solid #3b3b3b;
+  display: flex ;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.walletBalance {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #9290B1;
+  background-color: #3C3C3C80 ;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+.quickAction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

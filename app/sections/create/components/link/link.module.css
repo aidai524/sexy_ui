@@ -1,16 +1,15 @@
 .linkBox {
   /* background-color: #fff; */
-  padding: 0 20px 10px;
+  padding: 0 0 10px;
 }
 
 .linkEdit {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 47px;
-  border: 1px solid rgba(146, 144, 177, 0.6);
-  border-radius: 8px;
-  padding: 0 5px;
+  height: 42px;
+  background-color: #21252E;
+  padding-left: 20px; 
 }
 
 .LinkEditPc {
@@ -39,17 +38,27 @@
   align-items: center;
   justify-content: space-between;
   height: 42px;
+  padding: 0 20px;
 }
 
 .linkTitle {
   display: flex;
   align-items: center;
-  gap: 20px;
-  color: rgba(255, 255, 255, 0.6);
+  gap: 10px;
   font-size: 14px;
   .linkImg {
     width: 15px;
   }
+}
+
+.linkTitleText {
+  color: #fff;
+}
+
+.linkTitleDesc {
+  font-size: 12px;
+  color: #9290B1;
+  align-self: flex-end;
 }
 
 .linkAction {

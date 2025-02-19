@@ -2,7 +2,7 @@ import styles from "./preview.module.css";
 import Create from "../components/create";
 
 import type { Project } from "@/app/type";
-import { forwardRef, useEffect, useState, useImperativeHandle, useMemo } from "react";
+import { forwardRef, useEffect, useState, useImperativeHandle, useMemo, useRef } from "react";
 import { httpAuthPost, sleep } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import MobileInfo from "./mobile-info";
@@ -11,23 +11,30 @@ import { useRouter } from "next/navigation";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useUser } from "@/app/store/useUser";
 import { useUserAgent } from "@/app/context/user-agent";
+import StepAction from "../components/stepAction";
 
 interface Props {
-  onAddDataCancel: () => void;
   show: boolean;
   data: Project;
+  step: number;
+  onNext: () => void;
+  onBack: () => void;
 }
 
 export default forwardRef(function PreviewNode(
-  { onAddDataCancel, show, data }: Props,
+  { show, data, step, onNext, onBack }: Props,
   ref: any
 ) {
   const router = useRouter();
   const [showCreate, setShowCreate] = useState(false);
   const [newData, setNewData] = useState(data);
+  const [activeTab, setActiveTab] = useState('flow'); // 添加新的 state
   const { isMobile } = useUserAgent();
   const { address } = useAccount();
   const { userInfo }: any = useUser();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const submitFnRef = useRef<any | null>(null);
 
   useEffect(() => {
     if (userInfo && data) {
@@ -44,7 +51,7 @@ export default forwardRef(function PreviewNode(
   useImperativeHandle(
     ref,
     () => ({
-      onEdit: onAddDataCancel,
+      onEdit: onBack,
       onCreate: () => {
         setShowCreate(true);
       }
@@ -73,6 +80,18 @@ export default forwardRef(function PreviewNode(
     return queryStr;
   }, [data]);
 
+  const submit = async (ignorePrepaid: number) => {
+    if (isLoading) {
+      return 
+    }
+
+    if (submitFnRef.current) {
+      setIsLoading(true)
+      await submitFnRef.current(ignorePrepaid)
+      setIsLoading(false) 
+    }
+  } 
+
   return (
     <div
       className={styles.mainContent}
@@ -82,75 +101,97 @@ export default forwardRef(function PreviewNode(
         minHeight: isMobile ? "100vh" : "auto"
       }}
     >
-      <div className={isMobile ? styles.main : styles.laptopMain}>
-        {isMobile ? (
-          <MobileInfo newData={newData} />
-        ) : (
-          <LaptopInfo newData={newData} />
-        )}
-      </div>
 
-      {isMobile && (
-        <div className={styles.actionBtns}>
-          <div
-            onClick={() => {
-              onAddDataCancel();
-            }}
-            className={styles.btn + " " + styles.edit}
-          >
-            Edit
+      {
+        step === 3 && <>
+          <div className={styles.previewTab}>
+            <div
+              className={`${styles.previewTabItem} ${activeTab === 'flow' ? styles.active : ''}`}
+              onClick={() => setActiveTab('flow')}
+            >
+              Flow
+            </div>
+            <div
+              className={`${styles.previewTabItem} ${activeTab === 'details' ? styles.active : ''}`}
+              onClick={() => setActiveTab('details')}
+            >
+              Details
+            </div>
           </div>
-          <div
-            onClick={() => {
-              setShowCreate(true);
-            }}
-            className={styles.btn + " " + styles.create}
-          >
-            Create
+          <div className={isMobile ? styles.main : styles.laptopMain}>
+            {activeTab === 'details' ? (
+              isMobile ? <MobileInfo newData={newData} /> : <LaptopInfo newData={newData} />
+            ) : (
+              <div>Details Content</div>
+            )}
           </div>
-        </div>
-      )}
+        </>
+      }
 
-      <Create
-        show={showCreate}
-        token={{
-          tokenName: data.tokenName,
-          tokenSymbol: data.tokenSymbol,
-          tokenDecimals: 6,
-          tokenUri: data.tokenIcon || data.tokenImg
-        }}
-        data={data}
-        onHide={() => {
-          setShowCreate(false);
-        }}
-        onBeforeCreate={async () => {
-          const val = await httpAuthPost(`/project/data?${query}`, {});
-          return val.code === 0;
-        }}
-        onCreateTokenSuccess={async () => {
-
-          let times = 0,
-            val;
-          while (times < 50) {
-            val = await httpAuthPost(`/project?${query}`, {});
-            if (val.code === 100000) {
-              times++;
-              await sleep(5000);
-            } else {
-              break;
+      {
+        step === 4 && <Create
+          token={{
+            tokenName: data.tokenName,
+            tokenSymbol: data.tokenSymbol,
+            tokenDecimals: 6,
+            tokenUri: data.tokenIcon || data.tokenImg
+          }}
+          data={data}
+          getSubmitFn = {(submitFn: any) => {
+            console.log('submitFn:', submitFn)  
+            submitFnRef.current = submitFn
+          }}
+          onBeforeCreate={async () => {
+            const val = await httpAuthPost(`/project/data?${query}`, {});
+            return val.code === 0;
+          }}
+          onCreateTokenSuccess={async () => {
+            let times = 0,
+              val;
+            while (times < 50) {
+              val = await httpAuthPost(`/project?${query}`, {});
+              if (val.code === 100000) {
+                times++;
+                await sleep(5000);
+              } else {
+                break;
+              }
             }
-          }
 
-          if (val.code === 0) {
-            return true;
-            // success('Create token success')
-            // router.push('/profile')
+            if (val.code === 0) {
+              return true;
+              // success('Create token success')
+              // router.push('/profile')
+            } else {
+              fail("Create token fail");
+              return false;
+            }
+          }}
+        />
+      }
+
+      <StepAction
+        step={step}
+        isLoading={isLoading}
+        btnText={step === 4 ? 'Get' : 'Continue'}  
+        onBack={() => {
+          onBack();
+        }}
+        extendBtn={
+          step === 4 && <div className={styles.skipBtn}  onClick={() => {
+            submit(0)
+          }}>Skip</div>
+        }
+        onNext={async () => {
+          if (step === 3) {
+            onNext();
           } else {
-            fail("Create token fail");
-            return false;
+            submit(1)
           }
         }}
       />
+
+
     </div>
   );
 });

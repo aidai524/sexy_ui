@@ -2,13 +2,19 @@ import React from 'react'
 import styles from './index.module.css'
 import { CopyierIconBlack, ClaimIcon } from '@/app/sections/trends/components/top-traders/icon'
 import RightArrowWrap from '@/app/sections/smart/components/RightArrowWrap'
+import {useRouter} from 'next/navigation'
 
 export default function CopyTradeCard() {
+  const router = useRouter();
   return (
     <div className={styles.container}>
         <div className={styles.title}>
             <span>Copied PRFM</span>
-            <RightArrowWrap />
+            <div onClick={() => {
+                router.push('/smartDetail')
+            }}>
+                <RightArrowWrap />
+            </div>
         </div>
 
         <div className={styles.copyDetails}>
