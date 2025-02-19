@@ -46,6 +46,7 @@ export default function Actions({
       )}
       {token.status === 0 ? (
         <>
+          <div style={{ height: 14 }} />
           <Like
             isLiked={token.isLike}
             like={token.like}
