@@ -160,7 +160,7 @@ export default function List({
                 danmakuShow={danmakuShow}
                 onUpdate={(token: any, action?: string) => {
                   updateProject(token);
-                  if (action && ["share"].includes(action)) return;
+                  if (action && ["share", "like"].includes(action)) return;
                   if (action === "flip") {
                     setTimeout(() => {
                       queryAndUpdateDetail(token.address);
