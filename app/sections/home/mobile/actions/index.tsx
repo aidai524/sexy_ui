@@ -11,12 +11,12 @@ import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useAuth } from "@/app/context/auth";
+import useHolders from "../hooks/use-holders";
 import { numberFormatter } from "@/app/utils/common";
 import Timer from "./timer";
 
 export default function Actions({
   token,
-  totalHolders,
   onClick = () => {},
   onSuccess,
   isCurrent,
@@ -26,6 +26,7 @@ export default function Actions({
   const { showShare } = useMessage();
   const { isMobile } = useUserAgent();
   const { updateUserLikeNum } = useAuth();
+  const { total: totalHolders } = useHolders(token);
   return (
     <div
       className={`${styles.Actions} ${
