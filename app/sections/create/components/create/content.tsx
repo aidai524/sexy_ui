@@ -11,6 +11,9 @@ import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
 import Paid from "@/app/components/tag/Paid";
+import useBalance from "@/app/hooks/useBalance";
+import useSolPrice from "@/app/hooks/use-sol-price";
+import { numberFormatter } from "@/app/utils/common";
 
 type Token = {
   tokenName: string;
@@ -26,16 +29,16 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.01, 0.05, 35];
+const SOL_PERCENT_LIST = [0.01, 0.05, 35, 'MAX'];
 
 export default function Create({
   token,
   data,
-  onHide,
   onCreateTokenSuccess,
   onBeforeCreate,
   setShowSuccessModal,
-  width
+  width,
+  getSubmitFn
 }: any) {
   const { tokenName, tokenSymbol, tokenUri } = token;
 
@@ -56,15 +59,23 @@ export default function Create({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [solPercent, setSolPercent] = useState(0);
+  const [solPercent, setSolPercent] = useState<any>(0);
   const [valInput, setValInput] = useState("");
   const [launchChecked, setLaunchChecked] = useState(false);
+
+  const { solPrice } = useSolPrice(); 
 
   const { createToken } = useTokenTrade({
     tokenName,
     tokenSymbol,
     tokenDecimals: 6,
     loadData: false
+  });
+
+  const { solBalance } = useBalance({
+    reFreshBalnace: 10,
+    tokenDecimals: 0,
+    mint: ''
   });
 
   const validateSameName = useCallback(async () => {
@@ -91,7 +102,7 @@ export default function Create({
       if (isNaN(Number(debounceVal))) {
         setIsError(true);
       }
-      if (Number(debounceVal) > 0 && Number(debounceVal) <= 35) {
+      if (Number(debounceVal) > 0 && Number(debounceVal) <= Number(solBalance)) {
         setIsError(false);
       } else {
         setIsError(true);
@@ -99,70 +110,115 @@ export default function Create({
     }
   }, [debounceVal]);
 
+  const submit = async (ignorePrepaid: number) => {
+    try {
+      if (isLoading || isError) {
+        return;
+      }
+
+      setIsLoading(true);
+
+      const sameNameRes = await validateSameName();
+
+      if (sameNameRes) {
+        setIsLoading(false);
+        fail(sameNameRes);
+      }
+
+      await onBeforeCreate()
+
+      const hash = await createToken({
+        name: tokenName,
+        symbol: tokenSymbol,
+        uri: tokenUri,
+        launching: launchChecked,
+        amount: (ignorePrepaid !==0 && valInput)
+          ? new Big(valInput).mul(10 ** 9).toString()
+          : ""
+      });
+
+      if (!hash) {
+        throw "Create token error";
+      }
+
+      const isSuccess = await onCreateTokenSuccess();
+      if (isSuccess) {
+        setShowSuccessModal(true);
+      }
+
+      setIsLoading(false);
+      // success('Transtion success')
+    } catch (e: any) {
+      console.log(e);
+      setIsLoading(false);
+      fail("Create token error");
+    }
+  }
+
+  useEffect(() => {
+    if (getSubmitFn) {
+      getSubmitFn(submit)
+    }
+  }, [])
+
   return (
     <div
       className={styles.Container}
-      style={{ width, borderRadius: isMobile ? "20px 20px 0px 0px" : "20px" }}
+      style={{
+        height: 'calc(100vh - 270px)'
+      }}
     >
-      <div className={styles.avatar}>
-        <Avatar data={infoData} />
-      </div>
+      <div className={styles.quickAction}>
+        <div className={styles.walletBalance}>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.9332 8.2551H12.7999C12.2341 8.2551 11.6915 8.48824 11.2914 8.90322C10.8913 9.31821 10.6666 9.88105 10.6666 10.4679C10.6666 11.0548 10.8913 11.6176 11.2914 12.0326C11.6915 12.4476 12.2341 12.6808 12.7999 12.6808H14.9332V14.8936C14.9332 15.187 14.8208 15.4684 14.6208 15.6759C14.4207 15.8834 14.1494 16 13.8665 16H1.06666C0.783761 16 0.512453 15.8834 0.312416 15.6759C0.11238 15.4684 0 15.187 0 14.8936V6.04227C0 5.89697 0.0275901 5.7531 0.0811946 5.61886C0.134799 5.48463 0.213368 5.36266 0.312416 5.25992C0.411464 5.15718 0.529052 5.07568 0.658465 5.02008C0.787877 4.96447 0.926581 4.93586 1.06666 4.93586H13.8665C14.0066 4.93586 14.1453 4.96447 14.2747 5.02008C14.4041 5.07568 14.5217 5.15718 14.6208 5.25992C14.7198 5.36266 14.7984 5.48463 14.852 5.61886C14.9056 5.7531 14.9332 5.89697 14.9332 6.04227V8.2551ZM11.1999 1.10656V3.82944H1.59998L9.70017 0.0952926C9.86258 0.0204512 10.0404 -0.0111135 10.2176 0.00346643C10.3948 0.0180464 10.5656 0.0783089 10.7146 0.178779C10.8636 0.279249 10.986 0.416742 11.0708 0.578768C11.1555 0.740794 11.1999 0.922217 11.1999 1.10656ZM12.7999 9.36151H14.9332C15.0733 9.36149 15.212 9.39009 15.3414 9.44568C15.4709 9.50128 15.5885 9.58277 15.6875 9.68551C15.7866 9.78826 15.8652 9.91023 15.9188 10.0445C15.9724 10.1787 16 10.3226 16 10.4679C16 10.6132 15.9724 10.7571 15.9188 10.8914C15.8652 11.0256 15.7866 11.1476 15.6875 11.2503C15.5885 11.3531 15.4709 11.4346 15.3414 11.4902C15.212 11.5458 15.0733 11.5744 14.9332 11.5743H12.7999C12.6598 11.5744 12.5211 11.5458 12.3916 11.4902C12.2622 11.4346 12.1446 11.3531 12.0455 11.2503C11.9465 11.1476 11.8679 11.0256 11.8143 10.8914C11.7606 10.7571 11.7331 10.6132 11.7331 10.4679C11.7331 10.3226 11.7606 10.1787 11.8143 10.0445C11.8679 9.91023 11.9465 9.78826 12.0455 9.68551C12.1446 9.58277 12.2622 9.50128 12.3916 9.44568C12.5211 9.39009 12.6598 9.36149 12.7999 9.36151Z" fill="#9290B1" />
+          </svg>
+          <span>{numberFormatter(solBalance, 2, true)} SOL</span>
+        </div>  
 
-      <div className={[styles.cationArea, styles.panel].join(" ")}>
-        <div className={styles.inputArea}>
-          <div className={styles.actionArea}>
-            <div className={styles.slippage}>Flip (optional)</div>
-          </div>
-
-          <div className={styles.inputArea}>
-            <input
-              value={valInput}
-              onChange={(e) => {
-                setValInput(e.target.value);
-                setSolPercent(0);
-              }}
-              className={styles.input}
-            />
-            <div className={styles.inputToken}>
-              <div className={styles.tokenName}>{currentToken.tokenName}</div>
-              <div className={styles.tokenImg}>
-                <img className={styles.tiImg} src={currentToken.tokenUri} />
-              </div>
-            </div>
-          </div>
-
-          {tokenType === 1 ? (
-            <div className={styles.tokenPercent}>
+        <div className={styles.tokenPercent}>
+          {SOL_PERCENT_LIST.map((item) => {
+            return (
               <div
                 onClick={() => {
-                  setSolPercent(0);
-                  setValInput("");
+                  if (item === 'MAX') {
+                    setSolPercent(item);
+                    setValInput(solBalance);
+                  } else {
+                    setSolPercent(item);
+                    setValInput(getFullNum(item));
+                  }
                 }}
-                className={`${styles.percentTag} button`}
+                key={item}
+                className={[
+                  "button",
+                  styles.percentTag,
+                  item === solPercent ? styles.tagActive : ""
+                ].join(" ")}
               >
-                Reset
+                {getFullNum(item)}
               </div>
-              {SOL_PERCENT_LIST.map((item) => {
-                return (
-                  <div
-                    onClick={() => {
-                      setSolPercent(item);
-                      setValInput(getFullNum(item));
-                    }}
-                    key={item}
-                    className={[
-                      "button",
-                      styles.percentTag,
-                      item === solPercent ? styles.tagActive : ""
-                    ].join(" ")}
-                  >
-                    {getFullNum(item)}SOL
-                  </div>
-                );
-              })}
-            </div>
-          ) : null}
+            );
+          })}
         </div>
+      </div>
+
+      <div className={styles.inputArea}>
+          <input
+            placeholder="0"
+            value={valInput}
+            onChange={(e) => {
+              setValInput(e.target.value);
+              setSolPercent(0);
+            }}
+            className={styles.input}
+          />
+          <div className={styles.inputToken}>SOL</div>
+          <div className={styles.inputPrice}>$0.00</div>
+        </div>
+
+
+      <div className={[styles.cationArea, styles.panel].join(" ")}>
         <div className={styles.launchTip}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -184,83 +240,7 @@ export default function Create({
             again
           </span>
         </div>
-        <div style={{ marginTop: 20 }} className={styles.receiveTokenAmount}>
-          <Checkbox
-            onChange={() => {
-              setLaunchChecked(!launchChecked);
-            }}
-            checked={launchChecked}
-          />
-          <div className={styles.receiveTitleWrapper}>
-            <div className={styles.receiveTitlePaidWrapper}>
-              <Paid
-                style={{
-                  height: 24,
-                  fontSize: 12
-                }}
-              />
-              <div className={styles.receiveTitlePaid}>0.1 SOL</div>
-            </div>
-            <div className={styles.receiveTitle}>
-              For an additional 0.1 SOL, you can directly enter the Launching
-              phase
-            </div>
-          </div>
-        </div>
-        <div style={{ marginTop: 18 }}>
-          <MainBtn
-            isLoading={isLoading}
-            isDisabled={isError}
-            onClick={async () => {
-              try {
-                if (isLoading || isError) {
-                  return;
-                }
 
-                setIsLoading(true);
-
-                const sameNameRes = await validateSameName();
-
-                if (sameNameRes) {
-                  setIsLoading(false);
-                  fail(sameNameRes);
-                }
-
-                await onBeforeCreate()
-
-                const hash = await createToken({
-                  name: tokenName,
-                  symbol: tokenSymbol,
-                  uri: tokenUri,
-                  launching: launchChecked,
-                  amount: valInput
-                    ? new Big(valInput).mul(10 ** 9).toString()
-                    : ""
-                });
-
-                if (!hash) {
-                  throw "Create token error";
-                }
-
-                const isSuccess = await onCreateTokenSuccess();
-                if (isSuccess) {
-                  onHide();
-                  setShowSuccessModal(true);
-                }
-
-                setIsLoading(false);
-                // success('Transtion success')
-              } catch (e: any) {
-                console.log(e, e.toString());
-                setIsLoading(false);
-                fail("Create token error");
-              }
-            }}
-            style={{ background: "#FBCA04", color: "#000" }}
-          >
-            Create Coin
-          </MainBtn>
-        </div>
       </div>
     </div>
   );

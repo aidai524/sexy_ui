@@ -1,19 +1,25 @@
 import { useUserAgent } from "@/app/context/user-agent";
 import styles from "./style.module.css";
 import MainBtn from "@/app/components/mainBtn";
+import type { ReactNode } from "react";
+import { fontWeight } from "html2canvas/dist/types/css/property-descriptors/font-weight";
 
 export default function StepAction({
     step,
+    isLoading = false,
+    extendBtn,
+    btnText = 'Continue',
     onBack,
     onNext,
-    onPreview
 }: {
     step: number;
+    isLoading?: boolean;
+    extendBtn?: ReactNode;
+    btnText?: string;
     onBack: () => void;
     onNext: () => void;
-    onPreview: (step: number) => Promise<boolean>;
 }) {
-    const { isMobile } = useUserAgent();    
+    const { isMobile } = useUserAgent();   
 
     if (!isMobile) {
         return null
@@ -27,21 +33,9 @@ export default function StepAction({
                 )
             }
 
-            <MainBtn onClick={async () => {
-                if (step === 1) {
-                    const isValid = await onPreview(1);
-                    if (!isValid) {
-                        onNext();
-                    }
-                } else {
-                    const isValid = await onPreview(2);
-                    console.log(isValid);
+            {extendBtn}
 
-                    if (!isValid) {
-                        onNext();
-                    }
-                }
-            }}>Continue</MainBtn>
+            <MainBtn style={{ color: '#000', fontWeight: 500 }} isLoading={isLoading} onClick={onNext}>{btnText}</MainBtn>
         </div>
     );
 }

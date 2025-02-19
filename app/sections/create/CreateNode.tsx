@@ -557,6 +557,7 @@ export default forwardRef(function CreateNode(
                           links[key].onBlur();
                         }}
                         onDelete={() => {
+                          links[key].onChange('');
                           links[key].show = false;
                           setLinks({ ...links });
                         }}
@@ -565,6 +566,8 @@ export default forwardRef(function CreateNode(
                         isLink={links[key].isLink}
                         hideDelete={key === "x"}
                       />
+
+                      {inValidVals[key] && <ErrMsg>{inValidVals[key]}</ErrMsg>} 
                     </div>
                   }
                 })
@@ -598,11 +601,16 @@ export default forwardRef(function CreateNode(
           </div>
         </>
       }
+
       <StepAction
         step={step}
         onBack={onBack}
-        onNext={onNext}
-        onPreview={onPreview}
+        onNext={async () => {
+          const isValid = await onPreview(step);
+          if (!isValid) {
+            onNext();
+          }
+        }}
       />
     </div>
   );
