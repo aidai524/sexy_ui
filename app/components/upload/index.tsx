@@ -31,7 +31,7 @@ export const getVideoExt = (url: string) => {
     if (match[2] === "mov") return "mp4";
     return match[2].toLowerCase();
   }
-  return "";
+  return "mp4";
 };
 
 const StyleMaps = {

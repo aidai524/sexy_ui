@@ -8,7 +8,6 @@ import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
 import { useHomeTab } from "@/app/store/useHomeTab";
-import useDanmaku from "@/app/hooks/use-danmaku";
 
 let startY = 0;
 let startX = 0;
@@ -41,11 +40,6 @@ export default function List({
     if (!id) return null;
     return getProjectById(id);
   }, [index, list]);
-
-  const { list: danmakus, show: danmakuShow } = useDanmaku({
-    id: currentToken?.id,
-    isCurrentTab
-  });
 
   useEffect(() => {
     const prevent = function (e: any) {
@@ -147,17 +141,15 @@ export default function List({
           {list?.map((item: number, i: number) => {
             let token = null;
 
-            if (Math.abs(i - index) < 30 && item) {
+            if (Math.abs(i - index) < 20 && item) {
               token = getProjectById(item);
             }
 
             return (
               <Token
-                key={item + i}
+                key={item + i + Math.random()}
                 token={token}
                 isCurrent={index === i && isCurrentTab}
-                danmakus={danmakus}
-                danmakuShow={danmakuShow}
                 onUpdate={(token: any, action?: string) => {
                   updateProject(token);
                   if (action && ["share", "like"].includes(action)) return;

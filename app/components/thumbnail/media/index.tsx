@@ -9,7 +9,8 @@ export default function Media({
   imgStyle,
   videoStyle,
   style,
-  autoPlay
+  autoPlay,
+  videoProgressStyle
 }: any) {
   return (
     <div className={styles.imgList}>
@@ -29,6 +30,7 @@ export default function Media({
             style={videoStyle}
             autoPlay={autoPlay}
             token={data}
+            videoProgressStyle={videoProgressStyle}
           />
         ) : (
           <img

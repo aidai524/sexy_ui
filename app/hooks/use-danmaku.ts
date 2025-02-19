@@ -3,7 +3,7 @@ import { httpGet } from "@/app/utils";
 import { useDebounceFn } from "ahooks";
 import { numberFormatter } from "@/app/utils/common";
 
-export default function useDanmaku({ id, isCurrentTab }: any) {
+export default function useDanmaku({ id }: any) {
   const [list, setList] = useState<any[]>([]);
   const [show, setShow] = useState(false);
   const offset = useRef(0);
@@ -89,12 +89,10 @@ export default function useDanmaku({ id, isCurrentTab }: any) {
 
   useEffect(() => {
     clearTimeout(timer.current);
-    if (!isCurrentTab) {
-      return;
-    }
     setList([]);
     loadData();
-  }, [id, isCurrentTab]);
+    console.log(94, id);
+  }, [id]);
 
   useEffect(() => {
     return () => {
