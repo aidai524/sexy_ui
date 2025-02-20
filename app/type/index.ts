@@ -34,6 +34,7 @@ export interface Project {
     kingProgress?: number;
     isKing?: boolean;
     lastKingTime?: number;
+    timeLeft?: number;
 }
 
 export interface Comment {

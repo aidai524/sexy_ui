@@ -3,6 +3,10 @@
   align-items: center;
   gap: 12px;
   padding: 22px;
+  position: relative ;
+  z-index: 10;
+  background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 81%);
+ 
 }
 
 .numberBadge {

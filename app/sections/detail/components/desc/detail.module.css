@@ -167,3 +167,15 @@
 .progressDesc {
   margin-top: 5px;
 } 
+
+.avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.tickerCreate {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
