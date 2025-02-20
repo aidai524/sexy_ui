@@ -10,7 +10,8 @@ import Big from "big.js";
 import { deleteCookie } from "./common";
 import { imgReg, videoReg } from "../components/upload";
 
-const BASE_URL = "/api/v1";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API || "https://api.dumpdump.fun/api/v1";
 const TOKEN_ERROR_CODE = -401;
 // const BASE_URL = '/api/v1'
 
