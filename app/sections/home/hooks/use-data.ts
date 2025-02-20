@@ -17,6 +17,7 @@ export default function useData(launchType: Type) {
   const projectsStore = useProjects();
   const mountedRef = useRef(false);
   const fetchingRef = useRef(false);
+  const prePageRef = useRef<any>([]);
   const { address } = useAccount();
 
   const queryList = async () => {

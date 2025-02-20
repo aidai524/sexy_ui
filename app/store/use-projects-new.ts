@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { mapDataToProject } from "../utils/mapTo";
+import mediaStore from "../libs/media-store";
+import { videoReg } from "@/app/components/upload";
+import { httpGet } from "@/app/utils";
 
 export enum LaunchType {
   forYou = "forYou",
@@ -58,12 +61,24 @@ export const useProjects = create(
         if (!_projects.length) return;
         const currentProjects = get().projects;
 
+        const cachedVideos: any = [];
+
         const projects = _projects
           .filter((item: any) => !currentProjects[item.id])
-          .map((item: any, i: number) => ({
-            ...mapDataToProject(item),
-            fetched_time: Date.now()
-          }));
+          .map((item: any, i: number) => {
+            if (item.video && videoReg.test(item.video)) {
+              cachedVideos.push({
+                url: item.video,
+                name: item.id
+              });
+            }
+            return {
+              ...mapDataToProject(item),
+              fetched_time: Date.now() + i
+            };
+          });
+
+        mediaStore.fetchFiles(cachedVideos);
 
         const list = {
           ...currentProjects,
@@ -95,8 +110,49 @@ export const useProjects = create(
 
         return currentProjects[id];
       },
-      setIndex(type: Type, index: number) {
+      setIndex: async (type: Type, index: number) => {
+        const list = get()[type + "List"];
+        const startI = index - 10 < 0 ? 0 : index - 10;
+        const endI =
+          index + 10 > list.length - 1 ? list.length - 1 : index + 10;
+
+        const availableProjects = list.slice(startI, endI);
+
+        const cachedVideos: any = [];
+        const needUpdateProjects: any = [];
+        availableProjects.forEach((item: any) => {
+          if (item.video && videoReg.test(item.video)) {
+            cachedVideos.push({
+              url: item.video,
+              name: item.id
+            });
+          }
+          if (Date.now() - item.fetched_time > 30 * 60 * 60 * 1000) {
+            needUpdateProjects.push(item.id);
+          }
+        });
+
+        mediaStore.fetchFiles(cachedVideos);
+
         set({ [type + "Index"]: index });
+
+        if (needUpdateProjects.length > 0) {
+          const projects = await httpGet(
+            "/project/ids?id_list=" + needUpdateProjects.join(",")
+          );
+          const currentProjects = get().projects;
+
+          projects.forEach((item: any) => {
+            if (!currentProjects[item.id]) return;
+
+            currentProjects[item.id] = {
+              ...mapDataToProject(item),
+              fetched_time: Date.now()
+            };
+          });
+
+          set({ projects: currentProjects });
+        }
       },
       getIndex(type: Type) {
         return get()[type + "Index"];

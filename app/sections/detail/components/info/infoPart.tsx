@@ -13,7 +13,6 @@ import { ProgressBar } from "antd-mobile";
 import Big from "big.js";
 import TokenTags from "@/app/components/tokenTags";
 import { getVideoExt, imgReg, videoReg } from "@/app/components/upload";
-import VideoPlayer from "@/app/components/video";
 import Empty from "@/app/components/empty";
 import { useTrendsStore } from "@/app/store/useTrends";
 import TokenIcon from "@/app/components/avatar/token";
@@ -48,9 +47,7 @@ export default function InfoPart({
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
-  
-  
-  
+
   const { isMobile } = useUserAgent();
 
   if (!data) {
@@ -107,27 +104,36 @@ export default function InfoPart({
             />
           </div>
 
-          <div className={styles.singleProgress} style={{ marginTop: 15, paddingRight: 30 }}>
+          <div
+            className={styles.singleProgress}
+            style={{ marginTop: 15, paddingRight: 30 }}
+          >
             <div className={styles.progressTitleWrapper}>
-              
               <div className={styles.progressPercent}>
                 <div className={styles.progressTitleText}>Flipped (SOL)</div>
-                <div className={styles.progressTitleValue} style={{ color: "#FBCA04" }}>
+                <div
+                  className={styles.progressTitleValue}
+                  style={{ color: "#FBCA04" }}
+                >
                   {data.prePaidAmount && data.prePaid
                     ? new Big(data.prePaidAmount || 0)
-                      .div(10 ** 9)
-                      .toFixed(4)
-                      .toString()
+                        .div(10 ** 9)
+                        .toFixed(4)
+                        .toString()
                     : 0}
                 </div>
               </div>
 
               <div className={styles.progressPercent}>
                 <div className={styles.progressTitleText}>Flipped Account</div>
-                <div className={styles.progressTitleValue} style={{ color: "#fff" }}>{data.prePaid || 0}</div>
+                <div
+                  className={styles.progressTitleValue}
+                  style={{ color: "#fff" }}
+                >
+                  {data.prePaid || 0}
+                </div>
               </div>
             </div>
-          
           </div>
         </div>
       )}
@@ -140,7 +146,7 @@ export default function InfoPart({
                 {data.bondingProgress}%
               </div>
               <div className={styles.progressTitle}>
-              45.5 / <span style={{ color: "#9290B1" }}>535.6 SOL</span>
+                45.5 / <span style={{ color: "#9290B1" }}>535.6 SOL</span>
               </div>
             </div>
 
@@ -155,16 +161,14 @@ export default function InfoPart({
           </div>
 
           <div className={styles.priceContent} style={{ marginTop: 15 }}>
-              <div className={styles.priceNums}>
-                <div className={styles.priceAmount}>$17.2K</div>
-                <div className={styles.priceUp}>+1.1K</div>
-              </div>
-              <div className={styles.priceUnit}>$0.00356</div>
+            <div className={styles.priceNums}>
+              <div className={styles.priceAmount}>$17.2K</div>
+              <div className={styles.priceUp}>+1.1K</div>
+            </div>
+            <div className={styles.priceUnit}>$0.00356</div>
           </div>
         </div>
       )}
-
-      
     </div>
   );
 }

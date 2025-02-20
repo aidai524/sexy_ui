@@ -3,10 +3,12 @@ import type { Project } from "@/app/type";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDebounceFn } from "ahooks";
 import ProgressBar from "./progress-bar";
+import mediaStore from "@/app/libs/media-store";
 
 interface VideoPlayerProps {
   src: string;
   type: string;
+  id: string;
   className?: string;
   style?: React.CSSProperties;
   autoPlay?: boolean;
@@ -18,6 +20,7 @@ interface VideoPlayerProps {
 export default function VideoPlayer({
   src,
   type,
+  id,
   className,
   style = {},
   autoPlay = true,
@@ -31,6 +34,7 @@ export default function VideoPlayer({
   const [isPlay, setIsPlay] = useState(false);
   const { autoPlay: autoPlaySetting, set }: any = useSetting();
   const [progress, setProgress] = useState(0);
+  const [mergedSrc, setMergedSrc] = useState("");
 
   const { run: onTimeUpdate } = useDebounceFn(
     () => {
@@ -149,6 +153,21 @@ export default function VideoPlayer({
     };
   }, [style]);
 
+  useEffect(() => {
+    if (!id && !src) return;
+    const getSrc = async () => {
+      try {
+        const blob: any = await mediaStore.getFile(id);
+        setMergedSrc(URL.createObjectURL(blob));
+      } catch (err) {
+        setMergedSrc(src);
+      }
+    };
+    getSrc();
+  }, [id, src]);
+
+  if (!mergedSrc) return null;
+
   return (
     <div
       className={className}
@@ -186,7 +205,7 @@ export default function VideoPlayer({
         style={style}
         preload="auto"
       >
-        <source src={src} type={`video/${type}`} />
+        <source src={mergedSrc} type={`video/${type}`} />
       </video>
       {autoPlay && !isPlay && (
         <div

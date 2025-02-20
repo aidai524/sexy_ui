@@ -91,7 +91,7 @@ export default function List({
           }}
         >
           <div>
-            {type} Index: {index}
+            {type} Id: {currentToken?.id}
           </div>
           <div>
             {type} Len: {list.length}
