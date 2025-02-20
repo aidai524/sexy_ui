@@ -8,6 +8,7 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import {useCloseCopyTrade} from '@/app/sections/profile/hooks/useCloseCopyTrade';
 import {useSwapCopyTokens} from '@/app/sections/profile/hooks/useSwapCopyTokens';
+import {useWithdrawTokens} from '@/app/sections/profile/hooks/useWithdrawTokens';
 import { useUserAgent } from "@/app/context/user-agent";
 import CloseCopyTips from "./closeCopyTips";
 import styles from './coppied.module.css';
@@ -20,6 +21,7 @@ export default function Coppied({ isOther }: any) {
   const { isMobile } = useUserAgent();
   const { isLoading: isCloseCopyTradeLoading, handleCloseCopyTrade } = useCloseCopyTrade();
   const { isLoading: isSwapCopyTokensLoading, handleSwapCopyTokens } = useSwapCopyTokens();
+  const { isLoading: isWithdrawTokensLoading, handleWithdrawTokens } = useWithdrawTokens();
   const homeTabStore: any = useHomeTab();
   const { userInfo } = useAuth();
   const [copyTradeMap, setCopyTradeMap] = useState<any>({
@@ -101,25 +103,28 @@ export default function Coppied({ isOther }: any) {
   }
 
   const handleClose = async (item: any) => {
-    //  let waitWithdrawTokens:any = []
-    //   if (item?.tokens?.length > 0) {
-    //     item?.tokens.map((it:any)=>{
-    //       waitWithdrawTokens.push(it.token)
-    //     })
-    //   }
-      const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4, isWithdraw: item?.tokens?.length > 0});
+    if (item?.tokens?.length > 0) {
+      const res = await handleWithdrawTokens({id: item?.id, walletAddress: userInfo?.address, chain: "solana", tokens: [], type: 2, sellAll: true, closeCopyTrade: true});
       if (res) {
         setPageIndex(1);
         setCopyTradeMap({ items: [], total: 0 });
         setHasMore(true);
         loadMore(); 
       }
+    } else {
+      const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
+      if (res) {
+        setPageIndex(1);
+        setCopyTradeMap({ items: [], total: 0 });
+        setHasMore(true);
+        loadMore(); 
+      }
+    }
   };
 
   const handleCloseAndSell = async (item: any) => {
      const swapRes = await handleSwapCopyTokens({id: item?.id, sellAll: true, tokens: [],type:2, walletAddress: userInfo?.address, chain: "solana", closeCopyTrade: true});
      if (swapRes) {
-      // const closeRes = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
         setPageIndex(1);
         setCopyTradeMap({ items: [], total: 0 });
         setHasMore(true);

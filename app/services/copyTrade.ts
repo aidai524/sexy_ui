@@ -217,7 +217,10 @@ class CopyTrade {
     chain: string;
     tokens: string[];
     id: string;
-    withdrawAll: boolean
+    sig: string;
+    timestamp: number;
+    withdrawAll: boolean;
+    closeCopyTrade: boolean;
   }) {
     try {
       const response = await fetch(`${this.baseURL}/copy_trade/withdraw_tokens`, {
