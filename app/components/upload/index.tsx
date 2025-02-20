@@ -37,7 +37,7 @@ export const getVideoExt = (url: string) => {
 const StyleMaps = {
   avatar: [styles.Avatar, styles.AvatarImg],
   banner: [styles.Banner, styles.Banner],
-  token: [styles.Token, styles.Token],
+  token: [styles.Token, styles.TokenImg],
   others: [styles.Others, styles.OthersImg]
 };
 

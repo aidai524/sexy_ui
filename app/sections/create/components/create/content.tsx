@@ -38,7 +38,8 @@ export default function Create({
   onCreateTokenSuccess,
   onBeforeCreate,
   width,
-  getSubmitFn
+  getSubmitFn,
+  setShowSuccessModal
 }: any) {
   const { tokenName, tokenSymbol, tokenUri } = token;
 
@@ -248,7 +249,7 @@ export default function Create({
         </div>
       </div>
 
-      <CreateSuccessModal show={modalShow} onHide={() => {
+      <CreateSuccessModal onShare={setShowSuccessModal} show={modalShow} onHide={() => {
         setModalShow(false);
       }} token={token} />
     </>
