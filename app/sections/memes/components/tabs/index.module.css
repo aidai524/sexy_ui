@@ -1,15 +1,19 @@
 .MemesTabsContainer {
   width: 100%;
   position: relative;
-  overflow: hidden;
+  padding-bottom: 72px;
 }
 
 .MemesTabsHeader {
   width: 100%;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 1;
   cursor: grab;
   touch-action: pan-x;
   overflow-x: auto;
+  background: #000;
+  padding-bottom: 18px;
 }
 
 .MemesTabsHeader::-webkit-scrollbar {
@@ -74,7 +78,6 @@
 }
 
 .MemesTabsContent {
-  margin-top: 18px;
   padding: 0 14px;
 }
 
@@ -82,6 +85,11 @@
   display: flex;
   gap: 6px;
   align-items: center;
+  position: sticky;
+  top: 51px;
+  z-index: 1;
+  background: #000;
+  padding-bottom: 10px;
 }
 
 .MemesTabsFilter {
@@ -101,6 +109,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5px;
   transition: all 0.3s ease;
 }
 
@@ -112,9 +121,26 @@
   background: rgba(60, 60, 60, 0.50);
 }
 
+.MemesTabsFilterArrow {
+  width: 7px;
+  transform: translateY(1px);
+}
+.MemesTabsFilterArrowDown {
+  composes: MemesTabsFilterArrow;
+  transform: translateY(1px) rotate(180deg);
+}
+
 .MemesTabsList {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.MemesTabsNoMoreData {
+  text-align: center;
+  padding: 20px;
+  opacity: 0.6;
 }

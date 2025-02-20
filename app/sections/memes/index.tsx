@@ -5,17 +5,20 @@ import Carousel from '@/app/sections/memes/components/carousel';
 import MemesTabs from '@/app/sections/memes/components/tabs';
 import { MemesContext } from '@/app/sections/memes/context';
 import { useMemes } from '@/app/sections/memes/hooks';
+import styles from './index.module.css';
 
 const MemesView = (props: any) => {
   const {} = props;
 
-  const data = useMemes({ isPolling: true });
+  const data = useMemes({ isLoadData: true });
 
   return (
     <MemesContext.Provider value={{ ...data }}>
-      <MemesTitle />
-      <Carousel data={list} />
-      <MemesTabs />
+      <div className={styles.MemesContainer}>
+        <MemesTitle />
+        <Carousel data={data.hotList?.slice?.(0, 3) || []} />
+        <MemesTabs />
+      </div>
     </MemesContext.Provider>
   );
 };
