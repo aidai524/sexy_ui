@@ -12,11 +12,14 @@ import MainBtn from "@/app/components/mainBtn";
 import { useCopyTrade } from "@/app/sections/profile/hooks/useCreateCopyTrade";
 import { Switch } from "antd-mobile";
 import { LeftBackIcon, QuestionIcon } from "@/app/sections/trends/components/top-traders/icon";
-
+import { useAccount } from "@/app/hooks/useAccount";
 
 export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   const { isLoading, handleCopyTrade } = useCopyTrade();
   const { userInfo: currentUserInfo } = useAuth();
+  const { address: walletAddress } = useAccount();
+  console.log(currentUserInfo,walletAddress, 'copiedInfo')
+
   const [copyAmount, setCopyAmount] = useState<string>("");
   const [onceCopyAmount, setOnceCopyAmount] = useState<string>("0.1");
   const [copyTimes, setCopyTimes] = useState<string>("10");
@@ -213,7 +216,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
       return;
     }
    const res = await handleCopyTrade({
-      walletAddress: currentUserInfo?.address,
+      walletAddress:  walletAddress || currentUserInfo?.address,
       copiedAddress: copiedInfo?.address,
       copyAmount,
       onceCopyAmount

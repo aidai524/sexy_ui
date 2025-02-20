@@ -167,6 +167,9 @@ class CopyTrade {
     sellAll: boolean;
     tokens: string[];
     id: string;
+    sig: string;
+    timestamp: number;
+    closeCopyTrade: boolean;
   }) {
     try {
       const response = await fetch(`${this.baseURL}/copy_trade/swap_tokens`, {
