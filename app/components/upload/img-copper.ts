@@ -1,6 +1,8 @@
 // @ts-ignore
 import Croppie from "croppie";
 
+const orientationMap = [2, 5, 3, 7]
+
 export default async function ImgCopper({ file }: { file: File }) {
   return new Promise(async (resolve, reject) => {
     const url = await new Promise<string | void>((resolve) => {
@@ -14,13 +16,13 @@ export default async function ImgCopper({ file }: { file: File }) {
     });
     if (!url) return;
 
-    const img = new Image();
-    await new Promise<[number, number]>(
-      (resolve) => {
-        img.onload = () => resolve([img.naturalWidth, img.naturalHeight]);
-        img.src = url;
-      }
-    );
+    // const img = new Image();
+    // await new Promise<[number, number]>(
+    //   (resolve) => {
+    //     img.onload = () => resolve([img.naturalWidth, img.naturalHeight]);
+    //     img.src = url;
+    //   }
+    // );
 
     const cropperContainer = document.createElement('div');
     cropperContainer.className = 'cropper-flip-container';
@@ -45,7 +47,11 @@ export default async function ImgCopper({ file }: { file: File }) {
 `;
     rotateBtn.style.cssText = 'color: #fff; font-size: 16px;';
     rotateBtn.onclick = () => {
-      cropper.rotate(90);
+      const { orientation } = cropper.get()
+      setTimeout(() => {
+        const nextOrientation = orientationMap[(orientationMap.indexOf(orientation) + 1) % orientationMap.length] 
+        cropper.bind({ url: url, orientation: nextOrientation, zoom: 0 });
+      }, 200);
     };
 
     const doneBtn = document.createElement('div');
@@ -53,19 +59,22 @@ export default async function ImgCopper({ file }: { file: File }) {
     doneBtn.style.cssText = 'background: #FBCA04; color: #000; font-size: 16px; padding: 8px 20px; border-radius: 100px;';
     doneBtn.onclick = () => {
       cropper.result({ type: "blob", size: "viewport" }).then((blob: any) => {
+        rotateBtn.onclick = null
+        doneBtn.onclick = null
+        cropper.destroy();
         cropperContainer.remove();
         resolve(blob);
       });
     };
 
-    cropperContainer.appendChild(img);
+    // cropperContainer.appendChild(img);
 
     header.appendChild(cancelBtn);
     header.appendChild(rotateBtn);
     header.appendChild(doneBtn);
     cropperContainer.appendChild(header);
 
-    const cropper = new Croppie(img, {
+    const cropper = new Croppie(cropperContainer, {
       viewport: { width: 128, height: 128, type: "circle" },
       boundary: { width: window.innerWidth, height: 128 },
       showZoomer: true,
@@ -73,6 +82,12 @@ export default async function ImgCopper({ file }: { file: File }) {
       enableResize: false,
       enableMove: true,
       enableRotate: true,
+    });
+
+    cropper.bind({
+      url: url,
+      orientation: 2,
+      zoom: 0
     });
 
   });
