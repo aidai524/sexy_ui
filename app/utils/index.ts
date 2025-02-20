@@ -474,8 +474,6 @@ export async function upload(
       }
     );
 
-  
-
     if (percent === 0) {
       const canvasWidth = 128 * scala;
       const canvasHeight = canvasWidth * 1.5;
@@ -526,13 +524,13 @@ export async function upload(
         canvasHeight
       );
     } else {
-      const scale = Math.min(800 / img.width, 800 / img.height)
-      const newWidth = img.width * scale
-      const newHeight = img.height * scale
-      canvas.width = newWidth
-      canvas.height = newHeight
+      const scale = Math.min(800 / img.width, 800 / img.height);
+      const newWidth = img.width * scale;
+      const newHeight = img.height * scale;
+      canvas.width = newWidth;
+      canvas.height = newHeight;
 
-      ctx.drawImage(img, 0, 0, newWidth, newHeight)
+      ctx.drawImage(img, 0, 0, newWidth, newHeight);
     }
 
     const base64Url = canvas.toDataURL("image/webp");
@@ -634,8 +632,6 @@ export function formatDateEn(time: number, format: string = "MMM D, YYYY") {
   const date = dayjs(time);
   return date.format(format);
 }
-
-
 
 export function getDeviceType() {
   if (typeof window === "undefined")
