@@ -7,6 +7,7 @@ import useUserInfo from '@/app/hooks/useUserInfo';
 import Big from 'big.js';
 import { useCopyTokenInfos } from '@/app/sections/profile/hooks/useCopyTokenInfos';
 import { numberFormatter } from '@/app/utils/common';
+import { formatDateTime } from '@/app/utils/index';
 
 export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading}: any) {
     const { userInfo: copyUserInfo } = useUserInfo(itemInfo?.from);
