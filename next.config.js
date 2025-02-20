@@ -8,12 +8,12 @@ const nextConfig = {
   rewrites: async () => [
     {
       source: "/api/v1/:path*",
-      destination: "https://api.dumpdump.fun/api/v1/:path*"
+      destination: process.env.NEXT_PUBLIC_API + "/:path*"
     },
     {
       source: "/s3/img/:path*",
       destination: process.env.NEXT_PUBLIC_S3_URL_PREFIX + "/:path*"
-    },
+    }
   ],
 
   webpack: (config, { dev, isServer }) => {
