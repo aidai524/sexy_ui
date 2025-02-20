@@ -142,7 +142,6 @@ class MediaStore {
 
   public async getFile(fileName: string) {
     const db = await this.initDB();
-    console.log("fileName", fileName);
     return new Promise(async (resolve, reject) => {
       const transaction = db.transaction(this.storeName, "readonly");
       const store = transaction.objectStore(this.storeName);
@@ -159,7 +158,6 @@ class MediaStore {
         for (let i = 0; i < totalChunks; i++) {
           const chunkRequest = store.get(`${fileName}_chunk_${i}`);
           chunkRequest.onsuccess = () => {
-            console.log(161, i);
             chunks.push(chunkRequest.result.data);
             if (chunks.length === totalChunks) {
               const finalBlob = new Blob(chunks, { type: meta.type });

@@ -24,23 +24,39 @@ export default function useData(launchType: Type) {
     if (fetchingRef.current) return;
     try {
       fetchingRef.current = true;
-      const cachedList = projectsStore.projects;
+      const cachedList = projectsStore.getList(launchType);
       const res = await httpGet(
         `/project/list?limit=${limit}&launchType=${
           launchType === "other" ? "video" : launchType
-        }&deleteCache=${Object.keys(cachedList).length === 0}`
+        }&deleteCache=${Object.keys(cachedList).length === 0}${
+          address && prePageRef.current.length
+            ? "&addIDList=" + prePageRef.current.join(",")
+            : ""
+        }`
       );
 
       if (res.code !== 0 || !res.data?.list) {
         return [];
       }
+      const ids = res.data?.list.map((item: any) => item.id) || [];
 
       projectsStore.setProjects(res.data?.list, address);
+
+      if (address && prePageRef.current.length) {
+        projectsStore.setList(launchType, prePageRef.current, true);
+        return;
+      }
+
       projectsStore.setList(
         launchType,
-        res.data?.list.map((item: any) => item.id) || [],
+        ids,
         launchType === "forYou" && !hasNext
       );
+      if (!address) {
+        prePageRef.current = ids;
+      } else {
+        prePageRef.current = [];
+      }
 
       const _hasNext = res.data?.list && res.data?.list.length === limit;
       setHasNext(_hasNext);
@@ -109,7 +125,7 @@ export default function useData(launchType: Type) {
   const { run: debounceList } = useDebounceFn(
     () => {
       if (projectsStore.address !== (address || "")) {
-        projectsStore.clear();
+        projectsStore.clearList(launchType);
       }
 
       initList();

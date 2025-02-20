@@ -35,7 +35,7 @@ interface ProjectsState {
   setIndex: (type: Type, index: number) => void;
   getList: (type: Type) => any[];
   setList: (type: Type, list: any[], reset: boolean) => void;
-  clear: () => void;
+  clearList: (type: Type) => void;
 }
 
 const init = {
@@ -163,11 +163,11 @@ export const useProjects = create(
       setList(type: Type, list: any[], reset: boolean) {
         const _list = get()[type + "List"];
         set({
-          [type + "List"]: [..._list, ...list]
+          [type + "List"]: reset ? list : [..._list, ...list]
         });
       },
-      clear() {
-        set({ ...init });
+      clearList(type: Type) {
+        set({ [type + "List"]: [] });
       }
     }),
     {
