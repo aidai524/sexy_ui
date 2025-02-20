@@ -9,10 +9,13 @@ import { useCopyTokenInfos } from '@/app/sections/profile/hooks/useCopyTokenInfo
 import { numberFormatter } from '@/app/utils/common';
 import { formatAddress } from "@/app/utils";
 import { formatLongText } from '@/app/utils/common';
+import { formatDateTime } from '@/app/utils/index';
+import TokenGroup from '../tokenGroup';
+
 export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTradeLoading, urlAddress}: any) {
     const { userInfo: copyUserInfo } = useUserInfo(itemInfo?.from);
     const tokensInfo = useCopyTokenInfos(itemInfo?.tokens);
-
+    const [showTokenGroup, setShowTokenGroup] = useState(false);
   return (
     <div className={styles.ItemBox}>
       <div className={styles.ItemBoxContent}>
@@ -89,30 +92,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
         {/* coppied tokens */}
         <div className={styles.CoppiedTokens}>
             <div className={styles.TitlePubStyle}>{itemInfo?.tokens?.length || 0} Copied Tokens</div>
-            <Popover
-              content={
-                <div className={styles.Tooltip}>
-                      {tokensInfo.map((tokenInfo:any, index:number) => {
-                        return  <p className={styles.TooltipItem} key={index}>
-                            <span className={styles.TooltipItemIcon}>
-                                <img 
-                                    key={index} 
-                                    src={tokenInfo.icon || defaultAvatar} 
-                                    alt={tokenInfo.symbol || 'token'} 
-                                    title={tokenInfo.symbol || 'token'}
-                                />
-                            <span style={{fontSize: '12px'}}>{tokenInfo.symbol || 'token'}</span>
-                            </span>
-                            <span style={{color: '#fff',marginLeft: '12px', fontSize: '12px'}}>{numberFormatter(tokenInfo.balance || 0, 4, true)}</span>
-                         </p>
-                })}
-                 
-                </div>
-              }
-              placement={PopoverPlacement.TopLeft}
-              trigger={PopoverTrigger.Click}
-            >
-            <div className={styles.TokenIconBox}>
+            <div className={styles.TokenIconBox} onClick={() => setShowTokenGroup(true)}>
                {tokensInfo.map((tokenInfo:any, index:number) => {
                     if (index === 4) {
                         return <div key={index} className={styles.MoreTokens}>...</div>
@@ -127,14 +107,13 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
                     }
                 })}
             </div>
-            </Popover>
         </div>
       </div>
       </div>
 
       {/* actions */}
       <div className={styles.ActionButtonBox}>
-        <span className={styles.lastTradeAt}>{itemInfo?.lastTradeAt}</span>
+        <span className={styles.lastTradeAt}>{formatDateTime(itemInfo?.lastTradeAt)}</span>
        {
         !urlAddress && (
           <button 
@@ -154,6 +133,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
         )
        }
       </div>
+      <TokenGroup show={showTokenGroup} onClose={() => setShowTokenGroup(false)} copiedInfo={itemInfo} />
     </div>
   )
 }

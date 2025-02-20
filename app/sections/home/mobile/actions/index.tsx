@@ -142,7 +142,7 @@ export default function Actions({
             >
               <TxIcon />
             </button>
-            <span>{0}</span>
+            <span>{token.tx || 0}</span>
           </div>
         </>
       )}
