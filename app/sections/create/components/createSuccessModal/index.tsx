@@ -9,14 +9,16 @@ import { shareToX } from "@/app/utils/share";
 import { useMessage } from "@/app/context/messageContext";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import Modal from "@/app/components/modal";
+import { useRouter } from "next/navigation";
 
 interface Props {
   show: boolean;
   onHide: () => void;
   token: Project;
+  onShare: () => void;
 }
 
-export default function CreateSuccessModal({ show, onHide, token }: Props) {
+export default function CreateSuccessModal({ show, onHide, token, onShare }: Props) {
   return (
     <div className={style.ModalMain}>
       <Modal
@@ -27,11 +29,12 @@ export default function CreateSuccessModal({ show, onHide, token }: Props) {
         }}
       >
         <SuccessModal
-            token={token}
-            onClose={() => {
-              onHide();
-            }}
-          />
+          token={token}
+          onClose={() => {
+            onHide();
+          }}
+          onShare={onShare}
+        />
       </Modal>
     </div>
   );
@@ -39,29 +42,20 @@ export default function CreateSuccessModal({ show, onHide, token }: Props) {
 
 function SuccessModal({
   onClose,
+  onShare,
   token
 }: {
   onClose: () => void;
-  token: Project;
+  token: any;
+  onShare: () => void;
 }) {
   const { isMobile } = useUserAgent();
-  const { showShare } = useMessage();
-
-  const share = useCallback(async () => {
-    if (token) {
-      const v = await httpGet("/project?token_name=" + token.tokenName);
-      if (v.code === 0) {
-        const data = v.data[0];
-        onClose();
-        showShare(mapDataToProject(data), true);
-      }
-    }
-  }, [token]);
+  const router = useRouter();
 
   return (
     <div className={style.main} style={{ width: isMobile ? "90vw" : 432 }}>
-      <div className={ style.yaowan }>
-        <img className={ style.yaowanImg } src="/img/share/yaowan.gif" alt="" />
+      <div className={style.yaowan}>
+        <img className={style.yaowanImg} src="/img/share/yaowan.gif" alt="" />
       </div>
 
       <div className={style.tokenInfo}>
@@ -75,7 +69,7 @@ function SuccessModal({
         <div className={style.avatar}>
           <img
             className={style.avatarImg}
-            src={token.tokenIcon || token.tokenImg}
+            src={token.tokenUri || token.tokenIcon || token.tokenImg}
           />
         </div>
 
@@ -90,7 +84,8 @@ function SuccessModal({
         <div className={style.btnBox}>
           <MainBtn
             onClick={async () => {
-              share();
+              onClose();
+              onShare();
             }}
             style={{
               background: "#000000",
@@ -100,12 +95,13 @@ function SuccessModal({
             Share
           </MainBtn>
         </div>
-    
-
       </div>
 
-      <div className={`${style.close} button`} onClick={onClose}>
-       Back to Home
+      <div className={`${style.close} button`} onClick={() => {
+        router.push('/');
+        onClose();
+      }}>
+        Back to Home
       </div>
     </div>
   );

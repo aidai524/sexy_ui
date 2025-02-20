@@ -296,6 +296,8 @@ div.adm-tab-bar-wrap {
   font-family: Unbounded;
   display: flex;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .cropper-header {
@@ -312,7 +314,7 @@ div.adm-tab-bar-wrap {
 }
 
 .croppie-container {
-  height: auto !important;
+  /* height: auto !important; */
 }
 
 .cr-slider::-webkit-slider-runnable-track {

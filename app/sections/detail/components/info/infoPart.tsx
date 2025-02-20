@@ -19,6 +19,7 @@ import TokenIcon from "@/app/components/avatar/token";
 import VideoIcon from "@/app/components/icons/video";
 import HeartIcon from "@/app/components/icons/heart";
 import ClockIcon from "@/app/components/icons/clock";
+import { useCountDown } from "ahooks";
 
 interface Props {
   data: Project;
@@ -47,6 +48,10 @@ export default function InfoPart({
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
+
+  const [timeLeft, { days, hours, minutes, seconds }] = useCountDown({
+    targetDate: data.timeLeft
+  });
 
   const { isMobile } = useUserAgent();
 
@@ -87,7 +92,9 @@ export default function InfoPart({
             <div className={styles.progressTitleWrapper}>
               <div className={styles.progressTitle}>
                 <ClockIcon />
-                <div className={styles.progressTime}>0 : 23 : 12</div>
+                <div className={styles.progressTime}>
+                  {hours} : {minutes} : {seconds}
+                </div>
               </div>
               <div className={styles.progressAmount}>
                 <div>{data.like || 0}/100 likes </div>

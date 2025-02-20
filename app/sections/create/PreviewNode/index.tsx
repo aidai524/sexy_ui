@@ -12,6 +12,8 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useUser } from "@/app/store/useUser";
 import { useUserAgent } from "@/app/context/user-agent";
 import StepAction from "../components/stepAction";
+import Token from "../../home/mobile/token";
+import { head } from "lodash-es";
 
 interface Props {
   show: boolean;
@@ -33,6 +35,7 @@ export default forwardRef(function PreviewNode(
   const { address } = useAccount();
   const { userInfo }: any = useUser();
   const [isLoading, setIsLoading] = useState(false);
+  const { innerHeight } = useUserAgent();
 
   const submitFnRef = useRef<any | null>(null);
 
@@ -101,7 +104,6 @@ export default forwardRef(function PreviewNode(
         minHeight: isMobile ? "100vh" : "auto"
       }}
     >
-
       {
         step === 3 && <>
           <div className={styles.previewTab}>
@@ -122,7 +124,24 @@ export default forwardRef(function PreviewNode(
             {activeTab === 'details' ? (
               isMobile ? <MobileInfo newData={newData} /> : <LaptopInfo newData={newData} />
             ) : (
-              <div>Details Content</div>
+              <div style={{ zIndex: 1, position: 'relative', top: '-84px' }}>
+              <Token 
+                isCurrent={true}
+                style={{
+                  height: innerHeight - 120,
+                  overflow: 'hidden'
+                }}
+                token={{
+                  ...newData,
+                  id: Date.now(),
+                  like: 0,
+                  icon: newData.tokenIcon || '/img/default-token.png',
+                  timeLeft: Date.now() + 1000 * 60 * 60 * 3
+                }}  
+                isPreview={true}
+                dataAvailable={true}
+              />
+              </div>
             )}
           </div>
         </>

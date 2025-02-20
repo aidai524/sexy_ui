@@ -22,7 +22,8 @@ export default function Token({
   onUpdate,
   isPreview = false,
   token,
-  dataAvailable
+  dataAvailable,
+  style = {}
 }: any) {
   const [imgHeight, setImgHeight] = useState("80%");
   const { innerHeight } = useUserAgent();
@@ -46,7 +47,7 @@ export default function Token({
     <>
       <div
         className={styles.Container}
-        style={{ height: isPreview ? innerHeight - 60 : innerHeight }}
+        style={{ height: isPreview ? innerHeight - 60 : innerHeight, ...style }}
       >
         <div className={styles.BottomBg} />
         {token?.icon && (

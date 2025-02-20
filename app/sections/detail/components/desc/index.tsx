@@ -109,9 +109,10 @@ export default function Desc({ data, specialTime, mc, showHolders = true }: { da
                                 );
                         }}
                         className={[
-                            styles.tickerContent,
+                            styles.tickerContent, styles.tickerCreate
                         ].join(" ")}
                     >
+                        <img className={ styles.avatar } src={data.creater.icon} />
                         {userName}
                         {address === data.account && (
                             <span style={{ color: "#FBCA04" }}>(Self)</span>

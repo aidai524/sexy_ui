@@ -22,6 +22,7 @@
   box-sizing: border-box;
   cursor: pointer;
   background-color: #21252E;
+  overflow: hidden;
 }
 
 .Token {
@@ -30,6 +31,12 @@
   border-radius: 10px;
   cursor: pointer;
   background-color: #21252E;
+  display: flex;
+}
+
+.TokenImg {
+  width: 100%;
+  object-fit: cover;
 }
 
 .Banner {
