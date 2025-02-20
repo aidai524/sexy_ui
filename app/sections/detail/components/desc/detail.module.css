@@ -101,3 +101,69 @@
   margin-bottom: 10px;
   font-weight: 500;
 }
+
+.statsPanel {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px;
+  background: rgba(22, 22, 22, 0.6);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.statsItemBuy {
+  grid-column: 1 / -1;
+}
+
+.statsItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statsLabel {
+  font-size: 10px;
+  color: #9290B1;
+}
+
+.statsItemBuy {
+  .statsLabel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .tradeAmount {
+      color: #fff;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  }
+}
+
+.statsValue {
+  font-size: 12px;
+  color: #FFFFFF;
+}
+
+.tradeChart {
+  display: flex;
+  align-items: center;
+  height: 4px;
+  margin-top: 5px; 
+}
+
+.buyChart {
+  background-color: #C9FF5D;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.sellChart {
+  background-color: #FF2681;
+  height: 100%;
+  border-radius: 10px;
+} 
+
+.progressDesc {
+  margin-top: 5px;
+} 

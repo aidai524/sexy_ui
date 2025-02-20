@@ -1,6 +1,5 @@
 .main {
     width: 100vw;
-    min-height: 280px;
     background-color: #252328;
     border-radius: 16px;
     border: 1px solid #3B3B3B;
@@ -8,10 +7,10 @@
 }
 .titleText {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
     color: #fff;
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 25px;
 }
 .personInfo {
     display: flex;
