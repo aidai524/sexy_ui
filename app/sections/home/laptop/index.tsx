@@ -2,6 +2,7 @@ import Header from "./header";
 import List from "./list";
 import TrendBanner from "../../trends/components/banner";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { LaunchType } from "@/app/store/use-projects-new";
 import styles from "./index.module.css";
 
 export default function Laptop() {
@@ -14,20 +15,21 @@ export default function Laptop() {
         <TrendBanner />
       </div>
       <div className={styles.Content}>
-        <List
-          type="preLaunch"
-          onChangeTab={(tab: number) => {
-            homeTabStore.set({ homeTabIndex: tab });
-          }}
-          isCurrentTab={homeTabStore.homeTabIndex === 0}
-        />
-        <List
-          type="launching"
-          onChangeTab={(tab: number) => {
-            homeTabStore.set({ homeTabIndex: tab });
-          }}
-          isCurrentTab={homeTabStore.homeTabIndex === 1}
-        />
+        {Object.keys(LaunchType).map((item, i) => (
+          <List
+            type={item}
+            key={i}
+            onChangeTab={(tab: number) => {
+              let _tab = tab;
+              if (tab < 0) _tab = 0;
+              const len = Object.keys(LaunchType).length;
+              if (tab > len - 1) _tab = len - 1;
+              homeTabStore.set({ homeTabIndex: _tab });
+            }}
+            tabIndex={i}
+            isCurrentTab={homeTabStore.homeTabIndex === i}
+          />
+        ))}
       </div>
     </div>
   );

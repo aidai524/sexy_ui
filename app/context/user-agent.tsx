@@ -18,7 +18,7 @@ export const UserAgentProvider: React.FC<{
         window.navigator.userAgent.includes("Mobile") ||
         window.innerWidth < 450;
       setIsMobile(_isMobile);
-      setInnerHeight(_isMobile ? window.innerHeight : 680);
+      setInnerHeight(_isMobile ? window.innerHeight : 702);
       setInnerWidth(_isMobile ? window.innerWidth : 426);
     };
 

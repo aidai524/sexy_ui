@@ -6,7 +6,7 @@ import TipsButton from "../tips-button";
 import styles from "./index.module.css";
 import dynamic from "next/dynamic";
 import { AnimatePresence } from "framer-motion";
-import useData from "@/app/sections/home/hooks/use-data-mobile";
+import useData from "@/app/sections/home/hooks/use-data";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
@@ -71,7 +71,7 @@ export default function List({ type, isCurrentTab }: any) {
   const currentToken = useMemo(() => {
     const id = list[index];
     if (!id) return null;
-    return getProjectById(type, id);
+    return getProjectById(id);
   }, [index, list, refresher]);
 
   const { list: danmakus, show: danmakuShow } = useDanmaku({
@@ -138,8 +138,8 @@ export default function List({ type, isCurrentTab }: any) {
         {list?.map((item: number, i: number) => {
           let token = null;
 
-          if (Math.abs(i - index) < 5 && item) {
-            token = getProjectById(type, item);
+          if (Math.abs(i - index) < 20 && item) {
+            token = getProjectById(item);
           }
 
           return (
@@ -151,15 +151,15 @@ export default function List({ type, isCurrentTab }: any) {
               danmakus={danmakus}
               danmakuShow={danmakuShow}
               onUpdate={(token: any, action?: string) => {
-                updateProject(type, token);
+                updateProject(token);
                 if (action && ["like", "share"].includes(action)) return;
                 if (action === "flip") {
                   setTimeout(() => {
-                    queryAndUpdateDetail(type, token.address);
+                    queryAndUpdateDetail(token.address);
                   }, 4000);
                   return;
                 }
-                queryAndUpdateDetail(type, token.address);
+                queryAndUpdateDetail(token.address);
               }}
               opacity={index > i ? 0 : 1}
               showTrade={tokenPanelStatusStore.showTrade}
@@ -171,6 +171,7 @@ export default function List({ type, isCurrentTab }: any) {
                   !tokenPanelStatusStore[panleType]
                 );
               }}
+              dataAvailable={Math.abs(i - index) < 5}
             />
           );
         })}
@@ -244,8 +245,8 @@ export default function List({ type, isCurrentTab }: any) {
               }}
               onSuccess={() => {
                 currentToken.comment = currentToken.comment + 1;
-                updateProject(type, currentToken);
-                queryAndUpdateDetail(type, currentToken.address);
+                updateProject(currentToken);
+                queryAndUpdateDetail(currentToken.address);
               }}
             />
           )}
@@ -265,10 +266,10 @@ export default function List({ type, isCurrentTab }: any) {
                 )
                   .add(Number(amount) * 1e9)
                   .toString();
-                updateProject(type, currentToken);
+                updateProject(currentToken);
                 tokenPanelStatusStore.setShow("showFlip", false);
                 setTimeout(() => {
-                  queryAndUpdateDetail(type, currentToken.address);
+                  queryAndUpdateDetail(currentToken.address);
                 }, 2000);
               }}
             />

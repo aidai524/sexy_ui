@@ -12,6 +12,7 @@
   background: #000;
   display: flex;
   position: relative;
+  overflow: hidden;
 }
 
 .Token {
