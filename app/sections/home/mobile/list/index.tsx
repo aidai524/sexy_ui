@@ -163,7 +163,7 @@ export default function List({
                   }
                   queryAndUpdateDetail(token.address);
                 }}
-                dataAvailable={Math.abs(i - index) < 5}
+                dataAvailable={Math.abs(i - index) < 5 && isCurrentTab}
               />
             );
           })}

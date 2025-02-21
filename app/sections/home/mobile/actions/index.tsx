@@ -14,6 +14,7 @@ import { useAuth } from "@/app/context/auth";
 import useHolders from "../hooks/use-holders";
 import { numberFormatter } from "@/app/utils/common";
 import Timer from "./timer";
+import TipsButton from "@/app/sections/home/laptop/tips-button";
 
 export default function Actions({
   token,
@@ -36,12 +37,23 @@ export default function Actions({
         opacity: disabled ? 0.3 : 1
       }}
     >
-      <TokenIcon
-        token={token}
-        onClick={() => {
-          onClick("detail");
-        }}
-      />
+      {isMobile ? (
+        <TokenIcon
+          token={token}
+          onClick={() => {
+            onClick("detail");
+          }}
+        />
+      ) : (
+        <TipsButton tips="Details">
+          <TokenIcon
+            token={token}
+            onClick={() => {
+              onClick("detail");
+            }}
+          />
+        </TipsButton>
+      )}
       {token.status === 0 && (
         <Timer time={token.created_at} isPreview={isPreview} />
       )}

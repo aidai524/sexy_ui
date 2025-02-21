@@ -17,6 +17,8 @@ import useUserInfo from "@/app/hooks/useUserInfo";
 import CopyTrade from "@/app/services/copyTrade";
 import { SmartMoneyAddress, CopyTraderAddress } from "@/app/services/copyTrade";
 import { numberFormatter } from "@/app/utils/common";
+import CopyTradeShare from "@/app/sections/smart/components/CopyTraderShare/modal";
+
 export default function SmartDetailM() {
   const { userInfo } = useUser();
   const currentAddress = userInfo?.address;
@@ -24,6 +26,7 @@ export default function SmartDetailM() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const address = searchParams.get("address");
+  const referrer = searchParams.get("referrer");
   const isOther = address !== currentAddress && address;
   const { userInfo: currentUserInfo } = useUserInfo(address || "");
   const CopyTradeService = new CopyTrade();
@@ -31,7 +34,7 @@ export default function SmartDetailM() {
     useState<SmartMoneyAddress | null>(null);
   const [copyTradersUserInfo, setCopyTradersUserInfo] =
     useState<CopyTraderAddress | null>(null);
-
+  const [shareVisible, setShareVisible] = useState(false);
   const reqAddress = isOther ? address : currentAddress;
   const getSmartMoniesInfo = async () => {
     if (reqAddress) {
@@ -62,7 +65,15 @@ export default function SmartDetailM() {
     <div className={styles.container}>
       {/*  */}
       <div className={styles.back}>
-        <div onClick={() => router.back()}>
+        <div
+          onClick={() => {
+            if (referrer === "copy-trader-share") {
+              router.push("/");
+            } else {
+              router.back();
+            }
+          }}
+        >
           <LeftBackIcon />
         </div>
         <div className={styles.userInfo}>
@@ -77,7 +88,7 @@ export default function SmartDetailM() {
               "FlipN"}
           </div>
         </div>
-        <div>
+        <div onClick={() => setShareVisible(true)}>
           <ShareIcon />
         </div>
       </div>
@@ -85,6 +96,11 @@ export default function SmartDetailM() {
       <SmartDetailContent copyTradersUserInfo={copyTradersUserInfo || null} />
       {/* copy list */}
       <Coppied isOther={false} />
+      <CopyTradeShare
+        copyTradersUserInfo={copyTradersUserInfo || null}
+        visible={shareVisible}
+        onClose={() => setShareVisible(false)}
+      />
     </div>
   );
 }

@@ -68,3 +68,14 @@
 .LinkIcon {
   transform: scale(0.66);
 }
+
+.Create {
+  width: 38px;
+  height: 36px;
+  border-radius: 10px;
+  background: #c9ff5d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+}

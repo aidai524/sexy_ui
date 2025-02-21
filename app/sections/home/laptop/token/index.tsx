@@ -10,8 +10,8 @@ import Trade from "@/app/sections/home/mobile/trade";
 import Danmaku from "@/app/components/danmaku";
 import ScaleButton from "./scale-button";
 import TradePanel from "../panels/trade";
-import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import LikeToEarn from "../../mobile/token/like-to-earn";
+import { useRef } from "react";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
 import TipsButton from "@/app/sections/home/laptop/tips-button";
@@ -23,23 +23,16 @@ export default function Token({
   opacity,
   showTrade,
   tradeTab,
-  danmakus,
-  danmakuShow,
+  isPreview,
+  dataAvailable,
   onUpdate,
   onOpenPanel,
   onUpdateTradeTab
 }: any) {
-  const [imgHeight, setImgHeight] = useState("80%");
   const { innerHeight, innerWidth } = useUserAgent();
   const descContentRef = useRef<any>();
 
   const { total: totalHolders } = useHolders(token);
-
-  useEffect(() => {
-    if (descContentRef.current) {
-      setImgHeight(`${innerHeight - descContentRef.current.clientHeight}px`);
-    }
-  }, []);
 
   return (
     <div
@@ -59,33 +52,18 @@ export default function Token({
               height: innerHeight
             }}
           >
-            <Media imgHeight={imgHeight} data={token} />
-            <div
-              className={styles.Labels}
-              style={{
-                right: showTrade ? 70 : 0
-              }}
-            >
-              {token.isSuperLike && (
-                <motion.img
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={styles.FlippedLabel}
-                  src="/img/home/flipped.png"
-                />
-              )}
-
-              {token.isLike && (
-                <motion.img
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={styles.LikedLabel}
-                  src="/img/home/liked.png"
-                />
-              )}
-            </div>
+            {token.status === 0 && !isPreview && <LikeToEarn />}
+            <Media
+              imgHeight="100%"
+              data={token}
+              videoProgressStyle={
+                isCurrent
+                  ? { position: "absoulte", left: 16, bottom: 72 }
+                  : null
+              }
+            />
             <div className={styles.Bottom}>
-              {isCurrent && <Danmaku show={danmakuShow} list={danmakus} />}
+              {isCurrent && <Danmaku id={token.id} />}
 
               {token.status === 0 ? (
                 !token.isSuperLike ? (
@@ -107,19 +85,22 @@ export default function Token({
                   <Flipped token={token} />
                 )
               ) : (
-                <Trade
-                  token={token}
-                  totalHolders={totalHolders}
-                  onClick={() => {
-                    if (!window.sexAddress) {
-                      window.connect();
-                      return;
-                    }
-                    onUpdateTradeTab("chart");
+                dataAvailable && (
+                  <Trade
+                    token={token}
+                    isCurrent={isCurrent}
+                    onClick={() => {
+                      if (isPreview) return;
+                      if (!window.sexAddress) {
+                        window.connect();
+                        return;
+                      }
+                      onUpdateTradeTab("chart");
 
-                    if (!showTrade) onOpenPanel("showTrade", true);
-                  }}
-                />
+                      if (!showTrade) onOpenPanel("showTrade", true);
+                    }}
+                  />
+                )
               )}
               <div className={styles.Desc} ref={descContentRef}>
                 <Desc token={token} />
@@ -154,42 +135,44 @@ export default function Token({
               />
             </TipsButton>
           )}
-          <Actions
-            token={token}
-            onClick={(type: any) => {
-              if (type === "comments") {
-                onOpenPanel("showComments");
-                return;
-              }
-              if (type === "detail") {
-                onOpenPanel("showDetail");
-                return;
-              }
-              if (!window.sexAddress) {
-                window.connect();
-                return;
-              }
-              if (type === "flip") {
-                onOpenPanel("showFlip");
-              }
-              if (type === "trade") {
-                onUpdateTradeTab("holders");
-                if (!showTrade) onOpenPanel("showTrade");
-              }
-            }}
-            totalHolders={totalHolders}
-            onSuccess={(type: string) => {
-              if (type === "like") {
-                token.isLike = true;
-                token.like = token.like + 1;
-              }
-              if (type === "share") {
-                // token.share_num = token.share_num + 1;
-              }
-              onUpdate(token, type);
-            }}
-            isCurrent={isCurrent}
-          />
+          {dataAvailable && (
+            <Actions
+              token={token}
+              onClick={(type: any) => {
+                if (type === "comments") {
+                  onOpenPanel("showComments");
+                  return;
+                }
+                if (type === "detail") {
+                  onOpenPanel("showDetail");
+                  return;
+                }
+                if (!window.sexAddress) {
+                  window.connect();
+                  return;
+                }
+                if (type === "flip") {
+                  onOpenPanel("showFlip");
+                }
+                if (type === "trade") {
+                  onUpdateTradeTab("holders");
+                  if (!showTrade) onOpenPanel("showTrade");
+                }
+              }}
+              totalHolders={totalHolders}
+              onSuccess={(type: string) => {
+                if (type === "like") {
+                  token.isLike = true;
+                  token.like = token.like + 1;
+                }
+                if (type === "share") {
+                  // token.share_num = token.share_num + 1;
+                }
+                onUpdate(token, type);
+              }}
+              isCurrent={isCurrent}
+            />
+          )}
         </div>
       )}
     </div>

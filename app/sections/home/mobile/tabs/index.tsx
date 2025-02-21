@@ -3,17 +3,33 @@ import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import tabs from "./config";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { useMemo } from "react";
+import { zIndex } from "html2canvas/dist/types/css/property-descriptors/z-index";
 
 export default function Tabs() {
   const { isMobile } = useUserAgent();
   const homeTabStore: any = useHomeTab();
+
+  const mergedStyle: any = useMemo(
+    () =>
+      isMobile
+        ? {
+            position: "absolute",
+            top: 45,
+            width: "100%",
+            background:
+              "linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0) 81%)",
+            zIndex: 5,
+            gap: 20
+          }
+        : {
+            gap: 34
+          },
+    [isMobile]
+  );
+
   return (
-    <div
-      className={styles.launchPadTab}
-      style={{
-        gap: isMobile ? 20 : 146
-      }}
-    >
+    <div className={styles.launchPadTab} style={mergedStyle}>
       {tabs.map((tab: any, i: number) => (
         <div
           key={tab.key}

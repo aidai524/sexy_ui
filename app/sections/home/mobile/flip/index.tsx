@@ -22,9 +22,9 @@ export default function Flip({ token, id, onClick }: any) {
         backgroundColor: [COLORS[0], COLORS[1], COLORS[2], COLORS[0]]
       }}
       transition={{
-        duration: 0.3,
+        duration: 0.1,
         ease: "linear",
-        repeat: 10
+        repeat: 30
       }}
       onClick={onClick}
     >

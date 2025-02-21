@@ -83,3 +83,22 @@
   position: absolute;
   right: -10px;
 }
+
+.Create {
+  width: 116px;
+  height: 36px;
+  border-radius: 48px;
+  background: #c9ff5d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+  margin-bottom: 25px;
+}
