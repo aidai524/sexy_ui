@@ -42,14 +42,6 @@ export default function CopyTradeCard(props: {smartMoniesInfo: SmartMoneyAddress
               </span>
             </div>
         </div>
-        <div className={styles.openPosition}>
-          <span className={styles.detailTitle}>Open Position</span>
-          <span className={styles.detailValueContainer}>
-            <span className={styles.detailValueCurrent}>0</span>
-            <span className={styles.detailValue}>/ 0</span>
-            <span className={styles.detailValueCurrency}>SOL</span>
-          </span>
-        </div>
       </div>
   );
 }

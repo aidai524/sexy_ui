@@ -215,9 +215,9 @@ export default function TopTraderDetailM() {
           <div className={styles.gridItem}>
             <div className={styles.label}>Buy/sell</div>
             <div className={styles.value}>
-              <span className={styles.amount}>{copyTradersUserInfo?.tradeInfo?.buys}</span>
+              <span className={styles.amount}>{copyTradersUserInfo?.tradeInfo?.buys || 0}</span>
               <span>/</span>
-              <span className={styles.sellAmount}>{copyTradersUserInfo?.tradeInfo?.sells}</span>
+              <span className={styles.sellAmount}>{copyTradersUserInfo?.tradeInfo?.sells || 0}</span>
             </div>
           </div>
           <div className={styles.gridItem}>
@@ -250,8 +250,21 @@ export default function TopTraderDetailM() {
         </div>
       </div>
 
-      {/* button */}
-      {isOther && (
+     
+
+      {SHOW_COPY_TRADE && (
+        <CoppiedModal
+          copiedInfo={currentUserInfo}
+          show={showModal}
+          onClose={() => {
+            setShowModal(false);
+            setRefreshNum(refreshNum + 1);
+          }}
+        />
+      )}
+    </div>
+     {/* button */}
+     {isOther && (
         <div className={styles.btnGroup}>
           <div
             className={styles.btnProfile}
@@ -271,18 +284,6 @@ export default function TopTraderDetailM() {
           </div>
         </div>
       )}
-
-      {SHOW_COPY_TRADE && (
-        <CoppiedModal
-          copiedInfo={currentUserInfo}
-          show={showModal}
-          onClose={() => {
-            setShowModal(false);
-            setRefreshNum(refreshNum + 1);
-          }}
-        />
-      )}
-    </div>
     </div>
   );
 };
