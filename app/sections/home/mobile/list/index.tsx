@@ -32,14 +32,14 @@ export default function List({
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
   const { innerHeight, innerWidth } = useUserAgent();
-  const guidingTourStore = useGuidingTour();
+  // const guidingTourStore = useGuidingTour();
   const listRef = useRef<any>();
 
-  const currentToken = useMemo(() => {
-    const id = list[index];
-    if (!id) return null;
-    return getProjectById(id);
-  }, [index, list]);
+  // const currentToken = useMemo(() => {
+  //   const id = list[index];
+  //   if (!id) return null;
+  //   return getProjectById(id);
+  // }, [index, list]);
 
   useEffect(() => {
     const prevent = function (e: any) {
@@ -104,7 +104,7 @@ export default function List({
             transform: `translateY(${y}px)`
           }}
           onTouchStart={(ev: any) => {
-            if (!guidingTourStore.hasShownTour) return;
+            // if (!guidingTourStore.hasShownTour) return;
             startY = ev.touches[0].clientY;
             startX = ev.touches[0].clientX;
             started = true;
