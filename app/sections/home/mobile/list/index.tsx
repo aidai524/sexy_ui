@@ -32,6 +32,8 @@ export default function List({
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
   const { innerHeight, innerWidth } = useUserAgent();
+
+  const contentHeight = innerHeight - 72;
   // const guidingTourStore = useGuidingTour();
   const listRef = useRef<any>();
 
@@ -56,7 +58,7 @@ export default function List({
       onChangeIndex(0);
       setY(0);
     } else {
-      setY(-index * innerHeight);
+      setY(-index * contentHeight);
     }
   }, [index, list]);
 
@@ -76,7 +78,7 @@ export default function List({
       <div
         className={styles.Container}
         style={{
-          height: innerHeight,
+          height: contentHeight,
           width: innerWidth,
           left: tabIndex * innerWidth
         }}
@@ -128,7 +130,7 @@ export default function List({
                 if (currentIndex > 0) currentIndex--;
               }
 
-              diffY = -innerHeight * currentIndex;
+              diffY = -contentHeight * currentIndex;
               onChangeIndex(currentIndex);
               setY(diffY);
               started = false;
@@ -168,7 +170,7 @@ export default function List({
           {!isLoading && (
             <div
               className={styles.EmptyWrapper}
-              style={{ height: innerHeight }}
+              style={{ height: contentHeight }}
             >
               <Empty height={300} text="No more projects" />
               {type !== "forYou" && (
@@ -190,7 +192,7 @@ export default function List({
         {isLoading && (
           <div
             className={styles.Wrapper}
-            style={{ height: innerHeight, width: innerWidth }}
+            style={{ height: contentHeight, width: innerWidth }}
           >
             <Loading />
           </div>

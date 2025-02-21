@@ -15,7 +15,7 @@ export default function HomeMobile() {
   return (
     <div
       className={styles.Container}
-      style={{ height: innerHeight, width: innerWidth }}
+      style={{ height: innerHeight - 72, width: innerWidth }}
     >
       <PageHeader from="home" />
       <Tabs />
@@ -23,7 +23,7 @@ export default function HomeMobile() {
         className={styles.ListWrapper}
         style={{
           transform: `translateX(-${homeTabStore.homeTabIndex * innerWidth}px)`,
-          height: innerHeight,
+          height: innerHeight - 72,
           width: innerWidth
         }}
       >

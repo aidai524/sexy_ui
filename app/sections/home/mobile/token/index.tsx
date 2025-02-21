@@ -36,7 +36,10 @@ export default function Token({
     <>
       <div
         className={styles.Container}
-        style={{ height: isPreview ? innerHeight - 60 : innerHeight, ...style }}
+        style={{
+          height: isPreview ? innerHeight - 60 : innerHeight - 72,
+          ...style
+        }}
       >
         <div className={styles.BottomBg} />
         {token?.icon && (

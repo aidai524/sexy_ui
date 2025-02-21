@@ -2,7 +2,6 @@
 
 import styles from "./layout.module.css";
 import useNotice from "../../../hooks/use-notice";
-
 import Tabs from "./tabs";
 
 export default function Component({ children }: any) {
@@ -15,7 +14,6 @@ export default function Component({ children }: any) {
       }}>juipter</Button> */}
       {children}
       {/* <Refer userInfo={userInfo} isMobile /> */}
-
       <Tabs />
       {/* {isRefer && <ReferContentCard />} */}
     </div>
