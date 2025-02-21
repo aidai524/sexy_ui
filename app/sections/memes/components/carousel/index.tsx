@@ -6,6 +6,7 @@ import { formatLongText, numberFormatter } from '@/app/utils/common';
 import SummaryItem from '@/app/sections/memes/components/summary-item';
 import Emoji from '@/app/sections/memes/components/emoji';
 import Big from 'big.js';
+import MemesTitle from '@/app/sections/memes/components/title';
 
 interface CarouselProps {
   className?: string;
@@ -140,6 +141,7 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
 
   return (
     <div className={clsx(styles.CarouselContainer, className)}>
+      <MemesTitle />
       <div className={styles.carouselWrapper}>
         <MediaItem item={{ ...currentItem, video: '/img/memes/memes-bg.mp4' }} onLoad={handleMediaLoad} />
         {

@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.module.css'
-import { CopyierIconBlack, ClaimIcon } from '@/app/sections/trends/components/top-traders/icon'
+import { CopyierIconBlack, ClaimIcon } from '@/app/sections/trends/components/top-traders/icons'
 import RightArrowWrap from '@/app/sections/smart/components/RightArrowWrap'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@/app/store/useUser';
@@ -46,5 +46,5 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
        }
       </div>
     </div>
-  )
+  );
 }

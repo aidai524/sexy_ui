@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.module.css'
-import { CopyierIconBlack, ClaimIcon } from '@/app/sections/trends/components/top-traders/icon'
+import { CopyierIconBlack, ClaimIcon } from '@/app/sections/trends/components/top-traders/icons'
 import RightArrowWrap from '@/app/sections/smart/components/RightArrowWrap'
 import {useRouter} from 'next/navigation'
 import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
@@ -12,14 +12,16 @@ export default function CopyTradeCard(props: {smartMoniesInfo: SmartMoneyAddress
   const { smartMoniesInfo, copyTradersUserInfo } = props;
   return (
     <div className={styles.container}>
-        <div className={styles.title}>
-            <span>Copied PRFM</span>
-            <div onClick={() => {
-                router.push('/smartDetail')
-            }}>
-                <RightArrowWrap />
-            </div>
+      <div className={styles.title}>
+        <span>Copied PRFM</span>
+        <div
+          onClick={() => {
+            router.push("/smartDetail");
+          }}
+        >
+          <RightArrowWrap />
         </div>
+      </div>
 
         <div className={styles.copyDetails}>
             <div className={styles.totalPnl}>
@@ -40,6 +42,14 @@ export default function CopyTradeCard(props: {smartMoniesInfo: SmartMoneyAddress
               </span>
             </div>
         </div>
-    </div>
-  )
+        <div className={styles.openPosition}>
+          <span className={styles.detailTitle}>Open Position</span>
+          <span className={styles.detailValueContainer}>
+            <span className={styles.detailValueCurrent}>0</span>
+            <span className={styles.detailValue}>/ 0</span>
+            <span className={styles.detailValueCurrency}>SOL</span>
+          </span>
+        </div>
+      </div>
+  );
 }

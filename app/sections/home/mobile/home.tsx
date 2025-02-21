@@ -30,6 +30,7 @@ export default function HomeMobile() {
         {Object.keys(LaunchType).map((item, i) => (
           <List
             type={item}
+            key={i}
             onChangeTab={(tab: number) => {
               let _tab = tab;
               if (tab < 0) _tab = 0;
