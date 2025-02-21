@@ -1,41 +1,46 @@
 import HomeIcon from "../icons/home";
-import Trends from "../icons/trends";
-import Create from "../icons/create";
-import Reward from "../icons/reward";
+import MemesIcon from "../icons/memes";
+import SmartIcon from "../icons/smart";
+import EarnIcon from "../icons/earn";
 import Profile from "../icons/profile";
 
 export default [
   {
-    icon: <HomeIcon />,
+    icon: HomeIcon,
     label: "Home",
     key: ["/"],
-    path: "/"
+    path: "/",
+    iconSize: 26
   },
   {
-    icon: <Trends />,
-    label: "Trends",
-    key: ["/trends"],
-    path: "/trends"
+    icon: MemesIcon,
+    label: "Memes",
+    key: ["/memes"],
+    path: "/memes",
+    iconSize: 26
   },
   {
-    icon: <Create />,
-    label: "Create",
-    key: ["/create"],
-    path: "/create",
-    needLogin: true
+    icon: SmartIcon,
+    label: "Smart",
+    key: ["/smart"],
+    path: "/smart",
+    iconSize: 26
   },
   {
-    icon: <Reward />,
-    label: "Reward",
+    icon: EarnIcon,
+    label: "Earn",
     key: ["/reward"],
-    path: "/reward"
+    path: "/reward",
+    needLogin: true,
+    iconSize: 26
   },
   {
-    icon: <Profile />,
+    icon: Profile,
     label: "Profile",
     key: ["/profile"],
     path: "/profile",
-    needLogin: true
+    needLogin: true,
+    iconSize: 25
   }
 ];
 

@@ -2,6 +2,7 @@ import styles from "./index.module.css";
 import config, { Links } from "@/app/components/menu/config";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import CreateIcon from "../create-icon";
 
 export default function ExpandPanel() {
   const pathname = usePathname();
@@ -32,13 +33,30 @@ export default function ExpandPanel() {
                 router.push(item.path);
               }}
             >
-              <span className={styles.ItemIcon}>{item.icon}</span>
+              <span className={styles.ItemIcon}>
+                <item.icon
+                  size={item.iconSize}
+                  type={item.key.includes(pathname) ? "primary" : "disabled"}
+                />
+              </span>
               <span className={styles.ItemText}>{item.label}</span>
             </div>
           );
         })}
       </div>
       <div className={styles.Bottom}>
+        <div
+          className={`${styles.Create} button`}
+          onClick={() => {
+            if (!window.sexAddress) {
+              window.connect();
+              return;
+            }
+            router.push("/create");
+          }}
+        >
+          <CreateIcon />
+        </div>
         <div className={styles.Links}>
           {Links.map((link: any) => (
             <a
