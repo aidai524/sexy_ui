@@ -77,57 +77,6 @@ export default function TopTraderDetailM() {
         image: currentUserInfo?.icon || defaultAvatar
       };
       
-      // const satellites = [
-      //   {
-      //     id: 'node1',
-      //     name: 'PEPEGIRL',
-      //     image: defaultAvatar,
-      //     pnl: 450
-      //   },
-      //   {
-      //     id: 'node2',
-      //     name: 'PEPEGIRL',
-      //     image: defaultAvatar,
-      //     pnl: 1450
-      //   },
-      //     {
-      //       id: 'node3',
-      //       name: 'PEPEGIRL',
-      //       image: defaultAvatar,
-      //       pnl: 250
-      //     },
-      //     {
-      //       id: 'node4',
-      //       name: 'PEPEGIRL',
-      //       image: defaultAvatar,
-      //       pnl: 2450
-      //     },
-      //     {
-      //       id: 'node5',
-      //       name: 'PEPEGIRL',
-      //       image: defaultAvatar,
-      //       pnl: 2450
-      //     },
-      //     {
-      //       id: 'node6',
-      //       name: 'PEPEGIRL',
-      //       image: defaultAvatar,
-      //       pnl: 2450
-      //     },
-      //     {
-      //       id: 'node7',
-      //       name: 'PEPEGIRL',
-      //       image: defaultAvatar,
-      //       pnl: 2450
-      //     },
-      //     {
-      //       id: 'node8',
-      //       name: 'PEPEGIRL',
-      //       image: defaultAvatar,
-      //       pnl: 2450
-      //     },
-      // ];
-
       const topCopiers = smartMoniesInfo?.topCopiers?.map((item:any)=>{
          const userInfo = getUserInfo(item.address);
          return {

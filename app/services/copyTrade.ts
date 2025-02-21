@@ -35,6 +35,8 @@ export interface SmartMoneyAddress {
           totalPNL: string;
           currentPNL: string;
           tokenPosition: string;
+          roi: string;
+          winRate: string;
     }
 }
  
