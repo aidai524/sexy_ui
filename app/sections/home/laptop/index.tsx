@@ -1,4 +1,4 @@
-import TypesTabs from "../tabs";
+import Header from "./header";
 import List from "./list";
 import TrendBanner from "../../trends/components/banner";
 import { useHomeTab } from "@/app/store/useHomeTab";
@@ -9,14 +9,7 @@ export default function Laptop() {
 
   return (
     <div className={styles.Container}>
-      <div className={styles.TabsWrapper}>
-        <TypesTabs
-          launchIndex={homeTabStore.homeTabIndex}
-          setLaunchIndex={(tab: number) => {
-            homeTabStore.set({ homeTabIndex: tab });
-          }}
-        />
-      </div>
+      <Header />
       <div className={styles.TrendBanner}>
         <TrendBanner />
       </div>
