@@ -3,7 +3,7 @@ import { httpGet } from "@/app/utils";
 
 export default function useTips() {
   const [prevTip, setPrevTip] = useState<any>();
-  const [tip, setTip] = useState<any>(Date.now());
+  const [tip, setTip] = useState<any>();
   const cached = useRef<any>();
   const prevRef = useRef<any>();
   const currentRef = useRef<any>();
