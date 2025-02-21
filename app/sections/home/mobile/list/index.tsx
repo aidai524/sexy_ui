@@ -161,6 +161,7 @@ export default function List({
                   }
                   queryAndUpdateDetail(token.address);
                 }}
+                dataAvailable={Math.abs(i - index) < 5}
               />
             );
           })}
