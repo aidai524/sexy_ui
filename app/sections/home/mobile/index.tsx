@@ -43,10 +43,7 @@ export default function Mobile() {
               history.pushState({ page: "/" }, "Home", `/`);
             }}
             onSuccess={(params: any) => {
-              projectsStore.updateProject(
-                homeTabStore.homeTabIndex === 0 ? "preLaunch" : "launching",
-                { ...token, ...params }
-              );
+              projectsStore.updateProject({ ...token, ...params });
             }}
           />
         </div>

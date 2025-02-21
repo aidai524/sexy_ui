@@ -14,8 +14,9 @@ import { Switch } from "antd-mobile";
 import {
   LeftBackIcon,
   QuestionIcon
-} from "@/app/sections/trends/components/top-traders/icon";
+} from "@/app/sections/trends/components/top-traders/icons";
 import { useAccount } from "@/app/hooks/useAccount";
+import { useCopyTimes } from "@/app/store/useCopyTimes";
 
 export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   const copyTimesStore: any = useCopyTimes();

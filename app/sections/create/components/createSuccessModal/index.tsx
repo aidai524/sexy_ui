@@ -1,4 +1,3 @@
-
 import style from "./index.module.css";
 import MainBtn from "@/app/components/mainBtn";
 import type { Project } from "@/app/type";
@@ -18,7 +17,12 @@ interface Props {
   onShare: () => void;
 }
 
-export default function CreateSuccessModal({ show, onHide, token, onShare }: Props) {
+export default function CreateSuccessModal({
+  show,
+  onHide,
+  token,
+  onShare
+}: Props) {
   return (
     <div className={style.ModalMain}>
       <Modal
@@ -61,7 +65,8 @@ function SuccessModal({
       <div className={style.tokenInfo}>
         <div className={style.tokenTitle}>A Genesis Token is live!</div>
         <div className={style.tokenAmount}>
-          You've got <span>1234</span> <span className={style.tokenSymbol}>$FlipN</span>
+          You&apos;ve got <span>1234</span>{" "}
+          <span className={style.tokenSymbol}>$FlipN</span>
         </div>
       </div>
 
@@ -79,7 +84,9 @@ function SuccessModal({
           <div className={style.ticker}>Ticker: {token.ticker}</div>
         </div>
 
-        <div className={style.successNote}>Collect 100 Likes to Ticking now!</div>
+        <div className={style.successNote}>
+          Collect 100 Likes to Ticking now!
+        </div>
 
         <div className={style.btnBox}>
           <MainBtn
@@ -89,7 +96,7 @@ function SuccessModal({
             }}
             style={{
               background: "#000000",
-              color: "#FBCA04",
+              color: "#FBCA04"
             }}
           >
             Share
@@ -97,10 +104,13 @@ function SuccessModal({
         </div>
       </div>
 
-      <div className={`${style.close} button`} onClick={() => {
-        router.push('/');
-        onClose();
-      }}>
+      <div
+        className={`${style.close} button`}
+        onClick={() => {
+          router.push("/");
+          onClose();
+        }}
+      >
         Back to Home
       </div>
     </div>

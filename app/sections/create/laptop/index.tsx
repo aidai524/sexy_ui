@@ -9,8 +9,6 @@ import { httpAuthPost, sleep } from "@/app/utils";
 import type { Project } from "@/app/type";
 import styles from "./index.module.css";
 
-
-
 export default function Laptop() {
   const [step, setStep] = useState("edit");
   const [dataAdd, setDataAdd] = useState<Project>();
@@ -30,11 +28,11 @@ export default function Laptop() {
       website: dataAdd?.website,
       x: dataAdd?.x
     };
-  
+
     const queryStr = Object.keys(query)
       .map((key) => `${key}=${encodeURIComponent(query[key])}`)
       .join("&");
-  
+
     return queryStr;
   }, [dataAdd]);
 
@@ -54,6 +52,7 @@ export default function Laptop() {
           >
             <CreateNode
               ref={createRef}
+              // @ts-ignore
               show={step === "edit"}
               onAddDataFill={(value: any) => {
                 setDataAdd(value);
@@ -104,7 +103,6 @@ export default function Laptop() {
             return val.code === 0;
           }}
           onCreateTokenSuccess={async () => {
-
             let times = 0,
               val;
             while (true && times < 50) {
