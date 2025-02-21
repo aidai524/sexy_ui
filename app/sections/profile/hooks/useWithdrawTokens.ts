@@ -22,7 +22,6 @@ export const useWithdrawTokens = () => {
   const { walletProvider } = useAccount();
   const { publicKey, signTransaction, sendTransaction, wallet } = useWallet();
   const { connection } = useConnection();
-  const { walletProvider } = useAccount();
   // @param type 1: buy tokens, 2: swap tokens
   const handleWithdrawTokens = async ({
     id,
