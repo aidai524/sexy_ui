@@ -321,3 +321,24 @@ div.adm-tab-bar-wrap {
   background: rgba(146, 144, 177, 0.6) !important;
   border-radius: 5px;
 }
+
+
+/* for smart share confirm */
+
+.global-checkbox-container .adm-checkbox div.adm-checkbox-icon {
+  border-radius: 6px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #3B3B3B;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.global-checkbox-container .adm-checkbox.adm-checkbox-checked div.adm-checkbox-icon {
+  border-color: rgba(146, 144, 177, 0.6);
+  color:#FBCA04;
+}
+
+/* 
+.global-checkbox-container .adm-checkbox.adm-checkbox-checked div.adm-checkbox-icon {
+  background-color: transparent;
+} */
