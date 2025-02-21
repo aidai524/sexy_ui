@@ -58,8 +58,14 @@ export default function SmartDetailM() {
     <div className={styles.container}>
       {/*  */}
       <div className={styles.back}>
-        <div onClick={() => router.back()}>
-         {referrer === 'copy-trader-share' ? '' : <LeftBackIcon />}
+        <div onClick={() => {
+           if (referrer === 'copy-trader-share') {
+            router.push('/');
+           } else {
+            router.back();
+           }
+        }}>
+         <LeftBackIcon />
         </div>
         <div className={styles.userInfo}>
           <img
