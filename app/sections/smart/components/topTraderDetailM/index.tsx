@@ -22,43 +22,68 @@ import { formatDateTime } from "@/app/utils/index";
 import Big from "big.js";
 import { fecthUserInfo } from "@/app/utils/getUserInfo";
 export default function TopTraderDetailM() {
-  const { userInfo } = useUser();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const address = searchParams.get("address");
-  const isOther = address !== userInfo?.address;
-  const { userInfo: currentUserInfo } = useUserInfo(address || "");
-  const CopyTradeService = new CopyTrade();
-  const [smartMoniesInfo, setSmartMoniesInfo] =
-    useState<SmartMoneyAddress | null>(null);
-  const [copyTradersUserInfo, setCopyTradersUserInfo] =
-    useState<CopyTraderAddress | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [refreshNum, setRefreshNum] = useState(0);
-  const getSmartMoniesInfo = async () => {
-    if (address) {
-      const { data } = await CopyTradeService.getSmartMoniesAddress({
-        address,
-        chain: "solana"
-      });
-      setSmartMoniesInfo(data);
-      console.log(data, "smartMoniesInfo");
-    }
-  };
-  const getCopyTradersUserInfo = async () => {
-    if (address) {
-      const { data } = await CopyTradeService.getCopyTradersUserInfo({
-        address,
-        chain: "solana"
-      });
-      setCopyTradersUserInfo(data);
-      console.log(data, "copyTradersUserInfo");
-    }
-  };
-  useEffect(() => {
-    getSmartMoniesInfo();
-    getCopyTradersUserInfo();
-  }, [address]);
+    const { userInfo } = useUser();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const address = searchParams.get('address');
+    const isOther = address !== userInfo?.address;
+    const { userInfo: currentUserInfo } = useUserInfo(address || "");
+    const CopyTradeService = new CopyTrade();
+    const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
+    const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<CopyTraderAddress | null>(null);
+    const [showModal, setShowModal] = useState(false);
+    const [refreshNum, setRefreshNum] = useState(0);
+    const [copierImages, setCopierImages] = useState<string[]>([]);
+    
+    const getUserInfoWithCache = useMemo(() => {
+      const cache = new Map<string, any>();
+      return async (address: string) => {
+        if (cache.has(address)) {
+          return cache.get(address);
+        }
+        const info = await fecthUserInfo(address);
+        cache.set(address, info);
+        return info;
+      };
+    }, []);
+
+    useEffect(() => {
+      const loadCopierImages = async () => {
+        if (!smartMoniesInfo?.copiers?.length) return;
+        
+        const copierAddresses = smartMoniesInfo.copiers;
+        const copierInfos = await Promise.all(
+          copierAddresses.map(copier => getUserInfoWithCache(copier))
+        );
+        
+        const images = copierInfos
+          .map(info => info?.icon)
+          .filter(Boolean); // Remove any undefined/null values
+        
+        setCopierImages(images);
+      };
+      
+      loadCopierImages();
+    }, [smartMoniesInfo?.copiers, getUserInfoWithCache]);
+
+    const getSmartMoniesInfo = async () => {
+        if (address) {
+            const { data } = await CopyTradeService.getSmartMoniesAddress({address, chain: 'solana'});
+            setSmartMoniesInfo(data);
+            console.log(data,'smartMoniesInfo');
+        }
+      }
+      const getCopyTradersUserInfo = async () => {
+        if (address) {
+            const { data } = await CopyTradeService.getCopyTradersUserInfo({address, chain: 'solana'});
+            setCopyTradersUserInfo(data);
+            console.log(data,'copyTradersUserInfo');
+        }
+      }
+      useEffect(() => {
+        getSmartMoniesInfo();
+        getCopyTradersUserInfo();
+      }, [address]);
 
   const formatPnl = (pnl: string) => {
     if (pnl == "0") {
@@ -225,17 +250,16 @@ export default function TopTraderDetailM() {
             </span>
           </div>
           <div>
-            {smartMoniesInfo?.copiers?.map((item: any, index: any) => {
-              return (
-                <img
-                  key={"sate" + index}
-                  className={styles.copierTokenImg}
-                  alt="copier tokens"
-                  src={getUserInfo(item.address)?.icon || defaultAvatar}
-                />
-              );
-            })}
-          </div>
+          {
+            copierImages.map((imageUrl, index) => (
+              <img
+                key={'sate' + index}
+                className={styles.copierTokenImg}
+                alt='copier tokens'
+                src={imageUrl || defaultAvatar}
+              />
+            ))
+          }
         </div>
 
         {SHOW_COPY_TRADE && (
