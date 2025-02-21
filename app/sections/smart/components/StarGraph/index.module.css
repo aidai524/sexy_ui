@@ -1,0 +1,9 @@
+.star {
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  
+  @keyframes twinkle {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.2; }
+  }

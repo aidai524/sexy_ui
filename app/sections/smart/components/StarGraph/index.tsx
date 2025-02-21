@@ -99,11 +99,14 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
     for (let i = 0; i < 8; i++) {
       const randomX = Math.random() * width;
       const randomY = Math.random() * height;
+      const randomDelay = Math.random() * 2; // 添加随机延迟使星星闪烁不同步
       
       starsGroup.append('path')
         .attr('transform', `translate(${randomX}, ${randomY})`)
         .attr('opacity', '0.2')
         .attr('fill', 'white')
+        .attr('class', styles.star) // 添加 CSS class
+        .style('animation-delay', `${randomDelay}s`) // 添加随机延迟
         .attr('d', 'M5.80688 0.717265C5.86001 0.519929 6.13999 0.519929 6.19312 0.717265L7.24286 4.61602C7.26139 4.68485 7.31515 4.73861 7.38398 4.75714L11.2827 5.80688C11.4801 5.86001 11.4801 6.13999 11.2827 6.19312L7.38398 7.24286C7.31515 7.26139 7.26139 7.31515 7.24286 7.38398L6.19312 11.2827C6.13999 11.4801 5.86001 11.4801 5.80688 11.2827L4.75714 7.38398C4.73861 7.31515 4.68485 7.26139 4.61602 7.24286L0.717265 6.19312C0.519929 6.13999 0.519929 5.86001 0.717265 5.80688L4.61602 4.75714C4.68485 4.73861 4.73861 4.68485 4.75714 4.61602L5.80688 0.717265Z');
     }
 
