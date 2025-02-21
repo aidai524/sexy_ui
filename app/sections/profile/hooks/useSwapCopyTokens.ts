@@ -13,7 +13,12 @@ interface CopyTradeParams {
   sellAll: boolean;
   tokens: string[];
   id: string;
+  closeCopyTrade: boolean;
 }
+
+// @ts-ignore
+const { walletProvider, sexAddress, connect } = window;
+
 export const useSwapCopyTokens = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const CopyTradeService = new CopyTrade();
@@ -31,20 +36,36 @@ export const useSwapCopyTokens = () => {
       chain,
       type,
       sellAll,
-      tokens
+      tokens,
+      closeCopyTrade
     }: CopyTradeParams) => {
       try {
         setIsLoading(true);
+        const timestamp = new Date().getTime();
+        const message = `Close and Sell Copy Trade,Id:${id},Timestamp:${timestamp}`
+        const encodedMessage = new TextEncoder().encode(message);
+        const signature = await walletProvider?.signMessage?.(encodedMessage);
+        if (!signature) {
+          throw new Error("Failed to sign message");
+        }
+
+        const signatureBase58 = bs58.encode(signature);
+
         const res = await CopyTradeService.swapCopyTokens({
           walletAddress,
           chain,
           type,
           sellAll,
           tokens,
-          id
+          id,
+          sig: signatureBase58,
+          timestamp,
+          closeCopyTrade
         });
-        if (res.code == 200) {
-            return true;
+
+        if (res.code === 200) {
+          success("Operation successful", { maskStyle: { zIndex: 1001 } });
+          return true;
         } else {
           fail(res?.message, { maskStyle: { zIndex: 1001} });
           return false;

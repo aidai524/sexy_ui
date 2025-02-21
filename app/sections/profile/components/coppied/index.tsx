@@ -114,7 +114,7 @@ export default function Coppied({ isOther }: any) {
   };
 
   const handleCloseAndSell = async (item: any) => {
-     const swapRes = await handleSwapCopyTokens({id: item?.id, sellAll: true, tokens: [],type:2, walletAddress: userInfo?.address, chain: "solana"});
+     const swapRes = await handleSwapCopyTokens({id: item?.id, sellAll: true, tokens: [],type:2, walletAddress: userInfo?.address, chain: "solana", closeCopyTrade: true});
      if (swapRes) {
       const closeRes = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
         setPageIndex(1);

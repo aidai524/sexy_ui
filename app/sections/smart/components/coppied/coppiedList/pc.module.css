@@ -1,0 +1,260 @@
+
+.ItemBox {
+  width: 100%;
+  height: 85px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+}
+.ItemBox:hover {
+  background-color: rgba(255, 255, 255, 0.10);
+  cursor: pointer;
+}
+.CopyInfoBox {
+  min-width: 220px;
+}
+.PersonalTradeInfoBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.PersonalInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.publicBox {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.publicBox p {
+    font-size: 12px;
+    color: #9290B1;
+    font-weight: 300;
+}
+
+.Name {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 150px;
+}
+
+.Avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.CopyAmount {
+    composes: PersonalTradeInfoBox;
+    gap: 4px;
+}
+.CopyAmountText {
+    composes: PersonalTradeInfoBox;
+}
+.CopyAmountTextUseAmount {
+    font-size: 12px;
+    color: #fff;
+    font-weight: 300;
+    /* text-decoration: line-through; */
+}
+.CopyAmountTextTotal {
+    font-size: 12px;
+    color: #9290B1;
+    font-weight: 300;
+}
+
+.CopyInfo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.Tooltip {
+    background-color: #252328;
+    color: #9290B1;
+    padding:18px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    white-space: nowrap;
+    min-width: 208px;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-height: 230px;
+    overflow-y: auto;
+}
+
+.TooltipItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.TooltipItem img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.TooltipItemIcon {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.TooltipItemValue {
+    color: #fff;
+    gap: 4px;
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+}
+
+
+.TradeInfoBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 16px;
+}
+
+.TokenIconBoxWrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.TokenIconBox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;    
+}
+.CopyAmountLength {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.TokenIconBox img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-left: -8px;
+}
+
+.TitlePubStyle {
+    font-size: 12px;
+    color: #9290B1;
+    font-weight: 300;
+    margin-bottom: 6px;
+}
+
+.PNLValuePercent {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.PNLValueUSD {
+    font-size: 12px;
+    color: #C9FF5D;
+    font-weight: 300;
+}
+
+.MoreTokens {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #202325;
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    color:#9290B1;
+    margin-left: -8px;
+}
+
+
+.ActionButtonWrapper {
+    display: flex;
+    gap: 16px;
+}
+
+.ActionButton {
+    background: transparent;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-family: Unbounded;
+    font-size: 12px;
+    font-weight: 300;
+    border: 1px solid #FBCA04;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+.ActionButton:hover {
+    background: #FBCA04;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-family: Unbounded;
+    font-size: 12px;
+    font-weight: 300;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.ActionButton:disabled {
+    opacity: 0.1;
+    cursor: not-allowed;
+}
+
+.ActionButton:disabled:hover {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #FBCA04;
+    cursor: not-allowed;
+}
+
+
+.ClosePopoverContent {
+    padding: 24px;
+    text-align: center;
+    background-color: #252328;
+    border-radius: 20px;
+    border: 1px solid #3B3B3B;
+    width: 332px;
+    height: 150px;
+}
+
+.ClosePopoverContent h3 {
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: 300;
+    line-height: 21px;
+    font-size: 14px;
+    font-family: 'Unbounded';
+    text-align: left;
+}
+
+.ClosePopoverButtons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+

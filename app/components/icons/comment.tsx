@@ -1,9 +1,9 @@
-export default function Comment() {
+export default function Comment({ size = 36 }: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="36"
-      height="31"
+      width={size}
+      height={size * 0.8611111111111112}
       viewBox="0 0 36 31"
       fill="none"
     >

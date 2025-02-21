@@ -23,10 +23,10 @@ const AirdropTitle = () => {
       <path
         d="M191.708 17.8189L123.986 36.7638L126.503 39.4145L125.656 42.9248L127.556 45.055L127.23 47.9479L129.13 50.0782L128.803 52.9711L130.655 54.5325L130.28 56.8565L198.668 39.001L195.63 36.9676L197.046 33.4089L194.577 31.3271L195.424 27.8168L193.003 26.3039L193.899 23.3625L191.381 20.7118L191.708 17.8189Z"
         fill="#FBCA04"
-        fill-opacity="0.8"
+        fillOpacity="0.8"
         stroke="black"
-        stroke-width="0.5"
-        stroke-linejoin="round"
+        strokeWidth="0.5"
+        strokeLinejoin="round"
       />
       <defs>
         <filter

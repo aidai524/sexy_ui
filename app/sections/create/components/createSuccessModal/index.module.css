@@ -1,23 +1,30 @@
 .main {
   padding-top: 60px;
+
+  .yaowan {
+    width: 126px;
+    margin: 0 auto;
+  }
+
+  .yaowanImg {
+    width: 100%;
+  }
+
   .content {
     position: relative;
+    margin-top: 30px;
     border-radius: 30px;
-    border: 1px solid;
-    border-image-source: linear-gradient(180deg, #ff008a 0%, #8d00ff 100%);
-    background: radial-gradient(
-        74.23% 74.23% at 44.23% 8.36%,
-        #ffcae0 0%,
-        #fffefe 100%
-      )
-      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+    background: #FBCA04;
+    padding: 15px 0;
+
     .avatar {
-      width: 85px;
-      height: 85px;
-      border: 4px solid #fff;
-      border-radius: 85px;
-      margin: -40px auto 0;
+      width: 76px;
+      height: 76px;
+      border: 4px solid #000000;
+      border-radius: 76px;
+      margin: 10px auto 0;
       overflow: hidden;
+
       .avatarImg {
         width: 100%;
         border-radius: 85px;
@@ -25,47 +32,61 @@
         object-position: center;
       }
     }
+
     .nameContent {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 10px;
-      gap: 20px;
       font-size: 12px;
-      align-items: flex-start;
+      background-color: #F2E9D8;
+      border-radius: 10px;
+      margin: 20px 30px;
+      text-align: center;
+      padding: 20px 0;
+      position: relative;
+      .time {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -12px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #fff;
+        border-radius: 100px;
+        padding: 0 10px;
+        background: #0000004D;
+        backdrop-filter: blur(4px);
+      }
       .name {
         font-weight: 700;
-        flex:2;
-        text-align: right;
+        font-size: 22px;
       }
+
       .ticker {
-        flex: 3;
-        word-break: break-all;
-        padding-right: 10px;
+        margin-top: 10px;
+        font-size: 14px;
       }
-    }
-    .successText {
-      font-size: 26px;
-      font-weight: 700;
-      text-align: center;
-      margin-top: 15px;
-      line-height: 32px;
     }
 
     .successNote {
       text-align: center;
-      margin-top: 10px;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #202020;
+      font-weight: 500;
     }
 
     .btnBox {
-      margin: 30px auto;
+      margin: 20px auto;
       width: 60%;
     }
+
     .heartWhite {
       position: absolute;
       left: 0px;
       top: -10px;
     }
+
     .heartMore {
       position: absolute;
       top: -45px;
@@ -75,11 +96,38 @@
 
   .close {
     margin: 30px auto;
-    width: 30px;
+    color: #9290B1;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;  
   }
 }
 
-.ModalMain
-  :global(.adm-modal .adm-center-popup-wrap div.adm-center-popup-body) {
+.ModalMain :global(.adm-modal .adm-center-popup-wrap div.adm-center-popup-body) {
   background-color: transparent;
+  position: absolute;
+}
+
+.tokenInfo {
+  margin-top: 30px;
+  text-align: center;
+
+  .tokenTitle {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .tokenAmount {
+    font-size: 14px;
+    color: #fff;
+    margin-top: 10px;
+    color: #9290B1;
+
+    .tokenSymbol {
+      font-weight: 700;
+      color: #FBCA04;
+    }
+  }
 }

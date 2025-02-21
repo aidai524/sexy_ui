@@ -12,4 +12,5 @@ interface Window {
   };
   AddToHomeScreenInstance: any;
   AddToHomeScreen: any;
+  danmakuTimer: any;
 }

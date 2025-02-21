@@ -12,8 +12,8 @@
   width: 100%;
   padding: 9px 6px 10px 14px;
   border-radius: 14px;
-  border: 1px dashed rgba(161, 161, 161, 0.60);;
-  background: rgba(251, 202, 4, 0.20);
+  border: 1px dashed rgba(161, 161, 161, 0.6);
+  background: rgba(251, 202, 4, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -60,7 +60,7 @@
 .AirdropEntryMobile {
   position: fixed;
   left: 4px;
-  top: 39px;
+  top: 80px;
   width: 65px;
   height: 68px;
   background: url("/img/airdrop/icon-entry.svg") no-repeat center / contain;

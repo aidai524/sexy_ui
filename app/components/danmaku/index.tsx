@@ -1,8 +1,12 @@
 import { motion } from "framer-motion";
 import styles from "./index.module.css";
 import { ReadAvatar } from "@/app/sections/messages/avatar";
+import useDanmaku from "@/app/hooks/use-danmaku";
 
-export default function DanmakuComp({ list, show }: any) {
+export default function DanmakuComp({ id }: any) {
+  const { list, show } = useDanmaku({
+    id
+  });
   return (
     <div className={styles.Container}>
       {show && !!list.length && (

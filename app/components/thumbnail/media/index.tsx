@@ -1,4 +1,3 @@
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import styles from "./index.module.css";
 import { getVideoExt, videoReg, imgReg } from "../../upload";
 import VideoPlayer from "../../video";
@@ -9,7 +8,8 @@ export default function Media({
   imgStyle,
   videoStyle,
   style,
-  autoPlay
+  autoPlay,
+  videoProgressStyle
 }: any) {
   return (
     <div className={styles.imgList}>
@@ -23,12 +23,14 @@ export default function Media({
         {videoReg.test(data.tokenImg || "") ? (
           <VideoPlayer
             key={data.tokenImg}
+            id={data.id}
             src={data.tokenImg}
             type={getVideoExt(data.tokenImg)}
             className={styles.Video}
             style={videoStyle}
             autoPlay={autoPlay}
             token={data}
+            videoProgressStyle={videoProgressStyle}
           />
         ) : (
           <img

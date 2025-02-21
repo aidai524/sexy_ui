@@ -2,18 +2,22 @@ import Token from "../token";
 import Empty from "@/app/components/empty";
 import Loading from "../loading";
 import TourGuid from "../tour-guid";
-import useData from "@/app/sections/home/hooks/use-data-mobile";
+import useData from "@/app/sections/home/hooks/use-data";
 import { useEffect, useState, useRef, useMemo } from "react";
 import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
 import { useHomeTab } from "@/app/store/useHomeTab";
-import useDanmaku from "@/app/hooks/use-danmaku";
 
 let startY = 0;
 let startX = 0;
 let started = false;
-export default function List({ type, isCurrentTab, onChangeTab }: any) {
+export default function List({
+  type,
+  tabIndex,
+  isCurrentTab,
+  onChangeTab
+}: any) {
   const {
     getIndex,
     isLoading,
@@ -34,13 +38,8 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   const currentToken = useMemo(() => {
     const id = list[index];
     if (!id) return null;
-    return getProjectById(type, id);
+    return getProjectById(id);
   }, [index, list]);
-
-  const { list: danmakus, show: danmakuShow } = useDanmaku({
-    id: currentToken?.id,
-    isCurrentTab
-  });
 
   useEffect(() => {
     const prevent = function (e: any) {
@@ -62,7 +61,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
   }, [index, list]);
 
   useEffect(() => {
-    if (hasNext || type === "preLaunch") return;
+    if (hasNext || type !== "forYou") return;
     if (!listRef.current) return;
     listRef.current.style.transition = "none";
     onChangeIndex(0);
@@ -79,7 +78,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
         style={{
           height: innerHeight,
           width: innerWidth,
-          left: type === "preLaunch" ? 0 : innerWidth
+          left: tabIndex * innerWidth
         }}
       >
         {/* <div
@@ -92,7 +91,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           }}
         >
           <div>
-            {type} Index: {index}
+            {type} Id: {currentToken?.id}
           </div>
           <div>
             {type} Len: {list.length}
@@ -117,7 +116,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
             let diffY = ev.touches[0].clientY - startY;
             let diffX = ev.touches[0].clientX - startX;
             if (Math.abs(diffX) > 100) {
-              onChangeTab(diffX < 0 ? 1 : 0);
+              onChangeTab(tabIndex + (diffX < 0 ? 1 : -1));
               return;
             }
             if (!list.length) return;
@@ -142,27 +141,25 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           {list?.map((item: number, i: number) => {
             let token = null;
 
-            if (Math.abs(i - index) < 5 && item) {
-              token = getProjectById(type, item);
+            if (Math.abs(i - index) < 20 && item) {
+              token = getProjectById(item);
             }
 
             return (
               <Token
-                key={token?.address || item}
+                key={item + i + Math.random()}
                 token={token}
                 isCurrent={index === i && isCurrentTab}
-                danmakus={danmakus}
-                danmakuShow={danmakuShow}
                 onUpdate={(token: any, action?: string) => {
-                  updateProject(type, token);
-                  if (action && ["share"].includes(action)) return;
+                  updateProject(token);
+                  if (action && ["share", "like"].includes(action)) return;
                   if (action === "flip") {
                     setTimeout(() => {
-                      queryAndUpdateDetail(type, token.address);
+                      queryAndUpdateDetail(token.address);
                     }, 4000);
                     return;
                   }
-                  queryAndUpdateDetail(type, token.address);
+                  queryAndUpdateDetail(token.address);
                 }}
               />
             );
@@ -173,16 +170,18 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
               style={{ height: innerHeight }}
             >
               <Empty height={300} text="No more projects" />
-              <button
-                className={styles.Button}
-                onClick={() => {
-                  homeTabStore.set({
-                    homeTabIndex: type === "preLaunch" ? 1 : 0
-                  });
-                }}
-              >
-                {type === "preLaunch" ? "View Launches" : "View Pre-Launch"}
-              </button>
+              {type !== "forYou" && (
+                <button
+                  className={styles.Button}
+                  onClick={() => {
+                    homeTabStore.set({
+                      homeTabIndex: 0
+                    });
+                  }}
+                >
+                  View For You
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -196,9 +195,9 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           </div>
         )}
       </div>
-      {type === "preLaunch" &&
+      {/* {type === "forYou" &&
         !!list?.length &&
-        !guidingTourStore.hasShownTour && <TourGuid />}
+        !guidingTourStore.hasShownTour && <TourGuid />} */}
     </>
   );
 }

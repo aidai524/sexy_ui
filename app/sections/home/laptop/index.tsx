@@ -1,4 +1,4 @@
-import TypesTabs from "@/app/sections/home/tabs";
+import TypesTabs from "../tabs";
 import List from "./list";
 import TrendBanner from "../../trends/components/banner";
 import { useHomeTab } from "@/app/store/useHomeTab";

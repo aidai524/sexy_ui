@@ -1,0 +1,225 @@
+.container {
+    height: 100%;
+    overflow-y: auto;
+    padding-top: 50px;
+    padding-bottom: 80px;
+    overflow-x: hidden;
+}
+
+.back {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #000;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.userName {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.smartDetailContent {
+    padding: 16px;
+    padding-right: 0;
+}
+
+.statsContainer {
+    background-color: #000;
+    border-radius: 12px;
+    color: #fff;
+}
+
+
+.smartDetailContentTitle {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 21px;
+}
+
+.statsRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.statsRow:last-child {
+    margin-bottom: 0;
+}
+
+.statItem {
+    flex: 1;
+    gap: 6px;
+}
+
+.statLabel {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    margin-bottom: 4px;
+    font-weight: 400;
+}
+
+.statValue {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.statValueBig {
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.highlight {
+    color: #CAFF33; 
+}
+
+.detailValueCurrency {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.5);
+    margin-left: 4px;
+}
+
+
+
+.performance {
+    margin: 16px 10px;
+    padding: 20px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .gridItem {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 300;
+  }
+  
+  .value {
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+  }
+  
+  .amount {
+    color: #C9FF5D;
+    margin-right: 4px;
+  }
+  
+  .unit {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 300;
+  }
+
+  .sellAmount {
+    margin-left: 4px;
+    color: #FF2681;
+  }
+  
+  .copierDetail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  
+  .copierAmount {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    color: #C9FF5D;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .copierTokenImg {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+
+  .copierTokenImg:not(:first-child) {
+    margin-left: -4px;
+  }
+
+  .btnGroup {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #000;
+    height: 76px;
+    padding: 16px;
+    align-items: center; 
+  }
+
+  .btnProfile {
+    color: #fff;
+    border-radius: 30px;
+    text-align: center;
+    border: 1px solid #FBCA04;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .btnCopyTrade {
+    color: #000;
+    border-radius: 30px;
+    text-align: center;
+    background-color: #FBCA04;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  

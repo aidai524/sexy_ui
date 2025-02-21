@@ -1,8 +1,8 @@
-import type { UserInfo } from '@/app/type';
-import { httpAuthGet, httpAuthPost } from '@/app/utils';
-import { fail, success } from '@/app/utils/toast';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useReferStore } from '@/app/store/use-user-info';
+import type { UserInfo } from "@/app/type";
+import { httpAuthGet, httpAuthPost } from "@/app/utils";
+import { fail, success } from "@/app/utils/toast";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useReferStore } from "@/app/store/use-user-info";
 
 export default function useUserInfo(
   address: string | undefined,
@@ -15,7 +15,7 @@ export default function useUserInfo(
 
   const userInfoShown = useMemo(() => {
     if (userInfo) return userInfo;
-    return info[address || 'default'];
+    return info[address || "default"];
   }, [info, userInfo]);
 
   const handleUserInfo = (_userInfo: UserInfo) => {
@@ -39,7 +39,7 @@ export default function useUserInfo(
       if (res.code === 0 && res.data) {
         return {
           name: res.data.name,
-          address: res.data.address,
+          address,
           icon: res.data.icon,
           banner: res.data.banner,
           followers: res.data.followers,
@@ -56,7 +56,7 @@ export default function useUserInfo(
           vipStartTime: res.data.vip_start_time,
           proxyFee: res.data.proxy_fee,
           referralFee: res.data.referral_fee,
-          level: res.data.level,
+          ...res.data
         };
       }
 

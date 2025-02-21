@@ -1,0 +1,43 @@
+.Container {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #00000099;
+  padding: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.Progress {
+  position: absolute;
+}
+
+.Icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.King {
+  color: #fff;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  position: absolute;
+  right: 0px;
+  top: -7px;
+  transform: rotate(45deg);
+}
+
+.KingAnimation {
+  position: absolute;
+  right: 0px;
+  top: 4px;
+  transform: rotate(-45deg);
+}

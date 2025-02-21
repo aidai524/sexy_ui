@@ -1,13 +1,13 @@
 .distributionArea {
   margin-top: 10px;
   .distributionTitle {
-    color: #fff;
-    font-size: 14px;
+    color: #9290B1;
+    font-size: 12px;
   }
 }
 
 .list {
-  color: #ffffff99;
+  color: #fff;
 
   .item {
     display: flex;
@@ -66,4 +66,10 @@
   align-items: center;
   justify-content: center;
   height: 150px;
+}
+
+.itemAmount {
+  font-size: 10px;
+  margin-top: 5px;
+  text-align: right;
 }

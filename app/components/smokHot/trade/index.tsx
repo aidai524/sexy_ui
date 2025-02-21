@@ -9,11 +9,11 @@ import { fail, success } from "@/app/utils/toast";
 import dayjs from "@/app/utils/dayjs";
 import { useAccount } from "@/app/hooks/useAccount";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
-import { useUserAgent } from "@/app/context/user-agent";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import useBalance from "@/app/hooks/useBalance";
 import { useSetting } from "@/app/store/use-setting";
+import { useAuth } from "@/app/context/auth";
 
 interface Props {
   token: Project;
@@ -38,7 +38,10 @@ export default function Trade({
   bottomStyle
 }: Props) {
   const { flipMax, set }: any = useSetting();
-  const [inputVal, setInputVal] = useState(flipMax.toString() || max.toString());
+  const [inputVal, setInputVal] = useState(
+    flipMax.toString() || max.toString()
+  );
+  const { updateUserLikeNum } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
@@ -195,7 +198,11 @@ export default function Trade({
                   setIsLoading(false);
                   if (res) {
                     success("Flip success");
-                    await actionLikeTrigger(token, showShare);
+                    await actionLikeTrigger({
+                      data: token,
+                      onShare: showShare,
+                      onSuccess: updateUserLikeNum
+                    });
                     onSuccess?.(inputVal);
                   }
                 }

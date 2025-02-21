@@ -16,38 +16,6 @@
   background: linear-gradient(0deg, #000 50%, rgba(0, 0, 0, 0) 100%);
 }
 
-.Labels {
-  position: absolute;
-  top: 50px;
-  right: 0px;
-  width: 160px;
-}
-
-.LikedLabel {
-  position: absolute;
-  z-index: 1;
-  width: 143px;
-  height: 114px;
-}
-
-.FlippedLabel {
-  position: absolute;
-  z-index: 2;
-  width: 157.878px;
-  height: 65.867px;
-  top: 76px;
-}
-
-.TopBg {
-  width: 100%;
-  height: 45px;
-  background: linear-gradient(to bottom, #000, rgba(0, 0, 0, 0));
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 1;
-}
-
 .BottomBg {
   width: 100%;
   height: 175px;

@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import SexInfiniteScroll from "../sexInfiniteScroll";
 import Empty from "../empty";
 import { getHoldersByToken, getTokenMeta } from "@/app/utils/solanaScanApi";
-import { formatAddress, httpGet } from "@/app/utils";
+import { formatAddress, httpGet, simplifyNum } from "@/app/utils";
 import Big from "big.js";
 import { defaultAvatar } from "@/app/utils/config";
 import { numberFormatter } from "@/app/utils/common";
@@ -162,9 +162,8 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
   return (
     <div
       style={style}
-      className={`${styles.distributionArea} ${
-        from === "panel" ? styles.LaptopList : ""
-      }`}
+      className={`${styles.distributionArea} ${from === "panel" ? styles.LaptopList : ""
+        }`}
     >
       {from !== "panel" && (
         <div className={styles.distributionTitle}>Holder Distribution</div>
@@ -173,12 +172,12 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
       {
         isLoading && (
           <div className={styles.loading}>
-            <Loading size={28}/>
+            <Loading size={28} />
           </div>
         )
       }
 
-      
+
       <div
         className={`${styles.list}`}
         style={{ paddingTop: from === "panel" ? 0 : 10 }}
@@ -241,17 +240,21 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
               )}
 
               <div className={styles.itemPercent}>
-                {new Big(item.amount).div(supply).mul(100).toNumber() > 99.99 &&
-                new Big(item.amount).div(supply).mul(100).toNumber() !== 100
+                <div>{new Big(item.amount).div(supply).mul(100).toNumber() > 99.99 &&
+                  new Big(item.amount).div(supply).mul(100).toNumber() !== 100
                   ? "<100"
                   : numberFormatter(
-                      new Big(item.amount).div(supply).mul(100).toNumber(),
-                      2,
-                      true,
-                      { isShort: true }
-                    )}
-                %
+                    new Big(item.amount).div(supply).mul(100).toNumber(),
+                    2,
+                    true,
+                    { isShort: true }
+                  )}
+                  %</div>
+                <div className={styles.itemAmount} style={{ color: "#9290B1" }}>
+                  {simplifyNum(item.amount)}
+                </div>
               </div>
+
             </div>
           );
         })}

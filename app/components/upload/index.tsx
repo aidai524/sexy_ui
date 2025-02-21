@@ -1,10 +1,13 @@
 import { ImageUploader, ImageUploadItem, ImageUploaderRef } from "antd-mobile";
+import "croppie/croppie.css";
+
 import styles from "./upload.module.css";
 import { upload } from "@/app/utils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CircleLoading from "../icons/loading";
 import UploadBox from "./upload-box";
 import { fail } from "@/app/utils/toast";
+import ImgCopper from "./img-copper";
 
 interface Props {
   fileList: ImageUploadItem[];
@@ -14,12 +17,13 @@ interface Props {
   type: "avatar" | "banner" | "others" | "token";
   percent?: number;
   scala?: number;
+  cropper?: boolean;
 }
 
 export const imgReg = /(.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif))$/i;
 export const svgReg = /(.+\.(svg))$/i;
 export const gifReg = /(.+\.(gif))$/i;
-export const videoReg = /(.+\.(mp4|webm))$/i;
+export const videoReg = /(.+\.(mp4|webm|mov))$/i;
 
 export const getVideoExt = (url: string) => {
   const match = url.match(videoReg);
@@ -27,13 +31,13 @@ export const getVideoExt = (url: string) => {
     if (match[2] === "mov") return "mp4";
     return match[2].toLowerCase();
   }
-  return "";
+  return "mp4";
 };
 
 const StyleMaps = {
   avatar: [styles.Avatar, styles.AvatarImg],
   banner: [styles.Banner, styles.Banner],
-  token: [styles.Token, styles.Token],
+  token: [styles.Token, styles.TokenImg],
   others: [styles.Others, styles.OthersImg]
 };
 
@@ -43,52 +47,68 @@ export default function Upload({
   accept = "image/*",
   type,
   percent = 1.5,
-  scala = 2
+  scala = 2,
+  cropper = false
 }: Props) {
   const [isUplaod, setIsUpload] = useState(false);
   const [fileList, setFileList] = useState<any>(defaultFileList || []);
   const input = useRef<ImageUploaderRef>(null);
 
-  const uploadImg = useCallback(async (file: File) => {
-    if (file.size > 50 * 1024 * 1024) {
-      fail("File size too large");
+  const uploadImg = useCallback(
+    async (file: File) => {
+      if (file.size > 50 * 1024 * 1024) {
+        fail("File size too large");
+        return {
+          url: ""
+        };
+      }
+
+      if (!imgReg.test(file.name) && !videoReg.test(file.name)) {
+        fail("File type not supported");
+        return {
+          url: ""
+        };
+      }
+
+      let _file: any = file;
+      if (cropper && imgReg.test(file.name)) {
+        const blob = await ImgCopper({ file });
+        if (!blob) {
+          return {
+            url: ""
+          };
+        }
+        _file = blob;
+      }
+
+      setIsUpload(true);
+
+      const url = await upload(
+        file.name,
+        _file,
+        imgReg.test(file.name) &&
+          !svgReg.test(file.name) &&
+          !gifReg.test(file.name),
+        percent,
+        scala,
+        cropper
+      );
+      setTimeout(() => {
+        setIsUpload(false);
+      }, 100);
+
+      if (url) {
+        return {
+          url
+        };
+      }
+
       return {
         url: ""
       };
-    }
-
-    if (!imgReg.test(file.name) && !videoReg.test(file.name)) {
-      fail("File type not supported");
-      return {
-        url: ""
-      };
-    }
-
-    setIsUpload(true);
-
-    const url = await upload(
-      file.name,
-      file,
-      imgReg.test(file.name) &&
-        !svgReg.test(file.name) &&
-        !gifReg.test(file.name),
-      percent,
-      scala
-    );
-    setTimeout(() => {
-      setIsUpload(false);
-    }, 100);
-
-    if (url) {
-      return {
-        url
-      };
-    }
-
-    return {
-      url: ""
-    };
-  }, []);
+    },
+    [cropper]
+  );
 
   useEffect(() => {
     if (fileList.length === 0 && defaultFileList.length > 0)

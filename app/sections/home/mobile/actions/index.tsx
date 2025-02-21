@@ -3,21 +3,30 @@ import Like from "./like";
 import HomeIcon from "@/app/components/icons/home";
 import CommentIcon from "@/app/components/icons/comment";
 import ShareIcon from "./share-icon";
-import DetailButton from "../../laptop/token/detail-button";
+import HolderIcon from "./holder-icon";
+import TokenIcon from "@/app/components/avatar/token";
+import TxIcon from "./tx-icon";
+import LaunchesLike from "./launches-like";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useAuth } from "@/app/context/auth";
+import useHolders from "../hooks/use-holders";
+import { numberFormatter } from "@/app/utils/common";
+import Timer from "./timer";
 
 export default function Actions({
   token,
-  totalHolders,
   onClick = () => {},
   onSuccess,
   isCurrent,
-  disabled
+  disabled,
+  isPreview
 }: any) {
   const { showShare } = useMessage();
   const { isMobile } = useUserAgent();
+  const { updateUserLikeNum } = useAuth();
+  const { total: totalHolders } = useHolders(token);
   return (
     <div
       className={`${styles.Actions} ${
@@ -27,16 +36,18 @@ export default function Actions({
         opacity: disabled ? 0.3 : 1
       }}
     >
-      <DetailButton
+      <TokenIcon
+        token={token}
         onClick={() => {
           onClick("detail");
         }}
-        style={{
-          boxShadow: "0px 0px 2px 2px rgba(0,0,0,0.1)"
-        }}
       />
+      {token.status === 0 && (
+        <Timer time={token.created_at} isPreview={isPreview} />
+      )}
       {token.status === 0 ? (
         <>
+          <div style={{ height: 14 }} />
           <Like
             isLiked={token.isLike}
             like={token.like}
@@ -46,11 +57,18 @@ export default function Actions({
                 window.connect();
                 return;
               }
-              await actionLikeTrigger(token, showShare);
+
               onSuccess("like");
+
+              await actionLikeTrigger({
+                data: token,
+                onShare: showShare,
+                onSuccess: updateUserLikeNum
+              });
             }}
             id={isCurrent ? "guid-tour-like" : ""}
           />
+
           <div
             className={styles.Item}
             onClick={() => {
@@ -64,7 +82,7 @@ export default function Actions({
               }`}
             >
               <HomeIcon
-                size={30}
+                size={22}
                 type={token.isSuperLike ? "primary" : "normal"}
               />
             </button>
@@ -73,6 +91,29 @@ export default function Actions({
         </>
       ) : (
         <>
+          <LaunchesLike
+            className={styles.Item}
+            buttonClassName={`${!disabled ? "button" : ""} ${
+              !isMobile && styles.PcItem
+            }`}
+            onClick={async () => {
+              if (token.isLike || disabled) return;
+              if (!window.sexAddress) {
+                window.connect();
+                return;
+              }
+
+              onSuccess("like");
+
+              await actionLikeTrigger({
+                data: token,
+                onShare: showShare
+              });
+            }}
+            isLiked={token.isLike}
+            like={token.like}
+          />
+
           <div
             className={styles.Item}
             onClick={() => {
@@ -84,28 +125,44 @@ export default function Actions({
                 !isMobile && styles.PcItem
               }`}
             >
-              <img src="/img/home/holder-icon.png" style={{ width: 34 }} />
+              <HolderIcon />
             </button>
-
             <span>{totalHolders}</span>
+          </div>
+          <div
+            className={styles.Item}
+            onClick={() => {
+              if (!disabled) onClick("trade");
+            }}
+          >
+            <button
+              className={`${!disabled ? "button" : ""} ${
+                !isMobile && styles.PcItem
+              }`}
+            >
+              <TxIcon />
+            </button>
+            <span>{token.tx || 0}</span>
           </div>
         </>
       )}
-      <div
-        className={styles.Item}
-        onClick={() => {
-          if (!disabled) onClick("comments");
-        }}
-      >
-        <button
-          className={`${!disabled ? "button" : ""} ${
-            !isMobile && styles.PcItem
-          }`}
+      {token.status === 0 && (
+        <div
+          className={styles.Item}
+          onClick={() => {
+            if (!disabled) onClick("comments");
+          }}
         >
-          <CommentIcon />
-        </button>
-        <span>{token.comment || 0}</span>
-      </div>
+          <button
+            className={`${!disabled ? "button" : ""} ${
+              !isMobile && styles.PcItem
+            }`}
+          >
+            <CommentIcon size={26} />
+          </button>
+          <span>{token.comment || 0}</span>
+        </div>
+      )}
       <div
         className={styles.Item}
         onClick={() => {
@@ -123,9 +180,14 @@ export default function Actions({
             !isMobile && styles.PcItem
           }`}
         >
-          <ShareIcon />
+          <ShareIcon size={24} />
         </button>
-        <span>{token.share_num || 0}</span>
+        <span>
+          {numberFormatter(token.share_num, 1, true, {
+            isShort: true,
+            isShortUppercase: true
+          }) || 0}
+        </span>
       </div>
     </div>
   );
