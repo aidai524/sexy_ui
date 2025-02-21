@@ -5,6 +5,7 @@ import SearchBar from "@/app/components/search-bar";
 import Tips from "./tips";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
+import clsx from 'clsx';
 
 export default function PageHeader({
   onBack,
@@ -14,16 +15,17 @@ export default function PageHeader({
   from,
   style,
   isOther,
-  rightActions
+  rightActions,
+  backButtonClassName
 }: any) {
   const { userInfo } = useAuth();
   const router = useRouter();
   return (
     <div className={`${styles.Container} ${className}`} style={style}>
-      {from === "profile" && <div />}
-      {(isOther || ["setting", "create", "messages"].includes(from)) && (
+      {from === "profile" && <></>}
+      {(isOther || ["setting", "create", "messages", "profile"].includes(from)) && (
         <button
-          className="button"
+          className={clsx('button', backButtonClassName)}
           onClick={() => {
             if (typeof onBack === "function") {
               onBack();
