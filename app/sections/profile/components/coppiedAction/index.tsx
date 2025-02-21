@@ -18,7 +18,6 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   const { isLoading, handleCopyTrade } = useCopyTrade();
   const { userInfo: currentUserInfo } = useAuth();
   const { address: walletAddress } = useAccount();
-  console.log(currentUserInfo,walletAddress, 'copiedInfo')
 
   const [copyAmount, setCopyAmount] = useState<string>("");
   const [onceCopyAmount, setOnceCopyAmount] = useState<string>("0.1");

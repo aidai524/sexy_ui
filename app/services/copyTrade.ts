@@ -4,21 +4,37 @@ export interface SmartMoneyAddress {
     buys7D: number;
     chain: string;
     copied: boolean;
+    copiers: any[];
     lastTradeAt: number;
     pnl7D: string;
     sells7D: number;
     trades7D: number;
-    winRate7D: string | number;
+    winRate7D: string;
+    pnl1D: string;
+    pnl30D: string;
+    winRate30D: string;
+    winRate1D: string;
+    newCopiers: any[];
+    topCopiers: {
+      address: string;
+      pnl: string;
+    }[];
   }
 
   export interface CopyTraderAddress {
       copied: number;
       copyTrades: number;
+      claimed: string;
+      carryFee: string;
+      isTopTrader: boolean;
       tradeInfo: {
           buys: number;
           pnl7D: string ;
           sells: number;
           winRate7D: number;
+          totalPNL: string;
+          currentPNL: string;
+          tokenPosition: string;
     }
 }
  

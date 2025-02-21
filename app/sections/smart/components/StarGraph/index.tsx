@@ -52,17 +52,17 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
         fy: height / 2,
       },
       ...satellites.map(sat => ({
-        id: sat.id,
-        name: sat.name,
-        image: sat.image,
+        id: sat?.id || '',
+        name: sat?.name || '',
+        image: sat?.image || '',
         size: 28,
-        pnl: sat.pnl
+        pnl: sat?.pnl || 0
       })),
     ];
 
     const links = satellites.map(sat => ({
       source: centerNode.id,
-      target: sat.id,
+      target: sat?.id || '',
       distance: Math.random() * 100 + 120,
     }));
 
@@ -124,7 +124,7 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
       .attr('stroke-width', 1)
       .attr('fill', 'none')
       .style('opacity', (d: any) => {
-        return d.target.id === satellites[0].id ? 1 : 0.5;
+        return d.target.id === satellites?.[0]?.id ? 1 : 0.5;
       });
 
     // Create node groups
@@ -133,7 +133,7 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
       .data(nodes)
       .join('g')
       .style('opacity', (d: any) => {
-        return d.id === centerNode.id || d.id === satellites[0].id ? 1 : 0.5;
+        return d.id === centerNode.id || d.id === satellites?.[0]?.id ? 1 : 0.5;
       })
       .on('click', function(event: any, d: any) {
         if (d.id === centerNode.id) return;
@@ -184,7 +184,7 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
       .attr('fill', 'white')
       .attr('font-size', '12px')
       .style('opacity', (d: any) => {
-        return d.id === satellites[0].id ? 1 : 0;  
+        return d.id === satellites?.[0]?.id ? 1 : 0;  
       });
       
       node.append('text')
@@ -199,7 +199,7 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
       .attr('fill', '#C9FF5D')
       .attr('font-size', '10px')
       .style('opacity', (d: any) => {
-        return d.id === satellites[0].id ? 1 : 0;  
+        return d.id === satellites?.[0]?.id ? 1 : 0;  
       });
 
     
