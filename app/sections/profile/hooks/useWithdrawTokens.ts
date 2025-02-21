@@ -19,6 +19,7 @@ interface CopyTradeParams {
 export const useWithdrawTokens = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const CopyTradeService = new CopyTrade();
+  const { walletProvider } = useAccount();
   const { publicKey, signTransaction, sendTransaction, wallet } = useWallet();
   const { connection } = useConnection();
   const { walletProvider } = useAccount();

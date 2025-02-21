@@ -11,9 +11,7 @@ import { numberFormatter } from "@/app/utils/common";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { useRouter } from "next/navigation";
 import Big from "big.js";
-import PageHeader from "@/app/components/page-header/mobile";
 import { CopyierIconWithBg, CrownIcon } from "../icons";
-import CardContainer from "@/app/sections/smart/components/cardContainer";
 interface Trader {
   avatar: string;
   name: string;
@@ -231,17 +229,6 @@ export default function TopTradersMobile({
 
   return (
     <div className={styles.container}>
-      <PageHeader
-        title="Top Traders"
-        theme="light"
-        from="smart"
-        style={{
-          background: "#000"
-        }}
-      />
-      {/* card container */}
-      <CardContainer />
-
       <div className={styles.crownContainer}>
         <CrownIcon />{" "}
         <span className={styles.crownTextContainer}>

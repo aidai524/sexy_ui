@@ -80,6 +80,7 @@ export interface Hot {
   marketCapTrends?: string;
   marketCapTrendsDirection?: '+' | '-';
   holder?: number;
+  kLineData?: { timestamp: number; price: number; }[];
 }
 
 export interface Meme {

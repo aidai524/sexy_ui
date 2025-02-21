@@ -19,9 +19,9 @@ interface CopyTradeParams {
 export const useSwapCopyTokens = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const CopyTradeService = new CopyTrade();
+  const { walletProvider } = useAccount();
   const { publicKey, signTransaction, sendTransaction, wallet } = useWallet();
   const { connection } = useConnection();
-  const { walletProvider } = useAccount();
   // @param type 1: buy tokens, 2: swap tokens
   const handleSwapCopyTokens = async ({
     id,

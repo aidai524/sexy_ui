@@ -1,6 +1,5 @@
 .container {
    padding-top: 30px;
-   padding-right: 9px;
 }
 .topTraderContainer {
     display: flex;
@@ -19,4 +18,5 @@
     padding-top: 12px;
     margin-bottom: 16px;
     width: 100%;
+
 }

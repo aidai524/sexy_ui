@@ -52,7 +52,7 @@ export default function PageHeader({
           </svg>
         </button>
       )}
-      {["trends", "reward", "home", "smart"].includes(from) && (
+      {["trends", "reward", "home", "smart", "memes"].includes(from) && (
         <SimpleAvatar
           icon={userInfo?.icon}
           onClick={() => {
@@ -60,7 +60,7 @@ export default function PageHeader({
           }}
         />
       )}
-      {["trends", "reward", "home", "smart"].includes(from) && <Tips />}
+      {["trends", "reward", "home", "smart", "memes"].includes(from) && <Tips />}
       {["setting", "create", "messages"].includes(from) && (
         <div
           className={styles.Title}
@@ -75,7 +75,7 @@ export default function PageHeader({
       {rightActions ? (
         <div className={styles.Right}>{rightActions}</div>
       ) : (
-        ["home", "reward", "smart"].includes(from) && (
+        ["home", "reward", "smart", "memes"].includes(from) && (
           <div className={styles.Right}>
             <SearchBar />
             <MessagesAlarm />

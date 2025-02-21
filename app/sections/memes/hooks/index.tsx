@@ -9,7 +9,8 @@ import { useConnection } from '@solana/wallet-adapter-react';
 import { Hot, Meme, useMemesListStore } from '@/app/sections/memes/store/list';
 import { MemesState, useMemesStore } from '@/app/sections/memes/store';
 import { Order, TABS } from '@/app/sections/memes/config';
-import { useDebounceFn, useThrottleFn } from 'ahooks';
+import { useThrottleFn } from 'ahooks';
+import { fetchData } from '@/app/components/chart/fetch-data';
 
 export function useMemes(props?: { isLoadData?: boolean; }): Memes {
   const { isLoadData } = props ?? {};
@@ -132,6 +133,18 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       it.progress = _progress.toFixed(2, Big.roundDown);
       it.poolAmount = poolAmount;
       it.solAmount = solAmount;
+      // get k-line data
+      if (![0].includes(it.status)) {
+        const kLineRes = await fetchData(
+          it.address,
+          60,
+          0
+        );
+        it.kLineData = kLineRes.data.map(([timestamp, open]: any) => ({
+          timestamp: timestamp,
+          price: parseFloat(open),
+        }));
+      }
     }
     return _list;
   };

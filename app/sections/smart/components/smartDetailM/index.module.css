@@ -47,8 +47,9 @@
 }
 
 .statsRow {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    /* justify-content: space-between; */
     margin-bottom: 24px;
 }
 
@@ -80,6 +81,10 @@
 
 .highlight {
     color: #CAFF33; 
+}
+
+.shortlight {
+    color: #FF2681;
 }
 
 .detailValueCurrency {

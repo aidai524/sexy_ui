@@ -6,6 +6,8 @@ import { formatLongText, numberFormatter } from '@/app/utils/common';
 import SummaryItem from '@/app/sections/memes/components/summary-item';
 import Emoji from '@/app/sections/memes/components/emoji';
 import Big from 'big.js';
+import MemesTitle from '@/app/sections/memes/components/title';
+import PriceChart from '@/app/sections/memes/components/chart';
 
 interface CarouselProps {
   className?: string;
@@ -140,6 +142,7 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
 
   return (
     <div className={clsx(styles.CarouselContainer, className)}>
+      <MemesTitle />
       <div className={styles.carouselWrapper}>
         <MediaItem item={{ ...currentItem, video: '/img/memes/memes-bg.mp4' }} onLoad={handleMediaLoad} />
         {
@@ -206,13 +209,7 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
                             {currentItem?.progress}%
                           </div>
                         ) : (
-                          <div className={styles.CarouselChart}>
-                            <svg width="132" height="49" viewBox="0 0 132 49" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M1 48C1 48 13.1307 48 21.953 48C31.9392 48 47.6179 48 53.1318 39.6042C57.3388 33.1984 60.5792 21.2749 66.0645 21.2749C72.6812 21.2749 73.3902 48 82.6135 48C91.8368 48 92.4026 1 99.32 1C106.238 1 113.898 58.4618 126 18.3158" stroke="#C9FF5D" stroke-linecap="round"/>
-                              <circle opacity="0.3" cx="126" cy="17" r="6" fill="#C9FF5D"/>
-                              <circle cx="126" cy="16.9996" r="3.00057" fill="#C9FF5D"/>
-                            </svg>
-                          </div>
+                          <PriceChart token={currentItem} className={styles.CarouselChart} />
                         )
                       }
                     </div>

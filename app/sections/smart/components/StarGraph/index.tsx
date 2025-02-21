@@ -52,17 +52,17 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
         fy: height / 2,
       },
       ...satellites.map(sat => ({
-        id: sat.id,
-        name: sat.name,
-        image: sat.image,
+        id: sat?.id || '',
+        name: sat?.name || '',
+        image: sat?.image || '',
         size: 28,
-        pnl: sat.pnl
+        pnl: sat?.pnl || 0
       })),
     ];
 
     const links = satellites.map(sat => ({
       source: centerNode.id,
-      target: sat.id,
+      target: sat?.id || '',
       distance: Math.random() * 100 + 120,
     }));
 
@@ -96,14 +96,17 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
     const starsGroup = g.append('g')
       .attr('class', 'stars');
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 16; i++) {
       const randomX = Math.random() * width;
       const randomY = Math.random() * height;
+      const randomDelay = Math.random() * 2; // 
       
       starsGroup.append('path')
         .attr('transform', `translate(${randomX}, ${randomY})`)
         .attr('opacity', '0.2')
         .attr('fill', 'white')
+        .attr('class', styles.star) // 
+        .style('animation-delay', `${randomDelay}s`) // 
         .attr('d', 'M5.80688 0.717265C5.86001 0.519929 6.13999 0.519929 6.19312 0.717265L7.24286 4.61602C7.26139 4.68485 7.31515 4.73861 7.38398 4.75714L11.2827 5.80688C11.4801 5.86001 11.4801 6.13999 11.2827 6.19312L7.38398 7.24286C7.31515 7.26139 7.26139 7.31515 7.24286 7.38398L6.19312 11.2827C6.13999 11.4801 5.86001 11.4801 5.80688 11.2827L4.75714 7.38398C4.73861 7.31515 4.68485 7.26139 4.61602 7.24286L0.717265 6.19312C0.519929 6.13999 0.519929 5.86001 0.717265 5.80688L4.61602 4.75714C4.68485 4.73861 4.73861 4.68485 4.75714 4.61602L5.80688 0.717265Z');
     }
 
@@ -124,7 +127,7 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
       .attr('stroke-width', 1)
       .attr('fill', 'none')
       .style('opacity', (d: any) => {
-        return d.target.id === satellites[0].id ? 1 : 0.5;
+        return d.target.id === satellites?.[0]?.id ? 1 : 0.5;
       });
 
     // Create node groups
@@ -133,7 +136,7 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
       .data(nodes)
       .join('g')
       .style('opacity', (d: any) => {
-        return d.id === centerNode.id || d.id === satellites[0].id ? 1 : 0.5;
+        return d.id === centerNode.id || d.id === satellites?.[0]?.id ? 1 : 0.5;
       })
       .on('click', function(event: any, d: any) {
         if (d.id === centerNode.id) return;
@@ -184,7 +187,7 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
       .attr('fill', 'white')
       .attr('font-size', '12px')
       .style('opacity', (d: any) => {
-        return d.id === satellites[0].id ? 1 : 0;  
+        return d.id === satellites?.[0]?.id ? 1 : 0;  
       });
       
       node.append('text')
@@ -199,7 +202,7 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
       .attr('fill', '#C9FF5D')
       .attr('font-size', '10px')
       .style('opacity', (d: any) => {
-        return d.id === satellites[0].id ? 1 : 0;  
+        return d.id === satellites?.[0]?.id ? 1 : 0;  
       });
 
     
