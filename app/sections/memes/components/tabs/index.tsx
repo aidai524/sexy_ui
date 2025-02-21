@@ -8,9 +8,12 @@ import { MemesContext } from '@/app/sections/memes/context';
 import { Hot, Meme } from '@/app/sections/memes/store/list';
 import Empty from '@/app/components/empty';
 import SexInfiniteScroll from '@/app/components/sexInfiniteScroll';
+import { useUserAgent } from '@/app/context/user-agent';
+import MemesSelect from '@/app/sections/memes/components/select';
 
 const MemesTabs = (props: any) => {
   const { className } = props;
+  const { isMobile } = useUserAgent();
   const {
     hotListLoading,
     memesListLoading,
@@ -152,12 +155,37 @@ const MemesTabs = (props: any) => {
             );
           })}
         </div>
+        {
+          (!isMobile && !!currentTab?.filters?.length) && (
+            <MemesSelect
+              value={currentFilter}
+              options={currentTab?.filters}
+              onChange={handleFilter}
+              renderSelectedLabel={() => (
+                <div className={styles.MemesTabsFilterDropdownSelected}>
+                  <div className={styles.MemesTabsFilterDropdownLabel}>
+                    {currentFilter?.label}
+                  </div>
+                  <OrderArrow order={currentFilter?.order} />
+                </div>
+              )}
+              renderLabel={(item: any) => (
+                <div className={styles.MemesTabsFilterDropdown}>
+                  <div className={styles.MemesTabsFilterDropdownLabel}>
+                    {item?.label}
+                  </div>
+                  <OrderArrow order={item.value === currentFilter?.value ? currentFilter?.order : item.order} />
+                </div>
+              )}
+            />
+          )
+        }
       </motion.div>
       <motion.div
         className={clsx(styles.MemesTabsContent)}
       >
         {
-          !!currentTab?.filters?.length && (
+          (!!currentTab?.filters?.length && isMobile) && (
             <div className={styles.MemesTabsFilters}>
               {
                 currentTab.filters.map((f) => (
@@ -168,19 +196,9 @@ const MemesTabs = (props: any) => {
                   >
                     <div>{f.label}</div>
                     {
-                      (currentFilter && currentFilter?.value === f.value) && ((currentFilter?.order === Order.Asc) ? (
-                        <img
-                          src="/img/memes/icon-arrow-up.svg"
-                          alt=""
-                          className={styles.MemesTabsFilterArrow}
-                        />
-                      ) : (
-                        <img
-                          src="/img/memes/icon-arrow-up.svg"
-                          alt=""
-                          className={styles.MemesTabsFilterArrowDown}
-                        />
-                      ))
+                      (currentFilter && currentFilter?.value === f.value) && (
+                        <OrderArrow order={currentFilter?.order} />
+                      )
                     }
                   </div>
                 ))
@@ -196,23 +214,25 @@ const MemesTabs = (props: any) => {
         >
           {
             (hotListLoading || ((!list || list.length < 1) && memesListLoading)) ? (
-              <>
+              <div className={styles.MemesTabsListInner}>
                 <TokenItemLoading key={1} />
                 <TokenItemLoading key={2} />
                 <TokenItemLoading key={3} />
                 <TokenItemLoading key={4} />
                 <TokenItemLoading key={5} />
-              </>
+              </div>
             ) : (
               (!list || list.length < 1) ? (
                 <Empty height={300} text="No Data" />
               ) : (
                 <>
-                  {
-                    list?.map?.((item: Hot | Meme, index: number) => (
-                      <TokenItem key={index} token={item} />
-                    ))
-                  }
+                  <div className={styles.MemesTabsListInner}>
+                    {
+                      list?.map?.((item: Hot | Meme, index: number) => (
+                        <TokenItem key={index} token={item} />
+                      ))
+                    }
+                  </div>
                   {
                     currentTab?.value !== TABS[0].value && (
                       <>
@@ -220,12 +240,12 @@ const MemesTabs = (props: any) => {
                           loadMore={onMemesListNextPage}
                           hasMore={memesListPageNext}
                         />
+                        {
+                          !memesListPageNext && (
+                            <div className={styles.MemesTabsNoMoreData}>No more data</div>
+                          )
+                        }
                       </>
-                    )
-                  }
-                  {
-                    !memesListPageNext && (
-                      <div className={styles.MemesTabsNoMoreData}>No more data</div>
                     )
                   }
                 </>
@@ -239,3 +259,21 @@ const MemesTabs = (props: any) => {
 };
 
 export default MemesTabs;
+
+const OrderArrow = (props: any) => {
+  const { className, order } = props;
+
+  return ((order === Order.Asc) ? (
+    <img
+      src="/img/memes/icon-arrow-up.svg"
+      alt=""
+      className={clsx(styles.MemesTabsFilterArrow, className)}
+    />
+  ) : (
+    <img
+      src="/img/memes/icon-arrow-up.svg"
+      alt=""
+      className={clsx(styles.MemesTabsFilterArrowDown, className)}
+    />
+  ));
+};

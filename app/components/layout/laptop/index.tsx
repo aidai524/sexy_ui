@@ -9,7 +9,7 @@ import { useSetting } from "@/app/store/use-setting";
 import Refer from '@/app/components/layout/laptop/user/refer';
 
 const CreatePage = dynamic(() => import("@/app/sections/create/laptop"));
-const TrendsPage = dynamic(() => import("@/app/sections/trends"));
+const MemesPage = dynamic(() => import("@/app/sections/memes"));
 const RewardPage = dynamic(() => import("@/app/sections/mining"));
 const ProfileCom = dynamic(() => import("@/app/sections/profile"));
 const DetailPage = dynamic(() => import("@/app/sections/detail"));
@@ -34,7 +34,7 @@ export default function Laptop({ children }: any) {
         {pathname === "/" && <Main />}{" "}
         {pathname === "/reward" && <RewardPage />}
         {pathname === "/create" && <CreatePage />}
-        {pathname === "/trends" && <TrendsPage />}
+        {pathname === "/memes" && <MemesPage />}
         {pathname === "/profile/user" && (
           <ProfileCom
             isOther={true}
