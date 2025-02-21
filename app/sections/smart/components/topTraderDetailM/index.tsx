@@ -28,6 +28,39 @@ export default function TopTraderDetailM() {
     const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<CopyTraderAddress | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [refreshNum, setRefreshNum] = useState(0);
+    const [copierImages, setCopierImages] = useState<string[]>([]);
+    
+    const getUserInfoWithCache = useMemo(() => {
+      const cache = new Map<string, any>();
+      return async (address: string) => {
+        if (cache.has(address)) {
+          return cache.get(address);
+        }
+        const info = await fecthUserInfo(address);
+        cache.set(address, info);
+        return info;
+      };
+    }, []);
+
+    useEffect(() => {
+      const loadCopierImages = async () => {
+        if (!smartMoniesInfo?.copiers?.length) return;
+        
+        const copierAddresses = smartMoniesInfo.copiers;
+        const copierInfos = await Promise.all(
+          copierAddresses.map(copier => getUserInfoWithCache(copier))
+        );
+        
+        const images = copierInfos
+          .map(info => info?.icon)
+          .filter(Boolean); // Remove any undefined/null values
+        
+        setCopierImages(images);
+      };
+      
+      loadCopierImages();
+    }, [smartMoniesInfo?.copiers, getUserInfoWithCache]);
+
     const getSmartMoniesInfo = async () => {
         if (address) {
             const { data } = await CopyTradeService.getSmartMoniesAddress({address, chain: 'solana'});
@@ -192,9 +225,14 @@ export default function TopTraderDetailM() {
           </div>
           <div>
           {
-            smartMoniesInfo?.copiers?.map((item:any, index:any)=>{
-              return <img key={'sate' + index} className={styles.copierTokenImg} alt='copier tokens' src={getUserInfo(item.address)?.icon || defaultAvatar} />
-            })
+            copierImages.map((imageUrl, index) => (
+              <img
+                key={'sate' + index}
+                className={styles.copierTokenImg}
+                alt='copier tokens'
+                src={imageUrl || defaultAvatar}
+              />
+            ))
           }
         </div>
       </div>
