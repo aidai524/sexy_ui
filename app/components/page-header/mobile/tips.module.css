@@ -1,4 +1,10 @@
 .Container {
+  height: 24px;
+  position: relative;
+  width: 200px;
+}
+
+.Tip {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -11,6 +17,10 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  transition: 0.3s;
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
 
 .Type {

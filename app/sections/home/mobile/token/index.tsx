@@ -25,23 +25,12 @@ export default function Token({
   dataAvailable,
   style = {}
 }: any) {
-  const [imgHeight, setImgHeight] = useState("80%");
   const { innerHeight } = useUserAgent();
   const descContentRef = useRef<any>();
   const [showFlipModal, setShowFlipModal] = useState(false);
   const [showTradeModal, setShowTradeModal] = useState(false);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
   const { goDetail } = useHome();
-
-  useEffect(() => {
-    if (descContentRef.current) {
-      setImgHeight(
-        `${
-          innerHeight - (isPreview ? 0 : descContentRef.current.clientHeight)
-        }px`
-      );
-    }
-  }, []);
 
   return (
     <>
@@ -60,7 +49,7 @@ export default function Token({
           <div className={styles.Content}>
             {token.status === 0 && !isPreview && <LikeToEarn />}
             <Media
-              imgHeight={imgHeight}
+              imgHeight="100%"
               data={token}
               videoProgressStyle={
                 isCurrent ? { position: "fixed", left: 16, bottom: 72 } : null
