@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState } from "react";
 import CopyTrade from "@/app/services/copyTrade";
 import { success, fail } from "@/app/utils/toast";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { VersionedTransaction, VersionedMessage } from '@solana/web3.js';
-import bs58 from 'bs58';
-
+import { VersionedTransaction, VersionedMessage } from "@solana/web3.js";
+import bs58 from "bs58";
+import { useAccount } from "@/app/hooks/useAccount";
 
 interface CopyTradeParams {
   walletAddress: string;
@@ -16,18 +16,11 @@ interface CopyTradeParams {
   closeCopyTrade: boolean;
 }
 
-// @ts-ignore
-const { walletProvider, sexAddress, connect } = window;
-
 export const useWithdrawTokens = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const CopyTradeService = new CopyTrade();
-  const {
-      publicKey,
-      signTransaction,
-      sendTransaction,
-      wallet,
-  } = useWallet();
+  const { walletProvider } = useAccount();
+  const { publicKey, signTransaction, sendTransaction, wallet } = useWallet();
   const { connection } = useConnection();
   // @param type 1: buy tokens, 2: swap tokens
   const handleWithdrawTokens = async ({
@@ -42,7 +35,7 @@ export const useWithdrawTokens = () => {
     try {
       setIsLoading(true);
       const timestamp = new Date().getTime();
-      const message = `Close and Withdraw Copy Trade,Id:${id},Timestamp:${timestamp}`
+      const message = `Close and Withdraw Copy Trade,Id:${id},Timestamp:${timestamp}`;
       const encodedMessage = new TextEncoder().encode(message);
       console.log(encodedMessage);
       const signature = await walletProvider?.signMessage?.(encodedMessage);
@@ -67,11 +60,11 @@ export const useWithdrawTokens = () => {
         success("Operation successful", { maskStyle: { zIndex: 1001 } });
         return true;
       } else {
-        fail(res?.message, { maskStyle: { zIndex: 1001} });
+        fail(res?.message, { maskStyle: { zIndex: 1001 } });
         return false;
       }
     } catch (e: any) {
-      fail(e?.message || "Swap tokens failed", {maskStyle: {zIndex: 1001}});
+      fail(e?.message || "Swap tokens failed", { maskStyle: { zIndex: 1001 } });
       return false;
     } finally {
       setIsLoading(false);
@@ -82,5 +75,4 @@ export const useWithdrawTokens = () => {
     isLoading,
     handleWithdrawTokens
   };
-  };
-  
+};
