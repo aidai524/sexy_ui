@@ -1,43 +1,89 @@
 import { useContext, useEffect, useRef } from 'react';
 import styles from './index.module.css';
 import clsx from 'clsx';
-import { Filter, Tab, TABS } from '@/app/sections/memes/config';
-import { useMemesStore } from '@/app/sections/memes/store';
+import { Filter, Order, Tab, TABS } from '@/app/sections/memes/config';
 import { AnimatePresence, motion } from 'framer-motion';
-import TokenItem from '@/app/sections/memes/components/token-item';
+import TokenItem, { TokenItemLoading } from '@/app/sections/memes/components/token-item';
 import { MemesContext } from '@/app/sections/memes/context';
+import { Hot, Meme } from '@/app/sections/memes/store/list';
+import Empty from '@/app/components/empty';
+import SexInfiniteScroll from '@/app/components/sexInfiniteScroll';
 
 const MemesTabs = (props: any) => {
   const { className } = props;
-  const { allList: data = [] } = useContext(MemesContext);
   const {
+    hotListLoading,
+    memesListLoading,
+    memesListPageNext,
+    onMemesListNextPage,
+    initMemesList,
+    list,
     currentTab,
     setCurrentTab,
-    prevTab,
     setPrevTab,
     currentFilter,
     setCurrentFilter,
-  } = useMemesStore();
+    getHotList,
+    getMemesList,
+  } = useContext(MemesContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleTabClick = (tab: Tab) => {
-    setPrevTab(currentTab);
-    setCurrentTab(tab);
+    setPrevTab?.(currentTab);
+    setCurrentTab?.(tab);
     if (tab.filters?.length) {
-      setCurrentFilter(tab.filters[0]);
+      setCurrentFilter?.(tab.filters[0]);
     } else {
-      setCurrentFilter(void 0);
+      setCurrentFilter?.(void 0);
     }
+    if (tab.value === TABS[0].value) {
+      getHotList?.();
+      return;
+    }
+    initMemesList?.();
+    getMemesList?.({
+      type: tab.value,
+      offset: 0,
+      sort: tab.filters?.[0].value,
+      order: tab.filters?.[0].order,
+    });
   };
 
   const handleFilter = (filter: Filter) => {
-    setCurrentFilter(filter);
+    let _order = filter.order;
+    if (filter.value === currentFilter?.value) {
+      if (currentFilter?.order === Order.Desc) {
+        setCurrentFilter?.({
+          ...filter,
+          order: Order.Asc,
+        });
+        _order = Order.Asc;
+      } else {
+        setCurrentFilter?.({
+          ...filter,
+          order: Order.Desc,
+        });
+        _order = Order.Desc;
+      }
+    } else {
+      setCurrentFilter?.({ ...filter });
+    }
+    if (currentTab?.value === TABS[0].value) {
+      return;
+    }
+    initMemesList?.();
+    getMemesList?.({
+      type: currentTab?.value,
+      offset: 0,
+      sort: filter.value,
+      order: _order,
+    });
   };
 
   useEffect(() => {
     const container = scrollContainerRef.current;
-    const activeTab = container?.querySelector(`[data-tab="${currentTab.value}"]`) as HTMLElement;
+    const activeTab = container?.querySelector(`[data-tab="${currentTab?.value}"]`) as HTMLElement;
 
     if (container && activeTab) {
       const containerWidth = container.offsetWidth;
@@ -64,8 +110,7 @@ const MemesTabs = (props: any) => {
           className={styles.tabsInner}
         >
           {TABS.map((tab, index) => {
-            const isActive = currentTab.value === tab.value;
-            const direction = Number(currentTab.value) > Number(prevTab.value) ? 1 : -1;
+            const isActive = currentTab?.value === tab.value;
 
             return (
               <div
@@ -112,7 +157,7 @@ const MemesTabs = (props: any) => {
         className={clsx(styles.MemesTabsContent)}
       >
         {
-          !!currentTab.filters?.length && (
+          !!currentTab?.filters?.length && (
             <div className={styles.MemesTabsFilters}>
               {
                 currentTab.filters.map((f) => (
@@ -121,18 +166,71 @@ const MemesTabs = (props: any) => {
                     key={f.value}
                     onClick={() => handleFilter(f)}
                   >
-                    {f.label}
+                    <div>{f.label}</div>
+                    {
+                      (currentFilter && currentFilter?.value === f.value) && ((currentFilter?.order === Order.Asc) ? (
+                        <img
+                          src="/img/memes/icon-arrow-up.svg"
+                          alt=""
+                          className={styles.MemesTabsFilterArrow}
+                        />
+                      ) : (
+                        <img
+                          src="/img/memes/icon-arrow-up.svg"
+                          alt=""
+                          className={styles.MemesTabsFilterArrowDown}
+                        />
+                      ))
+                    }
                   </div>
                 ))
               }
             </div>
           )
         }
-        <div className={styles.MemesTabsList}>
+        <div
+          className={styles.MemesTabsList}
+          // style={{
+          //   maxHeight: !!currentTab?.filters?.length ? 'calc(100dvh - 440px)' : 'calc(100dvh - 412px)',
+          // }}
+        >
           {
-            data.map((item: any, index: any) => (
-              <TokenItem key={index} token={item} />
-            ))
+            (hotListLoading || ((!list || list.length < 1) && memesListLoading)) ? (
+              <>
+                <TokenItemLoading key={1} />
+                <TokenItemLoading key={2} />
+                <TokenItemLoading key={3} />
+                <TokenItemLoading key={4} />
+                <TokenItemLoading key={5} />
+              </>
+            ) : (
+              (!list || list.length < 1) ? (
+                <Empty height={300} text="No Data" />
+              ) : (
+                <>
+                  {
+                    list?.map?.((item: Hot | Meme, index: number) => (
+                      <TokenItem key={index} token={item} />
+                    ))
+                  }
+                  {
+                    currentTab?.value !== TABS[0].value && (
+                      <>
+                        <SexInfiniteScroll
+                          loadMore={onMemesListNextPage}
+                          hasMore={memesListPageNext}
+                        />
+                      </>
+                    )
+                  }
+                  {
+                    !memesListPageNext && (
+                      <div className={styles.MemesTabsNoMoreData}>No more data</div>
+                    )
+                  }
+                </>
+              )
+            )
           }
         </div>
       </motion.div>

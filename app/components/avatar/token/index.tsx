@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import styles from "./index.module.css";
 import Image from "next/image";
+import { getVideoExt } from '@/app/components/upload';
+import VideoPlayer from '@/app/components/video';
 
 export default function TokenIcon({ token, onClick = () => {} }: any) {
   const progress = useMemo(() => {
@@ -31,7 +33,21 @@ export default function TokenIcon({ token, onClick = () => {} }: any) {
           />
         </svg>
       )}
-      <img src={token?.icon} className={styles.Icon} />
+      {
+        isVideoFile(token?.icon) ? (
+          <VideoPlayer
+            key={token.icon}
+            id={token.id}
+            src={token.icon}
+            type={getVideoExt(token.icon)}
+            className={styles.Icon}
+            autoPlay={true}
+            token={token}
+          />
+        ) : (
+          <img src={token?.icon} className={styles.Icon} loading="lazy" />
+        )
+      }
       {token.is_king && (
         <div className={styles.King}>
           👑
@@ -47,3 +63,8 @@ export default function TokenIcon({ token, onClick = () => {} }: any) {
     </div>
   );
 }
+
+const isVideoFile = (url: string) => {
+  const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov'];
+  return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
+};

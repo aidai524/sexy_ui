@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { httpGet, timeAgo } from '@/app/utils';
 import { PublicKey } from '@solana/web3.js';
 import { programId_address } from '@/app/utils/config';
@@ -6,20 +6,65 @@ import Big from 'big.js';
 import { Program } from '@coral-xyz/anchor';
 import idl from '@/app/hooks/meme_launchpad.json';
 import { useConnection } from '@solana/wallet-adapter-react';
-import { Meme, useMemesStore } from '@/app/sections/memes/store/meme';
+import { Hot, Meme, useMemesListStore } from '@/app/sections/memes/store/list';
+import { MemesState, useMemesStore } from '@/app/sections/memes/store';
+import { Order, TABS } from '@/app/sections/memes/config';
+import { useDebounceFn, useThrottleFn } from 'ahooks';
 
-export function useMemes(props?: { isPolling?: boolean; }): Memes {
-  const { isPolling } = props ?? {};
+export function useMemes(props?: { isLoadData?: boolean; }): Memes {
+  const { isLoadData } = props ?? {};
 
   const {
-    allList,
-    allListLoading,
-    setAllList,
-    setAllListLoading,
+    hotList,
+    hotListLoading,
+    setHotList,
+    setHotListLoading,
+    memesList,
+    memesListLoading,
+    memesListPageLimit,
+    memesListPageNext,
+    memesListPageOffset,
+    setMemesList,
+    setMemesListLoading,
+    setMemesListPageOffset,
+    setMemesListPageNext,
+  } = useMemesListStore();
+  const {
+    currentTab,
+    setCurrentTab,
+    prevTab,
+    setPrevTab,
+    currentFilter,
+    setCurrentFilter,
   } = useMemesStore();
   const { connection } = useConnection();
 
-  const getPoolToken = async (token: Meme) => {
+  const listShown = useMemo<Hot[] | Meme[]>(() => {
+    let _list: any = memesList;
+    if (currentTab.value === TABS[0].value) {
+      _list = hotList;
+      if (currentFilter) {
+        _list = _list.sort((a: any, b: any) => {
+          const aValue = Big(a[currentFilter.value]);
+          const bValue = Big(b[currentFilter.value]);
+
+          if (aValue.eq(bValue)) {
+            const aSort = a.ranking || 0;
+            const bSort = b.ranking || 0;
+            return aSort - bSort;
+          }
+
+          if (currentFilter.order === Order.Asc) {
+            return aValue.lt(bValue) ? -1 : 1;
+          }
+          return aValue.gt(bValue) ? -1 : 1;
+        });
+      }
+    }
+    return _list;
+  }, [hotList, memesList, currentTab, currentFilter]);
+
+  const getPoolToken = async (token: Hot) => {
     try {
       // console.log('%ctrends getPoolToken programId_address: %o', 'background:#FF2681;color:#fff;', programId_address);
       const programId = new PublicKey(programId_address);
@@ -70,10 +115,11 @@ export function useMemes(props?: { isPolling?: boolean; }): Memes {
     }
   };
 
-  const formatList = async (_list: Meme[] = []) => {
+  const formatHotList = async (_list: Hot[] = []) => {
     _list = Array.isArray(_list) ? _list : [];
     for (let i = 0; i < _list.length; i++) {
       const it = _list[i];
+      it.kind = 'Hot';
       it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
       const { poolAmount, solAmount } = await getPoolToken(it);
       let _progress = Big(1095840542120770).minus(poolAmount).div(Big(1095840542120770).minus(295840542120770)).times(100);
@@ -90,8 +136,8 @@ export function useMemes(props?: { isPolling?: boolean; }): Memes {
     return _list;
   };
 
-  const getAllList = async () => {
-    setAllListLoading(true);
+  const getHotList = async () => {
+    setHotListLoading(true);
     try {
       const res = await httpGet(`/project/trends/list`, {
         // ⚠️ Trends page is no longer paginated, all data is returned at once
@@ -102,39 +148,115 @@ export function useMemes(props?: { isPolling?: boolean; }): Memes {
         order: '',
       });
 
-      const _all_list = await formatList(res.data.list);
+      const _hot_list = await formatHotList(res.data.list);
 
-      console.log('_all_list', _all_list);
+      console.log('_hot_list', _hot_list);
 
-      setAllList(_all_list);
-      setAllListLoading(false);
+      setHotList(_hot_list);
+      setHotListLoading(false);
     } catch (err) {
-      console.log('get memes list err: %o', err);
-      setAllListLoading(false);
+      console.log('get hot list err: %o', err);
+      setHotListLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (!isPolling) return;
-    const timer = setInterval(() => {
-      getAllList();
-    }, 60000);
-    getAllList();
+  const formatMemesList = async (_list: Meme[] = []) => {
+    _list = Array.isArray(_list) ? _list : [];
+    for (let i = 0; i < _list.length; i++) {
+      const it = _list[i];
+      it.kind = 'Meme';
+      it.created2Now = timeAgo(it.DApp === "pump" ? it.time : it.created_at);
+    }
+    return _list;
+  };
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, [isPolling]);
+  const getMemesList = async (params?: MemesListParams) => {
+    setMemesListLoading(true);
+    const {
+      offset = memesListPageOffset,
+      order = currentFilter?.order,
+      sort = currentFilter?.value,
+      type = currentTab.value,
+    } = params ?? {};
+    try {
+      const res = await httpGet(`/project/memes/list`, {
+        limit: memesListPageLimit,
+        offset,
+        order,
+        sort,
+        type,
+      });
+
+      const _memes_list = await formatMemesList(res.data.list);
+
+      console.log('_memes_list', _memes_list);
+
+      if (offset === 0) {
+        setMemesList(_memes_list);
+      } else {
+        const _list = [...memesList, ..._memes_list];
+        setMemesList(_list);
+      }
+
+      setMemesListPageNext(res.data.has_next_page);
+      setMemesListPageOffset(offset);
+      setMemesListLoading(false);
+    } catch (err) {
+      console.log('get memes list err: %o', err);
+      setMemesListLoading(false);
+    }
+  };
+
+  const { run: onMemesListNextPage } = useThrottleFn(() => {
+    if (memesListLoading || !memesListPageNext) return;
+    getMemesList({
+      offset: memesListPageOffset + 1,
+    });
+  }, { wait: 1000 });
+
+  const initMemesList = () => {
+    setMemesList([]);
+    setMemesListPageNext(true);
+    setMemesListPageOffset(0);
+    setMemesListLoading(false);
+  };
+
+  useEffect(() => {
+    if (!isLoadData) return;
+
+    getHotList();
+    getMemesList();
+  }, [isLoadData]);
 
   return {
-    allList,
-    getAllList,
-    allListLoading,
+    hotList,
+    list: listShown,
+    getHotList,
+    getMemesList,
+    hotListLoading,
+    memesListLoading,
+    currentTab,
+    setCurrentTab,
+    prevTab,
+    setPrevTab,
+    currentFilter,
+    setCurrentFilter,
+    memesListPageNext,
+    onMemesListNextPage,
+    initMemesList,
   };
 }
 
-export interface Memes {
-  allList: Meme[];
-  getAllList(): Promise<void>;
-  allListLoading: boolean;
+interface MemesListParams { offset?: number; order?: Order; sort?: string; type?: string; }
+
+export interface Memes extends MemesState {
+  hotList: Hot[];
+  list: Hot[] | Meme[];
+  getHotList(): Promise<void>;
+  getMemesList(params?: MemesListParams): Promise<void>;
+  hotListLoading: boolean;
+  memesListLoading: boolean;
+  memesListPageNext: boolean;
+  onMemesListNextPage: () => void;
+  initMemesList: () => void;
 }
