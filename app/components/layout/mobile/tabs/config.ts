@@ -4,7 +4,7 @@ import CreateIcon from "../../../icons/create-m";
 import SmartIcon from "../../../icons/smart";
 import EarnIcon from "../../../icons/earn";
 
-export default [
+const tabs = [
   {
     icon: HomeIcon,
     label: "Home",
@@ -43,3 +43,6 @@ export default [
     iconSize: 26
   }
 ];
+
+export default tabs;
+export const tabsPath = tabs.map((tab) => tab.path);
