@@ -4,7 +4,7 @@ import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { motion } from "framer-motion";
 
 const COLORS = ["#C9FF5D", "#4305FE", "#FE05D9"];
-const DIFF = 45;
+const DIFF = 90;
 
 export default function Trade({ token, isCurrent, onClick }: any) {
   const mc = useMcWithPump(token);
@@ -60,9 +60,9 @@ export default function Trade({ token, isCurrent, onClick }: any) {
             backgroundColor: [COLORS[0], COLORS[2], COLORS[1], COLORS[0]]
           }}
           transition={{
-            duration: 0.3,
+            duration: 0.1,
             ease: "linear",
-            repeat: 6
+            repeat: 30
           }}
           onClick={onClick}
           className={`button ${styles.Button}`}

@@ -171,7 +171,7 @@ export default function List({ type, isCurrentTab }: any) {
                   !tokenPanelStatusStore[panleType]
                 );
               }}
-              dataAvailable={Math.abs(i - index) < 5}
+              dataAvailable={Math.abs(i - index) < 5 && isCurrentTab}
             />
           );
         })}

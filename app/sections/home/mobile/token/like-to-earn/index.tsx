@@ -28,7 +28,7 @@ export default function LikeToEarn() {
         <div>
           <div className={styles.Like}>
             <Heart />
-            <div>{remainingNum} left today</div>
+            <div>{remainingNum || 100} left today</div>
           </div>
           <div className={styles.Desc}>Like to Earn</div>
         </div>
@@ -65,7 +65,7 @@ export default function LikeToEarn() {
       >
         <div className={styles.Like}>
           <Heart />
-          <div>{remainingNum} left today</div>
+          <div>{remainingNum || 100} left today</div>
         </div>
       </div>
     );

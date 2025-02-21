@@ -7,49 +7,12 @@ export default function ShareIcon({ size = 34 }: any) {
       viewBox="0 0 34 34"
       fill="none"
     >
-      <g filter="url(#filter0_d_6029_2387)">
+      <g>
         <path
           d="M18.4591 25.2483C18.439 25.3873 18.4524 25.529 18.4984 25.6622C18.5443 25.7953 18.6215 25.9164 18.7239 26.0159L18.7321 26.0221C18.8213 26.1124 18.9285 26.1843 19.0472 26.2335C19.1659 26.2827 19.2936 26.3082 19.4227 26.3084C19.7233 26.3084 19.98 26.1669 20.1572 25.9608L29.7218 15.8534C29.8172 15.7612 29.8912 15.6504 29.9388 15.5283C29.9865 15.4063 30.0066 15.2758 29.998 15.1456C30.0067 15.0153 29.9866 14.8848 29.939 14.7627C29.8913 14.6407 29.8173 14.5299 29.7218 14.4378L20.1035 4.2737C19.9193 4.0983 19.6713 4 19.4129 4C19.1545 4 18.9065 4.0983 18.7223 4.2737C18.6204 4.37345 18.5436 4.49459 18.498 4.62771C18.4523 4.76084 18.439 4.90236 18.4591 5.04128V10.515C10.4739 10.515 4 16.7531 4 24.4508C3.99945 26.3609 4.40778 28.2503 5.19924 30C6.34 24.196 12.0892 19.7872 18.4428 19.7872L18.4591 25.2483Z"
           fill="white"
         />
       </g>
-      <defs>
-        <filter
-          id="filter0_d_6029_2387"
-          x="0"
-          y="0"
-          width="34"
-          height="34"
-          filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB"
-        >
-          <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset />
-          <feGaussianBlur stdDeviation="2" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-          />
-          <feBlend
-            mode="normal"
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_6029_2387"
-          />
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="effect1_dropShadow_6029_2387"
-            result="shape"
-          />
-        </filter>
-      </defs>
     </svg>
   );
 }
