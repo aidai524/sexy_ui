@@ -42,7 +42,7 @@ export default function TokenIcon({ token, onClick = () => {}, className }: any)
           src={token.icon}
           type={getVideoExt(token.icon)}
           className={styles.Icon}
-          autoPlay={true}
+          autoPlay={false}
           token={token}
         />
       ) : (
