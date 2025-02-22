@@ -22,7 +22,7 @@
 
 .tokenSummary {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between; 
   padding: 10px 15px;
 } 

@@ -238,39 +238,38 @@ export default forwardRef(function CreateNode(
     const inValidVals: any = {};
     let isValid = false;
 
-    const iconError = validateIcon(tokenIcon);
-    if (iconError) {
-      inValidVals["tokenIcon"] = iconError;
-      isValid = true;
-    }
-
-    const nameError = validateName(tokenName);
-    if (nameError) {
-      inValidVals["tokenName"] = nameError;
-      isValid = true;
-    }
-
-    const sameNameError = await validateSameName();
-    if (sameNameError) {
-      inValidVals["tokenName"] = sameNameError;
-      isValid = true;
-    }
-
-    const tickerError = validateTicker(ticker);
-    if (tickerError) {
-      inValidVals["ticker"] = tickerError;
-      isValid = true;
-    }
-
-    const aboutError = validateAbout(about);
-    if (aboutError) {
-      inValidVals["about"] = aboutError;
-      isValid = true;
-    }
-
-    setInvaldVasl(inValidVals);
-
     if (type === 1) {
+      const iconError = validateIcon(tokenIcon);
+      if (iconError) {
+        inValidVals["tokenIcon"] = iconError;
+        isValid = true;
+      }
+
+      const nameError = validateName(tokenName);
+      if (nameError) {
+        inValidVals["tokenName"] = nameError;
+        isValid = true;
+      }
+
+      const sameNameError = await validateSameName();
+      if (sameNameError) {
+        inValidVals["tokenName"] = sameNameError;
+        isValid = true;
+      }
+
+      const tickerError = validateTicker(ticker);
+      if (tickerError) {
+        inValidVals["ticker"] = tickerError;
+        isValid = true;
+      }
+
+      const aboutError = validateAbout(about);
+      if (aboutError) {
+        inValidVals["about"] = aboutError;
+        isValid = true;
+      }
+
+      setInvaldVasl(inValidVals);
       return isValid;
     }
 
@@ -414,7 +413,7 @@ export default forwardRef(function CreateNode(
               <span className={styles.require}>* </span>
               Name
             </div>
-            <div className={styles.requireSize}>{ nameLength }</div>
+            <div className={styles.requireSize}>{nameLength}</div>
           </div>
           <div className={styles.groupContent}>
             <input
@@ -456,7 +455,7 @@ export default forwardRef(function CreateNode(
               <span className={styles.require}>* </span>
               Ticker
             </div>
-            <div className={styles.requireSize}>{ tickerLength }</div>
+            <div className={styles.requireSize}>{tickerLength}</div>
           </div>
           <div className={styles.groupContent}>
             <input
@@ -490,7 +489,7 @@ export default forwardRef(function CreateNode(
             <div>
               Discription
             </div>
-            <div className={styles.requireSize}>{ aboutLength }</div>
+            <div className={styles.requireSize}>{aboutLength}</div>
           </div>
           <div className={styles.groupContent}>
             <textarea
@@ -539,7 +538,7 @@ export default forwardRef(function CreateNode(
               />
               <div>
                 <div className={styles.uploadTitle}>Video or image</div>
-                <div className={styles.uploadTip}>Support MOV/mp4jpg/png/gif, <br/>up to 10 MB</div>
+                <div className={styles.uploadTip}>Support MOV/mp4jpg/png/gif, <br />up to 10 MB</div>
               </div>
             </div>
             {inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>}
@@ -581,7 +580,7 @@ export default forwardRef(function CreateNode(
                         hideDelete={key === "x"}
                       />
 
-                      {inValidVals[key] && <ErrMsg>{inValidVals[key]}</ErrMsg>} 
+                      {inValidVals[key] && <ErrMsg>{inValidVals[key]}</ErrMsg>}
                     </div>
                   }
                 })

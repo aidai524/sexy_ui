@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDebounce } from "ahooks";
 import Big from "big.js";
 import styles from "./trande.module.css";
@@ -63,10 +63,14 @@ export default function Create({
   const [isLoading, setIsLoading] = useState(false);
 
   const [solPercent, setSolPercent] = useState<any>(0);
-  const [valInput, setValInput] = useState("");
+  const [valInput, setValInput] = useState("0");
+  const totalRef = useRef<any>({
+    inputVal: 0,
+    isError: false,
+    isLoading: false
+  })
   const [launchChecked, setLaunchChecked] = useState(false);
 
-  const { solPrice } = useSolPrice();
 
   console.log(config)
 
@@ -82,6 +86,10 @@ export default function Create({
     tokenDecimals: 0,
     mint: ''
   });
+
+  useEffect(() => {
+    totalRef.current.inputVal = valInput
+  }, [valInput])
 
   const validateSameName = useCallback(async () => {
     const tokenInUse = await httpGet(
@@ -105,22 +113,25 @@ export default function Create({
 
     if (debounceVal) {
       if (isNaN(Number(debounceVal))) {
+        totalRef.current.isError = true;
         setIsError(true);
       }
-      if (Number(debounceVal) > 0 && Number(debounceVal) <= Number(solBalance)) {
+      if (Number(debounceVal) > 0 && Number(debounceVal) <= Number(1)) {
+        totalRef.current.isError = false;
         setIsError(false);
       } else {
+        totalRef.current.isError = true;
         setIsError(true);
       }
     }
   }, [debounceVal]);
 
-  const submit = async (ignorePrepaid: number) => {
+  const submit = useCallback(async (ignorePrepaid: number) => {
     // setModalShow(true);
     // return;
 
     try {
-      if (isLoading || isError) {
+      if (isLoading || totalRef.current.isError) {
         return;
       }
 
@@ -140,8 +151,8 @@ export default function Create({
         symbol: tokenSymbol,
         uri: tokenUri,
         launching: launchChecked,
-        amount: (ignorePrepaid !== 0 && valInput)
-          ? new Big(valInput).mul(10 ** 9).toString()
+        amount: (ignorePrepaid !== 0 && totalRef.current.inputVal)
+          ? new Big(totalRef.current.inputVal).mul(10 ** 9).toString()
           : ""
       });
 
@@ -161,7 +172,7 @@ export default function Create({
       setIsLoading(false);
       fail("Create token error");
     }
-  }
+  }, [totalRef, isError])
 
   useEffect(() => {
     if (getSubmitFn) {
@@ -223,7 +234,7 @@ export default function Create({
             className={styles.input}
           />
           <div className={styles.inputToken}>SOL</div>
-          <div className={styles.inputPrice}>${numberFormatter(Number(solPrice) * Number(valInput), 2, true)}</div>
+          <div className={styles.inputPrice}>${numberFormatter(Number(config.SolPrice) * Number(valInput), 2, true)}</div>
         </div>
 
 

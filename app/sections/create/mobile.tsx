@@ -38,8 +38,8 @@ export default function Create() {
           <svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.5 14L1.5 7.5L7.5 1" stroke="white" stroke-width="2" stroke-linecap="round" />
           </svg>
-
         </div>
+        
         <div className={styles.titleText}>Create Token</div>
         {
           step > 1 && <div className={styles.titleIcon} onClick={() => {

@@ -103,7 +103,7 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
             <div>Trade Now</div>
           </div>
 
-          <div className={styles.share} onClick={() => {
+          {/* <div className={styles.share} onClick={() => {
             if (!address) {
               window.connect();
               return;
@@ -112,7 +112,7 @@ export default function Action({ data, justPlus = false, from, style }: Props) {
             showShare(data)
           }}>
            <Share />
-          </div>
+          </div> */}
 
           {/* <Boost token={data} isBigIcon={true} onClick={() => {}}/> */}
 

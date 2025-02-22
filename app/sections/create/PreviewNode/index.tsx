@@ -125,7 +125,7 @@ export default forwardRef(function PreviewNode(
             {activeTab === 'details' ? (
               isMobile ? <MobileInfo newData={newData} /> : <LaptopInfo newData={newData} />
             ) : (
-              <div style={{ zIndex: 1, position: 'relative', top: '-84px', height: '70vh' }}>
+              <div style={{ zIndex: 1, position: 'relative', top: '-74px', height: '70vh' }}>
                 <Token
                   isCurrent={true}
                   style={{
