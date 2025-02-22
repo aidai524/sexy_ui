@@ -1,7 +1,7 @@
 // @ts-ignore
 import Croppie from "croppie";
 
-const orientationMap = [2, 5, 3, 7]
+const orientationMap = [1, 7, 3, 5]
 
 export default async function ImgCopper({ file }: { file: File }) {
   return new Promise(async (resolve, reject) => {
@@ -90,7 +90,7 @@ export default async function ImgCopper({ file }: { file: File }) {
 
     cropper.bind({
       url: url,
-      // orientation: 2,
+      orientation: 1,
       // zoom: 0
     });
 
