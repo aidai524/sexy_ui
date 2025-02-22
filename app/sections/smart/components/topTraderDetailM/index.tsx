@@ -11,48 +11,48 @@ import {
 } from "@/app/sections/trends/components/top-traders/icons";
 import { useUser } from "@/app/store/useUser";
 import { defaultAvatar } from "@/app/utils/config";
-import { formatAddress } from "@/app/utils";
-import { useRouter, useSearchParams } from "next/navigation";
-import useUserInfo from "@/app/hooks/useUserInfo";
-import CopyTrade from "@/app/services/copyTrade";
-import { SmartMoneyAddress, CopyTraderAddress } from "@/app/services/copyTrade";
-import StarGraph from "../StarGraph";
-import { SHOW_COPY_TRADE } from "@/app/utils/config";
-import CoppiedModal from "@/app/sections/profile/components/coppiedAction";
-import { numberFormatter } from "@/app/utils/common";
-import { formatDateTime } from "@/app/utils/index";
-import Big from "big.js";
-import { fecthUserInfo } from "@/app/utils/getUserInfo";
-import TopTraderDetailShareConfirm from "@/app/sections/smart/components/topTraderDetailShareConfirm";
+import { formatAddress} from "@/app/utils";
+import { useRouter, useSearchParams } from 'next/navigation';
+import useUserInfo from '@/app/hooks/useUserInfo';
+import CopyTrade from '@/app/services/copyTrade';
+import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
+import StarGraph from '../StarGraph';
+import { SHOW_COPY_TRADE } from '@/app/utils/config';
+import CoppiedModal from '@/app/sections/profile/components/coppiedAction';
+import { numberFormatter } from '@/app/utils/common';
+import { formatDateTime } from '@/app/utils/index';
+import Big from 'big.js';
+import { fecthUserInfo } from '@/app/utils/getUserInfo';
+import TopTraderDetailShareConfirm from '@/app/sections/smart/components/topTraderDetailShareConfirm';
+import { useAccount } from '@/app/hooks/useAccount';
 
 export default function TopTraderDetailM() {
-  const { userInfo } = useUser();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const address = searchParams.get("address");
-  const isOther = address !== userInfo?.address;
-  const { userInfo: currentUserInfo } = useUserInfo(address || "");
-  const CopyTradeService = new CopyTrade();
-  const [smartMoniesInfo, setSmartMoniesInfo] =
-    useState<SmartMoneyAddress | null>(null);
-  const [copyTradersUserInfo, setCopyTradersUserInfo] =
-    useState<CopyTraderAddress | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [refreshNum, setRefreshNum] = useState(0);
-  const [copierImages, setCopierImages] = useState<string[]>([]);
-  const [showShareModal, setShowShareModal] = useState(false);
-
-  const getUserInfoWithCache = useMemo(() => {
-    const cache = new Map<string, any>();
-    return async (address: string) => {
-      if (cache.has(address)) {
-        return cache.get(address);
-      }
-      const info = await fecthUserInfo(address);
-      cache.set(address, info);
-      return info;
-    };
-  }, []);
+    const { address: walletAddress } = useAccount();
+    const { userInfo } = useUser();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const address = searchParams.get('address');
+    const isOther = address !== userInfo?.address && address !== walletAddress;
+    const { userInfo: currentUserInfo } = useUserInfo(address || "");
+    const CopyTradeService = new CopyTrade();
+    const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
+    const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<CopyTraderAddress | null>(null);
+    const [showModal, setShowModal] = useState(false);
+    const [refreshNum, setRefreshNum] = useState(0);
+    const [copierImages, setCopierImages] = useState<string[]>([]);
+    const [showShareModal, setShowShareModal] = useState(false);
+    
+    const getUserInfoWithCache = useMemo(() => {
+      const cache = new Map<string, any>();
+      return async (address: string) => {
+        if (cache.has(address)) {
+          return cache.get(address);
+        }
+        const info = await fecthUserInfo(address);
+        cache.set(address, info);
+        return info;
+      };
+    }, []);
 
   useEffect(() => {
     const loadCopierImages = async () => {
@@ -282,35 +282,31 @@ export default function TopTraderDetailM() {
             />
           )}
         </div>
-        {/* button */}
-        {isOther && (
-          <div className={styles.btnGroup}>
-            <div
-              className={styles.btnProfile}
-              onClick={() => {
-                router.push(
-                  "/profile/user?account=" + address + "&from=detail"
-                );
-              }}
-            >
-              Profile
-            </div>
-            <div
-              className={styles.btnCopyTrade}
-              onClick={() => {
-                setShowModal(true);
-              }}
-            >
-              Copy Trade
-            </div>
+    </div>
+    
+     {/* button */}
+     {isOther && (
+        <div className={styles.btnGroup}>
+          <div
+            className={styles.btnProfile}
+            onClick={() => {
+              router.push("/profile/user?account=" + address + "&from=detail");
+            }}
+          >
+            Profile
           </div>
-        )}
+          <div
+            className={styles.btnCopyTrade}
+            onClick={() => {
+              setShowModal(true);
+            }}
+          >
+            Copy Trade
+          </div>
+        </div>
+      )}
 
-        <TopTraderDetailShareConfirm
-          show={showShareModal}
-          onClose={() => setShowShareModal(false)}
-        />
-      </div>
+      <TopTraderDetailShareConfirm currentUserInfo={currentUserInfo} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo} show={showShareModal} onClose={() => setShowShareModal(false)} />
     </div>
   );
 }

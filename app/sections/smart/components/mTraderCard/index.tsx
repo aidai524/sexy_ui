@@ -1,20 +1,15 @@
-import React from "react";
-import styles from "./index.module.css";
-import {
-  CopyierIconBlack,
-  ClaimIcon
-} from "@/app/sections/trends/components/top-traders/icons";
-import RightArrowWrap from "@/app/sections/smart/components/RightArrowWrap";
-import { useRouter } from "next/navigation";
-import { useUser } from "@/app/store/useUser";
-import { SmartMoneyAddress, CopyTraderAddress } from "@/app/services/copyTrade";
-
-export default function TopTraderCard(props: {
-  smartMoniesInfo: SmartMoneyAddress | null;
-  copyTradersUserInfo: CopyTraderAddress | null;
-}) {
+import React from 'react'
+import styles from './index.module.css'
+import { CopyierIconBlack, ClaimIcon } from '@/app/sections/trends/components/top-traders/icons'
+import RightArrowWrap from '@/app/sections/smart/components/RightArrowWrap'
+import { useRouter } from 'next/navigation'
+import { useUser } from '@/app/store/useUser';
+import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
+import { useAccount } from '@/app/hooks/useAccount';
+export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress | null, copyTradersUserInfo: CopyTraderAddress | null}) {
   const router = useRouter();
   const { userInfo } = useUser();
+  const { address: walletAddress } = useAccount();
   const { smartMoniesInfo, copyTradersUserInfo } = props;
   const canClaim =
     Number(copyTradersUserInfo?.carryFee || "0") -
@@ -24,14 +19,10 @@ export default function TopTraderCard(props: {
       {/* title & copyier amount */}
       <div className={styles.titleContainer}>
         <div className={styles.title}>
-          <span>You&apos;re A Top Trader</span>
-          <div
-            onClick={() =>
-              router.push(`/smartTopDetail?address=${userInfo?.address}`)
-            }
-          >
-            <RightArrowWrap />
-          </div>
+            <span>You&apos;re A Top Trader</span>
+              <div onClick={() => router.push(`/smartTopDetail?address=${userInfo?.address || walletAddress}`)}>
+              <RightArrowWrap />
+            </div>
         </div>
         <span className={styles.copyierAmount}>
           <CopyierIconBlack />

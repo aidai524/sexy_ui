@@ -2,19 +2,83 @@ import React, { useState } from 'react'
 import styles from './index.module.css'
 import Modal from '@/app/components/modal'
 import {Checkbox} from 'antd-mobile'
+import { numberFormatter } from '@/app/utils/common';
+import { formatDateTime } from '@/app/utils/index';
+import Big from 'big.js'
+import TopTraderShareModal from '@/app/sections/smart/components/TopTraderShare/modal';
 
-export default function TopTraderDetailShareConfirm({ show, onClose }: any) {
-    const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>({});
 
+
+export default function TopTraderDetailShareConfirm({ show, onClose, smartMoniesInfo, copyTradersUserInfo, currentUserInfo }: any) {
+    const [selectedItems, setSelectedItems] = useState<Record<string, {value?: boolean; useValue?: any; title?: string; useValueCurrency?: string; useWhite?: boolean; useExtraValue?: string}>>({});
+    const [showShare, setShowShare] = useState(false);
     const handleCheckboxChange = (key: string, value: any) => {
       setSelectedItems(prev => ({
         ...prev,
         [key]: value
       }));
     };
-    console.log(selectedItems)
+
+    const formatPnl = (pnl: string) => {
+      if (pnl == '0') {
+        return '0';
+      }
+      if (pnl.startsWith('-')) {
+        return '-' + numberFormatter(Math.abs(Number(pnl)), 4, true);
+      }
+      return '+' + numberFormatter(pnl, 4, true);
+  }
+
+  const formatWinRate = (winRate: string) => {
+    if (winRate == '0') {
+      return '0%';
+    }
+    return new Big(winRate).times(100).toFixed(2) + '%';
+  }
+
+  const handleSelectAll = (checked: boolean) => {
+      if (!checked) {
+        const allItems = {
+          pnl1D: {value: checked},
+          winRate1D: {value: checked},
+          pnl7D: {value: checked},
+          winRate7D: {value: checked},
+          pnl30D: {value: checked},
+          winRate30D: {value: checked},
+          buySell: {value: checked},
+          lastTradeAt: {value: checked},
+          copiers: {value: checked},
+          totalPnl: {value: checked}
+      };
+        setSelectedItems(allItems); 
+        return;
+    }
+    const allItems = {
+        pnl1D: {value: checked, useValue: formatPnl(smartMoniesInfo?.pnl1D || '0'), title: '1D PnL', useValueCurrency: 'SOL'},
+        winRate1D: {value: checked, useValue: formatWinRate(smartMoniesInfo?.winRate1D || '0'), title: '1D Win Rate', useWhite: true},
+        pnl7D: {value: checked, useValue: formatPnl(smartMoniesInfo?.pnl7D || '0'), title: '7D PnL', useValueCurrency: 'SOL'},
+        winRate7D: {value: checked, useValue: formatWinRate(smartMoniesInfo?.winRate7D || '0'), title: '7D Win Rate', useWhite: true},
+        pnl30D: {value: checked, useValue: formatPnl(smartMoniesInfo?.pnl30D || '0'), title: '30D PnL', useValueCurrency: 'SOL'},
+        winRate30D: {value: checked, useValue: formatWinRate(smartMoniesInfo?.winRate30D || '0'), title: '30D Win Rate', useWhite: true},
+        buySell: {
+          value: checked, 
+          useValue: `${copyTradersUserInfo?.tradeInfo?.buys || 0}`, 
+          useExtraValue: ` / ${copyTradersUserInfo?.tradeInfo?.sells || 0}`,
+          title: 'Buy/Sell'
+        },
+        lastTradeAt: {value: checked, useValue: formatDateTime(copyTradersUserInfo?.lastTradeAt || 0), title: 'Last Trade'},
+        copiers: {value: checked, useValue: copyTradersUserInfo?.copiers?.length || 0, title: 'Copy Traders'},
+        totalPnl: {value: checked, useValue: formatPnl(copyTradersUserInfo?.totalPnl || '0'), title: 'Copy Cohort PnL', useValueCurrency: 'SOL'}
+      };
+      setSelectedItems(allItems);
+    };
+      const isAllSelected = () => {
+        const selectedValues = Object.values(selectedItems);
+        return selectedValues.length > 0 && selectedValues.every(item => item.value);
+      };
   return (
-    <Modal
+   <>
+     <Modal
       open={show}
       onClose={onClose}
       animation="popup"
@@ -22,19 +86,25 @@ export default function TopTraderDetailShareConfirm({ show, onClose }: any) {
     >
       <div className={styles.main}>
         
-        <div className={styles.titleText}>Shared Data</div>
+        <div className={styles.titleText}>
+          <span>Shared Data</span>
+         <div className={styles.selectAll + ' ' + 'global-checkbox-container'}>
+          <Checkbox checked={isAllSelected()} onChange={(val) => handleSelectAll(val)}></Checkbox>
+          <span className={styles.selectAllText}>select all</span>
+         </div>
+        </div>
             
         
         <div className={styles.grid}>
          <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['pnl1D']}
-                onChange={(val) => handleCheckboxChange('pnl1D', val)}
+                checked={selectedItems['pnl1D']?.value}
+                onChange={(val) => handleCheckboxChange('pnl1D', {value: val, useValue: formatPnl(smartMoniesInfo?.pnl1D || '0'), title: '1D PnL', useValueCurrency: 'SOL'})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>1D PnL</div>
                 <div className={styles.value}>
-                <span className={styles.profit}>+14.16</span> 
+                <span className={styles.profit}>{formatPnl(smartMoniesInfo?.pnl1D || '0')}</span> 
                 <span className={styles.currency}>SOL</span>
                 </div>
             </div>
@@ -42,24 +112,24 @@ export default function TopTraderDetailShareConfirm({ show, onClose }: any) {
           
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['winRate1D']}
-                onChange={(val) => handleCheckboxChange('winRate1D', val)}
+                checked={selectedItems['winRate1D']?.value}
+                onChange={(val) => handleCheckboxChange('winRate1D', {value: val, useValue: formatWinRate(smartMoniesInfo?.winRate1D || '0'), title: '1D Win Rate', useWhite: true})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>1D Win Rate</div>
-                <div className={styles.value}>50.6%</div>
+                <div className={styles.value}>{formatWinRate(smartMoniesInfo?.winRate1D || '0')}</div>
             </div>
           </div>
 
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['pnl7D']}
-                onChange={(val) => handleCheckboxChange('pnl7D', val)}
+                checked={selectedItems['pnl7D']?.value}
+                onChange={(val) => handleCheckboxChange('pnl7D', {value: val, useValue: formatPnl(smartMoniesInfo?.pnl7D || '0'), title: '7D PnL', useValueCurrency: 'SOL'})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>7D PnL</div>
                 <div className={styles.value}>
-                <span className={styles.profit}>+164.16</span> 
+                <span className={styles.profit}>{formatPnl(smartMoniesInfo?.pnl7D || '0')}</span> 
                 <span className={styles.currency}>SOL</span>
                 </div>
             </div>
@@ -67,24 +137,24 @@ export default function TopTraderDetailShareConfirm({ show, onClose }: any) {
 
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['winRate7D']}
-                onChange={(val) => handleCheckboxChange('winRate7D', val)}
+                checked={selectedItems['winRate7D']?.value}
+                onChange={(val) => handleCheckboxChange('winRate7D', {value: val, useValue: formatWinRate(smartMoniesInfo?.winRate7D || '0'), title: '7D Win Rate', useWhite: true})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>7D Win Rate</div>
-                <div className={styles.value}>250.6%</div>
+                <div className={styles.value}>{formatWinRate(smartMoniesInfo?.winRate7D || '0')}</div>
             </div>
           </div>
 
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['pnl30D']}
-                onChange={(val) => handleCheckboxChange('pnl30D', val)}
+                checked={selectedItems['pnl30D']?.value}
+                onChange={(val) => handleCheckboxChange('pnl30D', {value: val, useValue: formatPnl(smartMoniesInfo?.pnl30D || '0'), title: '30D PnL', useValueCurrency: 'SOL'})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>30D PnL</div>
                 <div className={styles.value}>
-                <span className={styles.profit}>+244.16</span> 
+                <span className={styles.profit}>{formatPnl(smartMoniesInfo?.pnl30D || '0')}</span> 
                 <span className={styles.currency}>SOL</span>
                 </div>
             </div>
@@ -92,61 +162,66 @@ export default function TopTraderDetailShareConfirm({ show, onClose }: any) {
 
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['winRate30D']}
-                onChange={(val) => handleCheckboxChange('winRate30D', val)}
+                checked={selectedItems['winRate30D']?.value}
+                onChange={(val) => handleCheckboxChange('winRate30D', {value: val, useValue: formatWinRate(smartMoniesInfo?.winRate30D || '0'), title: '30D Win Rate', useWhite: true})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>30D Win Rate</div>
-                <div className={styles.value}>150.6%</div>
+                <div className={styles.value}>{formatWinRate(smartMoniesInfo?.winRate30D || '0')}</div>
             </div>
           </div>
 
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['buySell']}
-                onChange={(val) => handleCheckboxChange('buySell', val)}
+                checked={selectedItems['buySell']?.value}
+                onChange={(val) => handleCheckboxChange('buySell', {
+                  value: val, 
+                  useValue: `${copyTradersUserInfo?.tradeInfo?.buys || 0}`, 
+                  useExtraValue: ` / ${copyTradersUserInfo?.tradeInfo?.sells || 0}`,
+                  title: 'Buy/Sell'
+                })}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Buy/Sell</div>
                 <div className={styles.value}>
-                    <span className={styles.buy}>40</span>
-                    <span>/</span>
-                    <span className={styles.sell}>22</span>
+                    <span className={styles.buy}>{copyTradersUserInfo?.tradeInfo?.buys || 0}</span>
+                    <span className={styles.divider}>/</span>
+                    <span className={styles.sell}>{copyTradersUserInfo?.tradeInfo?.sells || 0}</span>
                 </div>
             </div>
           </div>
 
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['lastTradeAt']}
-                onChange={(val) => handleCheckboxChange('lastTradeAt', val)}
+                checked={selectedItems['lastTradeAt']?.value}
+                onChange={(val) => handleCheckboxChange('lastTradeAt', {value: val, useValue: formatDateTime(copyTradersUserInfo?.lastTradeAt || 0), title: 'Last Trade'})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Last Trade</div>
-                <div className={styles.value}>2025-02-14 19:06</div>
+                <div className={styles.value}>{formatDateTime(copyTradersUserInfo?.lastTradeAt || 0)}</div>
             </div>
           </div>
 
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['copiers']}
-                onChange={(val) => handleCheckboxChange('copiers', val)}
+                checked={selectedItems['copiers']?.value}
+                onChange={(val) => handleCheckboxChange('copiers', {value: val, useValue: copyTradersUserInfo?.copiers?.length || 0, title: 'Copy Traders'})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Copy Traders</div>
-                <div className={styles.value}>125</div>
+                <div className={styles.value}>{copyTradersUserInfo?.copiers?.length || 0}</div>
             </div>
           </div>
 
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
-                checked={selectedItems['totalPnl']}
-                onChange={(val) => handleCheckboxChange('totalPnl', val)}
+                checked={selectedItems['totalPnl']?.value}
+                onChange={(val) => handleCheckboxChange('totalPnl', {value: val, useValue: formatPnl(copyTradersUserInfo?.totalPnl || '0'), title: 'Copy Cohort PnL', useValueCurrency: 'SOL'})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Copy Cohort PnL</div>
                 <div className={styles.value}>
-                    <span className={styles.profit}>523.44</span>
+                    <span className={styles.profit}>{formatPnl(copyTradersUserInfo?.totalPnl || '0')}</span>
                     <span className={styles.currency}>SOL</span>
                 </div>
             </div>
@@ -154,9 +229,13 @@ export default function TopTraderDetailShareConfirm({ show, onClose }: any) {
         </div>
 
         <div className={styles.buttonContainer}>
-            <div className={styles.button}>Confirm</div>
+            <div className={styles.button} onClick={() => setShowShare(true)}>Confirm</div>
         </div>
       </div>
     </Modal>
+    <TopTraderShareModal show={showShare} onClose={() => setShowShare(false)} selectedItems={selectedItems} currentUserInfo={currentUserInfo} />
+   </>
   )
 }
+
+

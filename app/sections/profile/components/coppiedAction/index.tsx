@@ -32,6 +32,10 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [errMsg, setErrMsg] = useState<string>("");
+  const [profitValue, setProfitValue] = useState<string>('200');
+  const [lossValue, setLossValue] = useState<string>('100');
+  const [isAutoCloseChecked, setIsAutoCloseChecked] = useState<boolean>(false);
+
 
   const inputRef = useRef<HTMLInputElement>(null);
   const { solBalance } = useSolBalance(Number(show) + (isLoading ? 1 : 0));
@@ -232,25 +236,43 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     setIsManualCopyTimes(true);
   };
 
-  const handleSetClick = () => {
-    setIsInputDisabled(false);
-    setTimeout(() => {
-      inputRef.current?.focus();
-      inputRef.current?.setSelectionRange(copyTimes.length, copyTimes.length);
-    }, 0);
-  };
 
   const handleCopyTradeClick = async () => {
     if (!window.sexAddress) {
       window.connect();
       return;
     }
-    const res = await handleCopyTrade({
-      walletAddress: walletAddress || currentUserInfo?.address,
-      copiedAddress: copiedInfo?.address,
-      copyAmount,
-      onceCopyAmount
-    });
+
+    let res;
+    if(isAutoCloseChecked){
+      res = await handleCopyTrade({
+        walletAddress: walletAddress || currentUserInfo?.address,
+        copiedAddress: copiedInfo?.address,
+        copyAmount,
+        onceCopyAmount,
+        "tps": [
+          {
+            "reachRadio": +profitValue,
+            "sellRadio": 100
+          }
+        ],
+        "sls": [
+          {
+            "reachRadio": +lossValue,
+            "sellRadio": 100
+          }
+        ]
+      });
+    }else{
+      res = await handleCopyTrade({
+        walletAddress: walletAddress || currentUserInfo?.address,
+        copiedAddress: copiedInfo?.address,
+        copyAmount,
+        onceCopyAmount
+      });
+    }
+
+
     if (res) {
       copyTimesStore.set({ copyTimes: copyTimes });
       onClose();
@@ -396,28 +418,6 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
             ))}
           </div>
 
-          {/* your coppies */}
-          {/* <div
-          className={`${styles.yourCoppies} ${styles.public} ${styles.textWhite07}`}
-        >
-          <div className={`${styles.public} ${styles.textWhite07}`}>
-            <span>Your Copies</span>
-            <div className={styles.setBtn} onClick={handleSetClick}>set</div>
-          </div>
-          <input
-            ref={inputRef}
-            type="text"
-            value={copyTimes}
-            onChange={handleCopyTimesChange}
-            disabled={isInputDisabled}
-            style={{
-              color: isInputDisabled ? 'rgba(255,255,255,0.7)' : '#fff',
-              fontSize: '16px',
-              transform: 'scale(1)',
-            }}
-          />
-        </div> */}
-
           {errMsg ? (
             <div className={styles.minCopyAmountTips}>{errMsg}</div>
           ) : (
@@ -449,6 +449,13 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
         }}
         copyTimes={copyTimes}
         setCopyTimes={handleCopyTimesChange}
+        profitValue={profitValue}
+        lossValue={lossValue}
+        setProfitValue={setProfitValue}
+        setLossValue={setLossValue}
+        isAutoCloseChecked={isAutoCloseChecked}
+        setIsAutoCloseChecked={setIsAutoCloseChecked}
+
       />
     </>
   );
@@ -458,23 +465,61 @@ export const AdvancedModal = ({
   show,
   onClose,
   copyTimes,
-  setCopyTimes
+  setCopyTimes,
+  profitValue,
+  lossValue,
+  setProfitValue,
+  setLossValue,
+  isAutoCloseChecked,
+  setIsAutoCloseChecked
 }: {
   show: boolean;
   onClose: () => void;
   copyTimes: string;
   setCopyTimes: any;
+  profitValue: string;
+  lossValue: string;
+  setProfitValue: (value: string) => void;
+  setLossValue: (value: string) => void;
+  isAutoCloseChecked: boolean;
+  setIsAutoCloseChecked: (value: boolean) => void;
 }) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const handleSwitchChange = (checked: boolean) => {
     setIsChecked(checked);
   };
-  const [isAutoCloseChecked, setIsAutoCloseChecked] = useState<boolean>(false);
   const handleAutoCloseSwitchChange = (checked: boolean) => {
     setIsAutoCloseChecked(checked);
   };
-  const [profitValue, setProfitValue] = useState<number>(200);
-  const [lossValue, setLossValue] = useState<number>(200);
+  
+
+  const handleProfitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const sanitizedValue = value.replace(/[^\d.]/g, "");
+
+    const parts = sanitizedValue.split(".");
+    const cleanValue = parts[0] + (parts.length > 1 ? "." + parts[1] : "");
+
+    if (cleanValue === "" || /^\d*\.?\d*$/.test(cleanValue)) {
+      setProfitValue(cleanValue);
+    }
+  };
+
+  const handleLossChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const sanitizedValue = value.replace(/[^\d.]/g, "");
+
+    const parts = sanitizedValue.split(".");
+    const cleanValue = parts[0] + (parts.length > 1 ? "." + parts[1] : "");
+
+    if (cleanValue === "" || /^\d*\.?\d*$/.test(cleanValue)) {
+      const num = parseFloat(cleanValue || "0");
+      if (num <= 100) {
+        setLossValue(cleanValue);
+      }
+    }
+  };
+
   return (
     <Modal
       open={show}
@@ -556,17 +601,10 @@ export const AdvancedModal = ({
             <span className={styles.profitValue}>
               <input
                 disabled={!isAutoCloseChecked}
-                type="number"
+                type="text"
                 className={styles.profitInput}
                 placeholder="200"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "") {
-                    setProfitValue(0);
-                  } else {
-                    setProfitValue(+value);
-                  }
-                }}
+                onChange={handleProfitChange}
                 value={profitValue}
               />
               <span className={styles.profitValueUnit}>%</span>
@@ -578,17 +616,10 @@ export const AdvancedModal = ({
               <span className={styles.lossValuePrefix}>-</span>
               <input
                 disabled={!isAutoCloseChecked}
-                type="number"
+                type="text"
                 className={styles.lossInput}
-                placeholder="200"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "") {
-                    setLossValue(0);
-                  } else {
-                    setLossValue(+value);
-                  }
-                }}
+                placeholder="100"
+                onChange={handleLossChange}
                 value={lossValue}
               />
               <span className={styles.lossValueUnit}>%</span>
