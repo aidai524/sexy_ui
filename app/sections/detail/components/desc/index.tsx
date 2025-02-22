@@ -130,25 +130,27 @@ export default function Desc({ data, specialTime, mc, showHolders = true, isCrea
                         </div>
                     </div>
                 )}
+                
                 <div className={styles.nameWrapper}>
                     <div className={styles.ticker}>Create time:</div>
                     <div className={styles.des}>
                         {specialTime
                             ? specialTime
-                            : timeAgo(data.DApp === "pump" ? data.time : data.createdAt)}
+                            : formatDateEn((data.DApp === "pump" ? data.time : data.createdAt) as number, "YYYY-MM-DD HH:mm:ss")
+                            }
                     </div>
                 </div>
                 {data.DApp === "pump" && (
                     <div className={styles.nameWrapper}>
                         <div className={styles.ticker}>{"Import time"}:</div>
                         <div className={styles.des}>
-                            {specialTime ? specialTime : timeAgo(data.createdAt)}
+                            {specialTime ? specialTime : formatDateEn(data.createdAt as number, "YYYY-MM-DD HH:mm:ss")}
                         </div>
                     </div>
                 )}
 
                 {
-                    !isCreated && <div className={styles.nameWrapper}>
+                    (!isCreated && data.status! > 0) && <div className={styles.nameWrapper}>
                         <div className={styles.ticker}>Market cap:</div>
                         {data.DApp === "sexy" && data.status === 1 && (
                             <div className={styles.authorDesc} key={data.address}>
