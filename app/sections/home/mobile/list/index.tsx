@@ -154,7 +154,11 @@ export default function List({
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any, action?: string) => {
                   updateProject(token);
-                  if (action && ["share", "like"].includes(action)) return;
+                  if (
+                    action &&
+                    ["share", "like", "launched_like"].includes(action)
+                  )
+                    return;
                   if (action === "flip") {
                     setTimeout(() => {
                       queryAndUpdateDetail(token.address);

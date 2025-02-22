@@ -1,31 +1,40 @@
 import RocketIcon from "../rocket-icon";
 import Rockets from "./rockets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export default function LaunchesLike({
   className,
   buttonClassName,
   onClick,
   isLiked,
-  like
+  like,
+  id
 }: any) {
   const [showAnimation, setShowAnimation] = useState(false);
+  const [mergedLiked, setMergedLiked] = useState(isLiked);
+  const [mergedNum, setMergedNum] = useState(like);
+
+  useEffect(() => {
+    setMergedLiked(isLiked);
+    setMergedNum(like);
+  }, [isLiked, like]);
+
   return (
     <div
       className={className}
       onClick={() => {
-        onClick();
         setShowAnimation(true);
-
+        setMergedLiked(true);
+        setMergedNum(mergedNum + 1);
         setTimeout(() => {
-          setShowAnimation(false);
+          onClick();
         }, 6000);
       }}
       style={{ position: "relative" }}
     >
       <button className={buttonClassName}>
-        <RocketIcon isActive={isLiked} />
+        <RocketIcon isActive={mergedLiked} />
       </button>
-      <span>{like}</span>
+      <span>{mergedNum}</span>
       {showAnimation && <Rockets />}
     </div>
   );

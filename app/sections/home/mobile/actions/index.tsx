@@ -115,15 +115,15 @@ export default function Actions({
                 return;
               }
 
-              onSuccess("like");
-
               await actionLikeTrigger({
                 data: token,
                 onShare: showShare
               });
+              onSuccess("launched_like");
             }}
             isLiked={token.isLike}
-            like={token.like}
+            like={token.launched_like}
+            id={token.id}
           />
 
           <div
