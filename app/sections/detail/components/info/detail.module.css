@@ -46,6 +46,7 @@
 
 .tokenSummaryIcon {
   cursor: pointer;
+  margin-bottom: -2px;
 }
 
 .tokenSummaryTitle {

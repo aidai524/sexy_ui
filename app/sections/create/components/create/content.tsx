@@ -104,6 +104,7 @@ export default function Create({
 
   useEffect(() => {
     if (!debounceVal) {
+      totalRef.current.isError = false;
       setIsError(false);
       return;
     }
