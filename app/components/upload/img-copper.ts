@@ -90,7 +90,7 @@ export default async function ImgCopper({ file }: { file: File }) {
 
     cropper.bind({
       url: url,
-      orientation: 2,
+      // orientation: 2,
       // zoom: 0
     });
 

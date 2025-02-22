@@ -9,7 +9,6 @@ import { Avatar } from "@/app/components/thumbnail/avatar";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
-import Paid from "@/app/components/tag/Paid";
 import useBalance from "@/app/hooks/useBalance";
 import useSolPrice from "@/app/hooks/use-sol-price";
 import { numberFormatter } from "@/app/utils/common";
@@ -71,8 +70,6 @@ export default function Create({
   })
   const [launchChecked, setLaunchChecked] = useState(false);
 
-
-  console.log(config)
 
   const { createToken, tokenInfo } = useTokenTrade({
     tokenName,
@@ -203,7 +200,7 @@ export default function Create({
                   onClick={() => {
                     if (item === 'MAX') {
                       setSolPercent(item);
-                      setValInput(Math.min(Number(solBalance) - 0.3, 1).toString());
+                      setValInput(numberFormatter(Math.min(Number(solBalance) - 0.03, 1).toString(), 4, true));
                     } else {
                       setSolPercent(item);
                       setValInput(getFullNum(item));

@@ -538,7 +538,7 @@ export default forwardRef(function CreateNode(
               />
               <div>
                 <div className={styles.uploadTitle}>Video or image</div>
-                <div className={styles.uploadTip}>Support MOV/mp4jpg/png/gif, <br />up to 10 MB</div>
+                <div className={styles.uploadTip}>Support MOV/mp4/jpg/png/gif, <br />up to 10 MB</div>
               </div>
             </div>
             {inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>}
