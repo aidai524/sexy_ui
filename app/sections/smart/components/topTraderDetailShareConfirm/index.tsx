@@ -74,7 +74,7 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
     };
       const isAllSelected = () => {
         const selectedValues = Object.values(selectedItems);
-        return selectedValues.length > 0 && selectedValues.every(item => item.value);
+        return selectedValues.length == 10 && selectedValues.every(item => item.value);
       };
   return (
    <>

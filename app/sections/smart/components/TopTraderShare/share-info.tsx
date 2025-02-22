@@ -14,6 +14,7 @@ const TopTraderShareInfoCard = (props: any, ref: any) => {
 
   const { userInfo } = useUser();
   console.log(userInfo,currentUserInfo, 'userInfo');
+  console.log(selectedItems, 'selectedItems');
   const {
     userData,
     userHasPoints,
@@ -48,7 +49,8 @@ const TopTraderShareInfoCard = (props: any, ref: any) => {
             {
               Object.entries(selectedItems).map(([key, v]:any) => {
                 return (
-                <div className={styles.CopyTradeShareInfoCardContentListItem} key={key}>
+                v.value ? (
+                  <div className={styles.CopyTradeShareInfoCardContentListItem} key={key}>
                   <div className={styles.CopyTradeShareInfoCardContentListItemTitle}>{v.title}</div>
                   <div className={styles.CopyTradeShareInfoCardContentListItemValue}>
                     <span className={v.useWhite ? styles.CopyTradeShareInfoCardContentListItemValueTextWhite : styles.CopyTradeShareInfoCardContentListItemValueText}>{v.value ? v.useValue : ''}</span>
@@ -56,6 +58,7 @@ const TopTraderShareInfoCard = (props: any, ref: any) => {
                     <span className={styles.CopyTradeShareInfoCardContentListItemValueCurrency}>{v.value ? v.useValueCurrency : ''}</span>
                   </div>
                 </div>
+                ) : null
               )
             })
           }
