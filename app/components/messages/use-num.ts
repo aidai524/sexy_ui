@@ -2,11 +2,13 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { httpAuthGet } from "@/app/utils";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";
+import useIsWindowVisible from "@/app/hooks/use-is-window-visible";
 
 export default function useNum() {
   const [num, setNum] = useState(0);
   const { accountRefresher } = useAuth();
   const timerRef = useRef<any>();
+  const isWindowVisible = useIsWindowVisible();
 
   const onQuery = useCallback(async () => {
     try {
@@ -34,8 +36,12 @@ export default function useNum() {
   );
 
   useEffect(() => {
+    if (isWindowVisible) {
+      clearTimeout(timerRef.current);
+      return;
+    }
     run();
-  }, [accountRefresher]);
+  }, [accountRefresher, isWindowVisible]);
 
   return {
     num,

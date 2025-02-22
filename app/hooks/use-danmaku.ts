@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { httpGet } from "@/app/utils";
 import { useDebounceFn } from "ahooks";
 import { numberFormatter } from "@/app/utils/common";
+import useIsWindowVisible from "@/app/hooks/use-is-window-visible";
 
 export default function useDanmaku({ id }: any) {
   const [list, setList] = useState<any[]>([]);
   const [show, setShow] = useState(false);
   const offset = useRef(0);
-
+  const isWindowVisible = useIsWindowVisible();
   const cachedList = useRef<any>([]);
 
   const loadMore = async () => {
@@ -88,9 +89,13 @@ export default function useDanmaku({ id }: any) {
   );
 
   useEffect(() => {
+    if (!isWindowVisible) {
+      clearTimeout(window.danmakuTimer);
+      return;
+    }
     setList([]);
     loadData();
-  }, [id]);
+  }, [id, isWindowVisible]);
 
   useEffect(() => {
     return () => {

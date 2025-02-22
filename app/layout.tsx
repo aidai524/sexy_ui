@@ -7,7 +7,7 @@ import WalletConnect from "./components/WalletConnect";
 import { UserAgentProvider } from "@/app/context/user-agent";
 import { Suspense, useEffect } from "react";
 import TGProvider from "./context/TGProvider";
-import PrivyWalletProvider from '@/app/context/privy';
+import PrivyWalletProvider from "@/app/context/privy";
 
 export default function RootLayout({
   children

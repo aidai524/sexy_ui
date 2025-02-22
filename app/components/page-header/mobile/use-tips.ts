@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { httpGet } from "@/app/utils";
+import useIsWindowVisible from "@/app/hooks/use-is-window-visible";
 
 export default function useTips() {
   const [prevTip, setPrevTip] = useState<any>();
@@ -7,34 +8,34 @@ export default function useTips() {
   const cached = useRef<any>();
   const prevRef = useRef<any>({});
   const currentRef = useRef<any>({});
+  const timer = useRef<any>();
+  const isWindowVisible = useIsWindowVisible();
+
+  const fetchTip = async () => {
+    try {
+      const response = await httpGet("/bought/data");
+      const temp = response.data;
+      if (temp.project_status === 0) {
+        temp.trade_type = "flip";
+      }
+      setTip(temp);
+      setPrevTip(cached.current);
+      cached.current = temp;
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => {
+        fetchTip();
+      }, 2000);
+    } catch (err) {
+      setPrevTip(null);
+      setTip(null);
+    } finally {
+    }
+  };
 
   useEffect(() => {
-    let timer: any = null;
-
-    const fetchTip = async () => {
-      try {
-        const response = await httpGet("/bought/data");
-        const temp = response.data;
-        if (temp.project_status === 0) {
-          temp.trade_type = "flip";
-        }
-        setTip(temp);
-        setPrevTip(cached.current);
-        cached.current = temp;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          fetchTip();
-        }, 2000);
-      } catch (err) {
-        setPrevTip(null);
-        setTip(null);
-      } finally {
-      }
-    };
-
     fetchTip();
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timer.current);
   }, []);
 
   useEffect(() => {
@@ -64,6 +65,14 @@ export default function useTips() {
       }
     }, 1000);
   }, [tip]);
+
+  useEffect(() => {
+    if (isWindowVisible) {
+      fetchTip();
+    } else {
+      clearTimeout(timer.current);
+    }
+  }, [isWindowVisible]);
 
   return { tip, prevTip, prevRef, currentRef };
 }
