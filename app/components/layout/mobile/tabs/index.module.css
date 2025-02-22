@@ -21,4 +21,15 @@
   font-style: normal;
   font-weight: 300;
   line-height: 150%; /* 15px */
+  position: relative;
+}
+
+.copyDot {
+  width: 10px;
+  height: 10px;
+  background: #FF2681;
+  border-radius: 50%;
+  position: absolute;
+  top: 0px;
+  right: 25%;
 }
