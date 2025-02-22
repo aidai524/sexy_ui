@@ -1,17 +1,17 @@
-export default function Holder({ size = 27 }: any) {
+export default function LikeIcon({ isActive }: any) {
   const id = String(Math.random() + Date.now());
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={1.1111111111111112 * size}
-      viewBox="0 0 27 30"
+      width="32"
+      height="28"
+      viewBox="0 0 32 28"
       fill="none"
     >
       <g filter={`url(#${id})`}>
         <path
-          d="M16.9479 15.0456V14.643C18.4012 13.5747 19.3469 11.838 19.3469 9.87595C19.3469 6.63038 16.7613 4 13.571 4C10.3806 4 7.79505 6.63038 7.79505 9.87595C7.79505 11.838 8.7407 13.5747 10.194 14.643V14.9899C6.58065 16.4152 4.00003 20.1063 4.00003 24.4228C4.00003 25.2937 4.86355 26 5.92865 26H21.0714C22.1365 26 23 25.2937 23 24.4228C23.0025 20.162 20.4891 16.5114 16.9479 15.0456Z"
-          fill="white"
+          d="M4.21564 8.50936C2.40685 15.5166 12.4697 22.8527 16.0071 24C21.9029 21.7052 29.3209 14.4045 27.7986 8.50924C26.0076 1.57316 18.6602 3.9192 16.0071 7.07465C14.2384 4.2059 6.00607 1.57329 4.21564 8.50936Z"
+          fill={isActive ? "#FF2681" : "#fff"}
         />
       </g>
       <defs>
@@ -19,8 +19,8 @@ export default function Holder({ size = 27 }: any) {
           id={id}
           x="0"
           y="0"
-          width="27"
-          height="30"
+          width="32"
+          height="28"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
@@ -41,12 +41,12 @@ export default function Holder({ size = 27 }: any) {
           <feBlend
             mode="normal"
             in2="BackgroundImageFix"
-            result="effect1_dropShadow_8274_6722"
+            result="effect1_dropShadow_8184_79"
           />
           <feBlend
             mode="normal"
             in="SourceGraphic"
-            in2="effect1_dropShadow_8274_6722"
+            in2="effect1_dropShadow_8184_79"
             result="shape"
           />
         </filter>
