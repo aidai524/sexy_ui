@@ -20,6 +20,7 @@ import VideoIcon from "@/app/components/icons/video";
 import HeartIcon from "@/app/components/icons/heart";
 import ClockIcon from "@/app/components/icons/clock";
 import { useCountDown } from "ahooks";
+import { numberFormatter } from "@/app/utils/common";
 
 interface Props {
   data: Project;
@@ -134,10 +135,9 @@ export default function InfoPart({
                   style={{ color: "#FBCA04" }}
                 >
                   {data.prePaidAmount && data.prePaid
-                    ? new Big(data.prePaidAmount || 0)
+                    ? numberFormatter(new Big(data.prePaidAmount || 0)
                       .div(10 ** 9)
-                      .toFixed(4)
-                      .toString()
+                      .toString(), 4, true)
                     : 0}
                 </div>
               </div>

@@ -723,6 +723,8 @@ export async function getTransaction(
     maxSupportedTransactionVersion: 0
   });
 
+  console.log('transactionDetails:', transactionDetails)
+
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta;
 
