@@ -58,8 +58,8 @@ const TokenItem = (props: { className?: string; token: Hot | Meme; }) => {
                     is_king: false,
                   }}
                 />
-                <div className={styles.TokenItemLaptopAvatarProfileSymbol}>
-                  {formatLongText(_token.token_symbol, 6, 6)}
+                <div className={styles.TokenItemLaptopAvatarProfileSymbol} title={_token.token_symbol}>
+                  {formatLongText(_token.token_symbol, 2, 4)}
                 </div>
               </div>
               <div className={styles.TokenItemLaptopAvatarProfileRight}>
