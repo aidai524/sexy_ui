@@ -61,24 +61,14 @@ export default function Actions({
         <>
           <div style={{ height: 14 }} />
           <Like
-            isLiked={token.isLike}
-            like={token.like}
-            onClick={async () => {
-              if (token.isLike || disabled) return;
-              if (!window.sexAddress) {
-                window.connect();
-                return;
-              }
-
-              onSuccess("like");
-
-              await actionLikeTrigger({
-                data: token,
-                onShare: showShare,
-                onSuccess: updateUserLikeNum
-              });
+            {...{
+              token,
+              onSuccess,
+              disabled,
+              actionLikeTrigger,
+              showShare,
+              updateUserLikeNum
             }}
-            id={isCurrent ? "guid-tour-like" : ""}
           />
 
           <div

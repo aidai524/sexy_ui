@@ -126,6 +126,7 @@ export default function useData(launchType: Type) {
     () => {
       if (projectsStore.address !== (address || "")) {
         projectsStore.clearList(launchType);
+        projectsStore.clearProjects();
         if (projectsStore.address) {
           projectsStore.setIndex(launchType, 0);
         }

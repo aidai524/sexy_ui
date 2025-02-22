@@ -32,16 +32,16 @@ const onLike = async (data: any) => {
         return v.data || {};
       } else if (v.code === 100002 && data.status === 0) {
         fail("You've run out of like times. You can come back tomorrow");
-        return -1;
       }
+      return {
+        likeNum: -1
+      };
     }
-  } catch (e) {}
-
-  return {
-    likeNum: 0,
-    likeNumToday: 0,
-    projectLikeNum: 0
-  };
+  } catch (e) {
+    return {
+      likeNum: -1
+    };
+  }
 };
 
 const onHate = async (data: Project) => {
@@ -114,7 +114,6 @@ export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
       });
     }
   }
-
   return likeNum === LIKE_ERROR ? false : true;
 }
 
