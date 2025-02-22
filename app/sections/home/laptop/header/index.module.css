@@ -1,9 +1,10 @@
 .Container {
   position: fixed;
-  left: 50%;
+  left: 0px;
   top: 10px;
-  transform: translateX(-50%);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 30px;
+  width: 100vw;
 }

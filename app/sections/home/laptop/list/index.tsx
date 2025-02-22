@@ -182,16 +182,18 @@ export default function List({ type, isCurrentTab }: any) {
             style={{ height: innerHeight, width: innerWidth }}
           >
             <Empty height={300} text="No more projects" />
-            <button
-              className={styles.Button}
-              onClick={() => {
-                homeTabStore.set({
-                  homeTabIndex: type === "preLaunch" ? 1 : 0
-                });
-              }}
-            >
-              {type === "preLaunch" ? "View Launches" : "View Pre-Launch"}
-            </button>
+            {type !== "forYou" && (
+              <button
+                className={styles.Button}
+                onClick={() => {
+                  homeTabStore.set({
+                    homeTabIndex: 0
+                  });
+                }}
+              >
+                View For You
+              </button>
+            )}
           </div>
         )}
 
