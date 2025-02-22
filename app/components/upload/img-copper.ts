@@ -50,7 +50,11 @@ export default async function ImgCopper({ file }: { file: File }) {
       const { orientation } = cropper.get()
       setTimeout(() => {
         const nextOrientation = orientationMap[(orientationMap.indexOf(orientation) + 1) % orientationMap.length] 
-        cropper.bind({ url: url, orientation: nextOrientation, zoom: 0 });
+        cropper.bind({ 
+          url: url, 
+          orientation: nextOrientation, 
+          // zoom: 0 
+        });
       }, 200);
     };
 
@@ -75,8 +79,8 @@ export default async function ImgCopper({ file }: { file: File }) {
     cropperContainer.appendChild(header);
 
     const cropper = new Croppie(cropperContainer, {
-      viewport: { width: 128, height: 128, type: "circle" },
-      boundary: { width: window.innerWidth, height: 128 },
+      viewport: { width: 250, height: 250, type: "circle" },
+      boundary: { width: window.innerWidth, height: 250 },
       showZoomer: true,
       enableOrientation: true,
       enableResize: false,
@@ -87,7 +91,7 @@ export default async function ImgCopper({ file }: { file: File }) {
     cropper.bind({
       url: url,
       orientation: 2,
-      zoom: 0
+      // zoom: 0
     });
 
   });

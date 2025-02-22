@@ -45,7 +45,8 @@ export default forwardRef(function PreviewNode(
         ...data,
         account: userInfo.address,
         creater: userInfo,
-        time: Date.now()
+        time: Date.now(),
+        timeLeft: Date.now() + 1000 * 60 * 60 * 3
       };
       setNewData(newData);
     }
@@ -85,15 +86,15 @@ export default forwardRef(function PreviewNode(
 
   const submit = async (ignorePrepaid: number) => {
     if (isLoading) {
-      return 
+      return
     }
 
     if (submitFnRef.current) {
       setIsLoading(true)
       await submitFnRef.current(ignorePrepaid)
-      setIsLoading(false) 
+      setIsLoading(false)
     }
-  } 
+  }
 
   return (
     <div
@@ -101,7 +102,7 @@ export default forwardRef(function PreviewNode(
       style={{
         display: show ? "block" : "none",
         paddingBottom: isMobile ? 80 : 0,
-        minHeight: isMobile ? "100vh" : "auto"
+        // minHeight: isMobile ? "100vh" : "auto"
       }}
     >
       {
@@ -124,23 +125,24 @@ export default forwardRef(function PreviewNode(
             {activeTab === 'details' ? (
               isMobile ? <MobileInfo newData={newData} /> : <LaptopInfo newData={newData} />
             ) : (
-              <div style={{ zIndex: 1, position: 'relative', top: '-84px' }}>
-              <Token 
-                isCurrent={true}
-                style={{
-                  height: innerHeight - 120,
-                  overflow: 'hidden'
-                }}
-                token={{
-                  ...newData,
-                  id: Date.now(),
-                  like: 0,
-                  icon: newData.tokenIcon || '/img/default-token.png',
-                  timeLeft: Date.now() + 1000 * 60 * 60 * 3
-                }}  
-                isPreview={true}
-                dataAvailable={true}
-              />
+              <div style={{ zIndex: 1, position: 'relative', top: '-84px', height: '70vh' }}>
+                <Token
+                  isCurrent={true}
+                  style={{
+                    height: innerHeight - 100,
+                    overflow: 'hidden',
+                    width: '100%'
+                  }}
+                  token={{
+                    ...newData,
+                    id: Date.now(),
+                    like: 0,
+                    icon: newData.tokenIcon || '/img/default-token.png',
+                    timeLeft: Date.now() + 1000 * 60 * 60 * 3
+                  }}
+                  isPreview={true}
+                  dataAvailable={true}
+                />
               </div>
             )}
           </div>
@@ -156,8 +158,8 @@ export default forwardRef(function PreviewNode(
             tokenUri: data.tokenIcon || data.tokenImg
           }}
           data={data}
-          getSubmitFn = {(submitFn: any) => {
-            console.log('submitFn:', submitFn)  
+          getSubmitFn={(submitFn: any) => {
+            console.log('submitFn:', submitFn)
             submitFnRef.current = submitFn
           }}
           onBeforeCreate={async () => {
@@ -192,12 +194,12 @@ export default forwardRef(function PreviewNode(
       <StepAction
         step={step}
         isLoading={isLoading}
-        btnText={step === 4 ? 'Get' : 'Continue'}  
+        btnText={step === 4 ? 'Get' : 'Continue'}
         onBack={() => {
           onBack();
         }}
         extendBtn={
-          step === 4 && <div className={styles.skipBtn}  onClick={() => {
+          step === 4 && <div className={styles.skipBtn} onClick={() => {
             submit(0)
           }}>Skip</div>
         }

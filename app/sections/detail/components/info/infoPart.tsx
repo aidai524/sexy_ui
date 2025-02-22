@@ -50,7 +50,8 @@ export default function InfoPart({
   const router = useRouter();
 
   const [timeLeft, { days, hours, minutes, seconds }] = useCountDown({
-    targetDate: data.timeLeft
+    targetDate: data.timeLeft,
+    interval: !showAddress ? 100000000000000000 : 1000
   });
 
   const { isMobile } = useUserAgent();
@@ -76,14 +77,19 @@ export default function InfoPart({
             </div>
           </div>
         </div>
-        <div className={styles.tokenAddressWrapper}>
-          <div className={styles.tokenAddressContent}>
-            <div className={styles.tokenAddress}>
-              {formatAddress(data.address as string)}
+        {
+          showAddress && (
+            <div className={styles.tokenAddressWrapper}>
+              <div className={styles.tokenAddressContent}>
+                <Copyed value={data.address as string}>
+                  <div className={styles.tokenAddress}>
+                    {formatAddress(data.address as string)}
+                  </div>
+                </Copyed>
+              </div>
             </div>
-            <Copyed value={data.address as string} />
-          </div>
-        </div>
+          )
+        }
       </div>
 
       {data.status === 0 && (
@@ -124,9 +130,9 @@ export default function InfoPart({
                 >
                   {data.prePaidAmount && data.prePaid
                     ? new Big(data.prePaidAmount || 0)
-                        .div(10 ** 9)
-                        .toFixed(4)
-                        .toString()
+                      .div(10 ** 9)
+                      .toFixed(4)
+                      .toString()
                     : 0}
                 </div>
               </div>

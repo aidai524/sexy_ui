@@ -5,7 +5,12 @@ export default function Tabs() {
   const pathname = usePathname();
   const router = useRouter();
 
+  if (pathname === "/create") {
+    return null
+  }
+
   if (!tabsPath.includes(pathname)) return null;
+  
   return (
     <div className={styles.Container}>
       {tabs.map((item: any) => {

@@ -56,7 +56,7 @@ export default function Upload({
 
   const uploadImg = useCallback(
     async (file: File) => {
-      if (file.size > 50 * 1024 * 1024) {
+      if (file.size > 2 * 50 * 1024 * 1024) {
         fail("File size too large");
         return {
           url: ""
@@ -71,7 +71,7 @@ export default function Upload({
       }
 
       let _file: any = file;
-      if (cropper && imgReg.test(file.name)) {
+      if (cropper && (imgReg.test(file.name) && !svgReg.test(file.name) && !gifReg.test(file.name))) {
         const blob = await ImgCopper({ file });
         if (!blob) {
           return {

@@ -7,5 +7,5 @@ import { useUserAgent } from "@/app/context/user-agent";
 
 export default memo(function Home(props: any) {
   const { isMobile } = useUserAgent();
-  return isMobile ? <div style={{ overflow: 'auto', height: '100vh' }}><Mobile {...props} /></div> : <Laptop {...props} />;
+  return isMobile ? <div style={{ overflow: 'auto', height: '100vh', width: '100vw' }}><Mobile {...props} /></div> : <Laptop {...props} />;
 });

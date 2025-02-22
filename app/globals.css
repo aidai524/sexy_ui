@@ -291,7 +291,7 @@ div.adm-tab-bar-wrap {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0);
   z-index: 9999;
   font-family: Unbounded;
   display: flex;
@@ -336,6 +336,10 @@ div.adm-tab-bar-wrap {
 .global-checkbox-container .adm-checkbox.adm-checkbox-checked div.adm-checkbox-icon {
   border-color: rgba(146, 144, 177, 0.6);
   color:#FBCA04;
+}
+
+.croppie-container .cr-viewport, .croppie-container .cr-resizer {
+  border: none !important;
 }
 
 /* 

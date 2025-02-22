@@ -9,9 +9,6 @@ export default function Component({ children }: any) {
 
   return (
     <div className={styles.Main} id="main-content">
-      {/* <Button onClick={() => {
-        trade()
-      }}>juipter</Button> */}
       {children}
       {/* <Refer userInfo={userInfo} isMobile /> */}
       <Tabs />
