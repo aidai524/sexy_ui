@@ -82,6 +82,8 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
     const nextIndex = (currentIndex + 1) % data.length;
     const nextItem = data[nextIndex];
 
+    if (!nextItem) return;
+
     if (isVideoFile(nextItem.video)) {
       const video = document.createElement('video');
       video.preload = 'auto';
@@ -144,7 +146,6 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
     <div className={clsx(styles.CarouselContainer, className)}>
       <MemesTitle />
       <div className={styles.carouselWrapper}>
-        <MediaItem item={{ ...currentItem, video: '/img/memes/memes-bg.mp4' }} onLoad={handleMediaLoad} />
         {
           currentItem && (
             <AnimatePresence mode="wait">
@@ -156,6 +157,7 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.5 }}
               >
+                <MediaItem item={currentItem} onLoad={handleMediaLoad} />
                 <div className={styles.slideContent}>
                   <div className={styles.CarouselAvatar}>
                     <img src={currentItem?.Icon} alt="" className={styles.CarouselAvatarImg} />
@@ -179,6 +181,14 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
                         )
                       }
                     </div>
+                    {
+                      [3].includes(currentItem.status) ? (
+                        <Emoji content="✈️" />
+                      ) : (
+                        <Emoji content="🚀️" />
+                      )
+                    }
+                    <Emoji content="💰" placement="right" />
                   </div>
                   <div className={styles.CarouselTokenName}>
                     {formatLongText(currentItem?.token_name, 6, 6)}
@@ -226,14 +236,6 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
                       )
                     }
                   </div>
-                  {
-                    [3].includes(currentItem.status) ? (
-                      <Emoji content="✈️" />
-                    ) : (
-                      <Emoji content="🚀️" />
-                    )
-                  }
-                  <Emoji content="💰" placement="right" />
                 </div>
               </motion.div>
             </AnimatePresence>

@@ -12,8 +12,20 @@
   cursor: grab;
   touch-action: pan-x;
   overflow-x: auto;
-  background: #000;
   padding-bottom: 18px;
+  background: #000;
+}
+@media screen and (min-width: 768px) {
+  .MemesTabsHeader {
+    background: unset;
+    margin-top: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #323232;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 58px;
+  }
 }
 
 .MemesTabsHeader::-webkit-scrollbar {
@@ -69,12 +81,16 @@
 
 .indicator {
   position: absolute;
-  bottom: 0;
+  bottom: -8px;
   width: 30px;
   height: 2px;
   background: #fff;
   border-radius: 1px;
   transition: left 0.3s ease;
+}
+
+@media screen and (max-width: 768px) {
+  bottom: 0;
 }
 
 .MemesTabsContent {
@@ -131,7 +147,7 @@
 }
 
 .MemesTabsList {
-  margin-top: 10px;
+  margin-top: 17px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -139,8 +155,38 @@
   overflow-y: auto;
 }
 
+.MemesTabsListInner {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 768px) {
+  .MemesTabsList {
+    margin-top: 10px;
+  }
+  .MemesTabsListInner {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+}
+
 .MemesTabsNoMoreData {
   text-align: center;
   padding: 20px;
   opacity: 0.6;
+}
+
+.MemesTabsFilterDropdown {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.MemesTabsFilterDropdownSelected {
+  composes: MemesTabsFilterDropdown;
+  justify-content: flex-start;
 }

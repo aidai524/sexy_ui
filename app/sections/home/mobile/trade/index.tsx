@@ -1,10 +1,7 @@
 import styles from "./index.module.css";
 import { simplifyNum } from "@/app/utils";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
-import { motion } from "framer-motion";
-
-const COLORS = ["#C9FF5D", "#4305FE", "#FE05D9"];
-const DIFF = 90;
+import TradeButton from "./button";
 
 export default function Trade({ token, isCurrent, onClick }: any) {
   const mc = useMcWithPump(token);
@@ -48,28 +45,7 @@ export default function Trade({ token, isCurrent, onClick }: any) {
           </div>
         </div>
       )}
-      {isCurrent && (
-        <motion.div
-          key={token.id}
-          initial={{
-            rotateZ: 0,
-            backgroundColor: COLORS[0]
-          }}
-          animate={{
-            rotateZ: [0, -DIFF, DIFF, 0],
-            backgroundColor: [COLORS[0], COLORS[2], COLORS[1], COLORS[0]]
-          }}
-          transition={{
-            duration: 0.1,
-            ease: "linear",
-            repeat: 30
-          }}
-          onClick={onClick}
-          className={`button ${styles.Button}`}
-        >
-          Trade
-        </motion.div>
-      )}
+      {isCurrent && <TradeButton token={token} onClick={onClick} />}
     </div>
   );
 }

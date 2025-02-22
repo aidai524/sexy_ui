@@ -14,7 +14,7 @@ export default function useNotice() {
     const notice = list.shift();
     Toast.show({
       content: (
-        <div style={{ color: "#AAFF00" }}>
+        <div style={{ color: "#AAFF00", wordBreak: "break-word" }}>
           {notice.content_2} you liked has been launched!
         </div>
       ),

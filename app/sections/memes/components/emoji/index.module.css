@@ -11,14 +11,14 @@
   justify-content: flex-start;
   align-items: center;
   position: absolute;
-  left: 57px;
-  top: 69px;
+  left: -81px;
+  top: 14px;
 }
 .EmojiContainerRight {
   font-size: 20px;
   left: unset;
-  right: 83px;
-  top: 110px;
+  right: -54px;
+  top: 57px;
 }
 .Emoji {
 

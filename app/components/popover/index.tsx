@@ -24,6 +24,7 @@ const Popover = (props: Props, ref: any) => {
     triggerContainerStyle,
     triggerContainerClassName,
     closeDelayDuration = 300,
+    onVisibleChange,
   } = props;
 
   const triggerRef = useRef<any>();
@@ -46,6 +47,10 @@ const Popover = (props: Props, ref: any) => {
     onCloseCancel: closeCancel,
   };
   useImperativeHandle(ref, () => refs);
+
+  useEffect(() => {
+    onVisibleChange?.(realVisible);
+  }, [realVisible]);
 
   return (
     <>
@@ -225,6 +230,7 @@ interface Props {
   triggerContainerClassName?: string;
   elRef?: HTMLElement;
   closeDelayDuration?: number;
+  onVisibleChange?(visible?: boolean): void;
 }
 
 const Card = (props: CardProps) => {

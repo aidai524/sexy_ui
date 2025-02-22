@@ -25,6 +25,7 @@ export default function Profile({
   isOther = false
 }: any) {
   const configStore: any = useConfig();
+  const { setVisible } = useReferStore();
   const userInfoBanner = userInfo?.banner;
   const backgroundImgStyle = userInfoBanner
     ? {
@@ -47,17 +48,27 @@ export default function Profile({
         from="profile"
         rightActions={
           !isOther && (
-            <button
-              type="button"
-              className={styles.SettingButton}
-              onClick={() => {
-                router.push("/profile/setting");
-              }}
-            />
+            <>
+              <button
+                type="button"
+                className={styles.SettingButton}
+                onClick={() => {
+                  router.push("/profile/setting");
+                }}
+              />
+              <button
+                type="button"
+                className={styles.ShareButton}
+                onClick={() => {
+                  setVisible?.(true);
+                }}
+              />
+            </>
           )
         }
         style={{ backgroundColor: "transparent" }}
         isOther={isOther}
+        backButtonClassName={styles.ProfileBackButton}
       />
       {configStore.config.showAirdropEntry && <AirdropEntry />}
       <div style={backgroundImgStyle1} className={styles.avatarBox}>

@@ -3,3 +3,8 @@
   height: 100%;
   overflow-y: auto;
 }
+@media screen and (min-width: 768px) {
+  .MemesContainer {
+    padding-top: 68px;
+  }
+}

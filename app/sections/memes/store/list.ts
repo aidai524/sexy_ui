@@ -70,6 +70,8 @@ export interface Hot {
   is_king: boolean;
   last_king_time: number;
   status: number;
+  video: string;
+  DApp: string;
 
   // front-end attributes
   kind: 'Hot',
@@ -134,6 +136,8 @@ export interface Meme {
   king_progress: number;
   market_cap_change: number;
   time: number;
+  market_cap: number;
+  countdown: number;
 
   // front-end attributes
   kind: 'Meme',
