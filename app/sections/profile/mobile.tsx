@@ -25,6 +25,7 @@ export default function Profile({
   isOther = false
 }: any) {
   const configStore: any = useConfig();
+  const { setVisible } = useReferStore();
   const userInfoBanner = userInfo?.banner;
   const backgroundImgStyle = userInfoBanner
     ? {
@@ -59,7 +60,7 @@ export default function Profile({
                 type="button"
                 className={styles.ShareButton}
                 onClick={() => {
-                  router.push("/profile/setting");
+                  setVisible?.(true);
                 }}
               />
             </>
