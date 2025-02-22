@@ -65,7 +65,7 @@ function SuccessModal({
       <div className={style.tokenInfo}>
         <div className={style.tokenTitle}>A Genesis Token is live!</div>
         <div className={style.tokenAmount}>
-          You&apos;ve got <span>1234</span>{" "}
+          You&apos;ve got <span style={{ color: '#fff' }}>1234</span>{" "}
           <span className={style.tokenSymbol}>$FlipN</span>
         </div>
       </div>
@@ -80,8 +80,8 @@ function SuccessModal({
 
         <div className={style.nameContent}>
           <div className={style.time}>3:00:00</div>
-          <div className={style.name}>Squirrel Cheers</div>
-          <div className={style.ticker}>Ticker: {token.ticker}</div>
+          <div className={style.name}>{token.tokenName}</div>
+          <div className={style.ticker}>Ticker: {token.tokenSymbol}</div>
         </div>
 
         <div className={style.successNote}>

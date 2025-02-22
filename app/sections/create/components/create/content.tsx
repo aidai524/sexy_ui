@@ -200,7 +200,7 @@ export default function Create({
                   onClick={() => {
                     if (item === 'MAX') {
                       setSolPercent(item);
-                      setValInput(numberFormatter(Math.min(Number(solBalance) - 0.03, 100).toString(), 4, true));
+                      setValInput(numberFormatter(Math.min(Number(solBalance) - 0.03, 1).toString(), 4, true));
                     } else {
                       setSolPercent(item);
                       setValInput(getFullNum(item));
