@@ -48,7 +48,8 @@
 .Like {
   display: flex;
   gap: 8px;
-  color: #ff61a4;
+  align-items: center;
+  color: #fff;
   font-family: Unbounded;
   font-size: 12px;
   font-style: normal;

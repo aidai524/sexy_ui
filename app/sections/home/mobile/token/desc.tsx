@@ -35,11 +35,6 @@ export default function Desc({ token }: any) {
     >
       <div className={styles.Title}>{token.tokenName}</div>
       <div className={styles.Header}>
-        <img
-          style={{ borderColor: token.status === 0 ? "#fff" : "transparent" }}
-          className={styles.Avatar}
-          src={token.icon || "/img/token-icon-placeholder.svg"}
-        />
         <div className={styles.TickerWrapper}>
           <span className={styles.TickerLabel}>Ticker: </span>
           <span className={styles.Ticker}>{token.ticker}</span>
