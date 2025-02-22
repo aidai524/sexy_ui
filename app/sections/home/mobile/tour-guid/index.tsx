@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Heart } from "../actions/like";
+// import { Heart } from "../actions/like";
 import { useState } from "react";
 import { useGuidingTour } from "@/app/store/use-guiding-tour";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -130,13 +130,13 @@ export default function TourGuid() {
         {step === 3 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className={styles.Flip} style={step3Info?.contentStyle}>
-              <Heart
+              {/* <Heart
                 isLiked={false}
                 like={0}
                 style={{
                   bottom: 10
                 }}
-              />
+              /> */}
               <div className={styles.FlipNum}>0</div>
             </div>
             <Image
