@@ -5,10 +5,11 @@ import RightArrowWrap from '@/app/sections/smart/components/RightArrowWrap'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@/app/store/useUser';
 import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
-
+import { useAccount } from '@/app/hooks/useAccount';
 export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress | null, copyTradersUserInfo: CopyTraderAddress | null}) {
   const router = useRouter();
   const { userInfo } = useUser();
+  const { address: walletAddress } = useAccount();
   const { smartMoniesInfo, copyTradersUserInfo } = props;
   const canClaim = Number(copyTradersUserInfo?.carryFee || '0') - Number(copyTradersUserInfo?.claimed || '0');
   return (
@@ -17,7 +18,7 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
       <div className={styles.titleContainer}>
         <div className={styles.title}>
             <span>You&apos;re A Top Trader</span>
-              <div onClick={() => router.push(`/smartTopDetail?address=${userInfo?.address}`)}>
+              <div onClick={() => router.push(`/smartTopDetail?address=${userInfo?.address || walletAddress}`)}>
               <RightArrowWrap />
             </div>
         </div>

@@ -4,7 +4,6 @@ import CopyList from "./coppiedList";
 import CopyTrade from "@/app/services/copyTrade";
 import { useAuth } from "@/app/context/auth";
 import { fail } from "@/app/utils/toast";
-import { useHomeTab } from "@/app/store/useHomeTab";
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import {useCloseCopyTrade} from '@/app/sections/profile/hooks/useCloseCopyTrade';
 import {useSwapCopyTokens} from '@/app/sections/profile/hooks/useSwapCopyTokens';
@@ -13,8 +12,9 @@ import { useUserAgent } from "@/app/context/user-agent";
 import CloseCopyTips from "./closeCopyTips";
 import styles from './coppied.module.css';
 import { useRouter,useSearchParams } from "next/navigation";
+import { useAccount } from "@/app/hooks/useAccount";
 export default function Coppied({ isOther }: any) {
-  const router = useRouter();
+  const { address: walletAddress } = useAccount();
   const searchParams = useSearchParams();
   const urlAddress = searchParams.get('address');
   const CopyTradeService = new CopyTrade();
@@ -22,7 +22,6 @@ export default function Coppied({ isOther }: any) {
   const { isLoading: isCloseCopyTradeLoading, handleCloseCopyTrade } = useCloseCopyTrade();
   const { isLoading: isSwapCopyTokensLoading, handleSwapCopyTokens } = useSwapCopyTokens();
   const { isLoading: isWithdrawTokensLoading, handleWithdrawTokens } = useWithdrawTokens();
-  const homeTabStore: any = useHomeTab();
   const { userInfo } = useAuth();
   const [copyTradeMap, setCopyTradeMap] = useState<any>({
     items: [],
@@ -38,7 +37,7 @@ export default function Coppied({ isOther }: any) {
 
   const loadMore = useCallback(async () => {
     if (
-      !userInfo?.address && !urlAddress
+      !userInfo?.address && !urlAddress && !walletAddress
     ) {
       setHasMore(false);
       return;
@@ -47,7 +46,7 @@ export default function Coppied({ isOther }: any) {
     setIsLoading(true);
     try {
       const res = await CopyTradeService.getCopyTradeList({
-        address:!urlAddress ? userInfo?.address : urlAddress,
+        address:!urlAddress ? userInfo?.address || walletAddress : urlAddress,
         chain: "solana",
         page: pageIndex,
         pageSize
@@ -70,10 +69,10 @@ export default function Coppied({ isOther }: any) {
     } finally {
       setIsLoading(false);
     }
-  }, [userInfo?.address, urlAddress, pageIndex]);
+  }, [userInfo?.address, urlAddress, pageIndex, walletAddress]);
 
   useEffect(() => {
-    if (!userInfo?.address && !urlAddress) {
+    if (!userInfo?.address && !urlAddress && !walletAddress) {
       return;
     }
     
@@ -84,7 +83,7 @@ export default function Coppied({ isOther }: any) {
     
     // Load initial data
     loadMore();
-  }, [userInfo?.address, urlAddress]);
+  }, [userInfo?.address, urlAddress, walletAddress]);
 
   if (isLoading && pageIndex === 1) {
     return (
@@ -104,7 +103,7 @@ export default function Coppied({ isOther }: any) {
 
   const handleClose = async (item: any) => {
     if (item?.tokens?.length > 0) {
-      const res = await handleWithdrawTokens({id: item?.id, walletAddress: userInfo?.address, chain: "solana", tokens: [], type: 2, sellAll: true, closeCopyTrade: true});
+      const res = await handleWithdrawTokens({id: item?.id, walletAddress: userInfo?.address || walletAddress, chain: "solana", tokens: [], type: 2, sellAll: true, closeCopyTrade: true});
       if (res) {
         setPageIndex(1);
         setCopyTradeMap({ items: [], total: 0 });
@@ -112,7 +111,7 @@ export default function Coppied({ isOther }: any) {
         loadMore(); 
       }
     } else {
-      const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address, chain: "solana", state: 4});
+      const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address || walletAddress, chain: "solana", state: 4});
       if (res) {
         setPageIndex(1);
         setCopyTradeMap({ items: [], total: 0 });
@@ -123,7 +122,7 @@ export default function Coppied({ isOther }: any) {
   };
 
   const handleCloseAndSell = async (item: any) => {
-     const swapRes = await handleSwapCopyTokens({id: item?.id, sellAll: true, tokens: [],type:2, walletAddress: userInfo?.address, chain: "solana", closeCopyTrade: true});
+     const swapRes = await handleSwapCopyTokens({id: item?.id, sellAll: true, tokens: [],type:2, walletAddress: userInfo?.address || walletAddress, chain: "solana", closeCopyTrade: true});
      if (swapRes) {
         setPageIndex(1);
         setCopyTradeMap({ items: [], total: 0 });
