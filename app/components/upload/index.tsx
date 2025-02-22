@@ -56,7 +56,7 @@ export default function Upload({
 
   const uploadImg = useCallback(
     async (file: File) => {
-      if (file.size > 2 * 50 * 1024 * 1024) {
+      if (file.size > 10 * 1024 * 1024) {
         fail("File size too large");
         return {
           url: ""
