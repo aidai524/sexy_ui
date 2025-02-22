@@ -132,10 +132,11 @@ export default function Detail({ token, onBack, onSuccess }: any) {
               style={{
                 height: innerHeight - headerHeight,
                 overflow: "auto",
-                paddingBottom: 100
+                paddingBottom: 100,
+                WebkitOverflowScrolling: "touch"
               }}
             >
-              
+
               <div className={styles.commentWrapper}>
                 <Info
                   mc={mc}
@@ -147,7 +148,6 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                 />
               </div>
               
-
               {infoData?.status !== 0 && (
                 <Chart token={infoData} style={{ position: "relative" }} />
               )}
@@ -158,7 +158,7 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                   setActiveKey(nodeName);
                 }}
                 nodes={tabs}
-              />
+              /> 
             </div>
 
             <div className={styles.action}>

@@ -6,7 +6,7 @@
     rgba(0, 0, 0, 1) 82%,
     rgba(255, 38, 129, 1) 82%
   ); */
-  padding: 10px 0;
+  /* padding: 0 0; */
 }
 
 .laptopMain {
@@ -15,7 +15,7 @@
 
 .mainContent {
   padding-top: 5px;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   position: relative;
   .actionBtns {
     display: flex;

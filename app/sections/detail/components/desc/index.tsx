@@ -10,7 +10,7 @@ import Holder from "@/app/components/holder";
 import { ProgressBar } from "antd-mobile";
 import { useTrendsStore } from "@/app/store/useTrends";
 
-export default function Desc({ data, specialTime, mc, showHolders = true }: { data: Project, specialTime?: string, mc: any, showHolders?: boolean }) {
+export default function Desc({ data, specialTime, mc, showHolders = true, isCreated = false }: { data: Project, specialTime?: string, mc: any, showHolders?: boolean, isCreated?: boolean }) {
     const { address } = useAccount();
     const router = useRouter();
     const userName = useMemo(() => {
@@ -112,7 +112,7 @@ export default function Desc({ data, specialTime, mc, showHolders = true }: { da
                             styles.tickerContent, styles.tickerCreate
                         ].join(" ")}
                     >
-                        <img className={ styles.avatar } src={data.creater.icon} />
+                        <img className={styles.avatar} src={data.creater.icon} />
                         {userName}
                         {address === data.account && (
                             <span style={{ color: "#FBCA04" }}>(Self)</span>
@@ -146,37 +146,41 @@ export default function Desc({ data, specialTime, mc, showHolders = true }: { da
                         </div>
                     </div>
                 )}
-                <div className={styles.nameWrapper}>
-                    <div className={styles.ticker}>Market cap:</div>
-                    {data.DApp === "sexy" && data.status === 1 && (
-                        <div className={styles.authorDesc} key={data.address}>
-                            {mc === 0 || mc === "0" || mc === "-" ? (
-                                <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
-                            ) : (
-                                <div style={{ color: "#6fff00" }}>
-                                    ${simplifyNum(mc as number, 2)}
-                                </div>
-                            )}
-                        </div>
-                    )}
 
-                    {((data.status === 1 && data.DApp === "pump") ||
-                        data.status! > 1) && (
-                            <div
-                                className={styles.authorDesc}
-                                key={data.address}
-                                style={{ color: "#6fff00" }}
-                            >
-                                {pumpMc === 0 ? (
+                {
+                    !isCreated && <div className={styles.nameWrapper}>
+                        <div className={styles.ticker}>Market cap:</div>
+                        {data.DApp === "sexy" && data.status === 1 && (
+                            <div className={styles.authorDesc} key={data.address}>
+                                {mc === 0 || mc === "0" || mc === "-" ? (
                                     <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
                                 ) : (
                                     <div style={{ color: "#6fff00" }}>
-                                        ${simplifyNum(pumpMc as number, 2)}
+                                        ${simplifyNum(mc as number, 2)}
                                     </div>
                                 )}
                             </div>
                         )}
-                </div>
+
+                        {((data.status === 1 && data.DApp === "pump") ||
+                            data.status! > 1) && (
+                                <div
+                                    className={styles.authorDesc}
+                                    key={data.address}
+                                    style={{ color: "#6fff00" }}
+                                >
+                                    {pumpMc === 0 ? (
+                                        <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
+                                    ) : (
+                                        <div style={{ color: "#6fff00" }}>
+                                            ${simplifyNum(pumpMc as number, 2)}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                    </div>
+                }
+
             </div>
 
             {!!data.about && (<>

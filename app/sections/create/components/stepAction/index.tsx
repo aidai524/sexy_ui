@@ -27,15 +27,15 @@ export default function StepAction({
 
     return (
         <div className={styles.btnWapper}>
-            {
+            {/* {
                 step > 1 && (
                     <div onClick={onBack} className={styles.backBtn}>Back</div>
                 )
-            }
+            } */}
 
             {extendBtn}
 
-            <MainBtn style={{ color: '#000', fontWeight: 500 }} isLoading={isLoading} onClick={onNext}>{btnText}</MainBtn>
+            <MainBtn style={{ color: '#000', fontWeight: 500, height: '40px', fontSize: '14px' }} isLoading={isLoading} onClick={onNext}>{btnText}</MainBtn>
         </div>
     );
 }

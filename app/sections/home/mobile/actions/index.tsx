@@ -179,6 +179,7 @@ export default function Actions({
         className={styles.Item}
         onClick={() => {
           if (disabled) return;
+          if (isPreview) return;
           if (!window?.sexAddress) {
             window.connect();
             return;

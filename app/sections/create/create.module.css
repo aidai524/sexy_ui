@@ -3,6 +3,14 @@
 
   .titleIcon {
     position: absolute;
+    right: 10px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+  .backIcon {
+    position: absolute;
     left: 10px; 
     top: 50%; 
     transform: translateY(-50%);

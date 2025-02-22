@@ -42,6 +42,10 @@ export default forwardRef(function CreateNode(
   const [tg, setTelegram] = useState("");
   const [discord, setDiscord] = useState("");
 
+  const [nameLength, setNameLength] = useState(20);
+  const [tickerLength, setTickerLength] = useState(10);
+  const [aboutLength, setAboutLength] = useState(1000);
+
   const [canValid, setCanValid] = useState(false);
   const [inValidVals, setInvaldVasl] = useState<any>({});
 
@@ -142,13 +146,13 @@ export default forwardRef(function CreateNode(
         return "Token name cannot be empty";
       }
 
-      if (tokenName.length > 50) {
-        return "Token name cannot exceed 50";
+      if (tokenName.length > 20) {
+        return "Token name cannot exceed 20";
       }
 
       return "";
     },
-    [ticker]
+    []
   );
 
   const validateTicker = useCallback(
@@ -191,9 +195,9 @@ export default forwardRef(function CreateNode(
   );
 
   const validateAbout = useCallback((about: string) => {
-    if (!about) {
-      return "Discription cannot be empty";
-    }
+    // if (!about) {
+    //   return "Discription cannot be empty";
+    // }
 
     if (about.length > 1000) {
       return "Discription cannot be length than 1000";
@@ -234,16 +238,21 @@ export default forwardRef(function CreateNode(
     const inValidVals: any = {};
     let isValid = false;
 
-
     const iconError = validateIcon(tokenIcon);
     if (iconError) {
       inValidVals["tokenIcon"] = iconError;
       isValid = true;
     }
 
-    const nameError = await validateName(tokenName);
+    const nameError = validateName(tokenName);
     if (nameError) {
       inValidVals["tokenName"] = nameError;
+      isValid = true;
+    }
+
+    const sameNameError = await validateSameName();
+    if (sameNameError) {
+      inValidVals["tokenName"] = sameNameError;
       isValid = true;
     }
 
@@ -405,13 +414,15 @@ export default forwardRef(function CreateNode(
               <span className={styles.require}>* </span>
               Name
             </div>
-            <div className={styles.requireSize}>50</div>
+            <div className={styles.requireSize}>{ nameLength }</div>
           </div>
           <div className={styles.groupContent}>
             <input
               value={tokenName}
+              maxLength={20}
               onChange={(e) => {
                 setTokenName(e.target.value);
+                setNameLength(Math.max(20 - e.target.value.length, 0));
               }}
               onBlur={async () => {
                 let nameError = validateName(tokenName);
@@ -426,7 +437,7 @@ export default forwardRef(function CreateNode(
               }}
               className={`${isMobile ? styles.inputText : styles.laptopInputText
                 } ${inValidVals["tokenName"] ? styles.inputError : ""}`}
-              placeholder="Meme name"
+              placeholder="Full Token Name"
             />
           </div>
           {inValidVals["tokenName"] && (
@@ -445,13 +456,15 @@ export default forwardRef(function CreateNode(
               <span className={styles.require}>* </span>
               Ticker
             </div>
-            <div className={styles.requireSize}>10</div>
+            <div className={styles.requireSize}>{ tickerLength }</div>
           </div>
           <div className={styles.groupContent}>
             <input
               value={ticker}
+              maxLength={10}
               onChange={(e) => {
                 setTicker(e.target.value);
+                setTickerLength(Math.max(10 - e.target.value.length, 0));
               }}
               onBlur={async () => {
                 let tickerError = validateTicker(ticker);
@@ -466,7 +479,7 @@ export default forwardRef(function CreateNode(
               }}
               className={`${isMobile ? styles.inputText : styles.laptopInputText
                 } ${inValidVals["ticker"] ? styles.inputError : ""}`}
-              placeholder="say something"
+              placeholder="Short symbol for exchanges"
             />
           </div>
           {inValidVals["ticker"] && <ErrMsg>{inValidVals["ticker"]}</ErrMsg>}
@@ -475,16 +488,17 @@ export default forwardRef(function CreateNode(
         <div className={styles.group}>
           <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
             <div>
-              <span className={styles.require}>* </span>
               Discription
             </div>
-            <div className={styles.requireSize}>1000</div>
+            <div className={styles.requireSize}>{ aboutLength }</div>
           </div>
           <div className={styles.groupContent}>
             <textarea
               value={about}
+              maxLength={1000}
               onChange={(e) => {
                 setAbout(e.target.value);
+                setAboutLength(Math.max(1000 - e.target.value.length, 0));
               }}
               onBlur={() => {
                 const aboutError = validateAbout(about);
@@ -497,7 +511,7 @@ export default forwardRef(function CreateNode(
               style={{ height: 100, padding: 10 }}
               className={`${styles.inputText} ${inValidVals["about"] ? styles.inputError : ""
                 } ${!isMobile && styles.laptopInputText}`}
-              placeholder="say something"
+              placeholder="Say something"
             />
           </div>
           {inValidVals["about"] && <ErrMsg>{inValidVals["about"]}</ErrMsg>}
@@ -525,7 +539,7 @@ export default forwardRef(function CreateNode(
               />
               <div>
                 <div className={styles.uploadTitle}>Video or image</div>
-                <div className={styles.uploadTip}>Support img/png/gif/mp4</div>
+                <div className={styles.uploadTip}>Support MOV/mp4jpg/png/gif, <br/>up to 10 MB</div>
               </div>
             </div>
             {inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>}
