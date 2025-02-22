@@ -43,6 +43,7 @@ export default function Mobile() {
               history.pushState({ page: "/" }, "Home", `/`);
             }}
             onSuccess={(params: any) => {
+              console.log(46, { ...token, ...params });
               projectsStore.updateProject({ ...token, ...params });
             }}
           />

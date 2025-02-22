@@ -76,7 +76,19 @@ export default function Detail({ token, onBack, onSuccess }: any) {
   const tabs = useMemo(() => {
     const vals = [
       { name: "Details", content: <Desc data={infoData} mc={mc} /> },
-      { name: "Comments", content: <CommnentList token={infoData} /> },
+      {
+        name: "Comments",
+        content: (
+          <CommnentList
+            token={infoData}
+            onSuccess={() => {
+              onSuccess?.({
+                comment: token.comment + 1
+              });
+            }}
+          />
+        )
+      }
     ];
 
     if (infoData?.status > 0) {
@@ -136,7 +148,6 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                 WebkitOverflowScrolling: "touch"
               }}
             >
-
               <div className={styles.commentWrapper}>
                 <Info
                   mc={mc}
@@ -147,7 +158,7 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                   }}
                 />
               </div>
-              
+
               {infoData?.status !== 0 && (
                 <Chart token={infoData} style={{ position: "relative" }} />
               )}
@@ -158,7 +169,7 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                   setActiveKey(nodeName);
                 }}
                 nodes={tabs}
-              /> 
+              />
             </div>
 
             <div className={styles.action}>
@@ -175,6 +186,7 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                     if (res) {
                       onSuccess?.({
                         isLike: true,
+                        is_like: true,
                         like: token.like + 1
                       });
                       getDetailInfo();
@@ -185,11 +197,11 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                     getDetailInfo();
                   }}
                   onSuperLike={(amount: any) => {
-                    // onSuccess?.({
-                    //   isSuperLike: true,
-                    //   prePaid: token.prePaid + 1,
-                    //   total_amount: amount
-                    // });
+                    onSuccess?.({
+                      isSuperLike: true,
+                      prePaid: token.prePaid + 1,
+                      total_amount: amount
+                    });
                     getDetailInfo();
                   }}
                   onBoost={() => {

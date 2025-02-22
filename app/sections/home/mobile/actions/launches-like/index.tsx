@@ -1,5 +1,6 @@
 import RocketIcon from "../rocket-icon";
 import Rockets from "./rockets";
+import { numberFormatter } from "@/app/utils/common";
 import { useEffect, useState } from "react";
 export default function LaunchesLike({
   className,
@@ -34,7 +35,12 @@ export default function LaunchesLike({
       <button className={buttonClassName}>
         <RocketIcon isActive={mergedLiked} />
       </button>
-      <span>{mergedNum}</span>
+      <span>
+        {numberFormatter(mergedNum, 1, true, {
+          isShort: true,
+          isShortUppercase: true
+        }) || 0}
+      </span>
       {showAnimation && <Rockets />}
     </div>
   );
