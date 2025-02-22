@@ -39,6 +39,20 @@ export interface SmartMoneyAddress {
           winRate: string;
     }
 }
+
+export interface CopyTradeSettings {
+  buyAmount: number;
+  slippage: number;
+  errorToleranceRatio: number;
+  tps?: {
+    reachRadio: number | string;
+    sellRadio: number | string;
+  }[];
+  sls?: {
+    reachRadio: number | string;
+    sellRadio: number | string;
+  }[];
+}
  
 class CopyTrade {
   private baseURL: string;
@@ -88,11 +102,7 @@ class CopyTrade {
     chain: string;
     from: string;
     investment: number;
-    setting: {
-      buyAmount: number;
-      slippage: number;
-      errorToleranceRatio: number;
-    }
+    setting: CopyTradeSettings;
   }) {
     try {
       const response = await fetch(`${this.baseURL}/copy_trade/create`, {
@@ -242,6 +252,32 @@ class CopyTrade {
   }) {
     try {
       const response = await fetch(`${this.baseURL}/copy_trade/withdraw_tokens`, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify(params)
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
+
+
+  // claim
+  async claimProfit(params: {
+    address: string;
+    amount: number;
+    chain: string;
+    id: string;
+    receiver: string;
+    sig: string;
+    timestamp: number;
+    type: number;
+    walletAddress: string;
+  }) {
+    try {
+      const response = await fetch(`${this.baseURL}/copy_trade/withdraw`, {
         method: 'POST',
         headers: this.headers,
         body: JSON.stringify(params)

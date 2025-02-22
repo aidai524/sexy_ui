@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import CopyTradeShareInfoCard from '@/app/sections/smart/components/TopTraderShare/share-info';
+import TopTraderShareInfoCard from '@/app/sections/smart/components/TopTraderShare/share-info';
 import { useMemo, useRef, useState } from 'react';
 import { useAccount } from '@/app/hooks/useAccount';
 import { fail, success } from '@/app/utils/toast';
@@ -8,9 +8,12 @@ import { generateRandomString } from '@/app/utils';
 import dayjs from 'dayjs';
 import Loading from '@/app/components/icons/loading';
 import Modal from '@/app/components/modal';
+import {
+  LeftBackIcon,
+} from "@/app/sections/trends/components/top-traders/icons";
 
-const CopyTradeShare = (props: any) => {
-  const { onClose, copyTradersUserInfo } = props;
+const TopTraderShare = (props: any) => {
+  const { show, onClose, selectedItems, currentUserInfo } = props;
 
   const { address } = useAccount();
 
@@ -22,9 +25,9 @@ const CopyTradeShare = (props: any) => {
   const [downloadFileName, setDownloadFileName] = useState<any>();
 
   const shareLink = useMemo(() => {
-    const _shareLink = new URL(window?.location?.origin + '/smartDetail');
+    const _shareLink = new URL(window?.location?.origin + '/smartTopDetail');
     _shareLink.searchParams.set("address", address ?? "");
-    _shareLink.searchParams.set("referrer", 'copy-trader-share');
+    _shareLink.searchParams.set("referrer", 'top-trader-share');
     return _shareLink.toString();
   }, [address]);
 
@@ -73,8 +76,13 @@ const CopyTradeShare = (props: any) => {
 
   return (
     <div className={styles.CopyTradeShareContainer}>
+        <div className={styles.TopTraderShareHeader} onClick={onClose}>
+          <LeftBackIcon />
+          <span className={styles.TopTraderShareHeaderTitle}>Share</span>
+        </div>
+        
       <div ref={cardRef} className={styles.CopyTradeShareCard}>
-        <CopyTradeShareInfoCard shareLink={shareLink} copyTradersUserInfo={copyTradersUserInfo} />
+        <TopTraderShareInfoCard shareLink={shareLink} selectedItems={selectedItems} currentUserInfo={currentUserInfo} />
       </div>
       <div className={styles.CopyTradeShareFooter}>
         <button
@@ -127,4 +135,4 @@ const CopyTradeShare = (props: any) => {
   );
 };
 
-export default CopyTradeShare;
+export default TopTraderShare;

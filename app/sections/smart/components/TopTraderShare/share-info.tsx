@@ -5,12 +5,16 @@ import QRCodeCom, { QRCodeImage } from '@/app/components/qrcode';
 import React, { useContext, useImperativeHandle } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
 import { numberFormatter } from '@/app/utils/common';
+import { ShareTitleIcon,TopTraderCrown } from "@/app/sections/trends/components/top-traders/icons";
+import { defaultAvatar } from "@/app/utils/config";
 
-const AirdropShareInfoCard = (props: any, ref: any) => {
-  const { shareLink, copyTradersUserInfo } = props;
+
+const TopTraderShareInfoCard = (props: any, ref: any) => {
+  const { shareLink, selectedItems, currentUserInfo } = props;
 
   const { userInfo } = useUser();
-  console.log(userInfo, 'userInfo');
+  console.log(userInfo,currentUserInfo, 'userInfo');
+  console.log(selectedItems, 'selectedItems');
   const {
     userData,
     userHasPoints,
@@ -32,29 +36,32 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
   return (
     <div className={styles.CopyTradeShareInfoCardContainer}>
       <div className={styles.CopyTradeShareInfoCard}>
+        <ShareTitleIcon style={{position:'absolute',top:'-30px',left:'0px'}}/>
         <div className={styles.CopyTradeShareInfoCardContent}>
-          <div className={styles.CopyTradeShareInfoCardTitle}>Copied PRFM</div>
           <div className={styles.avatarAndName}>
-            <img src={userInfo?.icon} alt="" className={styles.CopyTradeShareInfoCardAvatar}/>
-            <div className={styles.CopyTradeShareInfoCardName}>{formatLongText(userInfo?.name)}</div>
+            <img src={currentUserInfo?.icon || defaultAvatar} alt="" className={styles.CopyTradeShareInfoCardAvatar}/>
+            <div>
+              <div className={styles.CopyTradeShareInfoCardName}>{formatLongText(currentUserInfo?.name || 'FlipN')}</div>
+              <div><TopTraderCrown /></div>
+            </div>
           </div>
-          <div className={styles.publicStyle}>
-            <span className={styles.publicStyleTitle}>Total PNL</span>
-            <span>
-              <span className={styles.publicStylePNL}>{formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || '0')}</span>
-               <span className={styles.publicStyleValueCurrency}>SOL</span>
-            </span>
-          </div>
-
-          <div className={styles.ROIandWinRate}>
-                <div className={styles.publicStyle}>
-                  <span className={styles.publicStyleTitle}>ROI</span>
-                  <span className={styles.publicStyleValue}>{copyTradersUserInfo?.tradeInfo?.roi}%</span>
+          <div className={styles.CopyTradeShareInfoCardContentList}>
+            {
+              Object.entries(selectedItems).map(([key, v]:any) => {
+                return (
+                v.value ? (
+                  <div className={styles.CopyTradeShareInfoCardContentListItem} key={key}>
+                  <div className={styles.CopyTradeShareInfoCardContentListItemTitle}>{v.title}</div>
+                  <div className={styles.CopyTradeShareInfoCardContentListItemValue}>
+                    <span className={v.useWhite ? styles.CopyTradeShareInfoCardContentListItemValueTextWhite : styles.CopyTradeShareInfoCardContentListItemValueText}>{v.value ? v.useValue : ''}</span>
+                    {v.useExtraValue && <span className={styles.CopyTradeShareInfoCardContentListItemValueTextRed}>{v.useExtraValue}</span>}
+                    <span className={styles.CopyTradeShareInfoCardContentListItemValueCurrency}>{v.value ? v.useValueCurrency : ''}</span>
+                  </div>
                 </div>
-                <div className={styles.publicStyle}>
-                  <span className={styles.publicStyleTitle}>Win Rate</span>
-                  <span className={styles.publicStyleValue}>{copyTradersUserInfo?.tradeInfo?.winRate}%</span>
-                </div>
+                ) : null
+              )
+            })
+          }
           </div>
         </div>
       
@@ -72,4 +79,6 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
   );
 };
 
-export default React.forwardRef(AirdropShareInfoCard);
+export default React.forwardRef(TopTraderShareInfoCard);
+
+

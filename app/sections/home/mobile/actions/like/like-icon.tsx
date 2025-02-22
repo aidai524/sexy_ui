@@ -1,10 +1,10 @@
-export default function LikeIcon({ isActive }: any) {
+export default function LikeIcon({ isActive, size = 32 }: any) {
   const id = String(Math.random() + Date.now());
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="32"
-      height="28"
+      width={size}
+      height={0.875 * size}
       viewBox="0 0 32 28"
       fill="none"
     >

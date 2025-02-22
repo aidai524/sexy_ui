@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import Heart from "./rocket-icon";
+import RocketIcon from "./rocket-icon";
 
 export default function Rockets() {
   const [rockets, setRockets] = useState<any>([]);
@@ -31,7 +31,8 @@ export default function Rockets() {
         top: -56,
         left: 0,
         width: 24,
-        height: 20
+        height: 20,
+        zIndex: 50
       }}
     >
       {rockets.map((rocket: any, i: number) => (
@@ -43,7 +44,7 @@ export default function Rockets() {
           transition={{ duration: 1, ease: "easeOut" }}
           style={{ position: "absolute" }}
         >
-          <Heart />
+          <RocketIcon />
         </motion.div>
       ))}
     </div>

@@ -12,6 +12,14 @@ interface CopyTradeParams {
   copiedAddress: string;
   copyAmount: string;
   onceCopyAmount: string;
+  tps?: {
+    reachRadio: number | string;
+    sellRadio: number | string;
+  }[];
+  sls?: {
+    reachRadio: number | string;
+    sellRadio: number | string;
+  }[];
 }
 export const useCopyTrade = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -28,7 +36,9 @@ export const useCopyTrade = () => {
       walletAddress,
       copiedAddress,
       copyAmount,
-      onceCopyAmount
+      onceCopyAmount,
+      tps,
+      sls
     }: CopyTradeParams) => {
       try {
         setIsLoading(true);
@@ -40,7 +50,9 @@ export const useCopyTrade = () => {
           setting: {
             buyAmount: +onceCopyAmount,
             slippage: 0.1,
-            errorToleranceRatio: 0.1
+            errorToleranceRatio: 0.1,
+            tps,
+            sls
           }
         });
         
