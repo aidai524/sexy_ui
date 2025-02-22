@@ -222,17 +222,19 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
   };
 
   const handleCopyTimesChange = (e: any) => {
-    console.log(e.target.value);
-    const value = +e.target.value > 10 ? "10" : e.target.value;
+    const value = e.target.value;
+    // First sanitize to numbers only
     const sanitizedValue = value.replace(/[^\d]/g, "");
-
-    if (sanitizedValue !== "0") {
-      console.log(sanitizedValue);
-      const num = parseInt(sanitizedValue, 10);
-      if (num === 0) return;
+    
+    // Don't allow "0" or empty values
+    if (!sanitizedValue || sanitizedValue === "0") {
+      setCopyTimes("1");
+    } else {
+      // Cap at 10
+      const finalValue = Math.min(parseInt(sanitizedValue, 10), 10).toString();
+      setCopyTimes(finalValue);
     }
-
-    setCopyTimes(sanitizedValue);
+    
     setIsManualCopyTimes(true);
   };
 
