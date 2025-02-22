@@ -4,6 +4,7 @@ import { mapDataToProject } from "../utils/mapTo";
 import mediaStore from "../libs/media-store";
 import { videoReg } from "@/app/components/upload";
 import { httpGet } from "@/app/utils";
+import { uniq } from "lodash-es";
 
 export enum LaunchType {
   forYou = "forYou",
@@ -164,7 +165,7 @@ export const useProjects = create(
       setList(type: Type, list: any[], reset: boolean) {
         const _list = get()[type + "List"];
         set({
-          [type + "List"]: reset ? list : [..._list, ...list]
+          [type + "List"]: uniq(reset ? list : [..._list, ...list])
         });
       },
       clearList(type: Type) {
