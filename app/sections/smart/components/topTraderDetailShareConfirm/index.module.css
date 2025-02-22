@@ -10,10 +10,26 @@
 }
 
 .titleText {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: 16px;
     font-weight: 500;
     color: #fff;
     margin-bottom: 20px;
+}
+
+.selectAll {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.selectAllText {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 4px;
 }
 
 .grid {
@@ -80,4 +96,8 @@
     justify-content: center;
     margin-top: 20px;
     margin-bottom: 20px;
+  }
+
+  .divider {
+    margin: 0 4px;
   }

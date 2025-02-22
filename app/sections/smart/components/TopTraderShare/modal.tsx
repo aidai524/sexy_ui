@@ -1,19 +1,19 @@
 import Modal from '@/app/components/modal';
 import Index from './index';
 
-const CopyTradeShareModal = (props: any) => {
-  const { visible, onClose, copyTradersUserInfo } = props;
+const TopTraderShareModal = (props: any) => {
+  const { show, onClose, selectedItems } = props;
 
   return (
     <Modal
-      open={visible}
+      open={show}
       onClose={onClose}
       animation="popup"
       closeStyle={{ display: "none" }}
     >
-      <Index {...props} copyTradersUserInfo={copyTradersUserInfo} />
+      <Index {...props} />
     </Modal>
   );
 };
 
-export default CopyTradeShareModal;
+export default TopTraderShareModal;

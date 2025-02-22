@@ -274,7 +274,7 @@ export default function TopTraderDetailM() {
         </div>
       )}
 
-      <TopTraderDetailShareConfirm show={showShareModal} onClose={() => setShowShareModal(false)} />
+      <TopTraderDetailShareConfirm currentUserInfo={currentUserInfo} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo} show={showShareModal} onClose={() => setShowShareModal(false)} />
     </div>
   );
 };
