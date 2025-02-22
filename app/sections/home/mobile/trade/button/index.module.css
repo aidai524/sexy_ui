@@ -1,0 +1,21 @@
+.Button {
+  width: 76px;
+  height: 32px;
+  border-radius: 32px;
+  color: #1e1e1e;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 18px */
+  transform-origin: center;
+}
+
+.Inner {
+  width: 76px;
+  height: 32px;
+  border-radius: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

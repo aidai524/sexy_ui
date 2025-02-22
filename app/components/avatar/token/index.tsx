@@ -3,10 +3,14 @@ import styles from "./index.module.css";
 import Image from "next/image";
 import { getVideoExt } from "@/app/components/upload";
 import VideoPlayer from "@/app/components/video";
-import { isVideoFile } from '@/app/utils/common';
-import clsx from 'clsx';
+import { isVideoFile } from "@/app/utils/common";
+import clsx from "clsx";
 
-export default function TokenIcon({ token, onClick = () => {}, className }: any) {
+export default function TokenIcon({
+  token,
+  onClick = () => {},
+  className
+}: any) {
   const progress = useMemo(() => {
     if (token.status === 0) {
       return (token.like / 100) * 138.23;
@@ -14,7 +18,10 @@ export default function TokenIcon({ token, onClick = () => {}, className }: any)
     return (token.bondingProgress / 100) * 138.23;
   }, [token]);
   return (
-    <div className={clsx(styles.Container, className, 'button')} onClick={onClick}>
+    <div
+      className={clsx(styles.Container, className, "button")}
+      onClick={onClick}
+    >
       {!!progress && (
         <svg
           width="48"
@@ -46,7 +53,11 @@ export default function TokenIcon({ token, onClick = () => {}, className }: any)
           token={token}
         />
       ) : (
-        <img src={token?.icon} className={styles.Icon} loading="lazy" />
+        <img
+          src={token?.icon || "/img/token-placeholder.png"}
+          className={styles.Icon}
+          loading="lazy"
+        />
       )}
       {token.is_king && (
         <div className={styles.King}>

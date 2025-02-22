@@ -135,45 +135,46 @@ export default function Token({
               />
             </TipsButton>
           )}
-          {dataAvailable && (
-            <Actions
-              token={token}
-              onClick={(type: any) => {
-                if (type === "comments") {
-                  onOpenPanel("showComments");
-                  return;
-                }
-                if (type === "detail") {
-                  onOpenPanel("showDetail");
-                  return;
-                }
-                if (!window.sexAddress) {
-                  window.connect();
-                  return;
-                }
-                if (type === "flip") {
-                  onOpenPanel("showFlip");
-                }
-                if (type === "trade") {
-                  onUpdateTradeTab("holders");
-                  if (!showTrade) onOpenPanel("showTrade");
-                }
-              }}
-              totalHolders={totalHolders}
-              onSuccess={(type: string) => {
-                if (type === "like") {
-                  token.isLike = true;
-                  token.like = token.like + 1;
-                }
-                if (type === "share") {
-                  // token.share_num = token.share_num + 1;
-                }
-                onUpdate(token, type);
-              }}
-              isCurrent={isCurrent}
-            />
-          )}
         </div>
+      )}
+
+      {dataAvailable && token?.id && (
+        <Actions
+          token={token}
+          onClick={(type: any) => {
+            if (type === "comments") {
+              onOpenPanel("showComments");
+              return;
+            }
+            if (type === "detail") {
+              onOpenPanel("showDetail");
+              return;
+            }
+            if (!window.sexAddress) {
+              window.connect();
+              return;
+            }
+            if (type === "flip") {
+              onOpenPanel("showFlip");
+            }
+            if (type === "trade") {
+              onUpdateTradeTab("holders");
+              if (!showTrade) onOpenPanel("showTrade");
+            }
+          }}
+          totalHolders={totalHolders}
+          onSuccess={(type: string) => {
+            if (type === "like") {
+              token.isLike = true;
+              token.like = token.like + 1;
+            }
+            if (type === "share") {
+              // token.share_num = token.share_num + 1;
+            }
+            onUpdate(token, type);
+          }}
+          isCurrent={isCurrent}
+        />
       )}
     </div>
   );

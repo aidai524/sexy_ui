@@ -16,7 +16,7 @@ const onLike = async (data: any) => {
   try {
     if (data) {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
-      if (v.code === 0) {
+      if (v.code === 0 && data.status === 0) {
         const points =
           Number(v.data?.point) < 0.01
             ? "0.01"
@@ -30,7 +30,7 @@ const onLike = async (data: any) => {
             " points"
         );
         return v.data || {};
-      } else if (v.code === 100002) {
+      } else if (v.code === 100002 && data.status === 0) {
         fail("You've run out of like times. You can come back tomorrow");
         return -1;
       }

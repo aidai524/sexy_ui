@@ -8,6 +8,8 @@ import Emoji from '@/app/sections/memes/components/emoji';
 import Big from 'big.js';
 import MemesTitle from '@/app/sections/memes/components/title';
 import PriceChart from '@/app/sections/memes/components/chart';
+import { getVideoExt } from '@/app/components/upload';
+import VideoPlayer from '@/app/components/video';
 
 interface CarouselProps {
   className?: string;
@@ -160,7 +162,33 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
                 <MediaItem item={currentItem} onLoad={handleMediaLoad} />
                 <div className={styles.slideContent}>
                   <div className={styles.CarouselAvatar}>
-                    <img src={currentItem?.Icon} alt="" className={styles.CarouselAvatarImg} />
+                    {
+                      !currentItem?.Icon ? (
+                        isVideoFile(currentItem?.video) ? (
+                          <VideoPlayer
+                            key={currentItem.video}
+                            id={`TokenItemLaptopAvatar-${currentItem.video}`}
+                            src={currentItem.video}
+                            type={getVideoExt(currentItem.video)}
+                            className={styles.CarouselAvatarImg}
+                            autoPlay={false}
+                            token={currentItem as any}
+                          />
+                        ) : (
+                          <img
+                            src={currentItem?.video || "/img/token-placeholder.png"}
+                            alt=""
+                            className={styles.CarouselAvatarImg}
+                          />
+                        )
+                      ) : (
+                        <img
+                          src={currentItem?.Icon || "/img/token-placeholder.png"}
+                          alt=""
+                          className={styles.CarouselAvatarImg}
+                        />
+                      )
+                    }
                     <div className={styles.CarouselAvatarIcon}>
                       👑
                     </div>
@@ -191,7 +219,7 @@ const Carousel: React.FC<CarouselProps> = ({ className, data, duration = 10000 }
                     <Emoji content="💰" placement="right" />
                   </div>
                   <div className={styles.CarouselTokenName}>
-                    {formatLongText(currentItem?.token_name, 6, 6)}
+                    {formatLongText(currentItem?.token_symbol, 6, 6)}
                   </div>
                   <div className={styles.CarouselSummaries}>
                     {
