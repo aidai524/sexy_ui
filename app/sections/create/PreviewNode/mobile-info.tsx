@@ -7,24 +7,23 @@ import CommnentList from "../../detail/components/comment/commnet";
 const timeLeft = Date.now() + 1000 * 60 * 60 * 3
 
 export default function Mobile({ newData }: any) {
-  console.log('newData:', newData)
   const [activeKey, setActiveKey] = useState('')
   const tabs = useMemo(() => {
     const vals = [
-      { name: "Details", content: <Desc data={newData} mc={0} specialTime={"just now"} /> },
-      { name: "Comments", content: <CommnentList token={newData} /> },
+      { name: "Details", content: <Desc data={newData} mc={0} specialTime={"just now"} isCreated={true} /> },
+      { name: "Comments", content: <CommnentList token={newData} isPreview={true} /> },
     ];
 
     return vals;
   }, [newData]);
   return (
-    <div>
+    <div style={{ marginTop: '-20px' }}>
       <InfoPart
         showLikes={false}
         data={{
           ...newData,
           icon: newData.tokenIcon || '/img/default-token.png',
-          timeLeft: timeLeft
+          // timeLeft: timeLeft
         }}
         theme="light"
         showHolders={false}

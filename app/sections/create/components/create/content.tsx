@@ -6,7 +6,6 @@ import MainBtn from "@/app/components/mainBtn";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
 import { getFullNum, httpGet } from "@/app/utils";
 import { Avatar } from "@/app/components/thumbnail/avatar";
-import { Checkbox } from "antd-mobile";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -15,6 +14,7 @@ import useBalance from "@/app/hooks/useBalance";
 import useSolPrice from "@/app/hooks/use-sol-price";
 import { numberFormatter } from "@/app/utils/common";
 import CreateSuccessModal from "../createSuccessModal";
+import { useConfig } from "@/app/store/useConfig";
 
 type Token = {
   tokenName: string;
@@ -30,7 +30,7 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.01, 0.05, 35, 'MAX'];
+const SOL_PERCENT_LIST = [0.01, 0.05, 1, 'MAX'];
 
 export default function Create({
   token,
@@ -58,6 +58,7 @@ export default function Create({
   const [currentToken, setCurrentToken] = useState<Token>(SOL);
   const [errorMsg, setErrorMsg] = useState("");
   const [isError, setIsError] = useState(false);
+  const { config }: any = useConfig();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,6 +67,8 @@ export default function Create({
   const [launchChecked, setLaunchChecked] = useState(false);
 
   const { solPrice } = useSolPrice();
+
+  console.log(config)
 
   const { createToken, tokenInfo } = useTokenTrade({
     tokenName,
@@ -171,7 +174,7 @@ export default function Create({
       <div
         className={styles.Container}
         style={{
-          height: 'calc(100vh - 270px)'
+          height: 'calc(100vh - 190px)'
         }}
       >
         <div className={styles.quickAction}>
@@ -189,7 +192,7 @@ export default function Create({
                   onClick={() => {
                     if (item === 'MAX') {
                       setSolPercent(item);
-                      setValInput(solBalance);
+                      setValInput(Math.min(Number(solBalance) - 0.3, 1).toString());
                     } else {
                       setSolPercent(item);
                       setValInput(getFullNum(item));
@@ -220,7 +223,7 @@ export default function Create({
             className={styles.input}
           />
           <div className={styles.inputToken}>SOL</div>
-          <div className={styles.inputPrice}>$0.00</div>
+          <div className={styles.inputPrice}>${numberFormatter(Number(solPrice) * Number(valInput), 2, true)}</div>
         </div>
 
 
@@ -242,8 +245,7 @@ export default function Create({
               />
             </svg>
             <span>
-              After successful creation, the creator will not be able to flip
-              again
+              After successful creation, the creator will not be able to flip again
             </span>
           </div>
         </div>

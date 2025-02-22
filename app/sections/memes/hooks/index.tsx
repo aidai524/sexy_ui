@@ -10,7 +10,7 @@ import { Hot, Meme, useMemesListStore } from '@/app/sections/memes/store/list';
 import { MemesState, useMemesStore } from '@/app/sections/memes/store';
 import { Order, TABS } from '@/app/sections/memes/config';
 import { useThrottleFn } from 'ahooks';
-import { fetchData } from '@/app/components/chart/fetch-data';
+import { fetchData, getGranularityByResolution } from '@/app/components/chart/fetch-data';
 
 export function useMemes(props?: { isLoadData?: boolean; }): Memes {
   const { isLoadData } = props ?? {};
@@ -137,7 +137,7 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       if (![0].includes(it.status)) {
         const kLineRes = await fetchData(
           it.address,
-          60,
+          getGranularityByResolution('1H'),
           0
         );
         it.kLineData = kLineRes.data.map(([timestamp, open]: any) => ({

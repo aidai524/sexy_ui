@@ -22,6 +22,7 @@ export default function CommentComp({
   commentList,
   update,
   token,
+  isPreview,
   onSuccess
 }: any) {
   const [commentText, setCommentText] = useState("");
@@ -47,10 +48,21 @@ export default function CommentComp({
   const Content = (
     <>
       <div className={styles.title} style={titleStyle}>
-        <div>Comments({token?.comment})</div>
+        <div>Comments({isPreview ? 0: Math.max(token?.comment, CommentList.length || 0)})</div>
         <div
           className={styles.postBtn}
+          style={{
+            opacity: isPreview ? 0.5 : 1
+          }}
           onClick={() => {
+            if (isPreview) {
+              return;
+            }
+
+            if (!userInfo?.address) {
+              window?.connect();
+              return;
+            }
             setShowEdit(true);
           }}
         >
