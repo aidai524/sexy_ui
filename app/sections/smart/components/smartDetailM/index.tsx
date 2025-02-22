@@ -18,11 +18,12 @@ import CopyTrade from '@/app/services/copyTrade';
 import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
 import { numberFormatter } from '@/app/utils/common';
 import CopyTradeShare from '@/app/sections/smart/components/CopyTraderShare/modal';
-
+import { useAccount } from "@/app/hooks/useAccount";
 
 export default function SmartDetailM() {
   const { userInfo } = useUser();
-  const currentAddress = userInfo?.address;
+  const { address: walletAddress } = useAccount();
+  const currentAddress = userInfo?.address || walletAddress;
   const { isMobile } = useUserAgent();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -75,7 +76,7 @@ export default function SmartDetailM() {
           />
           <div className={styles.userName}>
             {formatLongText(userInfo?.name) ||
-              formatAddress(userInfo?.address) ||
+              formatAddress(userInfo?.address || walletAddress) ||
               "FlipN"}
           </div>
         </div>

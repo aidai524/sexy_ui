@@ -22,17 +22,14 @@ export default function CardContainer() {
     if (walletAddress) {
         const { data } = await CopyTradeService.getSmartMoniesAddress({address: walletAddress, chain: 'solana'});
         setSmartMoniesInfo(data);
-        console.log(data);
     }
   }
   useEffect(() => {
     getSmartMoniesInfo();
     getCopyTradeDetails();
   }, [walletAddress]);
-  console.log(smartMoniesInfo, 'smartMoniesInfo')
-  console.log(copyTradersUserInfo, 'copyTradersUserInfo')
-
   const isTopTrader = copyTradersUserInfo?.isTopTrader;
+  // const isTopTrader = true;
   const isCopyier = copyTradersUserInfo && copyTradersUserInfo?.tradeInfo?.buys > 0;
 
   if (!walletAddress) {

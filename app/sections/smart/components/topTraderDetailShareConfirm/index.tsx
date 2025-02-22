@@ -35,7 +35,6 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
     }
     return new Big(winRate).times(100).toFixed(2) + '%';
   }
-    
 
   const handleSelectAll = (checked: boolean) => {
       if (!checked) {
@@ -63,8 +62,8 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
         winRate30D: {value: checked, useValue: formatWinRate(smartMoniesInfo?.winRate30D || '0'), title: '30D Win Rate', useWhite: true},
         buySell: {
           value: checked, 
-          useValue: `${copyTradersUserInfo?.buy || 0}`, 
-          useExtraValue: ` / ${copyTradersUserInfo?.sell || 0}`,
+          useValue: `${copyTradersUserInfo?.tradeInfo?.buys || 0}`, 
+          useExtraValue: ` / ${copyTradersUserInfo?.tradeInfo?.sells || 0}`,
           title: 'Buy/Sell'
         },
         lastTradeAt: {value: checked, useValue: formatDateTime(copyTradersUserInfo?.lastTradeAt || 0), title: 'Last Trade'},
@@ -177,17 +176,17 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
                 checked={selectedItems['buySell']?.value}
                 onChange={(val) => handleCheckboxChange('buySell', {
                   value: val, 
-                  useValue: `${copyTradersUserInfo?.buy || 0}`, 
-                  useExtraValue: ` / ${copyTradersUserInfo?.sell || 0}`,
+                  useValue: `${copyTradersUserInfo?.tradeInfo?.buys || 0}`, 
+                  useExtraValue: ` / ${copyTradersUserInfo?.tradeInfo?.sells || 0}`,
                   title: 'Buy/Sell'
                 })}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Buy/Sell</div>
                 <div className={styles.value}>
-                    <span className={styles.buy}>{copyTradersUserInfo?.buy || 0}</span>
+                    <span className={styles.buy}>{copyTradersUserInfo?.tradeInfo?.buys || 0}</span>
                     <span className={styles.divider}>/</span>
-                    <span className={styles.sell}>{copyTradersUserInfo?.sell || 0}</span>
+                    <span className={styles.sell}>{copyTradersUserInfo?.tradeInfo?.sells || 0}</span>
                 </div>
             </div>
           </div>

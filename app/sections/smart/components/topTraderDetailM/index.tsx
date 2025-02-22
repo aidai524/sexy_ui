@@ -16,13 +16,15 @@ import { formatDateTime } from '@/app/utils/index';
 import Big from 'big.js';
 import { fecthUserInfo } from '@/app/utils/getUserInfo';
 import TopTraderDetailShareConfirm from '@/app/sections/smart/components/topTraderDetailShareConfirm';
+import { useAccount } from '@/app/hooks/useAccount';
 
 export default function TopTraderDetailM() {
+    const { address: walletAddress } = useAccount();
     const { userInfo } = useUser();
     const router = useRouter();
     const searchParams = useSearchParams();
     const address = searchParams.get('address');
-    const isOther = address !== userInfo?.address;
+    const isOther = address !== userInfo?.address && address !== walletAddress;
     const { userInfo: currentUserInfo } = useUserInfo(address || "");
     const CopyTradeService = new CopyTrade();
     const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
