@@ -14,7 +14,8 @@
     position: relative;
     margin-top: 30px;
     border-radius: 30px;
-    background: #FBCA04;
+    background: #FBCA04 url('/img/share/create-done-bg.svg') no-repeat center center;
+    background-size: 100% 100%; 
     padding: 15px 0;
 
     .avatar {

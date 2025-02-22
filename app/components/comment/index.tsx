@@ -48,7 +48,7 @@ export default function CommentComp({
   const Content = (
     <>
       <div className={styles.title} style={titleStyle}>
-        <div>Comments({isPreview ? 0: Math.max(token?.comment, CommentList.length || 0)})</div>
+        <div>Comments({isPreview ? 0 : Math.max(token?.comment || 0, CommentList.length || 0)})</div>
         <div
           className={styles.postBtn}
           style={{
