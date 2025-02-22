@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import LikedLabel from "../liked-label";
 import FloatingHearts from "./hearts";
 import LikeIcon from "./like-icon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Like({
   token,
@@ -19,11 +19,16 @@ export default function Like({
   const [mergedLiked, setMergedLiked] = useState(false);
   const [mergedNum, setMergedNum] = useState(0);
 
+  useEffect(() => {
+    setMergedLiked(token.isLike);
+    setMergedNum(token.like);
+  }, [token]);
+
   return (
     <div
       className={styles.Like}
       onClick={async () => {
-        if (token.isLike || disabled) return;
+        if (mergedLiked || disabled) return;
         if (!window.sexAddress) {
           window.connect();
           return;
