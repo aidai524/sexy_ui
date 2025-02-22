@@ -25,7 +25,7 @@ export default function useIsWindowVisible() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [setIsVisible]);
+  }, []);
 
   return isVisible;
 }

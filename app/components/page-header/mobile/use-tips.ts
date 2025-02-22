@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { httpGet } from "@/app/utils";
-import useIsWindowVisible from "@/app/hooks/use-is-window-visible";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function useTips() {
   const [prevTip, setPrevTip] = useState<any>();
@@ -9,7 +9,7 @@ export default function useTips() {
   const prevRef = useRef<any>({});
   const currentRef = useRef<any>({});
   const timer = useRef<any>();
-  const isWindowVisible = useIsWindowVisible();
+  const { isWindowVisible } = useUserAgent();
 
   const fetchTip = async () => {
     try {
@@ -24,7 +24,7 @@ export default function useTips() {
       clearTimeout(timer.current);
       timer.current = setTimeout(() => {
         fetchTip();
-      }, 2000);
+      }, 5000);
     } catch (err) {
       setPrevTip(null);
       setTip(null);
@@ -33,8 +33,6 @@ export default function useTips() {
   };
 
   useEffect(() => {
-    fetchTip();
-
     return () => clearTimeout(timer.current);
   }, []);
 

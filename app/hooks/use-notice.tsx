@@ -3,14 +3,13 @@ import { useAuth } from "@/app/context/auth";
 import { httpAuthGet } from "@/app/utils";
 import { Toast } from "antd-mobile";
 import useRead from "../components/messages/use-read";
-import useIsWindowVisible from "@/app/hooks/use-is-window-visible";
-
+import { useUserAgent } from "@/app/context/user-agent";
 export default function useNotice() {
   const { accountRefresher } = useAuth();
   const noticesRef = useRef<any>([]);
   const timerRef = useRef<any>();
   const { onRead } = useRead();
-  const isWindowVisible = useIsWindowVisible();
+  const { isWindowVisible } = useUserAgent();
 
   const onToast = (list: any) => {
     const notice = list.shift();
@@ -59,7 +58,7 @@ export default function useNotice() {
   };
 
   useEffect(() => {
-    if (isWindowVisible) {
+    if (!isWindowVisible) {
       clearTimeout(timerRef.current);
       return;
     }
