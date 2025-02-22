@@ -161,6 +161,10 @@
   padding: 15px 15px;
 }
 
+.panelEmpty {
+  padding: 15px 15px;
+}
+
 .tokenAddressWrapper {
   display: flex;
   justify-content: space-between;

@@ -51,7 +51,7 @@ export default function InfoPart({
 
   const [timeLeft, { days, hours, minutes, seconds }] = useCountDown({
     targetDate: data.timeLeft,
-    interval: !showAddress ? 100000000000000000 : 1000
+    interval: 1000
   });
 
   const { isMobile } = useUserAgent();
@@ -93,14 +93,19 @@ export default function InfoPart({
       </div>
 
       {data.status === 0 && (
-        <div className={styles.panel}>
+        <div className={styles.panelEmpty}>
           <div className={styles.singleProgress}>
             <div className={styles.progressTitleWrapper}>
               <div className={styles.progressTitle}>
                 <ClockIcon />
-                <div className={styles.progressTime}>
+                {
+                  showAddress ? <div className={styles.progressTime}>
                   {hours} : {minutes} : {seconds}
+                </div> : <div className={styles.progressTime}>
+                  3 : 00 : 00
                 </div>
+                }
+                
               </div>
               <div className={styles.progressAmount}>
                 <div>{data.like || 0}/100 likes </div>
