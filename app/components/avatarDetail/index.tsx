@@ -3,7 +3,6 @@ import styles from "./index.module.css";
 import { simplifyNum } from "@/app/utils";
 import LaunchTag from "../tag/status";
 import Import from "../tag/import";
-import Paid from "../tag/Paid";
 import TokenTags from "../tokenTags";
 
 interface Props {

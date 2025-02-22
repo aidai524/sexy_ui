@@ -131,6 +131,10 @@ export default function Token({
                     token.isLike = true;
                     token.like = token.like + 1;
                   }
+                  if (type === "launched_like") {
+                    token.isLike = true;
+                    token.launched_like = token.launched_like + 1;
+                  }
                   if (type === "share") {
                     // token.share_num = token.share_num + 1;
                   }

@@ -1,10 +1,10 @@
-export default function RocketIcon({ isActive }: any) {
+export default function RocketIcon({ isActive, size = 30 }: any) {
   const id = String(Math.random() + Date.now());
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="30"
-      height="30"
+      width={size}
+      height={size}
       viewBox="0 0 30 30"
       fill="none"
     >
