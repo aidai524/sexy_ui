@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDebounce } from "ahooks";
 import Big from "big.js";
 import styles from "./trande.module.css";
@@ -9,6 +9,7 @@ import { Avatar } from "@/app/components/thumbnail/avatar";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
+import Paid from "@/app/components/tag/Paid";
 import useBalance from "@/app/hooks/useBalance";
 import useSolPrice from "@/app/hooks/use-sol-price";
 import { numberFormatter } from "@/app/utils/common";
@@ -29,7 +30,7 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.01, 0.05, 1, "MAX"];
+const SOL_PERCENT_LIST = [0.01, 0.05, 1, 'MAX'];
 
 export default function Create({
   token,
@@ -53,7 +54,7 @@ export default function Create({
   });
 
   const [tokenType, setTokenType] = useState<number>(1);
-  const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false)
   const [currentToken, setCurrentToken] = useState<Token>(SOL);
   const [errorMsg, setErrorMsg] = useState("");
   const [isError, setIsError] = useState(false);
@@ -62,12 +63,16 @@ export default function Create({
   const [isLoading, setIsLoading] = useState(false);
 
   const [solPercent, setSolPercent] = useState<any>(0);
-  const [valInput, setValInput] = useState("");
+  const [valInput, setValInput] = useState("0");
+  const totalRef = useRef<any>({
+    inputVal: 0,
+    isError: false,
+    isLoading: false
+  })
   const [launchChecked, setLaunchChecked] = useState(false);
 
-  const { solPrice } = useSolPrice();
 
-  console.log(config);
+  console.log(config)
 
   const { createToken, tokenInfo } = useTokenTrade({
     tokenName,
@@ -79,8 +84,12 @@ export default function Create({
   const { solBalance } = useBalance({
     reFreshBalnace: 10,
     tokenDecimals: 0,
-    mint: ""
+    mint: ''
   });
+
+  useEffect(() => {
+    totalRef.current.inputVal = valInput
+  }, [valInput])
 
   const validateSameName = useCallback(async () => {
     const tokenInUse = await httpGet(
@@ -104,25 +113,25 @@ export default function Create({
 
     if (debounceVal) {
       if (isNaN(Number(debounceVal))) {
+        totalRef.current.isError = true;
         setIsError(true);
       }
-      if (
-        Number(debounceVal) > 0 &&
-        Number(debounceVal) <= Number(solBalance)
-      ) {
+      if (Number(debounceVal) > 0 && Number(debounceVal) <= Number(1)) {
+        totalRef.current.isError = false;
         setIsError(false);
       } else {
+        totalRef.current.isError = true;
         setIsError(true);
       }
     }
   }, [debounceVal]);
 
-  const submit = async (ignorePrepaid: number) => {
+  const submit = useCallback(async (ignorePrepaid: number) => {
     // setModalShow(true);
     // return;
 
     try {
-      if (isLoading || isError) {
+      if (isLoading || totalRef.current.isError) {
         return;
       }
 
@@ -135,17 +144,16 @@ export default function Create({
         fail(sameNameRes);
       }
 
-      await onBeforeCreate();
+      await onBeforeCreate()
 
       const hash = await createToken({
         name: tokenName,
         symbol: tokenSymbol,
         uri: tokenUri,
         launching: launchChecked,
-        amount:
-          ignorePrepaid !== 0 && valInput
-            ? new Big(valInput).mul(10 ** 9).toString()
-            : ""
+        amount: (ignorePrepaid !== 0 && totalRef.current.inputVal)
+          ? new Big(totalRef.current.inputVal).mul(10 ** 9).toString()
+          : ""
       });
 
       if (!hash) {
@@ -164,35 +172,26 @@ export default function Create({
       setIsLoading(false);
       fail("Create token error");
     }
-  };
+  }, [totalRef, isError])
 
   useEffect(() => {
     if (getSubmitFn) {
-      getSubmitFn(submit);
+      getSubmitFn(submit)
     }
-  }, []);
+  }, [])
 
   return (
     <>
       <div
         className={styles.Container}
         style={{
-          height: "calc(100vh - 190px)"
+          height: 'calc(100vh - 190px)'
         }}
       >
         <div className={styles.quickAction}>
           <div className={styles.walletBalance}>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M14.9332 8.2551H12.7999C12.2341 8.2551 11.6915 8.48824 11.2914 8.90322C10.8913 9.31821 10.6666 9.88105 10.6666 10.4679C10.6666 11.0548 10.8913 11.6176 11.2914 12.0326C11.6915 12.4476 12.2341 12.6808 12.7999 12.6808H14.9332V14.8936C14.9332 15.187 14.8208 15.4684 14.6208 15.6759C14.4207 15.8834 14.1494 16 13.8665 16H1.06666C0.783761 16 0.512453 15.8834 0.312416 15.6759C0.11238 15.4684 0 15.187 0 14.8936V6.04227C0 5.89697 0.0275901 5.7531 0.0811946 5.61886C0.134799 5.48463 0.213368 5.36266 0.312416 5.25992C0.411464 5.15718 0.529052 5.07568 0.658465 5.02008C0.787877 4.96447 0.926581 4.93586 1.06666 4.93586H13.8665C14.0066 4.93586 14.1453 4.96447 14.2747 5.02008C14.4041 5.07568 14.5217 5.15718 14.6208 5.25992C14.7198 5.36266 14.7984 5.48463 14.852 5.61886C14.9056 5.7531 14.9332 5.89697 14.9332 6.04227V8.2551ZM11.1999 1.10656V3.82944H1.59998L9.70017 0.0952926C9.86258 0.0204512 10.0404 -0.0111135 10.2176 0.00346643C10.3948 0.0180464 10.5656 0.0783089 10.7146 0.178779C10.8636 0.279249 10.986 0.416742 11.0708 0.578768C11.1555 0.740794 11.1999 0.922217 11.1999 1.10656ZM12.7999 9.36151H14.9332C15.0733 9.36149 15.212 9.39009 15.3414 9.44568C15.4709 9.50128 15.5885 9.58277 15.6875 9.68551C15.7866 9.78826 15.8652 9.91023 15.9188 10.0445C15.9724 10.1787 16 10.3226 16 10.4679C16 10.6132 15.9724 10.7571 15.9188 10.8914C15.8652 11.0256 15.7866 11.1476 15.6875 11.2503C15.5885 11.3531 15.4709 11.4346 15.3414 11.4902C15.212 11.5458 15.0733 11.5744 14.9332 11.5743H12.7999C12.6598 11.5744 12.5211 11.5458 12.3916 11.4902C12.2622 11.4346 12.1446 11.3531 12.0455 11.2503C11.9465 11.1476 11.8679 11.0256 11.8143 10.8914C11.7606 10.7571 11.7331 10.6132 11.7331 10.4679C11.7331 10.3226 11.7606 10.1787 11.8143 10.0445C11.8679 9.91023 11.9465 9.78826 12.0455 9.68551C12.1446 9.58277 12.2622 9.50128 12.3916 9.44568C12.5211 9.39009 12.6598 9.36149 12.7999 9.36151Z"
-                fill="#9290B1"
-              />
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.9332 8.2551H12.7999C12.2341 8.2551 11.6915 8.48824 11.2914 8.90322C10.8913 9.31821 10.6666 9.88105 10.6666 10.4679C10.6666 11.0548 10.8913 11.6176 11.2914 12.0326C11.6915 12.4476 12.2341 12.6808 12.7999 12.6808H14.9332V14.8936C14.9332 15.187 14.8208 15.4684 14.6208 15.6759C14.4207 15.8834 14.1494 16 13.8665 16H1.06666C0.783761 16 0.512453 15.8834 0.312416 15.6759C0.11238 15.4684 0 15.187 0 14.8936V6.04227C0 5.89697 0.0275901 5.7531 0.0811946 5.61886C0.134799 5.48463 0.213368 5.36266 0.312416 5.25992C0.411464 5.15718 0.529052 5.07568 0.658465 5.02008C0.787877 4.96447 0.926581 4.93586 1.06666 4.93586H13.8665C14.0066 4.93586 14.1453 4.96447 14.2747 5.02008C14.4041 5.07568 14.5217 5.15718 14.6208 5.25992C14.7198 5.36266 14.7984 5.48463 14.852 5.61886C14.9056 5.7531 14.9332 5.89697 14.9332 6.04227V8.2551ZM11.1999 1.10656V3.82944H1.59998L9.70017 0.0952926C9.86258 0.0204512 10.0404 -0.0111135 10.2176 0.00346643C10.3948 0.0180464 10.5656 0.0783089 10.7146 0.178779C10.8636 0.279249 10.986 0.416742 11.0708 0.578768C11.1555 0.740794 11.1999 0.922217 11.1999 1.10656ZM12.7999 9.36151H14.9332C15.0733 9.36149 15.212 9.39009 15.3414 9.44568C15.4709 9.50128 15.5885 9.58277 15.6875 9.68551C15.7866 9.78826 15.8652 9.91023 15.9188 10.0445C15.9724 10.1787 16 10.3226 16 10.4679C16 10.6132 15.9724 10.7571 15.9188 10.8914C15.8652 11.0256 15.7866 11.1476 15.6875 11.2503C15.5885 11.3531 15.4709 11.4346 15.3414 11.4902C15.212 11.5458 15.0733 11.5744 14.9332 11.5743H12.7999C12.6598 11.5744 12.5211 11.5458 12.3916 11.4902C12.2622 11.4346 12.1446 11.3531 12.0455 11.2503C11.9465 11.1476 11.8679 11.0256 11.8143 10.8914C11.7606 10.7571 11.7331 10.6132 11.7331 10.4679C11.7331 10.3226 11.7606 10.1787 11.8143 10.0445C11.8679 9.91023 11.9465 9.78826 12.0455 9.68551C12.1446 9.58277 12.2622 9.50128 12.3916 9.44568C12.5211 9.39009 12.6598 9.36149 12.7999 9.36151Z" fill="#9290B1" />
             </svg>
             <span>{numberFormatter(solBalance, 2, true)} SOL</span>
           </div>
@@ -202,11 +201,9 @@ export default function Create({
               return (
                 <div
                   onClick={() => {
-                    if (item === "MAX") {
+                    if (item === 'MAX') {
                       setSolPercent(item);
-                      setValInput(
-                        Math.min(Number(solBalance) - 0.3, 1).toString()
-                      );
+                      setValInput(Math.min(Number(solBalance) - 0.3, 1).toString());
                     } else {
                       setSolPercent(item);
                       setValInput(getFullNum(item));
@@ -237,10 +234,9 @@ export default function Create({
             className={styles.input}
           />
           <div className={styles.inputToken}>SOL</div>
-          <div className={styles.inputPrice}>
-            ${numberFormatter(Number(solPrice) * Number(valInput), 2, true)}
-          </div>
+          <div className={styles.inputPrice}>${numberFormatter(Number(config.SolPrice) * Number(valInput), 2, true)}</div>
         </div>
+
 
         <div className={[styles.cationArea, styles.panel].join(" ")}>
           <div className={styles.launchTip}>
@@ -260,21 +256,15 @@ export default function Create({
               />
             </svg>
             <span>
-              After successful creation, the creator will not be able to flip
-              again
+              After successful creation, the creator will not be able to flip again
             </span>
           </div>
         </div>
       </div>
 
-      <CreateSuccessModal
-        onShare={setShowSuccessModal}
-        show={modalShow}
-        onHide={() => {
-          setModalShow(false);
-        }}
-        token={token}
-      />
+      <CreateSuccessModal onShare={setShowSuccessModal} show={modalShow} onHide={() => {
+        setModalShow(false);
+      }} token={token} />
     </>
   );
 }

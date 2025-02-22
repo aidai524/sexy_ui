@@ -80,7 +80,7 @@ export default async function ImgCopper({ file }: { file: File }) {
 
     const cropper = new Croppie(cropperContainer, {
       viewport: { width: 250, height: 250, type: "circle" },
-      boundary: { width: window.innerWidth, height: 250 },
+      boundary: { width: window.innerWidth, height: 400 },
       showZoomer: true,
       enableOrientation: true,
       enableResize: false,
