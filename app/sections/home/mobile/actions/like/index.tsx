@@ -6,24 +6,53 @@ import FloatingHearts from "./hearts";
 import LikeIcon from "./like-icon";
 import { useState } from "react";
 
-export default function Like(props: any) {
-  const { like } = props;
-  return (
-    <div className={styles.Like}>
-      <Heart {...props} />
-      <div className={styles.LikeNum} id={props.id}>
-        {like}
-      </div>
-    </div>
-  );
-}
-
-export const Heart = ({ isLiked, onClick = () => {} }: any) => {
+export default function Like({
+  token,
+  onSuccess,
+  disabled,
+  actionLikeTrigger,
+  showShare,
+  updateUserLikeNum
+}: any) {
   const [showAnimation, setShowAnimation] = useState(false);
   const [showHearts, setShowHearts] = useState(false);
+  const [mergedLiked, setMergedLiked] = useState(false);
+  const [mergedNum, setMergedNum] = useState(0);
+
   return (
-    <>
-      {isLiked && <LikedLabel className={styles.LikedLabel} />}
+    <div
+      className={styles.Like}
+      onClick={async () => {
+        if (token.isLike || disabled) return;
+        if (!window.sexAddress) {
+          window.connect();
+          return;
+        }
+
+        setShowAnimation(true);
+        setShowHearts(true);
+        setTimeout(() => {
+          setShowAnimation(false);
+        }, 1000);
+
+        setTimeout(() => {
+          setShowHearts(false);
+        }, 6000);
+
+        const res = await actionLikeTrigger({
+          data: token,
+          onShare: showShare,
+          onSuccess: updateUserLikeNum
+        });
+
+        if (res) {
+          setMergedLiked(true);
+          setMergedNum(mergedNum + 1);
+          onSuccess("like");
+        }
+      }}
+    >
+      {mergedLiked && <LikedLabel className={styles.LikedLabel} />}
       {showHearts && <FloatingHearts />}
       <Image
         src="/img/home/liked.gif"
@@ -41,17 +70,10 @@ export const Heart = ({ isLiked, onClick = () => {} }: any) => {
         initial={{ opacity: showAnimation ? 1 : 0 }}
         animate={{ opacity: showAnimation ? 0 : 1 }}
         className={`${styles.Heart} button`}
-        onClick={() => {
-          onClick();
-          setShowAnimation(true);
-          setShowHearts(true);
-          setTimeout(() => {
-            setShowAnimation(false);
-          }, 1000);
-        }}
       >
-        <LikeIcon isActive={isLiked} />
+        <LikeIcon isActive={mergedLiked} />
       </motion.div>
-    </>
+      <div className={styles.LikeNum}>{mergedNum}</div>
+    </div>
   );
-};
+}

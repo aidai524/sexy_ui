@@ -1,12 +1,10 @@
 import Token from "../token";
 import Empty from "@/app/components/empty";
 import Loading from "../loading";
-import TourGuid from "../tour-guid";
 import useData from "@/app/sections/home/hooks/use-data";
 import { useEffect, useState, useRef, useMemo } from "react";
 import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
-import { useGuidingTour } from "@/app/store/use-guiding-tour";
 import { useHomeTab } from "@/app/store/useHomeTab";
 
 let startY = 0;
@@ -28,6 +26,7 @@ export default function List({
     getProjectById,
     queryAndUpdateDetail
   } = useData(type);
+
   const index = getIndex(type);
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
@@ -149,16 +148,14 @@ export default function List({
 
             return (
               <Token
-                key={item + i + Math.random()}
+                key={item}
                 token={token}
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any, action?: string) => {
-                  updateProject(token);
-                  if (
-                    action &&
-                    ["share", "like", "launched_like"].includes(action)
-                  )
+                  if (action && ["launched_like"].includes(action)) {
+                    updateProject(token);
                     return;
+                  }
                   if (action === "flip") {
                     setTimeout(() => {
                       queryAndUpdateDetail(token.address);
