@@ -9,7 +9,8 @@ import { Skeleton } from 'antd-mobile'
 import { useUserAgent } from '@/app/context/user-agent';
 import VideoPlayer from '@/app/components/video';
 import { getVideoExt } from '@/app/components/upload';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import Big from 'big.js';
 
 const TokenItem = (props: { className?: string; token: Hot | Meme; }) => {
   const { className, token } = props;
@@ -23,7 +24,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme; }) => {
       bondingProgress: token.bonding_progress,
     } : {
       ...token,
-      icon: token.Icon,
+      icon: token.Icon || token.video,
       bondingProgress: token.progress,
     };
   }, [token]);
@@ -45,7 +46,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme; }) => {
                   token={_token as any}
                 />
               ) : (
-                <img src={_token?.video} alt="" className={styles.TokenItemLaptopAvatarBanner} loading="lazy" />
+                <img src={_token?.video || "/img/token-placeholder.png"} alt="" className={styles.TokenItemLaptopAvatarBanner} loading="lazy" />
               )
             }
             <div className={styles.TokenItemLaptopAvatarProfile}>
@@ -232,12 +233,24 @@ export const TokenItemSummaries = (props: any) => {
 export const TokenItemMarketCap = (props: any) => {
   const { token } = props;
 
+  const [countdownFinished, setCountdownFinished] = useState(false);
+
   return (
     <>
-      <div className={styles.TokenItemMarketCap}>
-        MC {numberFormatter(token.market_cap, 2, true, { prefix: '$', isShort: true, isShortUppercase: true })}
-      </div>
-      {/*<Countdown />*/}
+      {
+        (Big(token.countdown || 0).gt(0) && !countdownFinished) ? (
+          <Countdown
+            token={token}
+            onFinish={() => {
+              setCountdownFinished(true);
+            }}
+          />
+        ) : (
+          <div className={styles.TokenItemMarketCap}>
+            MC {numberFormatter(token.market_cap, 2, true, { prefix: '$', isShort: true, isShortUppercase: true })}
+          </div>
+        )
+      }
     </>
   );
 };
