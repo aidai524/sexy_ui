@@ -9,11 +9,13 @@ import { useMessage } from "@/app/context/messageContext";
 import { mapDataToProject } from "@/app/utils/mapTo";
 import Modal from "@/app/components/modal";
 import { useRouter } from "next/navigation";
+import { numberFormatter } from "@/app/utils/common";
 
 interface Props {
   show: boolean;
   onHide: () => void;
   token: Project;
+  pointByVolume: string | undefined;
   onShare: () => void;
 }
 
@@ -21,6 +23,7 @@ export default function CreateSuccessModal({
   show,
   onHide,
   token,
+  pointByVolume,
   onShare
 }: Props) {
   return (
@@ -34,6 +37,7 @@ export default function CreateSuccessModal({
       >
         <SuccessModal
           token={token}
+          pointByVolume={pointByVolume}
           onClose={() => {
             onHide();
           }}
@@ -47,11 +51,13 @@ export default function CreateSuccessModal({
 function SuccessModal({
   onClose,
   onShare,
+  pointByVolume,
   token
 }: {
   onClose: () => void;
   token: any;
   onShare: () => void;
+  pointByVolume: string | undefined;
 }) {
   const { isMobile } = useUserAgent();
   const router = useRouter();
@@ -65,7 +71,7 @@ function SuccessModal({
       <div className={style.tokenInfo}>
         <div className={style.tokenTitle}>A Genesis Token is live!</div>
         <div className={style.tokenAmount}>
-          You&apos;ve got <span style={{ color: '#fff' }}>1234</span>{" "}
+          You&apos;ve got <span style={{ color: '#fff' }}>{ numberFormatter(pointByVolume as string, 4, true) }</span>{" "}
           <span className={style.tokenSymbol}>$FlipN</span>
         </div>
       </div>

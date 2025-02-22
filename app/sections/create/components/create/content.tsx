@@ -4,16 +4,19 @@ import Big from "big.js";
 import styles from "./trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
 import { useTokenTrade } from "@/app/hooks/useTokenTrade";
-import { getFullNum, httpGet } from "@/app/utils";
+import { getFullNum, getPointByVolume, getTransaction, httpGet } from "@/app/utils";
 import { Avatar } from "@/app/components/thumbnail/avatar";
 import type { Project } from "@/app/type";
 import { fail } from "@/app/utils/toast";
 import { useUserAgent } from "@/app/context/user-agent";
 import useBalance from "@/app/hooks/useBalance";
-import useSolPrice from "@/app/hooks/use-sol-price";
 import { numberFormatter } from "@/app/utils/common";
 import CreateSuccessModal from "../createSuccessModal";
 import { useConfig } from "@/app/store/useConfig";
+import { useAccount } from "@/app/hooks/useAccount";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { useUser } from "@/app/store/useUser";
+
 
 type Token = {
   tokenName: string;
@@ -41,6 +44,8 @@ export default function Create({
   setShowSuccessModal
 }: any) {
   const { tokenName, tokenSymbol, tokenUri } = token;
+  const { connection } = useConnection();
+  const { userInfo }: any = useUser();
 
   const { isMobile } = useUserAgent();
   const [infoData, setInfoData] = useState<Project>({
@@ -58,7 +63,8 @@ export default function Create({
   const [errorMsg, setErrorMsg] = useState("");
   const [isError, setIsError] = useState(false);
   const { config }: any = useConfig();
-
+  const [pointByVolume, setPointByVolume] = useState('0')
+  
   const [isLoading, setIsLoading] = useState(false);
 
   const [solPercent, setSolPercent] = useState<any>(0);
@@ -104,6 +110,7 @@ export default function Create({
 
   useEffect(() => {
     if (!debounceVal) {
+      totalRef.current.isError = false;
       setIsError(false);
       return;
     }
@@ -113,7 +120,7 @@ export default function Create({
         totalRef.current.isError = true;
         setIsError(true);
       }
-      if (Number(debounceVal) > 0 && Number(debounceVal) <= Number(1)) {
+      if (Number(debounceVal) >= 0 && Number(debounceVal) <= Number(1)) {
         totalRef.current.isError = false;
         setIsError(false);
       } else {
@@ -124,9 +131,6 @@ export default function Create({
   }, [debounceVal]);
 
   const submit = useCallback(async (ignorePrepaid: number) => {
-    // setModalShow(true);
-    // return;
-
     try {
       if (isLoading || totalRef.current.isError) {
         return;
@@ -156,6 +160,30 @@ export default function Create({
       if (!hash) {
         throw "Create token error";
       }
+
+      const _showBuyInToken = await getTransaction(
+        connection,
+        hash,
+        token.address as string,
+        userInfo.address
+      );
+
+      console.log('_showBuyInToken', _showBuyInToken)
+
+      if (_showBuyInToken) {
+        const pointByVolume = await getPointByVolume(
+          Big(_showBuyInToken)
+            .div(10 ** SOL.tokenDecimals)
+            .toFixed(SOL.tokenDecimals),
+          "sexy"
+        );
+
+        console.log('pointByVolume:', pointByVolume)
+
+        setPointByVolume(pointByVolume)
+      }
+      
+      
 
       const isSuccess = await onCreateTokenSuccess();
       if (isSuccess) {
@@ -259,7 +287,7 @@ export default function Create({
         </div>
       </div>
 
-      <CreateSuccessModal onShare={setShowSuccessModal} show={modalShow} onHide={() => {
+      <CreateSuccessModal pointByVolume={pointByVolume as string} onShare={setShowSuccessModal} show={modalShow} onHide={() => {
         setModalShow(false);
       }} token={token} />
     </>

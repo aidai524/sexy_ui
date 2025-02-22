@@ -96,6 +96,8 @@ export default forwardRef(function PreviewNode(
     }
   }
 
+  console.log('isLoading:', isLoading)
+
   return (
     <div
       className={styles.mainContent}
@@ -159,7 +161,6 @@ export default forwardRef(function PreviewNode(
           }}
           data={data}
           getSubmitFn={(submitFn: any) => {
-            console.log('submitFn:', submitFn)
             submitFnRef.current = submitFn
           }}
           onBeforeCreate={async () => {
