@@ -13,12 +13,13 @@ import { useUserAgent } from "@/app/context/user-agent";
 export default function CopyTradeCard(props: {
   smartMoniesInfo: SmartMoneyAddress | null;
   copyTradersUserInfo: CopyTraderAddress | null;
+  useLinear?: boolean;
 }) {
   const router = useRouter();
-  const { smartMoniesInfo, copyTradersUserInfo } = props;
+  const { smartMoniesInfo, copyTradersUserInfo, useLinear } = props;
   const { isMobile } = useUserAgent();
   return (
-    <div className={isMobile ? styles.container : styles.containerPC}>
+    <div className={isMobile ? styles.container : useLinear ? styles.linearContainer : styles.containerPC}>
       <div className={styles.title}>
         <span>Copied PRFM</span>
         <div

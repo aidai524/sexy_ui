@@ -30,8 +30,8 @@ export default function CardContainer() {
     getSmartMoniesInfo();
     getCopyTradeDetails();
   }, [walletAddress]);
-  // const isTopTrader = copyTradersUserInfo?.isTopTrader;
-  const isTopTrader = true;
+  const isTopTrader = copyTradersUserInfo?.isTopTrader;
+  // const isTopTrader = true;
   const isCopyier = copyTradersUserInfo && copyTradersUserInfo?.tradeInfo?.buys > 0;
 
   // if (!walletAddress) {
@@ -54,7 +54,7 @@ export default function CardContainer() {
           </>
         ) : (
            isCopyier ? (
-            <CopyTradeCard smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo}/>
+            <CopyTradeCard useLinear={true} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo}/>
            ) : (
             <CopyCardEmpty />
            )
