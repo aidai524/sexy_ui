@@ -1,6 +1,7 @@
 .Container {
   left: 0px;
   top: 10px;
+  z-index: 5;
 }
 
 .Wrapper {
