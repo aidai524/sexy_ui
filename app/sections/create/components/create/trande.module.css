@@ -188,3 +188,10 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.skipBtn {
+  font-size: 14px;
+  color: #9290B1;
+  cursor: pointer;  
+  font-weight: 500; 
+}

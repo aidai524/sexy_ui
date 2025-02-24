@@ -16,6 +16,7 @@ import { useConfig } from "@/app/store/useConfig";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { useUser } from "@/app/store/useUser";
+import StepAction from "../stepAction";
 
 
 type Token = {
@@ -111,19 +112,27 @@ export default function Create({
   useEffect(() => {
     if (!debounceVal) {
       totalRef.current.isError = false;
-      setIsError(false);
+      setIsError(false);  
+      setErrorMsg('')
       return;
     }
 
     if (debounceVal) {
       if (isNaN(Number(debounceVal))) {
+        setErrorMsg('Invalid number')
         totalRef.current.isError = true;
         setIsError(true);
       }
-      if (Number(debounceVal) >= 0 && Number(debounceVal) <= Number(1)) {
+      if (Number(debounceVal) >= 0 && Number(debounceVal) <= Number(Math.min(Number(solBalance) - 0.03, 1))) {
         totalRef.current.isError = false;
         setIsError(false);
-      } else {
+        setErrorMsg('')
+      } else {  
+        if (Number(debounceVal) > Number(solBalance) - 0.03) {  
+          setErrorMsg('Insufficient balance')
+        } else {
+          setErrorMsg('Invalid number')
+        }
         totalRef.current.isError = true;
         setIsError(true);
       }
@@ -161,27 +170,6 @@ export default function Create({
         throw "Create token error";
       }
 
-      const _showBuyInToken = await getTransaction(
-        connection,
-        hash,
-        token.address as string,
-        userInfo.address
-      );
-
-      if (_showBuyInToken) {
-        const pointByVolume = await getPointByVolume(
-          Big(_showBuyInToken)
-            .div(10 ** SOL.tokenDecimals)
-            .toFixed(SOL.tokenDecimals),
-          "sexy"
-        );
-
-        console.log('pointByVolume:', pointByVolume)
-
-        setPointByVolume(pointByVolume)
-      }
-      
-      
 
       const isSuccess = await onCreateTokenSuccess();
       if (isSuccess) {
@@ -193,7 +181,11 @@ export default function Create({
     } catch (e: any) {
       console.log(e);
       setIsLoading(false);
-      fail("Create token error");
+      if (e.message) {
+        fail(e.message);
+      } else {
+        fail("Create token error");
+      }
     }
   }, [totalRef, isError])
 
@@ -283,6 +275,27 @@ export default function Create({
             </span>
           </div>
         </div>
+
+
+        {
+          <StepAction
+            step={4}
+            disabled={isError}
+            isLoading={isLoading}
+            btnText={isError ? errorMsg : 'Get'}
+            onBack={() => {
+              // onBack();
+            }}
+            extendBtn={
+              <div className={styles.skipBtn} onClick={() => {
+                submit(0)
+              }}>Skip</div>
+            }
+            onNext={async () => {
+              submit(1)
+            }}
+          />
+        }
       </div>
 
       <CreateSuccessModal pointByVolume={pointByVolume as string} onShare={setShowSuccessModal} show={modalShow} onHide={() => {

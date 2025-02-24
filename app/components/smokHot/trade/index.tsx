@@ -208,7 +208,11 @@ export default function Trade({
                 }
               } catch (e: any) {
                 console.log(e);
-                fail(e.toString());
+                if (e.message) {
+                  fail(e.message);
+                } else {
+                  fail("Transtion fail");
+                }
               } finally {
                 setIsLoading(false);
               }

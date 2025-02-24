@@ -569,10 +569,15 @@ export default function BuySellPump({
                       setValInput("");
                       onClose();
                     }
-                  } catch (e) {
+                  } catch (e: any) {
                     console.log(e);
                     setIsLoading(false);
-                    fail("Transtion fail");
+
+                    if (e.message) {
+                      fail(e.message);
+                    } else {
+                      fail("Transtion fail");
+                    }
                   }
                 }}
                 style={{

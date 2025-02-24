@@ -9,6 +9,7 @@ import useMc from "@/app/hooks/useMc";
 import Holder from "@/app/components/holder";
 import { ProgressBar } from "antd-mobile";
 import { useTrendsStore } from "@/app/store/useTrends";
+import { defaultAvatar } from "@/app/utils/config";
 
 export default function Desc({ data, specialTime, mc, showHolders = true, isCreated = false }: { data: Project, specialTime?: string, mc: any, showHolders?: boolean, isCreated?: boolean }) {
     const { address } = useAccount();
@@ -112,7 +113,7 @@ export default function Desc({ data, specialTime, mc, showHolders = true, isCrea
                             styles.tickerContent, styles.tickerCreate
                         ].join(" ")}
                     >
-                        <img className={styles.avatar} src={data.creater.icon} />
+                        <img className={styles.avatar} src={data.creater.icon || defaultAvatar} />
                         {userName}
                         {address === data.account && (
                             <span style={{ color: "#FBCA04" }}>(Self)</span>

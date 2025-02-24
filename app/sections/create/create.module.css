@@ -27,6 +27,17 @@
   }
 }
 
+.uploadImgWrapper {
+  position: relative;
+  align-self: stretch;
+  padding-top: 20px;
+}
+
+.uploadAction {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
 
 .group {
   padding: 15px 0;
