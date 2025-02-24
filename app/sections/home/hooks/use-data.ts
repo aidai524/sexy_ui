@@ -29,7 +29,6 @@ export default function useData(launchType: Type) {
         const res = await httpGet(
           "/project/ids?id_list=" + prePageRef.current.join(",")
         );
-        console.log(32, res.data);
         projectsStore.setProjects(res.data, address);
         projectsStore.setList(launchType, prePageRef.current, true);
         setHasNext(true);

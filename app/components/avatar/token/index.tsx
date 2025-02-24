@@ -22,6 +22,11 @@ export default function TokenIcon({
     <div
       className={clsx(styles.Container, className, "button")}
       onClick={onClick}
+      style={{
+        width: token.status === 3 ? 44 : 50,
+        height: token.status === 3 ? 44 : 50,
+        backgroundColor: token.status === 3 ? "#fff" : "#00000099"
+      }}
     >
       {!!progress && (
         <svg
