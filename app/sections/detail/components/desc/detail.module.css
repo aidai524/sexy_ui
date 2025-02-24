@@ -66,9 +66,9 @@
 .communityIcons {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 15vw;
-  padding: 0 35px;
+  justify-content: flex-start;
+  gap: 5vw;
+  padding: 0 3vw;
 }
 
 .panel {

@@ -132,7 +132,7 @@ export default function Desc({ data, specialTime, mc, showHolders = true, isCrea
                 )}
                 
                 <div className={styles.nameWrapper}>
-                    <div className={styles.ticker}>Create time:</div>
+                    <div className={styles.ticker}>Create:</div>
                     <div className={styles.des}>
                         {specialTime
                             ? specialTime

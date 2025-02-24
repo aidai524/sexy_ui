@@ -168,8 +168,6 @@ export default function Create({
         userInfo.address
       );
 
-      console.log('_showBuyInToken', _showBuyInToken)
-
       if (_showBuyInToken) {
         const pointByVolume = await getPointByVolume(
           Big(_showBuyInToken)

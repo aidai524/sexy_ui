@@ -173,9 +173,9 @@ export default function Trade({
             <div className={styles.receiveTitle}>
               You will auto-buy in at the average price when this meme
               launching.{" "}
-              {delayTime
+              {/* {delayTime
                 ? `You can refund after ${delayTime}.`
-                : "You can refund anytime before launching."}
+                : "You can refund anytime before launching."} */}
             </div>
           )}
         </div>
@@ -198,11 +198,11 @@ export default function Trade({
                   setIsLoading(false);
                   if (res) {
                     success("Flip success");
-                    await actionLikeTrigger({
-                      data: token,
-                      onShare: showShare,
-                      onSuccess: updateUserLikeNum
-                    });
+                    // await actionLikeTrigger({
+                    //   data: token,
+                    //   onShare: showShare,
+                    //   onSuccess: updateUserLikeNum
+                    // });
                     onSuccess?.(inputVal);
                   }
                 }
