@@ -33,9 +33,9 @@ interface Summary {
 const SUMMARIES_DEFAULT: Record<string, Summary[]> = {
   liked: [
     { label: "All", amount: 0, value: "" },
-    { label: "Launched", amount: 0, value: 3 },
-    { label: "Launching", amount: 0, value: 1 },
-    { label: "Pre-Launch", amount: 0, value: 0 }
+    { label: "Listed", amount: 0, value: 3 },
+    { label: "Ticking", amount: 0, value: 1 },
+    { label: "Genesis", amount: 0, value: 0 }
   ]
 };
 
@@ -126,14 +126,14 @@ export default function Created({
         if (type === "liked") {
           const _summaries: Summary[] = [
             { label: "All", amount: res.data.total_num || 0, value: "" },
-            { label: "Launched", amount: res.data.launched_num || 0, value: 3 },
+            { label: "Listed", amount: res.data.launched_num || 0, value: 3 },
             {
-              label: "Launching",
+              label: "Ticking",
               amount: res.data.launching_num || 0,
               value: 1
             },
             {
-              label: "Pre-Launch",
+              label: "Genesis",
               amount: res.data.pre_launch_num || 0,
               value: 0
             }

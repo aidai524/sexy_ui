@@ -329,19 +329,19 @@ export default function Token({
 function LaunchTag({ type }: { type: number }) {
   if (type === 0) {
     return (
-      <div className={styles.launchTag + " " + styles.launch1}>Pre-Launch</div>
+      <div className={styles.launchTag + " " + styles.launch1}>Genesis</div>
     );
   }
 
   if (type === 1) {
     return (
-      <div className={styles.launchTag + " " + styles.launch2}>Launching</div>
+      <div className={styles.launchTag + " " + styles.launch2}>Ticking</div>
     );
   }
 
   if (type === 3) {
     return (
-      <div className={styles.launchTag + " " + styles.launch3}>Launched</div>
+      <div className={styles.launchTag + " " + styles.launch3}>Listed</div>
     );
   }
 }
