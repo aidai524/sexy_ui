@@ -206,7 +206,7 @@ export default function Token({
           backgroundColor:
             from === "page" ? "rgba(255, 255, 255, 0.05)" : "transparent",
           padding: from === "page" ? "4px 12px 15px" : 0,
-          borderRadius: from === "page" ? 12 : 0
+          borderRadius: from === "page" ? 10 : 0
         }}
       >
         <div className={`${styles.tokenImgContent}`}>
@@ -215,14 +215,16 @@ export default function Token({
             imgHeight={84}
             autoPlay={false}
             imgStyle={{
-              width: 84
+              width: 84,
+              borderRadius: 7,
             }}
             style={{
               overflow: "hidden"
             }}
             videoStyle={{
               height: "100%",
-              background: "#000"
+              background: "#000",
+              borderRadius: 7,
             }}
           />
           <LaunchTag type={data.status as number} />
