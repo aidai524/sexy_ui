@@ -259,7 +259,7 @@ export default function Token({
           </div>
           {data?.status === 0 ? (
             <>
-              <div className={styles.trikerContent}>
+              {/*<div className={styles.trikerContent}>
                 <div className={styles.Likes}>
                   <div>
                     Likes: <span style={{ color: "white" }}>{data?.like}</span>
@@ -272,7 +272,7 @@ export default function Token({
                     height={11}
                   />
                 </div>
-              </div>
+              </div>*/}
               <div className={styles.trikerContent}>
                 <div className={styles.tickerName}>
                   Flipped:{" "}
