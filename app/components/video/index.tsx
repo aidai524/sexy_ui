@@ -68,34 +68,39 @@ export default function VideoPlayer({
     if (!autoPlay) {
       return;
     }
+
+
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        entries.forEach((entry: any) => {
           if (entry.isIntersecting) {
-            const rect = videoRef.current?.getBoundingClientRect();
-            if (rect) {
-              const isInViewport =
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <=
-                  (window.innerHeight ||
-                    document.documentElement.clientHeight) &&
-                rect.right <=
-                  (window.innerWidth || document.documentElement.clientWidth);
-              setIsShow(isInViewport);
-              if (autoPlay && autoPlaySetting && !playManually) {
-                const outDom = document.getElementById(
-                  `${token?.status === 0 ? "preLaunch" : "launching"}-list`
-                );
+            // const rect = videoRef.current?.getBoundingClientRect();
+            // if (rect) {
+            //   const isInViewport =
+            //     rect.top >= 0 &&
+            //     rect.left >= 0 &&
+            //     rect.bottom <=
+            //       (window.innerHeight ||
+            //         document.documentElement.clientHeight) &&
+            //     rect.right <=
+            //       (window.innerWidth || document.documentElement.clientWidth);
+            //   setIsShow(isInViewport);
+            //   if (autoPlay && autoPlaySetting && !playManually) {
+            //     // const outDom = document.getElementById(
+            //     //   `${token?.status === 0 ? "preLaunch" : "launching"}-list`
+            //     // );
 
-                if (outDom?.style.opacity === "1") {
-                  videoRef.current?.play();
-                }
-              }
-            } else {
-              setIsShow(false);
-              videoRef.current?.pause();
-            }
+            //     // if (outDom?.style.opacity === "1") {
+            //     //   videoRef.current?.play();
+            //     // }
+            //     videoRef.current?.play();
+            //   }
+            //   videoRef.current?.play();
+            // } else {
+            //   setIsShow(false);
+            //   videoRef.current?.pause();
+            // }
+            autoPlaySetting && videoRef.current?.play();
           } else {
             setIsShow(false);
             videoRef.current?.pause();
@@ -123,18 +128,17 @@ export default function VideoPlayer({
     });
 
     if (videoRef.current) {
-      const outDom = document.getElementById(
-        `${token?.status === 0 ? "preLaunch" : "launching"}-list`
-      );
-      if (outDom) {
-        mutationObserver.observe(outDom, {
-          attributes: true,
-          attributeFilter: ["style"]
-        });
-      }
-      if (videoRef.current) {
-        observer.observe(videoRef.current);
-      }
+      // const outDom = document.getElementById(
+      //   `${token?.status === 0 ? "preLaunch" : "launching"}-list`
+      // );
+      // if (outDom) {
+      //   mutationObserver.observe(outDom, {
+      //     attributes: true,
+      //     attributeFilter: ["style"]
+      //   });
+      // }
+
+      observer.observe(videoRef.current);
     }
 
     return () => {
@@ -144,7 +148,8 @@ export default function VideoPlayer({
         mutationObserver.disconnect();
       }
     };
-  }, [videoRef, autoPlay, autoPlaySetting, token]);
+  }, [videoRef.current, autoPlay, autoPlaySetting, token]);
+
 
   const allStyle = useMemo(() => {
     return {
