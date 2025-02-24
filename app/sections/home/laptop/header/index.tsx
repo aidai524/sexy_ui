@@ -3,6 +3,7 @@ import Tabs from "../../mobile/tabs";
 import Tips from "@/app/components/page-header/mobile/tips";
 import Top1 from "./top-1";
 import { useUserAgent } from "@/app/context/user-agent";
+import SearchBar from "@/app/components/search-bar";
 
 export default function Header() {
   const { screenWidth } = useUserAgent();
@@ -19,6 +20,7 @@ export default function Header() {
         <div className={styles.Wrapper} style={{ gap: 30 }}>
           <Tips />
           <Tabs />
+          <SearchBar />
           <Top1 />
         </div>
       ) : (
@@ -26,6 +28,7 @@ export default function Header() {
           <div className={styles.Wrapper} style={{ gap: 10 }}>
             <Tips />
             <Top1 />
+            <SearchBar />
           </div>
           <div style={{ width: 426, margin: "0 auto" }}>
             <Tabs />
