@@ -7,15 +7,31 @@ import { useUser } from '@/app/store/useUser';
 import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
 import { useAccount } from '@/app/hooks/useAccount';
 import { useUserAgent } from "@/app/context/user-agent";
+import { useWithdrawClaim } from '@/app/sections/profile/hooks/useWithdrawClaim';
 export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress | null, copyTradersUserInfo: CopyTraderAddress | null}) {
   const router = useRouter();
+  const { handleWithdrawClaim } = useWithdrawClaim();
   const { isMobile } = useUserAgent();
   const { userInfo } = useUser();
   const { address: walletAddress } = useAccount();
   const { smartMoniesInfo, copyTradersUserInfo } = props;
-  const canClaim =
+  let canClaim =
     Number(copyTradersUserInfo?.carryFee || "0") -
     Number(copyTradersUserInfo?.claimed || "0");
+
+  const claimProfit = async () => {
+    if (!walletAddress) {
+      return;
+    }
+    const res = await handleWithdrawClaim({
+      amount: canClaim,
+      chain: 'solana',
+      walletAddress,
+    });
+    if (res) {
+      canClaim = 0;
+    }
+  }
   return (
     <div className={isMobile ? styles.container : styles.containerPC}>
       {/* title & copyier amount */}
@@ -44,7 +60,7 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
           </p>
         </div>
         {canClaim > 0 && (
-          <div className={styles.claimAmountButton}>
+          <div className={styles.claimAmountButton} onClick={claimProfit}>
             <ClaimIcon />
             <span className={styles.claimAmountButtonText}>Claim</span>
           </div>
