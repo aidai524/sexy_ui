@@ -110,7 +110,7 @@ export default function Create({
   const debounceVal = useDebounce(valInput, { wait: 800 });
 
   useEffect(() => {
-    if (!debounceVal) {
+    if (!debounceVal || debounceVal === '0') {
       totalRef.current.isError = false;
       setIsError(false);  
       setErrorMsg('')
@@ -194,6 +194,8 @@ export default function Create({
       getSubmitFn(submit)
     }
   }, [])
+
+  console.log('modalShow:', isLoading, errorMsg, isError)
 
   return (
     <>
