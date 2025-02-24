@@ -11,7 +11,6 @@ const left_num = 5;
 export default function useData(launchType: Type) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
-  const [list, setList] = useState<number[]>([]);
   const [refresher, setRefresher] = useState(0);
   const { accountRefresher } = useAuth();
   const projectsStore = useProjects();
@@ -77,8 +76,6 @@ export default function useData(launchType: Type) {
     if (!isNext) setIsLoading(true);
     await queryList();
     const _list = projectsStore.getList(launchType) || [];
-
-    setList(_list);
     setIsLoading(false);
   };
 
@@ -89,8 +86,6 @@ export default function useData(launchType: Type) {
       handleList(false);
       return;
     }
-
-    setList(_list);
 
     if (_list.length - projectsStore.getIndex(launchType) > left_num) {
       setIsLoading(false);
@@ -117,6 +112,7 @@ export default function useData(launchType: Type) {
 
   const onChangeIndex = (currentIndex: number) => {
     projectsStore.setIndex(launchType, currentIndex);
+    const list = projectsStore.getList(launchType);
     if (list.length - projectsStore.getIndex(launchType) > left_num) {
       return;
     }
@@ -157,7 +153,7 @@ export default function useData(launchType: Type) {
   return {
     getIndex: projectsStore.getIndex,
     isLoading,
-    list,
+    getList: projectsStore.getList,
     hasNext,
     refresher,
     updateProject: projectsStore.updateProject,

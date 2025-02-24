@@ -38,7 +38,9 @@ export default function Media({
             style={{
               ...imgStyle,
               backgroundImage: `url(${
-                data.tokenImg || "/img/token-placeholder.png"
+                data.tokenImg
+                  ? '"' + data.tokenImg + '"'
+                  : "/img/token-placeholder.png"
               })`
             }}
           />
