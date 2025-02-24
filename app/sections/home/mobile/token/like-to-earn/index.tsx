@@ -3,23 +3,38 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import { useAuth } from "@/app/context/auth";
 import { useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useProjects } from "@/app/store/use-projects-new";
+import { findIndex } from "lodash-es";
 
-export default function LikeToEarn() {
+export default function LikeToEarn({ token }: any) {
   const homeTabStore: any = useHomeTab();
   const { userInfo } = useAuth();
   const remainingNum = useMemo(
     () => userInfo?.like_num - userInfo?.using_like_num,
     [userInfo]
   );
+  const projectStore: any = useProjects();
   const { isMobile } = useUserAgent();
   if (homeTabStore.homeTabIndex === 0)
     return (
       <div
         className={`${styles.Container} ${styles.All}`}
         onClick={() => {
-          homeTabStore.set({
-            homeTabIndex: 1
-          });
+          const genesisList = projectStore.getList("genesis");
+          const _index = findIndex(genesisList, token.id);
+          if (_index !== -1) {
+            projectStore.setIndex("genesis", _index);
+          } else {
+            const genesisIndex = projectStore.getIndex("genesis");
+            genesisList.splice(genesisIndex, 1, token.id);
+            projectStore.setList("genesis", JSON.stringify(genesisList));
+          }
+
+          setTimeout(() => {
+            homeTabStore.set({
+              homeTabIndex: 1
+            });
+          }, 500);
         }}
         style={{
           top: isMobile ? 100 : 20

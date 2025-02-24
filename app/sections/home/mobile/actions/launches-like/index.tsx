@@ -8,7 +8,7 @@ export default function LaunchesLike({
   onClick,
   isLiked,
   like,
-  id
+  disabled
 }: any) {
   const [showAnimation, setShowAnimation] = useState(false);
   const [mergedLiked, setMergedLiked] = useState(isLiked);
@@ -23,6 +23,11 @@ export default function LaunchesLike({
     <div
       className={className}
       onClick={() => {
+        if (mergedLiked || disabled) return;
+        if (!window.sexAddress) {
+          window.connect();
+          return;
+        }
         setShowAnimation(true);
         setMergedLiked(true);
         setMergedNum(mergedNum + 1);
