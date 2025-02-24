@@ -1,10 +1,10 @@
 .Container {
-  position: fixed;
   left: 0px;
   top: 10px;
+}
+
+.Wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  width: 100vw;
 }

@@ -2,11 +2,18 @@ import styles from "./index.module.css";
 import Image from "next/image";
 import { useTrends } from "@/app/sections/trends/hooks";
 import { numberFormatter } from "@/app/utils/common";
+import { useRouter } from "next/navigation";
 export default function Top1() {
   const { top1 } = useTrends({ isPolling: true });
-  console.log(6, top1);
+  const router = useRouter();
+
   return (
-    <div className={styles.Container}>
+    <div
+      className={`${styles.Container} button`}
+      onClick={() => {
+        router.push(`/detail?address=${top1?.address}&from=trends`);
+      }}
+    >
       <div className={styles.IconWrapper}>
         <img
           src={top1?.Icon || "/img/token-placeholder.png"}

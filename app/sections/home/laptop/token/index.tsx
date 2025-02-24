@@ -40,7 +40,7 @@ export default function Token({
       style={{
         opacity,
         height: innerHeight,
-        width: showTrade && isNext ? 968 : innerWidth
+        width: showTrade && isCurrent ? 968 : innerWidth
       }}
     >
       {token?.id && (
@@ -48,11 +48,18 @@ export default function Token({
           <div
             className={styles.Token}
             style={{
-              width: showTrade && isNext ? 968 : innerWidth,
+              width: innerWidth,
               height: innerHeight
             }}
           >
-            {token.status === 0 && !isPreview && <LikeToEarn />}
+            <div className={styles.BottomBg} />
+            {token?.icon && (
+              <div
+                className={styles.Bg}
+                style={{ backgroundImage: `url(${token.icon})` }}
+              />
+            )}
+            {token.status === 0 && !isPreview && <LikeToEarn token={token} />}
             <Media
               imgHeight="100%"
               data={token}
@@ -73,6 +80,7 @@ export default function Token({
                       onUpdate({ ...token, ...params }, "flip");
                     }}
                     onClick={() => {
+                      if (isPreview) return;
                       if (!window.sexAddress) {
                         window.connect();
                         return;
@@ -117,25 +125,26 @@ export default function Token({
               setTab={onUpdateTradeTab}
             />
           )}
-          {token.status !== 0 && !showTrade && isCurrent && (
-            <TipsButton
-              tips="Expand"
-              triggerStyle={{
-                marginBottom: 20,
-                position: "absolute",
-                top: 0,
-                right: -50,
-                zIndex: 35
-              }}
-            >
-              <ScaleButton
-                onClick={() => {
-                  onOpenPanel("showTrade", !showTrade);
-                }}
-              />
-            </TipsButton>
-          )}
         </div>
+      )}
+
+      {token.status !== 0 && !showTrade && isCurrent && (
+        <TipsButton
+          tips="Expand"
+          triggerStyle={{
+            marginBottom: 20,
+            position: "absolute",
+            top: 0,
+            right: -50,
+            zIndex: 35
+          }}
+        >
+          <ScaleButton
+            onClick={() => {
+              onOpenPanel("showTrade", !showTrade);
+            }}
+          />
+        </TipsButton>
       )}
 
       {dataAvailable && token?.id && (

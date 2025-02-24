@@ -18,7 +18,7 @@ export default function LikeToEarn({ token }: any) {
   if (homeTabStore.homeTabIndex === 0)
     return (
       <div
-        className={`${styles.Container} ${styles.All}`}
+        className={`${styles.Container} ${styles.All} button`}
         onClick={() => {
           const genesisList = projectStore.getList("genesis");
           const _index = findIndex(genesisList, token.id);

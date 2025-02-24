@@ -12,6 +12,7 @@ export const UserAgentProvider: React.FC<{
   const [isMobile, setIsMobile] = useState<boolean>();
   const [innerHeight, setInnerHeight] = useState<number>(0);
   const [innerWidth, setInnerWidth] = useState<number>(0);
+  const [screenWidth, setScreenWidth] = useState<number>(0);
   const isWindowVisible = useIsWindowVisible();
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export const UserAgentProvider: React.FC<{
       setIsMobile(_isMobile);
       setInnerHeight(_isMobile ? window.innerHeight : 702);
       setInnerWidth(_isMobile ? window.innerWidth : 426);
+      setScreenWidth(window.innerWidth);
     };
 
     checkIsMobile();
@@ -34,7 +36,13 @@ export const UserAgentProvider: React.FC<{
 
   return (
     <UserAgentContext.Provider
-      value={{ isWindowVisible, isMobile, innerHeight, innerWidth }}
+      value={{
+        isWindowVisible,
+        isMobile,
+        innerHeight,
+        innerWidth,
+        screenWidth
+      }}
     >
       {isMobile !== undefined && children}
     </UserAgentContext.Provider>

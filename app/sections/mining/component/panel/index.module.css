@@ -1,0 +1,16 @@
+.PanelContainer {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid #323232;
+  background: #1B1B1B;
+  padding: 30px 20px 52px;
+}
+
+.PanelTape {
+  width: 148.551px;
+  height: 92.679px;
+  flex-shrink: 0;
+  top: -15px;
+  right: -20.55px;
+  position: absolute;
+}

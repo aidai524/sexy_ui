@@ -172,7 +172,7 @@ export const useProjects = create(
         set({ [type + "List"]: [] });
       },
       clearProjects() {
-        mediaStore.clearStore();
+        // mediaStore.clearStore();
         set({
           projects: {}
         });

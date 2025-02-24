@@ -151,8 +151,10 @@ export default function List({ type, isCurrentTab }: any) {
               danmakus={danmakus}
               danmakuShow={danmakuShow}
               onUpdate={(token: any, action?: string) => {
-                updateProject(token);
-                if (action && ["like", "share"].includes(action)) return;
+                if (action && ["launched_like"].includes(action)) {
+                  updateProject(token);
+                  return;
+                }
                 if (action === "flip") {
                   setTimeout(() => {
                     queryAndUpdateDetail(token.address);

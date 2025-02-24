@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useUserAgent } from "@/app/context/user-agent";
 import styles from "./index.module.css";
 
 import { motion } from "framer-motion";
@@ -6,7 +8,9 @@ const COLORS = ["#C9FF5D", "#4305FE", "#FE05D9"];
 const DIFF = 90;
 
 export default function TradeButton({ token, onClick }: any) {
-  return (
+  const { isMobile } = useUserAgent();
+  const [isEnter, setIsEnter] = useState(isMobile);
+  return isEnter ? (
     <motion.div
       key={token.id}
       initial={{
@@ -18,9 +22,12 @@ export default function TradeButton({ token, onClick }: any) {
       transition={{
         duration: 0.1,
         ease: "linear",
-        repeat: 30
+        repeat: isMobile ? 30 : Infinity
       }}
       onClick={onClick}
+      onMouseLeave={() => {
+        setIsEnter(false);
+      }}
       className={`button ${styles.Button}`}
     >
       <motion.div
@@ -33,12 +40,22 @@ export default function TradeButton({ token, onClick }: any) {
         transition={{
           duration: 0.5,
           ease: "linear",
-          repeat: 6
+          repeat: isMobile ? 6 : Infinity
         }}
         className={styles.Inner}
       >
         Trade
       </motion.div>
     </motion.div>
+  ) : (
+    <button
+      className={`button ${styles.Button}`}
+      style={{ backgroundColor: COLORS[0] }}
+      onMouseEnter={() => {
+        setIsEnter(true);
+      }}
+    >
+      Trade
+    </button>
   );
 }

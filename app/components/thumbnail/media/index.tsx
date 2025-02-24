@@ -33,10 +33,14 @@ export default function Media({
             videoProgressStyle={videoProgressStyle}
           />
         ) : (
-          <img
-            className={styles.tokenImg}
-            src={data.tokenImg || "/img/token-placeholder.png"}
-            style={imgStyle}
+          <div
+            className={styles.TokenImg}
+            style={{
+              ...imgStyle,
+              backgroundImage: `url(${
+                data.tokenImg || "/img/token-placeholder.png"
+              })`
+            }}
           />
         )}
       </div>

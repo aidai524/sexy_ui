@@ -3,11 +3,6 @@
   padding-top: 70px;
 }
 
-.TrendBanner {
-  display: flex;
-  justify-content: center;
-}
-
 .Content {
   height: calc(100vh - 126px);
   display: flex;

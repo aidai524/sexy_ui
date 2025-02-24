@@ -1,6 +1,5 @@
 import Header from "./header";
 import List from "./list";
-import TrendBanner from "../../trends/components/banner";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { LaunchType } from "@/app/store/use-projects-new";
 import styles from "./index.module.css";
@@ -11,9 +10,7 @@ export default function Laptop() {
   return (
     <div className={styles.Container}>
       <Header />
-      <div className={styles.TrendBanner}>
-        <TrendBanner />
-      </div>
+
       <div className={styles.Content}>
         {Object.keys(LaunchType).map((item, i) => (
           <List
