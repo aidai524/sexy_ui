@@ -3,7 +3,7 @@ import "croppie/croppie.css";
 
 import styles from "./upload.module.css";
 import { upload } from "@/app/utils";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import CircleLoading from "../icons/loading";
 import UploadBox from "./upload-box";
 import { fail } from "@/app/utils/toast";
@@ -41,7 +41,7 @@ const StyleMaps = {
   others: [styles.Others, styles.OthersImg]
 };
 
-export default function Upload({
+export function Upload({
   fileList: defaultFileList,
   setFileList: setDefaultFileList,
   accept = "image/*",
@@ -49,14 +49,14 @@ export default function Upload({
   percent = 1.5,
   scala = 2,
   cropper = false
-}: Props) {
+}: Props, ref: React.Ref<any>) {
   const [isUplaod, setIsUpload] = useState(false);
   const [fileList, setFileList] = useState<any>(defaultFileList || []);
   const input = useRef<ImageUploaderRef>(null);
 
   const uploadImg = useCallback(
     async (file: File) => {
-      if (file.size > 10 * 1024 * 1024) {
+      if (file.size > 10 * 1000 * 1000) {
         fail("File size too large");
         return {
           url: ""
@@ -139,6 +139,10 @@ export default function Upload({
     }
   }, [mergedFiles]);
 
+  useImperativeHandle(ref, () => ({
+    open: onUpload,
+  }));
+
   return (
     <div className={styles.Container}>
       <div className={styles.uploadBox}>
@@ -170,8 +174,8 @@ export default function Upload({
             </div>
           )}
           {fileType === "video" && (
-            <div className={styles.videoBox}>
-              <video className={styles.imgPreview} controls>
+            <div className={styles.videoBox} onClick={onUpload}>
+              <video className={styles.imgPreview} style={{ pointerEvents: "none" }} >
                 <source
                   src={mergedFiles[0].url}
                   type={"video/" + getVideoExt(mergedFiles[0].url)}
@@ -196,3 +200,6 @@ export default function Upload({
     </div>
   );
 }
+
+
+export default forwardRef(Upload);

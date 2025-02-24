@@ -161,27 +161,6 @@ export default function Create({
         throw "Create token error";
       }
 
-      const _showBuyInToken = await getTransaction(
-        connection,
-        hash,
-        token.address as string,
-        userInfo.address
-      );
-
-      if (_showBuyInToken) {
-        const pointByVolume = await getPointByVolume(
-          Big(_showBuyInToken)
-            .div(10 ** SOL.tokenDecimals)
-            .toFixed(SOL.tokenDecimals),
-          "sexy"
-        );
-
-        console.log('pointByVolume:', pointByVolume)
-
-        setPointByVolume(pointByVolume)
-      }
-      
-      
 
       const isSuccess = await onCreateTokenSuccess();
       if (isSuccess) {

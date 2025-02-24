@@ -1,8 +1,9 @@
 import style from "./index.module.css";
 import MainBtn from "@/app/components/mainBtn";
 import type { Project } from "@/app/type";
+
 import { httpGet } from "@/app/utils";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { shareToX } from "@/app/utils/share";
 import { useMessage } from "@/app/context/messageContext";
@@ -10,6 +11,8 @@ import { mapDataToProject } from "@/app/utils/mapTo";
 import Modal from "@/app/components/modal";
 import { useRouter } from "next/navigation";
 import { numberFormatter } from "@/app/utils/common";
+// @ts-ignore
+import confetti from "canvas-confetti";
 
 interface Props {
   show: boolean;
@@ -61,6 +64,17 @@ function SuccessModal({
 }) {
   const { isMobile } = useUserAgent();
   const router = useRouter();
+
+  useEffect(() => {
+    if (token) {
+      confetti({
+        particleCount: 100,
+        spread: 100,
+        origin: { y: 0.8 },
+        zIndex: 99999
+      });
+    }
+  }, [token]);
 
   return (
     <div className={style.main} style={{ width: isMobile ? "90vw" : 432 }}>
