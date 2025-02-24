@@ -8,6 +8,7 @@ import RightArrowWrap from "@/app/sections/smart/components/RightArrowWrap";
 import { useRouter } from "next/navigation";
 import { SmartMoneyAddress, CopyTraderAddress } from "@/app/services/copyTrade";
 import { numberFormatter } from "@/app/utils/common";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function CopyTradeCard(props: {
   smartMoniesInfo: SmartMoneyAddress | null;
@@ -15,14 +16,16 @@ export default function CopyTradeCard(props: {
 }) {
   const router = useRouter();
   const { smartMoniesInfo, copyTradersUserInfo } = props;
+  const { isMobile } = useUserAgent();
   return (
-    <div className={styles.container}>
+    <div className={isMobile ? styles.container : styles.containerPC}>
       <div className={styles.title}>
         <span>Copied PRFM</span>
         <div
           onClick={() => {
             router.push("/smartDetail");
           }}
+          style={{cursor: 'pointer'}}
         >
           <RightArrowWrap />
         </div>

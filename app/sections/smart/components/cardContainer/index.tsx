@@ -6,8 +6,10 @@ import CopyCardEmpty from '@/app/sections/smart/components/mCopyCardEmpty'
 import { useAccount } from '@/app/hooks/useAccount'
 import CopyTrade from '@/app/services/copyTrade'
 import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
+import { useUserAgent } from "@/app/context/user-agent";
 export default function CardContainer() {
   const { address: walletAddress } = useAccount();
+  const { isMobile } = useUserAgent();
   const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
   const CopyTradeService = new CopyTrade();
   const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<CopyTraderAddress | null>(null);
@@ -28,8 +30,8 @@ export default function CardContainer() {
     getSmartMoniesInfo();
     getCopyTradeDetails();
   }, [walletAddress]);
-  const isTopTrader = copyTradersUserInfo?.isTopTrader;
-  // const isTopTrader = true;
+  // const isTopTrader = copyTradersUserInfo?.isTopTrader;
+  const isTopTrader = true;
   const isCopyier = copyTradersUserInfo && copyTradersUserInfo?.tradeInfo?.buys > 0;
 
   // if (!walletAddress) {
@@ -37,7 +39,7 @@ export default function CardContainer() {
   // }
   
   return (
-    <div className={styles.container + ' ' + (isTopTrader ? styles.topTraderContainer : styles.copyTradeContainer)}>
+    <div className={isMobile ? styles.container : styles.containerPC + ' ' + (isTopTrader ? styles.topTraderContainer : styles.copyTradeContainer)}>
        {
         isTopTrader ? (
           <>

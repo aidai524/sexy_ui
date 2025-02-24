@@ -14,6 +14,7 @@ const RewardPage = dynamic(() => import("@/app/sections/mining"));
 const ProfileCom = dynamic(() => import("@/app/sections/profile"));
 const DetailPage = dynamic(() => import("@/app/sections/detail"));
 const MessagePage = dynamic(() => import("@/app/sections/messages/laptop"));
+const SmartPage = dynamic(() => import("@/app/smart/page"));
 
 export default function Laptop({ children }: any) {
   const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
@@ -34,6 +35,7 @@ export default function Laptop({ children }: any) {
         {pathname === "/" && <Main />}{" "}
         {pathname === "/reward" && <RewardPage />}
         {pathname === "/create" && <CreatePage />}
+        {pathname === "/smart" && <SmartPage />}
         {pathname === "/memes" && <MemesPage />}
         {pathname === "/profile/user" && (
           <ProfileCom
