@@ -1,6 +1,7 @@
-import { Popup } from "antd-mobile";
 import styles from "./index.module.css";
-import MainBtn from "@/app/components/mainBtn";
+import Modal from "../../modal";
+import { Switch } from "antd-mobile";
+import { useSetting } from "@/app/store/use-setting";
 
 interface Props {
   show: boolean;
@@ -18,22 +19,15 @@ export default function Mobile({
   onHide
 }: Props) {
   // const [inputData, setInputData] = useState(slipData)
-
+  const settingStore: any = useSetting();
   return (
-    <Popup
-      visible={show}
-      onMaskClick={() => {
-        onHide && onHide();
-      }}
+    <Modal
+      open={show}
       onClose={() => {
         onHide && onHide();
       }}
-      bodyStyle={{
-        borderTopLeftRadius: "8px",
-        borderTopRightRadius: "8px",
-        paddingTop: 10,
-        paddingBottom: 10
-      }}
+      animation="popup"
+      forceNoCloseIcon={true}
     >
       <div className={styles.main}>
         <div
@@ -77,7 +71,7 @@ export default function Mobile({
           })}
         </div>
 
-        <div className={styles.inputBox}>
+        {/* <div className={styles.inputBox}>
           <input
             value={slipData}
             onChange={(e) => {
@@ -88,16 +82,35 @@ export default function Mobile({
             placeholder="Custom"
           />
           <div className={styles.percent}>%</div>
+        </div> */}
+        <div className={styles.ProtectionWrapper}>
+          <div className={styles.ProtectionItem}>
+            <div style={{ width: 180 }}>Enable front-running protection:</div>
+            <div className={styles.ProtectionAction}>
+              <span>On</span>
+              <Switch
+                checked={settingStore.jitoable}
+                style={{
+                  "--checked-color": "#FBCA04",
+                  "--height": "20px",
+                  "--width": "36px"
+                }}
+                onChange={(val) => {
+                  settingStore.set({
+                    jitoable: val
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <div className={styles.ProtectionDesc}>
+            front-running protection decreases the chances of bots from
+            front-running your buys. you can use high slippage with
+            front-running protection turned on. we recommend setting a tip
+            amount of at least 0.01 SOL with front-running protection enabled.
+          </div>
         </div>
-
-        <MainBtn
-          onClick={() => {
-            onHide && onHide();
-          }}
-        >
-          Okay
-        </MainBtn>
       </div>
-    </Popup>
+    </Modal>
   );
 }
