@@ -1,15 +1,33 @@
 .container {
    padding-top: 30px;
 }
+
+.containerPC {
+    padding-top: 70px !important;
+}
+
+
+@media (max-width: 1025px) {
+    .topTraderContainer {
+        display: flex;
+        gap: 12px;
+        padding-top: 12px;
+        margin-bottom: 16px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none; 
+    }
+}
+@media (min-width: 1026px) {
+   
 .topTraderContainer {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
     padding-top: 12px;
     margin-bottom: 16px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none; 
+    }
 }
 
 .copyTradeContainer {
@@ -18,5 +36,4 @@
     padding-top: 12px;
     margin-bottom: 16px;
     width: 100%;
-
 }

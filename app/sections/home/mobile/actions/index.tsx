@@ -104,12 +104,6 @@ export default function Actions({
               !isMobile && styles.PcItem
             }`}
             onClick={async () => {
-              if (token.isLike || disabled) return;
-              if (!window.sexAddress) {
-                window.connect();
-                return;
-              }
-
               await actionLikeTrigger({
                 data: token,
                 onShare: showShare
@@ -118,6 +112,7 @@ export default function Actions({
             }}
             isLiked={token.isLike}
             like={token.launched_like}
+            disabled={disabled}
             id={token.id}
           />
 

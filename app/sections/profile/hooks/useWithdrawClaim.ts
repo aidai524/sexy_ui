@@ -7,11 +7,11 @@ import bs58 from "bs58";
 import { useAccount } from "@/app/hooks/useAccount";
 
 interface WithdrawClaimParams {
-  address: string;
+  // address: string;
   amount: number;
   chain: string;
-  receiver: string;
-  id: string;
+  // receiver: string;
+  // id: string;
   walletAddress: string;
 }
 
@@ -21,11 +21,11 @@ export const useWithdrawClaim = () => {
   const { walletProvider } = useAccount();
   
   const handleWithdrawClaim = async ({
-    address,
+    // address,
     amount,
     chain,
-    receiver,
-    id,
+    // receiver,
+    // id,
     walletAddress
   }: WithdrawClaimParams) => {
     try {
@@ -42,11 +42,11 @@ export const useWithdrawClaim = () => {
       const signatureBase58 = bs58.encode(signature);
 
       const res = await CopyTradeService.claimProfit({
-        address,
+        // address,
         amount,
         chain,
-        id,
-        receiver,
+        // id,
+        receiver: walletAddress,
         sig: signatureBase58,
         timestamp,
         type: 3,
@@ -54,14 +54,14 @@ export const useWithdrawClaim = () => {
       });
 
       if (res.code === 200) {
-        success("Operation successful", { maskStyle: { zIndex: 1001 } });
+        success("Claim success", { maskStyle: { zIndex: 1001 } });
         return true;
       } else {
         fail(res?.message, { maskStyle: { zIndex: 1001 } });
         return false;
       }
     } catch (e: any) {
-      fail(e?.message || "Swap tokens failed", { maskStyle: { zIndex: 1001 } });
+      fail(e?.message || "Claim failed", { maskStyle: { zIndex: 1001 } });
       return false;
     } finally {
       setIsLoading(false);

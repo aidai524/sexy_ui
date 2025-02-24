@@ -5,7 +5,7 @@ import SearchBar from "@/app/components/search-bar";
 import Tips from "./tips";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
-import clsx from 'clsx';
+import clsx from "clsx";
 
 export default function PageHeader({
   onBack,
@@ -23,9 +23,10 @@ export default function PageHeader({
   return (
     <div className={`${styles.Container} ${className}`} style={style}>
       {from === "profile" && <></>}
-      {(isOther || ["setting", "create", "messages", "profile"].includes(from)) && (
+      {(isOther ||
+        ["setting", "create", "messages", "profile"].includes(from)) && (
         <button
-          className={clsx('button', backButtonClassName)}
+          className={clsx("button", backButtonClassName)}
           onClick={() => {
             if (typeof onBack === "function") {
               onBack();
@@ -58,11 +59,17 @@ export default function PageHeader({
         <SimpleAvatar
           icon={userInfo?.icon}
           onClick={() => {
+            if (!window.sexAddress) {
+              window.connect();
+              return;
+            }
             router.push("/profile");
           }}
         />
       )}
-      {["trends", "reward", "home", "smart", "memes"].includes(from) && <Tips />}
+      {["trends", "reward", "home", "smart", "memes"].includes(from) && (
+        <Tips />
+      )}
       {["setting", "create", "messages"].includes(from) && (
         <div
           className={styles.Title}
