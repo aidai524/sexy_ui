@@ -119,22 +119,23 @@ export default function TopTraderDetailM() {
     return userInfo;
   };
 
-  const centerNode = {
+  const centerNode = useMemo(() => ({
     id: currentUserInfo?.address || "",
     name: currentUserInfo?.name || "",
     image: currentUserInfo?.icon || defaultAvatar
-  };
+  }), [currentUserInfo?.address, currentUserInfo?.name, currentUserInfo?.icon]);
 
-  const topCopiers = smartMoniesInfo?.topCopiers?.map((item: any) => {
-    const userInfo = getUserInfo(item.address);
-    return {
-      id: item.address,
-      name: userInfo?.name,
-      image: userInfo?.icon,
-      pnl: item.pnl
-    };
-  });
-  const satellites = topCopiers || [];
+  const satellites = useMemo(() => {
+    return smartMoniesInfo?.topCopiers?.map((item: any) => {
+      const userInfo = getUserInfo(item.address);
+      return {
+        id: item.address,
+        name: userInfo?.name,
+        image: userInfo?.icon,
+        pnl: item.pnl
+      };
+    }) || [];
+  }, [smartMoniesInfo?.topCopiers]);
 
   return (
     <div className={styles.container}>

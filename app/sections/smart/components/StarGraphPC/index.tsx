@@ -27,7 +27,7 @@ interface NodeType extends d3.SimulationNodeDatum {
   pnl?: number;
 }
 
-const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
+const StarGraph: React.FC<StarGraphProps> = React.memo(({ centerNode, satellites }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -264,6 +264,6 @@ const StarGraph: React.FC<StarGraphProps> = ({ centerNode, satellites }) => {
       <svg ref={svgRef} />
     </div>
   );
-};
+});
 
 export default StarGraph;
