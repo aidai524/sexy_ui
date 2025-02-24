@@ -18,7 +18,7 @@ import {
 import { useAccount } from "@/app/hooks/useAccount";
 import { useCopyTimes } from "@/app/store/useCopyTimes";
 
-export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
+export default function CoppiedAction({ show, onClose, copiedInfo, address }: any) {
   const copyTimesStore: any = useCopyTimes();
   const { isLoading, handleCopyTrade } = useCopyTrade();
   const { userInfo: currentUserInfo } = useAuth();
@@ -249,7 +249,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     if(isAutoCloseChecked){
       res = await handleCopyTrade({
         walletAddress: walletAddress || currentUserInfo?.address,
-        copiedAddress: copiedInfo?.address,
+        copiedAddress: copiedInfo?.address || address,
         copyAmount,
         onceCopyAmount,
         "tps": [
@@ -268,7 +268,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     }else{
       res = await handleCopyTrade({
         walletAddress: walletAddress || currentUserInfo?.address,
-        copiedAddress: copiedInfo?.address,
+        copiedAddress: copiedInfo?.address || address,
         copyAmount,
         onceCopyAmount
       });
@@ -306,7 +306,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
             <span style={{ color: "#C9FF5D" }}>
               &nbsp;@
               {formatLongText(copiedInfo?.name) ||
-                formatAddress(copiedInfo?.address) ||
+                formatAddress(copiedInfo?.address || address) ||
                 "FlipN"}
             </span>
           </div>
