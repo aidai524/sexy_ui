@@ -11,7 +11,9 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
   const { userInfo } = useUser();
   const { address: walletAddress } = useAccount();
   const { smartMoniesInfo, copyTradersUserInfo } = props;
-  const canClaim = Number(copyTradersUserInfo?.carryFee || '0') - Number(copyTradersUserInfo?.claimed || '0');
+  const canClaim =
+    Number(copyTradersUserInfo?.carryFee || "0") -
+    Number(copyTradersUserInfo?.claimed || "0");
   return (
     <div className={styles.container}>
       {/* title & copyier amount */}
@@ -23,28 +25,28 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
             </div>
         </div>
         <span className={styles.copyierAmount}>
-            <CopyierIconBlack />
-            <span className={styles.copyierAmountValue}>{copyTradersUserInfo?.copied}</span>
+          <CopyierIconBlack />
+          <span className={styles.copyierAmountValue}>
+            {copyTradersUserInfo?.copied}
+          </span>
         </span>
       </div>
 
       {/* claim amount */}
       <div className={styles.claimAmountContainer}>
         <div className={styles.claimAmountDetails}>
-            <h3 className={styles.claimAmountDetailsTitle}>Your Profit Share</h3>
-            <p className={styles.claimAmountValueContainer}>
-                <span className={styles.claimAmountValue}>{canClaim}</span>
-                <span className={styles.claimAmountCurrency}>SOL</span>
-            </p>
+          <h3 className={styles.claimAmountDetailsTitle}>Your Profit Share</h3>
+          <p className={styles.claimAmountValueContainer}>
+            <span className={styles.claimAmountValue}>{canClaim}</span>
+            <span className={styles.claimAmountCurrency}>SOL</span>
+          </p>
         </div>
-       {
-        canClaim > 0 && (
+        {canClaim > 0 && (
           <div className={styles.claimAmountButton}>
             <ClaimIcon />
             <span className={styles.claimAmountButtonText}>Claim</span>
           </div>
-        )
-       }
+        )}
       </div>
     </div>
   );

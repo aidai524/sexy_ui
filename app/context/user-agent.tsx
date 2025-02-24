@@ -2,6 +2,7 @@
 
 import React, { useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
+import useIsWindowVisible from "@/app/hooks/use-is-window-visible";
 
 const UserAgentContext = React.createContext<any | null>(null);
 
@@ -11,6 +12,7 @@ export const UserAgentProvider: React.FC<{
   const [isMobile, setIsMobile] = useState<boolean>();
   const [innerHeight, setInnerHeight] = useState<number>(0);
   const [innerWidth, setInnerWidth] = useState<number>(0);
+  const isWindowVisible = useIsWindowVisible();
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -31,7 +33,9 @@ export const UserAgentProvider: React.FC<{
   }, []);
 
   return (
-    <UserAgentContext.Provider value={{ isMobile, innerHeight, innerWidth }}>
+    <UserAgentContext.Provider
+      value={{ isWindowVisible, isMobile, innerHeight, innerWidth }}
+    >
       {isMobile !== undefined && children}
     </UserAgentContext.Provider>
   );

@@ -88,7 +88,12 @@ export default function Actions({
                 type={token.isSuperLike ? "primary" : "normal"}
               />
             </button>
-            <span>{token.prePaid}</span>
+            <span>
+              {numberFormatter(token.prePaid, 1, true, {
+                isShort: true,
+                isShortUppercase: true
+              }) || 0}
+            </span>
           </div>
         </>
       ) : (
@@ -129,7 +134,12 @@ export default function Actions({
             >
               <HolderIcon />
             </button>
-            <span>{totalHolders}</span>
+            <span>
+              {numberFormatter(totalHolders, 1, true, {
+                isShort: true,
+                isShortUppercase: true
+              }) || 0}
+            </span>
           </div>
           <div
             className={styles.Item}
@@ -144,7 +154,12 @@ export default function Actions({
             >
               <TxIcon />
             </button>
-            <span>{token.tx || 0}</span>
+            <span>
+              {numberFormatter(token.tx, 1, true, {
+                isShort: true,
+                isShortUppercase: true
+              }) || 0}
+            </span>
           </div>
         </>
       )}
@@ -162,7 +177,12 @@ export default function Actions({
           >
             <CommentIcon size={26} />
           </button>
-          <span>{token.comment || 0}</span>
+          <span>
+            {numberFormatter(token.comment, 1, true, {
+              isShort: true,
+              isShortUppercase: true
+            }) || 0}
+          </span>
         </div>
       )}
       <div

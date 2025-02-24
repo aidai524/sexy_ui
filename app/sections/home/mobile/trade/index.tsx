@@ -7,7 +7,7 @@ export default function Trade({ token, isCurrent, onClick }: any) {
   const mc = useMcWithPump(token);
   return (
     <div className={`${styles.Container}`} onClick={onClick}>
-      {token.bondingProgress !== 100 ? (
+      {token.bondingProgress !== 100 && token.status !== 3 ? (
         <div>
           <div className={styles.McWrapper}>
             <div className={styles.McBox}>

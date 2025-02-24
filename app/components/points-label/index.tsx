@@ -5,13 +5,14 @@ import { httpAuthGet } from "@/app/utils";
 import { numberFormatter } from "@/app/utils/common";
 import { useAuth } from "@/app/context/auth";
 import { useRouter } from "next/navigation";
-
+import { useUserAgent } from "@/app/context/user-agent";
 export default function PointsLabel({ id, reverse = false, bg }: any) {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { accountRefresher, userInfo } = useAuth();
   const timer = useRef<any>();
+  const { isWindowVisible } = useUserAgent();
 
   const init = async () => {
     timer.current && clearTimeout(timer.current);
@@ -30,12 +31,16 @@ export default function PointsLabel({ id, reverse = false, bg }: any) {
   };
 
   useEffect(() => {
+    if (!isWindowVisible) {
+      clearTimeout(timer.current);
+      return;
+    }
     if (accountRefresher) {
       init();
     } else {
       setAmount(0);
     }
-  }, [accountRefresher]);
+  }, [accountRefresher, isWindowVisible]);
 
   return (
     <div

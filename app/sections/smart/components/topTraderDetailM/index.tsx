@@ -1,7 +1,15 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import styles from './index.module.css'
-import { LeftBackIcon, ShareIcon, CopyierIconWithBg, RightTopArrowIcon, TopTraderCrown, CopierTextIcon, Performance } from '@/app/sections/trends/components/top-traders/icons'
-import { useUser } from '@/app/store/useUser';
+import React, { useState, useEffect, useMemo } from "react";
+import styles from "./index.module.css";
+import {
+  LeftBackIcon,
+  ShareIcon,
+  CopyierIconWithBg,
+  RightTopArrowIcon,
+  TopTraderCrown,
+  CopierTextIcon,
+  Performance
+} from "@/app/sections/trends/components/top-traders/icons";
+import { useUser } from "@/app/store/useUser";
 import { defaultAvatar } from "@/app/utils/config";
 import { formatAddress} from "@/app/utils";
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -46,84 +54,87 @@ export default function TopTraderDetailM() {
       };
     }, []);
 
-    useEffect(() => {
-      const loadCopierImages = async () => {
-        if (!smartMoniesInfo?.copiers?.length) return;
-        
-        const copierAddresses = smartMoniesInfo.copiers;
-        const copierInfos = await Promise.all(
-          copierAddresses.map(copier => getUserInfoWithCache(copier))
-        );
-        
-        const images = copierInfos
-          .map(info => info?.icon)
-          .filter(Boolean); // Remove any undefined/null values
-        
-        setCopierImages(images);
-      };
-      
-      loadCopierImages();
-    }, [smartMoniesInfo?.copiers, getUserInfoWithCache]);
+  useEffect(() => {
+    const loadCopierImages = async () => {
+      if (!smartMoniesInfo?.copiers?.length) return;
 
-    const getSmartMoniesInfo = async () => {
-        if (address) {
-            const { data } = await CopyTradeService.getSmartMoniesAddress({address, chain: 'solana'});
-            setSmartMoniesInfo(data);
-            console.log(data,'smartMoniesInfo');
-        }
-      }
-      const getCopyTradersUserInfo = async () => {
-        if (address) {
-            const { data } = await CopyTradeService.getCopyTradersUserInfo({address, chain: 'solana'});
-            setCopyTradersUserInfo(data);
-            console.log(data,'copyTradersUserInfo');
-        }
-      }
-      useEffect(() => {
-        getSmartMoniesInfo();
-        getCopyTradersUserInfo();
-      }, [address]);
+      const copierAddresses = smartMoniesInfo.copiers;
+      const copierInfos = await Promise.all(
+        copierAddresses.map((copier) => getUserInfoWithCache(copier))
+      );
 
-    const formatPnl = (pnl: string) => {
-        if (pnl == '0') {
-          return '0';
-        }
-        if (pnl.startsWith('-')) {
-          return '-' + numberFormatter(Math.abs(Number(pnl)), 4, true);
-        }
-        return '+' + numberFormatter(pnl, 4, true);
+      const images = copierInfos.map((info) => info?.icon).filter(Boolean); // Remove any undefined/null values
+
+      setCopierImages(images);
+    };
+
+    loadCopierImages();
+  }, [smartMoniesInfo?.copiers, getUserInfoWithCache]);
+
+  const getSmartMoniesInfo = async () => {
+    if (address) {
+      const { data } = await CopyTradeService.getSmartMoniesAddress({
+        address,
+        chain: "solana"
+      });
+      setSmartMoniesInfo(data);
+      console.log(data, "smartMoniesInfo");
     }
-
-    const formatWinRate = (winRate: string) => {
-      if (winRate == '0') {
-        return '0%';
-      }
-      return new Big(winRate).times(100).toFixed(2) + '%';
+  };
+  const getCopyTradersUserInfo = async () => {
+    if (address) {
+      const { data } = await CopyTradeService.getCopyTradersUserInfo({
+        address,
+        chain: "solana"
+      });
+      setCopyTradersUserInfo(data);
+      console.log(data, "copyTradersUserInfo");
     }
+  };
+  useEffect(() => {
+    getSmartMoniesInfo();
+    getCopyTradersUserInfo();
+  }, [address]);
 
-   const getUserInfo:any = async (address: string) => {
-      if (!address) return null;
-      const userInfo = await fecthUserInfo(address);
-      return userInfo;
+  const formatPnl = (pnl: string) => {
+    if (pnl == "0") {
+      return "0";
     }
-   
+    if (pnl.startsWith("-")) {
+      return "-" + numberFormatter(Math.abs(Number(pnl)), 4, true);
+    }
+    return "+" + numberFormatter(pnl, 4, true);
+  };
 
-    const centerNode = {
-        id: currentUserInfo?.address || '',
-        name: currentUserInfo?.name || '',
-        image: currentUserInfo?.icon || defaultAvatar
-      };
-      
-    const topCopiers = smartMoniesInfo?.topCopiers?.map((item:any)=>{
-         const userInfo = getUserInfo(item.address);
-         return {
-          id: item.address,
-          name: userInfo?.name,
-          image: userInfo?.icon,
-          pnl: item.pnl,
-         }
-      })
-      const satellites = topCopiers || [];
+  const formatWinRate = (winRate: string) => {
+    if (winRate == "0") {
+      return "0%";
+    }
+    return new Big(winRate).times(100).toFixed(2) + "%";
+  };
+
+  const getUserInfo: any = async (address: string) => {
+    if (!address) return null;
+    const userInfo = await fecthUserInfo(address);
+    return userInfo;
+  };
+
+  const centerNode = {
+    id: currentUserInfo?.address || "",
+    name: currentUserInfo?.name || "",
+    image: currentUserInfo?.icon || defaultAvatar
+  };
+
+  const topCopiers = smartMoniesInfo?.topCopiers?.map((item: any) => {
+    const userInfo = getUserInfo(item.address);
+    return {
+      id: item.address,
+      name: userInfo?.name,
+      image: userInfo?.icon,
+      pnl: item.pnl
+    };
+  });
+  const satellites = topCopiers || [];
 
   return (
     <div className={styles.container}>
@@ -163,35 +174,47 @@ export default function TopTraderDetailM() {
           <div className={styles.gridItem}>
             <div className={styles.label}>1D PNL</div>
             <div className={styles.value}>
-              <span className={styles.amount}>{formatPnl(smartMoniesInfo?.pnl1D || '0')}</span>
+              <span className={styles.amount}>
+                {formatPnl(smartMoniesInfo?.pnl1D || "0")}
+              </span>
               <span className={styles.unit}>SOL</span>
             </div>
           </div>
           <div className={styles.gridItem}>
             <div className={styles.label}>1D Win Rate</div>
-            <div className={styles.value}>{formatWinRate(smartMoniesInfo?.winRate1D || '0')}</div>
+            <div className={styles.value}>
+              {formatWinRate(smartMoniesInfo?.winRate1D || "0")}
+            </div>
           </div>
           <div className={styles.gridItem}>
             <div className={styles.label}>7D PNL</div>
             <div className={styles.value}>
-              <span className={styles.amount}>{formatPnl(smartMoniesInfo?.pnl7D || '0')}</span>
+              <span className={styles.amount}>
+                {formatPnl(smartMoniesInfo?.pnl7D || "0")}
+              </span>
               <span className={styles.unit}>SOL</span>
             </div>
           </div>
           <div className={styles.gridItem}>
             <div className={styles.label}>7D Win Rate</div>
-            <div className={styles.value}>{formatWinRate(smartMoniesInfo?.winRate7D || '0')}</div>
+            <div className={styles.value}>
+              {formatWinRate(smartMoniesInfo?.winRate7D || "0")}
+            </div>
           </div>
           <div className={styles.gridItem}>
             <div className={styles.label}>30D PNL</div>
             <div className={styles.value}>
-              <span className={styles.amount}>{formatPnl(smartMoniesInfo?.pnl30D || '0')}</span>
+              <span className={styles.amount}>
+                {formatPnl(smartMoniesInfo?.pnl30D || "0")}
+              </span>
               <span className={styles.unit}>SOL</span>
             </div>
           </div>
           <div className={styles.gridItem}>
             <div className={styles.label}>30D Win Rate</div>
-            <div className={styles.value}>{formatWinRate(smartMoniesInfo?.winRate30D || '0')}</div>
+            <div className={styles.value}>
+              {formatWinRate(smartMoniesInfo?.winRate30D || "0")}
+            </div>
           </div>
         </div>
       </div>
@@ -201,14 +224,20 @@ export default function TopTraderDetailM() {
           <div className={styles.gridItem}>
             <div className={styles.label}>Buy/sell</div>
             <div className={styles.value}>
-              <span className={styles.amount}>{copyTradersUserInfo?.tradeInfo?.buys || 0}</span>
+              <span className={styles.amount}>
+                {copyTradersUserInfo?.tradeInfo?.buys || 0}
+              </span>
               <span>/</span>
-              <span className={styles.sellAmount}>{copyTradersUserInfo?.tradeInfo?.sells || 0}</span>
+              <span className={styles.sellAmount}>
+                {copyTradersUserInfo?.tradeInfo?.sells || 0}
+              </span>
             </div>
           </div>
           <div className={styles.gridItem}>
             <div className={styles.label}>Last Trade</div>
-            <div className={styles.value}>{formatDateTime(smartMoniesInfo?.lastTradeAt)}</div>
+            <div className={styles.value}>
+              {formatDateTime(smartMoniesInfo?.lastTradeAt)}
+            </div>
           </div>
         </div>
       </div>
@@ -220,40 +249,41 @@ export default function TopTraderDetailM() {
         </div>
         <div className={styles.copierDetail}>
           <div className={styles.copierAmount}>
-            <CopyierIconWithBg/>
-            <span style={{color: '#fff'}}>{smartMoniesInfo?.copiers?.length || 0}</span>
+            <CopyierIconWithBg />
+            <span style={{ color: "#fff" }}>
+              {smartMoniesInfo?.copiers?.length || 0}
+            </span>
             <span>
-              <RightTopArrowIcon/>
-              <span style={{marginLeft: '4px'}}>{smartMoniesInfo?.newCopiers?.length || 0}</span>
+              <RightTopArrowIcon />
+              <span style={{ marginLeft: "4px" }}>
+                {smartMoniesInfo?.newCopiers?.length || 0}
+              </span>
             </span>
           </div>
           <div>
-          {
-            copierImages.map((imageUrl, index) => (
+            {copierImages.map((imageUrl, index) => (
               <img
-                key={'sate' + index}
+                key={"sate" + index}
                 className={styles.copierTokenImg}
-                alt='copier tokens'
+                alt="copier tokens"
                 src={imageUrl || defaultAvatar}
               />
-            ))
-          }
+            ))}
+          </div>
+
+          {SHOW_COPY_TRADE && (
+            <CoppiedModal
+              copiedInfo={currentUserInfo}
+              show={showModal}
+              onClose={() => {
+                setShowModal(false);
+                setRefreshNum(refreshNum + 1);
+              }}
+            />
+          )}
         </div>
-      </div>
-
-     
-
-      {SHOW_COPY_TRADE && (
-        <CoppiedModal
-          copiedInfo={currentUserInfo}
-          show={showModal}
-          onClose={() => {
-            setShowModal(false);
-            setRefreshNum(refreshNum + 1);
-          }}
-        />
-      )}
     </div>
+    
      {/* button */}
      {isOther && (
         <div className={styles.btnGroup}>
@@ -279,6 +309,4 @@ export default function TopTraderDetailM() {
       <TopTraderDetailShareConfirm currentUserInfo={currentUserInfo} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo} show={showShareModal} onClose={() => setShowShareModal(false)} />
     </div>
   );
-};
-
-
+}

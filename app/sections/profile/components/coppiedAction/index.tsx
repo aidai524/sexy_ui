@@ -16,8 +16,10 @@ import {
   QuestionIcon
 } from "@/app/sections/trends/components/top-traders/icons";
 import { useAccount } from "@/app/hooks/useAccount";
+import { useCopyTimes } from "@/app/store/useCopyTimes";
 
 export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
+  const copyTimesStore: any = useCopyTimes();
   const { isLoading, handleCopyTrade } = useCopyTrade();
   const { userInfo: currentUserInfo } = useAuth();
   const { address: walletAddress } = useAccount();
@@ -114,6 +116,12 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
     const viewportMeta = document.querySelector('meta[name="viewport"]');
     if (!show) {
       resetForm();
+    } else {
+      const cachedCopyTimes = copyTimesStore.copyTimes;
+      if (cachedCopyTimes) {
+        setCopyTimes(cachedCopyTimes);
+        setIsManualCopyTimes(true);
+      }
     }
     viewportMeta?.setAttribute(
       "content",
@@ -268,6 +276,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo }: any) {
 
 
     if (res) {
+      copyTimesStore.set({ copyTimes: copyTimes });
       onClose();
     }
   };
@@ -565,7 +574,7 @@ export const AdvancedModal = ({
           style={{ marginTop: "20px", marginBottom: "31px" }}
         >
           <div className={styles.advancedModalHeaderLeft}>
-            <span className={styles.advancedModalHeaderTitle}>Auto Close</span>
+            <span className={styles.advancedModalHeaderTitle}>Auto-close</span>
           </div>
           <Switch
             style={{
@@ -590,7 +599,7 @@ export const AdvancedModal = ({
           }
         >
           <div className={styles.profit}>
-            <span className={styles.profitTitle}>Profit</span>
+            <span className={styles.profitTitle}>Take Profit</span>
             <span className={styles.profitValue}>
               <input
                 disabled={!isAutoCloseChecked}
@@ -604,7 +613,7 @@ export const AdvancedModal = ({
             </span>
           </div>
           <div className={styles.loss}>
-            <span className={styles.lossTitle}>Loss</span>
+            <span className={styles.lossTitle}>Stop Loss</span>
             <span className={styles.lossValue}>
               <span className={styles.lossValuePrefix}>-</span>
               <input

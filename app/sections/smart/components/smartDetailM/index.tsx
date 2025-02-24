@@ -27,46 +27,56 @@ export default function SmartDetailM() {
   const { isMobile } = useUserAgent();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const address = searchParams.get('address');
-  const referrer = searchParams.get('referrer');
+  const address = searchParams.get("address");
+  const referrer = searchParams.get("referrer");
   const isOther = address !== currentAddress && address;
   const { userInfo: currentUserInfo } = useUserInfo(address || "");
   const CopyTradeService = new CopyTrade();
-  const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
-  const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<CopyTraderAddress | null>(null);
+  const [smartMoniesInfo, setSmartMoniesInfo] =
+    useState<SmartMoneyAddress | null>(null);
+  const [copyTradersUserInfo, setCopyTradersUserInfo] =
+    useState<CopyTraderAddress | null>(null);
   const [shareVisible, setShareVisible] = useState(false);
   const reqAddress = isOther ? address : currentAddress;
   const getSmartMoniesInfo = async () => {
     if (reqAddress) {
-        const { data } = await CopyTradeService.getSmartMoniesAddress({address: reqAddress, chain: 'solana'});
-        setSmartMoniesInfo(data);
-        console.log(data,'smartMoniesInfo');
+      const { data } = await CopyTradeService.getSmartMoniesAddress({
+        address: reqAddress,
+        chain: "solana"
+      });
+      setSmartMoniesInfo(data);
+      console.log(data, "smartMoniesInfo");
     }
-  }
+  };
   const getCopyTradersUserInfo = async () => {
     if (reqAddress) {
-        const { data } = await CopyTradeService.getCopyTradersUserInfo({address: reqAddress, chain: 'solana'});
-        setCopyTradersUserInfo(data);
-        console.log(data,'copyTradersUserInfo');
+      const { data } = await CopyTradeService.getCopyTradersUserInfo({
+        address: reqAddress,
+        chain: "solana"
+      });
+      setCopyTradersUserInfo(data);
+      console.log(data, "copyTradersUserInfo");
     }
-  }
+  };
   useEffect(() => {
     getSmartMoniesInfo();
     getCopyTradersUserInfo();
   }, [reqAddress]);
-  
+
   return (
     <div className={styles.container}>
       {/*  */}
       <div className={styles.back}>
-        <div onClick={() => {
-           if (referrer === 'copy-trader-share') {
-            router.push('/');
-           } else {
-            router.back();
-           }
-        }}>
-         <LeftBackIcon />
+        <div
+          onClick={() => {
+            if (referrer === "copy-trader-share") {
+              router.push("/");
+            } else {
+              router.back();
+            }
+          }}
+        >
+          <LeftBackIcon />
         </div>
         <div className={styles.userInfo}>
           <img
@@ -88,24 +98,32 @@ export default function SmartDetailM() {
       <SmartDetailContent copyTradersUserInfo={copyTradersUserInfo || null} />
       {/* copy list */}
       <Coppied isOther={false} />
-      <CopyTradeShare copyTradersUserInfo={copyTradersUserInfo || null} visible={shareVisible} onClose={() => setShareVisible(false)} />
+      <CopyTradeShare
+        copyTradersUserInfo={copyTradersUserInfo || null}
+        visible={shareVisible}
+        onClose={() => setShareVisible(false)}
+      />
     </div>
   );
 }
 
-export const SmartDetailContent = ({copyTradersUserInfo}: {copyTradersUserInfo: CopyTraderAddress | null}) => {
-    const formatPnl = (pnl: string) => {
-        if (pnl == '0') {
-          return '0';
-        }
-        if (pnl.startsWith('-')) {
-          return '-' + numberFormatter(Math.abs(Number(pnl)), 4, true);
-        }
-        return '+' + numberFormatter(pnl, 4, true);
+export const SmartDetailContent = ({
+  copyTradersUserInfo
+}: {
+  copyTradersUserInfo: CopyTraderAddress | null;
+}) => {
+  const formatPnl = (pnl: string) => {
+    if (pnl == "0") {
+      return "0";
     }
-    const isGtZero = (str: string) => {
-        return Number(str) > 0;
+    if (pnl.startsWith("-")) {
+      return "-" + numberFormatter(Math.abs(Number(pnl)), 4, true);
     }
+    return "+" + numberFormatter(pnl, 4, true);
+  };
+  const isGtZero = (str: string) => {
+    return Number(str) > 0;
+  };
   return (
     <div className={styles.smartDetailContent}>
       <h3 className={styles.smartDetailContentTitle}>Copied PRFM</h3>
@@ -114,34 +132,61 @@ export const SmartDetailContent = ({copyTradersUserInfo}: {copyTradersUserInfo: 
           <div className={styles.statItem}>
             <div className={styles.statLabel}>Total PnL</div>
             <div className={styles.statValueBig}>
-              <span className={isGtZero(copyTradersUserInfo?.tradeInfo?.totalPNL || '0') ?styles.highlight: styles.shortlight}>{formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || '0')}</span>
+              <span
+                className={
+                  isGtZero(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")
+                    ? styles.highlight
+                    : styles.shortlight
+                }
+              >
+                {formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")}
+              </span>
               <span className={styles.detailValueCurrency}>SOL</span>
             </div>
           </div>
           <div className={styles.statItem}>
             <div className={styles.statLabel}>ROI</div>
-            <div className={styles.statValue}>{+(copyTradersUserInfo?.tradeInfo?.roi || 0) * 100}%</div>
+            <div className={styles.statValue}>
+              {+(copyTradersUserInfo?.tradeInfo?.roi || 0) * 100}%
+            </div>
           </div>
         </div>
         <div className={styles.statsRow}>
           <div className={styles.statItem}>
             <div className={styles.statLabel}>Copy Trade Count</div>
-            <div className={styles.statValue}>{copyTradersUserInfo?.copyTrades || 0}</div>
+            <div className={styles.statValue}>
+              {copyTradersUserInfo?.copyTrades || 0}
+            </div>
           </div>
           <div className={styles.statItem}>
             <div className={styles.statLabel}>Win Rate</div>
-            <div className={styles.statValue}>{+(copyTradersUserInfo?.tradeInfo?.winRate || 0) * 100}%</div>
+            <div className={styles.statValue}>
+              {+(copyTradersUserInfo?.tradeInfo?.winRate || 0) * 100}%
+            </div>
           </div>
         </div>
         <div className={styles.statsRow}>
           <div className={styles.statItem}>
             <div className={styles.statLabel}>Open Position</div>
-            <div className={styles.statValue}>{numberFormatter(copyTradersUserInfo?.tradeInfo?.tokenPosition, 2, true)} SOL</div>
+            <div className={styles.statValue}>
+              {numberFormatter(
+                copyTradersUserInfo?.tradeInfo?.tokenPosition,
+                2,
+                true
+              )}{" "}
+              SOL
+            </div>
           </div>
           <div className={styles.statItem}>
             <div className={styles.statLabel}>Current PnL</div>
             <div className={styles.statValue}>
-              <span className={styles.highlight}>{numberFormatter(copyTradersUserInfo?.tradeInfo?.currentPNL, 2, true)}</span>
+              <span className={styles.highlight}>
+                {numberFormatter(
+                  copyTradersUserInfo?.tradeInfo?.currentPNL,
+                  2,
+                  true
+                )}
+              </span>
               <span className={styles.detailValueCurrency}>SOL</span>
             </div>
           </div>
