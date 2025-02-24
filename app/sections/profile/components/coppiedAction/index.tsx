@@ -574,7 +574,7 @@ export const AdvancedModal = ({
           style={{ marginTop: "20px", marginBottom: "31px" }}
         >
           <div className={styles.advancedModalHeaderLeft}>
-            <span className={styles.advancedModalHeaderTitle}>Auto Close</span>
+            <span className={styles.advancedModalHeaderTitle}>Auto-close</span>
           </div>
           <Switch
             style={{
@@ -599,7 +599,7 @@ export const AdvancedModal = ({
           }
         >
           <div className={styles.profit}>
-            <span className={styles.profitTitle}>Profit</span>
+            <span className={styles.profitTitle}>Take Profit</span>
             <span className={styles.profitValue}>
               <input
                 disabled={!isAutoCloseChecked}
@@ -613,7 +613,7 @@ export const AdvancedModal = ({
             </span>
           </div>
           <div className={styles.loss}>
-            <span className={styles.lossTitle}>Loss</span>
+            <span className={styles.lossTitle}>Stop Loss</span>
             <span className={styles.lossValue}>
               <span className={styles.lossValuePrefix}>-</span>
               <input

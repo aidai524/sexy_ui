@@ -32,9 +32,9 @@ export default function CardContainer() {
   // const isTopTrader = true;
   const isCopyier = copyTradersUserInfo && copyTradersUserInfo?.tradeInfo?.buys > 0;
 
-  if (!walletAddress) {
-    return null
-  }
+  // if (!walletAddress) {
+  //   return null
+  // }
   
   return (
     <div className={styles.container + ' ' + (isTopTrader ? styles.topTraderContainer : styles.copyTradeContainer)}>
