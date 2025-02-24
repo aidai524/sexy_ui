@@ -144,7 +144,7 @@ export default function useData(launchType: Type) {
     if (!mountedRef.current) return;
 
     initList();
-  }, [launchType]);
+  }, []);
 
   useEffect(() => {
     debounceList();
