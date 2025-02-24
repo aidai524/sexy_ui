@@ -132,14 +132,12 @@ export default function useData(launchType: Type) {
 
   const { run: debounceList } = useDebounceFn(
     () => {
-      if (projectsStore.address !== (address || "")) {
-        projectsStore.clearList(launchType);
-        projectsStore.clearProjects();
-        if (projectsStore.address) {
-          projectsStore.setIndex(launchType, 0);
-        }
-        setIsLoading(true);
+      projectsStore.clearList(launchType);
+      projectsStore.clearProjects();
+      if (projectsStore.address) {
+        projectsStore.setIndex(launchType, 0);
       }
+      setIsLoading(true);
 
       initList();
       mountedRef.current = true;

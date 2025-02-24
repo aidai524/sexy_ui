@@ -220,6 +220,25 @@ class MediaStore {
       };
     });
   }
+
+  public async clearStore() {
+    return new Promise((resolve, reject) => {
+      let request = indexedDB.open(this.dbName);
+
+      request.onerror = () => reject("Error opening database");
+
+      request.onsuccess = (event: any) => {
+        let db = event.target.result;
+        let transaction = db.transaction(this.storeName, "readwrite");
+        let store = transaction.objectStore(this.storeName);
+        let clearRequest = store.clear();
+
+        clearRequest.onsuccess = () =>
+          resolve(`Cleared all data in ${this.storeName}`);
+        clearRequest.onerror = () => reject("Error clearing object store");
+      };
+    });
+  }
 }
 
 const mediaStore = new MediaStore({
