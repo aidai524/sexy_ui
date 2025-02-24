@@ -139,12 +139,12 @@ export const useProjects = create(
         set({ [type + "Index"]: index });
 
         if (needUpdateProjects.length > 0) {
-          const projects = await httpGet(
+          const res = await httpGet(
             "/project/ids?id_list=" + needUpdateProjects.join(",")
           );
           const currentProjects = get().projects;
 
-          projects.forEach((item: any) => {
+          res.data?.forEach((item: any) => {
             if (!currentProjects[item.id]) return;
 
             currentProjects[item.id] = {

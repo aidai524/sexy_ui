@@ -24,6 +24,19 @@ export default function useData(launchType: Type) {
     if (fetchingRef.current) return;
     try {
       fetchingRef.current = true;
+
+      if (address && prePageRef.current.length) {
+        const res = await httpGet(
+          "/project/ids?id_list=" + prePageRef.current.join(",")
+        );
+        console.log(32, res.data);
+        projectsStore.setProjects(res.data, address);
+        projectsStore.setList(launchType, prePageRef.current, true);
+        setHasNext(true);
+        prePageRef.current = [];
+        return;
+      }
+
       const cachedList = projectsStore.getList(launchType);
       const res = await httpGet(
         `/project/list?limit=${limit}&launchType=${
@@ -41,11 +54,6 @@ export default function useData(launchType: Type) {
       const ids = res.data?.list.map((item: any) => item.id) || [];
 
       projectsStore.setProjects(res.data?.list, address);
-
-      if (address && prePageRef.current.length) {
-        projectsStore.setList(launchType, prePageRef.current, true);
-        return;
-      }
 
       projectsStore.setList(
         launchType,
