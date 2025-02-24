@@ -25,8 +25,8 @@ export const useTokenPanelStatus = create(
         return (
           params.showDetail ||
           params.showComments ||
-          (params.showFlip && tab === "preLaunch") ||
-          (params.showTrade && tab === "launching")
+          params.showFlip ||
+          params.showTrade
         );
       },
       setTab(tab: string) {
