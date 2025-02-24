@@ -9,6 +9,7 @@ import {
   CopierTextIcon,
   Performance
 } from "@/app/sections/trends/components/top-traders/icons";
+import LeftArrowWrap from "../LeftArrowWrap";
 import { useUser } from "@/app/store/useUser";
 import { defaultAvatar } from "@/app/utils/config";
 import { formatAddress} from "@/app/utils";
@@ -16,9 +17,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import useUserInfo from '@/app/hooks/useUserInfo';
 import CopyTrade from '@/app/services/copyTrade';
 import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
-import StarGraph from '../StarGraph';
+import StarGraph from '../StarGraphPC';
 import { SHOW_COPY_TRADE } from '@/app/utils/config';
-import CoppiedModal from '@/app/sections/profile/components/coppiedAction';
+import CoppiedModal from '@/app/sections/profile/components/coppiedActionPc';
 import { numberFormatter } from '@/app/utils/common';
 import { formatDateTime } from '@/app/utils/index';
 import Big from 'big.js';
@@ -119,6 +120,7 @@ export default function TopTraderDetailM() {
     return userInfo;
   };
 
+  // 
   const centerNode = useMemo(() => ({
     id: currentUserInfo?.address || "",
     name: currentUserInfo?.name || "",
@@ -139,151 +141,143 @@ export default function TopTraderDetailM() {
 
   return (
     <div className={styles.container}>
-      {/*  */}
-      <div className={styles.back}>
-        <div onClick={() => router.back()}>
-          <LeftBackIcon />
-        </div>
-        <div className={styles.userInfo}>
-          <img
-            className={styles.avatar}
-            src={currentUserInfo?.icon || defaultAvatar}
-            alt=""
-          />
-          <div className={styles.userName}>
-            {formatAddress(
-              currentUserInfo?.name ||
-                currentUserInfo?.address ||
-                address ||
-                "FlipN"
-            )}
-          </div>
-        </div>
-        <div onClick={() => setShowShareModal(true)}>
-          <ShareIcon />
-        </div>
-      </div>
+      <div onClick={() => router.back()}>
+      <LeftArrowWrap />
+       </div>
+      
+      {/* per */}
+      <div className={styles.performanceAndGraph}>
       {/* charts */}
       <StarGraph centerNode={centerNode} satellites={satellites} />
-      {/* performance */}
-      <div className={styles.performance}>
-        <div className={styles.header}>
-          <Performance />
-          <TopTraderCrown />
-        </div>
-        <div className={styles.grid}>
-          <div className={styles.gridItem}>
-            <div className={styles.label}>1D PNL</div>
-            <div className={styles.value}>
-              <span className={styles.amount}>
-                {formatPnl(smartMoniesInfo?.pnl1D || "0")}
-              </span>
-              <span className={styles.unit}>SOL</span>
-            </div>
-          </div>
-          <div className={styles.gridItem}>
-            <div className={styles.label}>1D Win Rate</div>
-            <div className={styles.value}>
-              {formatWinRate(smartMoniesInfo?.winRate1D || "0")}
-            </div>
-          </div>
-          <div className={styles.gridItem}>
-            <div className={styles.label}>7D PNL</div>
-            <div className={styles.value}>
-              <span className={styles.amount}>
-                {formatPnl(smartMoniesInfo?.pnl7D || "0")}
-              </span>
-              <span className={styles.unit}>SOL</span>
-            </div>
-          </div>
-          <div className={styles.gridItem}>
-            <div className={styles.label}>7D Win Rate</div>
-            <div className={styles.value}>
-              {formatWinRate(smartMoniesInfo?.winRate7D || "0")}
-            </div>
-          </div>
-          <div className={styles.gridItem}>
-            <div className={styles.label}>30D PNL</div>
-            <div className={styles.value}>
-              <span className={styles.amount}>
-                {formatPnl(smartMoniesInfo?.pnl30D || "0")}
-              </span>
-              <span className={styles.unit}>SOL</span>
-            </div>
-          </div>
-          <div className={styles.gridItem}>
-            <div className={styles.label}>30D Win Rate</div>
-            <div className={styles.value}>
-              {formatWinRate(smartMoniesInfo?.winRate30D || "0")}
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* buy sell */}
-      <div className={styles.performance}>
-        <div className={styles.grid}>
-          <div className={styles.gridItem}>
-            <div className={styles.label}>Buy/sell</div>
-            <div className={styles.value}>
-              <span className={styles.amount}>
-                {copyTradersUserInfo?.tradeInfo?.buys || 0}
-              </span>
-              <span>/</span>
-              <span className={styles.sellAmount}>
-                {copyTradersUserInfo?.tradeInfo?.sells || 0}
-              </span>
-            </div>
-          </div>
-          <div className={styles.gridItem}>
-            <div className={styles.label}>Last Trade</div>
-            <div className={styles.value}>
-              {formatDateTime(smartMoniesInfo?.lastTradeAt)}
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {/* copier */}
-      <div className={styles.performance}>
-        <div className={styles.header}>
-          <CopierTextIcon />
-        </div>
-        <div className={styles.copierDetail}>
-          <div className={styles.copierAmount}>
-            <CopyierIconWithBg />
-            <span style={{ color: "#fff" }}>
-              {smartMoniesInfo?.copiers?.length || 0}
-            </span>
-            <span>
-              <RightTopArrowIcon />
-              <span style={{ marginLeft: "4px" }}>
-                {smartMoniesInfo?.newCopiers?.length || 0}
-              </span>
-            </span>
-          </div>
-          <div>
-            {copierImages.map((imageUrl, index) => (
+      <div className={styles.performanceAndGraphRight}>
+        {/* performance */}
+        <div className={styles.performance}>
+            {/*  */}
+          <div className={styles.back}>
+            
+            <div className={styles.userInfo}>
               <img
-                key={"sate" + index}
-                className={styles.copierTokenImg}
-                alt="copier tokens"
-                src={imageUrl || defaultAvatar}
+                className={styles.avatar}
+                src={currentUserInfo?.icon || defaultAvatar}
+                alt=""
               />
-            ))}
-          </div>
+              <div className={styles.userName}>
+                {formatAddress(
+                  currentUserInfo?.name ||
+                    currentUserInfo?.address ||
+                    address ||
+                    "FlipN"
+                )}
+              </div>
+              <TopTraderCrown />
 
-          {SHOW_COPY_TRADE && (
-            <CoppiedModal
-              copiedInfo={currentUserInfo}
-              show={showModal}
-              onClose={() => {
-                setShowModal(false);
-                setRefreshNum(refreshNum + 1);
-              }}
-            />
-          )}
+            </div>
+            <div onClick={() => setShowShareModal(true)}>
+              <ShareIcon />
+            </div>
+          </div>
+          <div className={styles.header}>
+            <Performance />
+          </div>
+          <div className={styles.grid}>
+            <div className={styles.gridItem}>
+              <div className={styles.label}>1D PNL</div>
+              <div className={styles.value}>
+                <span className={styles.amount}>
+                  {formatPnl(smartMoniesInfo?.pnl1D || "0")}
+                </span>
+                <span className={styles.unit}>SOL</span>
+              </div>
+            </div>
+            <div className={styles.gridItem}>
+              <div className={styles.label}>1D Win Rate</div>
+              <div className={styles.value}>
+                {formatWinRate(smartMoniesInfo?.winRate1D || "0")}
+              </div>
+            </div>
+            <div className={styles.gridItem}>
+              <div className={styles.label}>7D PNL</div>
+              <div className={styles.value}>
+                <span className={styles.amount}>
+                  {formatPnl(smartMoniesInfo?.pnl7D || "0")}
+                </span>
+                <span className={styles.unit}>SOL</span>
+              </div>
+            </div>
+            <div className={styles.gridItem}>
+              <div className={styles.label}>7D Win Rate</div>
+              <div className={styles.value}>
+                {formatWinRate(smartMoniesInfo?.winRate7D || "0")}
+              </div>
+            </div>
+            <div className={styles.gridItem}>
+              <div className={styles.label}>30D PNL</div>
+              <div className={styles.value}>
+                <span className={styles.amount}>
+                  {formatPnl(smartMoniesInfo?.pnl30D || "0")}
+                </span>
+                <span className={styles.unit}>SOL</span>
+              </div>
+            </div>
+            <div className={styles.gridItem}>
+              <div className={styles.label}>30D Win Rate</div>
+              <div className={styles.value}>
+                {formatWinRate(smartMoniesInfo?.winRate30D || "0")}
+              </div>
+            </div>
+            <div className={styles.gridItem}>
+              <div className={styles.label}>Buy/sell</div>
+              <div className={styles.value}>
+                <span className={styles.amount}>
+                  {copyTradersUserInfo?.tradeInfo?.buys || 0}
+                </span>
+                <span>/</span>
+                <span className={styles.sellAmount}>
+                  {copyTradersUserInfo?.tradeInfo?.sells || 0}
+                </span>
+              </div>
+            </div>
+            <div className={styles.gridItem}>
+              <div className={styles.label}>Last Trade</div>
+              <div className={styles.value}>
+                {formatDateTime(smartMoniesInfo?.lastTradeAt)}
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
+        {/* copier */}
+        <div className={styles.performance}>
+          <div className={styles.header}>
+            <CopierTextIcon />
+          </div>
+          <div className={styles.copierDetail}>
+            <div className={styles.copierAmount}>
+              <CopyierIconWithBg />
+              <span style={{ color: "#fff" }}>
+                {smartMoniesInfo?.copiers?.length || 0}
+              </span>
+              <span>
+                <RightTopArrowIcon />
+                <span style={{ marginLeft: "4px" }}>
+                  {smartMoniesInfo?.newCopiers?.length || 0}
+                </span>
+              </span>
+            </div>
+           
+
+          </div>
+          <div className={styles.copierTokenList}>
+              {copierImages.map((imageUrl, index) => (
+                <img
+                  key={"sate" + index}
+                  className={styles.copierTokenImg}
+                  alt="copier tokens"
+                  src={imageUrl || defaultAvatar}
+                />
+              ))}
+            </div>
+        </div>
     
      {/* button */}
      {isOther && (
@@ -307,7 +301,20 @@ export default function TopTraderDetailM() {
         </div>
       )}
 
-      <TopTraderDetailShareConfirm currentUserInfo={currentUserInfo} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo} show={showShareModal} onClose={() => setShowShareModal(false)} />
+    {SHOW_COPY_TRADE && (
+              <CoppiedModal
+                copiedInfo={currentUserInfo}
+                show={showModal}
+                address={address}
+                onClose={() => {
+                  setShowModal(false);
+                  setRefreshNum(refreshNum + 1);
+                }}
+              />
+            )}
+      </div>
+      </div>
+      <TopTraderDetailShareConfirm  shareName={address} currentUserInfo={currentUserInfo} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo} show={showShareModal} onClose={() => setShowShareModal(false)} />
     </div>
   );
 }

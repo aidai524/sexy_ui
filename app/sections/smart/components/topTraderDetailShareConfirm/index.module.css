@@ -9,6 +9,15 @@
     padding: 20px 25px;
 }
 
+.mainPC {
+    width: 429px;
+    min-height: 420px;
+    background: #252328;
+    border: 1px solid #3B3B3B;
+    border-radius: 10px;
+    padding: 40px 25px 20px;
+}
+
 .titleText {
     display: flex;
     align-items: center;
@@ -101,3 +110,12 @@
   .divider {
     margin: 0 4px;
   }
+
+
+
+.CloseButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}

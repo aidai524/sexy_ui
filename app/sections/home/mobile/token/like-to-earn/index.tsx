@@ -4,7 +4,6 @@ import { useAuth } from "@/app/context/auth";
 import { useMemo } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useProjects } from "@/app/store/use-projects-new";
-import { findIndex } from "lodash-es";
 
 export default function LikeToEarn({ token }: any) {
   const homeTabStore: any = useHomeTab();
@@ -21,13 +20,17 @@ export default function LikeToEarn({ token }: any) {
         className={`${styles.Container} ${styles.All} button`}
         onClick={() => {
           const genesisList = projectStore.getList("genesis");
-          const _index = findIndex(genesisList, token.id);
+          const _index = genesisList.findIndex((i: number) => i === token.id);
+          console.log(25, _index, genesisList, token.id);
           if (_index !== -1) {
             projectStore.setIndex("genesis", _index);
           } else {
             const genesisIndex = projectStore.getIndex("genesis");
-            genesisList.splice(genesisIndex, 1, token.id);
-            projectStore.setList("genesis", JSON.stringify(genesisList));
+            genesisList.splice(genesisIndex, 0, token.id);
+            projectStore.setList(
+              "genesis",
+              JSON.parse(JSON.stringify(genesisList))
+            );
           }
 
           setTimeout(() => {

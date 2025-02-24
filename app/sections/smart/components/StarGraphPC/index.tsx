@@ -38,7 +38,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(({ centerNode, satellites
     d3.select(svgRef.current).selectAll("*").remove();
 
     const width = containerRef.current.clientWidth;
-    const height = 400;
+    const height = containerRef.current.clientHeight;
 
     // Prepare data
     const nodes: NodeType[] = [
@@ -46,7 +46,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(({ centerNode, satellites
         id: centerNode.id,
         name: centerNode.name,
         image: centerNode.image,
-        size: 68,
+        size: 124,
         fixed: true,
         fx: width / 2,
         fy: height / 2,
@@ -55,7 +55,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(({ centerNode, satellites
         id: sat?.id || '',
         name: sat?.name || '',
         image: sat?.image || '',
-        size: 28,
+        size: 36,
         pnl: sat?.pnl || 0
       })),
     ];
@@ -63,7 +63,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(({ centerNode, satellites
     const links = satellites.map(sat => ({
       source: centerNode.id,
       target: sat?.id || '',
-      distance: Math.random() * 100 + 120,
+      distance: Math.random() * 200 + 250,
     }));
 
     // Create SVG
@@ -76,17 +76,17 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(({ centerNode, satellites
       .force('link', d3.forceLink(links)
         .id((d: any) => d.id)
         .distance((d: any) => d.distance))
-      .force('charge', d3.forceManyBody().strength(-200))  
-      .force('center', d3.forceCenter(width / 2, height * 0.35))  
-      .force('collision', d3.forceCollide().radius((d: any) => d.size / 2 + 20))  
-      .force('x', d3.forceX(width / 2).strength(0.1))
-      .force('y', d3.forceY(height * 0.35).strength(0.15))  
+      .force('charge', d3.forceManyBody().strength(-500))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('collision', d3.forceCollide().radius((d: any) => d.size / 2 + 50))
+      .force('x', d3.forceX(width / 2).strength(0.08))
+      .force('y', d3.forceY(height / 2).strength(0.1))
       .force('boundary', () => {
         for (let node of nodes) {
           if (!node.fixed) {
             const r = node.size / 2;
             node.x = Math.max(r, Math.min(width - r, node.x ?? 0));
-            node.y = Math.max(r, Math.min(height - r - 40, node.y ?? 0));  
+            node.y = Math.max(r, Math.min(height - r, node.y ?? 0));
           }
         }
       });
@@ -210,7 +210,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(({ centerNode, satellites
       link.attr('d', (d: any) => {
         const dx = d.target.x - d.source.x;
         const dy = d.target.y - d.source.y;
-        const dr = Math.sqrt(dx * dx + dy * dy) * 1.02;  
+        const dr = Math.sqrt(dx * dx + dy * dy) * 2.5;  
         
         const angle = Math.atan2(dy, dx);
         
@@ -232,8 +232,15 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(({ centerNode, satellites
     const handleResize = () => {
       if (containerRef.current) {
         const newWidth = containerRef.current.clientWidth;
-        svg.attr('width', newWidth);
-        simulation.force('center', d3.forceCenter(newWidth / 2, height / 2));
+        const newHeight = containerRef.current.clientHeight;
+        svg.attr('width', newWidth)
+           .attr('height', newHeight);
+        
+        // Update center node position
+        nodes[0].fx = newWidth / 2;
+        nodes[0].fy = newHeight / 2;
+        
+        simulation.force('center', d3.forceCenter(newWidth / 2, newHeight / 2));
         simulation.alpha(0.3).restart();
       }
     };
@@ -253,7 +260,6 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(({ centerNode, satellites
     <div 
       ref={containerRef} 
       className={styles.container} 
-      style={{ width: '100vw', height: '400px' }}
     >
       <svg ref={svgRef} />
     </div>

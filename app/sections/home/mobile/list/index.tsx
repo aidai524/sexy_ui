@@ -19,7 +19,7 @@ export default function List({
   const {
     getIndex,
     isLoading,
-    list,
+    getList,
     hasNext,
     onChangeIndex,
     updateProject,
@@ -28,6 +28,7 @@ export default function List({
   } = useData(type);
 
   const index = getIndex(type);
+  const list = getList(type);
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
   const { innerHeight, innerWidth } = useUserAgent();
