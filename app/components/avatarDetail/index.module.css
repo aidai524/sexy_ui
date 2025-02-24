@@ -14,7 +14,8 @@
 }
 
 .tokenImg {
-    width: 25px;
+    width: 100%;
+    height: 100%;
     border-radius: 44px;
     object-fit: cover;
     object-position: center;
