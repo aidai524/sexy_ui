@@ -538,11 +538,13 @@ export async function upload(
     _file = bloBData[0];
   }
 
-  const newFileName =
-    generateRandomString(5) +
-    (fileName?.length > 10 ? fileName.slice(-10) : fileName);
+  const newFileName = generateRandomString(5);
+  const fileExt = fileName?.split('.').pop() || '';
+  const finalFileName = `${newFileName}${fileExt ? '.' + fileExt : ''}`;
 
-  return postUpload(_file, newFileName, file.type);
+  console.log('finalFileName:', finalFileName)
+
+  return postUpload(_file, finalFileName, file.type);
 }
 
 const s3_dir = process.env.NEXT_PUBLIC_S3_DIR || "flipn/stg/";
@@ -722,8 +724,6 @@ export async function getTransaction(
     commitment: "confirmed",
     maxSupportedTransactionVersion: 0
   });
-
-  console.log('transactionDetails:', transactionDetails)
 
   if (transactionDetails?.meta) {
     const { preTokenBalances, postTokenBalances } = transactionDetails?.meta;

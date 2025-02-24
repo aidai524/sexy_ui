@@ -69,6 +69,7 @@ export default function VideoPlayer({
       return;
     }
 
+    let timeOut: any = null;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -100,9 +101,13 @@ export default function VideoPlayer({
             //   setIsShow(false);
             //   videoRef.current?.pause();
             // }
-            autoPlaySetting && videoRef.current?.play();
+
+            timeOut = setTimeout(() => {
+              autoPlaySetting && videoRef.current?.play();
+            }, 100);
           } else {
             setIsShow(false);
+            clearTimeout(timeOut);
             videoRef.current?.pause();
           }
         });

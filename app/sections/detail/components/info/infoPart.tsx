@@ -1,6 +1,6 @@
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
-import { formatAddress, formatDateEn, simplifyNum, timeAgo } from "@/app/utils";
+import { checkFileType, formatAddress, formatDateEn, simplifyNum, timeAgo } from "@/app/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -21,6 +21,7 @@ import HeartIcon from "@/app/components/icons/heart";
 import ClockIcon from "@/app/components/icons/clock";
 import { useCountDown } from "ahooks";
 import { numberFormatter } from "@/app/utils/common";
+import FullPlay from "./fullPlay";
 
 interface Props {
   data: Project;
@@ -49,13 +50,12 @@ export default function InfoPart({
 }: Props) {
   const { address } = useAccount();
   const router = useRouter();
-
+  const [showFullPlay, setShowFullPlay] = useState(false);
   const [timeLeft, { days, hours, minutes, seconds }] = useCountDown({
     targetDate: data.timeLeft,
     interval: 1000
   });
 
-  const { isMobile } = useUserAgent();
 
   if (!data) {
     return <Empty text="No info" />;
@@ -69,9 +69,13 @@ export default function InfoPart({
           <div className={styles.tokenSummaryInfo}>
             <div className={styles.tokenSummaryTitle}>{data.tokenName}</div>
             <div className={styles.tokenSummaryDesc}>
-              <div className={styles.tokenSummaryIcon}>
-                <VideoIcon />
-              </div>
+              {
+                checkFileType(data.tokenImg) === 'video' && <div onClick={() => {
+                  setShowFullPlay(true);
+                }} className={styles.tokenSummaryIcon}>
+                  <VideoIcon />
+                </div>
+              }
               <div className={styles.tokenSummaryDescText}>
                 <TokenTags token={data} />
               </div>
@@ -187,6 +191,10 @@ export default function InfoPart({
           </div>
         </div>
       )}
+
+      {
+        checkFileType(data.tokenImg) === 'video' && <FullPlay src={data.tokenImg as string} show={showFullPlay} onClose={() => setShowFullPlay(false)} />
+      } 
     </div>
   );
 }
