@@ -31,15 +31,16 @@ export default function List({ type, isCurrentTab }: any) {
   const {
     getIndex,
     isLoading,
-    list,
     refresher,
     hasNext,
+    getList,
     onChangeIndex,
     updateProject,
     queryAndUpdateDetail,
     getProjectById
   } = useData(type);
   const index = getIndex(type);
+  const list = getList(type);
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
   const tokenPanelStatusStore: any = useTokenPanelStatus();
