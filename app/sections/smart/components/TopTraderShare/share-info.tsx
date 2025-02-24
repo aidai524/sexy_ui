@@ -10,7 +10,7 @@ import { defaultAvatar } from "@/app/utils/config";
 
 
 const TopTraderShareInfoCard = (props: any, ref: any) => {
-  const { shareLink, selectedItems, currentUserInfo } = props;
+  const { shareLink, selectedItems, currentUserInfo, shareName } = props;
 
   const { userInfo } = useUser();
   console.log(userInfo,currentUserInfo, 'userInfo');
@@ -41,7 +41,7 @@ const TopTraderShareInfoCard = (props: any, ref: any) => {
           <div className={styles.avatarAndName}>
             <img src={currentUserInfo?.icon || defaultAvatar} alt="" className={styles.CopyTradeShareInfoCardAvatar}/>
             <div>
-              <div className={styles.CopyTradeShareInfoCardName}>{formatLongText(currentUserInfo?.name || 'FlipN')}</div>
+              <div className={styles.CopyTradeShareInfoCardName}>{formatLongText(currentUserInfo?.name || shareName || 'FlipN')}</div>
               <div><TopTraderCrown /></div>
             </div>
           </div>

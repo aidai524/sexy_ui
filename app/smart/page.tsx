@@ -11,7 +11,8 @@ export default function Create() {
   return (
     <>
     <div className={!isMobile ? styles.containerPC : styles.container}>
-      <PageHeader
+      {
+        isMobile &&  <PageHeader
         title="Top Traders"
         theme="light"
         from="smart"
@@ -19,6 +20,7 @@ export default function Create() {
           background: "#000"
         }}
       />
+      }
       {/* card container */}
       <CardContainer />
     </div>

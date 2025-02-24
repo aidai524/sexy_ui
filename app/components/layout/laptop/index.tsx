@@ -15,6 +15,8 @@ const ProfileCom = dynamic(() => import("@/app/sections/profile"));
 const DetailPage = dynamic(() => import("@/app/sections/detail"));
 const MessagePage = dynamic(() => import("@/app/sections/messages/laptop"));
 const SmartPage = dynamic(() => import("@/app/smart/page"));
+const SmartTopDetailPage = dynamic(() => import("@/app/smartTopDetail/page"));
+const SmartDetailPage = dynamic(() => import("@/app/smartDetail/page"));
 
 export default function Laptop({ children }: any) {
   const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
@@ -48,6 +50,8 @@ export default function Laptop({ children }: any) {
         )}
         {pathname === "/detail" && <DetailPage />}
         {pathname === "/messages" && <MessagePage />}
+        {pathname === "/smartTopDetail" && <SmartTopDetailPage />}
+        {pathname === "/smartDetail" && <SmartDetailPage />}
       </div>
       <Refer userInfo={userInfo} />
     </div>

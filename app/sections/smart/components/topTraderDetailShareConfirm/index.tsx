@@ -6,10 +6,12 @@ import { numberFormatter } from '@/app/utils/common';
 import { formatDateTime } from '@/app/utils/index';
 import Big from 'big.js'
 import TopTraderShareModal from '@/app/sections/smart/components/TopTraderShare/modal';
+import { useUserAgent } from '@/app/context/user-agent';
+import CloseIcon from "@/app/components/icons/modal-close";
 
 
-
-export default function TopTraderDetailShareConfirm({ show, onClose, smartMoniesInfo, copyTradersUserInfo, currentUserInfo }: any) {
+export default function TopTraderDetailShareConfirm({ show, onClose, smartMoniesInfo, copyTradersUserInfo, currentUserInfo, shareName }: any) {
+    const { isMobile } = useUserAgent();
     const [selectedItems, setSelectedItems] = useState<Record<string, {value?: boolean; useValue?: any; title?: string; useValueCurrency?: string; useWhite?: boolean; useExtraValue?: string}>>({});
     const [showShare, setShowShare] = useState(false);
     const handleCheckboxChange = (key: string, value: any) => {
@@ -76,16 +78,29 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
         const selectedValues = Object.values(selectedItems);
         return selectedValues.length == 10 && selectedValues.every(item => item.value);
       };
+
+      const modalConfig = isMobile ? {
+        animation: 'popup',
+        closeStyle: { display: "none" }
+      } : {
+        closeStyle:{ display: "none" },
+        maskClose:false
+      };
+      
   return (
    <>
      <Modal
       open={show}
       onClose={onClose}
-      animation="popup"
-      closeStyle={{ display: "none" }}
+      {...modalConfig}
     >
-      <div className={styles.main}>
-        
+      <div className={isMobile ? styles.main : styles.mainPC}>
+     {!isMobile &&  <div
+                  onClick={onClose}
+                  className={styles.CloseButton}
+                >
+                  <CloseIcon size={35} />
+                </div>}
         <div className={styles.titleText}>
           <span>Shared Data</span>
          <div className={styles.selectAll + ' ' + 'global-checkbox-container'}>
@@ -233,7 +248,7 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
         </div>
       </div>
     </Modal>
-    <TopTraderShareModal show={showShare} onClose={() => setShowShare(false)} selectedItems={selectedItems} currentUserInfo={currentUserInfo} />
+    <TopTraderShareModal shareName={shareName} show={showShare} onClose={() => setShowShare(false)} selectedItems={selectedItems} currentUserInfo={currentUserInfo} />
    </>
   )
 }
