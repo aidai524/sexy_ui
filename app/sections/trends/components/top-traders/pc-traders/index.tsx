@@ -10,6 +10,7 @@ import { numberFormatter } from '@/app/utils/common';
 import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { useRouter } from 'next/navigation';
 import Big from 'big.js';
+import { CrownIcon } from '../icons';
 
 interface Trader {
   avatar: string
@@ -48,8 +49,14 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
 
   return (
     <div className={styles.container}>
+      <div className={styles.crownContainer}>
+        <CrownIcon />{" "}
+        <span className={styles.crownTextContainer}>
+          TOP <span className={styles.crownText}>Trader</span>
+        </span>
+      </div>
       <div className={styles.header}>
-        <div className={styles.headerItem}>Trader</div>
+        <div className={styles.headerItem}>Trader / Coppy Traders</div>
         {/*  */}
        <div className={styles.filterItem}>
         
@@ -58,7 +65,7 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
             </div>
             <span>/</span>
            <div className={styles.headerItem + ' ' + (orderBy === 'winRate1D' ? styles.filterItemContent : '')} onClick={() => handleSort('winRate1D')}>
-              Win Rate <TriangleIcon direction={orderBy === 'winRate1D' ? sortDirection : undefined} highlight={orderBy === 'winRate1D'} />
+              Win Rate <TriangleIcon direction={orderBy === 'winRate1D' ? sortDirection : undefined} highlight={orderBy === 'winRate1D' || orderBy === 'pnl1D'} />
             </div>
        </div>
        {/*  */}
@@ -68,7 +75,7 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
             </div>
             <span>/</span>
            <div className={styles.headerItem + ' ' + (orderBy === 'winRate7D' ? styles.filterItemContent : '')} onClick={() => handleSort('winRate7D')}>
-              Win Rate <TriangleIcon direction={orderBy === 'winRate7D' ? sortDirection : undefined} highlight={orderBy === 'winRate7D'} />
+              Win Rate <TriangleIcon direction={orderBy === 'winRate7D' ? sortDirection : undefined} highlight={orderBy === 'winRate7D' || orderBy === 'pnl7D'} />
             </div>
        </div>
        {/*  */}
@@ -79,7 +86,7 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
             </div>
             <span>/</span>
            <div className={styles.headerItem + ' ' + (orderBy === 'winRate30D' ? styles.filterItemContent : '')} onClick={() => handleSort('winRate30D')}>
-              Win Rate <TriangleIcon direction={orderBy === 'winRate30D' ? sortDirection : undefined} highlight={orderBy === 'winRate30D'} />
+              Win Rate <TriangleIcon direction={orderBy === 'winRate30D' ? sortDirection : undefined} highlight={orderBy === 'winRate30D' || orderBy === 'pnl30D'} />
             </div>
        </div>
       </div>
@@ -150,7 +157,7 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
       <div className={styles.pnl}>
         {
         trader.pnl1D >= 0 ? 
-        numberFormatter(trader.pnl1D, 2, true, { isShort: true, isShortUppercase: true }) : 
+        '+' + numberFormatter(trader.pnl1D, 2, true, { isShort: true, isShortUppercase: true }) : 
         '-' + numberFormatter(Math.abs(trader.pnl1D), 2, true, { isShort: true, isShortUppercase: true })
         } SOL
 
@@ -163,7 +170,7 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
       <div className={styles.pnl}>
         {
         trader.pnl7D >= 0 ? 
-        numberFormatter(trader.pnl7D, 2, true, { isShort: true, isShortUppercase: true }) : 
+        '+' + numberFormatter(trader.pnl7D, 2, true, { isShort: true, isShortUppercase: true }) : 
         '-' + numberFormatter(Math.abs(trader.pnl7D), 2, true, { isShort: true, isShortUppercase: true })
         } SOL
 
@@ -176,7 +183,7 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
       <div className={styles.pnl}>
         {
         trader.pnl30D >= 0 ? 
-        numberFormatter(trader.pnl30D, 2, true, { isShort: true, isShortUppercase: true }) : 
+        '+' + numberFormatter(trader.pnl30D, 2, true, { isShort: true, isShortUppercase: true }) : 
         '-' + numberFormatter(Math.abs(trader.pnl30D), 2, true, { isShort: true, isShortUppercase: true })
         } SOL
 

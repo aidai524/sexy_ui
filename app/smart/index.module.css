@@ -6,3 +6,8 @@
     -ms-overflow-style: none; 
     overflow-x: auto;
   }
+
+.containerPC {
+    width: 1200px;
+    margin: 0 auto;
+}

@@ -9,6 +9,7 @@
     .tip {
         position: absolute;
         height: 16px;
+        z-index: 1000;
         background-color: rgba(64, 64, 64, 1);
         border-radius: 4px;
         line-height: 16px;

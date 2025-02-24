@@ -61,11 +61,13 @@
       .name {
         font-weight: 700;
         font-size: 22px;
+        color: #000;
       }
 
       .ticker {
         margin-top: 10px;
         font-size: 14px;
+        color: #000;
       }
     }
 

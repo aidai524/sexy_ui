@@ -108,7 +108,7 @@ const TraderItem = ({
               activeTab === "winRate30D"
                 ? new Big(getPnlValue()).times(100).toFixed(1) + "%"
                 : getPnlValue() >= 0
-                ? numberFormatter(getPnlValue(), 2, true, {
+                ?'+' + numberFormatter(getPnlValue(), 2, true, {
                     isShort: true,
                     isShortUppercase: true
                   }) + " SOL"
