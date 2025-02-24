@@ -36,11 +36,11 @@ export default function List({
   // const guidingTourStore = useGuidingTour();
   const listRef = useRef<any>();
 
-  // const currentToken = useMemo(() => {
-  //   const id = list[index];
-  //   if (!id) return null;
-  //   return getProjectById(id);
-  // }, [index, list]);
+  const currentToken = useMemo(() => {
+    const id = list[index];
+    if (!id) return null;
+    return getProjectById(id);
+  }, [index, list]);
 
   useEffect(() => {
     const prevent = function (e: any) {
@@ -82,7 +82,7 @@ export default function List({
           left: tabIndex * innerWidth
         }}
       >
-        {/* <div
+        <div
           style={{
             position: "absolute",
             left: 0,
@@ -97,7 +97,7 @@ export default function List({
           <div>
             {type} Len: {list.length}
           </div>
-        </div> */}
+        </div>
         <div
           className={styles.List}
           ref={listRef}

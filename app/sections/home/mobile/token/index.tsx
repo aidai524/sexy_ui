@@ -50,7 +50,7 @@ export default function Token({
         )}
         {token?.id && (
           <div className={styles.Content}>
-            {token.status === 0 && !isPreview && <LikeToEarn />}
+            {token.status === 0 && !isPreview && <LikeToEarn token={token} />}
             <Media
               imgHeight="100%"
               data={token}
