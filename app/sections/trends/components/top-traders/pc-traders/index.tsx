@@ -134,7 +134,7 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
 
   return (
     <div className={styles.traderItem} onClick={() => {
-      router.push("/profile/user?account=" + trader.address + '&from=detail');
+      router.push("/smartTopDetail?address=" + trader.address);
     }}>
       <div className={styles.traderInfo}>
         <div className={styles.avatar}>

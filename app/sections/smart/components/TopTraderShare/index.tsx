@@ -11,10 +11,12 @@ import Modal from '@/app/components/modal';
 import {
   LeftBackIcon,
 } from "@/app/sections/trends/components/top-traders/icons";
+import { useUserAgent } from '@/app/context/user-agent';
+import CloseIcon from "@/app/components/icons/modal-close";
 
 const TopTraderShare = (props: any) => {
-  const { show, onClose, selectedItems, currentUserInfo } = props;
-
+  const { show, onClose, selectedItems, currentUserInfo, shareName } = props;
+  const { isMobile } = useUserAgent();
   const { address } = useAccount();
 
   const cardRef = useRef<any>(null);
@@ -75,16 +77,24 @@ const TopTraderShare = (props: any) => {
   };
 
   return (
-    <div className={styles.CopyTradeShareContainer}>
-        <div className={styles.TopTraderShareHeader} onClick={onClose}>
+    <div className={isMobile ? styles.CopyTradeShareContainer : styles.CopyTradeShareContainerPC}>
+      {
+        isMobile ? (
+          <div className={styles.TopTraderShareHeader} onClick={onClose}>
           <LeftBackIcon />
           <span className={styles.TopTraderShareHeaderTitle}>Share</span>
         </div>
+        ) : (
+          <div className={styles.TopTraderShareHeaderPC} onClick={onClose}>
+            <CloseIcon size={35} />
+          </div>
+        )
+      }
         
       <div ref={cardRef} className={styles.CopyTradeShareCard}>
-        <TopTraderShareInfoCard shareLink={shareLink} selectedItems={selectedItems} currentUserInfo={currentUserInfo} />
+        <TopTraderShareInfoCard shareName={shareName} shareLink={shareLink} selectedItems={selectedItems} currentUserInfo={currentUserInfo} />
       </div>
-      <div className={styles.CopyTradeShareFooter}>
+      <div className={isMobile ? styles.CopyTradeShareFooter : styles.CopyTradeShareFooterPC}>
         <button
           type="button"
           className={styles.AirdropShareButtonDark}

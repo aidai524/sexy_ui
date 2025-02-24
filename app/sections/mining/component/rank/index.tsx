@@ -7,32 +7,46 @@ import { numberFormatter } from "@/app/utils/common";
 import { formatAddress } from "@/app/utils";
 import CircleLoading from "@/app/components/icons/loading";
 import Header from "./header";
+import clsx from 'clsx';
 
-export default function Rank({ rank, list = [], loading }: any) {
+export default function Rank(props: any) {
+  const {
+    rank,
+    list = [],
+    loading,
+    isHeader = true,
+    className,
+    listClassName,
+    itemClassName,
+    itemLeftClassName,
+    itemRightClassName,
+  } = props;
   const { isMobile } = useUserAgent();
 
   return (
     <div
-      className={styles.Container}
+      className={clsx(styles.Container, className)}
       style={{
         padding: isMobile ? "20px 12px" : "0px"
       }}
     >
-      <Header isMobile={isMobile} rank={rank} />
+      {
+        isHeader && (
+          <Header isMobile={isMobile} rank={rank} />
+        )
+      }
       <div
-        className={styles.List}
+        className={clsx(styles.List, listClassName)}
         style={{
           height: isMobile ? "auto" : "calc(100% - 50px)"
         }}
       >
         {list.map((item: any, index: number) => (
           <div
-            className={`${styles.Item} ${
-              isMobile ? styles.MobileItem : styles.LaptopItem
-            }`}
+            className={clsx(styles.Item, isMobile ? styles.MobileItem : styles.LaptopItem, itemClassName)}
             key={index}
           >
-            <div className={styles.ItemLeft}>
+            <div className={clsx(styles.ItemLeft, itemLeftClassName)}>
               <Avatar rank={index + 1} src={item.account_data?.icon} />
               <div style={{ width: 120 }}>
                 <div className={styles.NameWrapper}>
@@ -51,7 +65,7 @@ export default function Rank({ rank, list = [], loading }: any) {
                 </div>
               </div>
             </div>
-            <div className={styles.ItemRight}>
+            <div className={clsx(styles.ItemRight, itemRightClassName)}>
               <span>
                 {numberFormatter(item.minted_amount, 3, true, {
                   isShort: true,

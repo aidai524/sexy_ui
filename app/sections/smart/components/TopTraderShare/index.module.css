@@ -12,6 +12,20 @@
   flex-direction: column;
   justify-content: center;
 }
+
+.CopyTradeShareContainerPC {
+  width: 400px;
+  min-height: 525px;
+  background: transparent;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .CopyTradeShareCard {
   width: 100%;
   min-height: 412px;
@@ -26,6 +40,15 @@
 .CopyTradeShareFooter {
   width: 90%;
   margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 11px;
+}
+
+.CopyTradeShareFooterPC {
+  width: 90%;
+  margin-top: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -341,4 +364,9 @@
   font-weight: 300; 
   color: rgba(255,255,255,.6);
   margin-left: 4px;
+}
+
+
+.TopTraderShareHeaderPC {
+  margin-left: auto;
 }

@@ -32,6 +32,16 @@
   justify-content: center;
 }
 
+.ItemContentFollowX {
+  composes: ItemContent;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .Title {
   color: #fff;
   font-family: Unbounded;
@@ -39,6 +49,22 @@
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+}
+
+.TitleLaptop {
+  composes: Title;
+  text-align: left;
+  width: 100%;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.TitleIcon {
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
 }
 
 .Desc {
@@ -50,6 +76,14 @@
   line-height: normal;
   margin-top: 9px;
 }
+.DescLaptop {
+  composes: Desc;
+  text-align: left;
+  width: 100%;
+  padding-left: 20px;
+  font-weight: 700;
+  margin-top: 5px;
+}
 
 .Num {
   color: #fff;
@@ -60,6 +94,10 @@
   font-weight: 700;
   line-height: normal;
   margin-top: 6px;
+}
+.NumFollowX {
+  composes: Num;
+  margin-top: 0;
 }
 
 .Button {
@@ -78,6 +116,10 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+}
+.ButtonFollowX {
+  composes: Button;
+  margin-top: 0;
 }
 
 .Link {
