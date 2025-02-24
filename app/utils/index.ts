@@ -542,8 +542,6 @@ export async function upload(
   const fileExt = fileName?.split('.').pop() || '';
   const finalFileName = `${newFileName}${fileExt ? '.' + fileExt : ''}`;
 
-  console.log('finalFileName:', finalFileName)
-
   return postUpload(_file, finalFileName, file.type);
 }
 
