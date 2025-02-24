@@ -12,6 +12,7 @@ export default function TokenIcon({
   className
 }: any) {
   const progress = useMemo(() => {
+    if (token.status === 3) return 0;
     if (token.status === 0) {
       return (token.like / 100) * 138.23;
     }
