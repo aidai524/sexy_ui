@@ -23,6 +23,7 @@ const MemesSelect = (props: any) => {
     <Popover
       ref={popoverRef}
       placement={PopoverPlacement.BottomRight}
+      closeDelayDuration={0}
       content={(
         <div className={styles.MemesSelectDropdown}>
           {
@@ -47,7 +48,11 @@ const MemesSelect = (props: any) => {
       <button
         type="button"
         className={clsx(styles.MemesSelectContainer, className)}
-        onClick={() => {}}
+        onClick={() => {
+          if (open) {
+            popoverRef.current?.onClose?.();
+          }
+        }}
       >
         <div className={styles.MemesSelectLabel}>
           {
