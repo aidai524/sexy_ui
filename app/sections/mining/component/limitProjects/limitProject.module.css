@@ -4,11 +4,17 @@
   justify-content: center;
   color: #fff;
   .img {
-    width: 26px;
-    height: 26px;
-    border-radius: 26px;
-    margin-left: -5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    margin-left: -8px;
     border: 2px solid rgba(0, 0, 0, 1);
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.2s ease-in-out;
+  }
+  .img:hover {
+    transform: scale(1.2);
   }
   .more {
     width: 28px;
