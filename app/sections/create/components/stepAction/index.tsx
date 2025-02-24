@@ -6,6 +6,7 @@ import { fontWeight } from "html2canvas/dist/types/css/property-descriptors/font
 
 export default function StepAction({
     step,
+    disabled = false,
     isLoading = false,
     extendBtn,
     btnText = 'Continue',
@@ -13,6 +14,7 @@ export default function StepAction({
     onNext,
 }: {
     step: number;
+    disabled?: boolean;
     isLoading?: boolean;
     extendBtn?: ReactNode;
     btnText?: string;
@@ -35,7 +37,7 @@ export default function StepAction({
 
             {extendBtn}
 
-            <MainBtn style={{ color: '#000', fontWeight: 500, height: '40px', fontSize: '14px' }} isLoading={isLoading} onClick={onNext}>{btnText}</MainBtn>
+            <MainBtn isDisabled={disabled} style={{ color: '#000', fontWeight: 500, height: '40px', fontSize: '14px' }} isLoading={isLoading} onClick={onNext}>{btnText}</MainBtn>
         </div>
     );
 }

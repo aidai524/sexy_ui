@@ -192,26 +192,28 @@ export default forwardRef(function PreviewNode(
         />
       }
 
-      <StepAction
-        step={step}
-        isLoading={isLoading}
-        btnText={step === 4 ? 'Get' : 'Continue'}
-        onBack={() => {
-          onBack();
-        }}
-        extendBtn={
-          step === 4 && <div className={styles.skipBtn} onClick={() => {
-            submit(0)
-          }}>Skip</div>
-        }
-        onNext={async () => {
-          if (step === 3) {
-            onNext();
-          } else {
-            submit(1)
+      {
+        step !== 4 && <StepAction
+          step={step}
+          isLoading={isLoading}
+          btnText={step === 4 ? 'Get' : 'Continue'}
+          onBack={() => {
+            onBack();
+          }}
+          extendBtn={
+            step === 4 && <div className={styles.skipBtn} onClick={() => {
+              submit(0)
+            }}>Skip</div>
           }
-        }}
-      />
+          onNext={async () => {
+            if (step === 3) {
+              onNext();
+            } else {
+              submit(1)
+            }
+          }}
+        />
+      }
 
 
     </div>
