@@ -50,7 +50,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
           { key: 0.1, value: 0.1, id: "level1" },
           { key: 0.5, value: 0.5, id: "level2" },
           { key: 1, value: 1, id: "level3" },
-          { key: +solBalance, value: "Max", id: "level4" }
+          { key: +solBalance, value: +solBalance, id: "level4" }
         ]
       : [
           { key: 0.1, value: 0.1, id: "level1" },
@@ -426,7 +426,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
                     : styles.amountLevelNotActive
                 }
               >
-                {item.key}
+                {item.id === "level4" ? "Max" : item.value}
               </div>
             ))}
           </div>
