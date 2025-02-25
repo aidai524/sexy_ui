@@ -110,16 +110,16 @@ export default function TopTraderDetailM() {
       return "0";
     }
     if (pnl.startsWith("-")) {
-      return "-" + numberFormatter(Math.abs(Number(pnl)), 4, true);
+      return "-" + numberFormatter(Math.abs(Number(pnl)), 2, true);
     }
-    return "+" + numberFormatter(pnl, 4, true);
+    return "+" + numberFormatter(pnl, 2, true);
   };
 
   const formatWinRate = (winRate: string) => {
     if (winRate == "0") {
       return "0%";
     }
-    return new Big(winRate).times(100).toFixed(2) + "%";
+    return new Big(winRate).times(100).toFixed(1) + "%";
   };
 
   const getUserInfo: any = async (address: string) => {
