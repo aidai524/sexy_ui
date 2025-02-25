@@ -1,6 +1,7 @@
 import styles from './index.module.css';
 import { useUser } from '@/app/store/useUser';
 import { formatLongText } from '@/app/utils/common';
+import { formatAddress } from '@/app/utils';
 import QRCodeCom, { QRCodeImage } from '@/app/components/qrcode';
 import React, { useContext, useImperativeHandle } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
@@ -41,7 +42,7 @@ const TopTraderShareInfoCard = (props: any, ref: any) => {
           <div className={styles.avatarAndName}>
             <img src={currentUserInfo?.icon || defaultAvatar} alt="" className={styles.CopyTradeShareInfoCardAvatar}/>
             <div>
-              <div className={styles.CopyTradeShareInfoCardName}>{formatLongText(currentUserInfo?.name || shareName || 'FlipN')}</div>
+              <div className={styles.CopyTradeShareInfoCardName}>{formatAddress(currentUserInfo?.name || shareName || 'FlipN')}</div>
               <div><TopTraderCrown /></div>
             </div>
           </div>
