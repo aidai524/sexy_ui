@@ -5,10 +5,10 @@ import VideoPlayer from "../../video";
 export default function Media({
   imgHeight,
   data,
+  mediaId,
   imgStyle,
   videoStyle,
   style,
-  autoPlay,
   videoProgressStyle
 }: any) {
   return (
@@ -23,11 +23,11 @@ export default function Media({
         <VideoPlayer
           key={data.tokenImg}
           id={data.id}
+          mediaId={mediaId}
           src={data.tokenImg}
           type={getVideoExt(data.tokenImg)}
           className={styles.Media}
           style={videoStyle}
-          autoPlay={autoPlay}
           token={data}
           videoProgressStyle={videoProgressStyle}
         />

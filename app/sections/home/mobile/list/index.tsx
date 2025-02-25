@@ -6,6 +6,8 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
+import { useVideoPlayer } from "@/app/store/use-video-player";
+import { videoReg } from "@/app/components/upload";
 
 let startY = 0;
 let startX = 0;
@@ -32,6 +34,7 @@ export default function List({
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
   const { innerHeight, innerWidth } = useUserAgent();
+  const videoPlayerStore: any = useVideoPlayer();
 
   const contentHeight = innerHeight - 72;
   // const guidingTourStore = useGuidingTour();
@@ -72,6 +75,23 @@ export default function List({
       listRef.current.style.transition = "0.3s";
     }, 60);
   }, [hasNext, type]);
+
+  useEffect(() => {
+    if (!isCurrentTab) return;
+    if (!currentToken) {
+      videoPlayerStore.setPlay(false);
+      return;
+    }
+    setTimeout(() => {
+      const isVideo = videoReg.test(currentToken.tokenImg || "");
+
+      if (videoPlayerStore.autoPlay && isVideo) {
+        videoPlayerStore.setPlay(true, String(currentToken.id) + "_" + type);
+      } else {
+        videoPlayerStore.setPlay(false);
+      }
+    }, 500);
+  }, [isCurrentTab, currentToken]);
 
   return (
     <>
@@ -131,6 +151,7 @@ export default function List({
               }
 
               diffY = -contentHeight * currentIndex;
+
               onChangeIndex(currentIndex);
               setY(diffY);
               started = false;
@@ -151,6 +172,7 @@ export default function List({
               <Token
                 key={item}
                 token={token}
+                mediaId={String(token?.id) + "_" + type}
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any, action?: string) => {
                   if (action && ["launched_like"].includes(action)) {

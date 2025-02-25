@@ -113,6 +113,7 @@ export default function useData(launchType: Type) {
   const onChangeIndex = (currentIndex: number) => {
     projectsStore.setIndex(launchType, currentIndex);
     const list = projectsStore.getList(launchType);
+
     if (list.length - projectsStore.getIndex(launchType) > left_num) {
       return;
     }
@@ -127,12 +128,14 @@ export default function useData(launchType: Type) {
 
   const { run: debounceList } = useDebounceFn(
     () => {
-      projectsStore.clearList(launchType);
-      projectsStore.clearProjects();
-      if (projectsStore.address) {
-        projectsStore.setIndex(launchType, 0);
+      if (projectsStore.address !== (address || "")) {
+        projectsStore.clearList(launchType);
+        projectsStore.clearProjects();
+        if (projectsStore.address) {
+          projectsStore.setIndex(launchType, 0);
+        }
+        setIsLoading(true);
       }
-      setIsLoading(true);
 
       initList();
       mountedRef.current = true;
@@ -142,7 +145,13 @@ export default function useData(launchType: Type) {
 
   useEffect(() => {
     if (!mountedRef.current) return;
-
+    window.addEventListener("unload", () => {
+      projectsStore.clearList(launchType);
+      projectsStore.clearProjects();
+      if (projectsStore.address) {
+        projectsStore.setIndex(launchType, 0);
+      }
+    });
     initList();
   }, []);
 

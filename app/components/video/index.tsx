@@ -1,7 +1,7 @@
-import { useSetting } from "@/app/store/use-setting";
 import type { Project } from "@/app/type";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDebounceFn } from "ahooks";
+import { useVideoPlayer } from "@/app/store/use-video-player";
 import ProgressBar from "./progress-bar";
 import mediaStore from "@/app/libs/media-store";
 
@@ -15,24 +15,20 @@ interface VideoPlayerProps {
   token?: Project;
   playManually?: boolean;
   videoProgressStyle?: any;
+  mediaId: string;
 }
 
 export default function VideoPlayer({
   src,
   type,
   id,
+  mediaId,
   className,
   style = {},
-  autoPlay = true,
-  token,
-  playManually = false,
   videoProgressStyle
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isShow, setIsShow] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [isPlay, setIsPlay] = useState(false);
-  const { autoPlay: autoPlaySetting, set }: any = useSetting();
+  const videoPlayerStore: any = useVideoPlayer();
   const [progress, setProgress] = useState(0);
   const [mergedSrc, setMergedSrc] = useState("");
 
@@ -44,117 +40,6 @@ export default function VideoPlayer({
     },
     { wait: 100 }
   );
-
-  const handleClick = useCallback(() => {
-    if (!autoPlay || !autoPlaySetting || !playManually) {
-      return;
-    }
-
-    if (isShow && isVisible) {
-      videoRef.current?.play();
-    } else {
-      videoRef.current?.pause();
-    }
-  }, [isShow, isVisible, autoPlay, autoPlaySetting, playManually]);
-
-  // useEffect(() => {
-  //   document.addEventListener('click', handleClick);
-  //   return () => {
-  //     document.removeEventListener('click', handleClick);
-  //   };
-  // }, [handleClick]);
-
-  useEffect(() => {
-    if (!autoPlay) {
-      return;
-    }
-
-    let timeOut: any = null;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry: any) => {
-          if (entry.isIntersecting) {
-            // const rect = videoRef.current?.getBoundingClientRect();
-            // if (rect) {
-            //   const isInViewport =
-            //     rect.top >= 0 &&
-            //     rect.left >= 0 &&
-            //     rect.bottom <=
-            //       (window.innerHeight ||
-            //         document.documentElement.clientHeight) &&
-            //     rect.right <=
-            //       (window.innerWidth || document.documentElement.clientWidth);
-            //   setIsShow(isInViewport);
-            //   if (autoPlay && autoPlaySetting && !playManually) {
-            //     // const outDom = document.getElementById(
-            //     //   `${token?.status === 0 ? "preLaunch" : "launching"}-list`
-            //     // );
-
-            //     // if (outDom?.style.opacity === "1") {
-            //     //   videoRef.current?.play();
-            //     // }
-            //     videoRef.current?.play();
-            //   }
-            //   videoRef.current?.play();
-            // } else {
-            //   setIsShow(false);
-            //   videoRef.current?.pause();
-            // }
-
-            timeOut = setTimeout(() => {
-              autoPlaySetting && videoRef.current?.play();
-            }, 100);
-          } else {
-            setIsShow(false);
-            clearTimeout(timeOut);
-            videoRef.current?.pause();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    const mutationObserver = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.target instanceof HTMLElement) {
-          const opacity = mutation.target.style.opacity;
-          if (opacity === "0") {
-            videoRef.current?.pause();
-            setIsVisible(false);
-          } else {
-            setIsVisible(true);
-            if (autoPlay && autoPlaySetting) {
-              // videoRef.current?.play();
-            }
-          }
-        }
-      });
-    });
-
-    if (videoRef.current) {
-      // const outDom = document.getElementById(
-      //   `${token?.status === 0 ? "preLaunch" : "launching"}-list`
-      // );
-      // if (outDom) {
-      //   mutationObserver.observe(outDom, {
-      //     attributes: true,
-      //     attributeFilter: ["style"]
-      //   });
-      // }
-
-      observer.observe(videoRef.current);
-    }
-
-    return () => {
-      if (videoRef.current) {
-        observer.unobserve(videoRef.current);
-
-        mutationObserver.disconnect();
-      }
-    };
-  }, [videoRef.current, autoPlay, autoPlaySetting, token]);
-
 
   const allStyle = useMemo(() => {
     return {
@@ -183,43 +68,25 @@ export default function VideoPlayer({
       className={className}
       style={allStyle as React.CSSProperties}
       onClick={() => {
-        if (!autoPlay) {
-          return;
-        }
-
-        if (isPlay) {
-          videoRef.current?.pause();
-          set({ autoPlay: false });
-        } else {
-          videoRef.current?.play();
-          set({ autoPlay: true });
-        }
+        videoPlayerStore.setPlay(!videoPlayerStore.isPlay, mediaId);
+        videoPlayerStore.setAutoPlay(!videoPlayerStore.isPlay);
       }}
     >
       <video
-        loop={autoPlay && autoPlaySetting}
-        onPause={() => {
-          setIsPlay(false);
-        }}
-        onPlay={() => {
-          setIsPlay(true);
-        }}
-        onEnded={() => {
-          setIsPlay(false);
-        }}
+        loop={videoPlayerStore.isPlay}
         onTimeUpdate={onTimeUpdate}
         ref={videoRef}
         playsInline
         webkit-playsinline
         className={className}
         style={style}
-        preload="auto"
+        preload={videoPlayerStore.autoPlay ? "auto" : "none"}
+        id={mediaId}
       >
         <source src={mergedSrc} type={`video/${type}`} />
       </video>
-      {autoPlay && !isPlay && (
+      {!videoPlayerStore.isPlay && (
         <div
-          onClick={() => {}}
           style={{
             position: "absolute",
             top: "50%",
@@ -259,5 +126,3 @@ export default function VideoPlayer({
     </div>
   );
 }
-
-//preload={autoPlay ? "auto" : "none"}
