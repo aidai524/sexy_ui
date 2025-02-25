@@ -359,7 +359,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
                   fontSize: "36px",
                   border: "none",
                   textAlign: "center",
-                  color: minCopyAmountTips ? "#FF2681" : "#fff"
+                  color: errMsg ? "#FF2681" : "#fff"
                 }}
               />
             </div>
