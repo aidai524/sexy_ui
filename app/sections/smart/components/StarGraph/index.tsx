@@ -85,14 +85,14 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
           .id((d: any) => d.id)
           .distance((d: any) => d.distance)
       )
-      .force("charge", d3.forceManyBody().strength(-200))
-      .force("center", d3.forceCenter(width / 2, height * 0.35))
+      .force("charge", d3.forceManyBody().strength(-400))
+      .force("center", d3.forceCenter(width / 2, height / 2))
       .force(
         "collision",
-        d3.forceCollide().radius((d: any) => d.size / 2 + 20)
+        d3.forceCollide().radius((d: any) => d.size / 2 + 80)
       )
-      .force("x", d3.forceX(width / 2).strength(0.1))
-      .force("y", d3.forceY(height * 0.35).strength(0.15))
+      .force("x", d3.forceX(width / 2).strength(0.05))
+      .force("y", d3.forceY(height * 0.35).strength(0.08))
       .force("boundary", () => {
         for (let node of nodes) {
           if (!node.fixed) {
@@ -230,7 +230,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
       link.attr("d", (d: any) => {
         const dx = d.target.x - d.source.x;
         const dy = d.target.y - d.source.y;
-        const dr = Math.sqrt(dx * dx + dy * dy) * 1.02;
+        const dr = Math.sqrt(dx * dx + dy * dy) * 2.5;
 
         const angle = Math.atan2(dy, dx);
 

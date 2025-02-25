@@ -181,12 +181,7 @@ export default function TopTraderDetailM() {
         </div>
       </div>
       {/* charts */}
-      <StarGraph centerNode={centerNode} satellites={[{
-        id: "1",
-        name: "1",
-        image: "1",
-        pnl: 1
-      }]} />
+      <StarGraph centerNode={centerNode} satellites={satelliteNodes} />
       {/* performance */}
       <div className={styles.performance}>
         <div className={styles.header}>
