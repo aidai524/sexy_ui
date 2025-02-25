@@ -395,7 +395,11 @@ export default forwardRef(function CreateNode(
               setFileList={(fileList: any) => {
                 setTokenIcon(fileList)
                 if (!isImgUploaded) {
-                  setTokenImg(fileList)
+                  setTokenImg([
+                    {
+                      url: fileList[0].originUrl,
+                    } 
+                  ])
                 }
               }}
             />

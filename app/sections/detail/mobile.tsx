@@ -25,8 +25,8 @@ import { useAuth } from "@/app/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TokenStatusModal } from "@/app/components/status2Alert";
 import Share from "@/app/components/share";
-import TokenIcon from "@/app/components/avatar/token";
 import Desc from "./components/desc";
+import Empty from "@/app/components/empty";
 
 export default function Detail({ token, onBack, onSuccess }: any) {
   const [activeKey, setActiveKey] = useState("Info");
@@ -73,6 +73,7 @@ export default function Detail({ token, onBack, onSuccess }: any) {
     }
   }, [onBack, token]);
 
+
   const tabs = useMemo(() => {
     const vals = [
       { name: "Details", content: <Desc data={infoData} mc={mc} /> },
@@ -103,6 +104,12 @@ export default function Detail({ token, onBack, onSuccess }: any) {
       <div className={styles.loadingBox}>
         <CircleLoading size={60} />
       </div>
+    );
+  }
+
+  if (!infoData) {
+    return (
+      <Empty />
     );
   }
 
