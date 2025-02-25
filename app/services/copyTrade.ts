@@ -37,6 +37,7 @@ export interface SmartMoneyAddress {
           tokenPosition: string;
           roi: string;
           winRate: string;
+          totalInvestment: string;
     }
 }
 

@@ -32,7 +32,7 @@ export default function CardContainer() {
   }, [walletAddress]);
   const isTopTrader = copyTradersUserInfo?.isTopTrader;
   // const isTopTrader = true;
-  const isCopyier = copyTradersUserInfo && copyTradersUserInfo?.tradeInfo?.buys > 0;
+  const isCopyier = copyTradersUserInfo && +copyTradersUserInfo?.tradeInfo?.totalInvestment > 0;
 
   // if (!walletAddress) {
   //   return null
