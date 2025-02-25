@@ -139,6 +139,7 @@ export default function Token({
                 }}
                 isCurrent={isCurrent}
                 isPreview={isPreview}
+                disabled={isPreview}
               />
             )}
           </div>
