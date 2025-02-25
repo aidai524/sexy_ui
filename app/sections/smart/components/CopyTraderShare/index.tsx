@@ -8,10 +8,12 @@ import { generateRandomString } from '@/app/utils';
 import dayjs from 'dayjs';
 import Loading from '@/app/components/icons/loading';
 import Modal from '@/app/components/modal';
+import { useUserAgent } from '@/app/context/user-agent';
+import CloseIcon from "@/app/components/icons/modal-close";
 
 const CopyTradeShare = (props: any) => {
   const { onClose, copyTradersUserInfo } = props;
-
+  const { isMobile } = useUserAgent();
   const { address } = useAccount();
 
   const cardRef = useRef<any>(null);
@@ -72,9 +74,16 @@ const CopyTradeShare = (props: any) => {
   };
 
   return (
-    <div className={styles.CopyTradeShareContainer}>
+    <div className={isMobile? styles.CopyTradeShareContainer: styles.CopyTradeShareContainerPc}>
+      {
+        !isMobile && (
+          <div className={styles.TopTraderShareHeaderPC} onClick={onClose}>
+          <CloseIcon size={35} />
+         </div>
+        )
+      }
       <div ref={cardRef} className={styles.CopyTradeShareCard}>
-        <CopyTradeShareInfoCard shareLink={shareLink} copyTradersUserInfo={copyTradersUserInfo} />
+        <CopyTradeShareInfoCard shareLink={shareLink} copyTradersUserInfo={copyTradersUserInfo} accountAddress={address}/>
       </div>
       <div className={styles.CopyTradeShareFooter}>
         <button

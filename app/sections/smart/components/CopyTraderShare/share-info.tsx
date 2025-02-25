@@ -1,14 +1,15 @@
 import styles from './index.module.css';
 import { useUser } from '@/app/store/useUser';
 import { formatLongText } from '@/app/utils/common';
+import { formatAddress } from '@/app/utils';
 import QRCodeCom, { QRCodeImage } from '@/app/components/qrcode';
 import React, { useContext, useImperativeHandle } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
 import { numberFormatter } from '@/app/utils/common';
 import Big from 'big.js';
-
+import { defaultAvatar } from '@/app/utils/config';
 const AirdropShareInfoCard = (props: any, ref: any) => {
-  const { shareLink, copyTradersUserInfo } = props;
+  const { shareLink, copyTradersUserInfo, accountAddress } = props;
 
   const { userInfo } = useUser();
   console.log(userInfo, 'userInfo');
@@ -43,8 +44,8 @@ const formatWinRate = (winRate: string) => {
         <div className={styles.CopyTradeShareInfoCardContent}>
           <div className={styles.CopyTradeShareInfoCardTitle}>Copied PRFM</div>
           <div className={styles.avatarAndName}>
-            <img src={userInfo?.icon} alt="" className={styles.CopyTradeShareInfoCardAvatar}/>
-            <div className={styles.CopyTradeShareInfoCardName}>{formatLongText(userInfo?.name)}</div>
+            <img src={userInfo?.icon || defaultAvatar} alt="" className={styles.CopyTradeShareInfoCardAvatar}/>
+            <div className={styles.CopyTradeShareInfoCardName}>{formatAddress(userInfo?.name || accountAddress)}</div>
           </div>
           <div className={styles.publicStyle}>
             <span className={styles.publicStyleTitle}>Total PNL</span>
