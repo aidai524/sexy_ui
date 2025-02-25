@@ -18,6 +18,15 @@ export default function CopyTradeCard(props: {
   const router = useRouter();
   const { smartMoniesInfo, copyTradersUserInfo, useLinear } = props;
   const { isMobile } = useUserAgent();
+  const formatPnl = (pnl: string) => {
+    if (pnl == '0') {
+      return '0';
+    }
+    if (pnl.startsWith('-')) {
+      return '-' + numberFormatter(Math.abs(Number(pnl)), 2, true);
+    }
+    return '+' + numberFormatter(pnl, 2, true);
+}
   return (
     <div className={isMobile ? styles.container : useLinear ? styles.linearContainer : styles.containerPC}>
       <div className={styles.title}>
@@ -37,11 +46,7 @@ export default function CopyTradeCard(props: {
           <span className={styles.detailTitle}>Total PNL</span>
           <span className={styles.detailValueContainer}>
             <span className={styles.detailValue}>
-              {numberFormatter(
-                copyTradersUserInfo?.tradeInfo?.totalPNL || 0,
-                2,
-                true
-              ) || "0"}
+              {formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")}
             </span>
             <span className={styles.detailValueCurrency}>SOL</span>
           </span>

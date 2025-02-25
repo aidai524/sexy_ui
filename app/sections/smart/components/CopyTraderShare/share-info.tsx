@@ -24,9 +24,9 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
       return '0';
     }
     if (pnl.startsWith('-')) {
-      return '-' + numberFormatter(Math.abs(Number(pnl)), 4, true);
+      return '-' + numberFormatter(Math.abs(Number(pnl)), 2, true);
     }
-    return '+' + numberFormatter(pnl, 4, true);
+    return '+' + numberFormatter(pnl, 2, true);
 }
 
   return (
