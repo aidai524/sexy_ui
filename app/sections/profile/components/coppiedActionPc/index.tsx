@@ -39,7 +39,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
 
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const { solBalance } = useSolBalance(Number(show) + (isLoading ? 1 : 0));
+  const { solBalance } = useSolBalance(Number(show) + (isLoading ? 1 : 0),2);
   const { solPrice } = useSolPrice();
   const [isAdvancedModalOpen, setIsAdvancedModalOpen] =
     useState<boolean>(false);

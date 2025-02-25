@@ -5,6 +5,7 @@ import QRCodeCom, { QRCodeImage } from '@/app/components/qrcode';
 import React, { useContext, useImperativeHandle } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
 import { numberFormatter } from '@/app/utils/common';
+import Big from 'big.js';
 
 const AirdropShareInfoCard = (props: any, ref: any) => {
   const { shareLink, copyTradersUserInfo } = props;
@@ -29,6 +30,13 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
     return '+' + numberFormatter(pnl, 2, true);
 }
 
+
+const formatWinRate = (winRate: string) => {
+  if (winRate == '0') {
+    return '0%';
+  }
+  return new Big(winRate).times(100).toFixed(1) + '%';
+}
   return (
     <div className={styles.CopyTradeShareInfoCardContainer}>
       <div className={styles.CopyTradeShareInfoCard}>
@@ -49,11 +57,11 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
           <div className={styles.ROIandWinRate}>
                 <div className={styles.publicStyle}>
                   <span className={styles.publicStyleTitle}>ROI</span>
-                  <span className={styles.publicStyleValue}>{copyTradersUserInfo?.tradeInfo?.roi}%</span>
+                  <span className={styles.publicStyleValue}>{formatWinRate(copyTradersUserInfo?.tradeInfo?.roi || '0')}</span>
                 </div>
                 <div className={styles.publicStyle}>
                   <span className={styles.publicStyleTitle}>Win Rate</span>
-                  <span className={styles.publicStyleValue}>{copyTradersUserInfo?.tradeInfo?.winRate}%</span>
+                  <span className={styles.publicStyleValue}>{formatWinRate(copyTradersUserInfo?.tradeInfo?.winRate || '0')}</span>
                 </div>
           </div>
         </div>
