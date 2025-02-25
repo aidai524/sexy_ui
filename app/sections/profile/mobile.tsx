@@ -112,7 +112,7 @@ export default function Profile({
         </div>
       </div>
 
-      {SHOW_COPY_TRADE && (
+      {/* {SHOW_COPY_TRADE && (
         <Summaries
           address={address}
           isFollower={isFollower}
@@ -121,7 +121,7 @@ export default function Profile({
           userInfo={userInfo}
           isOther={isOther}
         />
-      )}
+      )} */}
 
       <Tabs
         address={address}
