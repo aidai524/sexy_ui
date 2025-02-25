@@ -39,7 +39,7 @@ export default function CopyTradeCard(props: {
             <span className={styles.detailValue}>
               {numberFormatter(
                 copyTradersUserInfo?.tradeInfo?.totalPNL || 0,
-                4,
+                2,
                 true
               ) || "0"}
             </span>
@@ -52,12 +52,12 @@ export default function CopyTradeCard(props: {
             <span className={styles.detailValueCurrent}>
               {numberFormatter(
                 copyTradersUserInfo?.tradeInfo?.currentPNL || 0,
-                4,
+                2,
                 true
               ) || "0"}
             </span>
             <span className={styles.detailValue}>
-              / {copyTradersUserInfo?.tradeInfo?.tokenPosition}
+              / {numberFormatter(copyTradersUserInfo?.tradeInfo?.tokenPosition || 0, 2, true)}
             </span>
             <span className={styles.detailValueCurrency}>SOL</span>
           </span>
