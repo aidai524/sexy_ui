@@ -16,7 +16,7 @@ import { useDebounceFn } from "ahooks";
 import useDanmaku from "@/app/hooks/use-danmaku";
 
 const DetailPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/detail")
+  () => import("@/app/sections/home/laptop/panels/details")
 );
 
 const CommentsPanel = dynamic(

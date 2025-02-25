@@ -4,12 +4,12 @@
   align-items: center;
   transition: 0.3s;
   border-radius: 20px;
-  background: #000;
+  background: #1b1b1b;
 }
 
 .Container {
   border-radius: 20px;
-  background: #000;
+  background: #ffffff0d;
   display: flex;
   position: relative;
   overflow: hidden;
@@ -17,6 +17,8 @@
 
 .Token {
   position: relative;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .Bottom {

@@ -2,12 +2,19 @@ import { motion } from "framer-motion";
 import styles from "./index.module.css";
 import { useRef } from "react";
 
-export default function Tabs({ currentTab, onChangeTab, tabs, type }: any) {
+export default function Tabs({
+  currentTab,
+  onChangeTab,
+  tabs,
+  type,
+  style = {}
+}: any) {
   const prevI = useRef<number[]>([0]);
   return (
     <div
       className={styles.Container}
       style={{
+        ...styles,
         justifyContent: type === "center" ? "center" : "flex-start"
       }}
     >
