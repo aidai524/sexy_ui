@@ -10,8 +10,6 @@ import {
 } from "react";
 import Upload, { videoReg } from "@/app/components/upload";
 import Link from "./components/link";
-import MainBtn from "@/app/components/mainBtn";
-import CheckBox from "@/app/components/checkBox";
 import { useUserAgent } from "@/app/context/user-agent";
 import ErrMsg from "./components/errMsg";
 import type { Project } from "@/app/type";
