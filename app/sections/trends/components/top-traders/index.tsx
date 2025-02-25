@@ -63,11 +63,6 @@ export default function TopTraders() {
   //   </div>
   // }
 
-  if (tradersList.items.length === 0 && !smartMoniesLoading) {
-    return <div style={{ paddingTop: 116 }}>
-      <Empty text="No data" />
-    </div>
-  }
 
   return (
     <>

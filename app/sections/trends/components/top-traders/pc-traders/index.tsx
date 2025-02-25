@@ -11,6 +11,7 @@ import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { useRouter } from 'next/navigation';
 import Big from 'big.js';
 import { CrownIcon } from '../icons';
+import Empty from '@/app/components/empty';
 
 interface Trader {
   avatar: string
@@ -92,18 +93,26 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
       </div>
 
       <div className={styles.traderList}>
-        {list.map((trader, index) => (
-          <TraderItem 
-            key={index}
-            trader={trader}
-            onCopyTradeClick={handleCopyTradeClick}
-          />
-        ))}
-           <SexInfiniteScroll 
-          loadMore={loadMore} 
-          hasMore={hasMore}
-          isLoadingMore={isLoadingMore}
-        />
+        {list.length > 0 ? (
+          <>
+            {list.map((trader, index) => (
+              <TraderItem 
+                key={index}
+                trader={trader}
+                onCopyTradeClick={handleCopyTradeClick}
+              />
+            ))}
+            <SexInfiniteScroll 
+              loadMore={loadMore} 
+              hasMore={hasMore}
+              isLoadingMore={isLoadingMore}
+            />
+          </>
+        ) : (
+         <div style={{ paddingTop: 116 }}>
+          <Empty text="No data" />
+         </div>
+        )}
       </div>
       {SHOW_COPY_TRADE && (
         <CoppiedModal

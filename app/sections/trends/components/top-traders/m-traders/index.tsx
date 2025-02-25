@@ -254,19 +254,27 @@ export default function TopTradersMobile({
       </div>
 
       <div className={styles.traderList}>
-        {list.map((trader, index) => (
-          <TraderItem
-            key={index}
-            trader={trader}
-            onCopyTradeClick={handleCopyTradeClick}
-            activeTab={activeTab}
-          />
-        ))}
-        <SexInfiniteScroll
-          loadMore={loadMore}
-          hasMore={hasMore}
-          isLoadingMore={isLoadingMore}
-        />
+        {list.length === 0 ? (
+           <div style={{ paddingTop: 116 }}>
+            <Empty text="No data" />
+            </div>
+        ) : (
+          <>
+            {list.map((trader, index) => (
+              <TraderItem
+                key={index}
+                trader={trader}
+                onCopyTradeClick={handleCopyTradeClick}
+                activeTab={activeTab}
+              />
+            ))}
+            <SexInfiniteScroll
+              loadMore={loadMore}
+              hasMore={hasMore}
+              isLoadingMore={isLoadingMore}
+            />
+          </>
+        )}
       </div>
 
       {SHOW_COPY_TRADE && (
