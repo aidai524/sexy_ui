@@ -51,6 +51,12 @@
     align-items: center;
 }
 
+.copyDetailsPC {
+    display: flex;
+    gap: 104px;
+    justify-content: flex-start;
+    align-items: center;
+}
 .totalPnl {
     display: flex;
     flex-direction: column;

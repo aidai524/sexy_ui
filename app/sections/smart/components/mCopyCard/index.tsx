@@ -44,7 +44,7 @@ export default function CopyTradeCard(props: {
         </div>
       </div>
 
-      <div className={styles.copyDetails}>
+      <div className={isMobile ? styles.copyDetails : styles.copyDetailsPC}>
         <div className={styles.totalPnl}>
           <span className={styles.detailTitle}>Total PNL</span>
           <span className={styles.detailValueContainer}>
