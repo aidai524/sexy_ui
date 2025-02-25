@@ -121,6 +121,10 @@ export default function TopTraderDetailM() {
     return new Big(winRate).times(100).toFixed(1) + "%";
   };
 
+  const isGtZero = (str: string) => {
+    return Number(str) >= 0;
+  };
+
   const getUserInfo: any = async (address: string) => {
     if (!address) return null;
     const userInfo = await fecthUserInfo(address);
@@ -192,7 +196,7 @@ export default function TopTraderDetailM() {
           <div className={styles.gridItem}>
             <div className={styles.label}>1D PNL</div>
             <div className={styles.value}>
-              <span className={styles.amount}>
+              <span className={isGtZero(smartMoniesInfo?.pnl1D || "0") ? styles.amount : styles.amountLessThanZero}>
                 {formatPnl(smartMoniesInfo?.pnl1D || "0")}
               </span>
               <span className={styles.unit}>SOL</span>
@@ -207,7 +211,7 @@ export default function TopTraderDetailM() {
           <div className={styles.gridItem}>
             <div className={styles.label}>7D PNL</div>
             <div className={styles.value}>
-              <span className={styles.amount}>
+              <span className={isGtZero(smartMoniesInfo?.pnl7D || "0") ? styles.amount : styles.amountLessThanZero}>
                 {formatPnl(smartMoniesInfo?.pnl7D || "0")}
               </span>
               <span className={styles.unit}>SOL</span>
@@ -222,7 +226,7 @@ export default function TopTraderDetailM() {
           <div className={styles.gridItem}>
             <div className={styles.label}>30D PNL</div>
             <div className={styles.value}>
-              <span className={styles.amount}>
+              <span className={isGtZero(smartMoniesInfo?.pnl30D || "0") ? styles.amount : styles.amountLessThanZero}>
                 {formatPnl(smartMoniesInfo?.pnl30D || "0")}
               </span>
               <span className={styles.unit}>SOL</span>

@@ -38,6 +38,10 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
     return new Big(winRate).times(100).toFixed(1) + '%';
   }
 
+  const isGtZero = (str: string) => {
+    return Number(str) >= 0;
+  };
+
   const handleSelectAll = (checked: boolean) => {
       if (!checked) {
         const allItems = {
@@ -56,21 +60,22 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
         return;
     }
     const allItems = {
-        pnl1D: {value: checked, useValue: formatPnl(smartMoniesInfo?.pnl1D || '0'), title: '1D PnL', useValueCurrency: 'SOL'},
+        pnl1D: {value: checked, useValue: formatPnl(smartMoniesInfo?.pnl1D || '0'), title: '1D PnL', useValueCurrency: 'SOL', useGreen: isGtZero(smartMoniesInfo?.pnl1D || '0')},
         winRate1D: {value: checked, useValue: formatWinRate(smartMoniesInfo?.winRate1D || '0'), title: '1D Win Rate', useWhite: true},
-        pnl7D: {value: checked, useValue: formatPnl(smartMoniesInfo?.pnl7D || '0'), title: '7D PnL', useValueCurrency: 'SOL'},
+        pnl7D: {value: checked, useValue: formatPnl(smartMoniesInfo?.pnl7D || '0'), title: '7D PnL', useValueCurrency: 'SOL', useGreen: isGtZero(smartMoniesInfo?.pnl7D || '0')},
         winRate7D: {value: checked, useValue: formatWinRate(smartMoniesInfo?.winRate7D || '0'), title: '7D Win Rate', useWhite: true},
-        pnl30D: {value: checked, useValue: formatPnl(smartMoniesInfo?.pnl30D || '0'), title: '30D PnL', useValueCurrency: 'SOL'},
+        pnl30D: {value: checked, useValue: formatPnl(smartMoniesInfo?.pnl30D || '0'), title: '30D PnL', useValueCurrency: 'SOL', useGreen: isGtZero(smartMoniesInfo?.pnl30D || '0')},
         winRate30D: {value: checked, useValue: formatWinRate(smartMoniesInfo?.winRate30D || '0'), title: '30D Win Rate', useWhite: true},
         buySell: {
           value: checked, 
           useValue: `${copyTradersUserInfo?.tradeInfo?.buys || 0}`, 
           useExtraValue: ` / ${copyTradersUserInfo?.tradeInfo?.sells || 0}`,
-          title: 'Buy/Sell'
+          title: 'Buy/Sell',
+          useGreen: true
         },
         lastTradeAt: {value: checked, useValue: formatDateTime(copyTradersUserInfo?.lastTradeAt || 0), title: 'Last Trade'},
-        copiers: {value: checked, useValue: copyTradersUserInfo?.copiers?.length || 0, title: 'Copy Traders'},
-        totalPnl: {value: checked, useValue: formatPnl(copyTradersUserInfo?.totalPnl || '0'), title: 'Copy Cohort PnL', useValueCurrency: 'SOL'}
+        copiers: {value: checked, useValue: copyTradersUserInfo?.copiers?.length || 0, title: 'Copy Traders',useGreen: true},
+        totalPnl: {value: checked, useValue: formatPnl(copyTradersUserInfo?.totalPnl || '0'), title: 'Copy Cohort PnL', useValueCurrency: 'SOL', useGreen: isGtZero(copyTradersUserInfo?.totalPnl || '0')}
       };
       setSelectedItems(allItems);
     };
@@ -114,12 +119,12 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
          <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
                 checked={selectedItems['pnl1D']?.value}
-                onChange={(val) => handleCheckboxChange('pnl1D', {value: val, useValue: formatPnl(smartMoniesInfo?.pnl1D || '0'), title: '1D PnL', useValueCurrency: 'SOL'})}
+                onChange={(val) => handleCheckboxChange('pnl1D', {value: val, useValue: formatPnl(smartMoniesInfo?.pnl1D || '0'), title: '1D PnL', useValueCurrency: 'SOL', useGreen: isGtZero(smartMoniesInfo?.pnl1D || '0')})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>1D PnL</div>
                 <div className={styles.value}>
-                <span className={styles.profit}>{formatPnl(smartMoniesInfo?.pnl1D || '0')}</span> 
+                <span className={isGtZero(smartMoniesInfo?.pnl1D || '0') ? styles.profit : styles.profitLessThanZero}>{formatPnl(smartMoniesInfo?.pnl1D || '0')}</span> 
                 <span className={styles.currency}>SOL</span>
                 </div>
             </div>
@@ -139,12 +144,12 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
                 checked={selectedItems['pnl7D']?.value}
-                onChange={(val) => handleCheckboxChange('pnl7D', {value: val, useValue: formatPnl(smartMoniesInfo?.pnl7D || '0'), title: '7D PnL', useValueCurrency: 'SOL'})}
+                onChange={(val) => handleCheckboxChange('pnl7D', {value: val, useValue: formatPnl(smartMoniesInfo?.pnl7D || '0'), title: '7D PnL', useValueCurrency: 'SOL', useGreen: isGtZero(smartMoniesInfo?.pnl7D || '0')})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>7D PnL</div>
                 <div className={styles.value}>
-                <span className={styles.profit}>{formatPnl(smartMoniesInfo?.pnl7D || '0')}</span> 
+                <span className={isGtZero(smartMoniesInfo?.pnl7D || '0') ? styles.profit : styles.profitLessThanZero}>{formatPnl(smartMoniesInfo?.pnl7D || '0')}</span> 
                 <span className={styles.currency}>SOL</span>
                 </div>
             </div>
@@ -164,12 +169,12 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
                 checked={selectedItems['pnl30D']?.value}
-                onChange={(val) => handleCheckboxChange('pnl30D', {value: val, useValue: formatPnl(smartMoniesInfo?.pnl30D || '0'), title: '30D PnL', useValueCurrency: 'SOL'})}
+                onChange={(val) => handleCheckboxChange('pnl30D', {value: val, useValue: formatPnl(smartMoniesInfo?.pnl30D || '0'), title: '30D PnL', useValueCurrency: 'SOL', useGreen: isGtZero(smartMoniesInfo?.pnl30D || '0')})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>30D PnL</div>
                 <div className={styles.value}>
-                <span className={styles.profit}>{formatPnl(smartMoniesInfo?.pnl30D || '0')}</span> 
+                <span className={isGtZero(smartMoniesInfo?.pnl30D || '0') ? styles.profit : styles.profitLessThanZero}>{formatPnl(smartMoniesInfo?.pnl30D || '0')}</span> 
                 <span className={styles.currency}>SOL</span>
                 </div>
             </div>
@@ -193,7 +198,8 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
                   value: val, 
                   useValue: `${copyTradersUserInfo?.tradeInfo?.buys || 0}`, 
                   useExtraValue: ` / ${copyTradersUserInfo?.tradeInfo?.sells || 0}`,
-                  title: 'Buy/Sell'
+                  title: 'Buy/Sell',
+                  useGreen: true
                 })}
             ></Checkbox>
             <div className={styles.item}>
@@ -220,7 +226,7 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
                 checked={selectedItems['copiers']?.value}
-                onChange={(val) => handleCheckboxChange('copiers', {value: val, useValue: copyTradersUserInfo?.copiers?.length || 0, title: 'Copy Traders'})}
+                onChange={(val) => handleCheckboxChange('copiers', {value: val, useValue: copyTradersUserInfo?.copiers?.length || 0, title: 'Copy Traders', useGreen: true})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Copy Traders</div>
@@ -231,12 +237,12 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
                 checked={selectedItems['totalPnl']?.value}
-                onChange={(val) => handleCheckboxChange('totalPnl', {value: val, useValue: formatPnl(copyTradersUserInfo?.totalPnl || '0'), title: 'Copy Cohort PnL', useValueCurrency: 'SOL'})}
+                onChange={(val) => handleCheckboxChange('totalPnl', {value: val, useValue: formatPnl(copyTradersUserInfo?.totalPnl || '0'), title: 'Copy Cohort PnL', useValueCurrency: 'SOL', useGreen: isGtZero(copyTradersUserInfo?.totalPnl || '0')})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Copy Cohort PnL</div>
                 <div className={styles.value}>
-                    <span className={styles.profit}>{formatPnl(copyTradersUserInfo?.totalPnl || '0')}</span>
+                    <span className={isGtZero(copyTradersUserInfo?.totalPnl || '0') ? styles.profit : styles.profitLessThanZero}>{formatPnl(copyTradersUserInfo?.totalPnl || '0')}</span>
                     <span className={styles.currency}>SOL</span>
                 </div>
             </div>

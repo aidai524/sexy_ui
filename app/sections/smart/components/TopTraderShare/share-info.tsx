@@ -54,7 +54,8 @@ const TopTraderShareInfoCard = (props: any, ref: any) => {
                   <div className={styles.CopyTradeShareInfoCardContentListItem} key={key}>
                   <div className={styles.CopyTradeShareInfoCardContentListItemTitle}>{v.title}</div>
                   <div className={styles.CopyTradeShareInfoCardContentListItemValue}>
-                    <span className={v.useWhite ? styles.CopyTradeShareInfoCardContentListItemValueTextWhite : styles.CopyTradeShareInfoCardContentListItemValueText}>{v.value ? v.useValue : ''}</span>
+                    <span className={v.useWhite ? styles.CopyTradeShareInfoCardContentListItemValueTextWhite : v.useGreen ? styles.CopyTradeShareInfoCardContentListItemValueText : styles.CopyTradeShareInfoCardContentListItemValueTextRed}>{v.value ? v.useValue : ''}</span>
+                  
                     {v.useExtraValue && <span className={styles.CopyTradeShareInfoCardContentListItemValueTextRed}>{v.useExtraValue}</span>}
                     <span className={styles.CopyTradeShareInfoCardContentListItemValueCurrency}>{v.value ? v.useValueCurrency : ''}</span>
                   </div>

@@ -82,6 +82,12 @@
     margin-right: 2px;
     font-size: 12px;
   }
+
+  .profitLessThanZero {
+    color: #FF2681;
+    margin-right: 2px;
+    font-size: 12px;
+  }
   
   .buy {
     color: #C9FF5D;
