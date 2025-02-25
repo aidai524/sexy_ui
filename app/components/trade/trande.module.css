@@ -1,6 +1,5 @@
 .main {
   height: 100%;
-  padding: 0 10px;
   .cationArea {
     display: flex;
     flex-direction: column;
@@ -200,8 +199,6 @@
 }
 
 .PanelContent {
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
   padding: 10px 14px;
   /* display: flex;
   gap: 20px; */

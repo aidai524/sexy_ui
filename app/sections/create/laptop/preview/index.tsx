@@ -3,7 +3,7 @@ import Media from "@/app/components/thumbnail/media";
 import Desc from "@/app/sections/home/mobile/token/desc";
 import Actions from "@/app/sections/home/mobile/actions";
 import ArrowIcon from "../arrow-icon";
-import DetailPanel from "@/app/sections/home/laptop/panels/detail";
+import DetailPanel from "@/app/sections/home/laptop/panels/details";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useAuth } from "@/app/context/auth";

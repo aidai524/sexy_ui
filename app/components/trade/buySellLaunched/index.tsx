@@ -178,7 +178,9 @@ export default function BuySellLaunched({
               return;
             }
 
-            const buyIn = new Big(debounceVal).mul(10 ** desToken.tokenDecimals);
+            const buyIn = new Big(debounceVal).mul(
+              10 ** desToken.tokenDecimals
+            );
             const buyInSol = buyIn.div(qoute).toFixed(SOL.tokenDecimals);
             if (buyInSol) {
               setBuyIn(debounceVal);
@@ -277,6 +279,9 @@ export default function BuySellLaunched({
               setSolPercent(0);
               setTokenPercent(0);
             }}
+            style={{
+              backgroundColor: "#1B1B1B"
+            }}
           />
         ) : (
           <div className={styles.tradeTabs}>
@@ -340,8 +345,9 @@ export default function BuySellLaunched({
             </div>
 
             <div
-              className={`${styles.tokenBalanceBox} ${from === "panel" && styles.PanelInput
-                }`}
+              className={`${styles.tokenBalanceBox} ${
+                from === "panel" && styles.PanelInput
+              }`}
             >
               <div className={styles.inputArea}>
                 <input
@@ -395,10 +401,11 @@ export default function BuySellLaunched({
                       setSolPercent(0);
                       setValInput("");
                     }}
-                    className={`${from === "panel"
+                    className={`${
+                      from === "panel"
                         ? styles.PanelPercentTag
                         : styles.percentTag
-                      } button`}
+                    } button`}
                   >
                     Reset
                   </div>
@@ -443,10 +450,11 @@ export default function BuySellLaunched({
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${from === "panel"
+                  className={`${
+                    from === "panel"
                       ? styles.PanelPercentTag
                       : styles.percentTag
-                    } button`}
+                  } button`}
                 >
                   Reset
                 </div>
@@ -517,7 +525,8 @@ export default function BuySellLaunched({
                     }
 
                     let hash;
-                    let showBuyInToken: any = Number(buyIn) * (10 ** token.tokenDecimals!);
+                    let showBuyInToken: any =
+                      Number(buyIn) * 10 ** token.tokenDecimals!;
                     setIsLoading(true);
                     if (activeIndex === 0) {
                       hash = await trade(buyInSol, "buy", slip * 100);
@@ -529,7 +538,11 @@ export default function BuySellLaunched({
                           userInfo.address
                         );
 
-                        console.log("showBuyInToken:", showBuyInToken, _showBuyInToken);
+                        console.log(
+                          "showBuyInToken:",
+                          showBuyInToken,
+                          _showBuyInToken
+                        );
 
                         if (_showBuyInToken) {
                           showBuyInToken = _showBuyInToken;
@@ -544,8 +557,8 @@ export default function BuySellLaunched({
                       const volume =
                         activeIndex === 0
                           ? new Big(buyInSol)
-                            .div(10 ** SOL.tokenDecimals)
-                            .toFixed(SOL.tokenDecimals)
+                              .div(10 ** SOL.tokenDecimals)
+                              .toFixed(SOL.tokenDecimals)
                           : sellOutSol;
 
                       const pointByVolume = await getPointByVolume(

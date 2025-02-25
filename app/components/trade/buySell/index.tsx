@@ -124,139 +124,143 @@ export default function BuySell({
         setIsError(false);
         setIsLoading(true);
         if (activeIndex === 0) {
-        let buyInSol = "";
-        if (tokenType === 1) {
-          if (Number(debounceVal) <= 0) {
-            setIsError(true);
-            setErrorMsg("Invalid value");
-            setIsLoading(false);
-            return;
-          }
-
-          buyInSol = new Big(debounceVal)
-            .mul(10 ** SOL.tokenDecimals)
-            .toFixed(0);
-
-          getRate({
-            solAmount: buyInSol
-          }).then((res: any) => {
-            const buyIn = new Big(res)
-              .mul(1 - slip / 100)
-              .toFixed(token.tokenDecimals);
-            setBuyIn(buyIn);
-            setIsLoading(false);
-
-            if (
-              Number(buyIn) >
-              new Big(1).div(10 ** token.tokenDecimals!).toNumber()
-            ) {
-              setIsError(false);
-              setErrorMsg("");
-            } else {
+          let buyInSol = "";
+          if (tokenType === 1) {
+            if (Number(debounceVal) <= 0) {
               setIsError(true);
-              setErrorMsg("Enter a amount");
-            }
-
-            if (Number(debounceVal) > Number(solBalance)) {
-              setIsError(true);
-              setErrorMsg("Invalid balance");
+              setErrorMsg("Invalid value");
+              setIsLoading(false);
               return;
             }
-          });
 
-          setBuyInSol(buyInSol);
-        } else if (tokenType === 0) {
-          if (Number(debounceVal) <= 0) {
-            setIsError(true);
+            buyInSol = new Big(debounceVal)
+              .mul(10 ** SOL.tokenDecimals)
+              .toFixed(0);
 
-            setErrorMsg("Invalid value");
-            return;
+            getRate({
+              solAmount: buyInSol
+            }).then((res: any) => {
+              const buyIn = new Big(res)
+                .mul(1 - slip / 100)
+                .toFixed(token.tokenDecimals);
+              setBuyIn(buyIn);
+              setIsLoading(false);
+
+              if (
+                Number(buyIn) >
+                new Big(1).div(10 ** token.tokenDecimals!).toNumber()
+              ) {
+                setIsError(false);
+                setErrorMsg("");
+              } else {
+                setIsError(true);
+                setErrorMsg("Enter a amount");
+              }
+
+              if (Number(debounceVal) > Number(solBalance)) {
+                setIsError(true);
+                setErrorMsg("Invalid balance");
+                return;
+              }
+            });
+
+            setBuyInSol(buyInSol);
+          } else if (tokenType === 0) {
+            if (Number(debounceVal) <= 0) {
+              setIsError(true);
+
+              setErrorMsg("Invalid value");
+              return;
+            }
+
+            getRate({
+              tokenAmount: new Big(debounceVal)
+                .mul(10 ** token.tokenDecimals!)
+                .toFixed(0)
+            }).then((res: any) => {
+              setIsLoading(false);
+              buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
+              if (
+                new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)
+              ) {
+                setBuyInSol(buyInSol);
+                setIsError(true);
+                setErrorMsg("Invalid balance");
+                return;
+              }
+
+              if (Number(buyInSol) > 0.000000001) {
+                setBuyIn(
+                  new Big(debounceVal)
+                    .mul(10 ** token.tokenDecimals!)
+                    .toFixed(0)
+                );
+                setBuyInSol(buyInSol);
+              } else {
+                setBuyInSol("");
+                setBuyIn("");
+              }
+
+              if (buyInSol) {
+                setIsError(false);
+                setErrorMsg("Enter a amount");
+              }
+            });
           }
+        } else if (activeIndex === 1) {
+          let sellOut = "";
+          let sellSolOut = "";
+          if (tokenType === 1) {
+            // sellOut = new Big(debounceVal)
+            //   .mul(rate)
+            //   .mul(10 ** token.tokenDecimals)
+            //   .toFixed(0);
+          } else if (tokenType === 0) {
+            if (Number(debounceVal) <= 0) {
+              setIsError(true);
+              setIsLoading(false);
+              setErrorMsg("Invalid value");
+              return;
+            }
 
-          getRate({
-            tokenAmount: new Big(debounceVal)
+            sellOut = new Big(debounceVal)
               .mul(10 ** token.tokenDecimals!)
-              .toFixed(0)
-          }).then((res: any) => {
-            setIsLoading(false);
-            buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
-            if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
-              setBuyInSol(buyInSol);
-              setIsError(true);
-              setErrorMsg("Invalid balance");
-              return;
-            }
+              .toFixed(0);
 
-            if (Number(buyInSol) > 0.000000001) {
-              setBuyIn(
-                new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
-              );
-              setBuyInSol(buyInSol);
-            } else {
-              setBuyInSol("");
-              setBuyIn("");
-            }
+            getRate({
+              tokenAmount: new Big(debounceVal)
+                .mul(10 ** token.tokenDecimals!)
+                .toFixed(0)
+            }).then((res: any) => {
+              setIsLoading(false);
+              sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
 
-            if (buyInSol) {
-              setIsError(false);
-              setErrorMsg("Enter a amount");
-            }
-          });
-        }
-      } else if (activeIndex === 1) {
-        let sellOut = "";
-        let sellSolOut = "";
-        if (tokenType === 1) {
-          // sellOut = new Big(debounceVal)
-          //   .mul(rate)
-          //   .mul(10 ** token.tokenDecimals)
-          //   .toFixed(0);
-        } else if (tokenType === 0) {
-          if (Number(debounceVal) <= 0) {
-            setIsError(true);
-            setIsLoading(false);
-            setErrorMsg("Invalid value");
-            return;
+              if (Number(debounceVal) > Number(tokenBalance)) {
+                setIsError(true);
+                setErrorMsg("Invalid balance");
+                setSellOutSol(getFullNum(sellSolOut));
+                return;
+              }
+
+              if (Number(sellSolOut) > 0.000000001) {
+                setSellOut(sellOut);
+                setSellOutSol(getFullNum(sellSolOut));
+                setIsError(false);
+              } else {
+                setIsError(true);
+                setErrorMsg("Amount is too little");
+                setSellOut("");
+              }
+            });
           }
-
-          sellOut = new Big(debounceVal)
-            .mul(10 ** token.tokenDecimals!)
-            .toFixed(0);
-
-          getRate({
-            tokenAmount: new Big(debounceVal)
-              .mul(10 ** token.tokenDecimals!)
-              .toFixed(0)
-          }).then((res: any) => {
-            setIsLoading(false);
-            sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
-
-            if (Number(debounceVal) > Number(tokenBalance)) {
-              setIsError(true);
-              setErrorMsg("Invalid balance");
-              setSellOutSol(getFullNum(sellSolOut));
-              return;
-            }
-
-            if (Number(sellSolOut) > 0.000000001) {
-              setSellOut(sellOut);
-              setSellOutSol(getFullNum(sellSolOut));
-              setIsError(false);
-            } else {
-              setIsError(true);
-              setErrorMsg("Amount is too little");
-              setSellOut("");
-            }
-          });
         }
-      }
-    } else {
-      setBuyIn("");
-      setBuyInSol("");
-      setSellOut("");
-      setSellOutSol("");
-      setIsError(true);
-      setErrorMsg("Enter a amount");
+      } else {
+        setBuyIn("");
+        setBuyInSol("");
+        setSellOut("");
+        setSellOutSol("");
+        setIsError(true);
+        setErrorMsg("Enter a amount");
       }
     } catch (e) {
       setIsLoading(false);
@@ -264,7 +268,6 @@ export default function BuySell({
       setErrorMsg("Invalid value");
     }
   }, [debounceVal, tokenType, slip, currentToken]);
-
 
   return (
     <>
@@ -297,6 +300,9 @@ export default function BuySell({
                 setCurrentToken(buyTokenType === 1 ? SOL : desToken);
                 setSolPercent(0);
               }
+            }}
+            style={{
+              backgroundColor: "#1B1B1B"
             }}
           />
         ) : (

@@ -164,9 +164,10 @@ export default function BuySellPump({
               slip / 100
             )
               .then((res) => {
-
                 setBuyIn(debounceVal);
-                setBuyInSol(new Big(res).div(10 ** SOL.tokenDecimals).toString());
+                setBuyInSol(
+                  new Big(res).div(10 ** SOL.tokenDecimals).toString()
+                );
 
                 setIsLoading(false);
                 setIsError(false);
@@ -264,6 +265,9 @@ export default function BuySellPump({
               setSolPercent(0);
               setTokenPercent(0);
             }}
+            style={{
+              backgroundColor: "#1B1B1B"
+            }}
           />
         ) : (
           <div className={styles.tradeTabs}>
@@ -316,7 +320,6 @@ export default function BuySellPump({
             }
           >
             <div className={styles.actionArea}>
-
               <div></div>
               <div
                 onClick={(ev) => {
@@ -332,8 +335,9 @@ export default function BuySellPump({
             </div>
 
             <div
-              className={`${styles.tokenBalanceBox} ${from === "panel" && styles.PanelInput
-                }`}
+              className={`${styles.tokenBalanceBox} ${
+                from === "panel" && styles.PanelInput
+              }`}
             >
               <div className={styles.inputArea}>
                 <input
@@ -387,10 +391,11 @@ export default function BuySellPump({
                       setSolPercent(0);
                       setValInput("");
                     }}
-                    className={`${from === "panel"
+                    className={`${
+                      from === "panel"
                         ? styles.PanelPercentTag
                         : styles.percentTag
-                      } button`}
+                    } button`}
                   >
                     Reset
                   </div>
@@ -429,10 +434,11 @@ export default function BuySellPump({
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${from === "panel"
+                  className={`${
+                    from === "panel"
                       ? styles.PanelPercentTag
                       : styles.percentTag
-                    } button`}
+                  } button`}
                 >
                   Reset
                 </div>
@@ -473,8 +479,8 @@ export default function BuySellPump({
                 <div className={styles.receiveAmount}>
                   {buyIn
                     ? new Big(buyIn)
-                      .div(10 ** token.tokenDecimals!)
-                      .toFixed(token.tokenDecimals)
+                        .div(10 ** token.tokenDecimals!)
+                        .toFixed(token.tokenDecimals)
                     : ""}{" "}
                   {tokenName}
                 </div>
