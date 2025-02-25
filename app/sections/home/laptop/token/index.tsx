@@ -27,7 +27,8 @@ export default function Token({
   dataAvailable,
   onUpdate,
   onOpenPanel,
-  onUpdateTradeTab
+  onUpdateTradeTab,
+  mediaId
 }: any) {
   const { innerHeight, innerWidth } = useUserAgent();
   const descContentRef = useRef<any>();
@@ -63,6 +64,7 @@ export default function Token({
             <Media
               imgHeight="100%"
               data={token}
+              mediaId={mediaId || token.id}
               videoProgressStyle={
                 isCurrent
                   ? { position: "absoulte", left: 16, bottom: 72 }

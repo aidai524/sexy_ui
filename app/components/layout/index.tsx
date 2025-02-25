@@ -19,6 +19,7 @@ export default function Layout(props: any) {
   const configStore: any = useConfig();
   const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
   const pathname = usePathname();
+
   // useWhitelist();
 
   const { getConfig } = useTokenTrade({
