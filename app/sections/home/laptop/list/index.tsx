@@ -13,7 +13,8 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 import Big from "big.js";
 import { useDebounceFn } from "ahooks";
-import useDanmaku from "@/app/hooks/use-danmaku";
+import { useVideoPlayer } from "@/app/store/use-video-player";
+import { videoReg } from "@/app/components/upload";
 
 const DetailPanel = dynamic(
   () => import("@/app/sections/home/laptop/panels/details")
@@ -48,6 +49,7 @@ export default function List({ type, isCurrentTab }: any) {
   const listRef = useRef<any>();
   const containerRef = useRef<any>();
   const startY = useRef<number>(0);
+  const videoPlayerStore: any = useVideoPlayer();
 
   useEffect(() => {
     if (list.length && index > list.length) {
@@ -74,11 +76,6 @@ export default function List({ type, isCurrentTab }: any) {
     if (!id) return null;
     return getProjectById(id);
   }, [index, list, refresher]);
-
-  const { list: danmakus, show: danmakuShow } = useDanmaku({
-    id: currentToken?.id,
-    isCurrentTab
-  });
 
   const { run } = useDebounceFn(
     (ev: any) => {
@@ -112,6 +109,21 @@ export default function List({ type, isCurrentTab }: any) {
       containerRef.current?.removeEventListener("wheel", wheel);
     };
   }, []);
+
+  useEffect(() => {
+    if (!isCurrentTab) return;
+    if (!currentToken) {
+      videoPlayerStore.setPlay(false);
+      return;
+    }
+    const isVideo = videoReg.test(currentToken.tokenImg || "");
+
+    if (videoPlayerStore.autoPlay && isVideo) {
+      videoPlayerStore.setPlay(true, String(currentToken.id) + "_" + type);
+    } else {
+      videoPlayerStore.setPlay(false);
+    }
+  }, [isCurrentTab, currentToken]);
 
   return (
     <div
@@ -149,8 +161,7 @@ export default function List({ type, isCurrentTab }: any) {
               token={token}
               isCurrent={index === i && isCurrentTab}
               isNext={i - 1 === index && type === "launching"}
-              danmakus={danmakus}
-              danmakuShow={danmakuShow}
+              mediaId={String(token?.id) + "_" + type}
               onUpdate={(token: any, action?: string) => {
                 if (action && ["launched_like"].includes(action)) {
                   updateProject(token);

@@ -3,19 +3,22 @@ import dynamic from "next/dynamic";
 import { HomeContext } from "./context";
 import styles from "./index.module.css";
 import { useState } from "react";
-import { useProjects } from "@/app/store/use-projects-new";
-import { useHomeTab } from "@/app/store/useHomeTab";
+import { useProjects, LaunchType } from "@/app/store/use-projects-new";
 import { useUserAgent } from "@/app/context/user-agent";
+import { useVideoPlayer } from "@/app/store/use-video-player";
+import { videoReg } from "@/app/components/upload";
+import { useHomeTab } from "@/app/store/useHomeTab";
 
 const DetailPage = dynamic(() => import("@/app/sections/detail/mobile"), {
   ssr: false
 });
-
+console.log(15);
 export default function Mobile() {
   const [token, setToken] = useState<any>();
-  const homeTabStore: any = useHomeTab();
   const projectsStore = useProjects();
   const { innerHeight, innerWidth } = useUserAgent();
+  const videoPlayerStore: any = useVideoPlayer();
+  const homeTabStore: any = useHomeTab();
 
   return (
     <HomeContext.Provider
@@ -23,6 +26,7 @@ export default function Mobile() {
         token,
         goDetail(token: any) {
           setToken(token);
+          videoPlayerStore.setPlay(false);
         }
       }}
     >
@@ -41,9 +45,17 @@ export default function Mobile() {
             onBack={() => {
               setToken(null);
               history.pushState({ page: "/" }, "Home", `/`);
+              const isVideo = videoReg.test(token.tokenImg || "");
+              if (isVideo && videoPlayerStore.autoPlay) {
+                videoPlayerStore.setPlay(
+                  true,
+                  String(token.id) +
+                    "_" +
+                    Object.keys(LaunchType)[homeTabStore.homeTabIndex]
+                );
+              }
             }}
             onSuccess={(params: any) => {
-              console.log(46, { ...token, ...params });
               projectsStore.updateProject({ ...token, ...params });
             }}
           />

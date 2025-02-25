@@ -2,28 +2,34 @@ import styles from "./index.module.css";
 import tabs, { tabsPath } from "./config";
 import { useRouter, usePathname } from "next/navigation";
 import { useAccount } from "@/app/hooks/useAccount";
-import  CopyTrade  from "@/app/services/copyTrade";
+import CopyTrade from "@/app/services/copyTrade";
 import { useEffect, useState } from "react";
+
 export default function Tabs() {
   const pathname = usePathname();
   const router = useRouter();
   const { address: sexAddress } = useAccount();
   const copyTradeService = new CopyTrade();
   const [copyTradeUserInfo, setCopyTradeUserInfo] = useState<any>(null);
-  const canClaim = Number(copyTradeUserInfo?.carryFee || '0') - Number(copyTradeUserInfo?.claimed || '0');
+  const canClaim =
+    Number(copyTradeUserInfo?.carryFee || "0") -
+    Number(copyTradeUserInfo?.claimed || "0");
   useEffect(() => {
     if (sexAddress) {
-      copyTradeService.getCopyTradersUserInfo({address: sexAddress, chain: 'solana'}).then((res) => {
-        setCopyTradeUserInfo(res.data);
-      });
+      copyTradeService
+        .getCopyTradersUserInfo({ address: sexAddress, chain: "solana" })
+        .then((res) => {
+          setCopyTradeUserInfo(res.data);
+        });
     }
   }, [sexAddress]);
+
   if (pathname === "/create") {
-    return null
+    return null;
   }
 
   if (!tabsPath.includes(pathname)) return null;
-  
+
   return (
     <div className={styles.Container}>
       {tabs.map((item: any) => {
@@ -41,9 +47,8 @@ export default function Tabs() {
               router.push(item.path);
             }}
           >
-            {item.label === 'Smart' && canClaim > 0 && (
-              <div className={styles.copyDot}>
-              </div>
+            {item.label === "Smart" && canClaim > 0 && (
+              <div className={styles.copyDot}></div>
             )}
             <item.icon
               size={item.iconSize}
