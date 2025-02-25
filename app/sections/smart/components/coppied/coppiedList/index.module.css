@@ -215,3 +215,31 @@
     color: #9290B1;
     font-weight: 300;
 }
+
+
+
+.ClosePopoverContent {
+    padding: 24px;
+    text-align: center;
+    background-color: #252328;
+    border-radius: 20px;
+    border: 1px solid #3B3B3B;
+    width: 332px;
+    height: 150px;
+}
+
+.ClosePopoverContent h3 {
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: 300;
+    line-height: 21px;
+    font-size: 14px;
+    font-family: 'Unbounded';
+    text-align: left;
+}
+
+.ClosePopoverButtons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
