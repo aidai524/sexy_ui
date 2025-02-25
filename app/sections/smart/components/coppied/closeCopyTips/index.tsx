@@ -56,7 +56,7 @@ export default function CloseCopyTips({ show, onClose, copiedInfo, handleCloseAn
         </div>
 
         <div className={styles.ButtonBox}>
-            <div className={styles.SellButton + " " + styles.Button} onClick={() => {handleCloseAndSell(copiedInfo); onClose()}}>Close And Sell</div>
+            <div className={styles.SellButton + " " + styles.Button} onClick={() => {handleCloseAndSell(copiedInfo); onClose()}}>Close and Sell</div>
             <div className={styles.CloseButton + " " + styles.Button} onClick={() => {handleClose(copiedInfo); onClose()}}>Just Close</div>
         </div>
       </div>
