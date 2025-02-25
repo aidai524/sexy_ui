@@ -94,3 +94,7 @@
     font-weight: 400;
     color: rgba(255, 255, 255, 0.5);
 }
+
+.fontWeight700 * {
+    font-weight: 700 !important;
+}

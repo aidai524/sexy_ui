@@ -33,7 +33,10 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
     }
   }
   return (
-    <div className={isMobile ? styles.container : styles.containerPC}>
+    <div className={`
+      ${isMobile ? styles.container : styles.containerPC}
+      ${!isMobile ? styles.fontWeight700 : ''}
+    `.trim()}>
       {/* title & copyier amount */}
       <div className={styles.titleContainer}>
         <div className={styles.title}>

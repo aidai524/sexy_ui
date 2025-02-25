@@ -113,3 +113,7 @@
   .claimAmountButton svg {
     animation: blink 1.5s infinite;
   }
+
+.fontWeight700 * {
+    font-weight: 700 !important;
+}

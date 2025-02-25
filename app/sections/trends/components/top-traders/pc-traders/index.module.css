@@ -19,7 +19,7 @@
     gap: 4px;
     cursor: pointer;
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 700;
   }
   
   .traderList {
@@ -67,13 +67,14 @@
 
   .name {
     color: #FFFFFF;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 14px;
   }
   
   .followers {
     color: #9290B1;
     font-size: 12px;
+    font-weight: 700;
   }
   
   .roi,
@@ -82,15 +83,18 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    font-weight: 700;
   }
   .winRate {
     color: #9290B1;
     font-size: 12px;
+    font-weight: 700;
   }
   
   .profit {
     color: #9290B1;
     font-size: 12px;
+    font-weight: 700;
   }
   
   .copyButton {
@@ -103,7 +107,7 @@
     font-size: 12px;
     font-family: Unbounded;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 700;
     line-height: normal;
     
   }
@@ -181,5 +185,5 @@
   justify-content: center;
 }
 .crownText {
-  font-weight: 400;
+  font-weight: 700;
 }

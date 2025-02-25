@@ -28,7 +28,10 @@ export default function CopyTradeCard(props: {
     return '+' + numberFormatter(pnl, 2, true);
 }
   return (
-    <div className={isMobile ? styles.container : useLinear ? styles.linearContainer : styles.containerPC}>
+    <div className={`
+      ${isMobile ? styles.container : useLinear ? styles.linearContainer : styles.containerPC}
+      ${!isMobile ? styles.fontWeight700 : ''}
+    `.trim()}>
       <div className={styles.title}>
         <span>Copied PRFM</span>
         <div
@@ -37,7 +40,7 @@ export default function CopyTradeCard(props: {
           }}
           style={{cursor: 'pointer'}}
         >
-          <RightArrowWrap />
+          <RightArrowWrap useLinear={useLinear} />
         </div>
       </div>
 
