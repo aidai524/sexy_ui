@@ -57,7 +57,7 @@ export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
 
   if (data.status !== 0) return;
 
-  onSuccess?.(likeNumToday);
+  if (likeNum !== LIKE_ERROR) onSuccess?.(likeNumToday);
 
   if (projectLikeNum === 100) {
     const timeLikeHandler = Modal.show({
