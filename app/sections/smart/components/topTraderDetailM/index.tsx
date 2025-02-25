@@ -275,6 +275,7 @@ export default function TopTraderDetailM() {
           {SHOW_COPY_TRADE && (
             <CoppiedModal
               copiedInfo={currentUserInfo}
+              address={address}
               show={showModal}
               onClose={() => {
                 setShowModal(false);
