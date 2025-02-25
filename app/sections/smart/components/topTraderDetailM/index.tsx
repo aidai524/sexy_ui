@@ -129,7 +129,7 @@ export default function TopTraderDetailM() {
 
   const centerNode = useMemo(() => ({
     id: currentUserInfo?.address || "",
-    name: currentUserInfo?.name || "",
+    name: currentUserInfo?.name || formatAddress(currentUserInfo?.address || ""),
     image: currentUserInfo?.icon || defaultAvatar
   }), [currentUserInfo?.address, currentUserInfo?.name, currentUserInfo?.icon]);
 
@@ -142,7 +142,7 @@ export default function TopTraderDetailM() {
           const userInfo = await getUserInfoWithCache(item.address);
           return {
             id: item.address,
-            name: userInfo?.name || '',
+            name: userInfo?.name || formatAddress(item.address || ""),
             image: userInfo?.icon || defaultAvatar,
             pnl: item.pnl
           };
@@ -154,7 +154,6 @@ export default function TopTraderDetailM() {
 
     loadSatellites();
   }, [smartMoniesInfo?.topCopiers, getUserInfoWithCache]);
-
   return (
     <div className={styles.container}>
       {/*  */}
@@ -182,7 +181,12 @@ export default function TopTraderDetailM() {
         </div>
       </div>
       {/* charts */}
-      <StarGraph centerNode={centerNode} satellites={satelliteNodes} />
+      <StarGraph centerNode={centerNode} satellites={[{
+        id: "1",
+        name: "1",
+        image: "1",
+        pnl: 1
+      }]} />
       {/* performance */}
       <div className={styles.performance}>
         <div className={styles.header}>

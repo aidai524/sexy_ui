@@ -227,12 +227,19 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
     // First sanitize to numbers only
     const sanitizedValue = value.replace(/[^\d]/g, "");
     
-    // Don't allow "0" or empty values
-    if (!sanitizedValue || sanitizedValue === "0") {
+    // Allow empty value temporarily during editing
+    if (sanitizedValue === "") {
+      setCopyTimes("");
+      return;
+    }
+    
+    // Convert to number and apply constraints
+    const numValue = parseInt(sanitizedValue, 10);
+    if (numValue === 0) {
       setCopyTimes("1");
     } else {
       // Cap at 10
-      const finalValue = Math.min(parseInt(sanitizedValue, 10), 10).toString();
+      const finalValue = Math.min(numValue, 10).toString();
       setCopyTimes(finalValue);
     }
     
@@ -247,7 +254,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
     }
 
     let res;
-    if(isAutoCloseChecked){
+    if(isChecked){
       res = await handleCopyTrade({
         walletAddress: walletAddress || currentUserInfo?.address,
         copiedAddress: copiedInfo?.address || address,
@@ -283,7 +290,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
   };
 
   const handleSwitchChange = (checked: boolean) => {
-    setIsChecked(checked);
+    // setIsChecked(checked);
     setIsAdvancedModalOpen(checked);
   };
 
@@ -553,7 +560,7 @@ export const AdvancedModal = ({
             <span
               onClick={() => {
                 onClose();
-                setIsChecked(false);
+                // setIsChecked(false);
               }}
             >
               <LeftBackIcon />
