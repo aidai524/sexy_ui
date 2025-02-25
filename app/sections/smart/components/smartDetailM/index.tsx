@@ -19,6 +19,7 @@ import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
 import { numberFormatter } from '@/app/utils/common';
 import CopyTradeShare from '@/app/sections/smart/components/CopyTraderShare/modal';
 import { useAccount } from "@/app/hooks/useAccount";
+import Big from 'big.js';
 
 export default function SmartDetailM() {
   const { userInfo } = useUser();
@@ -62,6 +63,7 @@ export default function SmartDetailM() {
     getSmartMoniesInfo();
     getCopyTradersUserInfo();
   }, [reqAddress]);
+
 
   return (
     <div className={styles.container}>
@@ -117,13 +119,21 @@ export const SmartDetailContent = ({
       return "0";
     }
     if (pnl.startsWith("-")) {
-      return "-" + numberFormatter(Math.abs(Number(pnl)), 4, true);
+      return "-" + numberFormatter(Math.abs(Number(pnl)), 2, true);
     }
-    return "+" + numberFormatter(pnl, 4, true);
+    return "+" + numberFormatter(pnl, 2, true);
   };
   const isGtZero = (str: string) => {
     return Number(str) > 0;
   };
+
+
+  const formatWinRate = (winRate: string) => {
+    if (winRate == '0') {
+      return '0%';
+    }
+    return new Big(winRate).times(100).toFixed(1) + '%';
+  }
   return (
     <div className={styles.smartDetailContent}>
       <h3 className={styles.smartDetailContentTitle}>Copied PRFM</h3>
@@ -147,7 +157,7 @@ export const SmartDetailContent = ({
           <div className={styles.statItem}>
             <div className={styles.statLabel}>ROI</div>
             <div className={styles.statValue}>
-              {+(copyTradersUserInfo?.tradeInfo?.roi || 0) * 100}%
+              {formatWinRate(copyTradersUserInfo?.tradeInfo?.roi || "0")}
             </div>
           </div>
         </div>
@@ -161,7 +171,7 @@ export const SmartDetailContent = ({
           <div className={styles.statItem}>
             <div className={styles.statLabel}>Win Rate</div>
             <div className={styles.statValue}>
-              {+(copyTradersUserInfo?.tradeInfo?.winRate || 0) * 100}%
+              {formatWinRate(copyTradersUserInfo?.tradeInfo?.winRate || "0")}
             </div>
           </div>
         </div>
@@ -169,23 +179,15 @@ export const SmartDetailContent = ({
           <div className={styles.statItem}>
             <div className={styles.statLabel}>Open Position</div>
             <div className={styles.statValue}>
-              {numberFormatter(
-                copyTradersUserInfo?.tradeInfo?.tokenPosition,
-                2,
-                true
-              )}{" "}
-              SOL
+              {formatPnl(copyTradersUserInfo?.tradeInfo?.tokenPosition || "0")}
+              &nbsp;SOL
             </div>
           </div>
           <div className={styles.statItem}>
             <div className={styles.statLabel}>Current PnL</div>
             <div className={styles.statValue}>
               <span className={styles.highlight}>
-                {numberFormatter(
-                  copyTradersUserInfo?.tradeInfo?.currentPNL,
-                  2,
-                  true
-                )}
+                {formatPnl(copyTradersUserInfo?.tradeInfo?.currentPNL || "0")}
               </span>
               <span className={styles.detailValueCurrency}>SOL</span>
             </div>
