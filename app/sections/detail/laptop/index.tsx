@@ -12,7 +12,7 @@ import { TokenStatusModal } from "@/app/components/status2Alert";
 import { useDetailStatus } from "@/app/store/use-detail-status";
 
 const DetailPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/detail")
+  () => import("@/app/sections/home/laptop/panels/details")
 );
 
 const CommentsPanel = dynamic(
