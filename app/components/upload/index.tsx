@@ -93,13 +93,30 @@ export function Upload({
         scala,
         cropper
       );
+
+      let originUrl = url;
+      if (cropper) {
+        originUrl = await upload(
+          file.name,
+          file,
+          imgReg.test(file.name) &&
+            !svgReg.test(file.name) &&
+            !gifReg.test(file.name),
+          -1,
+          scala,
+          false
+        );
+        console.log(originUrl)
+      }
+
       setTimeout(() => {
         setIsUpload(false);
       }, 100);
 
       if (url) {
         return {
-          url
+          url,
+          originUrl
         };
       }
 
