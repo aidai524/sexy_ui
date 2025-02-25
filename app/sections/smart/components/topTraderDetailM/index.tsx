@@ -26,6 +26,13 @@ import { fecthUserInfo } from '@/app/utils/getUserInfo';
 import TopTraderDetailShareConfirm from '@/app/sections/smart/components/topTraderDetailShareConfirm';
 import { useAccount } from '@/app/hooks/useAccount';
 
+interface SatelliteNode {
+  id: string;
+  name: string;
+  image: string;
+  pnl: number;
+}
+
 export default function TopTraderDetailM() {
     const { address: walletAddress } = useAccount();
     const { userInfo } = useUser();
@@ -41,6 +48,7 @@ export default function TopTraderDetailM() {
     const [refreshNum, setRefreshNum] = useState(0);
     const [copierImages, setCopierImages] = useState<string[]>([]);
     const [showShareModal, setShowShareModal] = useState(false);
+    const [satelliteNodes, setSatelliteNodes] = useState<SatelliteNode[]>([]);
     
     const getUserInfoWithCache = useMemo(() => {
       const cache = new Map<string, any>();
@@ -125,17 +133,27 @@ export default function TopTraderDetailM() {
     image: currentUserInfo?.icon || defaultAvatar
   }), [currentUserInfo?.address, currentUserInfo?.name, currentUserInfo?.icon]);
 
-  const satellites = useMemo(() => {
-    return smartMoniesInfo?.topCopiers?.map((item: any) => {
-      const userInfo = getUserInfo(item.address);
-      return {
-        id: item.address,
-        name: userInfo?.name,
-        image: userInfo?.icon,
-        pnl: item.pnl
-      };
-    }) || [];
-  }, [smartMoniesInfo?.topCopiers]);
+  useEffect(() => {
+    const loadSatellites = async () => {
+      if (!smartMoniesInfo?.topCopiers?.length) return;
+      
+      const nodes = await Promise.all(
+        smartMoniesInfo.topCopiers.map(async (item: any) => {
+          const userInfo = await getUserInfoWithCache(item.address);
+          return {
+            id: item.address,
+            name: userInfo?.name || '',
+            image: userInfo?.icon || defaultAvatar,
+            pnl: item.pnl
+          };
+        })
+      );
+      
+      setSatelliteNodes(nodes);
+    };
+
+    loadSatellites();
+  }, [smartMoniesInfo?.topCopiers, getUserInfoWithCache]);
 
   return (
     <div className={styles.container}>
@@ -164,7 +182,7 @@ export default function TopTraderDetailM() {
         </div>
       </div>
       {/* charts */}
-      <StarGraph centerNode={centerNode} satellites={satellites} />
+      <StarGraph centerNode={centerNode} satellites={satelliteNodes} />
       {/* performance */}
       <div className={styles.performance}>
         <div className={styles.header}>
