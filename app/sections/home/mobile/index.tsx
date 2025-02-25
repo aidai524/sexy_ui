@@ -12,9 +12,9 @@ import { useHomeTab } from "@/app/store/useHomeTab";
 const DetailPage = dynamic(() => import("@/app/sections/detail/mobile"), {
   ssr: false
 });
-console.log(15);
 export default function Mobile() {
   const [token, setToken] = useState<any>();
+  const [detailTab, setDetailTab] = useState<string>("");
   const projectsStore = useProjects();
   const { innerHeight, innerWidth } = useUserAgent();
   const videoPlayerStore: any = useVideoPlayer();
@@ -24,8 +24,9 @@ export default function Mobile() {
     <HomeContext.Provider
       value={{
         token,
-        goDetail(token: any) {
+        goDetail(token: any, tab: string) {
           setToken(token);
+          setDetailTab(tab);
           videoPlayerStore.setPlay(false);
         }
       }}
@@ -42,6 +43,7 @@ export default function Mobile() {
         >
           <DetailPage
             token={token}
+            tab={detailTab}
             onBack={() => {
               setToken(null);
               history.pushState({ page: "/" }, "Home", `/`);

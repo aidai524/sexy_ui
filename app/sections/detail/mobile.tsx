@@ -28,8 +28,8 @@ import Share from "@/app/components/share";
 import Desc from "./components/desc";
 import Empty from "@/app/components/empty";
 
-export default function Detail({ token, onBack, onSuccess }: any) {
-  const [activeKey, setActiveKey] = useState("Info");
+export default function Detail({ token, tab, onBack, onSuccess }: any) {
+  const [activeKey, setActiveKey] = useState(tab || "Info");
   const {
     infoData: queryedInfoData,
     isLoading,
@@ -73,7 +73,6 @@ export default function Detail({ token, onBack, onSuccess }: any) {
     }
   }, [onBack, token]);
 
-
   const tabs = useMemo(() => {
     const vals = [
       { name: "Details", content: <Desc data={infoData} mc={mc} /> },
@@ -108,9 +107,7 @@ export default function Detail({ token, onBack, onSuccess }: any) {
   }
 
   if (!infoData) {
-    return (
-      <Empty />
-    );
+    return <Empty />;
   }
 
   return (
