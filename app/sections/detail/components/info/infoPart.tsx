@@ -1,6 +1,12 @@
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
-import { checkFileType, formatAddress, formatDateEn, simplifyNum, timeAgo } from "@/app/utils";
+import {
+  checkFileType,
+  formatAddress,
+  formatDateEn,
+  simplifyNum,
+  timeAgo
+} from "@/app/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -68,32 +74,33 @@ export default function InfoPart({
           <div className={styles.tokenSummaryInfo}>
             <div className={styles.tokenSummaryTitle}>{data.tokenName}</div>
             <div className={styles.tokenSummaryDesc}>
-              {
-                checkFileType(data.tokenImg) === 'video' && <div onClick={() => {
-                  setShowFullPlay(true);
-                }} className={styles.tokenSummaryIcon}>
+              {checkFileType(data.tokenImg) === "video" && (
+                <div
+                  onClick={() => {
+                    setShowFullPlay(true);
+                  }}
+                  className={styles.tokenSummaryIcon}
+                >
                   <VideoIcon />
                 </div>
-              }
+              )}
               <div className={styles.tokenSummaryDescText}>
                 <TokenTags token={data} />
               </div>
             </div>
           </div>
         </div>
-        {
-          showAddress && (
-            <div className={styles.tokenAddressWrapper}>
-              <div className={styles.tokenAddressContent}>
-                <Copyed value={data.address as string}>
-                  <div className={styles.tokenAddress}>
-                    {formatAddress(data.address as string)}
-                  </div>
-                </Copyed>
-              </div>
+        {showAddress && (
+          <div className={styles.tokenAddressWrapper}>
+            <div className={styles.tokenAddressContent}>
+              <Copyed value={data.address as string}>
+                <div className={styles.tokenAddress}>
+                  {formatAddress(data.address as string)}
+                </div>
+              </Copyed>
             </div>
-          )
-        }
+          </div>
+        )}
       </div>
 
       {data.status === 0 && (
@@ -102,14 +109,13 @@ export default function InfoPart({
             <div className={styles.progressTitleWrapper}>
               <div className={styles.progressTitle}>
                 <ClockIcon />
-                {
-                  showAddress ? <div className={styles.progressTime}>
-                  {hours} : {minutes} : {seconds}
-                </div> : <div className={styles.progressTime}>
-                  3 : 00 : 00
-                </div>
-                }
-                
+                {showAddress ? (
+                  <div className={styles.progressTime}>
+                    {hours} : {minutes} : {seconds}
+                  </div>
+                ) : (
+                  <div className={styles.progressTime}>3 : 00 : 00</div>
+                )}
               </div>
               <div className={styles.progressAmount}>
                 <div>{data.like || 0}/100 likes </div>
@@ -138,9 +144,13 @@ export default function InfoPart({
                   style={{ color: "#FBCA04" }}
                 >
                   {data.prePaidAmount && data.prePaid
-                    ? numberFormatter(new Big(data.prePaidAmount || 0)
-                      .div(10 ** 9)
-                      .toString(), 4, true)
+                    ? numberFormatter(
+                        new Big(data.prePaidAmount || 0)
+                          .div(10 ** 9)
+                          .toString(),
+                        4,
+                        true
+                      )
                     : 0}
                 </div>
               </div>
@@ -191,9 +201,13 @@ export default function InfoPart({
         </div>
       )}
 
-      {
-        checkFileType(data.tokenImg) === 'video' && <FullPlay src={data.tokenImg as string} show={showFullPlay} onClose={() => setShowFullPlay(false)} />
-      } 
+      {checkFileType(data.tokenImg) === "video" && (
+        <FullPlay
+          src={data.tokenImg as string}
+          show={showFullPlay}
+          onClose={() => setShowFullPlay(false)}
+        />
+      )}
     </div>
   );
 }

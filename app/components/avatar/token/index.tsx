@@ -55,8 +55,8 @@ export default function TokenIcon({
           src={token.icon}
           type={getVideoExt(token.icon)}
           className={styles.Icon}
-          autoPlay={false}
           token={token}
+          mediaId={token.id}
         />
       ) : (
         <img
