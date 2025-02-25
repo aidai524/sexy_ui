@@ -50,7 +50,7 @@ const CopyTradeShare = (props: any) => {
     setLoading(true);
     if (cardRef.current) {
       try {
-        const canvas = await html2canvas(cardRef.current, { useCORS: true });
+        const canvas = await html2canvas(cardRef.current, { useCORS: true,backgroundColor: null  });
 
         const base64Url = canvas.toDataURL("image/webp");
         const newFileName = generateRandomString(10);
