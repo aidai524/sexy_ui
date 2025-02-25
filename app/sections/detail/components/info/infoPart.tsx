@@ -58,7 +58,7 @@ export default function InfoPart({
   const router = useRouter();
   const [showFullPlay, setShowFullPlay] = useState(false);
   const [timeLeft, { days, hours, minutes, seconds }] = useCountDown({
-    targetDate: data.timeLeft,
+    targetDate: data?.timeLeft || 0,
     interval: 1000
   });
 

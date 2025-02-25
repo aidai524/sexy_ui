@@ -15,6 +15,7 @@ import usePump from "@/app/hooks/usePump";
 import { useSlip } from "@/app/store/useSlip";
 import useBalance from "@/app/hooks/useBalance";
 import { useConnection } from "@solana/wallet-adapter-react";
+import { numberFormatter } from "@/app/utils/common";
 
 type Token = {
   tokenName: string;
@@ -38,7 +39,7 @@ export const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.1, 0.5, 1];
+const SOL_PERCENT_LIST = [0.1, 0.5, 1, 'Max'];
 
 export default function BuySellPump({
   token,
@@ -164,10 +165,9 @@ export default function BuySellPump({
               slip / 100
             )
               .then((res) => {
+
                 setBuyIn(debounceVal);
-                setBuyInSol(
-                  new Big(res).div(10 ** SOL.tokenDecimals).toString()
-                );
+                setBuyInSol(new Big(res).div(10 ** SOL.tokenDecimals).toString());
 
                 setIsLoading(false);
                 setIsError(false);
@@ -265,9 +265,6 @@ export default function BuySellPump({
               setSolPercent(0);
               setTokenPercent(0);
             }}
-            style={{
-              backgroundColor: "#1B1B1B"
-            }}
           />
         ) : (
           <div className={styles.tradeTabs}>
@@ -320,6 +317,11 @@ export default function BuySellPump({
             }
           >
             <div className={styles.actionArea}>
+              <div className={styles.balance}>
+                <img src="/img/trade/balance.svg" />
+                <div className={styles.balanceNum}> {tokenType === 0 ? numberFormatter(tokenBalance, 2, true) : numberFormatter(solBalance, 2, true) + ' SOL'}</div>
+              </div>
+
               <div></div>
               <div
                 onClick={(ev) => {
@@ -330,14 +332,14 @@ export default function BuySellPump({
                 className={`${styles.slippage}`}
                 ref={slippageTextRef}
               >
-                <span className="button">Set max slippage</span>
+                <img src="/img/trade/slip.svg" className={styles.slipIcon} />
+                <span className="button">Slippage</span>
               </div>
             </div>
 
             <div
-              className={`${styles.tokenBalanceBox} ${
-                from === "panel" && styles.PanelInput
-              }`}
+              className={`${styles.tokenBalanceBox} ${from === "panel" && styles.PanelInput
+                }`}
             >
               <div className={styles.inputArea}>
                 <input
@@ -378,9 +380,7 @@ export default function BuySellPump({
                   </div>
                 </div>
               </div>
-              <div className={styles.balance}>
-                Balance: {tokenType === 0 ? tokenBalance : solBalance}
-              </div>
+
             </div>
 
             {activeIndex === 0 &&
@@ -391,11 +391,10 @@ export default function BuySellPump({
                       setSolPercent(0);
                       setValInput("");
                     }}
-                    className={`${
-                      from === "panel"
-                        ? styles.PanelPercentTag
-                        : styles.percentTag
-                    } button`}
+                    className={`${from === "panel"
+                      ? styles.PanelPercentTag
+                      : styles.percentTag
+                      } button`}
                   >
                     Reset
                   </div>
@@ -403,8 +402,13 @@ export default function BuySellPump({
                     return (
                       <div
                         onClick={() => {
-                          setSolPercent(item);
-                          setValInput(getFullNum(item));
+                          if (item === 'Max') {
+                            setSolPercent(Number(solBalance) - 0.03);
+                            setValInput(getFullNum(Number(solBalance) - 0.03));
+                          } else {
+                            setSolPercent(item as number);
+                            setValInput(getFullNum(item as number));
+                          }
                         }}
                         key={item}
                         className={[
@@ -415,7 +419,7 @@ export default function BuySellPump({
                           "button"
                         ].join(" ")}
                       >
-                        {getFullNum(item)}SOL
+                        {getFullNum(item)}
                       </div>
                     );
                   })}
@@ -434,11 +438,10 @@ export default function BuySellPump({
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${
-                    from === "panel"
-                      ? styles.PanelPercentTag
-                      : styles.percentTag
-                  } button`}
+                  className={`${from === "panel"
+                    ? styles.PanelPercentTag
+                    : styles.percentTag
+                    } button`}
                 >
                   Reset
                 </div>
@@ -479,10 +482,10 @@ export default function BuySellPump({
                 <div className={styles.receiveAmount}>
                   {buyIn
                     ? new Big(buyIn)
-                        .div(10 ** token.tokenDecimals!)
-                        .toFixed(token.tokenDecimals)
+                      .div(10 ** token.tokenDecimals!)
+                      .toFixed(token.tokenDecimals)
                     : ""}{" "}
-                  {tokenName}
+                  <img src={desToken.tokenUri} className={styles.receiveTokenImg} />
                 </div>
               </div>
             )}
@@ -490,7 +493,10 @@ export default function BuySellPump({
             {activeIndex === 0 && tokenType === 0 && (
               <div className={styles.paid}>
                 <div>Payment</div>
-                <div>{buyInSol && buyInSol} SOL</div>
+                <div className={styles.receiveAmount}>
+                  {buyInSol && buyInSol}
+                  <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                </div>
               </div>
             )}
 
@@ -498,7 +504,8 @@ export default function BuySellPump({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {sellOutSol && sellOutSol} SOL
+                  {sellOutSol && sellOutSol} 
+                  <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
                 </div>
               </div>
             )}

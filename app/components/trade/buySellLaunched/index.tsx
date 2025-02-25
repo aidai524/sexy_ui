@@ -17,6 +17,7 @@ import { useUserAgent } from "@/app/context/user-agent";
 import { useSlip } from "@/app/store/useSlip";
 import useBalance from "@/app/hooks/useBalance";
 import { useConnection } from "@solana/wallet-adapter-react";
+import { numberFormatter } from "@/app/utils/common";
 
 type Token = {
   tokenName: string;
@@ -40,7 +41,7 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.1, 0.5, 1];
+const SOL_PERCENT_LIST = [0.1, 0.5, 1, 'Max'];
 
 export default function BuySellLaunched({
   token,
@@ -178,9 +179,7 @@ export default function BuySellLaunched({
               return;
             }
 
-            const buyIn = new Big(debounceVal).mul(
-              10 ** desToken.tokenDecimals
-            );
+            const buyIn = new Big(debounceVal).mul(10 ** desToken.tokenDecimals);
             const buyInSol = buyIn.div(qoute).toFixed(SOL.tokenDecimals);
             if (buyInSol) {
               setBuyIn(debounceVal);
@@ -279,9 +278,6 @@ export default function BuySellLaunched({
               setSolPercent(0);
               setTokenPercent(0);
             }}
-            style={{
-              backgroundColor: "#1B1B1B"
-            }}
           />
         ) : (
           <div className={styles.tradeTabs}>
@@ -331,6 +327,11 @@ export default function BuySellLaunched({
             }
           >
             <div className={styles.actionArea}>
+              <div className={styles.balance}>
+                <img src="/img/trade/balance.svg" />
+                <div className={styles.balanceNum}> {tokenType === 0 ? numberFormatter(tokenBalance, 2, true) : numberFormatter(solBalance, 2, true) + ' SOL'}</div>
+              </div>
+              <div></div>
               <div
                 onClick={(ev) => {
                   ev.stopPropagation();
@@ -340,14 +341,14 @@ export default function BuySellLaunched({
                 className={`${styles.slippage}`}
                 ref={slippageTextRef}
               >
-                <span className="button">Set max slippage</span>
+                <img src="/img/trade/slip.svg" className={styles.slipIcon} />
+                <span className="button">Slippage</span>
               </div>
             </div>
 
             <div
-              className={`${styles.tokenBalanceBox} ${
-                from === "panel" && styles.PanelInput
-              }`}
+              className={`${styles.tokenBalanceBox} ${from === "panel" && styles.PanelInput
+                }`}
             >
               <div className={styles.inputArea}>
                 <input
@@ -388,9 +389,7 @@ export default function BuySellLaunched({
                   </div>
                 </div>
               </div>
-              <div className={styles.balance}>
-                Balance: {tokenType === 0 ? tokenBalance : solBalance}
-              </div>
+
             </div>
 
             {activeIndex === 0 &&
@@ -401,11 +400,10 @@ export default function BuySellLaunched({
                       setSolPercent(0);
                       setValInput("");
                     }}
-                    className={`${
-                      from === "panel"
-                        ? styles.PanelPercentTag
-                        : styles.percentTag
-                    } button`}
+                    className={`${from === "panel"
+                      ? styles.PanelPercentTag
+                      : styles.percentTag
+                      } button`}
                   >
                     Reset
                   </div>
@@ -413,8 +411,13 @@ export default function BuySellLaunched({
                     return (
                       <div
                         onClick={() => {
-                          setSolPercent(item);
-                          setValInput(getFullNum(item));
+                          if (item === 'Max') {
+                            setSolPercent(Number(solBalance) - 0.03);
+                            setValInput(getFullNum(Number(solBalance) - 0.03));
+                          } else {
+                            setSolPercent(item as number);
+                            setValInput(getFullNum(item as number));
+                          }
                         }}
                         key={item}
                         className={[
@@ -425,7 +428,7 @@ export default function BuySellLaunched({
                           "button"
                         ].join(" ")}
                       >
-                        {getFullNum(item)}SOL
+                        {getFullNum(item)}
                       </div>
                     );
                   })}
@@ -450,11 +453,10 @@ export default function BuySellLaunched({
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${
-                    from === "panel"
-                      ? styles.PanelPercentTag
-                      : styles.percentTag
-                  } button`}
+                  className={`${from === "panel"
+                    ? styles.PanelPercentTag
+                    : styles.percentTag
+                    } button`}
                 >
                   Reset
                 </div>
@@ -493,7 +495,8 @@ export default function BuySellLaunched({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {buyIn && buyIn} {tokenName}
+                  {buyIn && buyIn} 
+                  <img src={desToken.tokenUri} className={styles.receiveTokenImg} />
                 </div>
               </div>
             )}
@@ -501,7 +504,10 @@ export default function BuySellLaunched({
             {activeIndex === 0 && tokenType === 0 && (
               <div className={styles.paid}>
                 <div>Payment</div>
-                <div>{buyInSol && buyInSol} SOL</div>
+                <div className={styles.receiveAmount}>
+                  {buyInSol && buyInSol} 
+                  <img src={desToken.tokenUri} className={styles.receiveTokenImg} />
+                </div>
               </div>
             )}
 
@@ -509,7 +515,8 @@ export default function BuySellLaunched({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {sellOutSol && sellOutSol} SOL
+                  {sellOutSol && sellOutSol}
+                  <img src={desToken.tokenUri} className={styles.receiveTokenImg} />
                 </div>
               </div>
             )}
@@ -525,8 +532,7 @@ export default function BuySellLaunched({
                     }
 
                     let hash;
-                    let showBuyInToken: any =
-                      Number(buyIn) * 10 ** token.tokenDecimals!;
+                    let showBuyInToken: any = Number(buyIn) * (10 ** token.tokenDecimals!);
                     setIsLoading(true);
                     if (activeIndex === 0) {
                       hash = await trade(buyInSol, "buy", slip * 100);
@@ -538,11 +544,7 @@ export default function BuySellLaunched({
                           userInfo.address
                         );
 
-                        console.log(
-                          "showBuyInToken:",
-                          showBuyInToken,
-                          _showBuyInToken
-                        );
+                        console.log("showBuyInToken:", showBuyInToken, _showBuyInToken);
 
                         if (_showBuyInToken) {
                           showBuyInToken = _showBuyInToken;
@@ -557,8 +559,8 @@ export default function BuySellLaunched({
                       const volume =
                         activeIndex === 0
                           ? new Big(buyInSol)
-                              .div(10 ** SOL.tokenDecimals)
-                              .toFixed(SOL.tokenDecimals)
+                            .div(10 ** SOL.tokenDecimals)
+                            .toFixed(SOL.tokenDecimals)
                           : sellOutSol;
 
                       const pointByVolume = await getPointByVolume(

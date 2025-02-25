@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { PrivyWalletContext } from '@/app/context/privy';
 import { usePrivy } from '@privy-io/react-auth';
 import JitoJsonRpcClient from '@/app/utils/jito';
+import { useSetting } from "../store/use-setting";
 
 const lookupTableAddress = new PublicKey('2ATmQ41kVt7tpxWkyv82CGcVg6CWVWjp7GPuexoXTonR')
 
@@ -25,6 +26,7 @@ export function useAccount() {
   const { connection } = useConnection();
   const { authenticated, user, logout } = usePrivy();
   const { wallet: privyWallet, disconnect: privyDisconnect } = useContext(PrivyWalletContext);
+  const settingStore: any = useSetting();
 
   if (authenticated && privyWallet?.address) {
     const privyPublicKey = new PublicKey(privyWallet.address);
@@ -179,7 +181,6 @@ export function useAccount() {
         transaction: any,
         sendOptions: any = {},
         isVersionedTransaction: boolean = false,
-        isJito: boolean = false
       ) => {
         const confirmationStrategy: any = {
           skipPreflight: true,
@@ -187,13 +188,13 @@ export function useAccount() {
           preflightCommitment: "finalized"
         };
 
+        const jitoable = settingStore.jitoable
 
         let _transaction: any = transaction
         const jitoClient = new JitoJsonRpcClient('https://mainnet.block-engine.jito.wtf/api/v1', "");
         if (!isVersionedTransaction) {
-          if (isJito) {
+          if (jitoable && process.env.NEXT_PUBLIC_NET === 'Mainnet') {
             const jitoTipAccounts = await jitoClient.getTipAccounts();
-            console.log(jitoTipAccounts)
             transaction.add(
               SystemProgram.transfer({
                 fromPubkey: publicKey!,
@@ -242,7 +243,7 @@ export function useAccount() {
         }
 
         let tx
-        if (isJito) { 
+        if (jitoable && process.env.NEXT_PUBLIC_NET === 'Mainnet') { 
           const signedTransaction = await signTransaction!(_transaction)
           const serializedTransaction = signedTransaction.serialize();
           const base58Transaction = bs58.encode(serializedTransaction);
