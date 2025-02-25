@@ -49,7 +49,7 @@ export default function Tips() {
               </div>
               <div className={styles.Token}>
                 <div style={{ flexShrink: 0 }}>
-                  {numberFormatter(item.sol_amount / 1e9, 4, true)} SOL{" "}
+                  {numberFormatter(item.sol_amount / 1e9, 2, true)} SOL{" "}
                 </div>
                 <img src={item.token_icon} className={styles.TokenIcon} />
                 <div className={styles.TokenName}>{item.token_symbol} </div>
