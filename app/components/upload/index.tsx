@@ -175,7 +175,7 @@ export function Upload({
           )}
           {fileType === "video" && (
             <div className={styles.videoBox} onClick={onUpload}>
-              <video className={styles.imgPreview} style={{ pointerEvents: "none" }} >
+              <video className={styles.imgPreview} playsInline webkit-playsinline preload="metadata" style={{ pointerEvents: "none" }} >
                 <source
                   src={mergedFiles[0].url}
                   type={"video/" + getVideoExt(mergedFiles[0].url)}
