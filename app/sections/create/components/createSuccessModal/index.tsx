@@ -85,8 +85,9 @@ function SuccessModal({
       <div className={style.tokenInfo}>
         <div className={style.tokenTitle}>A Genesis Token is live!</div>
         <div className={style.tokenAmount}>
-          You&apos;ve got <span style={{ color: '#fff' }}>{ numberFormatter(pointByVolume as string, 4, true) }</span>{" "}
-          <span className={style.tokenSymbol}>$FlipN</span>
+          You will get 
+          <span className={style.tokenSymbol}>{ numberFormatter(5950, 4, true) } $FlipN</span> 
+           when this token hit bonding curve.
         </div>
       </div>
 
