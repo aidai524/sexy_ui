@@ -256,7 +256,7 @@ export default function TopTradersMobile({
       <div className={styles.traderList}>
         {list.length === 0 ? (
            <div style={{ paddingTop: 116 }}>
-            <Empty text="No data" />
+            {smartMoniesLoading ? <Empty text="Loading" showLoading={true} /> : <Empty text="No data" />}
             </div>
         ) : (
           <>

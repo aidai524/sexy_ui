@@ -33,7 +33,7 @@ interface Trader {
   }
 }
 
-export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,isLoadingMore}: {list: any[], setOrderBy: any,orderBy: string,loadMore: any,hasMore: any,isLoadingMore: any}) {
+export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,isLoadingMore,smartMoniesLoading}: {list: any[], setOrderBy: any,orderBy: string,loadMore: any,hasMore: any,isLoadingMore: any,smartMoniesLoading: boolean}) {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [currentTrader, setCurrentTrader] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
@@ -110,7 +110,7 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
           </>
         ) : (
          <div style={{ paddingTop: 116 }}>
-          <Empty text="No data" />
+          {smartMoniesLoading ? <Empty text="Loading" showLoading={true} /> : <Empty text="No data" />}
          </div>
         )}
       </div>

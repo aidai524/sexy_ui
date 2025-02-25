@@ -69,7 +69,7 @@ export default function TopTraders() {
       <div className={styles.topTraders}>
         {isMobile ? 
           <TopTradersMobile list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} smartMoniesLoading={smartMoniesLoading}/> : 
-          <TopTradersPC list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} />
+          <TopTradersPC list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} smartMoniesLoading={smartMoniesLoading} />
         }
       </div>
     
