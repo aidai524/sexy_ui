@@ -28,10 +28,10 @@ const TopTraderShare = (props: any) => {
 
   const shareLink = useMemo(() => {
     const _shareLink = new URL(window?.location?.origin + '/smartTopDetail');
-    _shareLink.searchParams.set("address", address ?? "");
+    _shareLink.searchParams.set("address", shareName ?? "");
     _shareLink.searchParams.set("referrer", 'top-trader-share');
     return _shareLink.toString();
-  }, [address]);
+  }, [shareName]);
 
   const handleCopy = () => {
     navigator.clipboard
