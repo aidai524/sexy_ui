@@ -47,6 +47,7 @@ export default function useData(launchType: Type) {
       );
 
       if (res.code !== 0 || !res.data?.list) {
+        setHasNext(false);
         return [];
       }
       const ids = res.data?.list.map((item: any) => item.id) || [];

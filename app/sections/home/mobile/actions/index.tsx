@@ -119,7 +119,7 @@ export default function Actions({
           <div
             className={styles.Item}
             onClick={() => {
-              if (!disabled) onClick("trade");
+              if (!disabled) onClick("detail", "Info");
             }}
           >
             <button
@@ -139,7 +139,7 @@ export default function Actions({
           <div
             className={styles.Item}
             onClick={() => {
-              if (!disabled) onClick("trade");
+              if (!disabled) onClick("detail", "Trades");
             }}
           >
             <button

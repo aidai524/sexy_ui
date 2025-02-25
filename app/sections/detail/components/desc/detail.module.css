@@ -4,9 +4,6 @@
   padding: 15px;
   gap: 10px; */
 }
-.infoArea {
-  padding: 15px;
-}
 
 .nameWrapper {
   .name {
@@ -64,13 +61,9 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 5vw;
-  padding: 0 3vw;
 }
 
 .panel {
-  background-color: #121719;
-  padding: 15px 15px;
   margin-top: 10px;
 }
 
@@ -105,7 +98,6 @@
   padding: 16px;
   background: rgba(22, 22, 22, 0.6);
   border-radius: 12px;
-  margin-bottom: 20px;
 }
 
 .statsItemBuy {
@@ -119,7 +111,6 @@
 }
 
 .statsLabel {
-  font-size: 10px;
   color: #9290b1;
 }
 

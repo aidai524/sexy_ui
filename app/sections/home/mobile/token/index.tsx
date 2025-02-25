@@ -107,14 +107,14 @@ export default function Token({
             {dataAvailable && (
               <Actions
                 token={token}
-                onClick={(type: any) => {
+                onClick={(type: any, params: any) => {
                   if (isPreview) return;
                   if (type === "comments") {
                     setShowCommentsModal(true);
                     return;
                   }
                   if (type === "detail") {
-                    goDetail(token);
+                    goDetail(token, params);
                     return;
                   }
                   if (!window.sexAddress) {
