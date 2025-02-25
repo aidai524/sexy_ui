@@ -59,7 +59,7 @@ export default function Token({
                 style={{ backgroundImage: `url(${token.icon})` }}
               />
             )}
-            {token.status === 0 && !isPreview && <LikeToEarn token={token} />}
+            {token?.status === 0 && !isPreview && <LikeToEarn token={token} />}
             <Media
               imgHeight="100%"
               data={token}
@@ -128,7 +128,7 @@ export default function Token({
         </div>
       )}
 
-      {token.status !== 0 && !showTrade && isCurrent && (
+      {token?.status !== 0 && !showTrade && isCurrent && (
         <TipsButton
           tips="Expand"
           triggerStyle={{
