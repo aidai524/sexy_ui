@@ -159,6 +159,21 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
         <span className={styles.lastTradeAt}>{formatDateTime(itemInfo?.lastTradeAt)}</span>
        {
         !urlAddress && (
+            !itemInfo?.tokens || itemInfo?.tokens?.length === 0 ?
+                <button 
+                className={styles.ActionButton}
+                disabled={itemInfo?.state === 5 || (isCloseCopyTradeLoading && itemInfo?.isClosing)}
+                onClick={async () => {
+                    itemInfo.isClosing = true;
+                        try {
+                            await handleClose(itemInfo);
+                        } finally {
+                            itemInfo.isClosing = false;
+                    }
+                }}
+            >
+                    {itemInfo?.state === 5 ? "Closing" : "Close"}
+                </button> :
             <Popover
             content={
                 <div className={styles.ClosePopoverContent}>
@@ -181,14 +196,6 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
           <button 
           className={styles.ActionButton}
           disabled={itemInfo?.state === 5 || (isCloseCopyTradeLoading && itemInfo?.isClosing)}
-          onClick={async () => {
-              itemInfo.isClosing = true;
-              try {
-                  await handleCloseCopyTrade(itemInfo);
-              } finally {
-                  itemInfo.isClosing = false;
-              }
-          }}
          >
               {itemInfo?.state === 5 ? "Closing" : "Close"}
           </button>
