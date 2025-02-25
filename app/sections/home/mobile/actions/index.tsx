@@ -110,7 +110,7 @@ export default function Actions({
               });
               onSuccess("launched_like");
             }}
-            isLiked={token.isLike}
+            isLiked={token.is_launched_like}
             like={token.launched_like}
             disabled={disabled}
             id={token.id}
