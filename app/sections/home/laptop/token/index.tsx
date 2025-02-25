@@ -34,7 +34,7 @@ export default function Token({
   const descContentRef = useRef<any>();
 
   const { total: totalHolders } = useHolders(token);
-
+  if (isCurrent) console.log(token);
   return (
     <div
       className={styles.Box}

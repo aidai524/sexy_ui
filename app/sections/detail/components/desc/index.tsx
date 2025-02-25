@@ -59,11 +59,19 @@ export default function Desc({
           className={styles.statsPanel}
           style={{
             gridTemplateColumns:
-              from === "panel" ? "repeat(4, 1fr)" : "repeat(2, 1fr)"
+              from === "panel" ? "repeat(4, 1fr)" : "repeat(2, 1fr)",
+            marginBottom: from === "panel" ? 0 : 20
           }}
         >
           <div className={styles.statsItem}>
-            <div className={styles.statsLabel}>Market Cap</div>
+            <div
+              className={styles.statsLabel}
+              style={{
+                fontSize: from === "panel" ? 14 : 10
+              }}
+            >
+              Market Cap
+            </div>
             <div className={styles.statsValue}>
               {"$"}
               {data.DApp === "sexy" &&
@@ -74,19 +82,45 @@ export default function Desc({
             </div>
           </div>
           <div className={styles.statsItem}>
-            <div className={styles.statsLabel}>24h Volume</div>
+            <div
+              className={styles.statsLabel}
+              style={{
+                fontSize: from === "panel" ? 14 : 10
+              }}
+            >
+              24h Volume
+            </div>
             <div className={styles.statsValue}>${"36.6K"}</div>
           </div>
           <div className={styles.statsItem}>
-            <div className={styles.statsLabel}>Holders</div>
+            <div
+              className={styles.statsLabel}
+              style={{
+                fontSize: from === "panel" ? 14 : 10
+              }}
+            >
+              Holders
+            </div>
             <div className={styles.statsValue}>{"125"}</div>
           </div>
           <div className={styles.statsItem}>
-            <div className={styles.statsLabel}>Txns</div>
+            <div
+              className={styles.statsLabel}
+              style={{
+                fontSize: from === "panel" ? 14 : 10
+              }}
+            >
+              Txns
+            </div>
             <div className={styles.statsValue}>{"2,512"}</div>
           </div>
           <div className={styles.statsItem + " " + styles.statsItemBuy}>
-            <div className={styles.statsLabel}>
+            <div
+              className={styles.statsLabel}
+              style={{
+                fontSize: from === "panel" ? 14 : 10
+              }}
+            >
               <div>
                 <div>Buys</div>
                 <div className={styles.tradeAmount}>$888</div>
@@ -110,8 +144,8 @@ export default function Desc({
       )}
 
       <div
-        className={styles.infoArea}
         style={{
+          padding: from === "panel" ? "0px 15px 15px" : 15,
           backgroundColor: from === "panel" ? "transparent" : "#ffffff14"
         }}
       >
@@ -231,11 +265,18 @@ export default function Desc({
         )}
 
         {(data.x || data.tg || data.discord || data.website) && (
-          <div className={styles.panel}>
+          <div
+            className={styles.panel}
+            style={{
+              backgroundColor: from === "panel" ? "transparent" : "#121719",
+              padding: from === "panel" ? 0 : 15
+            }}
+          >
             <div
               className={styles.communityIcons}
               style={{
-                gap: "60px"
+                gap: from === "panel" ? 20 : 60,
+                padding: from === "panel" ? "0" : "0 3vw"
               }}
             >
               {data.website && (
@@ -266,46 +307,46 @@ export default function Desc({
         )}
       </div>
 
-      {data.status! > 0 && (
-        <div
-          className={styles.singleProgress}
-          style={{
-            backgroundColor: from === "panel" ? "transparent" : "#ffffff14"
-          }}
-        >
-          <div className={styles.progressTitleWrapper}>
-            <div className={styles.progressTitle}>Crowned progress</div>
-            <div className={styles.progressPercent}>
-              {data.kingProgress && top1?.address === data.address
-                ? 100
-                : data.kingProgress}
-              %
-            </div>
-          </div>
-
-          <ProgressBar
-            percent={
-              data.kingProgress && top1?.address === data.address
-                ? 100
-                : data.kingProgress
-            }
+      {data.status! > 0 &&
+        ((from === "panel" && data.kingProgress) || from !== "panel") && (
+          <div
+            className={styles.singleProgress}
             style={{
-              "--track-width": "4px",
-              "--fill-color": "#FCD743",
-              "--track-color": "#3C3C3C80"
+              backgroundColor: from === "panel" ? "transparent" : "#ffffff14"
             }}
-          />
-
-          {data.lastKingTime !== 0 && (
-            <div className={styles.progressDesc} style={{ color: "#FCD743" }}>
-              Crowned king of the hill on{" "}
-              {data.lastKingTime
-                ? formatDateEn(data.lastKingTime, "MMM D, YYYY HH:mm:ss")
-                : "-"}
+          >
+            <div className={styles.progressTitleWrapper}>
+              <div className={styles.progressTitle}>Crowned progress</div>
+              <div className={styles.progressPercent}>
+                {data.kingProgress && top1?.address === data.address
+                  ? 100
+                  : data.kingProgress}
+                %
+              </div>
             </div>
-          )}
-        </div>
-      )}
+            <ProgressBar
+              percent={
+                data.kingProgress && top1?.address === data.address
+                  ? 100
+                  : data.kingProgress
+              }
+              style={{
+                "--track-width": "4px",
+                "--fill-color": "#FCD743",
+                "--track-color": "#3C3C3C80"
+              }}
+            />
+
+            {data.lastKingTime !== 0 && (
+              <div className={styles.progressDesc} style={{ color: "#FCD743" }}>
+                Crowned king of the hill on{" "}
+                {data.lastKingTime
+                  ? formatDateEn(data.lastKingTime, "MMM D, YYYY HH:mm:ss")
+                  : "-"}
+              </div>
+            )}
+          </div>
+        )}
 
       {showHolders && data.status! > 0 && from !== "panel" && (
         <div className={styles.panel}>
