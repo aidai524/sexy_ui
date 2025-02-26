@@ -143,6 +143,7 @@ export default forwardRef(function PreviewNode(
                     timeLeft: Date.now() + 1000 * 60 * 60 * 3
                   }}
                   isPreview={true}
+                  isPreviewNoOpacity={true}
                   dataAvailable={true}
                 />
               </div>

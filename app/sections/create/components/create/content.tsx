@@ -195,8 +195,6 @@ export default function Create({
     }
   }, [])
 
-  console.log('modalShow:', isLoading, errorMsg, isError)
-
   return (
     <>
       <div

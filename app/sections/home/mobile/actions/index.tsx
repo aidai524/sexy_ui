@@ -22,7 +22,8 @@ export default function Actions({
   onSuccess,
   isCurrent,
   disabled,
-  isPreview
+  isPreview,
+  isPreviewNoOpacity
 }: any) {
   const { showShare } = useMessage();
   const { isMobile } = useUserAgent();
@@ -34,7 +35,7 @@ export default function Actions({
         isMobile ? styles.MbActions : styles.PcActions
       }`}
       style={{
-        opacity: disabled ? 0.3 : 1
+        opacity: (disabled && !isPreviewNoOpacity) ? 0.3 : 1
       }}
     >
       {isMobile ? (
