@@ -26,6 +26,7 @@ import Big from 'big.js';
 import { fecthUserInfo } from '@/app/utils/getUserInfo';
 import TopTraderDetailShareConfirm from '@/app/sections/smart/components/topTraderDetailShareConfirm';
 import { useAccount } from '@/app/hooks/useAccount';
+import { useCopyTradeRefresh } from '@/app/store/useCopyTradeRefresh';
 
 interface SatelliteNode {
   id: string;
@@ -50,6 +51,7 @@ export default function TopTraderDetailM() {
     const [copierImages, setCopierImages] = useState<string[]>([]);
     const [showShareModal, setShowShareModal] = useState(false);
     const [satelliteNodes, setSatelliteNodes] = useState<SatelliteNode[]>([]);
+    const lastCopyTradeTime = useCopyTradeRefresh((state: any) => state.lastCopyTradeTime);
     
     const getUserInfoWithCache = useMemo(() => {
       const cache = new Map<string, any>();
@@ -103,7 +105,7 @@ export default function TopTraderDetailM() {
   useEffect(() => {
     getSmartMoniesInfo();
     getCopyTradersUserInfo();
-  }, [address]);
+  }, [address, lastCopyTradeTime]);
 
   const formatPnl = (pnl: string) => {
     if (pnl == "0") {

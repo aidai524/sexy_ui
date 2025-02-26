@@ -6,8 +6,9 @@ import styles from './index.module.css'
 import { useGetSmartMonies } from '../../hooks/useGetSmartMonies';
 import Empty from '@/app/components/empty';
 import { useAccount } from '@/app/hooks/useAccount';
-
+import { useCopyTradeRefresh } from '@/app/store/useCopyTradeRefresh';
 export default function TopTraders() {
+  const lastCopyTradeTime = useCopyTradeRefresh((state: any) => state.lastCopyTradeTime);
   const { isMobile } = useUserAgent()
   const pageSize = 10;
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -24,7 +25,7 @@ export default function TopTraders() {
     page: pageIndex, 
     pageSize,
     orderBy,
-    walletAddress: walletAddress || ''
+    walletAddress: walletAddress || '',
   });
 
   useEffect(() => {
@@ -55,6 +56,15 @@ export default function TopTraders() {
     });
     setHasMore(true);
   };
+
+  useEffect(() => {
+    setPageIndex(1);
+    setTradersList({
+      items: [],
+      total: 0
+    });
+    setHasMore(true);
+  }, [lastCopyTradeTime]);
 
   // if (smartMoniesLoading && tradersList.items.length === 0) {
   //   return <div style={{ paddingTop: 116 }}>

@@ -18,9 +18,11 @@ import {
 import { useAccount } from "@/app/hooks/useAccount";
 import { useCopyTimes } from "@/app/store/useCopyTimes";
 import CloseIcon from "@/app/components/icons/modal-close";
+import { useCopyTradeRefresh } from "@/app/store/useCopyTradeRefresh";
 
 export default function CoppiedAction({ show, onClose, copiedInfo, address }: any) {
   const copyTimesStore: any = useCopyTimes();
+  const copyTradeRefreshStore: any = useCopyTradeRefresh();
   const { isLoading, handleCopyTrade } = useCopyTrade();
   const { userInfo: currentUserInfo } = useAuth();
   const { address: walletAddress } = useAccount();
@@ -285,6 +287,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
 
     if (res) {
       copyTimesStore.set({ copyTimes: copyTimes });
+      copyTradeRefreshStore.set({ lastCopyTradeTime: Date.now() });
       onClose();
     }
   };
