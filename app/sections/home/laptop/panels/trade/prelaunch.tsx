@@ -5,11 +5,16 @@ import Holder from "@/app/components/holder";
 import PreUser from "@/app/components/thumbnail/preUser";
 import Trade from "@/app/components/trade";
 import Details from "../details";
+import Comments from "../comments";
 
 const TABS = [
   {
     label: "Details",
     key: "details"
+  },
+  {
+    label: "Discussion",
+    key: "comments"
   },
   {
     label: "Flipped",
@@ -21,7 +26,8 @@ export default function PrelaunchTradePanel({
   token,
   tab,
   setTab,
-  onClose
+  onClose,
+  onSuccess
 }: any) {
   return (
     <div className={styles.Container}>
@@ -36,6 +42,15 @@ export default function PrelaunchTradePanel({
           <PanelWrapper>
             <Details token={token} from="detail" />
           </PanelWrapper>
+        )}
+        {tab === "comments" && (
+          <Comments
+            token={token}
+            onSuccess={() => {
+              token.comment = token.comment + 1;
+              onSuccess(token);
+            }}
+          />
         )}
         {tab === "holders" && (
           <PanelWrapper>

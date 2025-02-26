@@ -108,6 +108,9 @@ export default function Token({
 
                       if (!showTrade) onOpenPanel("showTrade", true);
                     }}
+                    onSuccess={(_token: any) => {
+                      onUpdate?.(_token);
+                    }}
                   />
                 )
               )}
