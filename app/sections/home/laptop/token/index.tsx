@@ -108,9 +108,6 @@ export default function Token({
 
                       if (!showTrade) onOpenPanel("showTrade", true);
                     }}
-                    onSuccess={(_token: any) => {
-                      onUpdate?.(_token);
-                    }}
                   />
                 )
               )}
@@ -123,6 +120,9 @@ export default function Token({
             <TradePanel
               onClose={() => {
                 onOpenPanel("showTrade", false);
+              }}
+              onSuccess={(_token: any, type: string) => {
+                onUpdate?.(_token, type);
               }}
               token={token}
               tab={tradeTab}
@@ -145,6 +145,7 @@ export default function Token({
         >
           <ScaleButton
             onClick={() => {
+              onUpdateTradeTab("details");
               onOpenPanel("showTrade", !showTrade);
             }}
           />
@@ -163,6 +164,9 @@ export default function Token({
             if (type === "detail") {
               if (params === "Info") tab = "holders";
               if (params === "Trades") tab = "transactions";
+            }
+            if (type === "flip") {
+              tab = "holders";
             }
             onUpdateTradeTab(tab);
             if (!showTrade) onOpenPanel("showTrade");

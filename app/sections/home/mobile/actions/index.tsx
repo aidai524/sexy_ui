@@ -35,7 +35,7 @@ export default function Actions({
         isMobile ? styles.MbActions : styles.PcActions
       }`}
       style={{
-        opacity: (disabled && !isPreviewNoOpacity) ? 0.3 : 1
+        opacity: disabled && !isPreviewNoOpacity ? 0.3 : 1
       }}
     >
       {isMobile ? (
@@ -74,8 +74,11 @@ export default function Actions({
 
           <div
             className={styles.Item}
+            style={{
+              position: "relative",
+              zIndex: 5
+            }}
             onClick={() => {
-              if (token.isSuperLike || disabled) return;
               onClick("flip");
             }}
           >

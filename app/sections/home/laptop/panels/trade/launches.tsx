@@ -41,7 +41,12 @@ export default function LaunchesTradePanel({
         onClose={onClose}
         tabs={TABS}
       />
-      <div className={styles.Tabs}>
+      <div
+        className={styles.Tabs}
+        style={{
+          height: 420
+        }}
+      >
         {tab === "chart" && (
           <PanelWrapper>
             <Chart

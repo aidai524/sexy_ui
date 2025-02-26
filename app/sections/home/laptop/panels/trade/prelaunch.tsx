@@ -3,9 +3,10 @@ import Header from "./header";
 import PanelWrapper from "./panel-wrapper";
 import Holder from "@/app/components/holder";
 import PreUser from "@/app/components/thumbnail/preUser";
-import Trade from "@/app/components/trade";
 import Details from "../details";
 import Comments from "../comments";
+import FlipPanel from "../flip";
+import Big from "big.js";
 
 const TABS = [
   {
@@ -37,7 +38,12 @@ export default function PrelaunchTradePanel({
         onClose={onClose}
         tabs={TABS}
       />
-      <div className={styles.Tabs}>
+      <div
+        className={styles.Tabs}
+        style={{
+          height: 492
+        }}
+      >
         {tab === "details" && (
           <PanelWrapper>
             <Details token={token} from="detail" />
@@ -48,7 +54,7 @@ export default function PrelaunchTradePanel({
             token={token}
             onSuccess={() => {
               token.comment = token.comment + 1;
-              onSuccess(token);
+              onSuccess(token, "comments");
             }}
           />
         )}
@@ -72,7 +78,20 @@ export default function PrelaunchTradePanel({
           marginTop: "-20px"
         }}
       >
-        <Trade from="panel" initType="buy" token={token} show={true} />
+        <FlipPanel
+          token={token}
+          onSuccess={(amount: string) => {
+            token.isSuperLike = true;
+            token.prePaid = token.prePaid + 1;
+            token.total_amount = Number(token.total_amount) + Number(amount);
+            token.prePaidAmount = Big(token.prePaidAmount || 0)
+              .add(Number(amount) * 1e9)
+              .toString();
+            token.isLike = true;
+            token.like = token.like + 1;
+            onSuccess(token, "flip");
+          }}
+        />
       </div>
     </div>
   );
