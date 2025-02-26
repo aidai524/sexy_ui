@@ -123,6 +123,21 @@ export default function Create({
         totalRef.current.isError = true;
         setIsError(true);
       }
+
+      if (Number(debounceVal) > 1) {
+        setErrorMsg('Up to 1 SOL')
+        totalRef.current.isError = true;
+        setIsError(true);
+        return
+      } 
+
+      if (Number(debounceVal) > Number(solBalance) - 0.03) {
+        setErrorMsg('Reserve at least 0.03 SOL')
+        totalRef.current.isError = true;
+        setIsError(true);
+        return
+      }
+
       if (Number(debounceVal) >= 0 && Number(debounceVal) <= Number(Math.min(Number(solBalance) - 0.03, 1))) {
         totalRef.current.isError = false;
         setIsError(false);
