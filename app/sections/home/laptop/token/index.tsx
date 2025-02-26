@@ -121,6 +121,9 @@ export default function Token({
               onClose={() => {
                 onOpenPanel("showTrade", false);
               }}
+              onSuccess={(_token: any, type: string) => {
+                onUpdate?.(_token, type);
+              }}
               token={token}
               tab={tradeTab}
               setTab={onUpdateTradeTab}
@@ -142,6 +145,7 @@ export default function Token({
         >
           <ScaleButton
             onClick={() => {
+              onUpdateTradeTab(token.status === 0 ? "details" : "chart");
               onOpenPanel("showTrade", !showTrade);
             }}
           />
@@ -161,18 +165,14 @@ export default function Token({
               if (params === "Info") tab = "holders";
               if (params === "Trades") tab = "transactions";
             }
+            if (type === "flip") {
+              tab = "holders";
+            }
             onUpdateTradeTab(tab);
             if (!showTrade) onOpenPanel("showTrade");
           }}
           totalHolders={totalHolders}
           onSuccess={(type: string) => {
-            if (type === "like") {
-              token.isLike = true;
-              token.like = token.like + 1;
-            }
-            if (type === "share") {
-              // token.share_num = token.share_num + 1;
-            }
             onUpdate(token, type);
           }}
           isCurrent={isCurrent}

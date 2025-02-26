@@ -35,7 +35,7 @@ export default function Actions({
         isMobile ? styles.MbActions : styles.PcActions
       }`}
       style={{
-        opacity: (disabled && !isPreviewNoOpacity) ? 0.3 : 1
+        opacity: disabled && !isPreviewNoOpacity ? 0.3 : 1
       }}
     >
       {isMobile ? (
@@ -74,8 +74,11 @@ export default function Actions({
 
           <div
             className={styles.Item}
+            style={{
+              position: "relative",
+              zIndex: 5
+            }}
             onClick={() => {
-              if (token.isSuperLike || disabled) return;
               onClick("flip");
             }}
           >
@@ -104,17 +107,10 @@ export default function Actions({
             buttonClassName={`${!disabled ? "button" : ""} ${
               !isMobile && styles.PcItem
             }`}
-            onClick={async () => {
-              await actionLikeTrigger({
-                data: token,
-                onShare: showShare
-              });
-              onSuccess("launched_like");
-            }}
-            isLiked={token.is_launched_like}
-            like={token.launched_like}
             disabled={disabled}
-            id={token.id}
+            token={token}
+            actionLikeTrigger={actionLikeTrigger}
+            onSuccess={onSuccess}
           />
 
           <div

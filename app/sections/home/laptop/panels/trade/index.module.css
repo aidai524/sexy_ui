@@ -3,16 +3,16 @@
 }
 
 .Tabs {
-  height: 420px;
   margin-bottom: 20px;
 }
 
 .PanelWrapper {
   padding: 10px 14px;
   background-color: #1b1b1b;
+  height: 100%;
 }
 
 .PanelContent {
-  height: 400px;
+  height: calc(100% - 20px);
   overflow-y: auto;
 }

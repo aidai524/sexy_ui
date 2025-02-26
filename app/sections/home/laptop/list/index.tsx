@@ -148,7 +148,7 @@ export default function List({ type, isCurrentTab }: any) {
               isNext={i - 1 === index && type === "launching"}
               mediaId={String(token?.id) + "_" + type}
               onUpdate={(token: any, action?: string) => {
-                if (action && ["launched_like"].includes(action)) {
+                if (action && ["launched_like", "comments"].includes(action)) {
                   updateProject(token);
                   return;
                 }
