@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import styles from "./index.module.css";
+import { numberFormatterNew } from "@/app/utils/common";
+
 
 interface StarGraphProps {
   centerNode: {
@@ -214,7 +216,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
       .append("text")
       .text((d: any) => {
         if (d.id !== centerNode.id && d.pnl !== undefined) {
-          return `+${d.pnl.toLocaleString()}%`;
+          return `+${numberFormatterNew(d.pnl,3,true)}`;
         }
         return "";
       })
