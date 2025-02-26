@@ -5,7 +5,7 @@ import { formatAddress } from '@/app/utils';
 import QRCodeCom, { QRCodeImage } from '@/app/components/qrcode';
 import React, { useContext, useImperativeHandle } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
-import { numberFormatter } from '@/app/utils/common';
+import { numberFormatter, numberFormatterNew } from '@/app/utils/common';
 import Big from 'big.js';
 import { defaultAvatar } from '@/app/utils/config';
 const AirdropShareInfoCard = (props: any, ref: any) => {
@@ -26,9 +26,9 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
       return '0';
     }
     if (pnl.startsWith('-')) {
-      return '-' + numberFormatter(Math.abs(Number(pnl)), 2, true);
+      return '-' + numberFormatterNew(Math.abs(Number(pnl)), 3, true);
     }
-    return '+' + numberFormatter(pnl, 2, true);
+    return '+' + numberFormatterNew(pnl, 3, true);
 }
 
 

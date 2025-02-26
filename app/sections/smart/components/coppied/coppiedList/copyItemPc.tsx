@@ -6,7 +6,7 @@ import Popover, { PopoverPlacement, PopoverTrigger } from '@/app/components/popo
 import useUserInfo from '@/app/hooks/useUserInfo';
 import Big from 'big.js';
 import { useCopyTokenInfos } from '@/app/sections/profile/hooks/useCopyTokenInfos';
-import { numberFormatter } from '@/app/utils/common';
+import { numberFormatter, numberFormatterNew } from '@/app/utils/common';
 import { formatAddress } from "@/app/utils";
 import { formatLongText } from '@/app/utils/common';
 import { formatDateTime } from '@/app/utils/index';
@@ -35,6 +35,28 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
     const commonStyles3 = {
         color: '#000',
     }
+
+    const formatPnl = (pnl: string) => {
+      if (pnl == "0") {
+        return "0";
+      }
+      if (pnl.startsWith("-")) {
+        return "-" + numberFormatterNew(Math.abs(Number(pnl)), 3, true);
+      }
+      return "+" + numberFormatterNew(pnl, 3, true);
+    };
+  
+    const formatWinRate = (winRate: string) => {
+      if (winRate == "0") {
+        return "0%";
+      }
+      return new Big(winRate).times(100).toFixed(1) + "%";
+    };
+  
+    
+    const isGtZero = (str: string) => {
+      return Number(str) >= 0;
+    };
   return (
     <div className={styles.ItemBox}>
       <div className={styles.ItemBoxContent}>
@@ -105,7 +127,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
             <div className={styles.TitlePubStyle}>Copied ROI (PNL) </div>
             <div className={styles.PNLValuePercent}>{Big(itemInfo?.roi).times(100).toString() || 0}%</div>
             <div className={styles.PNLValueUSD}>
-              <span style={{color: !itemInfo?.pnl.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{(numberFormatter(Big(itemInfo?.pnl).toString() || 0, 4, true) || '0')} SOL</span>
+              <span style={{color: isGtZero(itemInfo?.pnl || '0') ? '#C9FF5D' : '#FF2681'}}>{formatPnl(itemInfo?.pnl || '0')} SOL</span>
             </div>
         </div>
         {/* coppied tokens */}

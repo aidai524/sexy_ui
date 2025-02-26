@@ -16,7 +16,7 @@ import { useSearchParams } from "next/navigation";
 import useUserInfo from '@/app/hooks/useUserInfo';
 import CopyTrade from '@/app/services/copyTrade';
 import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
-import { numberFormatter } from '@/app/utils/common';
+import { numberFormatter, numberFormatterNew } from '@/app/utils/common';
 import CopyTradeShare from '@/app/sections/smart/components/CopyTraderShare/modal';
 import { useAccount } from "@/app/hooks/useAccount";
 import Big from 'big.js';
@@ -119,9 +119,9 @@ export const SmartDetailContent = ({
       return "0";
     }
     if (pnl.startsWith("-")) {
-      return "-" + numberFormatter(Math.abs(Number(pnl)), 2, true);
+      return "-" + numberFormatterNew(Math.abs(Number(pnl)), 3, true);
     }
-    return "+" + numberFormatter(pnl, 2, true);
+    return "+" + numberFormatterNew(pnl, 3, true);
   };
   const isGtZero = (str: string) => {
     return Number(str) > 0;

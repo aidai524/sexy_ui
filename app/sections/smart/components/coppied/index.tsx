@@ -36,27 +36,26 @@ export default function Coppied({ isOther }: any) {
 
 
   const loadMore = useCallback(async () => {
-    if (
-      !userInfo?.address && !urlAddress && !walletAddress
-    ) {
+    if (!userInfo?.address && !urlAddress && !walletAddress) {
       setHasMore(false);
       return;
     }
     setIsLoading(true);
     try {
       const res = await CopyTradeService.getCopyTradeList({
-        address:!urlAddress ? userInfo?.address || walletAddress : urlAddress,
+        address: !urlAddress ? userInfo?.address || walletAddress : urlAddress,
         chain: "solana",
         page: pageIndex,
         pageSize
       });
 
       setCopyTradeMap((prev: any) => ({
-        items: [...prev?.items, ...(res?.data?.items || [])],
+        items: pageIndex === 1 
+          ? res?.data?.items || []
+          : [...prev?.items, ...(res?.data?.items || [])],
         total: res?.data?.total || 0
       }));
 
-      // update page
       if (res.data.items.length < pageSize) {
         setHasMore(false);
       } else {
@@ -75,13 +74,15 @@ export default function Coppied({ isOther }: any) {
       return;
     }
     
-    // Reset states
+    // init
     setPageIndex(1);
     setCopyTradeMap({ items: [], total: 0 });
     setHasMore(true);
     
-    // Load initial data
-    loadMore();
+    // 
+    setTimeout(() => {
+      loadMore();
+    }, 0);
   }, [userInfo?.address, urlAddress, walletAddress]);
 
   if (isLoading && pageIndex === 1) {
