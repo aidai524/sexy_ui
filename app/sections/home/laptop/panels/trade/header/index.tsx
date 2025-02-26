@@ -1,24 +1,10 @@
 import styles from "./index.module.css";
 import Tabs from "@/app/components/tabs";
 
-const TABS = [
-  {
-    label: "Charts",
-    key: "chart"
-  },
-  {
-    label: "Holders",
-    key: "holders"
-  },
-  {
-    label: "Transactions",
-    key: "transactions"
-  }
-];
-export default function Header({ onClose, ...rest }: any) {
+export default function Header({ tabs, onClose, ...rest }: any) {
   return (
     <div className={styles.Container}>
-      <Tabs {...rest} tabs={TABS} />
+      <Tabs {...rest} tabs={tabs} />
       <button className="button" onClick={onClose}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

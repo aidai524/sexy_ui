@@ -35,10 +35,12 @@ export default function Desc({ token }: any) {
     >
       <div className={styles.Title}>{token.tokenName}</div>
       <div className={styles.Header}>
-        <div className={styles.TickerWrapper}>
-          <span className={styles.TickerLabel}>Ticker: </span>
-          <span className={styles.Ticker}>{token.ticker}</span>
-        </div>
+        {token.ticker && (
+          <div className={styles.TickerWrapper}>
+            <span className={styles.TickerLabel}>Ticker: </span>
+            <span className={styles.Ticker}>{token.ticker}</span>
+          </div>
+        )}
         <div className={styles.StatusWrapper}>
           <TokenTags token={token} />
         </div>

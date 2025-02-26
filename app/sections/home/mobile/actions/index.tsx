@@ -110,7 +110,7 @@ export default function Actions({
               });
               onSuccess("launched_like");
             }}
-            isLiked={token.isLike}
+            isLiked={token.is_launched_like}
             like={token.launched_like}
             disabled={disabled}
             id={token.id}
@@ -119,7 +119,7 @@ export default function Actions({
           <div
             className={styles.Item}
             onClick={() => {
-              if (!disabled) onClick("trade");
+              if (!disabled) onClick("detail", "Info");
             }}
           >
             <button
@@ -139,7 +139,7 @@ export default function Actions({
           <div
             className={styles.Item}
             onClick={() => {
-              if (!disabled) onClick("trade");
+              if (!disabled) onClick("detail", "Trades");
             }}
           >
             <button

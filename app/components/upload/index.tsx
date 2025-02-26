@@ -93,13 +93,30 @@ export function Upload({
         scala,
         cropper
       );
+
+      let originUrl = url;
+      if (cropper) {
+        originUrl = await upload(
+          file.name,
+          file,
+          imgReg.test(file.name) &&
+            !svgReg.test(file.name) &&
+            !gifReg.test(file.name),
+          -1,
+          scala,
+          false
+        );
+        console.log(originUrl)
+      }
+
       setTimeout(() => {
         setIsUpload(false);
       }, 100);
 
       if (url) {
         return {
-          url
+          url,
+          originUrl
         };
       }
 
@@ -175,7 +192,7 @@ export function Upload({
           )}
           {fileType === "video" && (
             <div className={styles.videoBox} onClick={onUpload}>
-              <video className={styles.imgPreview} style={{ pointerEvents: "none" }} >
+              <video className={styles.imgPreview} playsInline webkit-playsinline preload="metadata" style={{ pointerEvents: "none" }} >
                 <source
                   src={mergedFiles[0].url}
                   type={"video/" + getVideoExt(mergedFiles[0].url)}

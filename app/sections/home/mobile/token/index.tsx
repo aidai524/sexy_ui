@@ -23,7 +23,8 @@ export default function Token({
   isPreview = false,
   token,
   dataAvailable,
-  style = {}
+  style = {},
+  mediaId
 }: any) {
   const { innerHeight } = useUserAgent();
   const descContentRef = useRef<any>();
@@ -54,6 +55,7 @@ export default function Token({
             <Media
               imgHeight="100%"
               data={token}
+              mediaId={mediaId || token.id}
               videoProgressStyle={
                 isCurrent ? { position: "fixed", left: 16, bottom: 72 } : null
               }
@@ -105,14 +107,14 @@ export default function Token({
             {dataAvailable && (
               <Actions
                 token={token}
-                onClick={(type: any) => {
+                onClick={(type: any, params: any) => {
                   if (isPreview) return;
                   if (type === "comments") {
                     setShowCommentsModal(true);
                     return;
                   }
                   if (type === "detail") {
-                    goDetail(token);
+                    goDetail(token, params);
                     return;
                   }
                   if (!window.sexAddress) {
@@ -139,6 +141,7 @@ export default function Token({
                 }}
                 isCurrent={isCurrent}
                 isPreview={isPreview}
+                disabled={isPreview}
               />
             )}
           </div>
