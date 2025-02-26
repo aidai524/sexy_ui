@@ -7,8 +7,11 @@ import { useGetSmartMonies } from '../../hooks/useGetSmartMonies';
 import Empty from '@/app/components/empty';
 import { useAccount } from '@/app/hooks/useAccount';
 import { useCopyTradeRefresh } from '@/app/store/useCopyTradeRefresh';
+import { useTopTraderTab } from '@/app/store/useTopTraderTab';
 export default function TopTraders() {
   const lastCopyTradeTime = useCopyTradeRefresh((state: any) => state.lastCopyTradeTime);
+  const topTraderTab = useTopTraderTab((state: any) => state.topTraderTab);
+  const setTab = useTopTraderTab((state: any) => state.set)
   const { isMobile } = useUserAgent()
   const pageSize = 10;
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -19,7 +22,7 @@ export default function TopTraders() {
     total: 0
   });
   const { address: walletAddress } = useAccount();
-  const [orderBy, setOrderBy] = useState<string>('pnl7D')
+  const [orderBy, setOrderBy] = useState<string>(topTraderTab)
   const { smartMonies, smartMoniesLoading } = useGetSmartMonies({ 
     chain: 'solana', 
     page: pageIndex, 
@@ -49,6 +52,7 @@ export default function TopTraders() {
 
   const handleOrderByChange = (newOrderBy: string) => {
     setOrderBy(newOrderBy);
+    setTab({ topTraderTab: newOrderBy });
     setPageIndex(1);
     setTradersList({
       items: [],
