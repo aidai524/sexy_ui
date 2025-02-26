@@ -69,18 +69,25 @@ class MediaStore {
   public async fetchFiles(files: any) {
     await this.check();
     this.queue = uniqBy([...this.queue, ...files], "name");
-
     if (this.fetching) {
       this.timer = setTimeout(() => {
         this.fetchFiles([]);
       }, 3000);
       return;
     }
+    this.fetching = true;
     clearTimeout(this.timer);
-    while (this.queue.length) {
+    const loop = async () => {
+      if (this.queue.length === 0) {
+        this.fetching = false;
+        return;
+      }
       const file = this.queue.shift();
+      console.log(87, file.name);
       await this.fetchAndStore(file.url, file.name);
-    }
+      loop();
+    };
+    loop();
   }
 
   public async fetchAndStore(url: any, name: string) {
@@ -89,7 +96,12 @@ class MediaStore {
 
     await this.clearOldData();
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Range: "bytes=0-1048575"
+      }
+    });
     if (!response.ok) throw new Error("Download failed" + response.statusText);
 
     const contentType = response.headers.get("content-type") || "video/mp4";

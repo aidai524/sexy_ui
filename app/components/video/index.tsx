@@ -78,8 +78,11 @@ export default function VideoPlayer({
         ref={videoRef}
         playsInline
         webkit-playsinline
-        className={className}
-        style={style}
+        style={{
+          ...style,
+          objectFit: "contain",
+          width: "100%"
+        }}
         preload={videoPlayerStore.autoPlay ? "auto" : "none"}
         id={mediaId}
       >
