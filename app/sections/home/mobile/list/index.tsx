@@ -175,11 +175,12 @@ export default function List({
                 mediaId={String(token?.id) + "_" + type}
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any, action?: string) => {
+                  console.log(178);
                   if (action && ["launched_like"].includes(action)) {
                     updateProject(token);
                     return;
                   }
-                  if (action === "flip") {
+                  if (action && ["flip", "trade"].includes(action)) {
                     setTimeout(() => {
                       queryAndUpdateDetail(token.address);
                     }, 4000);

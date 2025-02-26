@@ -31,6 +31,7 @@ interface Props {
   from?: string;
   show?: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 const SOL: Token = {
@@ -40,13 +41,14 @@ const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.1, 0.5, 1, 'Max'];
+const SOL_PERCENT_LIST = [0.1, 0.5, 1, "Max"];
 
 export default function BuySell({
   from,
   token,
   initType,
   onClose,
+  onSuccess,
   show
 }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
@@ -183,7 +185,9 @@ export default function BuySell({
             }).then((res: any) => {
               setIsLoading(false);
               buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
-              if (new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)) {
+              if (
+                new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)
+              ) {
                 setBuyInSol(buyInSol);
                 setIsError(true);
                 setErrorMsg("Invalid balance");
@@ -192,7 +196,9 @@ export default function BuySell({
 
               if (Number(buyInSol) > 0.000000001) {
                 setBuyIn(
-                  new Big(debounceVal).mul(10 ** token.tokenDecimals!).toFixed(0)
+                  new Big(debounceVal)
+                    .mul(10 ** token.tokenDecimals!)
+                    .toFixed(0)
                 );
                 setBuyInSol(buyInSol);
               } else {
@@ -267,7 +273,6 @@ export default function BuySell({
       setErrorMsg("Invalid value");
     }
   }, [debounceVal, tokenType, slip, currentToken]);
-
 
   return (
     <>
@@ -347,7 +352,12 @@ export default function BuySell({
             <div className={styles.actionArea}>
               <div className={styles.balance}>
                 <img src="/img/trade/balance.svg" />
-                <div className={ styles.balanceNum }> {tokenType === 0 ? numberFormatter(tokenBalance, 2, true) : numberFormatter(solBalance, 2, true) + ' SOL'}</div>
+                <div className={styles.balanceNum}>
+                  {" "}
+                  {tokenType === 0
+                    ? numberFormatter(tokenBalance, 2, true)
+                    : numberFormatter(solBalance, 2, true) + " SOL"}
+                </div>
               </div>
 
               {activeIndex === 0 ? (
@@ -371,8 +381,24 @@ export default function BuySell({
                     setSolPercent(0);
                   }}
                 >
-                    <div className={styles.switchTokenImg + ' ' + (tokenType === 0 ? styles.active : '')}><img src={ SOL.tokenUri }/></div>
-                    <div className={styles.switchTokenImg + ' ' + (tokenType === 1 ? styles.active : '')}><img src={ desToken.tokenUri }/></div>
+                  <div
+                    className={
+                      styles.switchTokenImg +
+                      " " +
+                      (tokenType === 0 ? styles.active : "")
+                    }
+                  >
+                    <img src={SOL.tokenUri} />
+                  </div>
+                  <div
+                    className={
+                      styles.switchTokenImg +
+                      " " +
+                      (tokenType === 1 ? styles.active : "")
+                    }
+                  >
+                    <img src={desToken.tokenUri} />
+                  </div>
                 </div>
               ) : (
                 <div></div>
@@ -387,14 +413,15 @@ export default function BuySell({
                 className={`${styles.slippage}`}
                 ref={slippageTextRef}
               >
-                <img src="/img/trade/slip.svg" className={ styles.slipIcon }/>
+                <img src="/img/trade/slip.svg" className={styles.slipIcon} />
                 <span className="button">Slippage</span>
               </div>
             </div>
 
             <div
-              className={`${styles.tokenBalanceBox} ${from === "panel" && styles.PanelInput
-                }`}
+              className={`${styles.tokenBalanceBox} ${
+                from === "panel" && styles.PanelInput
+              }`}
             >
               <div className={styles.inputArea}>
                 <input
@@ -435,15 +462,17 @@ export default function BuySell({
                     <img className={styles.tiImg} src={currentToken.tokenUri} />
                   </div>
                 </div>
-                {
-                  currentToken.tokenName === 'SOL' && ( 
-                    <div className={ styles.tokenPrice }>
-                      ${numberFormatter(Number(config.SolPrice) * Number(valInput), 2, true)}
-                    </div>
-                  )
-                }
+                {currentToken.tokenName === "SOL" && (
+                  <div className={styles.tokenPrice}>
+                    $
+                    {numberFormatter(
+                      Number(config.SolPrice) * Number(valInput),
+                      2,
+                      true
+                    )}
+                  </div>
+                )}
               </div>
-
             </div>
 
             {activeIndex === 0 && tokenType === 1 && (
@@ -453,10 +482,11 @@ export default function BuySell({
                     setSolPercent(0);
                     setValInput("");
                   }}
-                  className={`${from === "panel"
+                  className={`${
+                    from === "panel"
                       ? styles.PanelPercentTag
                       : styles.percentTag
-                    } button`}
+                  } button`}
                 >
                   Reset
                 </div>
@@ -464,7 +494,7 @@ export default function BuySell({
                   return (
                     <div
                       onClick={() => {
-                        if (item === 'Max') { 
+                        if (item === "Max") {
                           setSolPercent(Number(solBalance) - 0.03);
                           setValInput(getFullNum(Number(solBalance) - 0.03));
                         } else {
@@ -495,10 +525,11 @@ export default function BuySell({
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${from === "panel"
+                  className={`${
+                    from === "panel"
                       ? styles.PanelPercentTag
                       : styles.percentTag
-                    } button`}
+                  } button`}
                 >
                   Reset
                 </div>
@@ -539,11 +570,14 @@ export default function BuySell({
                 <div className={styles.receiveAmount}>
                   {buyIn
                     ? new Big(buyIn)
-                      .div(1 - slip / 100)
-                      .div(10 ** token.tokenDecimals!)
-                      .toFixed(token.tokenDecimals)
+                        .div(1 - slip / 100)
+                        .div(10 ** token.tokenDecimals!)
+                        .toFixed(token.tokenDecimals)
                     : ""}{" "}
-                  <img src={desToken.tokenUri} className={styles.receiveTokenImg} />
+                  <img
+                    src={desToken.tokenUri}
+                    className={styles.receiveTokenImg}
+                  />
                 </div>
               </div>
             )}
@@ -568,9 +602,9 @@ export default function BuySell({
                 <div className={styles.receiveAmount}>
                   {sellOutSol && Number(sellOutSol) > 0
                     ? new Big(sellOutSol)
-                      .div(1 - slip / 100)
-                      .div(10 ** SOL.tokenDecimals)
-                      .toFixed(SOL.tokenDecimals)
+                        .div(1 - slip / 100)
+                        .div(10 ** SOL.tokenDecimals)
+                        .toFixed(SOL.tokenDecimals)
                     : 0}{" "}
                   <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
                 </div>
@@ -618,7 +652,7 @@ export default function BuySell({
                       hash = await sellToken(sellOut, sellOutSol);
                     }
                     setIsLoading(false);
-
+                    onSuccess?.();
                     if (hash) {
                       const volume = activeIndex === 0 ? buyInSol : sellOutSol;
                       const pointByVolume = await getPointByVolume(
