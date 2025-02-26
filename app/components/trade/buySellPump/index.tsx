@@ -237,35 +237,46 @@ export default function BuySellPump({
 
   return (
     <>
-      <div className={[styles.cationArea].join(" ")}>
+      <div className={[styles.cationArea, from === "panel" ? styles.pcActionArea : styles.mobileActionArea].join(" ")}>
         {from === "panel" ? (
-          <Tabs
-            tabs={[
-              {
-                label: "Buy",
-                key: 0
-              },
-              {
-                label: "Sell",
-                key: 1
-              }
-            ]}
-            type="center"
-            currentTab={activeIndex}
-            onChangeTab={(index: number) => {
-              setActiveIndex(index);
-              setValInput("");
-              if (index === 0) {
-                setCurrentToken(SOL);
-                setTokenType(1);
-              } else {
-                setCurrentToken(desToken);
-                setTokenType(0);
-              }
-              setSolPercent(0);
-              setTokenPercent(0);
-            }}
-          />
+          <div className={styles.pcTabs}>
+            <Tabs
+              tabs={[
+                {
+                  label: "Buy",
+                  key: 0
+                },
+                {
+                  label: "Sell",
+                  key: 1
+                }
+              ]}
+              type="center"
+              currentTab={activeIndex}
+              onChangeTab={(index: number) => {
+                setActiveIndex(index);
+                setValInput("");
+                if (index === 0) {
+                  setCurrentToken(SOL);
+                  setTokenType(1);
+                } else {
+                  setCurrentToken(desToken);
+                  setTokenType(0);
+                }
+                setSolPercent(0);
+                setTokenPercent(0);
+              }}
+            />
+            <div className={styles.pcSlipIcon + ' '}
+              ref={slippageTextRef}
+              onClick={(ev) => {
+                ev.stopPropagation();
+                ev.nativeEvent.stopImmediatePropagation();
+                setShowSlip(true);
+              }}>
+              <img src="/img/trade/slip.svg" />
+            </div>
+          </div>
         ) : (
           <div className={styles.tradeTabs}>
             <div
@@ -309,7 +320,7 @@ export default function BuySellPump({
           className={from === "panel" ? styles.PanelContent : styles.Content}
         >
           <div
-            className={styles.inputArea}
+            className={styles.inputActionArea}
             style={
               {
                 // width: from === "panel" ? 335 : "100%"
@@ -504,7 +515,7 @@ export default function BuySellPump({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {sellOutSol && sellOutSol} 
+                  {sellOutSol && sellOutSol}
                   <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
                 </div>
               </div>

@@ -1,11 +1,13 @@
 .main {
   height: 100%;
+
   .cationArea {
     display: flex;
     flex-direction: column;
     height: 100%;
     margin-bottom: 10px;
     padding: 10px;
+
     .tradeTabs {
       /* padding: 0 0 20px; */
       margin-bottom: 20px;
@@ -13,16 +15,17 @@
       align-items: center;
       background-color: #3B3B3B;
       border-radius: 10px;
+
       .tab {
         flex: 1;
-       
+
         color: #fff;
         font-size: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
         height: 46px;
-        
+
         /* text-indent: -1000px; */
         overflow: hidden;
 
@@ -40,12 +43,14 @@
           /* background-size: 100% auto; */
         }
       }
+
       .tab:first-child {
         color: #C9FF5D;
         border-radius: 10px;
         /* background: url("/img/trade/buy-grey.png") no-repeat 0 -10px;
         background-size: 100% auto; */
       }
+
       .tab:last-child {
         border-radius: 10px;
         color: #FF559D;
@@ -55,17 +60,69 @@
     }
   }
 
+  .pcActionArea {
+    padding: 0;
+  }
+
   .tokenBalanceBox {
-    
     margin-top: 46px;
   }
+
+
+  .pcActionArea {
+    .tokenBalanceBox {
+      margin-top: -30px;
+
+      .inputArea {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: flex-end;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .input {
+          text-align: right;
+          font-size: 26px;
+          font-weight: 500;
+          color: #fff;
+          width: 40%;
+        }
+
+        .tokenName {
+          margin-top: 0;
+          font-size: 12px;
+          color: #9290B1;
+        }
+
+        .tokenPrice {
+          flex: 1 1 100%;
+          text-align: right;
+        }
+      }
+    }
+
+    .PanelInput {
+      height: auto;
+    }
+    .tokenPercent {
+      float: left;
+      margin-top: -10px;
+    }
+
+    .receiveAmountWrapper {
+      clear: both;
+      margin-top: 20px;
+    }
+  }
+
 
   .balance {
     color: #9290B1;
     font-size: 12px;
     display: flex;
     align-items: center;
-    gap: 5px; 
+    gap: 5px;
     height: 30px;
     background-color: #3C3C3C80;
     padding: 0 10px;
@@ -73,122 +130,129 @@
     min-width: 30%;
   }
 
-  .inputArea {
-    .actionArea {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 12px;
-      font-weight: 300;
+}
 
-      .switchTokenName {
-        color: #fff;
-      }
-    }
+.inputActionArea .actionArea {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 300;
+}
 
-    .inputArea {
-      /* display: flex;
-      align-items: center;
-      justify-content: space-between; */
-      color: #fff;
-      gap: 10px;
-      padding: 0 10px;
-      width: 100%;
+.PanelContent {
+  margin-top: 10px;
 
-      .input {
-        background-color: inherit;
-        border: none;
-        outline: none;
-        color: #fff;
-        width: 0;
-        font-size: 36px;
-        text-align: center;
-        width: 100%;
-      }
-
-      .inputToken {
-        font-size: 16px;
-        flex-shrink: 0;
-
-        .tokenName {
-          white-space: nowrap;
-          text-align: center;
-          width: 100%;
-          font-size: 16px;
-          margin-top: 10px;
-        }
-
-        .tokenImg {
-          width: 30px;
-          height: 30px;
-          border-radius: 30px;
-          overflow: hidden;
-          position: relative;
-          display: none;
-
-          .tiImg {
-            width: 100%;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-          }
-        }
-      }
-    }
-
-    .tokenPercent {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 20px;
-
-      .percentTag {
-        font-size: 12px;
-        font-weight: 300;
-        color: #FFFFFF;
-        border-radius: 6px;
-        padding: 5px 10px;
-        opacity: 0.5;
-        cursor: pointer;
-        min-width: 30px;
-        text-align: center;
-        &.tagActive {
-          background-color: #3C3C3C80;
-          opacity: 1;
-        }
-      }
-
-      .PanelPercentTag {
-        cursor: pointer;
-        height: 20px;
-        padding: 4px 6px;
-        line-height: 20px;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.7);
-        font-family: Unbounded;
-        font-size: 10px;
-        font-style: normal;
-        font-weight: 300;
-        line-height: normal;
-        border-radius: 30px;
-        border: 1px solid rgba(146, 144, 177, 0.4);
-        backdrop-filter: blur(5px);
-        &.tagActive {
-          background-color: #9290b166;
-        }
-      }
-    }
+  .inputActionArea .actionArea {
+    justify-content: flex-start;
+    gap: 10px;
   }
+}
+
+.inputActionArea .actionArea .switchTokenName {
+  color: #fff;
+}
+
+.inputActionArea .inputArea {
+  color: #fff;
+  gap: 10px;
+  padding: 0 10px;
+  width: 100%;
+}
+
+.inputActionArea .inputArea .input {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  color: #fff;
+  width: 0;
+  font-size: 36px;
+  text-align: center;
+  width: 100%;
+}
+
+.inputActionArea .inputArea .inputToken {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.inputActionArea .inputArea .inputToken .tokenName {
+  white-space: nowrap;
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.inputActionArea .inputArea .inputToken .tokenImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  display: none;
+}
+
+.inputActionArea .inputArea .inputToken .tokenImg .tiImg {
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.inputActionArea .tokenPercent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 20px;
+}
+
+.inputActionArea .tokenPercent .percentTag {
+  font-size: 12px;
+  font-weight: 300;
+  color: #FFFFFF;
+  border-radius: 6px;
+  padding: 5px 10px;
+  opacity: 0.5;
+  cursor: pointer;
+  min-width: 30px;
+  text-align: center;
+}
+
+.inputActionArea .tokenPercent .percentTag.tagActive {
+  background-color: #3C3C3C80;
+  opacity: 1;
+}
+
+.inputActionArea .tokenPercent .PanelPercentTag {
+  cursor: pointer;
+  height: 20px;
+  padding: 4px 6px;
+  line-height: 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  border-radius: 30px;
+  border: 1px solid rgba(146, 144, 177, 0.4);
+  backdrop-filter: blur(5px);
+}
+
+.inputActionArea .tokenPercent .PanelPercentTag.tagActive {
+  background-color: #9290b166;
 }
 
 .switchToken {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;  
+  gap: 3px;
   cursor: pointer;
   background-color: #3C3C3C80;
   border-radius: 26px;
@@ -262,9 +326,9 @@
 }
 
 .PanelInput {
-  border-radius: 8px;
+  /* border-radius: 8px;
   border: 1px solid rgba(146, 144, 177, 0.6) !important;
-  background: rgba(146, 144, 177, 0.1);
+  background: rgba(146, 144, 177, 0.1); */
   /* width: 335px; */
   height: 68px;
   flex-shrink: 0;
@@ -288,6 +352,7 @@
   font-size: 12px;
   color: #9290B1;
 }
+
 .receiveAmount {
   display: flex;
   align-items: center;
@@ -295,11 +360,11 @@
 }
 
 .receiveAmountWrapper {
-  white-space: nowrap;
+  /* white-space: nowrap;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 10px; */
   margin-top: 10px;
 }
 
@@ -312,4 +377,18 @@
   color: #9290B1;
   text-align: center;
   margin-top: 10px;
+  flex: 1;
+}
+
+.pcTabs {
+  position: relative;
+  background-color: #1b1b1b;
+}
+
+.pcSlipIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
