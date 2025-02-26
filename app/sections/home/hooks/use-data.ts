@@ -65,7 +65,7 @@ export default function useData(launchType: Type) {
         prePageRef.current = [];
       }
 
-      const _hasNext = res.data?.list && res.data?.list.length === limit;
+      const _hasNext = res.data?.list && res.data?.list.length >= limit;
       setHasNext(_hasNext);
     } catch (err) {
     } finally {
@@ -144,7 +144,6 @@ export default function useData(launchType: Type) {
   );
 
   useEffect(() => {
-    if (!mountedRef.current) return;
     window.addEventListener("unload", () => {
       projectsStore.clearList(launchType);
       projectsStore.clearProjects();
@@ -152,6 +151,7 @@ export default function useData(launchType: Type) {
         projectsStore.setIndex(launchType, 0);
       }
     });
+    if (!mountedRef.current) return;
     initList();
   }, []);
 

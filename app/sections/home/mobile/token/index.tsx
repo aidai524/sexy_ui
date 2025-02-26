@@ -130,6 +130,10 @@ export default function Token({
                   }
                 }}
                 onSuccess={(type: string) => {
+                  if (type === "launched_like") {
+                    token.is_launched_like = true;
+                    token.launched_like = token.launched_like + 1;
+                  }
                   onUpdate?.(token, type);
                 }}
                 isCurrent={isCurrent}
