@@ -78,6 +78,14 @@
 .mainContentPc {
   /* max-width: 1036px; */
   margin: 0 auto;
+  .stepActionWrapper {
+    display: flex;
+    justify-content:flex-end;
+    align-items: center;
+    gap: 10px;
+    width: 430px;
+    margin: 20px auto;
+  }
 
 }
 
@@ -88,4 +96,6 @@
   width: 100%;
   height: 100%;
 }
+
+
 

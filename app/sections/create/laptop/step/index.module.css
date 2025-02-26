@@ -2,13 +2,14 @@
   display: flex;
   align-items: center;
   font-family: Unbounded;
+  justify-content: center;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   color: #fff;
-  width: 700px;
   margin: 0 auto;
+  gap: 10px;
 }
 
 .StepCircle {

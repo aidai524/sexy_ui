@@ -101,7 +101,7 @@ export default forwardRef(function PreviewNode(
       return true
     }
 
-    if (step === 4 && !isMobile) {
+    if (step === 2 && !isMobile) {
       return true
     }
 
@@ -230,7 +230,7 @@ export default forwardRef(function PreviewNode(
       }
 
       {
-        (showAction) && <StepAction
+        (showAction) && <div className={ styles.stepActionWrapper }><StepAction
           step={step}
           isLoading={isLoading}
           btnText={step === 4 ? 'Get' : 'Continue'}
@@ -256,6 +256,7 @@ export default forwardRef(function PreviewNode(
             }
           }}
         />
+        </div>
       }
 
 
