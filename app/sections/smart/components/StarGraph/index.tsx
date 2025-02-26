@@ -216,7 +216,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
       .append("text")
       .text((d: any) => {
         if (d.id !== centerNode.id && d.pnl !== undefined) {
-          return `+${numberFormatterNew(d.pnl,3,true)}`;
+          return `+${numberFormatterNew(d.pnl,3,true)} SOL`;
         }
         return "";
       })

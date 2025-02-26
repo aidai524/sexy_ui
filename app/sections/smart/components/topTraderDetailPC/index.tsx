@@ -300,6 +300,7 @@ export default function TopTraderDetailM() {
               <div className={styles.label}>Copiers Pnl</div>
               <div className={styles.amount}>
                 {copyTradersUserInfo?.tradeInfo?.totalPNL || 0}
+                <span className={styles.unit}>&nbsp;SOL</span>
               </div>
             </div>
 
