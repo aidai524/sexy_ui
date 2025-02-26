@@ -133,14 +133,6 @@ export default function Token({
                   }
                 }}
                 onSuccess={(type: string) => {
-                  if (type === "launched_like") {
-                    token.isLike = true;
-                    token.launched_like = token.launched_like + 1;
-                  }
-                  if (type === "share") {
-                    // token.share_num = token.share_num + 1;
-                  }
-
                   onUpdate?.(token, type);
                 }}
                 isCurrent={isCurrent}

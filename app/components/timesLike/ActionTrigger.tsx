@@ -34,7 +34,7 @@ const onLike = async (data: any) => {
         fail("You've run out of like times. You can come back tomorrow");
       }
       return {
-        likeNum: -1
+        likeNum: v.code === 0 ? 0 : -1
       };
     }
   } catch (e) {
@@ -54,8 +54,12 @@ const onHate = async (data: Project) => {
 
 export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
   const { likeNum, likeNumToday, projectLikeNum } = await onLike(data);
-
-  if (data.status !== 0) return;
+  console.log({
+    likeNum,
+    likeNumToday,
+    projectLikeNum
+  });
+  if (data.status !== 0) return likeNum === LIKE_ERROR ? false : true;
 
   if (likeNum !== LIKE_ERROR) onSuccess?.(likeNumToday);
 
