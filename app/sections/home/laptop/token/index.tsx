@@ -173,13 +173,6 @@ export default function Token({
           }}
           totalHolders={totalHolders}
           onSuccess={(type: string) => {
-            if (type === "like") {
-              token.isLike = true;
-              token.like = token.like + 1;
-            }
-            if (type === "share") {
-              // token.share_num = token.share_num + 1;
-            }
             onUpdate(token, type);
           }}
           isCurrent={isCurrent}

@@ -107,17 +107,10 @@ export default function Actions({
             buttonClassName={`${!disabled ? "button" : ""} ${
               !isMobile && styles.PcItem
             }`}
-            onClick={async () => {
-              await actionLikeTrigger({
-                data: token,
-                onShare: showShare
-              });
-              onSuccess("launched_like");
-            }}
-            isLiked={token.is_launched_like}
-            like={token.launched_like}
             disabled={disabled}
-            id={token.id}
+            token={token}
+            actionLikeTrigger={actionLikeTrigger}
+            onSuccess={onSuccess}
           />
 
           <div
