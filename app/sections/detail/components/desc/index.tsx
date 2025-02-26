@@ -17,7 +17,8 @@ export default function Desc({
   mc,
   showHolders = true,
   isCreated = false,
-  from
+  from,
+  holdersId
 }: {
   data: Project;
   specialTime?: string;
@@ -25,6 +26,7 @@ export default function Desc({
   showHolders?: boolean;
   isCreated?: boolean;
   from?: string;
+  holdersId?: string;
 }) {
   const { address } = useAccount();
   const router = useRouter();
@@ -349,7 +351,7 @@ export default function Desc({
         )}
 
       {showHolders && data.status! > 0 && from !== "panel" && (
-        <div className={styles.panel}>
+        <div className={styles.panel} id={holdersId}>
           <Holder address={data.address} />
         </div>
       )}
