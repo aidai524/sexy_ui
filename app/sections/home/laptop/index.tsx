@@ -16,13 +16,6 @@ export default function Laptop() {
           <List
             type={item}
             key={i}
-            onChangeTab={(tab: number) => {
-              let _tab = tab;
-              if (tab < 0) _tab = 0;
-              const len = Object.keys(LaunchType).length;
-              if (tab > len - 1) _tab = len - 1;
-              homeTabStore.set({ homeTabIndex: _tab });
-            }}
             tabIndex={i}
             isCurrentTab={homeTabStore.homeTabIndex === i}
           />

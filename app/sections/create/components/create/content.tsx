@@ -213,9 +213,9 @@ export default function Create({
   return (
     <>
       <div
-        className={styles.Container}
+        className={styles.Container + ' ' + (isMobile ? styles.ContainerMobile : styles.ContainerPc) }
         style={{
-          height: 'calc(100vh - 190px)'
+          height: isMobile ? 'calc(100vh - 190px)' : '600px'
         }}
       >
         <div className={styles.quickAction}>

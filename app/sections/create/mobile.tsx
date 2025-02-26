@@ -8,6 +8,7 @@ import type { Project } from "@/app/type";
 import { ProgressBar } from "antd-mobile";
 import StepInfo from "./components/StepInfo/index";
 import { useRouter } from "next/navigation";
+import { useUserAgent } from "@/app/context/user-agent";
 
 const stepTitles = {
   1: 'Token info',
@@ -28,6 +29,7 @@ export default function Create() {
   const [dataAdd, setDataAdd] = useState<Project>();
   const [step, setStep] = useState(1);
   const router = useRouter();
+  const { isMobile } = useUserAgent();  
 
   return (
     <div className={styles.main}>
@@ -71,6 +73,7 @@ export default function Create() {
 
       <CreateNode
         step={step}
+        show={step === 1 || (step === 2 && isMobile)}
         onNext={() => {
           setStep(step + 1);
         }}

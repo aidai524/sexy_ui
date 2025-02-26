@@ -68,3 +68,10 @@
   -webkit-text-fill-color: transparent;
   border-bottom: 1px solid #ff2bae;
 }
+
+
+.linkBoxPc {
+  .linkTitle {
+    font-weight: 700;
+  }
+}
