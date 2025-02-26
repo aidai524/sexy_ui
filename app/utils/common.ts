@@ -257,7 +257,7 @@ export const numberFormatterNew = (
     isZeroPrecision,
     isShort,
     isShortUppercase,
-    round = Big.roundHalfUp
+    round = Big.roundDown
   } = options || {};
 
   const isValid = () => {
