@@ -13,11 +13,16 @@ export default function CardContainer() {
   const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
   const CopyTradeService = new CopyTrade();
   const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<CopyTraderAddress | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getCopyTradeDetails = async () => {
     if (walletAddress) {
+      try {
         const { data } = await CopyTradeService.getCopyTradersUserInfo({address: walletAddress, chain: 'solana'});
         setCopyTradersUserInfo(data);
+      } finally {
+        setIsLoading(false);
+      }
     }
   }
   const getSmartMoniesInfo = async () => {
@@ -27,9 +32,15 @@ export default function CardContainer() {
     }
   }
   useEffect(() => {
+    setIsLoading(true);
     getSmartMoniesInfo();
     getCopyTradeDetails();
   }, [walletAddress]);
+
+  if (isLoading) {
+    return null;
+  }
+
   const isTopTrader = copyTradersUserInfo?.isTopTrader;
   // const isTopTrader = true;
   const isCopyier = copyTradersUserInfo && +copyTradersUserInfo?.tradeInfo?.totalInvestment > 0;
