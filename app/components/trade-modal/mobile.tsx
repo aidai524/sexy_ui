@@ -1,7 +1,13 @@
 import { Popup } from "antd-mobile";
 import Content from "./content";
 
-export default function Mobile({ show, onClose, data, initType }: any) {
+export default function Mobile({
+  show,
+  onClose,
+  data,
+  initType,
+  onSuccess
+}: any) {
   return (
     <Popup
       visible={show}
@@ -14,7 +20,7 @@ export default function Mobile({ show, onClose, data, initType }: any) {
         paddingBottom: 10
       }}
     >
-      <Content {...{ onClose, data, initType, show }} />
+      <Content {...{ onClose, data, initType, show, onSuccess }} />
     </Popup>
   );
 }
