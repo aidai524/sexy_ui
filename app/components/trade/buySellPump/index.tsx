@@ -396,7 +396,7 @@ export default function BuySellPump({
 
             {activeIndex === 0 &&
               (tokenType === 1 ? (
-                <div className={styles.tokenPercent}>
+                <div className={styles.tokenPercent + ' ' + (from === "panel" ? styles.PanelPercent : styles.Percent)}>
                   <div
                     onClick={() => {
                       setSolPercent(0);

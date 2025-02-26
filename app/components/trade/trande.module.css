@@ -107,6 +107,9 @@
     }
     .tokenPercent {
       float: left;
+    }
+
+    .PanelPercent {
       margin-top: -10px;
     }
 
