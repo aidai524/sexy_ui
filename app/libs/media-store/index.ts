@@ -69,7 +69,6 @@ class MediaStore {
   public async fetchFiles(files: any) {
     await this.check();
     this.queue = uniqBy([...this.queue, ...files], "name");
-    console.log(72, this.queue, this.fetching);
     if (this.fetching) {
       this.timer = setTimeout(() => {
         this.fetchFiles([]);
