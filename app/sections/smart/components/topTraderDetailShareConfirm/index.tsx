@@ -73,7 +73,7 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
           title: 'Buy/Sell',
           useGreen: true
         },
-        lastTradeAt: {value: checked, useValue: formatDateTime(copyTradersUserInfo?.lastTradeAt || 0), title: 'Last Trade'},
+        lastTradeAt: {value: checked, useValue: formatDateTime(smartMoniesInfo?.lastTradeAt || 0), title: 'Last Trade', useWhite: true},
         copiers: {value: checked, useValue: copyTradersUserInfo?.copiers?.length || 0, title: 'Copy Traders',useGreen: true},
         totalPnl: {value: checked, useValue: formatPnl(copyTradersUserInfo?.totalPnl || '0'), title: 'Copy Cohort PnL', useValueCurrency: 'SOL', useGreen: isGtZero(copyTradersUserInfo?.totalPnl || '0')}
       };
@@ -215,11 +215,11 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
                 checked={selectedItems['lastTradeAt']?.value}
-                onChange={(val) => handleCheckboxChange('lastTradeAt', {value: val, useValue: formatDateTime(copyTradersUserInfo?.lastTradeAt || 0), title: 'Last Trade'})}
+                onChange={(val) => handleCheckboxChange('lastTradeAt', {value: val, useValue: formatDateTime(smartMoniesInfo?.lastTradeAt || 0), title: 'Last Trade', useWhite: true})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Last Trade</div>
-                <div className={styles.value}>{formatDateTime(copyTradersUserInfo?.lastTradeAt || 0)}</div>
+                <div className={styles.value}>{formatDateTime(smartMoniesInfo?.lastTradeAt || 0)}</div>
             </div>
           </div>
 
