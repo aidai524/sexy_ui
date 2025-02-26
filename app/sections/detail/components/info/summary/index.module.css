@@ -1,0 +1,55 @@
+.tokenSummary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 10px 15px;
+}
+
+.tokenSummaryContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.tokenSummaryInfo {
+  margin-top: 5px;
+}
+
+.tokenSummaryDesc {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.tokenSummaryIcon {
+  cursor: pointer;
+  margin-bottom: -2px;
+}
+
+.tokenSummaryTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.tokenAddressWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3c3c3c80;
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 5px;
+  .tokenAddressContent {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 10px;
+    gap: 5px;
+    .tokenAddress {
+      color: #9290b1;
+    }
+  }
+}
