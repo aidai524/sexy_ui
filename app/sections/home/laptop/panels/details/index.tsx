@@ -9,7 +9,9 @@ export default function Details({ token }: any) {
   return (
     <div className={styles.Container}>
       <Summary data={token} showAddress={true} from="panel" />
-      <PrelaunchStatus data={token} showAddress={true} />
+      {token.status === 0 && (
+        <PrelaunchStatus data={token} showAddress={true} />
+      )}
       <Info mc={mc} data={token} from="panel" />
     </div>
   );

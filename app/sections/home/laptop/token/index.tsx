@@ -145,7 +145,7 @@ export default function Token({
         >
           <ScaleButton
             onClick={() => {
-              onUpdateTradeTab("details");
+              onUpdateTradeTab(token.status === 0 ? "details" : "chart");
               onOpenPanel("showTrade", !showTrade);
             }}
           />

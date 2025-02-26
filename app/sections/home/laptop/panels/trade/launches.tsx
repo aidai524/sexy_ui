@@ -7,6 +7,7 @@ import PreUser from "@/app/components/thumbnail/preUser";
 import Txs from "@/app/sections/detail/components/txs";
 import Trade from "@/app/components/trade";
 import Details from "../details";
+import Comments from "../comments";
 
 const TABS = [
   {
@@ -24,6 +25,10 @@ const TABS = [
   {
     label: "Details",
     key: "details"
+  },
+  {
+    label: "Discussion",
+    key: "comments"
   }
 ];
 
@@ -31,7 +36,8 @@ export default function LaunchesTradePanel({
   token,
   tab,
   setTab,
-  onClose
+  onClose,
+  onSuccess
 }: any) {
   return (
     <div className={styles.Container}>
@@ -84,6 +90,15 @@ export default function LaunchesTradePanel({
           <PanelWrapper>
             <Details token={token} from="detail" />
           </PanelWrapper>
+        )}
+        {tab === "comments" && (
+          <Comments
+            token={token}
+            onSuccess={() => {
+              token.comment = token.comment + 1;
+              onSuccess(token, "comments");
+            }}
+          />
         )}
       </div>
       <div
