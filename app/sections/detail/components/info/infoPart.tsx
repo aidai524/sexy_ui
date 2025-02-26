@@ -1,33 +1,13 @@
 import styles from "./detail.module.css";
 import type { Project } from "@/app/type";
-import {
-  checkFileType,
-  formatAddress,
-  formatDateEn,
-  simplifyNum,
-  timeAgo
-} from "@/app/utils";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useUserAgent } from "@/app/context/user-agent";
-import { useAccount } from "@/app/hooks/useAccount";
-import useMc from "@/app/hooks/useMc";
-import LaunchTag from "@/app/components/tag/status";
-import Copyed from "@/app/components/copyed";
-import Holder from "@/app/components/holder";
 import { ProgressBar } from "antd-mobile";
 import Big from "big.js";
-import TokenTags from "@/app/components/tokenTags";
-import { getVideoExt, imgReg, videoReg } from "@/app/components/upload";
 import Empty from "@/app/components/empty";
-import { useTrendsStore } from "@/app/store/useTrends";
-import TokenIcon from "@/app/components/avatar/token";
-import VideoIcon from "@/app/components/icons/video";
 import HeartIcon from "@/app/components/icons/heart";
 import ClockIcon from "@/app/components/icons/clock";
 import { useCountDown } from "ahooks";
 import { numberFormatter } from "@/app/utils/common";
-import FullPlay from "./fullPlay";
+import Summary from "./summary";
 
 interface Props {
   data: Project;
@@ -42,21 +22,7 @@ interface Props {
   withoutFlip?: boolean;
 }
 
-export default function InfoPart({
-  data,
-  specialTime,
-  showLikes = true,
-  theme = "dark",
-  showProgress = true,
-  showHolders = true,
-  showAddress = true,
-  showMedia = true,
-  mc,
-  withoutFlip
-}: Props) {
-  const { address } = useAccount();
-  const router = useRouter();
-  const [showFullPlay, setShowFullPlay] = useState(false);
+export default function InfoPart({ data, showAddress = true }: Props) {
   const [timeLeft, { days, hours, minutes, seconds }] = useCountDown({
     targetDate: data?.timeLeft || 0,
     interval: 1000
@@ -68,41 +34,7 @@ export default function InfoPart({
 
   return (
     <div>
-      <div className={styles.tokenSummary}>
-        <div className={styles.tokenSummaryContent}>
-          <TokenIcon token={data} />
-          <div className={styles.tokenSummaryInfo}>
-            <div className={styles.tokenSummaryTitle}>{data.tokenName}</div>
-            <div className={styles.tokenSummaryDesc}>
-              {checkFileType(data.tokenImg) === "video" && (
-                <div
-                  onClick={() => {
-                    setShowFullPlay(true);
-                  }}
-                  className={styles.tokenSummaryIcon}
-                >
-                  <VideoIcon />
-                </div>
-              )}
-              <div className={styles.tokenSummaryDescText}>
-                <TokenTags token={data} />
-              </div>
-            </div>
-          </div>
-        </div>
-        {showAddress && (
-          <div className={styles.tokenAddressWrapper}>
-            <div className={styles.tokenAddressContent}>
-              <Copyed value={data.address as string}>
-                <div className={styles.tokenAddress}>
-                  {formatAddress(data.address as string)}
-                </div>
-              </Copyed>
-            </div>
-          </div>
-        )}
-      </div>
-
+      <Summary data={data} showAddress={showAddress} />
       {data.status === 0 && (
         <div className={styles.panelEmpty}>
           <div className={styles.singleProgress}>
@@ -199,14 +131,6 @@ export default function InfoPart({
             <div className={styles.priceUnit}>$0.00356</div>
           </div>
         </div>
-      )}
-
-      {checkFileType(data.tokenImg) === "video" && (
-        <FullPlay
-          src={data.tokenImg as string}
-          show={showFullPlay}
-          onClose={() => setShowFullPlay(false)}
-        />
       )}
     </div>
   );

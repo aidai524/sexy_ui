@@ -18,7 +18,6 @@ import TipsButton from "@/app/sections/home/laptop/tips-button";
 
 export default function Token({
   isCurrent,
-  isNext,
   token,
   opacity,
   showTrade,
@@ -34,7 +33,7 @@ export default function Token({
   const descContentRef = useRef<any>();
 
   const { total: totalHolders } = useHolders(token);
-  if (isCurrent) console.log(token);
+
   return (
     <div
       className={styles.Box}
@@ -117,7 +116,7 @@ export default function Token({
               </div>
             </div>
           </div>
-          {token.status !== 0 && isCurrent && showTrade && (
+          {isCurrent && showTrade && (
             <TradePanel
               onClose={() => {
                 onOpenPanel("showTrade", false);
@@ -130,7 +129,7 @@ export default function Token({
         </div>
       )}
 
-      {token?.status !== 0 && !showTrade && isCurrent && (
+      {!showTrade && isCurrent && (
         <TipsButton
           tips="Expand"
           triggerStyle={{
@@ -152,26 +151,18 @@ export default function Token({
       {dataAvailable && token?.id && (
         <Actions
           token={token}
-          onClick={(type: any) => {
+          onClick={(type: any, params: any) => {
+            let tab = "details";
             if (type === "comments") {
-              onOpenPanel("showComments");
-              return;
+              tab = "comments";
             }
+
             if (type === "detail") {
-              onOpenPanel("showDetail");
-              return;
+              if (params === "Info") tab = "holders";
+              if (params === "Trades") tab = "transactions";
             }
-            if (!window.sexAddress) {
-              window.connect();
-              return;
-            }
-            if (type === "flip") {
-              onOpenPanel("showFlip");
-            }
-            if (type === "trade") {
-              onUpdateTradeTab("holders");
-              if (!showTrade) onOpenPanel("showTrade");
-            }
+            onUpdateTradeTab(tab);
+            if (!showTrade) onOpenPanel("showTrade");
           }}
           totalHolders={totalHolders}
           onSuccess={(type: string) => {
