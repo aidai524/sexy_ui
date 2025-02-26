@@ -155,9 +155,6 @@ export default function Create({
   }, [debounceVal]);
 
   const submit = useCallback(async (ignorePrepaid: number) => {
-    setModalShow(true);
-    return
-
     try {
       if (isLoading || totalRef.current.isError) {
         return;
