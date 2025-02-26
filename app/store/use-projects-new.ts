@@ -63,24 +63,14 @@ export const useProjects = create(
         if (!_projects.length) return;
         const currentProjects = get().projects;
 
-        const cachedVideos: any = [];
-
         const projects = _projects
           .filter((item: any) => !currentProjects[item.id])
           .map((item: any, i: number) => {
-            if (item.video && videoReg.test(item.video)) {
-              cachedVideos.push({
-                url: item.video,
-                name: item.id
-              });
-            }
             return {
               ...mapDataToProject(item),
               fetched_time: Date.now() + i
             };
           });
-
-        mediaStore.fetchFiles(cachedVideos);
 
         const list = {
           ...currentProjects,
@@ -172,7 +162,6 @@ export const useProjects = create(
         set({ [type + "List"]: [] });
       },
       clearProjects() {
-        // mediaStore.clearStore();
         set({
           projects: {}
         });
