@@ -53,6 +53,7 @@ export default function TopTraderDetailM() {
     const [copierImages, setCopierImages] = useState<string[]>([]);
     const [showShareModal, setShowShareModal] = useState(false);
     const [satelliteNodes, setSatelliteNodes] = useState<SatelliteNode[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     
     const getUserInfoWithCache = useMemo(() => {
       const cache = new Map<string, any>();
@@ -95,15 +96,20 @@ export default function TopTraderDetailM() {
   };
   const getCopyTradersUserInfo = async () => {
     if (address) {
-      const { data } = await CopyTradeService.getCopyTradersUserInfo({
-        address,
-        chain: "solana"
+      try {
+        const { data } = await CopyTradeService.getCopyTradersUserInfo({
+          address,
+          chain: "solana"
       });
       setCopyTradersUserInfo(data);
       console.log(data, "copyTradersUserInfo");
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
   useEffect(() => {
+    setIsLoading(true);
     getSmartMoniesInfo();
     getCopyTradersUserInfo();
   }, [address, lastCopyTradeTime]);
@@ -162,8 +168,11 @@ export default function TopTraderDetailM() {
 
     loadSatellites();
   }, [smartMoniesInfo?.topCopiers, getUserInfoWithCache]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
-    <Suspense fallback={<Loading />}>
       <div className={styles.container}>
         {/*  */}
         <div className={styles.back}>
@@ -349,6 +358,5 @@ export default function TopTraderDetailM() {
 
       <TopTraderDetailShareConfirm shareName={address} currentUserInfo={currentUserInfo} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo} show={showShareModal} onClose={() => setShowShareModal(false)} />
     </div>
-    </Suspense>
   );
 }
