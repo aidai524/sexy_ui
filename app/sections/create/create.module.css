@@ -133,7 +133,7 @@
 .groupTitle {
   font-size: 16px;
   color: #fff;
-  padding: 0 18px;
+  padding: 0 18px 0 0;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -178,4 +178,30 @@
 .linkActionItem {
   width: 30px;
   cursor: pointer;
+}
+.linkTitle {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;  
+}
+
+.linkOptional {
+  font-size: 12px;
+  font-weight: 700;
+  color: #9290B1;
+}
+
+.Container {
+  .groupTitle {
+    padding-left: 18px;
+  }
+}
+
+.ContainerPc {
+  .groupTitle {
+    font-weight: 700;
+  }
+  .linkActionGroup {
+    margin-top: 20px;
+  }
 }

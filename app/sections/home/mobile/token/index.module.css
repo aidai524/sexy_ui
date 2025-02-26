@@ -12,7 +12,7 @@
 }
 
 .Desc {
-  width: 100vw;
+  width: 100%;
   background: linear-gradient(0deg, #000 50%, rgba(0, 0, 0, 0) 100%);
 }
 

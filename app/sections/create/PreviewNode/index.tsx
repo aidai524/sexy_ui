@@ -96,11 +96,23 @@ export default forwardRef(function PreviewNode(
     }
   }
 
-  console.log('isLoading:', isLoading)
+  const showAction = useMemo(() => {  
+    if (step === 3 && isMobile) {
+      return true
+    }
+
+    if (step === 4 && !isMobile) {
+      return true
+    }
+
+    return false
+  }, [step, isMobile])
+
+  console.log('step111:', showAction)
 
   return (
     <div
-      className={styles.mainContent}
+      className={styles.mainContent + ' ' + (isMobile ? styles.mainContentMobile : styles.mainContentPc)}
       style={{
         display: show ? "block" : "none",
         paddingBottom: isMobile ? 80 : 0,
@@ -108,7 +120,31 @@ export default forwardRef(function PreviewNode(
       }}
     >
       {
-        step === 3 && <>
+        (step === 2 && !isMobile) && <div className={styles.previewPc}><div style={{ width: 426 }}>
+          <Token
+            isCurrent={true}
+            style={{
+              width: '100%',
+              overflow: 'visible',
+              position: 'relative',
+            }}
+            token={{
+              ...newData,
+              id: Date.now(),
+              like: 0,
+              icon: newData.tokenIcon || '/img/default-token.png',
+              timeLeft: Date.now() + 1000 * 60 * 60 * 3
+            }}
+            isPreview={true}
+            isPreviewNoOpacity={true}
+            dataAvailable={true}
+          />
+        </div>
+        </div>
+      }
+
+      {
+        ((step === 3 && isMobile)) && <>
           <div className={styles.previewTab}>
             <div
               className={`${styles.previewTabItem} ${activeTab === 'flow' ? styles.active : ''}`}
@@ -153,7 +189,7 @@ export default forwardRef(function PreviewNode(
       }
 
       {
-        step === 4 && <Create
+        (step === 4 || (step === 3 && !isMobile)) && <Create
           token={{
             tokenName: data.tokenName,
             tokenSymbol: data.tokenSymbol,
@@ -194,7 +230,7 @@ export default forwardRef(function PreviewNode(
       }
 
       {
-        step !== 4 && <StepAction
+        (showAction) && <StepAction
           step={step}
           isLoading={isLoading}
           btnText={step === 4 ? 'Get' : 'Continue'}
@@ -207,9 +243,15 @@ export default forwardRef(function PreviewNode(
             }}>Skip</div>
           }
           onNext={async () => {
-            if (step === 3) {
+            if (step === 3 && isMobile) {
               onNext();
-            } else {
+            } 
+
+            if (step === 2 && !isMobile) {
+              onNext()
+            }
+
+            if (step === 4) {
               submit(1)
             }
           }}

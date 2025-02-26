@@ -38,11 +38,7 @@ export default memo(function Create(props: any) {
 
   return (
     <>
-      {isMobile ? (
-        <Mobile {...props} setShowSuccessModal={share} />
-      ) : (
-        <Laptop {...props} setShowSuccessModal={share} />
-      )}
+      <Mobile {...props} setShowSuccessModal={share} />
     </>
   );
 });

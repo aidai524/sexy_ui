@@ -173,6 +173,11 @@
   overflow: hidden;
 }
 
+.ContainerPc {
+  width: 570px;
+  margin: 0 auto;
+}
+
 .walletBalance {
   display: flex;
   align-items: center;

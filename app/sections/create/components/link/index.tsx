@@ -16,13 +16,13 @@ export default function Link({ type, img, value, isLink = true, onChange, onBlur
   const { isMobile } = useUserAgent();
   return (
     <div
-      className={styles.linkBox}
+      className={styles.linkBox + ' ' + (isMobile ? styles.linkBoxMobile : styles.linkBoxPc)  }
       style={{
         // backgroundColor: isMobile ? "rgba(18, 23, 25, 1)" : "transparent",
         padding: isMobile ? "0 0 10px" : "0px"
       }}
     >
-      {type && isMobile && (
+      {type && (
         <div className={styles.linkContent}>
           <div className={styles.linkTitle}>
             {img && <img className={styles.linkImg} src={img} />}
