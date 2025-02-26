@@ -276,37 +276,55 @@ export default function BuySell({
 
   return (
     <>
-      <div className={[styles.cationArea].join(" ")}>
+      <div
+        className={[
+          styles.cationArea,
+          from === "panel" ? styles.pcActionArea : styles.mobileActionArea
+        ].join(" ")}
+      >
         {from === "panel" ? (
-          <Tabs
-            tabs={[
-              {
-                label: "Buy",
-                key: 0
-              },
-              {
-                label: "Sell",
-                key: 1
-              }
-            ]}
-            type="center"
-            currentTab={activeIndex}
-            onChangeTab={(index: number) => {
-              setActiveIndex(index);
-              setValInput("");
-              if (index === 1) {
-                setCurrentToken(desToken);
-                setTokenType(0);
-                setTokenPercent(0);
-              }
+          <div className={styles.pcTabs}>
+            <Tabs
+              tabs={[
+                {
+                  label: "Buy",
+                  key: 0
+                },
+                {
+                  label: "Sell",
+                  key: 1
+                }
+              ]}
+              type="center"
+              currentTab={activeIndex}
+              onChangeTab={(index: number) => {
+                setActiveIndex(index);
+                setValInput("");
+                if (index === 1) {
+                  setCurrentToken(desToken);
+                  setTokenType(0);
+                  setTokenPercent(0);
+                }
 
-              if (index === 0) {
-                setTokenType(buyTokenType);
-                setCurrentToken(buyTokenType === 1 ? SOL : desToken);
-                setSolPercent(0);
-              }
-            }}
-          />
+                if (index === 0) {
+                  setTokenType(buyTokenType);
+                  setCurrentToken(buyTokenType === 1 ? SOL : desToken);
+                  setSolPercent(0);
+                }
+              }}
+            />
+            <div
+              className={styles.pcSlipIcon + " "}
+              ref={slippageTextRef}
+              onClick={(ev) => {
+                ev.stopPropagation();
+                ev.nativeEvent.stopImmediatePropagation();
+                setShowSlip(true);
+              }}
+            >
+              <img src="/img/trade/slip.svg" />
+            </div>
+          </div>
         ) : (
           <div className={styles.tradeTabs}>
             <div
@@ -348,7 +366,7 @@ export default function BuySell({
         <div
           className={from === "panel" ? styles.PanelContent : styles.Content}
         >
-          <div className={styles.inputArea}>
+          <div className={styles.inputActionArea}>
             <div className={styles.actionArea}>
               <div className={styles.balance}>
                 <img src="/img/trade/balance.svg" />
@@ -385,7 +403,7 @@ export default function BuySell({
                     className={
                       styles.switchTokenImg +
                       " " +
-                      (tokenType === 0 ? styles.active : "")
+                      (tokenType === 1 ? styles.active : "")
                     }
                   >
                     <img src={SOL.tokenUri} />
@@ -394,7 +412,7 @@ export default function BuySell({
                     className={
                       styles.switchTokenImg +
                       " " +
-                      (tokenType === 1 ? styles.active : "")
+                      (tokenType === 0 ? styles.active : "")
                     }
                   >
                     <img src={desToken.tokenUri} />
@@ -404,18 +422,22 @@ export default function BuySell({
                 <div></div>
               )}
 
-              <div
-                onClick={(ev) => {
-                  ev.stopPropagation();
-                  ev.nativeEvent.stopImmediatePropagation();
-                  setShowSlip(true);
-                }}
-                className={`${styles.slippage}`}
-                ref={slippageTextRef}
-              >
-                <img src="/img/trade/slip.svg" className={styles.slipIcon} />
-                <span className="button">Slippage</span>
-              </div>
+              {from === "panel" ? (
+                <></>
+              ) : (
+                <div
+                  onClick={(ev) => {
+                    ev.stopPropagation();
+                    ev.nativeEvent.stopImmediatePropagation();
+                    setShowSlip(true);
+                  }}
+                  className={`${styles.slippage}`}
+                  ref={slippageTextRef}
+                >
+                  <img src="/img/trade/slip.svg" className={styles.slipIcon} />
+                  <span className="button">Slippage</span>
+                </div>
+              )}
             </div>
 
             <div
@@ -482,11 +504,7 @@ export default function BuySell({
                     setSolPercent(0);
                     setValInput("");
                   }}
-                  className={`${
-                    from === "panel"
-                      ? styles.PanelPercentTag
-                      : styles.percentTag
-                  } button`}
+                  className={`${styles.percentTag} button`}
                 >
                   Reset
                 </div>
@@ -504,9 +522,7 @@ export default function BuySell({
                       }}
                       key={item}
                       className={[
-                        from === "panel"
-                          ? styles.PanelPercentTag
-                          : styles.percentTag,
+                        styles.percentTag,
                         item === solPercent ? styles.tagActive : "",
                         "button"
                       ].join(" ")}
@@ -611,7 +627,7 @@ export default function BuySell({
               </div>
             )}
 
-            <div style={{ marginTop: from === "panel" ? 0 : 18 }}>
+            <div style={{ marginTop: 18 }}>
               <MainBtn
                 isLoading={isLoading}
                 isDisabled={isError}
@@ -704,7 +720,7 @@ export default function BuySell({
                   color: activeIndex === 0 ? "#000" : "#fff",
                   background: activeIndex === 0 ? "#C9FF5D" : "#FF559D",
                   height: from === "panel" ? 36 : 60,
-                  width: from === "panel" ? "120px" : "100%"
+                  width: "100%"
                 }}
               >
                 {activeIndex === 0 ? "Buy" : "Sell"}

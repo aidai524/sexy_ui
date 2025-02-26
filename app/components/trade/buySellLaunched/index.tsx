@@ -252,37 +252,51 @@ export default function BuySellLaunched({
       <div
         className={[
           styles.cationArea,
-          !isMobile ? styles.LaptopMain : styles.panel
+          !isMobile ? styles.LaptopMain : styles.panel,
+          from === "panel" ? styles.pcActionArea : styles.mobileActionArea
         ].join(" ")}
       >
         {from === "panel" ? (
-          <Tabs
-            tabs={[
-              {
-                label: "Buy",
-                key: 0
-              },
-              {
-                label: "Sell",
-                key: 1
-              }
-            ]}
-            type="center"
-            currentTab={activeIndex}
-            onChangeTab={(index: number) => {
-              setActiveIndex(index);
-              setValInput("");
-              if (index === 0) {
-                setCurrentToken(SOL);
-                setTokenType(1);
-              } else {
-                setCurrentToken(desToken);
-                setTokenType(0);
-              }
-              setSolPercent(0);
-              setTokenPercent(0);
-            }}
-          />
+          <div className={styles.pcTabs}>
+            <Tabs
+              tabs={[
+                {
+                  label: "Buy",
+                  key: 0
+                },
+                {
+                  label: "Sell",
+                  key: 1
+                }
+              ]}
+              type="center"
+              currentTab={activeIndex}
+              onChangeTab={(index: number) => {
+                setActiveIndex(index);
+                setValInput("");
+                if (index === 0) {
+                  setCurrentToken(SOL);
+                  setTokenType(1);
+                } else {
+                  setCurrentToken(desToken);
+                  setTokenType(0);
+                }
+                setSolPercent(0);
+                setTokenPercent(0);
+              }}
+            />
+            <div
+              className={styles.pcSlipIcon + " "}
+              ref={slippageTextRef}
+              onClick={(ev) => {
+                ev.stopPropagation();
+                ev.nativeEvent.stopImmediatePropagation();
+                setShowSlip(true);
+              }}
+            >
+              <img src="/img/trade/slip.svg" />
+            </div>
+          </div>
         ) : (
           <div className={styles.tradeTabs}>
             <div
@@ -323,7 +337,7 @@ export default function BuySellLaunched({
           className={from === "panel" ? styles.PanelContent : styles.Content}
         >
           <div
-            className={styles.inputArea}
+            className={styles.inputActionArea}
             style={
               {
                 // width: from === "panel" ? 335 : "100%"
