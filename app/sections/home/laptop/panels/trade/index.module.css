@@ -1,21 +1,18 @@
 .Container {
-  padding-right: 14px;
   width: 542px;
-  padding-left: 14px;
 }
 
 .Tabs {
-  height: 400px;
+  height: 420px;
   margin-bottom: 20px;
 }
 
 .PanelWrapper {
-  padding: 10px 0px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px 14px;
+  background-color: #1b1b1b;
 }
 
 .PanelContent {
-  height: 380px;
+  height: 400px;
   overflow-y: auto;
 }

@@ -202,6 +202,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
         border: 0,
         ...style
       }}
+      style={{
+        backgroundColor: '#000'
+      }}
       closeStyle={{
         top: -10
       }}

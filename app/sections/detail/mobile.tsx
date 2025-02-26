@@ -25,11 +25,11 @@ import { useAuth } from "@/app/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TokenStatusModal } from "@/app/components/status2Alert";
 import Share from "@/app/components/share";
-import TokenIcon from "@/app/components/avatar/token";
 import Desc from "./components/desc";
+import Empty from "@/app/components/empty";
 
-export default function Detail({ token, onBack, onSuccess }: any) {
-  const [activeKey, setActiveKey] = useState("Info");
+export default function Detail({ token, tab, onBack, onSuccess }: any) {
+  const [activeKey, setActiveKey] = useState(tab || "Info");
   const {
     infoData: queryedInfoData,
     isLoading,
@@ -104,6 +104,10 @@ export default function Detail({ token, onBack, onSuccess }: any) {
         <CircleLoading size={60} />
       </div>
     );
+  }
+
+  if (!infoData) {
+    return <Empty />;
   }
 
   return (
