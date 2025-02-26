@@ -290,8 +290,8 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
   };
 
   const handleSwitchChange = (checked: boolean) => {
-    // setIsChecked(checked);
-    setIsAdvancedModalOpen(checked);
+    setIsChecked(checked);
+    // setIsAdvancedModalOpen(checked);
   };
 
   return (
@@ -337,7 +337,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
               <span>{solBalance} SOL</span>
             </div>
             <div className={styles.advancedAndSwitch}>
-              <div className={styles.advanced}>
+              <div className={styles.advanced} onClick={() => setIsAdvancedModalOpen(true)}>
                 <AdvancedIcon />
                 <span>Advanced</span>
               </div>
@@ -465,7 +465,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
         show={isAdvancedModalOpen}
         onClose={() => {
           setIsAdvancedModalOpen(false);
-          handleSwitchChange(false);
+          // handleSwitchChange(false);
         }}
         copyTimes={copyTimes}
         setCopyTimes={handleCopyTimesChange}
