@@ -20,7 +20,7 @@ export const useGetSmartMonies = ({chain, page, pageSize, orderBy, walletAddress
 
   useEffect(() => {
     fetchSmartMonies();
-  }, [chain, page, pageSize]);
+  }, [chain, page, pageSize, orderBy]);
 
   return { smartMonies, smartMoniesLoading };
 };

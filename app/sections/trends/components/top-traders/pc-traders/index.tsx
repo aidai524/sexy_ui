@@ -39,6 +39,7 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
   const [showModal, setShowModal] = useState(false);
   const router = useRouter()
   const handleSort = (field: 'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D' | 'winRate1D' | 'winRate7D' | 'winRate30D') => {
+    if (smartMoniesLoading) return;
     setOrderBy(field)
   };
 

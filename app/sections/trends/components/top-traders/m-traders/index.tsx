@@ -205,6 +205,7 @@ export default function TopTradersMobile({
   }, [orderBy]);
 
   const handleTabClick = (tab: (typeof tabs)[0]) => {
+    if (smartMoniesLoading) return;
     setActiveTab(
       tab.id as
         | "roi"
