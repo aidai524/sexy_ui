@@ -76,7 +76,6 @@ export default function useData(launchType: Type) {
   const handleList = async (isNext?: boolean) => {
     if (!isNext) setIsLoading(true);
     await queryList();
-    const _list = projectsStore.getList(launchType) || [];
     setIsLoading(false);
   };
 
