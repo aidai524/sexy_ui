@@ -26,6 +26,8 @@ import { fecthUserInfo } from '@/app/utils/getUserInfo';
 import TopTraderDetailShareConfirm from '@/app/sections/smart/components/topTraderDetailShareConfirm';
 import { useAccount } from '@/app/hooks/useAccount';
 import { useCopyTradeRefresh } from '@/app/store/useCopyTradeRefresh';
+import { Suspense } from "react";
+import Loading from "@/app/loading";
 
 interface SatelliteNode {
   id: string;
@@ -161,9 +163,10 @@ export default function TopTraderDetailM() {
     loadSatellites();
   }, [smartMoniesInfo?.topCopiers, getUserInfoWithCache]);
   return (
-    <div className={styles.container}>
-      {/*  */}
-      <div className={styles.back}>
+    <Suspense fallback={<Loading />}>
+      <div className={styles.container}>
+        {/*  */}
+        <div className={styles.back}>
         <div onClick={() => router.back()}>
           <LeftBackIcon />
         </div>
@@ -346,5 +349,6 @@ export default function TopTraderDetailM() {
 
       <TopTraderDetailShareConfirm shareName={address} currentUserInfo={currentUserInfo} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo} show={showShareModal} onClose={() => setShowShareModal(false)} />
     </div>
+    </Suspense>
   );
 }

@@ -7,6 +7,7 @@ import { useAccount } from '@/app/hooks/useAccount'
 import CopyTrade from '@/app/services/copyTrade'
 import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
 import { useUserAgent } from "@/app/context/user-agent";
+import CircleLoading from "@/app/components/icons/loading";
 export default function CardContainer() {
   const { address: walletAddress } = useAccount();
   const { isMobile } = useUserAgent();
@@ -38,7 +39,9 @@ export default function CardContainer() {
   }, [walletAddress]);
 
   if (isLoading) {
-    return null;
+    return <div className={styles.loading}>
+      <CircleLoading size={40} />
+    </div>;
   }
 
   const isTopTrader = copyTradersUserInfo?.isTopTrader;
