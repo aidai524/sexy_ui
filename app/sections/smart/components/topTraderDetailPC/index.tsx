@@ -278,7 +278,7 @@ export default function TopTraderDetailM() {
             <CopierTextIcon />
           </div>
           <div className={styles.copierDetail}>
-            <div className={styles.copierAmount}>
+            {/* <div className={styles.copierAmount}>
               <CopyierIconWithBg />
               <span style={{ color: "#fff" }}>
                 {smartMoniesInfo?.copiers?.length || 0}
@@ -289,11 +289,22 @@ export default function TopTraderDetailM() {
                   {smartMoniesInfo?.newCopiers?.length || 0}
                 </span>
               </span>
+            </div> */}
+             <div className={styles.gridItem}>
+              <div className={styles.label}>Copy Traders</div>
+              <div className={styles.amount}>
+                {smartMoniesInfo?.copiers?.length || 0}
+              </div>
             </div>
-           
+            <div className={styles.gridItem}>
+              <div className={styles.label}>Copiers Pnl</div>
+              <div className={styles.amount}>
+                {copyTradersUserInfo?.tradeInfo?.totalPNL || 0}
+              </div>
+            </div>
 
           </div>
-          <div className={styles.copierTokenList}>
+          {/* <div className={styles.copierTokenList}>
               {copierImages.map((imageUrl, index) => (
                 <img
                   key={"sate" + index}
@@ -302,7 +313,7 @@ export default function TopTraderDetailM() {
                   src={imageUrl || defaultAvatar}
                 />
               ))}
-            </div>
+            </div> */}
         </div>
     
      {/* button */}
