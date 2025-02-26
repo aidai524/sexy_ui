@@ -120,7 +120,7 @@ export default function Token({
                     setShowCommentsModal(true);
                     return;
                   }
-                 
+
                   if (!window.sexAddress) {
                     window.connect();
                     return;
@@ -148,22 +148,13 @@ export default function Token({
           </div>
         )}
       </div>
-      {!isPreview && (
+      {!isPreview && token && (
         <>
           {showFlipModal && (
             <SmokePanel
               token={token}
               show={showFlipModal}
               onSuccess={(amount: string) => {
-                token.isSuperLike = true;
-                token.prePaid = token.prePaid + 1;
-                token.total_amount =
-                  Number(token.total_amount) + Number(amount);
-                token.prePaidAmount = Big(token.prePaidAmount || 0)
-                  .add(Number(amount) * 1e9)
-                  .toString();
-                token.isLike = true;
-                token.like = token.like + 1;
                 onUpdate?.(token, "flip");
                 setShowFlipModal(false);
               }}
@@ -176,6 +167,10 @@ export default function Token({
             <TradeModal
               show={showTradeModal}
               onClose={() => {
+                setShowTradeModal(false);
+              }}
+              onSuccess={() => {
+                onUpdate?.(token, "trade");
                 setShowTradeModal(false);
               }}
               data={token}
