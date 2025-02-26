@@ -42,7 +42,6 @@ export default function Coppied({ isOther }: any) {
       setHasMore(false);
       return;
     }
-
     setIsLoading(true);
     try {
       const res = await CopyTradeService.getCopyTradeList({

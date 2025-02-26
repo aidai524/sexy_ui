@@ -19,7 +19,6 @@ export default function TopTraders() {
   });
   const { address: walletAddress } = useAccount();
   const [orderBy, setOrderBy] = useState<string>('pnl7D')
-  
   const { smartMonies, smartMoniesLoading } = useGetSmartMonies({ 
     chain: 'solana', 
     page: pageIndex, 

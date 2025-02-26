@@ -96,7 +96,7 @@ const TraderItem = ({
               </div>
             </div>
             <div className={styles.followers}>
-              <CopyierIconWithBg /> {user?.followers || 0}
+              <CopyierIconWithBg /> {trader?.copiers?.length || 0}
             </div>
           </div>
         </div>
