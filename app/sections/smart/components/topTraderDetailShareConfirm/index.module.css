@@ -1,6 +1,6 @@
 .main {
     width: 100vw;
-    height: 450px;
+    min-height: 450px;
     background: #252328;
     border: 1px solid #3B3B3B;
     border-radius: 12px;

@@ -230,7 +230,7 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Copy Traders</div>
-                <div className={styles.value}>{copyTradersUserInfo?.copiers?.length || 0}</div>
+                <div className={styles.profit}>{smartMoniesInfo?.copiers?.length || 0}</div>
             </div>
           </div>
 
@@ -249,9 +249,7 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
           </div>
         </div>
 
-        <div className={styles.buttonContainer}>
-            <div className={styles.button} onClick={() => setShowShare(true)}>Confirm</div>
-        </div>
+        <div className={styles.button} onClick={() => setShowShare(true)}>Confirm</div>
       </div>
     </Modal>
     <TopTraderShareModal shareName={shareName} show={showShare} onClose={() => setShowShare(false)} selectedItems={selectedItems} currentUserInfo={currentUserInfo} />
