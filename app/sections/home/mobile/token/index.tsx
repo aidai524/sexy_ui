@@ -21,6 +21,7 @@ export default function Token({
   isCurrent,
   onUpdate,
   isPreview = false,
+  isPreviewNoOpacity = false,
   token,
   dataAvailable,
   style = {},
@@ -141,6 +142,7 @@ export default function Token({
                 }}
                 isCurrent={isCurrent}
                 isPreview={isPreview}
+                isPreviewNoOpacity={isPreviewNoOpacity}
                 disabled={isPreview}
               />
             )}

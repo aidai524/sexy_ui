@@ -107,7 +107,7 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
   }
 
   if (!infoData) {
-    return <Empty />;
+    return <div className={styles.loadingBox}><Empty /></div>;
   }
 
   return (
