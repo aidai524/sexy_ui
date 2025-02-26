@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import Big from 'big.js';
 import { CrownIcon } from '../icons';
 import Empty from '@/app/components/empty';
+import { CopyierIconWithBg } from '../icons';
 
 interface Trader {
   avatar: string
@@ -161,7 +162,9 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         </div>
         <div className={styles.nameWrapper}>
           <div className={styles.name}>{formatAddress(trader.address) || formatAddress(user?.address)}</div>
-          <div className={styles.followers}>{trader?.copiers?.length || 0} followers</div>
+          <div className={styles.followers}>
+            <CopyierIconWithBg /> {trader?.copiers?.length || 0}
+          </div>
         </div>
       </div>
       <div className={styles.pnl}>
