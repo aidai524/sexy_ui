@@ -28,6 +28,23 @@ export default function Mobile() {
           setToken(token);
           setDetailTab(tab);
           videoPlayerStore.setPlay(false);
+          if (!tab || !["Info", "Trades"].includes(tab)) return;
+          const loop = () => {
+            setTimeout(() => {
+              const ele = document.getElementById(
+                tab === "Info" ? "detail-holders" : "detail-tabs"
+              );
+              const container = document.getElementById("detail-content");
+              if (!ele || !container) {
+                loop();
+                return;
+              }
+              const top = ele?.offsetTop;
+              container.scrollTop = top;
+            }, 30);
+          };
+
+          loop();
         }
       }}
     >

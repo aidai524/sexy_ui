@@ -361,6 +361,11 @@
     cursor: pointer;
     flex: 1;
     font-family: 'Unbounded';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    white-space: nowrap;
 }
 
 .shareButtonActive {

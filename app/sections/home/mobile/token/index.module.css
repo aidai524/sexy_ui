@@ -12,12 +12,11 @@
 }
 
 .Desc {
-  width: 100vw;
-  background: linear-gradient(0deg, #000 50%, rgba(0, 0, 0, 0) 100%);
+  width: 100%;
 }
 
 .BottomBg {
-  width: 100%;
+  width: 100vw;
   height: 175px;
   background: linear-gradient(to top, #000, rgba(0, 0, 0, 0));
   position: absolute;

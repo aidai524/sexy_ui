@@ -21,7 +21,7 @@ export default function LikeToEarn({ token }: any) {
         onClick={() => {
           const genesisList = projectStore.getList("genesis");
           const _index = genesisList.findIndex((i: number) => i === token.id);
-          console.log(25, _index, genesisList, token.id);
+
           if (_index !== -1) {
             projectStore.setIndex("genesis", _index);
           } else {

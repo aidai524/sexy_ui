@@ -164,7 +164,7 @@ export default function List({
           {list?.map((item: number, i: number) => {
             let token = null;
 
-            if (Math.abs(i - index) < 20 && item) {
+            if (Math.abs(i - index) <= 10 && item) {
               token = getProjectById(item);
             }
 
@@ -179,7 +179,7 @@ export default function List({
                     updateProject(token);
                     return;
                   }
-                  if (action === "flip") {
+                  if (action && ["flip", "trade"].includes(action)) {
                     setTimeout(() => {
                       queryAndUpdateDetail(token.address);
                     }, 4000);

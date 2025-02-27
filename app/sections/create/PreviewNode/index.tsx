@@ -12,8 +12,10 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useUser } from "@/app/store/useUser";
 import { useUserAgent } from "@/app/context/user-agent";
 import StepAction from "../components/stepAction";
-import Token from "../../home/mobile/token";
+import MobileToken from "../../home/mobile/token";
+import LaptopToken from "../../home/laptop/token";
 import { head } from "lodash-es";
+import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 
 interface Props {
   show: boolean;
@@ -36,6 +38,7 @@ export default forwardRef(function PreviewNode(
   const { userInfo }: any = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const { innerHeight } = useUserAgent();
+  const tokenPanelStatusStore: any = useTokenPanelStatus();
 
   const submitFnRef = useRef<any | null>(null);
 
@@ -96,11 +99,53 @@ export default forwardRef(function PreviewNode(
     }
   }
 
-  console.log('isLoading:', isLoading)
+  const showAction = useMemo(() => {
+    if (step === 3 && isMobile) {
+      return true
+    }
+
+    if (step === 2 && !isMobile) {
+      return true
+    }
+
+    return false
+  }, [step, isMobile])
+
+  const ActionBtn = <>
+    {
+      (showAction) && <div className={styles.stepActionWrapper}><StepAction
+        step={step}
+        isLoading={isLoading}
+        btnText={step === 4 ? 'Get' : 'Continue'}
+        onBack={() => {
+          onBack();
+        }}
+        extendBtn={
+          step === 4 && <div className={styles.skipBtn} onClick={() => {
+            submit(0)
+          }}>Skip</div>
+        }
+        onNext={async () => {
+          if (step === 3 && isMobile) {
+            onNext();
+          }
+
+          if (step === 2 && !isMobile) {
+            onNext()
+          }
+
+          if (step === 4) {
+            submit(1)
+          }
+        }}
+      />
+      </div>
+    }
+  </>
 
   return (
     <div
-      className={styles.mainContent}
+      className={styles.mainContent + ' ' + (isMobile ? styles.mainContentMobile : styles.mainContentPc)}
       style={{
         display: show ? "block" : "none",
         paddingBottom: isMobile ? 80 : 0,
@@ -108,7 +153,44 @@ export default forwardRef(function PreviewNode(
       }}
     >
       {
-        step === 3 && <>
+        (step === 2 && !isMobile) && <div className={styles.previewPc}><div>
+          <LaptopToken
+            isCurrent={true}
+            style={{
+              // width: '100%',
+              // overflow: 'visible',
+              // position: 'relative',
+            }}
+            token={{
+              ...newData,
+              id: 'preview',
+              like: 0,
+              icon: newData.tokenIcon || '/img/default-token.png',
+              timeLeft: Date.now() + 1000 * 60 * 60 * 3
+            }}
+            showTrade={tokenPanelStatusStore.showTrade}
+            tradeTab={tokenPanelStatusStore.tab}
+            onUpdateTradeTab={tokenPanelStatusStore.setTab}
+            onOpenPanel={(panleType: string) => {
+              tokenPanelStatusStore.setShow(
+                panleType,
+                !tokenPanelStatusStore[panleType]
+              );
+            }}
+
+            isPreview={true}
+            isPreviewNoOpacity={true}
+            dataAvailable={true}
+          />
+          {
+            ActionBtn
+          }
+        </div>
+        </div>
+      }
+
+      {
+        ((step === 3 && isMobile)) && <>
           <div className={styles.previewTab}>
             <div
               className={`${styles.previewTabItem} ${activeTab === 'flow' ? styles.active : ''}`}
@@ -128,7 +210,7 @@ export default forwardRef(function PreviewNode(
               isMobile ? <MobileInfo newData={newData} /> : <LaptopInfo newData={newData} />
             ) : (
               <div style={{ zIndex: 1, position: 'relative', top: '-74px', height: '70vh' }}>
-                <Token
+                <MobileToken
                   isCurrent={true}
                   style={{
                     height: innerHeight - 100,
@@ -143,6 +225,7 @@ export default forwardRef(function PreviewNode(
                     timeLeft: Date.now() + 1000 * 60 * 60 * 3
                   }}
                   isPreview={true}
+                  isPreviewNoOpacity={true}
                   dataAvailable={true}
                 />
               </div>
@@ -152,7 +235,7 @@ export default forwardRef(function PreviewNode(
       }
 
       {
-        step === 4 && <Create
+        (step === 4 || (step === 3 && !isMobile)) && <Create
           token={{
             tokenName: data.tokenName,
             tokenSymbol: data.tokenSymbol,
@@ -193,28 +276,8 @@ export default forwardRef(function PreviewNode(
       }
 
       {
-        step !== 4 && <StepAction
-          step={step}
-          isLoading={isLoading}
-          btnText={step === 4 ? 'Get' : 'Continue'}
-          onBack={() => {
-            onBack();
-          }}
-          extendBtn={
-            step === 4 && <div className={styles.skipBtn} onClick={() => {
-              submit(0)
-            }}>Skip</div>
-          }
-          onNext={async () => {
-            if (step === 3) {
-              onNext();
-            } else {
-              submit(1)
-            }
-          }}
-        />
+        step === 3 && isMobile && ActionBtn
       }
-
 
     </div>
   );

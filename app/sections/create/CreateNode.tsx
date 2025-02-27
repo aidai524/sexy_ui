@@ -15,11 +15,13 @@ import ErrMsg from "./components/errMsg";
 import type { Project } from "@/app/type";
 import { httpGet, isValidURL } from "@/app/utils";
 import StepAction from "./components/stepAction";
+import Remove from "@/app/components/icons/remove";
 
 
 interface Props {
   onAddDataFill: (value: Project) => void;
   step: number;
+  show?: boolean;
   onNext: () => void;
   onBack: () => void;
 }
@@ -27,7 +29,7 @@ interface Props {
 const name_reg = /^[a-zA-Z0-9]{1,10}$/;
 
 export default forwardRef(function CreateNode(
-  { onAddDataFill, step, onNext, onBack }: Props,
+  { onAddDataFill, step, onNext, onBack, show }: Props,
   ref: any
 ) {
   const [tokenImg, setTokenImg] = useState<ImageUploadItem[]>([]);
@@ -51,6 +53,7 @@ export default forwardRef(function CreateNode(
   const [inValidVals, setInvaldVasl] = useState<any>({});
   const imgRef = useRef<any>(null);
   const [isImgUploaded, setIsImgUploaded] = useState(false);
+  const [originIcon, setOriginIcon] = useState<string>('');
 
   const [links, setLinks] = useState<any>({
     x: {
@@ -58,7 +61,7 @@ export default forwardRef(function CreateNode(
       value: x,
       type: "X",
       img: "/img/community/x.svg",
-      show: true,
+      show: isMobile,
       onChange: (val: string) => {
         setTwitter(val);
         setLinks({ ...links, x: { ...links.x, value: val } });
@@ -273,7 +276,10 @@ export default forwardRef(function CreateNode(
       }
 
       setInvaldVasl(inValidVals);
-      return isValid;
+
+      if (isMobile) {
+        return isValid;
+      }
     }
 
     const imagesError = validateImages(tokenImg);
@@ -329,6 +335,10 @@ export default forwardRef(function CreateNode(
       status: 0
     });
 
+    if (!isMobile) {
+      onNext();
+    }
+
     return isValid;
   }, [
     tokenName,
@@ -348,7 +358,8 @@ export default forwardRef(function CreateNode(
     validateWebsite,
     validateTelegram,
     validateTwitter,
-    validateDiscord
+    validateDiscord,
+    isMobile,
   ]);
 
   useImperativeHandle(
@@ -368,8 +379,159 @@ export default forwardRef(function CreateNode(
     }
   }, [tokenImg]);
 
+  const tokenImgComponent = <div className={styles.group}>
+    <div
+      className={
+        styles.groupContent +
+        " " +
+        styles.uploadContent +
+        " " +
+        (inValidVals["tokenImg"] ? styles.uploadError : "")
+      }
+    >
+      <div className={styles.uploadImgWrapper}>
+        <Upload
+          key={Date.now()}
+          ref={imgRef}
+          percent={-1}
+          type="token"
+          accept="image/*, video/mp4"
+          fileList={tokenImg}
+          setFileList={(fileList: any) => {
+            setTokenImg(fileList)
+            setIsImgUploaded(true)
+          }}
+        />
+        {
+          !isMobile && !isImgUploaded && <div onClick={() => {
+            imgRef.current?.open()
+          }}   className={styles.uploadIconPlus}>
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="15" cy="15" r="15" fill="#21252E" />
+              <path d="M8.72964 15.9921C8.18125 15.8932 8.18125 15.1068 8.72964 15.0079L13.7073 14.1106C13.9127 14.0736 14.0736 13.9127 14.1106 13.7073L15.0079 8.72964C15.1068 8.18125 15.8932 8.18125 15.9921 8.72964L16.8894 13.7073C16.9264 13.9127 17.0873 14.0736 17.2927 14.1106L22.2704 15.0079C22.8187 15.1068 22.8187 15.8932 22.2704 15.9921L17.2927 16.8894C17.0873 16.9264 16.9264 17.0873 16.8894 17.2927L15.9921 22.2704C15.8932 22.8187 15.1068 22.8187 15.0079 22.2704L14.1106 17.2927C14.0736 17.0873 13.9127 16.9264 13.7073 16.8894L8.72964 15.9921Z" fill="white" />
+            </svg>
+          </div>
+        }
+      </div>
+      <div className={styles.uploadImgWrapper}>
+        <div className={styles.uploadTitle}>Video or image</div>
+        <div className={styles.uploadTip}>Support MOV/mp4/jpg/png/gif, <br />up to 10 MB</div>
+        {
+          isMobile && <div className={styles.uploadAction} onClick={() => {
+            if (!isImgUploaded) {
+              imgRef.current?.open()
+            } else {
+              setTokenImg(tokenIcon)
+              setIsImgUploaded(false)
+            }
+          }}>
+            {
+              isImgUploaded
+                ? <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="15" cy="15" r="15" fill="#21252E" />
+                  <path d="M16.8728 9.37201H14.2728C14.0935 9.37201 13.9407 9.43613 13.8129 9.56642C13.6863 9.69671 13.6225 9.85417 13.6225 10.039V10.704H17.5227V10.039C17.5227 9.85417 17.4586 9.69671 17.3322 9.56642C17.2046 9.43613 17.0518 9.37201 16.872 9.37201H16.8728ZM19.4725 20.0372V12.0379H11.6723V20.0374C11.6723 20.2201 11.7362 20.3776 11.8628 20.5079C11.9904 20.6382 12.1434 20.7043 12.3228 20.7043H18.8225C19.0019 20.7043 19.1554 20.6382 19.2819 20.5079C19.4097 20.3776 19.4728 20.2201 19.4728 20.0373H19.4724L19.4725 20.0372ZM14.2725 8.03809H16.872C17.4103 8.03809 17.8701 8.2325 18.251 8.62329C18.6316 9.01417 18.8222 9.48475 18.8222 10.037V10.7039H21.422C21.6013 10.7039 21.7549 10.77 21.8814 10.8984C22.0089 11.0305 22.0723 11.1861 22.0723 11.3708C22.0723 11.5556 22.0089 11.7111 21.8814 11.8434C21.7549 11.9717 21.6014 12.0378 21.422 12.0378H20.772V20.0373C20.772 20.5895 20.5816 21.06 20.201 21.4508C19.8201 21.8417 19.3601 22.0381 18.8222 22.0381H12.3225C11.7841 22.0381 11.3246 21.8417 10.9437 21.4508C10.5628 21.06 10.3725 20.5895 10.3725 20.0373V12.0377H9.72254C9.54327 12.0377 9.39045 11.9716 9.26281 11.8433C9.13599 11.7111 9.07227 11.5555 9.07227 11.3708C9.07227 11.1861 9.1359 11.0306 9.26281 10.8984C9.39045 10.77 9.54327 10.7039 9.72254 10.7039H12.3225V10.037C12.3225 9.48475 12.5129 9.01417 12.8937 8.62338C13.2744 8.2325 13.7338 8.03809 14.2725 8.03809Z" fill="white" />
+                </svg>
+                :
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="15" cy="15" r="15" fill="#21252E" />
+                  <path d="M8.72964 15.9921C8.18125 15.8932 8.18125 15.1068 8.72964 15.0079L13.7073 14.1106C13.9127 14.0736 14.0736 13.9127 14.1106 13.7073L15.0079 8.72964C15.1068 8.18125 15.8932 8.18125 15.9921 8.72964L16.8894 13.7073C16.9264 13.9127 17.0873 14.0736 17.2927 14.1106L22.2704 15.0079C22.8187 15.1068 22.8187 15.8932 22.2704 15.9921L17.2927 16.8894C17.0873 16.9264 16.9264 17.0873 16.8894 17.2927L15.9921 22.2704C15.8932 22.8187 15.1068 22.8187 15.0079 22.2704L14.1106 17.2927C14.0736 17.0873 13.9127 16.9264 13.7073 16.8894L8.72964 15.9921Z" fill="white" />
+                </svg>
+            }
+          </div>
+        }
+      </div>
+
+      {
+        !isMobile && tokenImg.length > 0 && tokenImg[0].url && isImgUploaded && <div className={styles.removeIcon} onClick={() => {
+          setIsImgUploaded(false)
+          setTokenImg([{
+            url: originIcon,
+          }])
+        }}>
+          <Remove />
+        </div>
+      }
+
+    </div>
+    {inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>}
+  </div>
+
+  const linkComponent = <div className={styles.group}>
+    <div
+      className={styles.Flex}
+      style={{
+        columnGap: isMobile ? 0 : 20
+      }}
+    >
+      {
+        Object.keys(links).map((key: any) => {
+          if (links[key].show) {
+            return <div
+              className={isMobile ? styles.groupContent : styles.LinkPc}
+              style={{
+                width: "100%"
+              }}
+              key={key}
+            >
+              <Link
+                value={links[key].value}
+                onChange={(val) => {
+                  links[key].onChange(val);
+                }}
+                onBlur={() => {
+                  links[key].onBlur();
+                }}
+                onDelete={() => {
+                  links[key].onChange('');
+                  links[key].show = false;
+                  setLinks({ ...links });
+                }}
+                type={links[key].type}
+                img={links[key].img}
+                isLink={links[key].isLink}
+                hideDelete={isMobile ? key === "x" : false}
+              />
+
+              {inValidVals[key] && <ErrMsg>{inValidVals[key]}</ErrMsg>}
+            </div>
+          }
+        })
+      }
+    </div>
+
+    {
+      Object.keys(links).some((key: any) => !links[key].show) && (
+        <div className={styles.linkActionGroup}>
+          <div>
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4.16 9.816V0.856H5.76V9.816H4.16ZM0.48 6.136V4.536H9.44V6.136H0.48Z" fill="#9290B1" />
+            </svg>
+          </div>
+
+          {
+            Object.keys(links).map((key: any) => {
+              if (!links[key].show) {
+                return <div className={styles.linkActionItem} key={key} onClick={() => {
+                  links[key].show = true;
+                  setLinks({ ...links });
+                }}>
+                  <img src={links[key].img} alt={links[key].type} />
+                </div>
+              }
+            })
+          }
+        </div>
+      )
+    }
+  </div>
+
+  if (!show) {
+    return null;
+  }
+
   return (
     <div
+      className={isMobile ? styles.Container : styles.ContainerPc}
       style={{
         display: step <= 2 ? "block" : "none",
         paddingBottom: isMobile ? 150 : 20
@@ -389,29 +551,49 @@ export default forwardRef(function CreateNode(
             <Upload
               percent={1}
               type="avatar"
+              key={tokenIcon.length ? tokenIcon[0].url : 1}
               cropper={true}
               accept="image/png, image/jpg, image/jpeg, image/svg"
               fileList={tokenIcon}
               setFileList={(fileList: any) => {
                 setTokenIcon(fileList)
+                setOriginIcon(fileList[0].originUrl)
                 if (!isImgUploaded) {
                   setTokenImg([
                     {
                       url: fileList[0].originUrl,
-                    } 
+                    }
                   ])
                 }
               }}
             />
             <div>
-              <div className={styles.uploadTitle}>Token icon</div>
+              <div className={styles.uploadTitle}><span className={styles.require}>* </span> Token icon</div>
               <div className={styles.uploadTip}>Support jpg/png/svg/gif</div>
             </div>
+
+            {
+              !isMobile && tokenIcon.length > 0 && tokenIcon[0].url && <div className={styles.removeIcon} onClick={() => {
+                setTokenIcon([{
+                  url: "",
+                }])
+                setOriginIcon('')
+                if (!isImgUploaded) {
+                  setTokenImg([{
+                    url: "",
+                  }])
+                }
+              }}>
+                <Remove />
+              </div>
+            }
           </div>
           {inValidVals["tokenIcon"] && (
             <ErrMsg>{inValidVals["tokenIcon"]}</ErrMsg>
           )}
         </div>
+
+        {!isMobile && tokenImg.length > 0 && tokenImg[0].url && tokenImgComponent}
 
         <div
           className={styles.group}
@@ -419,7 +601,7 @@ export default forwardRef(function CreateNode(
             width: isMobile ? "100%" : "calc(50% - 10px)"
           }}
         >
-          <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <div className={styles.groupTitle}>
             <div>
               <span className={styles.require}>* </span>
               Name
@@ -461,7 +643,7 @@ export default forwardRef(function CreateNode(
             width: isMobile ? "100%" : "calc(50% - 10px)"
           }}
         >
-          <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
+          <div className={styles.groupTitle}>
             <div>
               <span className={styles.require}>* </span>
               Ticker
@@ -496,9 +678,10 @@ export default forwardRef(function CreateNode(
         </div>
 
         <div className={styles.group}>
-          <div className={isMobile ? styles.groupTitle : styles.TitlePc}>
-            <div>
-              Discription
+          <div className={styles.groupTitle}>
+            <div className={styles.linkTitle}>
+              <div>Discription</div>
+              <div className={styles.linkOptional}>Optional</div>
             </div>
             <div className={styles.requireSize}>{aboutLength}</div>
           </div>
@@ -526,129 +709,23 @@ export default forwardRef(function CreateNode(
           </div>
           {inValidVals["about"] && <ErrMsg>{inValidVals["about"]}</ErrMsg>}
         </div>
+
+        {!isMobile && <>
+          <div className={styles.groupTitle}>
+            <div className={styles.linkTitle}>
+              <div>Linked infor / community</div>
+              <div className={styles.linkOptional}>Optional</div>
+            </div>
+
+          </div>
+          {linkComponent}
+        </>}
       </>}
 
       {
-        step === 2 && <>
-          <div className={styles.group}>
-            <div
-              className={
-                styles.groupContent +
-                " " +
-                styles.uploadContent +
-                " " +
-                (inValidVals["tokenImg"] ? styles.uploadError : "")
-              }
-            >
-              <Upload
-                key={Date.now()}
-                ref={imgRef}
-                percent={-1}
-                type="token"
-                accept="image/*, video/mp4"
-                fileList={tokenImg}
-                setFileList={(fileList: any) => {
-                  setTokenImg(fileList)
-                  setIsImgUploaded(true)
-                }}
-              />
-              <div className={styles.uploadImgWrapper}>
-                <div className={styles.uploadTitle}>Video or image</div>
-                <div className={styles.uploadTip}>Support MOV/mp4/jpg/png/gif, <br />up to 10 MB</div>
-                <div className={styles.uploadAction} onClick={() => {
-                  if (!isImgUploaded) {
-                    imgRef.current?.open()
-                  } else {
-                    setTokenImg(tokenIcon)
-                    setIsImgUploaded(false)
-                  }
-                }}>
-                  {
-                    isImgUploaded
-                      ? <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="15" cy="15" r="15" fill="#21252E" />
-                        <path d="M16.8728 9.37201H14.2728C14.0935 9.37201 13.9407 9.43613 13.8129 9.56642C13.6863 9.69671 13.6225 9.85417 13.6225 10.039V10.704H17.5227V10.039C17.5227 9.85417 17.4586 9.69671 17.3322 9.56642C17.2046 9.43613 17.0518 9.37201 16.872 9.37201H16.8728ZM19.4725 20.0372V12.0379H11.6723V20.0374C11.6723 20.2201 11.7362 20.3776 11.8628 20.5079C11.9904 20.6382 12.1434 20.7043 12.3228 20.7043H18.8225C19.0019 20.7043 19.1554 20.6382 19.2819 20.5079C19.4097 20.3776 19.4728 20.2201 19.4728 20.0373H19.4724L19.4725 20.0372ZM14.2725 8.03809H16.872C17.4103 8.03809 17.8701 8.2325 18.251 8.62329C18.6316 9.01417 18.8222 9.48475 18.8222 10.037V10.7039H21.422C21.6013 10.7039 21.7549 10.77 21.8814 10.8984C22.0089 11.0305 22.0723 11.1861 22.0723 11.3708C22.0723 11.5556 22.0089 11.7111 21.8814 11.8434C21.7549 11.9717 21.6014 12.0378 21.422 12.0378H20.772V20.0373C20.772 20.5895 20.5816 21.06 20.201 21.4508C19.8201 21.8417 19.3601 22.0381 18.8222 22.0381H12.3225C11.7841 22.0381 11.3246 21.8417 10.9437 21.4508C10.5628 21.06 10.3725 20.5895 10.3725 20.0373V12.0377H9.72254C9.54327 12.0377 9.39045 11.9716 9.26281 11.8433C9.13599 11.7111 9.07227 11.5555 9.07227 11.3708C9.07227 11.1861 9.1359 11.0306 9.26281 10.8984C9.39045 10.77 9.54327 10.7039 9.72254 10.7039H12.3225V10.037C12.3225 9.48475 12.5129 9.01417 12.8937 8.62338C13.2744 8.2325 13.7338 8.03809 14.2725 8.03809Z" fill="white" />
-                      </svg>
-                      :
-                      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="15" cy="15" r="15" fill="#21252E" />
-                        <path d="M8.72964 15.9921C8.18125 15.8932 8.18125 15.1068 8.72964 15.0079L13.7073 14.1106C13.9127 14.0736 14.0736 13.9127 14.1106 13.7073L15.0079 8.72964C15.1068 8.18125 15.8932 8.18125 15.9921 8.72964L16.8894 13.7073C16.9264 13.9127 17.0873 14.0736 17.2927 14.1106L22.2704 15.0079C22.8187 15.1068 22.8187 15.8932 22.2704 15.9921L17.2927 16.8894C17.0873 16.9264 16.9264 17.0873 16.8894 17.2927L15.9921 22.2704C15.8932 22.8187 15.1068 22.8187 15.0079 22.2704L14.1106 17.2927C14.0736 17.0873 13.9127 16.9264 13.7073 16.8894L8.72964 15.9921Z" fill="white" />
-                      </svg>
-                  }
-                </div>
-              </div>
-            </div>
-            {inValidVals["tokenImg"] && <ErrMsg>{inValidVals["tokenImg"]}</ErrMsg>}
-          </div>
-
-          <div className={styles.group}>
-            <div
-              className={styles.Flex}
-              style={{
-                columnGap: isMobile ? 0 : 20
-              }}
-            >
-              {
-                Object.keys(links).map((key: any) => {
-                  if (links[key].show) {
-                    return <div
-                      className={isMobile ? styles.groupContent : styles.LinkPc}
-                      style={{
-                        width: "100%"
-                      }}
-                      key={key}
-                    >
-                      <Link
-                        value={links[key].value}
-                        onChange={(val) => {
-                          links[key].onChange(val);
-                        }}
-                        onBlur={() => {
-                          links[key].onBlur();
-                        }}
-                        onDelete={() => {
-                          links[key].onChange('');
-                          links[key].show = false;
-                          setLinks({ ...links });
-                        }}
-                        type={links[key].type}
-                        img={links[key].img}
-                        isLink={links[key].isLink}
-                        hideDelete={key === "x"}
-                      />
-
-                      {inValidVals[key] && <ErrMsg>{inValidVals[key]}</ErrMsg>}
-                    </div>
-                  }
-                })
-              }
-            </div>
-
-            {
-              Object.keys(links).some((key: any) => !links[key].show) && (
-                <div className={styles.linkActionGroup}>
-                  <div>
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4.16 9.816V0.856H5.76V9.816H4.16ZM0.48 6.136V4.536H9.44V6.136H0.48Z" fill="#9290B1" />
-                    </svg>
-                  </div>
-
-                  {
-                    Object.keys(links).map((key: any) => {
-                      if (!links[key].show) {
-                        return <div className={styles.linkActionItem} key={key} onClick={() => {
-                          links[key].show = true;
-                          setLinks({ ...links });
-                        }}>
-                          <img src={links[key].img} alt={links[key].type} />
-                        </div>
-                      }
-                    })
-                  }
-                </div>
-              )
-            }
-          </div>
+        step === 2 && isMobile && <>
+          {tokenImgComponent}
+          {linkComponent}
         </>
       }
 

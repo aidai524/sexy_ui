@@ -10,6 +10,7 @@ interface Props {
   from?: string;
   show?: boolean;
   onClose?: () => void;
+  onSuccess?: () => void;
 }
 
 export default function Trade({
@@ -17,7 +18,8 @@ export default function Trade({
   initType = "buy",
   from,
   show,
-  onClose
+  onClose,
+  onSuccess
 }: Props) {
   return (
     <div className={styles.main}>
@@ -30,6 +32,7 @@ export default function Trade({
           onClose={() => {
             onClose && onClose();
           }}
+          onSuccess={onSuccess}
         />
       )}
       {token.status === 1 && token.DApp === "sexy" && (
@@ -41,6 +44,7 @@ export default function Trade({
           onClose={() => {
             onClose && onClose();
           }}
+          onSuccess={onSuccess}
         />
       )}
       {token.status === 3 && (
@@ -52,6 +56,7 @@ export default function Trade({
           onClose={() => {
             onClose && onClose();
           }}
+          onSuccess={onSuccess}
         />
       )}
     </div>

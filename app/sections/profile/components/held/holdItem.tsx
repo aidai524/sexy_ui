@@ -6,15 +6,16 @@ import { numberFormatter } from "@/app/utils/common";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+const netParam = process.env.NEXT_PUBLIC_NET === 'Mainnet' ? '' : '?cluster=devnet'
 export default function HoldItem(props: any) {
     const { item, from, tokenInfo, tokenPrice } = props;
     const router = useRouter();
     const [icon, setIcon] = useState('');
 
     useEffect(() => {
-        const type = checkFileType(tokenInfo[item.token_address].token_icon);
+        const type = checkFileType(item.token_icon);
         if (type === 'image') {
-            setIcon(tokenInfo[item.token_address].token_icon);
+            setIcon(item.token_icon);
         } else {
             httpGet("/project", { address: item.token_address }).then((res) => {
                 if (res.code === 0 && res.data && res.data.length) {
@@ -39,7 +40,7 @@ export default function HoldItem(props: any) {
         <div className={styles.tokenMsg}>
             <Media
                 data={{
-                    tokenImg: icon || tokenInfo[item.token_address].token_icon
+                    tokenImg: icon || item.token_icon
                 }}
                 imgHeight={46}
                 autoPlay={false}
@@ -51,7 +52,9 @@ export default function HoldItem(props: any) {
                     objectPosition: "center"
                 }}
                 style={{
-                    overflow: "hidden"
+                    overflow: "hidden",
+                    width: 46,
+                    height: 46,
                 }}
                 videoStyle={{
                     height: "100%",
@@ -60,14 +63,14 @@ export default function HoldItem(props: any) {
             />
             <div className={styles.tokenNames}>
                 <div className={styles.name}>
-                    {tokenInfo[item.token_address].token_name}
+                    {item.token_name}
                 </div>
                 <div
                     className={styles.viewCoin}
                     onClick={(e) => {
                         e.stopPropagation()
                         window.open(
-                            "https://solscan.io/account/" + item.token_account
+                            'https://solscan.io/account/' + item.token_account + netParam
                         );
                     }}
                 >
@@ -91,7 +94,7 @@ export default function HoldItem(props: any) {
         <div className={styles.tokenValue}>
             <div className={styles.tokenAmount}>
                 {simplifyNum(
-                    new Big(item.amount)
+                    new Big(item.token_balance)
                         .div(10 ** item.token_decimals)
                         .toNumber(),
                     2
@@ -101,7 +104,7 @@ export default function HoldItem(props: any) {
                 {tokenPrice[item.token_address]
                     ? numberFormatter(
                         Big(tokenPrice[item.token_address]).times(
-                            Big(item.amount).div(10 ** item.token_decimals)
+                            Big(item.token_balance).div(10 ** item.token_decimals)
                         ),
                         4,
                         true

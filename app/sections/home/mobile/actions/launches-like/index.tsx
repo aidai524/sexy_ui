@@ -5,35 +5,46 @@ import { useEffect, useState } from "react";
 export default function LaunchesLike({
   className,
   buttonClassName,
-  onClick,
-  isLiked,
-  like,
-  disabled
+  onSuccess,
+  disabled,
+  actionLikeTrigger,
+  token
 }: any) {
   const [showAnimation, setShowAnimation] = useState(false);
-  const [mergedLiked, setMergedLiked] = useState(isLiked);
-  const [mergedNum, setMergedNum] = useState(like);
+  const [mergedLiked, setMergedLiked] = useState(token.is_launched_like);
+  const [mergedNum, setMergedNum] = useState(token.launched_like);
 
   useEffect(() => {
-    setMergedLiked(isLiked);
-    setMergedNum(like);
-  }, [isLiked, like]);
+    setMergedLiked(token.is_launched_like);
+    setMergedNum(token.launched_like);
+  }, [token]);
 
   return (
     <div
       className={className}
-      onClick={() => {
+      onClick={async () => {
         if (mergedLiked || disabled) return;
         if (!window.sexAddress) {
           window.connect();
           return;
         }
         setShowAnimation(true);
-        setMergedLiked(true);
-        setMergedNum(mergedNum + 1);
-        setTimeout(() => {
-          onClick();
-        }, 6000);
+        const res = await actionLikeTrigger({
+          data: token,
+          onShare: false
+        });
+        if (res) {
+          setMergedLiked(true);
+          setMergedNum(mergedNum + 1);
+          setTimeout(() => {
+            onSuccess("launched_like");
+            setShowAnimation(false);
+          }, 6000);
+        } else {
+          setTimeout(() => {
+            setShowAnimation(false);
+          }, 6000);
+        }
       }}
       style={{ position: "relative" }}
     >
