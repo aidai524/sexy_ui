@@ -350,7 +350,7 @@ export default function BuySellLaunched({
                 <div className={styles.balanceNum}>
                   {" "}
                   {tokenType === 0
-                    ? numberFormatter(tokenBalance, 2, true)
+                    ? numberFormatter(tokenBalance, 2, true) + " " + tokenSymbol
                     : numberFormatter(solBalance, 2, true) + " SOL"}
                 </div>
               </div>
