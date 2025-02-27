@@ -3,13 +3,15 @@ import styles from "./detail.module.css";
 import TokenTags from "@/app/components/tokenTags";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatAddress, formatDateEn, simplifyNum, timeAgo } from "@/app/utils";
 import useMc from "@/app/hooks/useMc";
 import Holder from "@/app/components/holder";
 import { ProgressBar } from "antd-mobile";
 import { useTrendsStore } from "@/app/store/useTrends";
 import { defaultAvatar } from "@/app/utils/config";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 
 export default function Desc({
     data,
@@ -29,6 +31,8 @@ export default function Desc({
     holdersId?: string;
 }) {
     const { address } = useAccount();
+    const { connection } = useConnection();
+    const [holders, setHolders] = useState(0);
     const router = useRouter();
     const userName = useMemo(() => {
         if (data?.creater) {
@@ -53,6 +57,20 @@ export default function Desc({
     });
 
     const { top1 } = useTrendsStore();
+
+    useEffect(() => {
+        (async () => {
+            if (connection && data) {
+                const tokenAccounts = await connection.getTokenLargestAccounts(
+                    new PublicKey(data.address as string),
+                    "confirmed"
+                );
+
+                // console.log('tokenAccounts', tokenAccounts);
+                setHolders(tokenAccounts.value.length);
+            }
+        })()
+    }, [connection, data]);
 
     return (
         <div className={styles.detailAvatar}>
@@ -92,7 +110,7 @@ export default function Desc({
                         >
                             24h Volume
                         </div>
-                        <div className={styles.statsValue}>${"36.6K"}</div>
+                        <div className={styles.statsValue}>${simplifyNum(Number(data.volume24hUsd), 2)}</div>
                     </div>
                     <div className={styles.statsItem}>
                         <div
@@ -103,7 +121,7 @@ export default function Desc({
                         >
                             Holders
                         </div>
-                        <div className={styles.statsValue}>{"125"}</div>
+                        <div className={styles.statsValue}>{holders}</div>
                     </div>
                     <div className={styles.statsItem}>
                         <div
@@ -114,7 +132,7 @@ export default function Desc({
                         >
                             Txns
                         </div>
-                        <div className={styles.statsValue}>{"2,512"}</div>
+                        <div className={styles.statsValue}>{data.tx}</div>
                     </div>
                     <div className={styles.statsItem + " " + styles.statsItemBuy}>
                         <div
@@ -125,22 +143,24 @@ export default function Desc({
                         >
                             <div>
                                 <div>Buys</div>
-                                <div className={styles.tradeAmount}>$888</div>
+                                <div className={styles.tradeAmount}>${simplifyNum(Number(data.buys24hUsd), 2)}</div>
                             </div>
                             <div>
                                 <div>Sells</div>
-                                <div className={styles.tradeAmount}>$888</div>
+                                <div className={styles.tradeAmount}>${simplifyNum(Number(data.sells24hUsd), 2)}</div>
                             </div>
                         </div>
-                        <div className={styles.statsValue}>
-                            <div className={styles.tradeChart}>
-                                <div className={styles.buyChart} style={{ width: "60%" }}></div>
+                        {
+                            Number(data.volume24hUsd) > 0 && <div className={styles.statsValue}>
+                                <div className={styles.tradeChart}>
+                                <div className={styles.buyChart} style={{ width: (Number(data.buys24hUsd) / (Number(data.volume24hUsd))) * 100 + "%"    }}></div>
                                 <div
                                     className={styles.sellChart}
-                                    style={{ width: "40%" }}
+                                    style={{ width: (Number(data.sells24hUsd) / (Number(data.volume24hUsd))) * 100 + "%" }}
                                 ></div>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             )}
