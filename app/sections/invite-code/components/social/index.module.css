@@ -1,0 +1,13 @@
+.SocialContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 29px;
+  position: fixed;
+  bottom: 15px;
+  width: 100%;
+}
+.SocialItem {}
+.SocialItemIcon {
+  height: 20px;
+}
