@@ -26,9 +26,7 @@ import { fecthUserInfo } from '@/app/utils/getUserInfo';
 import TopTraderDetailShareConfirm from '@/app/sections/smart/components/topTraderDetailShareConfirm';
 import { useAccount } from '@/app/hooks/useAccount';
 import { useCopyTradeRefresh } from '@/app/store/useCopyTradeRefresh';
-import { Suspense } from "react";
 import Loading from "@/app/loading";
-
 interface SatelliteNode {
   id: string;
   name: string;
@@ -172,6 +170,18 @@ export default function TopTraderDetailM() {
   if (isLoading) {
     return <Loading />;
   }
+
+  if(copyTradersUserInfo && !copyTradersUserInfo.isTopTrader) {
+    return (
+      <div className={styles.notTopTraderContainer}>
+        <span>You are not a top trader!</span>
+        <div className={styles.notTopTraderBack} onClick={() => router.push('/')}>
+          <div className={styles.notTopTraderBackBtn}>Go Back</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
       <div className={styles.container}>
         {/*  */}
