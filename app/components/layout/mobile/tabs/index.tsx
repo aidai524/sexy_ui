@@ -15,7 +15,7 @@ export default function Tabs() {
   let canClaim =
   new Big(copyTradeUserInfo?.carryFee || "0").minus(
     new Big(copyTradeUserInfo?.claimed || "0")
-  ).div(10 ** 9).toNumber();
+  ).toNumber();
   useEffect(() => {
     if (sexAddress) {
       copyTradeService

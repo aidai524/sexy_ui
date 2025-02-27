@@ -19,7 +19,7 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
   let canClaim =
     new Big(copyTradersUserInfo?.carryFee || "0").minus(
       new Big(copyTradersUserInfo?.claimed || "0")
-    ).div(10 ** 9).toNumber();
+    ).toNumber();
 
   const claimProfit = async () => {
     if (!walletAddress) {
