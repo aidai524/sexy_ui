@@ -8,9 +8,9 @@ export default function Details({ token }: any) {
   const mc = useMcWithPump(token);
   return (
     <div className={styles.Container}>
-      <Summary data={token} showAddress={true} from="panel" />
+      <Summary data={token} showAddress={!!token.address} from="panel" />
       {token.status === 0 && (
-        <PrelaunchStatus data={token} showAddress={true} />
+        <PrelaunchStatus data={token} showAddress={!!token.address} />
       )}
       <Info mc={mc} data={token} from="panel" />
     </div>

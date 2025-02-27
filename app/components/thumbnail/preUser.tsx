@@ -36,7 +36,7 @@ export default function PreUser({ token, from }: Props) {
     >
       {from !== "panel" && <div className={styles.title}>Founders</div>}
       <UserItem item={token.creater} type={1} />
-      {superLikeList.map((item: any) => {
+      {superLikeList?.map((item: any) => {
         return <UserItem key={"super-like-" + item.id} item={item} type={3} />;
       })}
       {likeList.map((item: any) => {
@@ -49,6 +49,10 @@ export default function PreUser({ token, from }: Props) {
 function UserItem({ item, type }: any) {
   const router = useRouter();
 
+  if (!item) {
+    return null
+  }
+  
   return (
     <div className={styles.userItem}>
       <div

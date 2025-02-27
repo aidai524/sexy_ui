@@ -8,6 +8,7 @@ import CircleLoading from "../icons/loading";
 import UploadBox from "./upload-box";
 import { fail } from "@/app/utils/toast";
 import ImgCopper from "./img-copper";
+import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   fileList: ImageUploadItem[];
@@ -53,6 +54,7 @@ export function Upload({
   const [isUplaod, setIsUpload] = useState(false);
   const [fileList, setFileList] = useState<any>(defaultFileList || []);
   const input = useRef<ImageUploaderRef>(null);
+  const { isMobile } = useUserAgent();
 
   const uploadImg = useCallback(
     async (file: File) => {
@@ -72,7 +74,7 @@ export function Upload({
 
       let _file: any = file;
       if (cropper && (imgReg.test(file.name) && !svgReg.test(file.name) && !gifReg.test(file.name))) {
-        const blob = await ImgCopper({ file });
+        const blob = await ImgCopper({ file, isMobile });
         if (!blob) {
           return {
             url: ""
