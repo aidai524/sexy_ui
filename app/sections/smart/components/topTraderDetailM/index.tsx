@@ -319,13 +319,13 @@ export default function TopTraderDetailM() {
            <div className={styles.gridItem}>
               <div className={styles.label}>Copy Traders</div>
               <div className={styles.amount}>
-                {smartMoniesInfo?.copiers?.length || 0}
+                <strong>{smartMoniesInfo?.copiers?.length || 0}</strong>
               </div>
             </div>
             <div className={styles.gridItem}>
               <div className={styles.label}>Copiers Pnl</div>
               <div className={styles.amount}>
-                {formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")}
+                <strong>{formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")}</strong>
                 <span className={styles.unit}>&nbsp;SOL</span>
               </div>
             </div>
