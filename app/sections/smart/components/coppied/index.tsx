@@ -89,7 +89,6 @@ export default function Coppied({ isOther }: any) {
 
   const pollCopyTradeStatus = useCallback(async (id: string) => {
     if (!userInfo?.address) {
-      // Clear polling if no address
       setPollingIds(new Set());
       return;
     }
@@ -102,14 +101,12 @@ export default function Coppied({ isOther }: any) {
       });
       
       if (res?.data?.state !== 5) {
-        // Stop polling
         setPollingIds(prev => {
           const next = new Set(prev);
           next.delete(id);
           return next;
         });
         
-        // Update list data with more clear logic
         setCopyTradeMap((prev: any) => ({
           ...prev,
           items: prev.items.map((item: any) => {
@@ -120,7 +117,6 @@ export default function Coppied({ isOther }: any) {
       }
     } catch (error) {
       console.error('Poll status error:', error);
-      // Remove failed polling ID
       setPollingIds(prev => {
         const next = new Set(prev);
         next.delete(id);
@@ -129,30 +125,29 @@ export default function Coppied({ isOther }: any) {
     }
   }, [CopyTradeService, userInfo]);
 
+  // Initialize polling IDs when items change
   useEffect(() => {
-    // Clear existing polling when items change
-    setPollingIds(prev => {
-      const next = new Set<string>();
-      copyTradeMap.items.forEach((item: any) => {
-        if (item.state === 5) {
-          next.add(item.id);
-        }
-      });
-      return next;
+    const newPollingIds = new Set<string>();
+    copyTradeMap.items.forEach((item: any) => {
+      if (item.state === 5) {
+        newPollingIds.add(item.id);
+      }
     });
+    setPollingIds(newPollingIds);
+  }, [copyTradeMap.items]);
+
+  // Handle polling separately
+  useEffect(() => {
+    if (pollingIds.size === 0) return;
 
     const interval = setInterval(() => {
-      setPollingIds(prev => {
-        if (prev.size === 0) return prev;
-        prev.forEach(id => {
-          pollCopyTradeStatus(id);
-        });
-        return prev;
+      pollingIds.forEach(id => {
+        pollCopyTradeStatus(id);
       });
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [copyTradeMap.items, pollCopyTradeStatus]);
+  }, [pollingIds, pollCopyTradeStatus]);
 
 
 
