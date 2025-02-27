@@ -20,6 +20,7 @@ import { numberFormatter, numberFormatterNew } from '@/app/utils/common';
 import CopyTradeShare from '@/app/sections/smart/components/CopyTraderShare/modal';
 import { useAccount } from "@/app/hooks/useAccount";
 import Big from 'big.js';
+import Loading from "@/app/loading";
 
 export default function SmartDetailM() {
   const { userInfo } = useUser();
@@ -38,6 +39,7 @@ export default function SmartDetailM() {
   const [copyTradersUserInfo, setCopyTradersUserInfo] =
     useState<CopyTraderAddress | null>(null);
   const [shareVisible, setShareVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const reqAddress = isOther ? address : currentAddress;
   const getSmartMoniesInfo = async () => {
     if (reqAddress) {
@@ -51,19 +53,27 @@ export default function SmartDetailM() {
   };
   const getCopyTradersUserInfo = async () => {
     if (reqAddress) {
-      const { data } = await CopyTradeService.getCopyTradersUserInfo({
-        address: reqAddress,
-        chain: "solana"
+      try {
+        const { data } = await CopyTradeService.getCopyTradersUserInfo({
+          address: reqAddress,
+          chain: "solana"
       });
       setCopyTradersUserInfo(data);
       console.log(data, "copyTradersUserInfo");
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
   useEffect(() => {
+    setIsLoading(true);
     getSmartMoniesInfo();
     getCopyTradersUserInfo();
   }, [reqAddress]);
 
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className={styles.container}>

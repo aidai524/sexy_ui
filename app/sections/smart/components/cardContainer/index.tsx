@@ -46,8 +46,8 @@ export default function CardContainer() {
     </div>;
   }
 
-  const isTopTrader = copyTradersUserInfo?.isTopTrader;
-  // const isTopTrader = true;
+  // const isTopTrader = copyTradersUserInfo?.isTopTrader;
+  const isTopTrader = true;
   const isCopyier = copyTradersUserInfo && +copyTradersUserInfo?.tradeInfo?.totalInvestment > 0;
 
   // if (!walletAddress) {
@@ -55,7 +55,7 @@ export default function CardContainer() {
   // }
   
   return (
-    <div className={isMobile ? styles.container : styles.containerPC + ' ' + (isTopTrader ? styles.topTraderContainer : styles.copyTradeContainer)}>
+    <div className={(isMobile ? styles.container : styles.containerPC) + ' ' + (isTopTrader ? styles.topTraderContainer : styles.copyTradeContainer)}>
        {
         isTopTrader ? (
           <>

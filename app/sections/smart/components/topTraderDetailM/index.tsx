@@ -53,7 +53,7 @@ export default function TopTraderDetailM() {
     const [copierImages, setCopierImages] = useState<string[]>([]);
     const [showShareModal, setShowShareModal] = useState(false);
     const [satelliteNodes, setSatelliteNodes] = useState<SatelliteNode[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     
     const getUserInfoWithCache = useMemo(() => {
       const cache = new Map<string, any>();
