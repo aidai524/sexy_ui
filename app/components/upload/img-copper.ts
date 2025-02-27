@@ -3,7 +3,7 @@ import Croppie from "croppie";
 
 const orientationMap = [1, 7, 3, 5]
 
-export default async function ImgCopper({ file }: { file: File }) {
+export default async function ImgCopper({ file, isMobile }: { file: File, isMobile: boolean }) {
   return new Promise(async (resolve, reject) => {
     const url = await new Promise<string | void>((resolve) => {
       const reader = new FileReader();
@@ -15,14 +15,6 @@ export default async function ImgCopper({ file }: { file: File }) {
       reader.readAsDataURL(file);
     });
     if (!url) return;
-
-    // const img = new Image();
-    // await new Promise<[number, number]>(
-    //   (resolve) => {
-    //     img.onload = () => resolve([img.naturalWidth, img.naturalHeight]);
-    //     img.src = url;
-    //   }
-    // );
 
     const cropperContainer = document.createElement('div');
     cropperContainer.className = 'cropper-flip-container';
@@ -49,10 +41,10 @@ export default async function ImgCopper({ file }: { file: File }) {
     rotateBtn.onclick = () => {
       const { orientation } = cropper.get()
       setTimeout(() => {
-        const nextOrientation = orientationMap[(orientationMap.indexOf(orientation) + 1) % orientationMap.length] 
-        cropper.bind({ 
-          url: url, 
-          orientation: nextOrientation, 
+        const nextOrientation = orientationMap[(orientationMap.indexOf(orientation) + 1) % orientationMap.length]
+        cropper.bind({
+          url: url,
+          orientation: nextOrientation,
           // zoom: 0 
         });
       }, 200);
@@ -80,7 +72,7 @@ export default async function ImgCopper({ file }: { file: File }) {
 
     const cropper = new Croppie(cropperContainer, {
       viewport: { width: 250, height: 250, type: "circle" },
-      boundary: { width: window.innerWidth, height: 400 },
+      boundary: { width: isMobile ? window.innerWidth : 400, height: 400 },
       showZoomer: true,
       enableOrientation: true,
       enableResize: false,

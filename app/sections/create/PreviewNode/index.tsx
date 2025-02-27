@@ -12,8 +12,10 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useUser } from "@/app/store/useUser";
 import { useUserAgent } from "@/app/context/user-agent";
 import StepAction from "../components/stepAction";
-import Token from "../../home/mobile/token";
+import MobileToken from "../../home/mobile/token";
+import LaptopToken from "../../home/laptop/token";
 import { head } from "lodash-es";
+import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 
 interface Props {
   show: boolean;
@@ -36,6 +38,7 @@ export default forwardRef(function PreviewNode(
   const { userInfo }: any = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const { innerHeight } = useUserAgent();
+  const tokenPanelStatusStore: any = useTokenPanelStatus();
 
   const submitFnRef = useRef<any | null>(null);
 
@@ -96,7 +99,7 @@ export default forwardRef(function PreviewNode(
     }
   }
 
-  const showAction = useMemo(() => {  
+  const showAction = useMemo(() => {
     if (step === 3 && isMobile) {
       return true
     }
@@ -108,7 +111,37 @@ export default forwardRef(function PreviewNode(
     return false
   }, [step, isMobile])
 
-  console.log('step111:', showAction)
+  const ActionBtn = <>
+    {
+      (showAction) && <div className={styles.stepActionWrapper}><StepAction
+        step={step}
+        isLoading={isLoading}
+        btnText={step === 4 ? 'Get' : 'Continue'}
+        onBack={() => {
+          onBack();
+        }}
+        extendBtn={
+          step === 4 && <div className={styles.skipBtn} onClick={() => {
+            submit(0)
+          }}>Skip</div>
+        }
+        onNext={async () => {
+          if (step === 3 && isMobile) {
+            onNext();
+          }
+
+          if (step === 2 && !isMobile) {
+            onNext()
+          }
+
+          if (step === 4) {
+            submit(1)
+          }
+        }}
+      />
+      </div>
+    }
+  </>
 
   return (
     <div
@@ -120,25 +153,38 @@ export default forwardRef(function PreviewNode(
       }}
     >
       {
-        (step === 2 && !isMobile) && <div className={styles.previewPc}><div style={{ width: 426 }}>
-          <Token
+        (step === 2 && !isMobile) && <div className={styles.previewPc}><div>
+          <LaptopToken
             isCurrent={true}
             style={{
-              width: '100%',
-              overflow: 'visible',
-              position: 'relative',
+              // width: '100%',
+              // overflow: 'visible',
+              // position: 'relative',
             }}
             token={{
               ...newData,
-              id: Date.now(),
+              id: 'preview',
               like: 0,
               icon: newData.tokenIcon || '/img/default-token.png',
               timeLeft: Date.now() + 1000 * 60 * 60 * 3
             }}
+            showTrade={tokenPanelStatusStore.showTrade}
+            tradeTab={tokenPanelStatusStore.tab}
+            onUpdateTradeTab={tokenPanelStatusStore.setTab}
+            onOpenPanel={(panleType: string) => {
+              tokenPanelStatusStore.setShow(
+                panleType,
+                !tokenPanelStatusStore[panleType]
+              );
+            }}
+
             isPreview={true}
             isPreviewNoOpacity={true}
             dataAvailable={true}
           />
+          {
+            ActionBtn
+          }
         </div>
         </div>
       }
@@ -164,7 +210,7 @@ export default forwardRef(function PreviewNode(
               isMobile ? <MobileInfo newData={newData} /> : <LaptopInfo newData={newData} />
             ) : (
               <div style={{ zIndex: 1, position: 'relative', top: '-74px', height: '70vh' }}>
-                <Token
+                <MobileToken
                   isCurrent={true}
                   style={{
                     height: innerHeight - 100,
@@ -230,35 +276,8 @@ export default forwardRef(function PreviewNode(
       }
 
       {
-        (showAction) && <div className={ styles.stepActionWrapper }><StepAction
-          step={step}
-          isLoading={isLoading}
-          btnText={step === 4 ? 'Get' : 'Continue'}
-          onBack={() => {
-            onBack();
-          }}
-          extendBtn={
-            step === 4 && <div className={styles.skipBtn} onClick={() => {
-              submit(0)
-            }}>Skip</div>
-          }
-          onNext={async () => {
-            if (step === 3 && isMobile) {
-              onNext();
-            } 
-
-            if (step === 2 && !isMobile) {
-              onNext()
-            }
-
-            if (step === 4) {
-              submit(1)
-            }
-          }}
-        />
-        </div>
+        step === 3 && isMobile && ActionBtn
       }
-
 
     </div>
   );

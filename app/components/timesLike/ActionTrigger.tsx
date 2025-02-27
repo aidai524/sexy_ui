@@ -77,26 +77,26 @@ export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
       className: "final-like-modal no-bg"
     });
   }
-  // if (likeNum === FIRST_LIKE_TIMES) {
-  //   if (data) {
-  //     const timeLikeHandler = Modal.show({
-  //       content: (
-  //         <FirstTimeLike
-  //           data={data}
-  //           onShare={onShare}
-  //           onClose={() => {
-  //             timeLikeHandler.close();
-  //           }}
-  //         />
-  //       ),
-  //       maskStyle: {
-  //         backdropFilter: "none"
-  //       },
-  //       closeOnMaskClick: true,
-  //       className: "no-bg"
-  //     });
-  //   }
-  // }
+  if (likeNum === FIRST_LIKE_TIMES && !window.location.pathname.includes('detail')) {
+    if (data) {
+      const timeLikeHandler = Modal.show({
+        content: (
+          <FirstTimeLike
+            data={data}
+            onShare={onShare}
+            onClose={() => {
+              timeLikeHandler.close();
+            }}
+          />
+        ),
+        maskStyle: {
+          backdropFilter: "none"
+        },
+        closeOnMaskClick: true,
+        className: "no-bg"
+      });
+    }
+  }
 
   if (likeNum === SECOND_LIKE_TIMES) {
     if (data) {
