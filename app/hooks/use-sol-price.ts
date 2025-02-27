@@ -7,7 +7,7 @@ export default function useSolPrice(refresher?: number) {
  
   useEffect(() => {
     setError(null);
-    fetch('https://api_stage.flipn.fun/sol-price')
+    fetch('https://api_stage.flipn.fun/api/v1/sol-price')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
