@@ -6,6 +6,7 @@ import type { Project } from "@/app/type";
 import { httpAuthPost } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import Big from "big.js";
+import { numberFormatter } from "@/app/utils/common";
 
 export const FIRST_LIKE_TIMES = 10;
 export const SECOND_LIKE_TIMES = 30;
@@ -26,7 +27,7 @@ const onLike = async (data: any) => {
           "You liked '" +
             (data.token_name || data.tokenName) +
             "', You are expected to receive " +
-            points +
+            numberFormatter(points, 4, true) +
             " points"
         );
         return v.data || {};
@@ -54,11 +55,7 @@ const onHate = async (data: Project) => {
 
 export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
   const { likeNum, likeNumToday, projectLikeNum } = await onLike(data);
-  console.log({
-    likeNum,
-    likeNumToday,
-    projectLikeNum
-  });
+
   if (data.status !== 0) return likeNum === LIKE_ERROR ? false : true;
 
   if (likeNum !== LIKE_ERROR) onSuccess?.(likeNumToday);
@@ -80,26 +77,26 @@ export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
       className: "final-like-modal no-bg"
     });
   }
-  if (likeNum === FIRST_LIKE_TIMES) {
-    if (data) {
-      const timeLikeHandler = Modal.show({
-        content: (
-          <FirstTimeLike
-            data={data}
-            onShare={onShare}
-            onClose={() => {
-              timeLikeHandler.close();
-            }}
-          />
-        ),
-        maskStyle: {
-          backdropFilter: "none"
-        },
-        closeOnMaskClick: true,
-        className: "no-bg"
-      });
-    }
-  }
+  // if (likeNum === FIRST_LIKE_TIMES) {
+  //   if (data) {
+  //     const timeLikeHandler = Modal.show({
+  //       content: (
+  //         <FirstTimeLike
+  //           data={data}
+  //           onShare={onShare}
+  //           onClose={() => {
+  //             timeLikeHandler.close();
+  //           }}
+  //         />
+  //       ),
+  //       maskStyle: {
+  //         backdropFilter: "none"
+  //       },
+  //       closeOnMaskClick: true,
+  //       className: "no-bg"
+  //     });
+  //   }
+  // }
 
   if (likeNum === SECOND_LIKE_TIMES) {
     if (data) {

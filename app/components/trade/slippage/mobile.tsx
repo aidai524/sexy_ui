@@ -104,10 +104,8 @@ export default function Mobile({
             </div>
           </div>
           <div className={styles.ProtectionDesc}>
-            front-running protection decreases the chances of bots from
-            front-running your buys. you can use high slippage with
-            front-running protection turned on. we recommend setting a tip
-            amount of at least 0.01 SOL with front-running protection enabled.
+          Front-running protection decreases the chances of bots from front-running your buys. You can use high slippage with front-running protection turned on. We recommend setting a tip amount of at least 0.01 SOL with front-running protection enabled.
+
           </div>
         </div>
       </div>

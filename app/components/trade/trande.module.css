@@ -141,7 +141,10 @@
     background-color: #3C3C3C80;
     padding: 0 10px;
     border-radius: 10px;
-    min-width: 30%;
+    width: 30%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
 }
