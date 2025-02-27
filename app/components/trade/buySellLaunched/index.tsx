@@ -521,10 +521,12 @@ export default function BuySellLaunched({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn && numberFormatter(buyIn, 6, true)}
-                  <img
-                    src={desToken.tokenUri}
-                    className={styles.receiveTokenImg}
-                  />
+                  <div className={styles.receiveTokenImgBox}>
+                    <img
+                      src={desToken.tokenUri}
+                      className={styles.receiveTokenImg}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -534,10 +536,12 @@ export default function BuySellLaunched({
                 <div>Payment</div>
                 <div className={styles.receiveAmount}>
                   {buyInSol && numberFormatter(buyInSol, 9, true)}
-                  <img
-                    src={desToken.tokenUri}
-                    className={styles.receiveTokenImg}
-                  />
+                  <div className={styles.receiveTokenImgBox}>
+                    <img
+                      src={desToken.tokenUri}
+                      className={styles.receiveTokenImg}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -547,10 +551,12 @@ export default function BuySellLaunched({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && numberFormatter(sellOutSol, 9, true)}
-                  <img
-                    src={desToken.tokenUri}
-                    className={styles.receiveTokenImg}
-                  />
+                  <div className={styles.receiveTokenImgBox}> 
+                    <img
+                      src={desToken.tokenUri}
+                      className={styles.receiveTokenImg}
+                    />
+                  </div>
                 </div>
               </div>
             )}
