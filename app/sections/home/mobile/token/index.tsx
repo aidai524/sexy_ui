@@ -42,7 +42,6 @@ export default function Token({
           ...style
         }}
       >
-        <div className={styles.BottomBg} />
         {token?.icon && (
           <div
             className={styles.Bg}
@@ -51,6 +50,7 @@ export default function Token({
         )}
         {token?.id && (
           <div className={styles.Content}>
+            <div className={styles.BottomBg} />
             {token.status === 0 && !isPreview && <LikeToEarn token={token} />}
             <Media
               imgHeight="100%"

@@ -1,53 +1,24 @@
-import styles from "./index.module.css";
-import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import RankPanel from "../../component/rank";
-import RankHeader from "../../component/rank/header";
-import { useAuth } from "@/app/context/auth";
-import { Popup } from "antd-mobile";
-import { useState } from "react";
+import Modal from "@/app/components/modal";
+import styles from "./index.module.css";
 
-export default function Rank({ info, infoLoading }: any) {
-  const { userInfo } = useAuth();
-  const [visible, setVisible] = useState(false);
-
+export default function Rank({
+  show,
+  onClose,
+  info,
+  infoLoading,
+  userInfo
+}: any) {
   return (
-    <div className={styles.RankContainer}>
-      {userInfo?.address ? (
-        <div className={styles.RankWrapper}>
-          <RankHeader
-            rank={info?.your_rank}
-            onClick={() => {
-              setVisible(true);
-            }}
-          />
-        </div>
-      ) : (
-        <div className={styles.ConnectContainer}>
-          <WalletModalButton className={styles.ConnectWallet}>
-            Connect wallet
-          </WalletModalButton>
-          <span>and get start!</span>
-        </div>
-      )}
-      <Popup
-        visible={visible}
-        onMaskClick={() => {
-          setVisible(false);
-        }}
-        onClose={() => {
-          setVisible(false);
-        }}
-        bodyStyle={{
-          borderTopLeftRadius: "8px",
-          borderTopRightRadius: "8px"
-        }}
-      >
-        <RankPanel
-          rank={info?.your_rank}
-          list={info?.mining_rank}
-          loading={infoLoading}
-        />
-      </Popup>
-    </div>
+    <Modal
+      open={show}
+      onClose={onClose}
+      animation="popup"
+      forceNoCloseIcon={true}
+    >
+      <div className={styles.Container}>
+        <RankPanel loading={infoLoading} info={info} userInfo={userInfo} />
+      </div>
+    </Modal>
   );
 }
