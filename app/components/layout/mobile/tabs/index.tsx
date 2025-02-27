@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAccount } from "@/app/hooks/useAccount";
 import CopyTrade from "@/app/services/copyTrade";
 import { useEffect, useState } from "react";
+import Big from "big.js";
 
 export default function Tabs() {
   const pathname = usePathname();
@@ -11,9 +12,10 @@ export default function Tabs() {
   const { address: sexAddress } = useAccount();
   const copyTradeService = new CopyTrade();
   const [copyTradeUserInfo, setCopyTradeUserInfo] = useState<any>(null);
-  const canClaim =
-    Number(copyTradeUserInfo?.carryFee || "0") -
-    Number(copyTradeUserInfo?.claimed || "0");
+  let canClaim =
+  new Big(copyTradeUserInfo?.carryFee || "0").minus(
+    new Big(copyTradeUserInfo?.claimed || "0")
+  ).div(10 ** 9).toNumber();
   useEffect(() => {
     if (sexAddress) {
       copyTradeService

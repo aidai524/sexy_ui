@@ -290,7 +290,7 @@ class CopyTrade {
   // claim
   async claimProfit(params: {
     // address: string;
-    amount: number;
+    amount: string;
     chain: string;
     // id: string;
     receiver: string;

@@ -8,6 +8,7 @@ import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
 import { useAccount } from '@/app/hooks/useAccount';
 import { useUserAgent } from "@/app/context/user-agent";
 import { useWithdrawClaim } from '@/app/sections/profile/hooks/useWithdrawClaim';
+import Big from 'big.js';
 export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress | null, copyTradersUserInfo: CopyTraderAddress | null}) {
   const router = useRouter();
   const { handleWithdrawClaim } = useWithdrawClaim();
@@ -16,15 +17,16 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
   const { address: walletAddress } = useAccount();
   const { smartMoniesInfo, copyTradersUserInfo } = props;
   let canClaim =
-    Number(copyTradersUserInfo?.carryFee || "0") -
-    Number(copyTradersUserInfo?.claimed || "0");
+    new Big(copyTradersUserInfo?.carryFee || "0").minus(
+      new Big(copyTradersUserInfo?.claimed || "0")
+    ).div(10 ** 9).toNumber();
 
   const claimProfit = async () => {
     if (!walletAddress) {
       return;
     }
     const res = await handleWithdrawClaim({
-      amount: canClaim,
+      amount: canClaim.toString(),
       chain: 'solana',
       walletAddress,
     });
