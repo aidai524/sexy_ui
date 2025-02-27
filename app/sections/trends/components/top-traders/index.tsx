@@ -44,6 +44,15 @@ export default function TopTraders() {
     }
   }, [smartMonies]);
 
+  const resetList = useCallback(() => {
+    setPageIndex(1);
+    setTradersList({
+      items: [],
+      total: 0
+    });
+    setHasMore(true);
+  }, []);
+
   const loadMore = useCallback(() => {
     if (!isLoadingMore && !smartMoniesLoading) {
       setIsLoadingMore(true);
@@ -54,22 +63,13 @@ export default function TopTraders() {
   const handleOrderByChange = (newOrderBy: string) => {
     setOrderBy(newOrderBy);
     setTab({ topTraderTab: newOrderBy });
-    setPageIndex(1);
-    setTradersList({
-      items: [],
-      total: 0
-    });
-    setHasMore(true);
+    resetList();
   };
 
-  // useEffect(() => {
-  //   setPageIndex(1);
-  //   setTradersList({
-  //     items: [],
-  //     total: 0
-  //   });
-  //   setHasMore(true);
-  // }, [lastCopyTradeTime]);
+
+  useEffect(() => {
+    resetList();
+  }, [lastCopyTradeTime]);
 
 
   return (
