@@ -13,14 +13,12 @@ export const AirdropContextProvider: React.FC<any> = ({ children }) => {
 
   const [airdropUserData, setAirdropUserData] = useState<any>();
   const [airdropDataLoading, setAirdropDataLoading] = useState(true);
-  const [pageLoading, setPageLoading] = useState(true);
 
-  const { run: setPageLoadingDelay, cancel: setPageLoadingDelayCancel } = useDebounceFn(() => {
-    setPageLoading(false);
+  const { run: goToInviteCodeDelay, cancel: goToInviteCodeDelayCancel } = useDebounceFn(() => {
     setAirdropDataLoading(false);
     if (pathname === '/invite-code') return;
     router.replace('/invite-code');
-  }, { wait: 300 });
+  }, { wait: 2000 });
 
   const getAirdropData = async () => {
     setAirdropDataLoading(true);
@@ -40,13 +38,12 @@ export const AirdropContextProvider: React.FC<any> = ({ children }) => {
   const { accountRefresher } = useAuth();
 
   useEffect(() => {
-    setPageLoadingDelayCancel();
+    goToInviteCodeDelayCancel();
     if (!address || !accountRefresher) {
       setAirdropUserData(void 0);
-      setPageLoadingDelay();
+      goToInviteCodeDelay();
       return;
     }
-    setPageLoading(false);
     getAirdropData();
   }, [address, accountRefresher, pathname]);
 
