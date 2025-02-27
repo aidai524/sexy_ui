@@ -33,6 +33,7 @@ export default function Coppied({ isOther }: any) {
   const [showCloseCopyTips, setShowCloseCopyTips] = useState<boolean>(false);
   const [copiedInfo, setCopiedInfo] = useState<any>(null);
   const pageSize = 10;
+  const [pollingIds, setPollingIds] = useState<Set<string>>(new Set());
 
 
   const loadMore = useCallback(async () => {
@@ -84,6 +85,76 @@ export default function Coppied({ isOther }: any) {
       loadMore();
     }, 0);
   }, [userInfo?.address, urlAddress, walletAddress]);
+
+
+  const pollCopyTradeStatus = useCallback(async (id: string) => {
+    if (!userInfo?.address) {
+      // Clear polling if no address
+      setPollingIds(new Set());
+      return;
+    }
+    
+    try {
+      const res = await CopyTradeService.getCopyTradeDetail({
+        id,
+        chain: "solana",
+        walletAddress: userInfo.address
+      });
+      
+      if (res?.data?.state !== 5) {
+        // Stop polling
+        setPollingIds(prev => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
+        
+        // Update list data with more clear logic
+        setCopyTradeMap((prev: any) => ({
+          ...prev,
+          items: prev.items.map((item: any) => {
+            if (item.id !== id) return item;
+            return res.data.state === 4 ? null : { ...item, ...res.data };
+          }).filter(Boolean)
+        }));
+      }
+    } catch (error) {
+      console.error('Poll status error:', error);
+      // Remove failed polling ID
+      setPollingIds(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
+  }, [CopyTradeService, userInfo]);
+
+  useEffect(() => {
+    // Clear existing polling when items change
+    setPollingIds(prev => {
+      const next = new Set<string>();
+      copyTradeMap.items.forEach((item: any) => {
+        if (item.state === 5) {
+          next.add(item.id);
+        }
+      });
+      return next;
+    });
+
+    const interval = setInterval(() => {
+      setPollingIds(prev => {
+        if (prev.size === 0) return prev;
+        prev.forEach(id => {
+          pollCopyTradeStatus(id);
+        });
+        return prev;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [copyTradeMap.items, pollCopyTradeStatus]);
+
+
 
   if (isLoading && pageIndex === 1) {
     return (
