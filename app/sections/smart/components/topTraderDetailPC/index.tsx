@@ -312,7 +312,7 @@ export default function TopTraderDetailM() {
               </div>
             </div>
             <div className={styles.gridItem}>
-              <div className={styles.label}>Copiers Pnl</div>
+              <div className={styles.label}>Copiers PNL</div>
               <div className={styles.amount}>
                 <strong>{formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")}</strong>
                 <span className={styles.unit}>&nbsp;SOL</span>

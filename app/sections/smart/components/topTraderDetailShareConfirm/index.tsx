@@ -226,7 +226,7 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
           <div className={styles.checkboxContainer + ' ' + 'global-checkbox-container'}>
             <Checkbox
                 checked={selectedItems['copiers']?.value}
-                onChange={(val) => handleCheckboxChange('copiers', {value: val, useValue: copyTradersUserInfo?.copiers?.length || 0, title: 'Copy Traders', useGreen: true})}
+                onChange={(val) => handleCheckboxChange('copiers', {value: val, useValue: smartMoniesInfo?.copiers?.length || 0, title: 'Copy Traders', useGreen: true})}
             ></Checkbox>
             <div className={styles.item}>
                 <div className={styles.label}>Copy Traders</div>

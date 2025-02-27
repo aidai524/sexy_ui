@@ -78,7 +78,33 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
       .attr("height", height);
 
     // Define forces
-    const simulation = d3
+    const simulation = satellites.length > 1 ?
+    d3
+      .forceSimulation(nodes)
+      .force(
+        "link",
+        d3
+          .forceLink(links)
+          .id((d: any) => d.id)
+          .distance((d: any) => d.distance)
+      )
+      .force("charge", d3.forceManyBody().strength(-300))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force(
+        "collision",
+        d3.forceCollide().radius((d: any) => d.size / 2 + 40)
+      )
+      .force("x", d3.forceX(width / 2).strength(0.1))
+      .force("y", d3.forceY(height / 2).strength(0.15))
+      .force("boundary", () => {
+        for (let node of nodes) {
+          if (!node.fixed) {
+            const r = node.size / 2;
+            node.x = Math.max(r, Math.min(width - r, node.x ?? 0));
+            node.y = Math.max(r, Math.min(height - r, node.y ?? 0));
+          }
+        }
+      }) : d3
       .forceSimulation(nodes)
       .force(
         "link",
@@ -91,10 +117,10 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force(
         "collision",
-        d3.forceCollide().radius((d: any) => d.size / 2 + 80)
+        d3.forceCollide().radius((d: any) => d.size / 2 + 120)
       )
-      .force("x", d3.forceX(width / 2).strength(0.05))
-      .force("y", d3.forceY(height / 2).strength(0.08))
+      .force("x", d3.forceX(width / 2).strength(0.15))
+      .force("y", d3.forceY(height / 2).strength(0.24))
       .force("boundary", () => {
         for (let node of nodes) {
           if (!node.fixed) {
@@ -104,6 +130,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
           }
         }
       });
+
 
     const g = svg.append("g");
 
