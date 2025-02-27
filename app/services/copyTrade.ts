@@ -143,6 +143,28 @@ class CopyTrade {
     }
  }  
 
+ async getCopyTradeDetail(params: {
+  id: string;
+  chain: string;
+  walletAddress: string;
+}) {
+  try {
+    const queryParams = new URLSearchParams({
+      id: params.id,
+      chain: params.chain,
+      walletAddress: params.walletAddress
+    }).toString();
+    const response = await fetch(`${this.baseURL}/copy_trade/id?${queryParams}`, {
+      method: 'GET',  
+      headers: this.headers
+    });
+    return this.handleResponse(response);
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}  
+
   // 
   async getCopyTradeList(params: {
     address: string;
