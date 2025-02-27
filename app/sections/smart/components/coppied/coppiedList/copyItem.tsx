@@ -38,6 +38,8 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
     const isGtZero = (str: string) => {
       return Number(str) >= 0;
     };
+
+    const gasFee = 0.01;
   
   return (
     <div className={styles.ItemBox}>
@@ -71,7 +73,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
                   <p className={styles.TooltipItem}>
                     <span>Balance</span> 
                     <span className={styles.TooltipItemValue}>
-                      {numberFormatter(new Big(itemInfo?.balance).minus(0.00089088).toNumber() || 0, 4, true)}
+                      {numberFormatter(new Big(itemInfo?.balance).minus(0.00089088).minus(gasFee).toNumber() || 0, 4, true)}
                       <SolIconWithoutBg />
                     </span>
                   </p>

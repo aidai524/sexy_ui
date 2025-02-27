@@ -93,12 +93,13 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
         "collision",
         d3.forceCollide().radius((d: any) => d.size / 2 + 80)
       )
-      .force("x", d3.forceX(width / 2).strength(0.05))
-      .force("y", d3.forceY(height * 0.35).strength(0.08))
+      .force("x", d3.forceX(width / 2).strength(0.1))
+      .force("y", d3.forceY(height * 0.35).strength(0.12))
       .force("boundary", () => {
+        const padding = 60;
         for (let node of nodes) {
           if (!node.fixed) {
-            const r = node.size / 2;
+            const r = node.size / 2 + padding;
             node.x = Math.max(r, Math.min(width - r, node.x ?? 0));
             node.y = Math.max(r, Math.min(height - r - 40, node.y ?? 0));
           }
