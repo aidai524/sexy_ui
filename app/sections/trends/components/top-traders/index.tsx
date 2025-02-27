@@ -29,6 +29,7 @@ export default function TopTraders() {
     pageSize,
     orderBy,
     walletAddress: walletAddress || '',
+    lastCopyTradeTime
   });
 
   useEffect(() => {
@@ -61,20 +62,14 @@ export default function TopTraders() {
     setHasMore(true);
   };
 
-  useEffect(() => {
-    setPageIndex(1);
-    setTradersList({
-      items: [],
-      total: 0
-    });
-    setHasMore(true);
-  }, [lastCopyTradeTime]);
-
-  // if (smartMoniesLoading && tradersList.items.length === 0) {
-  //   return <div style={{ paddingTop: 116 }}>
-  //     <Empty text="Loading" showLoading={true} />
-  //   </div>
-  // }
+  // useEffect(() => {
+  //   setPageIndex(1);
+  //   setTradersList({
+  //     items: [],
+  //     total: 0
+  //   });
+  //   setHasMore(true);
+  // }, [lastCopyTradeTime]);
 
 
   return (

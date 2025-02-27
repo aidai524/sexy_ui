@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import CopyTrade from '@/app/services/copyTrade';
 import { debounce } from 'lodash-es';
 
-export const useGetSmartMonies = ({chain, page, pageSize, orderBy, walletAddress}: {chain: string, page: number, pageSize: number, orderBy: string, walletAddress: string}) => {
+export const useGetSmartMonies = ({chain, page, pageSize, orderBy, walletAddress, lastCopyTradeTime}: {chain: string, page: number, pageSize: number, orderBy: string, walletAddress: string, lastCopyTradeTime: number}) => {
   const copyTradeService = new CopyTrade();
   const [smartMonies, setSmartMonies] = useState<any>({items: [], total: 0});
   const [smartMoniesLoading, setSmartMoniesLoading] = useState(false);
@@ -19,7 +19,7 @@ export const useGetSmartMonies = ({chain, page, pageSize, orderBy, walletAddress
         setSmartMoniesLoading(false);
       }
     }, 350), //
-    [chain, page, pageSize, orderBy, walletAddress]
+    [chain, page, pageSize, orderBy, walletAddress, lastCopyTradeTime]
   );
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export const useGetSmartMonies = ({chain, page, pageSize, orderBy, walletAddress
     return () => {
       debouncedFetchSmartMonies.cancel();
     };
-  }, [chain, page, pageSize, orderBy, walletAddress]);
+  }, [chain, page, pageSize, orderBy, walletAddress, lastCopyTradeTime]);
 
   return { smartMonies, smartMoniesLoading };
 };
