@@ -36,6 +36,7 @@
     width: 100%;
     font-size: 18px;
     font-weight: 500;
+    color: #000;
 }
 
 
@@ -79,6 +80,7 @@
 .claimAmountValue{
     font-size: 14px;
     font-weight: 500;
+    color: #000;
 }
 
 .claimAmountCurrency {
