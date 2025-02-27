@@ -33,13 +33,13 @@ export function success(msg: string | React.ReactNode, opts?: { maskStyle?: Reac
   });
 }
 
-export function fail(msg: string, opts?: { maskStyle?: React.CSSProperties; }) {
-  const { maskStyle } = opts ?? {};
+export function fail(msg: string | React.ReactNode, opts?: { maskStyle?: React.CSSProperties; isIcon?: boolean; }) {
+  const { maskStyle, isIcon = true } = opts ?? {};
 
   Toast.show({
     content: <div style={{ color: "#FF2681", ...customStyle }}>{msg}</div>,
     position: "top",
-    icon: (
+    icon: isIcon && (
       <svg
         width="28"
         height="28"

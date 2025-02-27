@@ -1,0 +1,80 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { httpAuthGet } from '@/app/utils';
+import { useAccount } from '@/app/hooks/useAccount';
+import { useAuth } from '@/app/context/auth';
+import { usePathname, useRouter } from 'next/navigation';
+import { useDebounceFn } from 'ahooks';
+
+const AirdropContext = React.createContext<Partial<IAirdropContext>>({});
+
+export const AirdropContextProvider: React.FC<any> = ({ children }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [airdropUserData, setAirdropUserData] = useState<any>();
+  const [airdropDataLoading, setAirdropDataLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(true);
+
+  const { run: setPageLoadingDelay, cancel: setPageLoadingDelayCancel } = useDebounceFn(() => {
+    setPageLoading(false);
+    setAirdropDataLoading(false);
+    if (pathname === '/invite-code') return;
+    router.replace('/invite-code');
+  }, { wait: 300 });
+
+  const getAirdropData = async () => {
+    setAirdropDataLoading(true);
+    const res = await httpAuthGet('/airdrop/data');
+    if (res.code !== 0) {
+      setAirdropDataLoading(false);
+      return;
+    }
+    setAirdropUserData(res.data);
+    if (!res.data?.ReferralAccount) {
+      router.replace('/invite-code');
+    }
+    setAirdropDataLoading(false);
+  };
+
+  const { address } = useAccount();
+  const { accountRefresher } = useAuth();
+
+  useEffect(() => {
+    setPageLoadingDelayCancel();
+    if (!address || !accountRefresher) {
+      setAirdropUserData(void 0);
+      setPageLoadingDelay();
+      return;
+    }
+    setPageLoading(false);
+    getAirdropData();
+  }, [address, accountRefresher, pathname]);
+
+  return (
+    <AirdropContext.Provider
+      value={{
+        airdropUserData,
+        airdropDataLoading,
+      }}
+    >
+      {children}
+    </AirdropContext.Provider>
+  );
+};
+
+export function useAirdropContext() {
+  return useContext(AirdropContext);
+}
+
+interface IAirdropContext {
+  airdropUserData: {
+    ReferralAccount: string;
+    airdrop_points: string;
+    clime_create: boolean;
+    clime_pump: boolean;
+    invited: number;
+    points: string;
+    referral_points: string;
+  };
+  airdropDataLoading: boolean;
+}
