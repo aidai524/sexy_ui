@@ -373,7 +373,7 @@ export default function BuySell({
                 <div className={styles.balanceNum}>
                   {" "}
                   {tokenType === 0
-                    ? numberFormatter(tokenBalance, 2, true) + " " + tokenSymbol  
+                    ? numberFormatter(tokenBalance, 2, true) + " " + tokenSymbol
                     : numberFormatter(solBalance, 2, true) + " SOL"}
                 </div>
               </div>
@@ -441,9 +441,8 @@ export default function BuySell({
             </div>
 
             <div
-              className={`${styles.tokenBalanceBox} ${
-                from === "panel" && styles.PanelInput
-              }`}
+              className={`${styles.tokenBalanceBox} ${from === "panel" && styles.PanelInput
+                }`}
             >
               <div className={styles.inputArea}>
                 <input
@@ -541,11 +540,10 @@ export default function BuySell({
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${
-                    from === "panel"
+                  className={`${from === "panel"
                       ? styles.PanelPercentTag
                       : styles.percentTag
-                  } button`}
+                    } button`}
                 >
                   Reset
                 </div>
@@ -586,14 +584,16 @@ export default function BuySell({
                 <div className={styles.receiveAmount}>
                   {buyIn
                     ? numberFormatter(new Big(buyIn)
-                        .div(1 - slip / 100)
-                        .div(10 ** token.tokenDecimals!)
-                        .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
+                      .div(1 - slip / 100)
+                      .div(10 ** token.tokenDecimals!)
+                      .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
                     : ""}{" "}
-                  <img
-                    src={desToken.tokenUri}
-                    className={styles.receiveTokenImg}
-                  />
+                  <div className={styles.receiveTokenImgBox}>
+                    <img
+                      src={desToken.tokenUri}
+                      className={styles.receiveTokenImg}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -607,7 +607,9 @@ export default function BuySell({
                       .div(1 + slip / 100)
                       .div(10 ** SOL.tokenDecimals)
                       .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)}{" "}
-                  <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  <div className={styles.receiveTokenImgBox}>
+                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  </div>
                 </div>
               </div>
             )}
@@ -617,12 +619,15 @@ export default function BuySell({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && Number(sellOutSol) > 0
-                      ? numberFormatter(new Big(sellOutSol)
-                        .div(1 - slip / 100)
-                        .div(10 ** SOL.tokenDecimals)
-                        .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)
+                    ? numberFormatter(new Big(sellOutSol)
+                      .div(1 - slip / 100)
+                      .div(10 ** SOL.tokenDecimals)
+                      .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)
                     : 0}{" "}
-                  <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  <div className={styles.receiveTokenImgBox}>
+                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  </div>
+
                 </div>
               </div>
             )}

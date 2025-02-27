@@ -205,3 +205,31 @@
     margin-top: 20px;
   }
 }
+
+.removeIcon {
+  display: none;
+}
+
+.ContainerPc {
+  .removeIcon {
+    display: block;
+    margin-left: auto;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .uploadImgWrapper {
+    position: relative;
+    .uploadIconPlus {
+      position: absolute;
+      right: 0;
+      bottom: 0;  
+      left: 0;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;  
+      background-color: rgba(33, 37, 46, .6);
+    }
+  }
+}
