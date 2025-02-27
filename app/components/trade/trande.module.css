@@ -9,12 +9,13 @@
     padding: 10px;
 
     .tradeTabs {
-      /* padding: 0 0 20px; */
       margin-bottom: 20px;
       display: flex;
       align-items: center;
       background-color: #3B3B3B;
       border-radius: 10px;
+      position: relative;
+      
 
       .tab {
         flex: 1;
@@ -57,6 +58,16 @@
         /* background: url("/img/trade/sell-grey.png") no-repeat 0 -10px;
         background-size: 100% auto; */
       }
+    }
+
+    .tradeTabs::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: -10px;
+      width: calc(100vw + 20px);
+      height: 1px;
+      background-color: #353339;
     }
   }
 
@@ -266,10 +277,12 @@
   height: 26px;
   border-radius: 26px;
   overflow: hidden;
+  opacity: 0.3;
 }
 
 .switchTokenImg.active {
   border: 2px solid #fff;
+  opacity: 1;
 }
 
 .switchTokenImg img {

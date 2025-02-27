@@ -12,10 +12,9 @@ import Danmaku from "@/app/components/danmaku";
 import TradeModal from "@/app/components/trade-modal";
 import CommentsModal from "../comments";
 import LikeToEarn from "./like-to-earn";
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHome } from "../context";
-import Big from "big.js";
 
 export default function Token({
   isCurrent,
@@ -28,7 +27,6 @@ export default function Token({
   mediaId
 }: any) {
   const { innerHeight } = useUserAgent();
-  const { isMobile } = useUserAgent();
   const descContentRef = useRef<any>();
   const [showFlipModal, setShowFlipModal] = useState(false);
   const [showTradeModal, setShowTradeModal] = useState(false);

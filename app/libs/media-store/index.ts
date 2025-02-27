@@ -83,7 +83,6 @@ class MediaStore {
         return;
       }
       const file = this.queue.shift();
-      console.log(87, file.name);
       await this.fetchAndStore(file.url, file.name);
       loop();
     };

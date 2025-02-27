@@ -131,7 +131,8 @@ a {
 }
 
 .adm-popup .adm-popup-body {
-  background-color: #121719;
+  background-color: #252328;
+  border: 1px solid #3B3B3B;
 }
 
 .adm-toast-mask div.adm-toast-main {

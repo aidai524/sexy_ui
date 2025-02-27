@@ -71,7 +71,7 @@ export default function Mobile({
           })}
         </div>
 
-        {/* <div className={styles.inputBox}>
+        <div className={styles.inputBox}>
           <input
             value={slipData}
             onChange={(e) => {
@@ -82,7 +82,7 @@ export default function Mobile({
             placeholder="Custom"
           />
           <div className={styles.percent}>%</div>
-        </div> */}
+        </div>
         <div className={styles.ProtectionWrapper}>
           <div className={styles.ProtectionItem}>
             <div style={{ width: 180 }}>Enable front-running protection:</div>

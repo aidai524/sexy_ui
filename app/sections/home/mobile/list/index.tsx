@@ -164,7 +164,7 @@ export default function List({
           {list?.map((item: number, i: number) => {
             let token = null;
 
-            if (Math.abs(i - index) < 20 && item) {
+            if (Math.abs(i - index) <= 10 && item) {
               token = getProjectById(item);
             }
 
@@ -175,7 +175,6 @@ export default function List({
                 mediaId={String(token?.id) + "_" + type}
                 isCurrent={index === i && isCurrentTab}
                 onUpdate={(token: any, action?: string) => {
-                  console.log(178);
                   if (action && ["launched_like"].includes(action)) {
                     updateProject(token);
                     return;
