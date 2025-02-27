@@ -14,7 +14,7 @@ export default function CardContainer() {
   const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
   const CopyTradeService = new CopyTrade();
   const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<CopyTraderAddress | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(walletAddress ? true : false);
 
   const getCopyTradeDetails = async () => {
     if (walletAddress) {
@@ -33,7 +33,9 @@ export default function CardContainer() {
     }
   }
   useEffect(() => {
-    setIsLoading(true);
+    if (walletAddress){
+      setIsLoading(true);
+    }
     getSmartMoniesInfo();
     getCopyTradeDetails();
   }, [walletAddress]);
