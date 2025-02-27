@@ -1,19 +1,21 @@
 import CreateNode from "../CreateNode";
-import PreviewNode from "./preview";
-import Actions from "./actions";
-import CreateModal from "@/app/sections/create/components/create";
+// import PreviewNode from "./preview";
 import { motion } from "framer-motion";
 import { useState, useRef, useMemo } from "react";
 import { fail } from "@/app/utils/toast";
 import { httpAuthPost, sleep } from "@/app/utils";
 import type { Project } from "@/app/type";
 import styles from "./index.module.css";
+import Steps from "./step";
+import PreviewNode from "../PreviewNode";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Laptop() {
-  const [step, setStep] = useState("edit");
+  const [step, setStep] = useState(1);
   const [dataAdd, setDataAdd] = useState<Project>();
   const createRef = useRef<any>();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const { isMobile } = useUserAgent();
 
   const query = useMemo(() => {
     const query: any = {
@@ -43,7 +45,7 @@ export default function Laptop() {
         animate={{ opacity: 1 }}
         className={styles.Wrapper}
       >
-        <div className={styles.TitleWrapper}>Create token</div>
+        <Steps step={step} />
         <div className={styles.Container}>
           <motion.div
             initial={{ opacity: 0 }}
@@ -51,23 +53,41 @@ export default function Laptop() {
             className={styles.EditWrapper}
           >
             <CreateNode
-              ref={createRef}
-              // @ts-ignore
-              show={step === "edit"}
-              onAddDataFill={(value: any) => {
-                setDataAdd(value);
-                setStep("preview");
-                window.scrollTo(0, 0);
-              }}
-            />
+                ref={createRef}
+                step={step}
+                // @ts-ignore
+                show={step === 1}
+                onNext={() => {
+                  setStep(step + 1);
+                }}
+                onBack={() => {
+                  setStep(step - 1);
+                }}
+                onAddDataFill={(value: any) => {
+                  setDataAdd(value);
+                  setStep(2);
+                  window.scrollTo(0, 0);
+                }}
+              />
+            
           </motion.div>
-          {step === "preview" && (
+          { step >= 2 && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <PreviewNode token={dataAdd} />
+              <PreviewNode
+                show={true}
+                step={step}
+                data={dataAdd!}
+                onNext={() => {
+                  console.log('onNext', step)
+                  setStep(step + 1);
+                }}
+                onBack={() => {
+                  setStep(step - 1);
+                }} />
             </motion.div>
           )}
         </div>
-        <Actions
+        {/* <Actions 
           step={step}
           onClick={(type: string) => {
             if (type === "preview") {
@@ -75,7 +95,7 @@ export default function Laptop() {
               return;
             }
             if (type === "edit") {
-              setStep("edit");
+              setStep(1);
               return;
             }
             if (type === "create") {
@@ -83,9 +103,9 @@ export default function Laptop() {
               return;
             }
           }}
-        />
+        /> */}
       </motion.div>
-      {dataAdd && (
+      {/* {dataAdd && (
         <CreateModal
           show={showCreateModal}
           token={{
@@ -123,7 +143,7 @@ export default function Laptop() {
             }
           }}
         />
-      )}
+      )} */}
     </>
   );
 }

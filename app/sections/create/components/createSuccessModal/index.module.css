@@ -1,110 +1,74 @@
 .main {
   padding-top: 60px;
+  margin: 0 auto;
+}
 
-  .yaowan {
-    width: 126px;
-    margin: 0 auto;
-  }
+.yaowan {
+  width: 126px;
+  margin: 0 auto;
+}
 
-  .yaowanImg {
-    width: 100%;
-  }
+.yaowanImg {
+  width: 100%;
+}
 
-  .content {
-    position: relative;
-    margin-top: 30px;
-    border-radius: 30px;
-    background: #FBCA04 url('/img/share/create-done-bg.svg') no-repeat center center;
-    background-size: 100% 100%; 
-    padding: 15px 0;
+.content {
+  position: relative;
+  margin-top: 30px;
+  border-radius: 30px;
+  background: #FBCA04 url('/img/share/create-done-bg.svg') no-repeat center center;
+  background-size: auto 115%; 
+  padding: 15px 0;
+}
 
-    .avatar {
-      width: 76px;
-      height: 76px;
-      border: 4px solid #000000;
-      border-radius: 76px;
-      margin: 10px auto 0;
-      overflow: hidden;
+.avatar {
+  width: 76px;
+  height: 76px;
+  border: 4px solid #000000;
+  border-radius: 76px;
+  margin: 10px auto 0;
+  overflow: hidden;
+}
 
-      .avatarImg {
-        width: 100%;
-        border-radius: 85px;
-        object-fit: cover;
-        object-position: center;
-      }
-    }
+.avatarImg {
+  width: 100%;
+  border-radius: 85px;
+  object-fit: cover;
+  object-position: center;
+}
 
-    .nameContent {
-      font-size: 12px;
-      background-color: #F2E9D8;
-      border-radius: 10px;
-      margin: 20px 30px;
-      text-align: center;
-      padding: 20px 0;
-      position: relative;
-      .time {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: -12px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        color: #fff;
-        border-radius: 100px;
-        padding: 0 10px;
-        background: #0000004D;
-        backdrop-filter: blur(4px);
-      }
-      .name {
-        font-weight: 700;
-        font-size: 22px;
-        color: #000;
-      }
+.successNote {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #202020;
+  font-weight: 500;
+}
 
-      .ticker {
-        margin-top: 10px;
-        font-size: 14px;
-        color: #000;
-      }
-    }
+.btnBox {
+  margin: 20px auto;
+  width: 60%;
+}
 
-    .successNote {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-      color: #202020;
-      font-weight: 500;
-    }
+.heartWhite {
+  position: absolute;
+  left: 0px;
+  top: -10px;
+}
 
-    .btnBox {
-      margin: 20px auto;
-      width: 60%;
-    }
+.heartMore {
+  position: absolute;
+  top: -45px;
+  left: 30%;
+}
 
-    .heartWhite {
-      position: absolute;
-      left: 0px;
-      top: -10px;
-    }
-
-    .heartMore {
-      position: absolute;
-      top: -45px;
-      left: 30%;
-    }
-  }
-
-  .close {
-    margin: 30px auto;
-    color: #9290B1;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    cursor: pointer;  
-  }
+.close {
+  margin: 30px auto;
+  color: #9290B1;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;  
 }
 
 .ModalMain :global(.adm-modal .adm-center-popup-wrap div.adm-center-popup-body) {
@@ -115,22 +79,99 @@
 .tokenInfo {
   margin-top: 30px;
   text-align: center;
+  
+}
 
+.tokenTitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.tokenAmount {
+  font-size: 14px;
+  color: #fff;
+  margin-top: 10px;
+  color: #9290B1;
+}
+
+.tokenSymbol {
+  font-weight: 700;
+  color: #FBCA04;
+}
+
+.nameContent {
+  font-size: 12px;
+  background-color: #F2E9D8;
+  border-radius: 10px;
+  margin: 20px 30px;
+  text-align: center;
+  padding: 20px 0;
+  position: relative;
+}
+
+.time {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -12px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 100px;
+  padding: 0 10px;
+  background: #0000004D;
+  backdrop-filter: blur(4px);
+}
+
+.name {
+  font-weight: 700;
+  font-size: 22px;
+  color: #000;
+}
+
+.ticker {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #000;
+}
+
+.mainPc {
   .tokenTitle {
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  .content {
+    background: none;
+  }
+
+  .nameContent {
+    background: none;
+  }
+
+  .avatar {
+    width: 142px;
+    height: 142px;
+  }
+
+  .name {
+    color: #fff;  
+  }
+
+  .ticker {
     color: #fff;
   }
 
-  .tokenAmount {
-    font-size: 14px;
+  .successNote {
     color: #fff;
-    margin-top: 10px;
-    color: #9290B1;
+    font-weight: 700;
+  }
 
-    .tokenSymbol {
-      font-weight: 700;
-      color: #FBCA04;
-    }
+  .time {
+    top: -36px;
   }
 }

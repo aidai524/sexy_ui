@@ -1,85 +1,29 @@
 .Container {
   position: relative;
   z-index: 2;
+  padding: 20px 0px 60px;
 }
 
 .List {
-  padding-top: 3px;
   overflow-y: auto;
-  max-height: 80vh;
-}
-
-.Item {
-  height: 60px;
-  border-radius: 8px;
-  backdrop-filter: blur(5px);
-  margin-top: 6px;
-  padding: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.MobileItem {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.LaptopItem {
-  background: transparent;
-  transition: 0.3s;
-  padding: 8px 30px;
-}
-
-.LaptopItem:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.ItemLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-grow: 1;
-}
-
-.ItemTitle {
-  color: #fff;
-  font-family: Unbounded;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  text-align: left;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  cursor: inherit;
-}
-
-.ItemDesc {
-  color: #9290b1;
-  font-family: Unbounded;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
-  margin-top: 6px;
-}
-
-.ItemRight {
-  color: #fff;
-  font-family: Unbounded;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  justify-content: flex-end;
+  max-height: 70vh;
+  padding: 3px 12px 5px;
 }
 
 .NameWrapper {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.UserRank {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  background-color: #333135 !important;
+  border: 1px solid #323232 !important;
+  border-radius: 0px !important;
+  padding-right: 25px !important;
+  padding-left: 16px !important;
 }

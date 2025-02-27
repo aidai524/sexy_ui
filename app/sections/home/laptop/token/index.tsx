@@ -18,7 +18,6 @@ import TipsButton from "@/app/sections/home/laptop/tips-button";
 
 export default function Token({
   isCurrent,
-  isNext,
   token,
   opacity,
   showTrade,
@@ -34,7 +33,7 @@ export default function Token({
   const descContentRef = useRef<any>();
 
   const { total: totalHolders } = useHolders(token);
-  if (isCurrent) console.log(token);
+
   return (
     <div
       className={styles.Box}
@@ -117,10 +116,13 @@ export default function Token({
               </div>
             </div>
           </div>
-          {token.status !== 0 && isCurrent && showTrade && (
+          {isCurrent && showTrade && (
             <TradePanel
               onClose={() => {
                 onOpenPanel("showTrade", false);
+              }}
+              onSuccess={(_token: any, type: string) => {
+                onUpdate?.(_token, type);
               }}
               token={token}
               tab={tradeTab}
@@ -130,7 +132,7 @@ export default function Token({
         </div>
       )}
 
-      {token?.status !== 0 && !showTrade && isCurrent && (
+      {!showTrade && isCurrent && (
         <TipsButton
           tips="Expand"
           triggerStyle={{
@@ -143,6 +145,7 @@ export default function Token({
         >
           <ScaleButton
             onClick={() => {
+              onUpdateTradeTab(token.status === 0 ? "details" : "chart");
               onOpenPanel("showTrade", !showTrade);
             }}
           />
@@ -152,35 +155,27 @@ export default function Token({
       {dataAvailable && token?.id && (
         <Actions
           token={token}
-          onClick={(type: any) => {
+          onClick={(type: any, params: any) => {
+            let tab = "details";
             if (type === "comments") {
-              onOpenPanel("showComments");
-              return;
+              tab = "comments";
             }
+
             if (type === "detail") {
-              onOpenPanel("showDetail");
-              return;
-            }
-            if (!window.sexAddress) {
-              window.connect();
-              return;
+              if (params === "Info") tab = "holders";
+              if (params === "Trades") tab = "transactions";
             }
             if (type === "flip") {
-              onOpenPanel("showFlip");
+              tab = "holders";
             }
-            if (type === "trade") {
-              onUpdateTradeTab("holders");
-              if (!showTrade) onOpenPanel("showTrade");
-            }
+            onUpdateTradeTab(tab);
+            if (!showTrade) onOpenPanel("showTrade");
           }}
           totalHolders={totalHolders}
           onSuccess={(type: string) => {
-            if (type === "like") {
-              token.isLike = true;
-              token.like = token.like + 1;
-            }
-            if (type === "share") {
-              // token.share_num = token.share_num + 1;
+            if (type === "launched_like") {
+              token.is_launched_like = true;
+              token.launched_like = token.launched_like + 1;
             }
             onUpdate(token, type);
           }}

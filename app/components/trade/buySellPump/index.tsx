@@ -30,6 +30,7 @@ interface Props {
   from?: string;
   show?: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 export const SOL: Token = {
@@ -39,14 +40,15 @@ export const SOL: Token = {
   tokenDecimals: 9
 };
 
-const SOL_PERCENT_LIST = [0.1, 0.5, 1, 'Max'];
+const SOL_PERCENT_LIST = [0.1, 0.5, 1, "Max"];
 
 export default function BuySellPump({
   token,
   initType,
   from,
   show,
-  onClose
+  onClose,
+  onSuccess
 }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
@@ -165,9 +167,10 @@ export default function BuySellPump({
               slip / 100
             )
               .then((res) => {
-
                 setBuyIn(debounceVal);
-                setBuyInSol(new Big(res).div(10 ** SOL.tokenDecimals).toString());
+                setBuyInSol(
+                  new Big(res).div(10 ** SOL.tokenDecimals).toString()
+                );
 
                 setIsLoading(false);
                 setIsError(false);
@@ -237,35 +240,46 @@ export default function BuySellPump({
 
   return (
     <>
-      <div className={[styles.cationArea].join(" ")}>
+      <div className={[styles.cationArea, from === "panel" ? styles.pcActionArea : styles.mobileActionArea].join(" ")}>
         {from === "panel" ? (
-          <Tabs
-            tabs={[
-              {
-                label: "Buy",
-                key: 0
-              },
-              {
-                label: "Sell",
-                key: 1
-              }
-            ]}
-            type="center"
-            currentTab={activeIndex}
-            onChangeTab={(index: number) => {
-              setActiveIndex(index);
-              setValInput("");
-              if (index === 0) {
-                setCurrentToken(SOL);
-                setTokenType(1);
-              } else {
-                setCurrentToken(desToken);
-                setTokenType(0);
-              }
-              setSolPercent(0);
-              setTokenPercent(0);
-            }}
-          />
+          <div className={styles.pcTabs}>
+            <Tabs
+              tabs={[
+                {
+                  label: "Buy",
+                  key: 0
+                },
+                {
+                  label: "Sell",
+                  key: 1
+                }
+              ]}
+              type="center"
+              currentTab={activeIndex}
+              onChangeTab={(index: number) => {
+                setActiveIndex(index);
+                setValInput("");
+                if (index === 0) {
+                  setCurrentToken(SOL);
+                  setTokenType(1);
+                } else {
+                  setCurrentToken(desToken);
+                  setTokenType(0);
+                }
+                setSolPercent(0);
+                setTokenPercent(0);
+              }}
+            />
+            <div className={styles.pcSlipIcon + ' '}
+              ref={slippageTextRef}
+              onClick={(ev) => {
+                ev.stopPropagation();
+                ev.nativeEvent.stopImmediatePropagation();
+                setShowSlip(true);
+              }}>
+              <img src="/img/trade/slip.svg" />
+            </div>
+          </div>
         ) : (
           <div className={styles.tradeTabs}>
             <div
@@ -309,7 +323,7 @@ export default function BuySellPump({
           className={from === "panel" ? styles.PanelContent : styles.Content}
         >
           <div
-            className={styles.inputArea}
+            className={styles.inputActionArea}
             style={
               {
                 // width: from === "panel" ? 335 : "100%"
@@ -319,7 +333,12 @@ export default function BuySellPump({
             <div className={styles.actionArea}>
               <div className={styles.balance}>
                 <img src="/img/trade/balance.svg" />
-                <div className={styles.balanceNum}> {tokenType === 0 ? numberFormatter(tokenBalance, 2, true) : numberFormatter(solBalance, 2, true) + ' SOL'}</div>
+                <div className={styles.balanceNum}>
+                  {" "}
+                  {tokenType === 0
+                    ? numberFormatter(tokenBalance, 2, true) + " " + tokenSymbol
+                    : numberFormatter(solBalance, 2, true) + " SOL"}
+                </div>
               </div>
 
               <div></div>
@@ -380,12 +399,11 @@ export default function BuySellPump({
                   </div>
                 </div>
               </div>
-
             </div>
 
             {activeIndex === 0 &&
               (tokenType === 1 ? (
-                <div className={styles.tokenPercent}>
+                <div className={styles.tokenPercent + ' ' + (from === "panel" ? styles.PanelPercent : styles.Percent)}>
                   <div
                     onClick={() => {
                       setSolPercent(0);
@@ -402,7 +420,7 @@ export default function BuySellPump({
                     return (
                       <div
                         onClick={() => {
-                          if (item === 'Max') {
+                          if (item === "Max") {
                             setSolPercent(Number(solBalance) - 0.03);
                             setValInput(getFullNum(Number(solBalance) - 0.03));
                           } else {
@@ -481,11 +499,16 @@ export default function BuySellPump({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
-                    ? new Big(buyIn)
+                    ? numberFormatter(new Big(buyIn)
                       .div(10 ** token.tokenDecimals!)
-                      .toFixed(token.tokenDecimals)
+                      .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
                     : ""}{" "}
-                  <img src={desToken.tokenUri} className={styles.receiveTokenImg} />
+                  <div className={styles.receiveTokenImgBox}>
+                    <img
+                      src={desToken.tokenUri}
+                      className={styles.receiveTokenImg}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -494,8 +517,10 @@ export default function BuySellPump({
               <div className={styles.paid}>
                 <div>Payment</div>
                 <div className={styles.receiveAmount}>
-                  {buyInSol && buyInSol}
-                  <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  {buyInSol && numberFormatter(buyInSol, 9, true)}
+                  <div className={styles.receiveTokenImgBox}>
+                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  </div>
                 </div>
               </div>
             )}
@@ -504,8 +529,10 @@ export default function BuySellPump({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {sellOutSol && sellOutSol} 
-                  <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  {sellOutSol && numberFormatter(sellOutSol, 9, true)}
+                  <div className={styles.receiveTokenImgBox}>
+                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  </div>
                 </div>
               </div>
             )}
@@ -547,7 +574,7 @@ export default function BuySellPump({
                     }
                     setIsLoading(false);
                     setReFreshBalnace(reFreshBalnace + 1);
-
+                    onSuccess?.();
                     if (hash) {
                       const volume = activeIndex === 0 ? buyInSol : sellOutSol;
                       const pointByVolume = await getPointByVolume(

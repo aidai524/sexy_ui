@@ -5,7 +5,7 @@ class MediaStore {
   private dbName = "";
   private storeName = "";
   private chunkSize = 1024 * 1024;
-  private maxFile = 10;
+  private maxFile = 5;
   private queue: any[] = [];
   private fetching = false;
   private timer: any = null;
@@ -83,7 +83,6 @@ class MediaStore {
         return;
       }
       const file = this.queue.shift();
-      console.log(87, file.name);
       await this.fetchAndStore(file.url, file.name);
       loop();
     };

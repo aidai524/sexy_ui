@@ -12,15 +12,15 @@ import Danmaku from "@/app/components/danmaku";
 import TradeModal from "@/app/components/trade-modal";
 import CommentsModal from "../comments";
 import LikeToEarn from "./like-to-earn";
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHome } from "../context";
-import Big from "big.js";
 
 export default function Token({
   isCurrent,
   onUpdate,
   isPreview = false,
+  isPreviewNoOpacity = false,
   token,
   dataAvailable,
   style = {},
@@ -42,7 +42,6 @@ export default function Token({
           ...style
         }}
       >
-        <div className={styles.BottomBg} />
         {token?.icon && (
           <div
             className={styles.Bg}
@@ -51,6 +50,7 @@ export default function Token({
         )}
         {token?.id && (
           <div className={styles.Content}>
+            <div className={styles.BottomBg} />
             {token.status === 0 && !isPreview && <LikeToEarn token={token} />}
             <Media
               imgHeight="100%"
@@ -113,10 +113,13 @@ export default function Token({
                     setShowCommentsModal(true);
                     return;
                   }
+
                   if (type === "detail") {
                     goDetail(token, params);
                     return;
                   }
+
+
                   if (!window.sexAddress) {
                     window.connect();
                     return;
@@ -130,39 +133,27 @@ export default function Token({
                 }}
                 onSuccess={(type: string) => {
                   if (type === "launched_like") {
-                    token.isLike = true;
+                    token.is_launched_like = true;
                     token.launched_like = token.launched_like + 1;
                   }
-                  if (type === "share") {
-                    // token.share_num = token.share_num + 1;
-                  }
-
                   onUpdate?.(token, type);
                 }}
                 isCurrent={isCurrent}
                 isPreview={isPreview}
+                isPreviewNoOpacity={isPreviewNoOpacity}
                 disabled={isPreview}
               />
             )}
           </div>
         )}
       </div>
-      {!isPreview && (
+      {!isPreview && token && (
         <>
           {showFlipModal && (
             <SmokePanel
               token={token}
               show={showFlipModal}
               onSuccess={(amount: string) => {
-                token.isSuperLike = true;
-                token.prePaid = token.prePaid + 1;
-                token.total_amount =
-                  Number(token.total_amount) + Number(amount);
-                token.prePaidAmount = Big(token.prePaidAmount || 0)
-                  .add(Number(amount) * 1e9)
-                  .toString();
-                token.isLike = true;
-                token.like = token.like + 1;
                 onUpdate?.(token, "flip");
                 setShowFlipModal(false);
               }}
@@ -175,6 +166,10 @@ export default function Token({
             <TradeModal
               show={showTradeModal}
               onClose={() => {
+                setShowTradeModal(false);
+              }}
+              onSuccess={() => {
+                onUpdate?.(token, "trade");
                 setShowTradeModal(false);
               }}
               data={token}

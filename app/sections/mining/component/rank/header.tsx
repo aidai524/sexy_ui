@@ -2,35 +2,17 @@ import styles from "./header.module.css";
 
 export default function Header({
   onClick = () => {},
-  isMobile = true,
-  rank
+  text = "Leaderboard"
 }: any) {
   return (
     <div
       className={styles.Header}
       style={{
-        padding: isMobile ? 0 : "15px 25px 0px"
+        padding: "0px 12px"
       }}
       onClick={onClick}
     >
-      <div className={styles.Title}>Reward Rank</div>
-      <div className={styles.YourRank}>
-        <span
-          style={{
-            fontSize: 12
-          }}
-        >
-          Your Rank:
-        </span>
-        <div
-          className={styles.YourRankTag}
-          style={{
-            fontSize: isMobile ? 12 : 14
-          }}
-        >
-          {rank || "-"}
-        </div>
-      </div>
+      <div className={styles.Title}>{text}</div>
     </div>
   );
 }

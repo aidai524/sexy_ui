@@ -5,20 +5,22 @@ export default function MainBtn({
   onClick,
   style,
   isLoading = false,
-  isDisabled = false
+  isDisabled = false,
+  loadingStyle = '#000'
 }: {
   children: React.ReactNode;
   onClick?: () => void;
   isLoading?: boolean;
   isDisabled?: boolean;
   style?: any;
+  loadingStyle?: any;
 }) {
   return (
     <Button
       loadingIcon={
         <SpinLoading
-          color={"#000"}
-          style={{ "--size": "24px", marginRight: 10 }}
+          color={loadingStyle}
+          style={{ "--size": "24px", marginRight: 10, }}
         />
       }
       loadingText={children as any}

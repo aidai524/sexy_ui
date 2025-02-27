@@ -1,32 +1,22 @@
-.Container {
-  display: flex;
-  gap: 250px;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  height: 46px;
-  background-color: #151515;
-  padding-bottom: 17px;
-}
-
 .Steps {
   display: flex;
   align-items: center;
   font-family: Unbounded;
-  font-size: 14px;
+  justify-content: center;
+  font-size: 16px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700;
   line-height: normal;
   color: #fff;
+  margin: 0 auto;
+  gap: 10px;
 }
 
 .StepCircle {
   width: 8px;
   height: 8px;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: #fbca04;
   margin-right: 6px;
 }
 
@@ -59,4 +49,17 @@
   border-radius: 30px;
   background: #fbca04;
   color: #000000;
+}
+
+.GetShare {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.Optional {
+  font-size: 12px;
+  font-weight: 400;
+  color: #9290b1;
+  font-weight: bold;
 }

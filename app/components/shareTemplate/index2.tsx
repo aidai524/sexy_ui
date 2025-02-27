@@ -193,7 +193,7 @@ function ShareTemplate({ token, show, isNew, onClose }: Props, ref: any) {
       </div>
 
       <div className={styles.bottom}>
-        <img className={styles.logoImg} src="/img/logo.svg" />
+        <img className={styles.logoImg} src="/img/logo-old.svg" />
       </div> 
     </>
   );     

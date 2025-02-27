@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import tabs from "./config";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useMemo } from "react";
-import { zIndex } from "html2canvas/dist/types/css/property-descriptors/z-index";
-
+import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 export default function Tabs() {
   const { isMobile } = useUserAgent();
   const homeTabStore: any = useHomeTab();
+  const tokenPanelStatusStore: any = useTokenPanelStatus();
 
   const mergedStyle: any = useMemo(
     () =>
@@ -34,6 +34,8 @@ export default function Tabs() {
         <div
           key={tab.key}
           onClick={() => {
+            if (tokenPanelStatusStore.showTrade)
+              tokenPanelStatusStore.setTab("details");
             homeTabStore.set({
               homeTabIndex: i
             });

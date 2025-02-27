@@ -29,6 +29,19 @@ export default function CreateSuccessModal({
   pointByVolume,
   onShare
 }: Props) {
+  const { isMobile } = useUserAgent();
+
+  if (!isMobile && show) {
+    return <SuccessModal
+      token={token}
+      pointByVolume={pointByVolume}
+      onClose={() => {
+        onHide();
+      }}
+      onShare={onShare}
+    />;
+  }
+
   return (
     <div className={style.ModalMain}>
       <Modal
@@ -77,7 +90,7 @@ function SuccessModal({
   }, [token]);
 
   return (
-    <div className={style.main} style={{ width: isMobile ? "90vw" : 432 }}>
+    <div className={style.main + ' ' + (isMobile ? style.mainMobile : style.mainPc)} style={{ width: isMobile ? "90vw" : 432 }}>
       {/* <div className={style.yaowan}>
         <img className={style.yaowanImg} src="/img/share/yaowan.gif" alt="" />
       </div> */}
@@ -85,9 +98,9 @@ function SuccessModal({
       <div className={style.tokenInfo}>
         <div className={style.tokenTitle}>A Genesis Token is live!</div>
         <div className={style.tokenAmount}>
-          You will get 
-          <span className={style.tokenSymbol}>{ numberFormatter(5950, 4, true) } $FlipN</span> 
-           when this token hit bonding curve.
+          You will get
+          <span className={style.tokenSymbol}> {numberFormatter(5950, 4, true)} $FlipN </span>
+          when this token hit bonding curve.
         </div>
       </div>
 
@@ -112,12 +125,13 @@ function SuccessModal({
         <div className={style.btnBox}>
           <MainBtn
             onClick={async () => {
-              onClose();
+              isMobile && onClose();
               onShare();
             }}
             style={{
-              background: "#000000",
-              color: "#FBCA04"
+              fontWeight: isMobile ? 500 : 700,
+              background: isMobile ? "#000000" : "#FBCA04",
+              color: isMobile ? "#FBCA04" : "#000000"
             }}
           >
             Share

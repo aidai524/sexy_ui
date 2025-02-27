@@ -75,7 +75,10 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
 
   const tabs = useMemo(() => {
     const vals = [
-      { name: "Details", content: <Desc data={infoData} mc={mc} /> },
+      {
+        name: "Details",
+        content: <Desc data={infoData} mc={mc} holdersId="detail-holders" />
+      },
       {
         name: "Comments",
         content: (
@@ -107,7 +110,11 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
   }
 
   if (!infoData) {
-    return <Empty />;
+    return (
+      <div className={styles.loadingBox}>
+        <Empty />
+      </div>
+    );
   }
 
   return (
@@ -151,6 +158,7 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
                 paddingBottom: 100,
                 WebkitOverflowScrolling: "touch"
               }}
+              id="detail-content"
             >
               <div className={styles.commentWrapper}>
                 <Info
@@ -173,6 +181,7 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
                   setActiveKey(nodeName);
                 }}
                 nodes={tabs}
+                id="detail-tabs"
               />
             </div>
 

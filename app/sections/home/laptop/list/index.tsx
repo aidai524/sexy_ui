@@ -4,29 +4,14 @@ import Loading from "@/app/sections/home/mobile/loading";
 import ArrowIcon from "./arrow-icon";
 import TipsButton from "../tips-button";
 import styles from "./index.module.css";
-import dynamic from "next/dynamic";
-import { AnimatePresence } from "framer-motion";
 import useData from "@/app/sections/home/hooks/use-data";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useTokenPanelStatus } from "@/app/store/use-token-panel";
-import Big from "big.js";
 import { useDebounceFn } from "ahooks";
 import { useVideoPlayer } from "@/app/store/use-video-player";
 import { videoReg } from "@/app/components/upload";
-
-const DetailPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/details")
-);
-
-const CommentsPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/comments")
-);
-
-const FlipPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/flip")
-);
 
 export default function List({ type, isCurrentTab }: any) {
   const {
@@ -163,7 +148,7 @@ export default function List({ type, isCurrentTab }: any) {
               isNext={i - 1 === index && type === "launching"}
               mediaId={String(token?.id) + "_" + type}
               onUpdate={(token: any, action?: string) => {
-                if (action && ["launched_like"].includes(action)) {
+                if (action && ["launched_like", "comments"].includes(action)) {
                   updateProject(token);
                   return;
                 }
@@ -242,55 +227,6 @@ export default function List({ type, isCurrentTab }: any) {
             />
           </TipsButton>
         </div>
-      )}
-      {currentToken && (
-        <AnimatePresence mode="wait">
-          {tokenPanelStatusStore.showDetail && (
-            <DetailPanel
-              token={currentToken}
-              onClose={() => {
-                tokenPanelStatusStore.setShow("showDetail", false);
-              }}
-            />
-          )}
-          {tokenPanelStatusStore.showComments && (
-            <CommentsPanel
-              token={currentToken}
-              onClose={() => {
-                tokenPanelStatusStore.setShow("showComments", false);
-              }}
-              onSuccess={() => {
-                currentToken.comment = currentToken.comment + 1;
-                updateProject(currentToken);
-                queryAndUpdateDetail(currentToken.address);
-              }}
-            />
-          )}
-          {tokenPanelStatusStore.showFlip && type === "preLaunch" && (
-            <FlipPanel
-              token={currentToken}
-              onClose={() => {
-                tokenPanelStatusStore.setShow("showFlip", false);
-              }}
-              onSuccess={(amount: string) => {
-                currentToken.isSuperLike = true;
-                currentToken.prePaid = currentToken.prePaid + 1;
-                currentToken.total_amount =
-                  Number(currentToken.total_amount) + Number(amount);
-                currentToken.prePaidAmount = Big(
-                  currentToken.prePaidAmount || 0
-                )
-                  .add(Number(amount) * 1e9)
-                  .toString();
-                updateProject(currentToken);
-                tokenPanelStatusStore.setShow("showFlip", false);
-                setTimeout(() => {
-                  queryAndUpdateDetail(currentToken.address);
-                }, 2000);
-              }}
-            />
-          )}
-        </AnimatePresence>
       )}
     </div>
   );
