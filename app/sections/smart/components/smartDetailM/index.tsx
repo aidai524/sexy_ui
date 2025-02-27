@@ -106,6 +106,7 @@ export default function SmartDetailM() {
           <ShareIcon />
         </div>
       </div>
+      <div style={{height: '50px'}}></div>
       {/*  */}
       <SmartDetailContent copyTradersUserInfo={copyTradersUserInfo || null} />
       {/* copy list */}

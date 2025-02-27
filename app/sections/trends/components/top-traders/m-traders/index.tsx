@@ -164,7 +164,9 @@ export default function TopTradersMobile({
   const [currentTrader, setCurrentTrader] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
   const tabContainerRef = useRef<HTMLDivElement>(null);
-
+  const containerRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<HTMLDivElement>(null);
+  const [float, setFloat] = useState(false);
   const tabs = [
     { id: "pnl1D", label: "1D PnL" },
     { id: "pnl7D", label: "7D PnL" },
@@ -227,16 +229,52 @@ export default function TopTradersMobile({
         | "winRate30D"
     );
   };
+  useEffect(() => {
+    const observerTarget = observerRef.current;
+    
+    if (!observerTarget) {
+      return;
+    }
+  
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setFloat(!entry.isIntersecting);
+      },
+      {
+        threshold: [0],
+        rootMargin: '-44px 0px 0px 0px'
+      }
+    );
+  
+    observer.observe(observerTarget);
+  
+    requestAnimationFrame(() => {
+      const rect = observerTarget.getBoundingClientRect();
+      setFloat(rect.top <= 44);
+    });
+  
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       <div className={styles.crownContainer}>
         <CrownIcon />{" "}
         <span className={styles.crownTextContainer}>
           TOP <span className={styles.crownText}>Trader</span>
         </span>
       </div>
-      <div className={styles.tabContainer} ref={tabContainerRef}>
+      <div 
+        ref={observerRef} 
+        style={{ 
+          height: '1px', 
+          width: '100%',
+        }} 
+      />
+      <div className={`${float ? styles.stickyTabContainer : styles.tabContainer}`} ref={tabContainerRef}>
         {tabs.map((tab) => (
           <button
             key={tab.id}

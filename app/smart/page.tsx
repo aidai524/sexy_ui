@@ -9,7 +9,6 @@ import { useUserAgent } from "@/app/context/user-agent";
 export default function Create() {
   const { isMobile } = useUserAgent();
   return (
-    <>
     <div className={!isMobile ? styles.containerPC : styles.container}>
       {
         isMobile &&  <PageHeader
@@ -23,8 +22,8 @@ export default function Create() {
       }
       {/* card container */}
       <CardContainer />
-    </div>
     <TopTraders />
-    </>
+
+    </div>
   );
 }
