@@ -37,6 +37,12 @@ export function mapDataToProject(currentToken: any): Project {
     isKing: currentToken.is_king,
     lastKingTime: currentToken.last_king_time,
     timeLeft: currentToken.time + 3 * 60 * 60 * 1000,
+    price: currentToken.price,
+    tx: currentToken.tx,
+    sells24hUsd: currentToken.sells_24h_usd,
+    buys24hUsd: currentToken.buys_24h_usd,
+    marketCap24hUsd: currentToken.market_cap_24h_usd,
+    volume24hUsd: currentToken.volume_24h_usd,
     ...currentToken
   };
 }

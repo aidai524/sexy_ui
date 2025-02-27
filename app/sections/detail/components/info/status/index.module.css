@@ -77,6 +77,13 @@
 .priceUp {
   font-size: 12px;
   font-weight: 400;
+  color: #c9ff5d;
+}
+
+.priceDown {
+  font-size: 12px;
+  font-weight: 400;
+  color: #ff2681;
 }
 
 .priceUnit {

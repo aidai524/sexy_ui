@@ -35,6 +35,12 @@ export interface Project {
     isKing?: boolean;
     lastKingTime?: number;
     timeLeft?: number;
+    price?: string;
+    tx?: number;
+    sells24hUsd?: number;
+    buys24hUsd?: number;    
+    marketCap24hUsd?: number;
+    volume24hUsd?: number;
 }
 
 export interface Comment {
