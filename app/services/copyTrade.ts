@@ -27,6 +27,7 @@ export interface SmartMoneyAddress {
       claimed: string;
       carryFee: string;
       isTopTrader: boolean;
+      isClaiming: boolean;
       tradeInfo: {
           buys: number;
           pnl7D: string ;

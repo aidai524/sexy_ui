@@ -19,10 +19,10 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
   let canClaim =
     new Big(copyTradersUserInfo?.carryFee || "0").minus(
       new Big(copyTradersUserInfo?.claimed || "0")
-    ).div(10 ** 9).toNumber();
+    ).toNumber();
 
   const claimProfit = async () => {
-    if (!walletAddress) {
+    if (!walletAddress || copyTradersUserInfo?.isClaiming) {
       return;
     }
     const res = await handleWithdrawClaim({
@@ -67,7 +67,9 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
         {canClaim > 0 && (
           <div className={styles.claimAmountButton} onClick={claimProfit}>
             <ClaimIcon />
-            <span className={styles.claimAmountButtonText}>Claim</span>
+            <span className={styles.claimAmountButtonText}>{
+                copyTradersUserInfo?.isClaiming ? 'Claiming' : 'Claim'
+              }</span>
           </div>
         )}
       </div>
