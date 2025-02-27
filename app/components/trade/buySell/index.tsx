@@ -373,7 +373,7 @@ export default function BuySell({
                 <div className={styles.balanceNum}>
                   {" "}
                   {tokenType === 0
-                    ? numberFormatter(tokenBalance, 2, true)
+                    ? numberFormatter(tokenBalance, 2, true) + " " + tokenName  
                     : numberFormatter(solBalance, 2, true) + " SOL"}
                 </div>
               </div>
@@ -585,10 +585,10 @@ export default function BuySell({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
-                    ? new Big(buyIn)
+                    ? numberFormatter(new Big(buyIn)
                         .div(1 - slip / 100)
                         .div(10 ** token.tokenDecimals!)
-                        .toFixed(token.tokenDecimals)
+                        .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
                     : ""}{" "}
                   <img
                     src={desToken.tokenUri}
@@ -603,10 +603,10 @@ export default function BuySell({
                 <div>Payment</div>
                 <div>
                   {buyInSol &&
-                    new Big(buyInSol)
+                    numberFormatter(new Big(buyInSol)
                       .div(1 + slip / 100)
                       .div(10 ** SOL.tokenDecimals)
-                      .toFixed(SOL.tokenDecimals)}{" "}
+                      .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)}{" "}
                   <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
                 </div>
               </div>
@@ -617,10 +617,10 @@ export default function BuySell({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && Number(sellOutSol) > 0
-                    ? new Big(sellOutSol)
+                      ? numberFormatter(new Big(sellOutSol)
                         .div(1 - slip / 100)
                         .div(10 ** SOL.tokenDecimals)
-                        .toFixed(SOL.tokenDecimals)
+                        .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)
                     : 0}{" "}
                   <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
                 </div>

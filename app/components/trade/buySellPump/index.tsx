@@ -502,9 +502,9 @@ export default function BuySellPump({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
-                    ? new Big(buyIn)
+                    ? numberFormatter(new Big(buyIn)
                         .div(10 ** token.tokenDecimals!)
-                        .toFixed(token.tokenDecimals)
+                        .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
                     : ""}{" "}
                   <img
                     src={desToken.tokenUri}
@@ -518,7 +518,7 @@ export default function BuySellPump({
               <div className={styles.paid}>
                 <div>Payment</div>
                 <div className={styles.receiveAmount}>
-                  {buyInSol && buyInSol}
+                  {buyInSol && numberFormatter(buyInSol, 9, true)}
                   <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
                 </div>
               </div>
@@ -528,7 +528,7 @@ export default function BuySellPump({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {sellOutSol && sellOutSol}
+                  {sellOutSol && numberFormatter(sellOutSol, 9, true)}
                   <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
                 </div>
               </div>
