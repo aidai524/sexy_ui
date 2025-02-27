@@ -336,7 +336,7 @@ export default function BuySellPump({
                 <div className={styles.balanceNum}>
                   {" "}
                   {tokenType === 0
-                    ? numberFormatter(tokenBalance, 2, true)
+                    ? numberFormatter(tokenBalance, 2, true) + " " + tokenSymbol
                     : numberFormatter(solBalance, 2, true) + " SOL"}
                 </div>
               </div>
@@ -357,9 +357,8 @@ export default function BuySellPump({
             </div>
 
             <div
-              className={`${styles.tokenBalanceBox} ${
-                from === "panel" && styles.PanelInput
-              }`}
+              className={`${styles.tokenBalanceBox} ${from === "panel" && styles.PanelInput
+                }`}
             >
               <div className={styles.inputArea}>
                 <input
@@ -410,11 +409,10 @@ export default function BuySellPump({
                       setSolPercent(0);
                       setValInput("");
                     }}
-                    className={`${
-                      from === "panel"
-                        ? styles.PanelPercentTag
-                        : styles.percentTag
-                    } button`}
+                    className={`${from === "panel"
+                      ? styles.PanelPercentTag
+                      : styles.percentTag
+                      } button`}
                   >
                     Reset
                   </div>
@@ -458,11 +456,10 @@ export default function BuySellPump({
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${
-                    from === "panel"
-                      ? styles.PanelPercentTag
-                      : styles.percentTag
-                  } button`}
+                  className={`${from === "panel"
+                    ? styles.PanelPercentTag
+                    : styles.percentTag
+                    } button`}
                 >
                   Reset
                 </div>
@@ -502,14 +499,16 @@ export default function BuySellPump({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn
-                    ? new Big(buyIn)
-                        .div(10 ** token.tokenDecimals!)
-                        .toFixed(token.tokenDecimals)
+                    ? numberFormatter(new Big(buyIn)
+                      .div(10 ** token.tokenDecimals!)
+                      .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
                     : ""}{" "}
-                  <img
-                    src={desToken.tokenUri}
-                    className={styles.receiveTokenImg}
-                  />
+                  <div className={styles.receiveTokenImgBox}>
+                    <img
+                      src={desToken.tokenUri}
+                      className={styles.receiveTokenImg}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -518,8 +517,10 @@ export default function BuySellPump({
               <div className={styles.paid}>
                 <div>Payment</div>
                 <div className={styles.receiveAmount}>
-                  {buyInSol && buyInSol}
-                  <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  {buyInSol && numberFormatter(buyInSol, 9, true)}
+                  <div className={styles.receiveTokenImgBox}>
+                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  </div>
                 </div>
               </div>
             )}
@@ -528,8 +529,10 @@ export default function BuySellPump({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {sellOutSol && sellOutSol}
-                  <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  {sellOutSol && numberFormatter(sellOutSol, 9, true)}
+                  <div className={styles.receiveTokenImgBox}>
+                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                  </div>
                 </div>
               </div>
             )}

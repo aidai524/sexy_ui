@@ -9,12 +9,13 @@
     padding: 10px;
 
     .tradeTabs {
-      /* padding: 0 0 20px; */
       margin-bottom: 20px;
       display: flex;
       align-items: center;
       background-color: #3B3B3B;
       border-radius: 10px;
+      position: relative;
+      
 
       .tab {
         flex: 1;
@@ -57,6 +58,16 @@
         /* background: url("/img/trade/sell-grey.png") no-repeat 0 -10px;
         background-size: 100% auto; */
       }
+    }
+
+    .tradeTabs::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: -10px;
+      width: calc(100vw + 20px);
+      height: 1px;
+      background-color: #353339;
     }
   }
 
@@ -130,7 +141,10 @@
     background-color: #3C3C3C80;
     padding: 0 10px;
     border-radius: 10px;
-    min-width: 30%;
+    width: 30%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
 }
@@ -266,10 +280,12 @@
   height: 26px;
   border-radius: 26px;
   overflow: hidden;
+  opacity: 0.3;
 }
 
 .switchTokenImg.active {
   border: 2px solid #fff;
+  opacity: 1;
 }
 
 .switchTokenImg img {
@@ -278,11 +294,20 @@
   object-fit: cover;
 }
 
-.receiveTokenImg {
+.receiveTokenImgBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 26px;
   height: 26px;
   border-radius: 26px;
-  margin-left: 5px;
+  overflow: hidden;
+}
+
+.receiveTokenImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .paid {
@@ -360,6 +385,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 5px;
 }
 
 .receiveAmountWrapper {

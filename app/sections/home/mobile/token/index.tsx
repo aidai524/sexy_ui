@@ -108,16 +108,17 @@ export default function Token({
               <Actions
                 token={token}
                 onClick={(type: any, params: any) => {
-                  if (type === "detail") {
-                    goDetail(token, params);
-                    return;
-                  }
-
                   if (isPreview) return;
                   if (type === "comments") {
                     setShowCommentsModal(true);
                     return;
                   }
+
+                  if (type === "detail") {
+                    goDetail(token, params);
+                    return;
+                  }
+
 
                   if (!window.sexAddress) {
                     window.connect();

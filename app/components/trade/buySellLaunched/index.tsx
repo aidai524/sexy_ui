@@ -350,7 +350,7 @@ export default function BuySellLaunched({
                 <div className={styles.balanceNum}>
                   {" "}
                   {tokenType === 0
-                    ? numberFormatter(tokenBalance, 2, true)
+                    ? numberFormatter(tokenBalance, 2, true) + " " + tokenSymbol
                     : numberFormatter(solBalance, 2, true) + " SOL"}
                 </div>
               </div>
@@ -520,11 +520,13 @@ export default function BuySellLaunched({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {buyIn && buyIn}
-                  <img
-                    src={desToken.tokenUri}
-                    className={styles.receiveTokenImg}
-                  />
+                  {buyIn && numberFormatter(buyIn, 6, true)}
+                  <div className={styles.receiveTokenImgBox}>
+                    <img
+                      src={desToken.tokenUri}
+                      className={styles.receiveTokenImg}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -533,11 +535,13 @@ export default function BuySellLaunched({
               <div className={styles.paid}>
                 <div>Payment</div>
                 <div className={styles.receiveAmount}>
-                  {buyInSol && buyInSol}
-                  <img
-                    src={desToken.tokenUri}
-                    className={styles.receiveTokenImg}
-                  />
+                  {buyInSol && numberFormatter(buyInSol, 9, true)}
+                  <div className={styles.receiveTokenImgBox}>
+                    <img
+                      src={desToken.tokenUri}
+                      className={styles.receiveTokenImg}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -546,11 +550,13 @@ export default function BuySellLaunched({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {sellOutSol && sellOutSol}
-                  <img
-                    src={desToken.tokenUri}
-                    className={styles.receiveTokenImg}
-                  />
+                  {sellOutSol && numberFormatter(sellOutSol, 9, true)}
+                  <div className={styles.receiveTokenImgBox}> 
+                    <img
+                      src={desToken.tokenUri}
+                      className={styles.receiveTokenImg}
+                    />
+                  </div>
                 </div>
               </div>
             )}

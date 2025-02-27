@@ -211,7 +211,10 @@ export default function Token({
       >
         <div className={`${styles.tokenImgContent}`}>
           <Media
-            data={data}
+            data={{
+              ...data,
+              tokenImg: data.tokenIcon || data.tokenImg,
+            }}
             imgHeight={84}
             autoPlay={false}
             imgStyle={{
