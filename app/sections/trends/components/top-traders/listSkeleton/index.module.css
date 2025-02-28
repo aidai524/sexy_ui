@@ -1,73 +1,73 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 0;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 0 !important;
   }
   
   .skeletonCard {
-    display: grid;
-    grid-template-columns: 1fr 38px;
-    gap: 6px;
-    height: 69px;
+    display: grid !important;
+    grid-template-columns: 1fr 38px !important;
+    gap: 6px !important;
+    height: 69px !important;
   }
   
   .mainContent {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
   }
   
   .leftContent {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
   }
   
   .avatar {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
   }
   
   .textArea {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
   }
   
   .nameBlock {
-    width: 80px;
-    height: 14px;
+    width: 80px !important;
+    height: 14px !important;
   }
   
   .followersBlock {
-    width: 40px;
-    height: 12px;
+    width: 40px !important;
+    height: 12px !important;
   }
   
   .metrics {
-    display: flex;
-    align-items: flex-end;
+    display: flex !important;
+    align-items: flex-end !important;
   }
   
   .metricsBlock {
-    width: 60px;
-    height: 12px;
+    width: 60px !important;
+    height: 12px !important;
   }
   
   .copyButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
   }
   
   .copyButtonBlock {
-    width: 16px;
-    height: 15px;
+    width: 16px !important;
+    height: 15px !important;
   }

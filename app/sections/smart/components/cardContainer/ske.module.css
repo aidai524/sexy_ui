@@ -1,0 +1,117 @@
+.skeletonContainer {
+    width: 100% !important;
+    height: 134px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
+    padding: 16px !important;
+    min-width: 85vw !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+.skeletonContainerPC {
+    width: 1200px !important;
+    height: 134px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
+    padding: 16px !important;
+    display: flex !important;
+    margin: 70px auto 0 !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+.skeletonTitle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+}
+
+.skeletonContent {
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 90% !important;
+}
+
+.skeletonItem {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+@media screen and (min-width: 1025px) {
+    
+    .skeletonTitleLabel { 
+        width: 400px !important;
+        height: 20px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 2px !important;
+    }
+
+
+.skeletonLabel {
+    width: 200px !important;
+    height: 12px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 2px !important;
+}
+
+.skeletonValue {
+    width: 180px !important;
+    height: 16px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 2px !important;
+}
+}
+
+@media screen and (max-width: 1024px) {
+    
+    .skeletonTitleLabel { 
+        width: 100px !important;
+        height: 20px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 2px !important;
+    }
+
+
+    .skeletonLabel {
+        width: 60px !important;
+        height: 12px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 2px !important;
+    }
+
+    .skeletonValue {
+        width: 40px !important;
+        height: 16px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 2px !important;
+    }
+}
+
+
+.skeletonTitleValue {
+    width: 30px !important;
+    height: 30px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50% !important;
+}
+
+
+@keyframes shimmer {
+    0% {
+        opacity: 0.5 !important;
+    }
+    50% {
+        opacity: 1 !important;
+    }
+    100% {
+        opacity: 0.5 !important;
+    }
+}
+
+.skeleton {
+    animation: shimmer 1.5s ease-in-out infinite !important;
+}

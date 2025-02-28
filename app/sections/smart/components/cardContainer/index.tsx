@@ -9,6 +9,7 @@ import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
 import { useUserAgent } from "@/app/context/user-agent";
 import CircleLoading from "@/app/components/icons/loading";
 import { useCopyTradeRefresh } from '@/app/store/useCopyTradeRefresh'
+import MCopyCardSkeleton from './ske';
 export default function CardContainer() {
   const { address: walletAddress } = useAccount();
   const { lastCopyTradeTime, set: setLastCopyTradeTime }:any = useCopyTradeRefresh();
@@ -44,12 +45,6 @@ export default function CardContainer() {
   }, [walletAddress,refreshing,lastCopyTradeTime]);
 
 
-  if (isLoading) {
-    return <div className={styles.loading}>
-      <CircleLoading size={40} />
-    </div>;
-  }
-
   // const isTopTrader = copyTradersUserInfo?.isTopTrader;
   const isTopTrader = true;
   const isCopyier = copyTradersUserInfo && +copyTradersUserInfo?.tradeInfo?.totalInvestment > 0;
@@ -57,6 +52,12 @@ export default function CardContainer() {
   // if (!walletAddress) {
   //   return null
   // }
+
+
+  if (isLoading) {
+    return <MCopyCardSkeleton />;
+  }
+
   
   return (
     <div className={(isMobile ? styles.container : styles.containerPC) + ' ' + (isTopTrader ? styles.topTraderContainer : styles.copyTradeContainer)}>
