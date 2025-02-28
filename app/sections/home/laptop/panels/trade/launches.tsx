@@ -8,6 +8,8 @@ import Txs from "@/app/sections/detail/components/txs";
 import Trade from "@/app/components/trade";
 import Details from "../details";
 import Comments from "../comments";
+import { numberFormatter } from "@/app/utils/common";
+import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 
 const TABS = [
   {
@@ -39,6 +41,7 @@ export default function LaunchesTradePanel({
   onClose,
   onSuccess
 }: any) {
+  const mc = useMcWithPump(token);
   return (
     <div className={styles.Container}>
       <Header
@@ -55,13 +58,52 @@ export default function LaunchesTradePanel({
       >
         {tab === "chart" && (
           <PanelWrapper>
+            <div className={styles.DataWrapper}>
+              <div className={styles.DataItem} style={{ width: "50%" }}>
+                <div
+                  className={styles.MarketCapWrapper}
+                  style={{
+                    color: token.market_cap_change < 0 ? "#FF2681" : "#C9FF5D"
+                  }}
+                >
+                  <div className={styles.MarketCap}>
+                    $
+                    {Number(mc) > 0
+                      ? numberFormatter(mc, 2, true, { isShort: true })
+                      : "-"}
+                  </div>
+                  <div className={styles.MarketCap24}>
+                    {Number(token.marketCap24hUsd) > 0 ? "+" : "-"}$
+                    {numberFormatter(token.marketCap24hUsd, 2, true, {
+                      isShort: true
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className={styles.DataItem} style={{ width: "25%" }}>
+                <div className={styles.DataLabel}>24h Volume</div>
+                <div className={styles.DataValue}>
+                  {numberFormatter(token.volume_24h_usd, 2, true, {
+                    isShort: true
+                  })}
+                </div>
+              </div>
+              <div className={styles.DataItem} style={{ width: "25%" }}>
+                <div className={styles.DataLabel}>Current Price</div>
+                <div className={styles.DataValue}>
+                  {numberFormatter(token.price, 6, true, {
+                    isShort: true
+                  })}
+                </div>
+              </div>
+            </div>
             <Chart
               token={token}
               style={{
                 padding: "10px",
                 marginRight: "10px",
                 borderRadius: "10px",
-                height: "376px",
+                height: 343,
                 position: "relative"
               }}
             />

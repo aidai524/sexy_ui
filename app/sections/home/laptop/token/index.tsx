@@ -41,7 +41,7 @@ export default function Token({
       style={{
         opacity,
         height: innerHeight,
-        width: showTrade && (isCurrent || isNext) ? 968 : innerWidth
+        width: showTrade && (isCurrent || isNext) ? 1000 : innerWidth
       }}
     >
       {token?.id && (

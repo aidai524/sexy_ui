@@ -64,10 +64,6 @@ export default function Tips({ isCustomWidth }: any) {
                   }}
                 >
                   {item.token_symbol}
-                  {item.token_symbol}
-                  {item.token_symbol}
-                  {item.token_symbol}
-                  {item.token_symbol}{" "}
                 </div>
               </div>
             </>
