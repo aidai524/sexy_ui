@@ -483,7 +483,7 @@ export default function BuySell({
                 />
                 <div className={styles.inputToken}>
                   <div className={styles.tokenName}>
-                    {currentToken.tokenName}
+                    {currentToken.tokenSymbol}
                   </div>
                   <div className={styles.tokenImg}>
                     <img className={styles.tiImg} src={currentToken.tokenUri} />
@@ -537,16 +537,13 @@ export default function BuySell({
             )}
 
             {activeIndex === 1 && (
-              <div className={styles.tokenPercent}>
+              <div className={styles.tokenPercent + ' ' + (from === "panel" ? styles.PanelPercent : styles.Percent)}>
                 <div
                   onClick={() => {
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${from === "panel"
-                    ? styles.PanelPercentTag
-                    : styles.percentTag
-                    } button`}
+                  className={`${styles.percentTag} button`}
                 >
                   Reset
                 </div>
