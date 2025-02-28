@@ -12,6 +12,7 @@ import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { useRouter } from "next/navigation";
 import Big from "big.js";
 import { CopyierIconWithBg, CrownIcon } from "../icons";
+import ListSkeleton from "../listSkeleton";
 interface Trader {
   avatar: string;
   name: string;
@@ -294,9 +295,11 @@ export default function TopTradersMobile({
 
       <div className={styles.traderList}>
         {list.length === 0 ? (
+          smartMoniesLoading ? 
+          <ListSkeleton /> : 
            <div style={{ paddingTop: 116 }}>
-            {smartMoniesLoading ? <Empty text="Loading" showLoading={true} /> : <Empty text="No data" />}
-            </div>
+              <Empty text="No data" />
+          </div>
         ) : (
           <>
             {list.map((trader, index) => (

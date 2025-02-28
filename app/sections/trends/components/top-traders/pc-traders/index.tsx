@@ -13,7 +13,7 @@ import Big from 'big.js';
 import { CrownIcon } from '../icons';
 import Empty from '@/app/components/empty';
 import { CopyierIconWithBg } from '../icons';
-
+import SkeletonLoader from '../listSkeletonPc';
 interface Trader {
   avatar: string
   name: string
@@ -111,9 +111,11 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
             />
           </>
         ) : (
-         <div style={{ paddingTop: 116 }}>
-          {smartMoniesLoading ? <Empty text="Loading" showLoading={true} /> : <Empty text="No data" />}
-         </div>
+          smartMoniesLoading ? 
+          <SkeletonLoader /> : 
+           <div style={{ paddingTop: 116 }}>
+              <Empty text="No data" />
+          </div>
         )}
       </div>
       {SHOW_COPY_TRADE && (
