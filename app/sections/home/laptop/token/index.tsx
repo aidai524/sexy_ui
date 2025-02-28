@@ -18,6 +18,7 @@ import TipsButton from "@/app/sections/home/laptop/tips-button";
 
 export default function Token({
   isCurrent,
+  isNext,
   token,
   opacity,
   showTrade,
@@ -40,7 +41,7 @@ export default function Token({
       style={{
         opacity,
         height: innerHeight,
-        width: showTrade && isCurrent ? 968 : innerWidth
+        width: showTrade && (isCurrent || isNext) ? 968 : innerWidth
       }}
     >
       {token?.id && (
@@ -116,7 +117,7 @@ export default function Token({
               </div>
             </div>
           </div>
-          {isCurrent && showTrade && (
+          {showTrade && (isCurrent || isNext) && (
             <TradePanel
               onClose={() => {
                 onOpenPanel("showTrade", false);

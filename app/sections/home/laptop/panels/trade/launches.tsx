@@ -50,7 +50,7 @@ export default function LaunchesTradePanel({
       <div
         className={styles.Tabs}
         style={{
-          height: 420
+          height: 416
         }}
       >
         {tab === "chart" && (
@@ -61,7 +61,7 @@ export default function LaunchesTradePanel({
                 padding: "10px",
                 marginRight: "10px",
                 borderRadius: "10px",
-                height: "380px",
+                height: "376px",
                 position: "relative"
               }}
             />
