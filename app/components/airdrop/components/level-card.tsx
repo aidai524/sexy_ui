@@ -78,7 +78,7 @@ const LevelCard = (props: any) => {
       {...props}
       description={(
         <>
-          Starts your FlipN journey from <strong>Lv. {level}</strong>.
+          Starts your FUN journey from <strong>Lv. {level}</strong>.
         </>
       )}
       footer={(

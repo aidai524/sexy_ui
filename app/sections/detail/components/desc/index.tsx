@@ -51,10 +51,6 @@ export default function Desc({
         return "-";
     }, [data]);
 
-    const { mc: pumpMc } = useMc({
-        tokenAddress: data?.address,
-        disable: (data?.DApp === "sexy" && data?.status === 1) || data?.status! < 1
-    });
 
     const { top1 } = useTrendsStore();
 
@@ -94,11 +90,8 @@ export default function Desc({
                         </div>
                         <div className={styles.statsValue}>
                             {"$"}
-                            {data.DApp === "sexy" &&
-                                data.status === 1 &&
-                                simplifyNum(mc as number, 2)}
-                            {(data.status === 1 && data.DApp === "pump") ||
-                                (data.status! > 1 && simplifyNum(pumpMc as number, 2))}
+                            {data.mc ? simplifyNum(Number(data.mc)) : "-"}
+
                         </div>
                     </div>
                     <div className={styles.statsItem}>
@@ -153,11 +146,11 @@ export default function Desc({
                         {
                             Number(data.volume24hUsd) > 0 && <div className={styles.statsValue}>
                                 <div className={styles.tradeChart}>
-                                <div className={styles.buyChart} style={{ width: (Number(data.buys24hUsd) / (Number(data.volume24hUsd))) * 100 + "%"    }}></div>
-                                <div
-                                    className={styles.sellChart}
-                                    style={{ width: (Number(data.sells24hUsd) / (Number(data.volume24hUsd))) * 100 + "%" }}
-                                ></div>
+                                    <div className={styles.buyChart} style={{ width: (Number(data.buys24hUsd) / (Number(data.volume24hUsd))) * 100 + "%" }}></div>
+                                    <div
+                                        className={styles.sellChart}
+                                        style={{ width: (Number(data.sells24hUsd) / (Number(data.volume24hUsd))) * 100 + "%" }}
+                                    ></div>
                                 </div>
                             </div>
                         }
@@ -245,34 +238,11 @@ export default function Desc({
                     {!isCreated && data.status! > 0 && (
                         <div className={styles.nameWrapper}>
                             <div className={styles.ticker}>Market cap:</div>
-                            {data.DApp === "sexy" && data.status === 1 && (
-                                <div className={styles.authorDesc} key={data.address}>
-                                    {mc === 0 || mc === "0" || mc === "-" ? (
-                                        <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
-                                    ) : (
-                                        <div style={{ color: "#6fff00" }}>
-                                            ${simplifyNum(mc as number, 2)}
-                                        </div>
-                                    )}
+                            <div className={styles.authorDesc} key={data.address}>
+                                <div style={{ color: "#6fff00" }}>
+                                    ${data.mc ? simplifyNum(Number(data.mc), 2) : '-'}
                                 </div>
-                            )}
-
-                            {((data.status === 1 && data.DApp === "pump") ||
-                                data.status! > 1) && (
-                                    <div
-                                        className={styles.authorDesc}
-                                        key={data.address}
-                                        style={{ color: "#6fff00" }}
-                                    >
-                                        {pumpMc === 0 ? (
-                                            <div style={{ color: "rgba(255, 255, 255, 0.5)" }}>$-</div>
-                                        ) : (
-                                            <div style={{ color: "#6fff00" }}>
-                                                ${simplifyNum(pumpMc as number, 2)}
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
+                            </div>
                         </div>
                     )}
                 </div>

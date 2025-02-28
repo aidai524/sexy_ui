@@ -223,7 +223,7 @@ export default function Holder({ from, address, showAvatar, style = {} }: any) {
                       return;
                     }
 
-                    fail("Not flipN user yet");
+                    fail("Not FUN user yet");
                   }}
                 >
                   <div style={{ minWidth: 20 }}>{item.rank}.</div>

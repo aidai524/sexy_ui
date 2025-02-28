@@ -1,9 +1,7 @@
 import { simplifyNum } from "@/app/utils";
 import styles from "./index.module.css";
 import { ProgressBar } from "antd-mobile";
-import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 export default function LaunchesStatus({ data }: any) {
-  const pumpMc = useMcWithPump(data);
 
   return (
     <div className={styles.panel}>
@@ -27,7 +25,7 @@ export default function LaunchesStatus({ data }: any) {
 
       <div className={styles.priceContent} style={{ marginTop: 15 }}>
         <div className={styles.priceNums}>
-          <div className={styles.priceAmount}>${pumpMc && simplifyNum(Number(pumpMc), 2)}</div>
+          <div className={styles.priceAmount}>${data.mc && simplifyNum(Number(data.mc), 2)}</div>
           {
             Number(data.marketCap24hUsd) > 0 && <div className={styles.priceUp}>+${simplifyNum(data.marketCap24hUsd, 2)}</div>
           }

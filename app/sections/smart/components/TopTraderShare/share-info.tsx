@@ -41,7 +41,7 @@ const TopTraderShareInfoCard = (props: any, ref: any) => {
           <div className={styles.avatarAndName}>
             <img src={currentUserInfo?.icon || defaultAvatar} alt="" className={styles.CopyTradeShareInfoCardAvatar}/>
             <div>
-              <div className={styles.CopyTradeShareInfoCardName}>{formatLongText(currentUserInfo?.name || shareName || 'FlipN')}</div>
+              <div className={styles.CopyTradeShareInfoCardName}>{formatLongText(currentUserInfo?.name || shareName || 'FUN')}</div>
               <div><TopTraderCrown /></div>
             </div>
           </div>

@@ -53,6 +53,7 @@ export default function Mobile() {
           style={{
             zIndex: token ? 10 : 0,
             opacity: token ? 1 : 0,
+            position: 'relative',
             width: innerWidth,
             height: innerHeight
           }}

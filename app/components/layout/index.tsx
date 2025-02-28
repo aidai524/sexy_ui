@@ -1,6 +1,6 @@
 import { useUserAgent } from "@/app/context/user-agent";
 import Mobile from "./mobile/Layout";
-import Laptop from "./laptop";
+import Laptop from "./laptop/index";
 import { useConfig } from "@/app/store/useConfig";
 import { httpGet } from "@/app/utils";
 import { useEffect } from "react";
