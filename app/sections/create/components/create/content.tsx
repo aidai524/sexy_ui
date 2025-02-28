@@ -210,7 +210,7 @@ export default function Create({
          !modalShow && <div
          className={styles.Container + ' ' + (isMobile ? styles.ContainerMobile : styles.ContainerPc) }
          style={{
-           height: isMobile ? 'calc(100vh - 190px)' : '600px'
+           height: isMobile ? 'calc(100vh - 190px)' : '450px'
          }}
        >
          <div className={styles.quickAction}>

@@ -111,7 +111,7 @@ export default forwardRef(function PreviewNode(
         }}
         extendBtn={
           step === 4 && <div className={styles.skipBtn} onClick={() => {
-          }}>Skip</div>
+          }}>Skip111</div>
         }
         onNext={async () => {
           if (step === 3 && isMobile) {
@@ -153,7 +153,7 @@ export default forwardRef(function PreviewNode(
               timeLeft: Date.now() + 1000 * 60 * 60 * 3
             }}
             showTrade={tokenPanelStatusStore.showTrade}
-            tradeTab={tokenPanelStatusStore.tab}
+            tradeTab={'details'}
             onUpdateTradeTab={tokenPanelStatusStore.setTab}
             onOpenPanel={(panleType: string) => {
               tokenPanelStatusStore.setShow(
@@ -161,7 +161,7 @@ export default forwardRef(function PreviewNode(
                 !tokenPanelStatusStore[panleType]
               );
             }}
-
+            showFlip={false}
             isPreview={true}
             isPreviewNoOpacity={true}
             dataAvailable={true}
