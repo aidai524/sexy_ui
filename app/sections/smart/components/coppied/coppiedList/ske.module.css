@@ -1,0 +1,61 @@
+.ItemBoxContainer {
+    width: 100% !important;
+    margin: 20px auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+.ItemBox {
+    padding: 16px !important;
+    border-radius: 8px !important;
+    width: 360px !important;
+    height: 182px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    margin-bottom: 10px !important;
+}
+
+.ItemBoxTop {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.ItemBoxTopLeft {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+}
+
+.avatar {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+}
+
+.name {
+    width: 100px !important;
+    height: 20px !important;
+    border-radius: 4px !important;
+}
+
+.right {
+    width: 100px !important;
+    height: 20px !important;
+    border-radius: 4px !important;
+}
+
+.bottom {
+    width: 100px !important;
+    height: 20px !important;
+    border-radius: 4px !important;
+}
+
+.ItemBoxBottom {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}

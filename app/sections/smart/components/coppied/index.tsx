@@ -15,7 +15,7 @@ import { useRouter,useSearchParams } from "next/navigation";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useCloseCopy } from "@/app/store/useCloseCopy";
 import { success } from "@/app/utils/toast";
-
+import { CopyItemSkeleton } from "./coppiedList/ske";
 
 export default function Coppied({ isOther }: any) {
   const { address: walletAddress } = useAccount();
@@ -168,8 +168,9 @@ export default function Coppied({ isOther }: any) {
 
   if (isLoading && pageIndex === 1) {
     return (
-      <div style={{ paddingTop: 116 }}>
-        <Empty text="Loading" showLoading={true} />
+      <div>
+        <h1 className={styles.title}>Copying ({copyTradeMap?.items?.length || 0})</h1>
+        <CopyItemSkeleton />
       </div>
     );
   }
