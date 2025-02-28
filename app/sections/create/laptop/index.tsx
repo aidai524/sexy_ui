@@ -38,6 +38,8 @@ export default function Laptop() {
     return queryStr;
   }, [dataAdd]);
 
+  console.log('step', step)
+
   return (
     <>
       <motion.div
@@ -45,7 +47,7 @@ export default function Laptop() {
         animate={{ opacity: 1 }}
         className={styles.Wrapper}
       >
-        <Steps step={step} />
+        { step <= 3 && <Steps step={step} /> }
         <div className={styles.Container}>
           <motion.div
             initial={{ opacity: 0 }}

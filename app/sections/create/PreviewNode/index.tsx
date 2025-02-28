@@ -87,17 +87,6 @@ export default forwardRef(function PreviewNode(
     return queryStr;
   }, [data]);
 
-  const submit = async (ignorePrepaid: number) => {
-    if (isLoading) {
-      return
-    }
-
-    if (submitFnRef.current) {
-      setIsLoading(true)
-      await submitFnRef.current(ignorePrepaid)
-      setIsLoading(false)
-    }
-  }
 
   const showAction = useMemo(() => {
     if (step === 3 && isMobile) {
@@ -122,7 +111,6 @@ export default forwardRef(function PreviewNode(
         }}
         extendBtn={
           step === 4 && <div className={styles.skipBtn} onClick={() => {
-            submit(0)
           }}>Skip</div>
         }
         onNext={async () => {
@@ -132,10 +120,6 @@ export default forwardRef(function PreviewNode(
 
           if (step === 2 && !isMobile) {
             onNext()
-          }
-
-          if (step === 4) {
-            submit(1)
           }
         }}
       />
@@ -264,6 +248,7 @@ export default forwardRef(function PreviewNode(
             }
 
             if (val.code === 0) {
+              onNext()
               return true;
               // success('Create token success')
               // router.push('/profile')

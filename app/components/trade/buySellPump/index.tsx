@@ -513,12 +513,16 @@ export default function BuySellPump({
                       .div(10 ** token.tokenDecimals!)
                       .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
                     : ""}{" "}
-                  <div className={styles.receiveTokenImgBox}>
-                    <img
-                      src={desToken.tokenUri}
-                      className={styles.receiveTokenImg}
-                    />
-                  </div>
+                  {
+                    from === "panel" ? <div>{desToken.tokenSymbol}</div> : (
+                      <div className={styles.receiveTokenImgBox}>
+                        <img
+                          src={desToken.tokenUri}
+                          className={styles.receiveTokenImg}
+                        />
+                      </div>
+                    )
+                  }
                 </div>
               </div>
             )}
@@ -528,9 +532,13 @@ export default function BuySellPump({
                 <div>Payment</div>
                 <div className={styles.receiveAmount}>
                   {buyInSol && numberFormatter(buyInSol, 9, true)}
-                  <div className={styles.receiveTokenImgBox}>
-                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
-                  </div>
+                  {
+                    from === "panel" ? <div>{SOL.tokenSymbol}</div> : (
+                      <div className={styles.receiveTokenImgBox}>
+                        <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                      </div>
+                    )
+                  }
                 </div>
               </div>
             )}
@@ -540,9 +548,13 @@ export default function BuySellPump({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && numberFormatter(sellOutSol, 9, true)}
-                  <div className={styles.receiveTokenImgBox}>
-                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
-                  </div>
+                  {
+                    from === "panel" ? <div>{SOL.tokenSymbol}</div> : (
+                      <div className={styles.receiveTokenImgBox}>
+                        <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                      </div>
+                    )
+                  }
                 </div>
               </div>
             )}

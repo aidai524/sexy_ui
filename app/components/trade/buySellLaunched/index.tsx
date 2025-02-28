@@ -530,7 +530,7 @@ export default function BuySellLaunched({
                   {buyIn && numberFormatter(buyIn, 6, true)}
 
                   {
-                    from === "panel" ? <div>{token.tokenName}</div> : (
+                    from === "panel" ? <div>{token.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img
                           src={desToken.tokenUri}
@@ -548,7 +548,7 @@ export default function BuySellLaunched({
                 <div className={styles.receiveAmount}>
                   {buyInSol && numberFormatter(buyInSol, 9, true)}
                   {
-                    from === "panel" ? <div>{SOL.tokenName}</div> : (
+                    from === "panel" ? <div>{SOL.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img
                           src={SOL.tokenUri}
@@ -567,7 +567,7 @@ export default function BuySellLaunched({
                 <div className={styles.receiveAmount}>
                   {sellOutSol && numberFormatter(sellOutSol, 9, true)}
                   {
-                    from === "panel" ? <div>{desToken.tokenName}</div> : (
+                    from === "panel" ? <div>{desToken.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img
                           src={desToken.tokenUri}
