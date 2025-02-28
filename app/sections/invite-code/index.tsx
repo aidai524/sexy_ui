@@ -36,7 +36,7 @@ const InviteCodeView: React.FC<any> = (props) => {
   }, [address, accountRefresher]);
 
   useEffect(() => {
-    if (!!airdropUserData?.referral_account && pathname === "/invite-code") {
+    if ((!!airdropUserData?.referral_account || airdropUserData?.allow_login) && pathname === "/invite-code") {
       router.replace('/');
     }
   }, [airdropUserData, pathname]);
