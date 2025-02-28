@@ -4,9 +4,18 @@ import RefreshIcon from "./refresh-icon";
 import Copyed from "@/app/components/copyed";
 import clsx from "clsx";
 import { useUserAgent } from "@/app/context/user-agent";
+import { Skeleton } from "antd-mobile";
 
-export default function InviteCodes({ show, onClose }: any) {
+export default function InviteCodes({
+  show,
+  onClose,
+  list = [],
+  loading,
+  onCopyAll,
+  onQuery
+}: any) {
   const { isMobile } = useUserAgent();
+
   return (
     <Modal
       open={show}
@@ -21,21 +30,31 @@ export default function InviteCodes({ show, onClose }: any) {
         }}
       >
         <div className={styles.Header}>
-          <span>Invite Code (100)</span>
-          <button className={clsx(styles.RefreshButton, "button")}>
+          <span>Invite Code (10)</span>
+          <button
+            className={clsx(styles.RefreshButton, "button")}
+            onClick={onQuery}
+          >
             <RefreshIcon />
           </button>
         </div>
         <div className={styles.CodeList}>
-          {[1, 2, 3, 4].map((item) => (
-            <div className={styles.CodeItem} key={item}>
-              <span>7Y01U4</span>
-              <Copyed value={"7Y01U4"}></Copyed>
-            </div>
-          ))}
+          {loading
+            ? [...new Array(10)].map((item) => (
+                <Skeleton animated className={styles.CodeItem} />
+              ))
+            : list?.map((item: any) => (
+                <div className={styles.CodeItem} key={item.code}>
+                  <span>{item.code}</span>
+                  <Copyed value={item.code} />
+                </div>
+              ))}
         </div>
-        <button className={clsx(styles.Button, "button")}>Copy all</button>
-        <div className={styles.Desc}>
+
+        <button className={clsx(styles.Button, "button")} onClick={onCopyAll}>
+          Copy all
+        </button>
+        {/* <div className={styles.Desc}>
           <div>How to get more code?</div>
           <div className={styles.DescTags}>
             <div className={styles.DescTag}>
@@ -46,7 +65,7 @@ export default function InviteCodes({ show, onClose }: any) {
               Create a token <span style={{ color: "#FBCA04" }}>+20</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </Modal>
   );
