@@ -325,7 +325,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
          </div>
           <div className={styles.userName}>
             Copy Trade
-            <span style={{ color: "#C9FF5D" }}>
+            <span style={{ color: "#C9FF5D", fontWeight: 600 }}>
               &nbsp;@
               {formatLongText(copiedInfo?.name) ||
                 formatAddress(copiedInfo?.address) || 
