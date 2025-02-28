@@ -5,14 +5,16 @@ import { ProgressBar } from "antd-mobile";
 import { numberFormatter } from "@/app/utils/common";
 import { useCountDown } from "ahooks";
 import styles from "./index.module.css";
-export default function PrelaunchStatus({ data, showAddress }: any) {
+
+export default function PrelaunchStatus({ data, showAddress, from }: any) {
   const [timeLeft, { days, hours, minutes, seconds }] = useCountDown({
     targetDate: data?.timeLeft || 0,
     interval: 1000
   });
+
   return (
     <div className={styles.panelEmpty}>
-      <div className={styles.singleProgress}>
+      <div>
         <div className={styles.progressTitleWrapper}>
           <div className={styles.progressTitle}>
             <ClockIcon />
@@ -39,16 +41,28 @@ export default function PrelaunchStatus({ data, showAddress }: any) {
         />
       </div>
 
-      <div
-        className={styles.singleProgress}
-        style={{ marginTop: 15, paddingRight: 30 }}
-      >
-        <div className={styles.progressTitleWrapper}>
-          <div className={styles.progressPercent}>
+      <div style={{ marginTop: 15, paddingRight: from === "panel" ? 0 : 30 }}>
+        <div
+          className={styles.progressTitleWrapper}
+          style={{
+            flexDirection: from === "panel" ? "column" : "row",
+            fontWeight: from === "panel" ? 400 : 500,
+            marginBottom: from === "panel" ? 0 : 10
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: from === "panel" ? "row" : "column",
+              alignItems: "center",
+              justifyContent: from === "panel" ? "space-between" : "flex-start",
+              width: from === "panel" ? "100%" : "auto"
+            }}
+          >
             <div className={styles.progressTitleText}>Flipped (SOL)</div>
             <div
               className={styles.progressTitleValue}
-              style={{ color: "#FBCA04" }}
+              style={{ color: "#FBCA04", marginTop: from === "panel" ? 0 : 5 }}
             >
               {data.prePaidAmount && data.prePaid
                 ? numberFormatter(
@@ -60,11 +74,20 @@ export default function PrelaunchStatus({ data, showAddress }: any) {
             </div>
           </div>
 
-          <div className={styles.progressPercent}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: from === "panel" ? "row" : "column",
+              alignItems: "center",
+              justifyContent: from === "panel" ? "space-between" : "flex-start",
+              width: from === "panel" ? "100%" : "auto",
+              marginTop: from === "panel" ? 15 : 0
+            }}
+          >
             <div className={styles.progressTitleText}>Flipped Account</div>
             <div
               className={styles.progressTitleValue}
-              style={{ color: "#fff" }}
+              style={{ color: "#fff", marginTop: from === "panel" ? 0 : 5 }}
             >
               {data.prePaid || 0}
             </div>
