@@ -318,7 +318,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
               {formatLongText(copiedInfo?.name) ||
                 formatAddress(copiedInfo?.address) || 
                 formatAddress(address) ||
-                "FlipN"}
+                "FUN"}
             </span>
           </div>
 

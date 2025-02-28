@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import Mobile from "./mobile";
-import Laptop from "./laptop";
+import Laptop from "./laptop/index";
 import useReferralRate from "./use-referral-rate";
 import useUserMining from "./use-user-mining";
 import { useUserAgent } from "@/app/context/user-agent";

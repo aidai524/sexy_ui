@@ -41,6 +41,7 @@ export interface Project {
     buys24hUsd?: number;    
     marketCap24hUsd?: number;
     volume24hUsd?: number;
+    mc?: string;
 }
 
 export interface Comment {

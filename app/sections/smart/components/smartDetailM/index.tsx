@@ -87,7 +87,7 @@ export default function SmartDetailM() {
           <div className={styles.userName}>
             {formatLongText(userInfo?.name) ||
               formatAddress(userInfo?.address || walletAddress) ||
-              "FlipN"}
+              "FUN"}
           </div>
         </div>
         <div onClick={() => setShareVisible(true)}>

@@ -13,7 +13,8 @@ export default function ProgressBar({
           backgroundColor: "#3C3C3C80",
           backdropFilter: "blur(5px)",
           borderRadius: "12px",
-          ...videoProgressStyle
+          ...videoProgressStyle,
+          zIndex: 1
         }}
       >
         <div
@@ -24,7 +25,8 @@ export default function ProgressBar({
             height: 2,
             backgroundColor: "#fff",
             borderRadius: "12px",
-            width: progress * 100 + "%"
+            width: progress * 100 + "%",
+            zIndex: -1
           }}
         />
       </div>

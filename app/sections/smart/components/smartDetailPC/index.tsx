@@ -96,7 +96,7 @@ export default function SmartDetailPC() {
                   <div className={styles.userName}>
                     {formatLongText(userInfo?.name) ||
                       formatAddress(userInfo?.address || walletAddress) ||
-                      "FlipN"}
+                      "FUN"}
                   </div>
                   <div className={styles.shareIcon} onClick={() => setShareVisible(true)}>
                    <ShareIcon />

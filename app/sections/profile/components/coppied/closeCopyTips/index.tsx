@@ -28,7 +28,7 @@ export default function CloseCopyTips({ show, onClose, copiedInfo, handleCloseAn
                 alt=""
             />
             <div className={styles.userName}>
-                @{formatAddress(copiedInfo?.from) || "FlipN"}
+                @{formatAddress(copiedInfo?.from) || "FUN"}
             </div>
         </div>
         <div className={styles.tipsText}>
