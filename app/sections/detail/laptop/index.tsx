@@ -6,8 +6,6 @@ import { useEffect } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useSearchParams } from "next/navigation";
 import BackIcon from "./back-icon";
-import Tips from "@/app/components/page-header/mobile/tips";
-import SearchBar from "@/app/components/search-bar";
 import { TokenStatusModal } from "@/app/components/status2Alert";
 import { useDetailStatus } from "@/app/store/use-detail-status";
 
@@ -27,10 +25,6 @@ export default function Laptop(props: any) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <div className={styles.Header}>
-        <Tips isCustomWidth />
-        <SearchBar />
-      </div>
       <div className={styles.Content}>
         <div
           style={{
