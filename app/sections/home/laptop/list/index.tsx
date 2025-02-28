@@ -145,7 +145,7 @@ export default function List({ type, isCurrentTab }: any) {
               key={token?.address || item}
               token={token}
               isCurrent={index === i && isCurrentTab}
-              isNext={i - 1 === index && type === "launching"}
+              isNext={i - 1 === index && isCurrentTab}
               mediaId={String(token?.id) + "_" + type}
               onUpdate={(token: any, action?: string) => {
                 if (action && ["launched_like", "comments"].includes(action)) {
@@ -160,7 +160,9 @@ export default function List({ type, isCurrentTab }: any) {
                 }
                 queryAndUpdateDetail(token.address);
               }}
-              opacity={index > i ? 0 : 1}
+              opacity={
+                index > i ? 0 : i - 1 === index && isCurrentTab ? 0.3 : 1
+              }
               showTrade={tokenPanelStatusStore.showTrade}
               tradeTab={tokenPanelStatusStore.tab}
               onUpdateTradeTab={tokenPanelStatusStore.setTab}

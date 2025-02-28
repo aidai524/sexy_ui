@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import styles from "./index.module.css";
 import RankLoading from "./rank-loading";
 import Panel from "@/app/sections/mining/component/panel";
-import InviteCodes from "../component/invite-codes";
 import TotalPanel from "../mobile/total-panel";
 import InviteFrenz from "../mobile/panels/invite-frenz";
 import LikeToEarn from "../mobile/panels/like-to-earn";
@@ -18,10 +17,10 @@ export default function Laptop({
   userInfo,
   rate,
   rateLoading,
-  onCopyAll = () => {}
+  onQuery
 }: any) {
   const configStore: any = useConfig();
-  const [showInviteCodes, setShowInviteCodes] = useState(false);
+
   return (
     <>
       <motion.div
@@ -36,13 +35,7 @@ export default function Laptop({
           <Panel isTape={false} className={styles.PanelWrapper}>
             <div className={styles.PanelTitle}>Earn</div>
             <div className={styles.Panels}>
-              <InviteFrenz
-                onOpenInviteCodes={() => {
-                  setShowInviteCodes(true);
-                }}
-                onCopyAll={onCopyAll}
-                rate={rate}
-              />
+              <InviteFrenz rate={rate} />
               <LikeToEarn info={info} userInfo={userInfo} />
               <FollowX />
               <CreateToEarn airdropEndTime={configStore.AirdropEndTime} />
@@ -57,12 +50,6 @@ export default function Laptop({
           )}
         </div>
       </motion.div>
-      <InviteCodes
-        show={showInviteCodes}
-        onClose={() => {
-          setShowInviteCodes(false);
-        }}
-      />
     </>
   );
 }

@@ -44,6 +44,7 @@ export default function LikeToEarn({ info, userInfo }: any) {
               <button
                 type="button"
                 className={styles.Button}
+                disabled={remainingNum === 0}
                 onClick={() => {
                   router.push("/");
                 }}
