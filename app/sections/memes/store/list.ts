@@ -8,11 +8,17 @@ interface MemesState {
   setHotList: (list: Hot[]) => void;
   setHotListLoading: (loading: boolean) => void;
   memesListLoading: boolean;
-  memesList: Meme[];
+  memesGenesisList: Meme[];
+  memesTickingList: Meme[];
+  memesListedList: Meme[];
+  memesImportList: Meme[];
   memesListPageLimit: number;
   memesListPageOffset: number;
   memesListPageNext: boolean;
-  setMemesList: (list: Meme[]) => void;
+  setMemesGenesisList: (list: Meme[]) => void;
+  setMemesTickingList: (list: Meme[]) => void;
+  setMemesListedList: (list: Meme[]) => void;
+  setMemesImportList: (list: Meme[]) => void;
   setMemesListLoading: (loading: boolean) => void;
   setMemesListPageLimit: (limit: number) => void;
   setMemesListPageOffset: (offset: number) => void;
@@ -25,11 +31,17 @@ export const useMemesListStore = create(persist<MemesState>((set) => ({
   setHotList: (list: Hot[]) => set((state) => ({ ...state, hotList: list })),
   setHotListLoading: (loading) => set((state) => ({ ...state, hotListLoading: loading })),
   memesListLoading: false,
-  memesList: [],
+  memesGenesisList: [],
+  memesTickingList: [],
+  memesListedList: [],
+  memesImportList: [],
   memesListPageLimit: 20,
   memesListPageOffset: 0,
   memesListPageNext: true,
-  setMemesList: (list: Meme[]) => set((state) => ({ ...state, memesList: list })),
+  setMemesGenesisList: (list: Meme[]) => set((state) => ({ ...state, memesGenesisList: list })),
+  setMemesTickingList: (list: Meme[]) => set((state) => ({ ...state, memesTickingList: list })),
+  setMemesListedList: (list: Meme[]) => set((state) => ({ ...state, memesListedList: list })),
+  setMemesImportList: (list: Meme[]) => set((state) => ({ ...state, memesImportList: list })),
   setMemesListLoading: (loading) => set((state) => ({ ...state, memesListLoading: loading })),
   setMemesListPageLimit: (limit) => set((state) => ({ ...state, memesListPageLimit: limit })),
   setMemesListPageOffset: (offset) => set((state) => ({ ...state, memesListPageOffset: offset })),

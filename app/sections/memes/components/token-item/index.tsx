@@ -15,11 +15,13 @@ import VideoPlayer from "@/app/components/video";
 import { getVideoExt } from "@/app/components/upload";
 import { useMemo, useState } from "react";
 import Big from "big.js";
+import { useRouter } from 'next/navigation';
 
 const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
   const { className, token } = props;
 
   const { isMobile } = useUserAgent();
+  const router = useRouter();
 
   const _token = useMemo(() => {
     return token.kind === "Meme"
@@ -36,7 +38,12 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
   }, [token]);
 
   return (
-    <div className={clsx(styles.TokenItemContainer, className)}>
+    <div
+      className={clsx(styles.TokenItemContainer, className)}
+      onClick={() => {
+        router.push(`/detail?address=${token?.address}`);
+      }}
+    >
       {!isMobile && (
         <div className={styles.TokenItemLaptopAvatar}>
           {isVideoFile(_token.icon) ? (

@@ -128,6 +128,7 @@
   border-radius: 50px;
   border: 2px solid #FFF;
   position: relative;
+  cursor: pointer;
 }
 .CarouselAvatarImg {
   width: 100%;
