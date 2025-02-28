@@ -40,8 +40,8 @@ export default function InviteCodes({
         </div>
         <div className={styles.CodeList}>
           {loading
-            ? [...new Array(10)].map((item) => (
-                <Skeleton animated className={styles.CodeItem} />
+            ? [...new Array(10)].map((item, idx) => (
+                <Skeleton key={idx} animated className={styles.CodeItem} />
               ))
             : list?.map((item: any) => (
                 <div className={styles.CodeItem} key={item.code}>
