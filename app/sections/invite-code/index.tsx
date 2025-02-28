@@ -36,7 +36,7 @@ const InviteCodeView: React.FC<any> = (props) => {
   }, [address, accountRefresher]);
 
   useEffect(() => {
-    if ((!!airdropUserData?.referral_account || airdropUserData?.allow_login) && pathname === "/invite-code") {
+    if (airdropUserData?.allow_login && pathname === "/invite-code") {
       router.replace('/');
     }
   }, [airdropUserData, pathname]);
@@ -45,7 +45,7 @@ const InviteCodeView: React.FC<any> = (props) => {
     <div className={isMobile ? styles.inviteCodeContainer : styles.inviteCodeContainerLaptop}>
       {
        !pageLoading && (
-          (!address || !accountRefresher || airdropDataLoading || !!airdropUserData?.referral_account) ? (
+          (!address || !accountRefresher || airdropDataLoading || airdropUserData?.allow_login) ? (
             <InviteCodeConnectWallet loading={pageLoading || airdropDataLoading} />
           ) : (
             <InviteCodeForm />
