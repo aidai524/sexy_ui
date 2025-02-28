@@ -33,7 +33,7 @@ export const AirdropContextProvider: React.FC<any> = ({ children }) => {
     }
     setAirdropUserData(res.data);
     if (!res.data?.ReferralAccount) {
-      router.replace("/invite-code");
+      // router.replace("/invite-code");
     }
     setAirdropDataLoading(false);
   };
