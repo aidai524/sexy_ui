@@ -12,7 +12,7 @@ export default function Mining({
   userInfo,
   rate,
   rateLoading,
-  onCopyAll = () => {}
+  onQuery
 }: any) {
   const [showRank, setShowRank] = useState(false);
 
@@ -26,7 +26,12 @@ export default function Mining({
           }}
         />
         <div className={styles.Content}>
-          <Panels rate={rate} info={info} userInfo={userInfo} />
+          <Panels
+            rate={rate}
+            info={info}
+            userInfo={userInfo}
+            onQuery={onQuery}
+          />
           <TotalPanel info={info} userInfo={userInfo} />
           <Others info={info} />
         </div>

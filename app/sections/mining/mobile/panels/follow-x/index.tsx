@@ -1,13 +1,18 @@
 import styles from "../index.module.css";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
 import { useAuth } from "@/app/context/auth";
-import { useRouter } from "next/navigation";
+import { useConfig } from "@/app/store/useConfig";
 import XButton from "./x-button";
 import CheckedIcon from "../checked-icon";
+import useTwitterBind from "@/app/hooks/use-twitter-bind";
+import CircleLoading from "@/app/components/icons/loading";
 
-export default function FollowX({ info }: any) {
-  const { userInfo } = useAuth();
-  const router = useRouter();
+export default function FollowX() {
+  const { userInfo, onQueryInfo } = useAuth();
+  const config = useConfig((store: any) => store.config);
+  const { loading } = useTwitterBind({
+    onSuccess: onQueryInfo
+  });
   return (
     <div
       className={styles.Item}
@@ -44,15 +49,19 @@ export default function FollowX({ info }: any) {
           )}
           <div className={styles.ItemBottomButtons}>
             {userInfo?.address ? (
-              true ? (
+              !userInfo?.twitter_user_id ? (
                 <button
                   type="button"
                   className={styles.Button}
+                  disabled={loading}
+                  style={{ width: 104 }}
                   onClick={() => {
-                    router.push("/");
+                    const redirectUri = `${window.location.origin}${window.location.pathname}`;
+                    const path = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${config.TwitterClientID}&redirect_uri=${redirectUri}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`;
+                    window.open(path, "_blank");
                   }}
                 >
-                  Authorize
+                  {loading ? <CircleLoading /> : "Authorize"}
                 </button>
               ) : (
                 <div className={styles.Checked}>

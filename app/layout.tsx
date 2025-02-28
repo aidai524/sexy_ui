@@ -5,7 +5,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import Layout from "./components/layout";
 import WalletConnect from "./components/WalletConnect";
 import { UserAgentProvider } from "@/app/context/user-agent";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import TGProvider from "./context/TGProvider";
 import PrivyWalletProvider from "@/app/context/privy";
 
@@ -14,21 +14,21 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    if (!window.navigator.userAgent.includes("Mobile")) return;
-    window.AddToHomeScreenInstance = window?.AddToHomeScreen?.({
-      appName: "Fun",
-      appNameDisplay: "standalone",
-      appIconUrl: "/192x192.png",
-      assetUrl: "/libs/add_to_homescreen/img/", // Link to directory of library image assets.
+  // useEffect(() => {
+  //   if (!window.navigator.userAgent.includes("Mobile")) return;
+  //   window.AddToHomeScreenInstance = window?.AddToHomeScreen?.({
+  //     appName: "Fun",
+  //     appNameDisplay: "standalone",
+  //     appIconUrl: "/192x192.png",
+  //     assetUrl: "/libs/add_to_homescreen/img/", // Link to directory of library image assets.
 
-      maxModalDisplayCount: 1, // If set, the modal will only show this many times.
-      // [Optional] Default: -1 (no limit).  (Debugging: Use this.clearModalDisplayCount() to reset the count)
-      displayOptions: { showMobile: true, showDesktop: true }, // show on mobile/desktop [Optional] Default: show everywhere
-      allowClose: true
-    });
-    window.AddToHomeScreenInstance?.show("en"); // show "add-to-homescreen" instructions to user, or do nothing if already added to homescreen
-  }, []);
+  //     maxModalDisplayCount: 1, // If set, the modal will only show this many times.
+  //     // [Optional] Default: -1 (no limit).  (Debugging: Use this.clearModalDisplayCount() to reset the count)
+  //     displayOptions: { showMobile: true, showDesktop: true }, // show on mobile/desktop [Optional] Default: show everywhere
+  //     allowClose: true
+  //   });
+  //   window.AddToHomeScreenInstance?.show("en"); // show "add-to-homescreen" instructions to user, or do nothing if already added to homescreen
+  // }, []);
 
   return (
     <html lang="en">
@@ -38,10 +38,10 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
         />
-        <link rel="stylesheet" href="/libs/add_to_homescreen/index.css" />
+        {/* <link rel="stylesheet" href="/libs/add_to_homescreen/index.css" /> */}
         <link rel="manifest" href="/manifest.json" />
         <title>Fun</title>
-        <script async src="/libs/add_to_homescreen/index.js" />
+        {/* <script async src="/libs/add_to_homescreen/index.js" /> */}
       </head>
       <body>
         <TGProvider>
