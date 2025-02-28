@@ -28,19 +28,20 @@ export default function LaunchesLike({
           window.connect();
           return;
         }
+        setMergedLiked(true);
         setShowAnimation(true);
         const res = await actionLikeTrigger({
           data: token,
           onShare: false
         });
         if (res) {
-          setMergedLiked(true);
           setMergedNum(mergedNum + 1);
           setTimeout(() => {
             onSuccess("launched_like");
             setShowAnimation(false);
           }, 6000);
         } else {
+          setMergedLiked(false);
           setTimeout(() => {
             setShowAnimation(false);
           }, 6000);

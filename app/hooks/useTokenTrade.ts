@@ -963,7 +963,7 @@ export function useTokenTrade({
   }, [pool]);
 
   const getRate = useCallback(
-    async (amountParam: { solAmount?: string; tokenAmount?: string }) => {
+    async (amountParam: { solAmount?: string; tokenAmount?: string, type: string }) => {
       if (pool) {
         const program = new Program<any>(idl, programId, {
           connection: connection
@@ -1089,7 +1089,7 @@ export function useTokenTrade({
 async function _getRate(
   program: Program,
   pool: PublicKey,
-  { solAmount, tokenAmount }: { solAmount?: string; tokenAmount?: string }
+  { solAmount, tokenAmount, type }: { solAmount?: string; tokenAmount?: string, type: string }
 ) {
   const poolData: any = await program.account.pool.fetch(pool);
 
@@ -1097,7 +1097,7 @@ async function _getRate(
   const solToken = new Big(poolData!.virtualWsolAmount.toNumber());
 
   // buy
-  if (solAmount) {
+  if (solAmount && type === 'buy') {
     const _solAmount = new Big(solAmount).mul(1 - 0.01);
     const result = poolToken
       .mul(_solAmount)
@@ -1106,8 +1106,18 @@ async function _getRate(
     return result;
   }
 
+  if (tokenAmount && type === 'buy') {
+    const _tokenAmount = new Big(tokenAmount);
+    const result = solToken
+      .mul(_tokenAmount)
+      .div(poolToken.minus(_tokenAmount))
+      .div(1 - 0.01)
+      .toString();
+    return result;
+  }
+
   // sell
-  if (tokenAmount) {
+  if (tokenAmount && type === 'sell') {
     const _tokenAmount = new Big(tokenAmount).mul(1 - 0.015);
     const result = solToken
       .mul(_tokenAmount)

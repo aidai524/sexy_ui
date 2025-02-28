@@ -150,7 +150,9 @@ export default function Txs({ from, data }: any) {
                   from === "panel" ? "space-between" : "flex-start"
               }}
             >
-              <div className={styles.filterItem}>
+              <div className={styles.filterItem} style={{
+              justifyContent: from === "panel" ? "flex-start" : "space-between"
+            }}>
                 <div
                   className={styles.filterText}
                   style={{
@@ -172,7 +174,9 @@ export default function Txs({ from, data }: any) {
                 />
               </div>
 
-              <div className={styles.filterItem}>
+              <div className={styles.filterItem} style={{
+              justifyContent: from === "panel" ? "flex-start" : "space-between"
+            }}>
                 <div
                   className={styles.filterText}
                   style={{

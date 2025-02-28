@@ -20,11 +20,16 @@ const TYPES: Record<string, any> = {
     text: "Sold"
   }
 };
-export default function Tips() {
+export default function Tips({ isCustomWidth }: any) {
   const { prevTip, tip, prevRef, currentRef } = useTips();
 
   return (
-    <div className={styles.Container}>
+    <div
+      className={styles.Container}
+      style={{
+        width: isCustomWidth ? "auto" : 200
+      }}
+    >
       {[prevTip, tip].map((item: any, i: number) => (
         <div
           className={styles.Tip}
@@ -33,7 +38,7 @@ export default function Tips() {
               item && TYPES[item.trade_type]
                 ? TYPES[item.trade_type].bg
                 : "transparent",
-            width: 200
+            width: isCustomWidth ? "auto" : 200
           }}
           key={i}
           ref={i === 0 ? prevRef : currentRef}
@@ -52,7 +57,18 @@ export default function Tips() {
                   {numberFormatter(item.sol_amount / 1e9, 2, true)} SOL{" "}
                 </div>
                 <img src={item.token_icon} className={styles.TokenIcon} />
-                <div className={styles.TokenName}>{item.token_symbol} </div>
+                <div
+                  className={styles.TokenName}
+                  style={{
+                    width: isCustomWidth ? "auto" : 69
+                  }}
+                >
+                  {item.token_symbol}
+                  {item.token_symbol}
+                  {item.token_symbol}
+                  {item.token_symbol}
+                  {item.token_symbol}{" "}
+                </div>
               </div>
             </>
           )}

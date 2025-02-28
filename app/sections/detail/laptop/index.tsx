@@ -4,8 +4,8 @@ import Token from "../../home/laptop/token";
 import useTokenDetail from "../use-token-detail";
 import { useEffect } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
-import { useRouter, useSearchParams } from "next/navigation";
-import GoBack from "@/app/components/back/laptop";
+import { useSearchParams } from "next/navigation";
+import BackIcon from "./back-icon";
 import { TokenStatusModal } from "@/app/components/status2Alert";
 import { useDetailStatus } from "@/app/store/use-detail-status";
 
@@ -25,11 +25,6 @@ export default function Laptop(props: any) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <div className={styles.TitleWrapper}>
-        {["profile", "trends", "messages"].includes(
-          search.get("from") || ""
-        ) && <GoBack text="" />}
-      </div>
       <div className={styles.Content}>
         <div
           style={{
@@ -41,6 +36,17 @@ export default function Laptop(props: any) {
             width: innerWidth
           }}
         >
+          <div className={styles.BackButton}>
+            {["profile", "trends", "messages"].includes(
+              search.get("from") || ""
+            ) && (
+              <BackIcon
+                onClick={() => {
+                  history.back();
+                }}
+              />
+            )}
+          </div>
           <Token
             token={detailStatusStore.token}
             isCurrent={true}

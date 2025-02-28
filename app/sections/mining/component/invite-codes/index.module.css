@@ -1,0 +1,98 @@
+.Container {
+  width: 100vw;
+  max-width: 486px;
+  background-color: #252328;
+  border: 1px solid #3b3b3b;
+  padding-bottom: 20px;
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding: 22px 16px 0px;
+}
+
+.RefreshButton {
+  padding: 6px;
+}
+
+.CodeList {
+  padding: 22px 14px 0px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.CodeItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  width: calc(50% - 8px);
+  height: 34px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 12px */
+}
+
+.CopyButton {
+  padding: 4px;
+}
+
+.Button {
+  width: calc(100% - 30px);
+  margin: 10px 0px 0px 16px;
+  height: 40px;
+  border-radius: 100px;
+  background: #fff;
+  color: #000;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.Desc {
+  padding: 20px 14px 20px 16px;
+  color: #9290b1;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.DescTags {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.DescTag {
+  padding: 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

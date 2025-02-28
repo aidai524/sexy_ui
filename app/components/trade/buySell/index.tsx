@@ -143,7 +143,8 @@ export default function BuySell({
               .toFixed(0);
 
             getRate({
-              solAmount: buyInSol
+              solAmount: buyInSol,
+              type: 'buy'
             }).then((res: any) => {
               const buyIn = new Big(res)
                 .mul(1 - slip / 100)
@@ -181,7 +182,8 @@ export default function BuySell({
             getRate({
               tokenAmount: new Big(debounceVal)
                 .mul(10 ** token.tokenDecimals!)
-                .toFixed(0)
+                .toFixed(0),
+              type: 'buy'
             }).then((res: any) => {
               setIsLoading(false);
               buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
@@ -235,7 +237,8 @@ export default function BuySell({
             getRate({
               tokenAmount: new Big(debounceVal)
                 .mul(10 ** token.tokenDecimals!)
-                .toFixed(0)
+                .toFixed(0),
+              type: 'sell'
             }).then((res: any) => {
               setIsLoading(false);
               sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
@@ -601,15 +604,15 @@ export default function BuySell({
             {activeIndex === 0 && tokenType === 0 && (
               <div className={styles.paid}>
                 <div>Payment</div>
-                <div>
+                <div className={styles.receiveAmount}>
                   {buyInSol &&
                     numberFormatter(new Big(buyInSol)
                       .div(1 + slip / 100)
                       .div(10 ** SOL.tokenDecimals)
                       .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)}{" "}
-                  <div className={styles.receiveTokenImgBox}>
-                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
-                  </div>
+                    <div className={styles.receiveTokenImgBox}>
+                      <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                    </div>
                 </div>
               </div>
             )}

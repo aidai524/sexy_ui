@@ -1,5 +1,5 @@
 import styles from "./avatar.module.css";
-import clsx from 'clsx';
+import clsx from "clsx";
 
 const COLORS: Record<number, string[]> = {
   1: ["#FF97C3", "#FF2681"],
@@ -40,14 +40,15 @@ function RankIcon({ rank, isNormalBg = true }: any) {
       </svg>
     );
   }
-  return isNormalBg ? (
-    <div className={`${styles.RankIcon} ${styles.RankIconNormal}`} />
-  ) : (
-    <div className={`${styles.RankIcon}`} />
-  );
+  return null;
 }
 
-export default function Rank({ rank, className, textClassName, isNormalBg }: any) {
+export default function Rank({
+  rank,
+  className,
+  textClassName,
+  isNormalBg
+}: any) {
   return (
     <div
       className={clsx(styles.Rank, className)}

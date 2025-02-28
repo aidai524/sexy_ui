@@ -59,7 +59,7 @@ const InviteCodeForm: React.FC<any> = (props) => {
     }
     setPending(false);
   }, {
-    wait: 150
+    wait: 50
   });
 
   const handleStart = () => {
@@ -96,6 +96,12 @@ const InviteCodeForm: React.FC<any> = (props) => {
             value={code}
             onChange={(e) => handleCodeChange(e.target.value)}
             onBlur={(e) => handleCodeVerify(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.code === "Enter") {
+                // @ts-ignore
+                handleCodeVerify(e.target.value);
+              }
+            }}
             onFocus={handleCodeVerifyCancel}
           />
         </div>
