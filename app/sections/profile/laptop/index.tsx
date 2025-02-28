@@ -61,7 +61,7 @@ export default function Laptop({
                         {formatLongText(userInfo?.name, 9, 4) ||
                           formatAddress(userInfo?.address) ||
                           formatAddress(address) ||
-                          "FlipN"}
+                          "FUN"}
                       </div>
                       <Level level={userInfo?.level} style={{ marginLeft: 24 }} />
                       {!isOther && (

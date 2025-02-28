@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { httpGet, timeAgo } from '@/app/utils';
 import { PublicKey } from '@solana/web3.js';
 import { programId_address } from '@/app/utils/config';
@@ -20,12 +20,18 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     hotListLoading,
     setHotList,
     setHotListLoading,
-    memesList,
+    memesGenesisList,
+    memesImportList,
+    memesListedList,
+    memesTickingList,
     memesListLoading,
     memesListPageLimit,
     memesListPageNext,
     memesListPageOffset,
-    setMemesList,
+    setMemesListedList,
+    setMemesTickingList,
+    setMemesImportList,
+    setMemesGenesisList,
     setMemesListLoading,
     setMemesListPageOffset,
     setMemesListPageNext,
@@ -40,8 +46,26 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
   } = useMemesStore();
   const { connection } = useConnection();
 
+  const memesContainerRef = useRef<any>();
+
+  const _currentMemesList = (_type: string) => {
+    if (_type === TABS[1].value) {
+      return memesGenesisList;
+    }
+    if (_type === TABS[2].value) {
+      return memesTickingList;
+    }
+    if (_type === TABS[3].value) {
+      return memesListedList;
+    }
+    if (_type === TABS[4].value) {
+      return memesImportList;
+    }
+    return [];
+  };
+
   const listShown = useMemo<Hot[] | Meme[]>(() => {
-    let _list: any = memesList;
+    let _list: any = _currentMemesList(currentTab.value);
     if (currentTab.value === TABS[0].value) {
       _list = hotList;
       if (currentFilter) {
@@ -63,7 +87,16 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       }
     }
     return _list;
-  }, [hotList, memesList, currentTab, currentFilter]);
+  }, [
+    hotList,
+    memesGenesisList,
+    memesImportList,
+    memesListedList,
+    memesTickingList,
+    currentTab,
+    currentFilter,
+    _currentMemesList
+  ]);
 
   const getPoolToken = async (token: Hot) => {
     try {
@@ -122,19 +155,23 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       const it = _list[i];
       it.kind = 'Hot';
       it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
-      const { poolAmount, solAmount } = await getPoolToken(it);
-      let _progress = Big(1095840542120770).minus(poolAmount).div(Big(1095840542120770).minus(295840542120770)).times(100);
-      if (Big(_progress).lt(0)) {
-        _progress = Big(0);
+
+      if ([0].includes(it.status)) {
+        const { poolAmount, solAmount } = await getPoolToken(it);
+        let _progress = Big(1095840542120770).minus(poolAmount).div(Big(1095840542120770).minus(295840542120770)).times(100);
+        if (Big(_progress).lt(0)) {
+          _progress = Big(0);
+        }
+        if (Big(_progress).gt(100)) {
+          _progress = Big(100);
+        }
+        it.progress = _progress.toFixed(2, Big.roundDown);
+        it.poolAmount = poolAmount;
+        it.solAmount = solAmount;
       }
-      if (Big(_progress).gt(100)) {
-        _progress = Big(100);
-      }
-      it.progress = _progress.toFixed(2, Big.roundDown);
-      it.poolAmount = poolAmount;
-      it.solAmount = solAmount;
+
       // get k-line data
-      if (![0].includes(it.status)) {
+      if (![0].includes(it.status) && i < 3) {
         const kLineRes = await fetchData(
           it.address,
           getGranularityByResolution('1H'),
@@ -202,13 +239,34 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
 
       const _memes_list = await formatMemesList(res.data.list);
 
-      console.log('_memes_list', _memes_list);
+      const _setMemesList = (val: any) => {
+        switch (type) {
+          // Genesis
+          case TABS[1].value:
+            setMemesGenesisList(val);
+            break;
+          // Ticking
+          case TABS[2].value:
+            setMemesTickingList(val);
+            break;
+          // Listed
+          case TABS[3].value:
+            setMemesListedList(val);
+            break;
+          // Import
+          case TABS[4].value:
+            setMemesImportList(val);
+            break;
+          default:
+            break;
+        }
+      };
 
       if (offset === 0) {
-        setMemesList(_memes_list);
+        _setMemesList(_memes_list);
       } else {
-        const _list = [...memesList, ..._memes_list];
-        setMemesList(_list);
+        const _list = [..._currentMemesList(type), ..._memes_list];
+        _setMemesList(_list);
       }
 
       setMemesListPageNext(res.data.has_next_page);
@@ -228,7 +286,10 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
   }, { wait: 1000 });
 
   const initMemesList = () => {
-    setMemesList([]);
+    setMemesGenesisList([]);
+    setMemesTickingList([]);
+    setMemesListedList([]);
+    setMemesImportList([]);
     setMemesListPageNext(true);
     setMemesListPageOffset(0);
     setMemesListLoading(false);
@@ -257,6 +318,7 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     memesListPageNext,
     onMemesListNextPage,
     initMemesList,
+    memesContainerRef
   };
 }
 
@@ -272,4 +334,5 @@ export interface Memes extends MemesState {
   memesListPageNext: boolean;
   onMemesListNextPage: () => void;
   initMemesList: () => void;
+  memesContainerRef: React.MutableRefObject<any>;
 }

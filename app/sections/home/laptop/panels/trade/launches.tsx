@@ -21,7 +21,7 @@ const TABS = [
     key: "holders"
   },
   {
-    label: "Tnxs",
+    label: "Txns",
     key: "transactions"
   },
   {

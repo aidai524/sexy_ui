@@ -108,7 +108,7 @@ const AirdropInfoContent = (props: any) => {
         />
       </div>
       <div className={[styles.AirdropInfoLevelPointsWrapper, levelPointsLabelClassName].join(' ')}>
-        Your Level and airdrops on FlipN will be...
+        Your Level and airdrops on Fun will be...
       </div>
       <div className={[styles.AirdropInfoLevelPoints, levelPointsClassName].join(' ')}>
         {
@@ -161,10 +161,10 @@ const AirdropInfoContent = (props: any) => {
                 </span>
             ) : (
               isEnded ? (
-                <span>Go to FlipN</span>
+                <span>Go to Fun</span>
               ) : (
                 (isClaimed || !isPoints) ? (
-                  <span>Go to FlipN</span>
+                  <span>Go to FUN</span>
                 ) : (
                   <span>Claim</span>
                 )

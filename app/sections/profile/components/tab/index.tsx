@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useImperativeHandle } from 'react';
 import { motion } from "framer-motion";
 import styles from "./tab.module.css";
 
@@ -21,7 +21,7 @@ interface Props {
   onTabChange?: (nodeName: string) => void;
 }
 
-export default function Tab({
+export default React.forwardRef(function Tab({
   nodes,
   activeNode,
   tabContentStyle = {},
@@ -33,7 +33,8 @@ export default function Tab({
   tabContentClassName,
   cursorStyle,
   style
-}: Props) {
+}: Props, ref: any) {
+  const tabsRef = useRef<any>();
   const [tabIndex, setTabIndex] = useState(0);
   const prevI = useRef<number[]>([0]);
 
@@ -51,8 +52,13 @@ export default function Tab({
     }
   }, [activeNode, onTabChange, nodes]);
 
+  const refs = {
+    tabsRef: tabsRef.current,
+  };
+  useImperativeHandle(ref, () => refs);
+
   return (
-    <div className={styles.tabs} style={style}>
+    <div className={styles.tabs} style={style} ref={tabsRef}>
       <div
         className={[styles.tabHeaders, tabHeadersClassName].join(" ")}
         style={tabHeadersStyle}
@@ -117,4 +123,4 @@ export default function Tab({
       })}
     </div>
   );
-}
+});

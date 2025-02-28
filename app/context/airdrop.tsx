@@ -32,7 +32,7 @@ export const AirdropContextProvider: React.FC<any> = ({ children }) => {
       return;
     }
     setAirdropUserData(res.data);
-    if (!res.data?.referral_account) {
+    if (!res.data?.allow_login) {
       router.replace("/invite-code");
     }
     setAirdropDataLoading(false);
@@ -69,13 +69,14 @@ export function useAirdropContext() {
 
 interface IAirdropContext {
   airdropUserData: {
-    ReferralAccount: string;
+    referral_account: string;
     airdrop_points: string;
     clime_create: boolean;
     clime_pump: boolean;
     invited: number;
     points: string;
     referral_points: string;
+    allow_login: boolean;
   };
   airdropDataLoading: boolean;
 }

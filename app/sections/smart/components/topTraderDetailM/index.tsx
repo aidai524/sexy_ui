@@ -155,7 +155,7 @@ export default function TopTraderDetailM() {
               currentUserInfo?.name ||
                 currentUserInfo?.address ||
                 address ||
-                "FlipN"
+                "FUN"
             )}
           </div>
         </div>

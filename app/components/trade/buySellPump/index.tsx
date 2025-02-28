@@ -16,6 +16,7 @@ import { useSlip } from "@/app/store/useSlip";
 import useBalance from "@/app/hooks/useBalance";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { numberFormatter } from "@/app/utils/common";
+import { useConfig } from "@/app/store/useConfig";
 
 type Token = {
   tokenName: string;
@@ -52,6 +53,7 @@ export default function BuySellPump({
 }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
+  const { config }: any = useConfig();
   const { slip, set: setSlip }: any = useSlip();
   const tokenUri =
     token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
@@ -397,6 +399,14 @@ export default function BuySellPump({
                   <div className={styles.tokenImg}>
                     <img className={styles.tiImg} src={currentToken.tokenUri} />
                   </div>
+                </div>
+
+                <div className={styles.tokenPrice}>
+                  ${numberFormatter(
+                    currentToken.tokenName === "SOL" ? Number(config.SolPrice) * Number(valInput) : Number(token.price) * Number(valInput),
+                    2,
+                    true
+                  )}
                 </div>
               </div>
             </div>

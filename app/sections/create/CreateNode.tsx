@@ -391,8 +391,8 @@ export default forwardRef(function CreateNode(
     >
       <div className={styles.uploadImgWrapper}>
         <Upload
-          key={Date.now()}
           ref={imgRef}
+          key={tokenImg.length ? tokenImg[0].url : 10}
           percent={-1}
           type="token"
           accept="image/*, video/mp4"
