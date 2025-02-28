@@ -1,0 +1,26 @@
+.Container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  left: 10px;
+  top: 20px;
+  z-index: 5;
+}
+
+.Item {
+  width: 48px;
+  height: 23px;
+  border-radius: 6px;
+  background: rgba(60, 60, 60, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}

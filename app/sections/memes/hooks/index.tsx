@@ -20,12 +20,18 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     hotListLoading,
     setHotList,
     setHotListLoading,
-    memesList,
+    memesGenesisList,
+    memesImportList,
+    memesListedList,
+    memesTickingList,
     memesListLoading,
     memesListPageLimit,
     memesListPageNext,
     memesListPageOffset,
-    setMemesList,
+    setMemesListedList,
+    setMemesTickingList,
+    setMemesImportList,
+    setMemesGenesisList,
     setMemesListLoading,
     setMemesListPageOffset,
     setMemesListPageNext,
@@ -42,8 +48,24 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
 
   const memesContainerRef = useRef<any>();
 
+  const _currentMemesList = (_type: string) => {
+    if (_type === TABS[1].value) {
+      return memesGenesisList;
+    }
+    if (_type === TABS[2].value) {
+      return memesTickingList;
+    }
+    if (_type === TABS[3].value) {
+      return memesListedList;
+    }
+    if (_type === TABS[4].value) {
+      return memesImportList;
+    }
+    return [];
+  };
+
   const listShown = useMemo<Hot[] | Meme[]>(() => {
-    let _list: any = memesList;
+    let _list: any = _currentMemesList(currentTab.value);
     if (currentTab.value === TABS[0].value) {
       _list = hotList;
       if (currentFilter) {
@@ -65,7 +87,16 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       }
     }
     return _list;
-  }, [hotList, memesList, currentTab, currentFilter]);
+  }, [
+    hotList,
+    memesGenesisList,
+    memesImportList,
+    memesListedList,
+    memesTickingList,
+    currentTab,
+    currentFilter,
+    _currentMemesList
+  ]);
 
   const getPoolToken = async (token: Hot) => {
     try {
@@ -208,13 +239,34 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
 
       const _memes_list = await formatMemesList(res.data.list);
 
-      console.log('_memes_list', _memes_list);
+      const _setMemesList = (val: any) => {
+        switch (type) {
+          // Genesis
+          case TABS[1].value:
+            setMemesGenesisList(val);
+            break;
+          // Ticking
+          case TABS[2].value:
+            setMemesTickingList(val);
+            break;
+          // Listed
+          case TABS[3].value:
+            setMemesListedList(val);
+            break;
+          // Import
+          case TABS[4].value:
+            setMemesImportList(val);
+            break;
+          default:
+            break;
+        }
+      };
 
       if (offset === 0) {
-        setMemesList(_memes_list);
+        _setMemesList(_memes_list);
       } else {
-        const _list = [...memesList, ..._memes_list];
-        setMemesList(_list);
+        const _list = [..._currentMemesList(type), ..._memes_list];
+        _setMemesList(_list);
       }
 
       setMemesListPageNext(res.data.has_next_page);
@@ -234,7 +286,10 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
   }, { wait: 1000 });
 
   const initMemesList = () => {
-    setMemesList([]);
+    setMemesGenesisList([]);
+    setMemesTickingList([]);
+    setMemesListedList([]);
+    setMemesImportList([]);
     setMemesListPageNext(true);
     setMemesListPageOffset(0);
     setMemesListLoading(false);

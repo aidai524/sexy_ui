@@ -122,6 +122,10 @@
   line-height: normal;
 }
 
+.Button:disabled {
+  opacity: 0.5;
+}
+
 .Checked {
   display: flex;
   align-items: center;
