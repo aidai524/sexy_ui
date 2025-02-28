@@ -190,7 +190,7 @@ export default function Desc({
                         >
                             <img
                                 className={styles.avatar}
-                                src={data.creater.icon || defaultAvatar}
+                                src={data?.creater?.icon || defaultAvatar}
                             />
                             {userName}
                             {address === data.account && (
