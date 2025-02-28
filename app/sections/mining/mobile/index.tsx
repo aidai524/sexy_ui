@@ -5,7 +5,6 @@ import Panels from "./panels";
 import styles from "./index.module.css";
 import { useState } from "react";
 import Rank from "./rank";
-import InviteCodes from "../component/invite-codes";
 
 export default function Mining({
   info,
@@ -16,7 +15,6 @@ export default function Mining({
   onCopyAll = () => {}
 }: any) {
   const [showRank, setShowRank] = useState(false);
-  const [showInviteCodes, setShowInviteCodes] = useState(false);
 
   return (
     <>
@@ -28,15 +26,7 @@ export default function Mining({
           }}
         />
         <div className={styles.Content}>
-          <Panels
-            onOpenInviteCodes={() => {
-              setShowInviteCodes(true);
-            }}
-            rate={rate}
-            onCopyAll={onCopyAll}
-            info={info}
-            userInfo={userInfo}
-          />
+          <Panels rate={rate} info={info} userInfo={userInfo} />
           <TotalPanel info={info} userInfo={userInfo} />
           <Others info={info} />
         </div>
@@ -49,12 +39,6 @@ export default function Mining({
         info={info}
         userInfo={userInfo}
         infoLoading={infoLoading}
-      />
-      <InviteCodes
-        show={showInviteCodes}
-        onClose={() => {
-          setShowInviteCodes(false);
-        }}
       />
     </>
   );

@@ -5,7 +5,10 @@ const customStyle: any = {
   wordBreak: "break-word"
 };
 
-export function success(msg: string | React.ReactNode, opts?: { maskStyle?: React.CSSProperties; }) {
+export function success(
+  msg: string | React.ReactNode,
+  opts?: { maskStyle?: React.CSSProperties }
+) {
   const { maskStyle } = opts ?? {};
 
   Toast.show({
@@ -33,7 +36,10 @@ export function success(msg: string | React.ReactNode, opts?: { maskStyle?: Reac
   });
 }
 
-export function fail(msg: string | React.ReactNode, opts?: { maskStyle?: React.CSSProperties; isIcon?: boolean; }) {
+export function fail(
+  msg: string | React.ReactNode,
+  opts?: { maskStyle?: React.CSSProperties; isIcon?: boolean }
+) {
   const { maskStyle, isIcon = true } = opts ?? {};
 
   Toast.show({
