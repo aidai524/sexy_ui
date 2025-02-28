@@ -3,7 +3,7 @@
     height: 134px;
     background: #8F49FF;
     border-radius: 10px;
-    padding: 16px;
+    padding:8px 16px;
     min-width: 85vw;
     display: flex;
     justify-content: space-between;
@@ -52,4 +52,5 @@
     margin-top: auto;
     cursor: pointer;
     transition: all 0.3s ease;
+    flex-shrink: 0;
 }

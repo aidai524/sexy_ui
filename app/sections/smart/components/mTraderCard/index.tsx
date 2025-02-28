@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './index.module.css'
 import { CopyierIconBlack, ClaimIcon } from '@/app/sections/trends/components/top-traders/icons'
 import RightArrowWrap from '@/app/sections/smart/components/RightArrowWrap'
@@ -9,29 +9,43 @@ import { useAccount } from '@/app/hooks/useAccount';
 import { useUserAgent } from "@/app/context/user-agent";
 import { useWithdrawClaim } from '@/app/sections/profile/hooks/useWithdrawClaim';
 import Big from 'big.js';
-export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress | null, copyTradersUserInfo: CopyTraderAddress | null}) {
+export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress | null, copyTradersUserInfo: CopyTraderAddress | null, setRefreshing: (refreshing: number) => void, refreshing: number}) {
   const router = useRouter();
   const { handleWithdrawClaim } = useWithdrawClaim();
   const { isMobile } = useUserAgent();
   const { userInfo } = useUser();
   const { address: walletAddress } = useAccount();
-  const { smartMoniesInfo, copyTradersUserInfo } = props;
-  let canClaim =
-    new Big(copyTradersUserInfo?.carryFee || "0").minus(
-      new Big(copyTradersUserInfo?.claimed || "0")
-    ).toNumber();
+  const { smartMoniesInfo, copyTradersUserInfo, setRefreshing, refreshing } = props;
+  const [canClaim, setCanClaim] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setCanClaim(
+      new Big(copyTradersUserInfo?.carryFee || "0").minus(
+        new Big(copyTradersUserInfo?.claimed || "0")
+      ).toNumber()
+    );
+  }, [copyTradersUserInfo]);
 
   const claimProfit = async () => {
-    if (!walletAddress || copyTradersUserInfo?.isClaiming) {
+    if (!walletAddress || copyTradersUserInfo?.isClaiming || isLoading) {
       return;
     }
-    const res = await handleWithdrawClaim({
-      amount: canClaim.toString(),
-      chain: 'solana',
-      walletAddress,
-    });
+    setIsLoading(true);
+    try {
+      const res = await handleWithdrawClaim({
+        amount: canClaim.toString(),
+        chain: 'solana',
+        walletAddress,
+      });
     if (res) {
-      canClaim = 0;
+      setCanClaim(0);
+        setRefreshing(refreshing + 1);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -67,9 +81,14 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
         {canClaim > 0 && (
           <div className={styles.claimAmountButton} onClick={claimProfit}>
             <ClaimIcon />
-            <span className={styles.claimAmountButtonText}>{
-                copyTradersUserInfo?.isClaiming ? 'Claiming' : 'Claim'
-              }</span>
+           {isLoading ?    
+              <span className={styles.claimAmountButtonText}>
+                 Loading
+                </span> : 
+                <span className={styles.claimAmountButtonText}>
+                  { copyTradersUserInfo?.isClaiming ? 'Claiming' : 'Claim' }
+                </span>
+              }
           </div>
         )}
       </div>

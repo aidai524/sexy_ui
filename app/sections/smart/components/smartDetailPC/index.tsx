@@ -21,8 +21,11 @@ import { numberFormatter, numberFormatterNew } from '@/app/utils/common';
 import CopyTradeShare from '@/app/sections/smart/components/CopyTraderShare/modal';
 import { useAccount } from "@/app/hooks/useAccount";
 import Big from 'big.js';
+import { useCloseCopy } from "@/app/store/useCloseCopy";
+
 export default function SmartDetailPC() {
   const { userInfo } = useUser();
+  const { lastCloseCopyTime, set: setLastCloseCopyTime }:any = useCloseCopy();
   const { address: walletAddress } = useAccount();
   const currentAddress = userInfo?.address || walletAddress;
   const { isMobile } = useUserAgent();
@@ -62,7 +65,7 @@ export default function SmartDetailPC() {
   useEffect(() => {
     getSmartMoniesInfo();
     getCopyTradersUserInfo();
-  }, [reqAddress]);
+  }, [reqAddress,lastCloseCopyTime]);
 
   return (
     <div className={styles.container}>

@@ -18,7 +18,7 @@ export const useGetSmartMonies = ({chain, page, pageSize, orderBy, walletAddress
       } finally {
         setSmartMoniesLoading(false);
       }
-    }, 350), //
+    }, 500), //
     [chain, page, pageSize, orderBy, walletAddress, lastCopyTradeTime]
   );
 

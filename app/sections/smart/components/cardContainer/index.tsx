@@ -8,13 +8,16 @@ import CopyTrade from '@/app/services/copyTrade'
 import { SmartMoneyAddress, CopyTraderAddress } from '@/app/services/copyTrade';
 import { useUserAgent } from "@/app/context/user-agent";
 import CircleLoading from "@/app/components/icons/loading";
+import { useCopyTradeRefresh } from '@/app/store/useCopyTradeRefresh'
 export default function CardContainer() {
   const { address: walletAddress } = useAccount();
+  const { lastCopyTradeTime, set: setLastCopyTradeTime }:any = useCopyTradeRefresh();
   const { isMobile } = useUserAgent();
   const [smartMoniesInfo, setSmartMoniesInfo] = useState<SmartMoneyAddress | null>(null);
   const CopyTradeService = new CopyTrade();
   const [copyTradersUserInfo, setCopyTradersUserInfo] = useState<CopyTraderAddress | null>(null);
   const [isLoading, setIsLoading] = useState(walletAddress ? true : false);
+  const [refreshing, setRefreshing] = useState(0);
 
   const getCopyTradeDetails = async () => {
     if (walletAddress) {
@@ -38,7 +41,8 @@ export default function CardContainer() {
     }
     getSmartMoniesInfo();
     getCopyTradeDetails();
-  }, [walletAddress]);
+  }, [walletAddress,refreshing,lastCopyTradeTime]);
+
 
   if (isLoading) {
     return <div className={styles.loading}>
@@ -59,7 +63,7 @@ export default function CardContainer() {
        {
         isTopTrader ? (
           <>
-            <TopTraderCard smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo}/>
+            <TopTraderCard setRefreshing={setRefreshing} refreshing={refreshing} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo}/>
             {
               isCopyier ? (
                 <CopyTradeCard smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo}/>

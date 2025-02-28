@@ -21,9 +21,10 @@ import CopyTradeShare from '@/app/sections/smart/components/CopyTraderShare/moda
 import { useAccount } from "@/app/hooks/useAccount";
 import Big from 'big.js';
 import Loading from "@/app/loading";
-
+import { useCloseCopy } from "@/app/store/useCloseCopy";
 export default function SmartDetailM() {
   const { userInfo } = useUser();
+  const { lastCloseCopyTime, set: setLastCloseCopyTime }:any = useCloseCopy();
   const { address: walletAddress } = useAccount();
   const currentAddress = userInfo?.address || walletAddress;
   const { isMobile } = useUserAgent();
@@ -70,6 +71,13 @@ export default function SmartDetailM() {
     getSmartMoniesInfo();
     getCopyTradersUserInfo();
   }, [reqAddress]);
+
+  // refresh
+  useEffect(() => {
+    getSmartMoniesInfo();
+    getCopyTradersUserInfo();
+  }, [lastCloseCopyTime]);
+
 
   if (isLoading) {
     return <Loading />;

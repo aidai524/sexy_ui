@@ -13,8 +13,10 @@ import CloseCopyTips from "./closeCopyTips";
 import styles from './coppied.module.css';
 import { useRouter,useSearchParams } from "next/navigation";
 import { useAccount } from "@/app/hooks/useAccount";
+import { useCloseCopy } from "@/app/store/useCloseCopy";
 export default function Coppied({ isOther }: any) {
   const { address: walletAddress } = useAccount();
+  const { lastCloseCopyTime, set: setLastCloseCopyTime }:any = useCloseCopy();
   const searchParams = useSearchParams();
   const urlAddress = searchParams.get('address');
   const CopyTradeService = new CopyTrade();
@@ -111,7 +113,11 @@ export default function Coppied({ isOther }: any) {
           ...prev,
           items: prev.items.map((item: any) => {
             if (item.id !== id) return item;
-            return res.data.state === 4 ? null : { ...item, ...res.data };
+            if (res.data.state === 4) {
+              setCloseCopyTimeFunc(); // Add setCloseCopyTimeFunc call when removing item
+              return null;
+            }
+            return { ...item, ...res.data };
           }).filter(Boolean)
         }));
       }
@@ -175,6 +181,7 @@ export default function Coppied({ isOther }: any) {
         setCopyTradeMap({ items: [], total: 0 });
         setHasMore(true);
         loadMore(); 
+        setCloseCopyTimeFunc();
       }
     } else {
       const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address || walletAddress, chain: "solana", state: 4});
@@ -183,6 +190,7 @@ export default function Coppied({ isOther }: any) {
         setCopyTradeMap({ items: [], total: 0 });
         setHasMore(true);
         loadMore(); 
+        setCloseCopyTimeFunc();
       }
     }
   };
@@ -194,6 +202,7 @@ export default function Coppied({ isOther }: any) {
         setCopyTradeMap({ items: [], total: 0 });
         setHasMore(true);
         loadMore();
+        setCloseCopyTimeFunc();
      }
   }
 
@@ -204,6 +213,10 @@ export default function Coppied({ isOther }: any) {
     } else {
       handleClose(item);
     }
+  }
+
+  const setCloseCopyTimeFunc = () => {
+    setLastCloseCopyTime({lastCloseCopyTime: new Date().getTime()});
   }
 
 
