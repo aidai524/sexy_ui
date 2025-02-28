@@ -7,7 +7,7 @@ import {
 import RightArrowWrap from "@/app/sections/smart/components/RightArrowWrap";
 import { useRouter } from "next/navigation";
 import { SmartMoneyAddress, CopyTraderAddress } from "@/app/services/copyTrade";
-import { numberFormatter } from "@/app/utils/common";
+import { numberFormatter, numberFormatterNew } from "@/app/utils/common";
 import { useUserAgent } from "@/app/context/user-agent";
 
 export default function CopyTradeCard(props: {
@@ -23,9 +23,9 @@ export default function CopyTradeCard(props: {
       return '0';
     }
     if (pnl.startsWith('-')) {
-      return '-' + numberFormatter(Math.abs(Number(pnl)), 2, true);
+      return '-' + numberFormatterNew(Math.abs(Number(pnl)), 3, true);
     }
-    return '+' + numberFormatter(pnl, 2, true);
+    return '+' + numberFormatterNew(pnl, 3, true);
 }
   return (
     <div className={`

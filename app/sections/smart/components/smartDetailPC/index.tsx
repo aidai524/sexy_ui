@@ -120,38 +120,39 @@ export default function SmartDetailPC() {
   );
 }
 
+const formatPnl = (pnl: string) => {
+  if (pnl == "0") {
+    return "0";
+  }
+  if (pnl.startsWith("-")) {
+    return "-" + numberFormatterNew(Math.abs(Number(pnl)), 3, true);
+  }
+  return "+" + numberFormatterNew(pnl, 3, true);
+};
+const isGtZero = (str: string) => {
+  return Number(str) > 0;
+};
+
+
+const formatWinRate = (winRate: string) => {
+  if (winRate == '0') {
+    return '0%';
+  }
+  return new Big(winRate).times(100).toFixed(1) + '%';
+}
+
 export const SmartDetailContent = ({
   copyTradersUserInfo
 }: {
   copyTradersUserInfo: CopyTraderAddress | null;
 }) => {
-  const formatPnl = (pnl: string) => {
-    if (pnl == "0") {
-      return "0";
-    }
-    if (pnl.startsWith("-")) {
-      return "-" + numberFormatterNew(Math.abs(Number(pnl)), 3, true);
-    }
-    return "+" + numberFormatterNew(pnl, 3, true);
-  };
-  const isGtZero = (str: string) => {
-    return Number(str) > 0;
-  };
-
-
-  const formatWinRate = (winRate: string) => {
-    if (winRate == '0') {
-      return '0%';
-    }
-    return new Big(winRate).times(100).toFixed(1) + '%';
-  }
   return (
     <div className={styles.smartDetailContent}>
       <h3 className={styles.smartDetailContentTitle}>Copied PRFM</h3>
       <div className={styles.statsContainer}>
         <div className={styles.statsRow}>
           <div className={styles.statItem}>
-            <div className={styles.statLabel}>Total PnL</div>
+            <div className={styles.statLabel}>Total PNL</div>
             <div className={styles.statValueBig}>
               <span
                 className={
@@ -195,9 +196,9 @@ export const SmartDetailContent = ({
             </div>
           </div>
           <div className={styles.statItem}>
-            <div className={styles.statLabel}>Current PnL</div>
+            <div className={styles.statLabel}>Current P NL</div>
             <div className={styles.statValue}>
-              <span className={styles.highlight}>
+              <span className={isGtZero(copyTradersUserInfo?.tradeInfo?.currentPNL || "0") ? styles.highlight : styles.shortlight}>
                 {formatPnl(copyTradersUserInfo?.tradeInfo?.currentPNL || "0")}
               </span>
               <span className={styles.detailValueCurrency}>SOL</span>

@@ -14,6 +14,9 @@ import styles from './coppied.module.css';
 import { useRouter,useSearchParams } from "next/navigation";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useCloseCopy } from "@/app/store/useCloseCopy";
+import { success } from "@/app/utils/toast";
+
+
 export default function Coppied({ isOther }: any) {
   const { address: walletAddress } = useAccount();
   const { lastCloseCopyTime, set: setLastCloseCopyTime }:any = useCloseCopy();
@@ -109,17 +112,23 @@ export default function Coppied({ isOther }: any) {
           return next;
         });
         
-        setCopyTradeMap((prev: any) => ({
-          ...prev,
-          items: prev.items.map((item: any) => {
+        setCopyTradeMap((prev: any) => {
+          const updatedItems = prev.items.map((item: any) => {
             if (item.id !== id) return item;
             if (res.data.state === 4) {
-              setCloseCopyTimeFunc(); // Add setCloseCopyTimeFunc call when removing item
+              setTimeout(() => {
+                setCloseCopyTimeFunc();
+                success("Close copy trade success", {maskStyle: {zIndex: 1001}});
+              }, 0);
               return null;
             }
             return { ...item, ...res.data };
-          }).filter(Boolean)
-        }));
+          }).filter(Boolean);
+          return {
+            ...prev,
+            items: updatedItems
+          };
+        });
       }
     } catch (error) {
       console.error('Poll status error:', error);

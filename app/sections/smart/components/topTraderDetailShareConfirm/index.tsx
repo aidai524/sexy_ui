@@ -74,7 +74,7 @@ export default function TopTraderDetailShareConfirm({ show, onClose, smartMonies
           useGreen: true
         },
         lastTradeAt: {value: checked, useValue: formatDateTime(smartMoniesInfo?.lastTradeAt || 0), title: 'Last Trade', useWhite: true},
-        copiers: {value: checked, useValue: copyTradersUserInfo?.copiers?.length || 0, title: 'Copy Traders',useGreen: true},
+        copiers: {value: checked, useValue: smartMoniesInfo?.copiers?.length || 0, title: 'Copy Traders',useGreen: true},
         totalPnl: {value: checked, useValue: formatPnl(copyTradersUserInfo?.totalPnl || '0'), title: 'Copy Cohort PnL', useValueCurrency: 'SOL', useGreen: isGtZero(copyTradersUserInfo?.totalPnl || '0')}
       };
       setSelectedItems(allItems);

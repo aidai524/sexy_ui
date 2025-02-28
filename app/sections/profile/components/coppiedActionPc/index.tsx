@@ -287,8 +287,10 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
 
     if (res) {
       copyTimesStore.set({ copyTimes: copyTimes });
-      copyTradeRefreshStore.set({ lastCopyTradeTime: Date.now() });
       onClose();
+      setTimeout(() => {
+        copyTradeRefreshStore.set({ lastCopyTradeTime: Date.now() });
+      }, 1000);
     }
   };
 
