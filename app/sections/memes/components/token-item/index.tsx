@@ -39,24 +39,31 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
     <div className={clsx(styles.TokenItemContainer, className)}>
       {!isMobile && (
         <div className={styles.TokenItemLaptopAvatar}>
-          {isVideoFile(_token.video) ? (
+          {isVideoFile(_token.icon) ? (
             <VideoPlayer
-              key={_token.video}
+              key={_token.icon}
               id={String(_token.id)}
               mediaId={`TokenItemLaptopAvatar-${_token.id}`}
-              src={_token.video}
-              type={getVideoExt(_token.video)}
+              src={_token.icon}
+              type={getVideoExt(_token.icon)}
               className={styles.TokenItemLaptopAvatarBanner}
               autoPlay={true}
               token={_token as any}
             />
           ) : (
-            <img
-              src={_token?.video || "/img/token-placeholder.png"}
-              alt=""
-              className={styles.TokenItemLaptopAvatarBanner}
-              loading="lazy"
-            />
+            <div className={styles.TokenItemLaptopAvatarBannerWithPlayButton}>
+              <img
+                src={_token?.icon || "/img/token-placeholder.png"}
+                alt=""
+                className={styles.TokenItemLaptopAvatarBanner}
+                loading="lazy"
+              />
+              isVideoFile(_token.video) && (
+                <div className={styles.TokenItemLaptopAvatarBannerPlayButtonContainer}>
+                  <img src="/img/icon-play.svg" alt="" className={styles.TokenItemLaptopAvatarBannerPlayButton} />
+                </div>
+              )
+            </div>
           )}
           <div className={styles.TokenItemLaptopAvatarProfile}>
             <div className={styles.TokenItemLaptopAvatarProfileLeft}>

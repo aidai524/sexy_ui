@@ -3,9 +3,11 @@
   left: 0px;
   justify-content: center;
   width: 100%;
-  top: 20px;
+  top: 0;
   display: flex;
   gap: 20px;
   align-items: center;
-  z-index: 0;
+  z-index: 4;
+  height: 60px;
+  background: #151515;
 }

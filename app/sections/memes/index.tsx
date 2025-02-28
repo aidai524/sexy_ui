@@ -17,7 +17,7 @@ const MemesView = (props: any) => {
 
   return (
     <MemesContext.Provider value={{ ...data }}>
-      <div className={styles.MemesContainer}>
+      <div ref={data.memesContainerRef} className={styles.MemesContainer}>
         {isMobile && (
           <PageHeader from="memes" style={{ position: "static" }} title="" />
         )}
