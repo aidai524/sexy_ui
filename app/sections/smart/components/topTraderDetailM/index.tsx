@@ -218,7 +218,7 @@ export default function TopTraderDetailM() {
         </div>
         <div className={styles.grid}>
           <div className={styles.gridItem}>
-            <div className={styles.label}>1D PNL</div>
+            <div className={styles.label}>1D PnL</div>
             <div className={styles.value}>
               <span className={isGtZero(smartMoniesInfo?.pnl1D || "0") ? styles.amount : styles.amountLessThanZero}>
                 {formatPnl(smartMoniesInfo?.pnl1D || "0")}
@@ -233,7 +233,7 @@ export default function TopTraderDetailM() {
             </div>
           </div>
           <div className={styles.gridItem}>
-            <div className={styles.label}>7D PNL</div>
+            <div className={styles.label}>7D PnL</div>
             <div className={styles.value}>
               <span className={isGtZero(smartMoniesInfo?.pnl7D || "0") ? styles.amount : styles.amountLessThanZero}>
                 {formatPnl(smartMoniesInfo?.pnl7D || "0")}
@@ -248,7 +248,7 @@ export default function TopTraderDetailM() {
             </div>
           </div>
           <div className={styles.gridItem}>
-            <div className={styles.label}>30D PNL</div>
+            <div className={styles.label}>30D PnL</div>
             <div className={styles.value}>
               <span className={isGtZero(smartMoniesInfo?.pnl30D || "0") ? styles.amount : styles.amountLessThanZero}>
                 {formatPnl(smartMoniesInfo?.pnl30D || "0")}
@@ -323,7 +323,7 @@ export default function TopTraderDetailM() {
               </div>
             </div>
             <div className={styles.gridItem}>
-              <div className={styles.label}>Copiers PNL</div>
+              <div className={styles.label}>Copiers PnL</div>
               <div className={styles.amount}>
                 <strong>{formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")}</strong>
                 <span className={styles.unit}>&nbsp;SOL</span>

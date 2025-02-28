@@ -48,7 +48,7 @@ const formatWinRate = (winRate: string) => {
             <div className={styles.CopyTradeShareInfoCardName}>{formatAddress(userInfo?.name || accountAddress)}</div>
           </div>
           <div className={styles.publicStyle}>
-            <span className={styles.publicStyleTitle}>Total PNL</span>
+            <span className={styles.publicStyleTitle}>Total PnL</span>
             <span>
               <span className={styles.publicStylePNL}>{formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || '0')}</span>
                <span className={styles.publicStyleValueCurrency}>SOL</span>

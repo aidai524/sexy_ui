@@ -46,7 +46,7 @@ export default function CopyTradeCard(props: {
 
       <div className={isMobile ? styles.copyDetails : styles.copyDetailsPC}>
         <div className={styles.totalPnl}>
-          <span className={styles.detailTitle}>Total PNL</span>
+          <span className={styles.detailTitle}>Total PnL</span>
           <span className={styles.detailValueContainer}>
             <span className={styles.detailValue}>
               {formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")}

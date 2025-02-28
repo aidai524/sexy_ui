@@ -80,7 +80,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
       <div className={styles.TradeInfoBox}>
         {/* trade earn */}
         <div className={styles.TradeEarn}>
-            <div className={styles.TitlePubStyle}>Copied ROI (PNL) </div>
+            <div className={styles.TitlePubStyle}>Copied ROI (PnL) </div>
             <div className={styles.PNLValuePercent}>{Big(itemInfo?.roi).times(100).toString() || 0}%</div>
             <div className={styles.PNLValueUSD}>
               <span style={{color: !itemInfo?.pnl.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>{(numberFormatter(Big(itemInfo?.pnl).toString() || 0, 4, true) || '0')} SOL</span>

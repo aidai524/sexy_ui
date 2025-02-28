@@ -162,7 +162,7 @@ export const SmartDetailContent = ({
       <div className={styles.statsContainer}>
         <div className={styles.statsRow}>
           <div className={styles.statItem}>
-            <div className={styles.statLabel}>Total PNL</div>
+            <div className={styles.statLabel}>Total PnL</div>
             <div className={styles.statValueBig}>
               <span
                 className={
@@ -206,7 +206,7 @@ export const SmartDetailContent = ({
             </div>
           </div>
           <div className={styles.statItem}>
-            <div className={styles.statLabel}>Current PNL</div>
+            <div className={styles.statLabel}>Current PnL</div>
             <div className={styles.statValue}>
               <span className={isGtZero(copyTradersUserInfo?.tradeInfo?.currentPNL || "0") ? styles.highlight : styles.shortlight}>
                 {formatPnl(copyTradersUserInfo?.tradeInfo?.currentPNL || "0")}

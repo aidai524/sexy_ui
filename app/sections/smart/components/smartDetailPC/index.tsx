@@ -152,7 +152,7 @@ export const SmartDetailContent = ({
       <div className={styles.statsContainer}>
         <div className={styles.statsRow}>
           <div className={styles.statItem}>
-            <div className={styles.statLabel}>Total PNL</div>
+            <div className={styles.statLabel}>Total PnL</div>
             <div className={styles.statValueBig}>
               <span
                 className={

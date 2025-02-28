@@ -126,7 +126,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
       <div className={styles.TradeInfoBox}>
         {/* trade earn */}
         <div className={styles.TradeEarn}>
-            <div className={styles.TitlePubStyle}>Copied ROI (PNL) </div>
+            <div className={styles.TitlePubStyle}>Copied ROI (PnL) </div>
             <div className={styles.PNLValuePercent}>{Big(itemInfo?.roi).times(100).toString() || 0}%</div>
             <div className={styles.PNLValueUSD}>
               <span style={{color: isGtZero(itemInfo?.pnl || '0') ? '#C9FF5D' : '#FF2681'}}>{formatPnl(itemInfo?.pnl || '0')} SOL</span>
