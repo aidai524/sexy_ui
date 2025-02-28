@@ -42,24 +42,21 @@ export default function useTips() {
       prevRef.current.style.transition = "none";
       prevRef.current.style.transform = "translateY(0px)";
     }
-
     if (currentRef.current) {
       currentRef.current.style.opacity = 0;
       currentRef.current.style.transition = "none";
       currentRef.current.style.transform = "translateY(24px)";
     }
-
     setTimeout(() => {
       if (prevRef.current) {
         prevRef.current.style.opacity = 0;
         prevRef.current.style.transition = "0.3s";
-        prevRef.current.style.transform = "translateY(-24px)";
+        prevRef.current.style.transform = "translateY(-48px)";
       }
-
       if (currentRef.current) {
         currentRef.current.style.opacity = 1;
         currentRef.current.style.transition = "0.3s";
-        currentRef.current.style.transform = "translateY(0px)";
+        currentRef.current.style.transform = "translateY(-24px)";
       }
     }, 1000);
   }, [tip]);

@@ -6,7 +6,8 @@ import Menu from "./menu";
 import { useAuth } from "@/app/context/auth";
 import useNotice from "../../../hooks/use-notice";
 import { useSetting } from "@/app/store/use-setting";
-import Refer from '@/app/components/layout/laptop/user/refer';
+import Refer from "@/app/components/layout/laptop/user/refer";
+import Header from "./header";
 
 const CreatePage = dynamic(() => import("@/app/sections/create/laptop"));
 const MemesPage = dynamic(() => import("@/app/sections/memes"));
@@ -29,6 +30,9 @@ export default function Laptop({ children }: any) {
     <div className={styles.Container}>
       <RightActions logout={logout} userInfo={userInfo} />
       <Menu />
+      {["/create", "/smart", "/memes", "/detail"].includes(pathname) && (
+        <Header />
+      )}
       <div
         className={styles.Content}
         style={{
