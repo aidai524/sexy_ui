@@ -57,6 +57,9 @@ export default function TokenIcon({
           className={styles.Icon}
           token={token}
           mediaId={token.id}
+          style={{
+            borderRadius: 20,
+          }}
         />
       ) : (
         <img
