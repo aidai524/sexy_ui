@@ -176,6 +176,9 @@ const Carousel: React.FC<CarouselProps> = ({
                         className={styles.CarouselAvatarImg}
                         autoPlay={false}
                         token={currentItem as any}
+                        style={{
+                          borderRadius: 50,
+                        }}
                       />
                     ) : (
                       <img

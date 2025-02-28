@@ -3,12 +3,12 @@
 import { motion } from 'framer-motion';
 import styles from './index.module.css';
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Popover, { PopoverPlacement } from '@/app/components/popover';
 import { Order } from '@/app/sections/memes/config';
 
 const MemesSelect = (props: any) => {
-  const { className, value, onChange, options, renderSelectedLabel, renderLabel } = props;
+  const { className, value, onChange, options, renderSelectedLabel, renderLabel, memesContainerRef } = props;
 
   const popoverRef = useRef<any>();
 
@@ -18,6 +18,17 @@ const MemesSelect = (props: any) => {
     popoverRef.current?.onClose?.();
     onChange?.(item);
   };
+
+  useEffect(() => {
+    const onScroll = () => {
+      popoverRef.current?.onClose?.();
+    };
+
+    memesContainerRef?.current?.addEventListener?.('scroll', onScroll);
+    return () => {
+      memesContainerRef?.current?.removeEventListener?.('scroll', onScroll);
+    };
+  }, []);
 
   return (
     <Popover
