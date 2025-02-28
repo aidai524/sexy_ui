@@ -18,6 +18,7 @@ import { useSlip } from "@/app/store/useSlip";
 import useBalance from "@/app/hooks/useBalance";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { numberFormatter } from "@/app/utils/common";
+import { useConfig } from "@/app/store/useConfig";
 
 type Token = {
   tokenName: string;
@@ -54,6 +55,7 @@ export default function BuySellLaunched({
 }: Props) {
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
+  const { config }: any = useConfig();
   const { slip, set: setSlip }: any = useSlip();
   const { isMobile } = useUserAgent();
   const slippageTextRef = useRef<any>();
@@ -370,9 +372,8 @@ export default function BuySellLaunched({
             </div>
 
             <div
-              className={`${styles.tokenBalanceBox} ${
-                from === "panel" && styles.PanelInput
-              }`}
+              className={`${styles.tokenBalanceBox} ${from === "panel" && styles.PanelInput
+                }`}
             >
               <div className={styles.inputArea}>
                 <input
@@ -412,6 +413,14 @@ export default function BuySellLaunched({
                     <img className={styles.tiImg} src={currentToken.tokenUri} />
                   </div>
                 </div>
+
+                <div className={styles.tokenPrice}>
+                  ${numberFormatter(
+                    currentToken.tokenName === "SOL" ? Number(config.SolPrice) * Number(valInput) : Number(token.price) * Number(valInput),
+                    2,
+                    true
+                  )}
+                </div>
               </div>
             </div>
 
@@ -423,11 +432,10 @@ export default function BuySellLaunched({
                       setSolPercent(0);
                       setValInput("");
                     }}
-                    className={`${
-                      from === "panel"
+                    className={`${from === "panel"
                         ? styles.PanelPercentTag
                         : styles.percentTag
-                    } button`}
+                      } button`}
                   >
                     Reset
                   </div>
@@ -477,11 +485,10 @@ export default function BuySellLaunched({
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${
-                    from === "panel"
+                  className={`${from === "panel"
                       ? styles.PanelPercentTag
                       : styles.percentTag
-                  } button`}
+                    } button`}
                 >
                   Reset
                 </div>
@@ -521,12 +528,16 @@ export default function BuySellLaunched({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {buyIn && numberFormatter(buyIn, 6, true)}
-                  <div className={styles.receiveTokenImgBox}>
-                    <img
-                      src={desToken.tokenUri}
-                      className={styles.receiveTokenImg}
-                    />
-                  </div>
+
+                  {
+                    from === "panel" ? <div>{token.tokenName}</div> : (
+                      <div className={styles.receiveTokenImgBox}>
+                        <img
+                          src={desToken.tokenUri}
+                          className={styles.receiveTokenImg}
+                        />
+                      </div>
+                    )}
                 </div>
               </div>
             )}
@@ -536,12 +547,16 @@ export default function BuySellLaunched({
                 <div>Payment</div>
                 <div className={styles.receiveAmount}>
                   {buyInSol && numberFormatter(buyInSol, 9, true)}
-                  <div className={styles.receiveTokenImgBox}>
-                    <img
-                      src={desToken.tokenUri}
-                      className={styles.receiveTokenImg}
-                    />
-                  </div>
+                  {
+                    from === "panel" ? <div>{SOL.tokenName}</div> : (
+                      <div className={styles.receiveTokenImgBox}>
+                        <img
+                          src={SOL.tokenUri}
+                          className={styles.receiveTokenImg}
+                        />
+                      </div>
+                    )
+                  }
                 </div>
               </div>
             )}
@@ -551,12 +566,16 @@ export default function BuySellLaunched({
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
                   {sellOutSol && numberFormatter(sellOutSol, 9, true)}
-                  <div className={styles.receiveTokenImgBox}> 
-                    <img
-                      src={desToken.tokenUri}
-                      className={styles.receiveTokenImg}
-                    />
-                  </div>
+                  {
+                    from === "panel" ? <div>{desToken.tokenName}</div> : (
+                      <div className={styles.receiveTokenImgBox}>
+                        <img
+                          src={desToken.tokenUri}
+                          className={styles.receiveTokenImg}
+                        />
+                      </div>
+                    )
+                  }
                 </div>
               </div>
             )}
@@ -604,8 +623,8 @@ export default function BuySellLaunched({
                       const volume =
                         activeIndex === 0
                           ? new Big(buyInSol)
-                              .div(10 ** SOL.tokenDecimals)
-                              .toFixed(SOL.tokenDecimals)
+                            .div(10 ** SOL.tokenDecimals)
+                            .toFixed(SOL.tokenDecimals)
                           : sellOutSol;
 
                       const pointByVolume = await getPointByVolume(

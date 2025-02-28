@@ -17,6 +17,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { useSlip } from "@/app/store/useSlip";
 import { numberFormatter } from "@/app/utils/common";
 import { useConfig } from "@/app/store/useConfig";
+import { useUserAgent } from "@/app/context/user-agent";
 
 type Token = {
   tokenName: string;
@@ -51,11 +52,13 @@ export default function BuySell({
   onSuccess,
   show
 }: Props) {
+
   const { tokenName, tokenSymbol, tokenDecimals } = token;
   const [showSlip, setShowSlip] = useState(false);
   const { slip, set: setSlip }: any = useSlip();
   const slippageTextRef = useRef<any>();
   const { config }: any = useConfig();
+  const { isMobile } = useUserAgent();
   const tokenUri =
     token.tokenIcon || token.tokenImg || "/img/token-icon-placeholder.svg";
 
@@ -486,16 +489,13 @@ export default function BuySell({
                     <img className={styles.tiImg} src={currentToken.tokenUri} />
                   </div>
                 </div>
-                {currentToken.tokenName === "SOL" && (
-                  <div className={styles.tokenPrice}>
-                    $
-                    {numberFormatter(
-                      Number(config.SolPrice) * Number(valInput),
-                      2,
-                      true
-                    )}
-                  </div>
-                )}
+                <div className={styles.tokenPrice}>
+                  ${numberFormatter(
+                    currentToken.tokenName === "SOL" ? Number(config.SolPrice) * Number(valInput) : Number(token.price) * Number(valInput),
+                    2,
+                    true
+                  )}
+                </div>
               </div>
             </div>
 
@@ -544,8 +544,8 @@ export default function BuySell({
                     setValInput("");
                   }}
                   className={`${from === "panel"
-                      ? styles.PanelPercentTag
-                      : styles.percentTag
+                    ? styles.PanelPercentTag
+                    : styles.percentTag
                     } button`}
                 >
                   Reset
@@ -591,12 +591,15 @@ export default function BuySell({
                       .div(10 ** token.tokenDecimals!)
                       .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
                     : ""}{" "}
-                  <div className={styles.receiveTokenImgBox}>
-                    <img
-                      src={desToken.tokenUri}
-                      className={styles.receiveTokenImg}
-                    />
-                  </div>
+                  {
+                    from === "panel" ? <div>{token.tokenName}</div> : (
+                      <div className={styles.receiveTokenImgBox}>
+                        <img
+                          src={desToken.tokenUri}
+                          className={styles.receiveTokenImg}
+                        />
+                      </div>
+                    )}
                 </div>
               </div>
             )}
@@ -610,9 +613,13 @@ export default function BuySell({
                       .div(1 + slip / 100)
                       .div(10 ** SOL.tokenDecimals)
                       .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)}{" "}
-                    <div className={styles.receiveTokenImgBox}>
-                      <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
-                    </div>
+                  {
+                    from === "panel" ? <div>{SOL.tokenName}</div> : (
+                      <div className={styles.receiveTokenImgBox}>
+                        <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                      </div>
+                    )
+                  }
                 </div>
               </div>
             )}
@@ -627,9 +634,13 @@ export default function BuySell({
                       .div(10 ** SOL.tokenDecimals)
                       .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)
                     : 0}{" "}
-                  <div className={styles.receiveTokenImgBox}>
-                    <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
-                  </div>
+                  {
+                    from === "panel" ? <div>{SOL.tokenName}</div> : (
+                      <div className={styles.receiveTokenImgBox}>
+                        <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
+                      </div>
+                    )
+                  }
 
                 </div>
               </div>
