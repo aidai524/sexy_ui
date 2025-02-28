@@ -152,44 +152,44 @@ const Carousel: React.FC<CarouselProps> = ({
     <div className={clsx(styles.CarouselContainer, className)}>
       <MemesTitle />
       <div className={styles.carouselWrapper}>
-        {currentItem && (
-          <AnimatePresence mode="wait">
+        {
+          data.map((item, index) => (
             <motion.div
-              key={currentIndex}
+              key={index}
               className={styles.slide}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
+              initial={{ opacity: 0 }}
+              animate={index === currentIndex ? { opacity: 1 } : { opacity: 0 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <MediaItem item={currentItem} onLoad={handleMediaLoad} />
+              <MediaItem item={item} onLoad={handleMediaLoad} />
               <div className={styles.slideContent}>
                 <div className={styles.CarouselAvatar}>
-                  {!currentItem?.Icon ? (
-                    isVideoFile(currentItem?.video) ? (
+                  {!item?.Icon ? (
+                    isVideoFile(item?.video) ? (
                       <VideoPlayer
-                        key={currentItem.video}
-                        id={currentItem.id}
-                        mediaId={`TokenItemLaptopAvatar-${currentItem.id}`}
-                        src={currentItem.video}
-                        type={getVideoExt(currentItem.video)}
+                        key={item.video}
+                        id={item.id}
+                        mediaId={`TokenItemLaptopAvatar-${item.id}`}
+                        src={item.video}
+                        type={getVideoExt(item.video)}
                         className={styles.CarouselAvatarImg}
                         autoPlay={false}
-                        token={currentItem as any}
+                        token={item as any}
                         style={{
                           borderRadius: 50,
                         }}
                       />
                     ) : (
                       <img
-                        src={currentItem?.video || "/img/token-placeholder.png"}
+                        src={item?.video || "/img/token-placeholder.png"}
                         alt=""
                         className={styles.CarouselAvatarImg}
                       />
                     )
                   ) : (
                     <img
-                      src={currentItem?.Icon || "/img/token-placeholder.png"}
+                      src={item?.Icon || "/img/token-placeholder.png"}
                       alt=""
                       className={styles.CarouselAvatarImg}
                     />
@@ -198,21 +198,21 @@ const Carousel: React.FC<CarouselProps> = ({
                   <div
                     className={styles.CarouselAvatarBadge}
                     style={{
-                      backgroundColor: [3].includes(currentItem.status)
+                      backgroundColor: [3].includes(item.status)
                         ? BadgeConfig.Listed.bg
                         : BadgeConfig.Ticking.bg
                     }}
                   >
-                    {[3].includes(currentItem.status)
+                    {[3].includes(item.status)
                       ? BadgeConfig.Listed.label
                       : BadgeConfig.Ticking.label}
-                    {currentItem.DApp === "pump" && (
+                    {item.DApp === "pump" && (
                       <div className={styles.CarouselAvatarPump}>
                         <img src="/img/memes/pump.svg" alt="" />
                       </div>
                     )}
                   </div>
-                  {[3].includes(currentItem.status) ? (
+                  {[3].includes(item.status) ? (
                     <Emoji content="✈️" />
                   ) : (
                     <Emoji content="🚀️" />
@@ -220,15 +220,15 @@ const Carousel: React.FC<CarouselProps> = ({
                   <Emoji content="💰" placement="right" />
                 </div>
                 <div className={styles.CarouselTokenName}>
-                  {formatLongText(currentItem?.token_symbol, 6, 6)}
+                  {formatLongText(item?.token_symbol, 6, 6)}
                 </div>
                 <div className={styles.CarouselSummaries}>
-                  {[3].includes(currentItem.status) ? (
-                    <SummaryItem type="plane" value={currentItem.like || 0} />
+                  {[3].includes(item.status) ? (
+                    <SummaryItem type="plane" value={item.like || 0} />
                   ) : (
-                    <SummaryItem type="rocket" value={currentItem.like || 0} />
+                    <SummaryItem type="rocket" value={item.like || 0} />
                   )}
-                  <SummaryItem type="user" value={currentItem.holder} />
+                  <SummaryItem type="user" value={item.holder} />
                 </div>
                 <div
                   className={clsx(
@@ -239,7 +239,7 @@ const Carousel: React.FC<CarouselProps> = ({
                   <div className={styles.CarouselMarketCapTop}>
                     <div className={styles.CarouselMarketCapValue}>
                       <div>
-                        {numberFormatter(currentItem?.market_cap, 1, true, {
+                        {numberFormatter(item?.market_cap, 1, true, {
                           prefix: "$",
                           isShort: true,
                           isShortUppercase: true
@@ -247,12 +247,12 @@ const Carousel: React.FC<CarouselProps> = ({
                       </div>
                       <div className={styles.CarouselMarketCapChange}>
                         {numberFormatter(
-                          currentItem?.market_cap_percentage,
+                          item?.market_cap_percentage,
                           2,
                           true,
                           {
                             prefix: Big(
-                              currentItem?.market_cap_percentage || 0
+                              item?.market_cap_percentage || 0
                             ).gte(0)
                               ? "+"
                               : "-",
@@ -265,11 +265,11 @@ const Carousel: React.FC<CarouselProps> = ({
                     </div>
                     {isProgress ? (
                       <div className={styles.CarouselProgressValue}>
-                        {currentItem?.progress}%
+                        {item?.progress}%
                       </div>
                     ) : (
                       <PriceChart
-                        token={currentItem}
+                        token={item}
                         className={styles.CarouselChart}
                       />
                     )}
@@ -281,7 +281,7 @@ const Carousel: React.FC<CarouselProps> = ({
                         initial={{ x: "-100%" }}
                         animate={{
                           x: `-${Big(100)
-                            .minus(currentItem?.progress || 0)
+                            .minus(item?.progress || 0)
                             .toFixed(2)}%`
                         }}
                         transition={{ duration: 0.6, ease: "linear" }}
@@ -291,8 +291,8 @@ const Carousel: React.FC<CarouselProps> = ({
                 </div>
               </div>
             </motion.div>
-          </AnimatePresence>
-        )}
+          ))
+        }
         {!!data && data.length > 1 && (
           <div className={styles.indicators}>
             {data.map((_, index) => (
