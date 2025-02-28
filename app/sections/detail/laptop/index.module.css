@@ -12,17 +12,17 @@
   position: relative;
 }
 
-.TitleWrapper {
+.BackButton {
   position: absolute;
-  left: 30px;
+  left: -86px;
+}
+
+.Header {
+  position: absolute;
+  justify-content: center;
+  width: 100%;
   top: 20px;
-  color: #fff;
-  font-family: Unbounded;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
   display: flex;
+  gap: 20px;
   align-items: center;
-  gap: 10px;
 }
