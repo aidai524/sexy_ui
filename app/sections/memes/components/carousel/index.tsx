@@ -10,6 +10,7 @@ import MemesTitle from "@/app/sections/memes/components/title";
 import PriceChart from "@/app/sections/memes/components/chart";
 import { getVideoExt } from "@/app/components/upload";
 import VideoPlayer from "@/app/components/video";
+import { useRouter } from 'next/navigation';
 
 interface CarouselProps {
   className?: string;
@@ -22,7 +23,7 @@ const isVideoFile = (url: string) => {
   return videoExtensions.some((ext) => url.toLowerCase().endsWith(ext));
 };
 
-const MediaItem = ({ item, onLoad }: { item: any; onLoad: () => void }) => {
+const MediaItem = ({ item, onLoad }: { item: any; onLoad: () => void; }) => {
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -80,6 +81,8 @@ const Carousel: React.FC<CarouselProps> = ({
   data,
   duration = 10000
 }) => {
+  const router = useRouter();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isMediaLoaded, setIsMediaLoaded] = useState(false);
@@ -164,7 +167,12 @@ const Carousel: React.FC<CarouselProps> = ({
             >
               <MediaItem item={item} onLoad={handleMediaLoad} />
               <div className={styles.slideContent}>
-                <div className={styles.CarouselAvatar}>
+                <div
+                  className={styles.CarouselAvatar}
+                  onClick={() => {
+                    router.push(`/detail?address=${item?.address}`);
+                  }}
+                >
                   {!item?.Icon ? (
                     isVideoFile(item?.video) ? (
                       <VideoPlayer
