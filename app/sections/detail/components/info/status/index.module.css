@@ -9,8 +9,6 @@
   font-size: #ffffff;
   font-size: 12px;
   justify-content: space-between;
-  margin-bottom: 10px;
-  font-weight: 500;
 }
 
 .progressTitle {
@@ -40,7 +38,6 @@
 }
 
 .progressTitleValue {
-  margin-top: 5px;
   font-size: 14px;
   font-weight: 500;
 }

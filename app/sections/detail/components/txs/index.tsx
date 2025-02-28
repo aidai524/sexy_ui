@@ -30,7 +30,7 @@ export function formatAddress(address: string) {
 const switchStyle = {
   "--checked-color": "#90CD15",
   "--width": "37px",
-  "--height": "16px",
+  "--height": "20px",
   "--adm-color-background": "#515B63",
   "--adm-color-border": "#515B63"
   // '--adm-color-text-light-solid': '#808E9A',
@@ -115,30 +115,36 @@ export default function Txs({ from, data }: any) {
       {data.status === 1 && (
         <div className={styles.filter}>
           <div
-            className={styles.filterItem}
             style={{
-              justifyContent: from === "panel" ? "flex-start" : "space-between"
+              display: "flex",
+              flexDirection: from === "panel" ? "row" : "column",
+              justifyContent: from === "panel" ? "space-between" : "flex-start"
             }}
           >
-            <div
-              className={styles.filterText}
-              style={{
-                fontSize: from === "panel" ? 10 : 12
-              }}
-            >
-              Filter by size
-              <img style={{ width: "26px" }} src="/img/home/solana.png" /> 0.05
-              ({totalGreater} trade{totalGreater > 1 ? "s" : ""})
+            {from === "panel" && (
+              <div className={styles.filterItem}>
+                <div className={styles.filterText}>Filter by</div>
+              </div>
+            )}
+            <div className={styles.filterItem}>
+              <div className={styles.filterText}>
+                Filter by size
+                <img
+                  style={{ width: "26px" }}
+                  src="/img/home/solana.png"
+                />{" "}
+                0.05 ({totalGreater} trade{totalGreater > 1 ? "s" : ""})
+              </div>
+              <SexSwitch
+                checked={filter[1]}
+                onChange={() => {
+                  setFilter({
+                    ...filter,
+                    1: !filter[1]
+                  });
+                }}
+              />
             </div>
-            <SexSwitch
-              checked={filter[1]}
-              onChange={() => {
-                setFilter({
-                  ...filter,
-                  1: !filter[1]
-                });
-              }}
-            />
           </div>
 
           {address && (
@@ -146,44 +152,19 @@ export default function Txs({ from, data }: any) {
               style={{
                 display: "flex",
                 flexDirection: from === "panel" ? "row" : "column",
-                justifyContent:
-                  from === "panel" ? "space-between" : "flex-start"
+                justifyContent: "flex-end",
+                gap: 30
               }}
             >
-              <div className={styles.filterItem} style={{
-              justifyContent: from === "panel" ? "flex-start" : "space-between"
-            }}>
-                <div
-                  className={styles.filterText}
-                  style={{
-                    fontSize: from === "panel" ? 10 : 12
-                  }}
-                >
-                  Filter by my following ({totalMyFollowing} trade
-                  {totalMyFollowing > 1 ? "s" : ""})
-                </div>
-                <SexSwitch
-                  checked={filter[2]}
-                  onChange={() => {
-                    setFilter({
-                      ...filter,
-                      2: !filter[2],
-                      3: false
-                    });
-                  }}
-                />
-              </div>
-
-              <div className={styles.filterItem} style={{
-              justifyContent: from === "panel" ? "flex-start" : "space-between"
-            }}>
-                <div
-                  className={styles.filterText}
-                  style={{
-                    fontSize: from === "panel" ? 10 : 12
-                  }}
-                >
-                  Filter by own trades ({totalMyTrades} trade
+              <div
+                className={styles.filterItem}
+                style={{
+                  justifyContent:
+                    from === "panel" ? "flex-start" : "space-between"
+                }}
+              >
+                <div className={styles.filterText}>
+                  Own trades ({totalMyTrades} trade
                   {totalMyTrades > 1 ? "s" : ""})
                 </div>
                 <SexSwitch
@@ -193,6 +174,28 @@ export default function Txs({ from, data }: any) {
                       ...filter,
                       3: !filter[3],
                       2: false
+                    });
+                  }}
+                />
+              </div>
+              <div
+                className={styles.filterItem}
+                style={{
+                  justifyContent:
+                    from === "panel" ? "flex-start" : "space-between"
+                }}
+              >
+                <div className={styles.filterText}>
+                  My following ({totalMyFollowing} trade
+                  {totalMyFollowing > 1 ? "s" : ""})
+                </div>
+                <SexSwitch
+                  checked={filter[2]}
+                  onChange={() => {
+                    setFilter({
+                      ...filter,
+                      2: !filter[2],
+                      3: false
                     });
                   }}
                 />
@@ -238,11 +241,13 @@ export default function Txs({ from, data }: any) {
                       className={`${styles.item}`}
                     >
                       <div
-                        className={`${styles.account} ${
-                          from === "panel"
-                            ? styles.LaptopAccount
-                            : styles.MobileAccount
-                        } ${!isSelf && "button"}`}
+                        className={`${styles.Account} ${!isSelf && "button"}`}
+                        style={{
+                          color:
+                            from === "panel"
+                              ? "#aeace1"
+                              : "rgba(169, 167, 208, 1)"
+                        }}
                         onClick={() => {
                           if (!isSelf)
                             router.push(
@@ -254,13 +259,16 @@ export default function Txs({ from, data }: any) {
                           className={styles.avatar}
                           src={item.icon || defaultAvatar}
                         />
-                        <span>
-                          {formatAddress(item.address)}
-                          {isSelf && (
-                            <span style={{ color: "#FBCA04" }}>(Self)</span>
-                          )}
-                        </span>
-                        <Level level={item.level} />
+                        <div>
+                          <span>
+                            {formatAddress(item.address)}
+                            {isSelf && (
+                              <span style={{ color: "#FBCA04" }}>(Self)</span>
+                            )}
+                          </span>
+                          {from === "panel" && <div style={{ height: 2 }} />}
+                          <Level level={item.level} />
+                        </div>
                       </div>
 
                       <div className={styles.type + " " + styles[item.type]}>
