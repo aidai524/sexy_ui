@@ -10,7 +10,11 @@ export default function Details({ token }: any) {
     <div className={styles.Container}>
       <Summary data={token} showAddress={!!token.address} from="panel" />
       {token.status === 0 && (
-        <PrelaunchStatus data={token} showAddress={!!token.address} />
+        <PrelaunchStatus
+          data={token}
+          showAddress={!!token.address}
+          from="panel"
+        />
       )}
       <Info mc={mc} data={token} from="panel" />
     </div>
