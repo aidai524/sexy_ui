@@ -28,6 +28,7 @@ const MemesTabs = (props: any) => {
     setCurrentFilter,
     getHotList,
     getMemesList,
+    memesContainerRef,
   } = useContext(MemesContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -158,6 +159,7 @@ const MemesTabs = (props: any) => {
         {
           (!isMobile && !!currentTab?.filters?.length) && (
             <MemesSelect
+              memesContainerRef={memesContainerRef}
               value={currentFilter}
               options={currentTab?.filters}
               onChange={handleFilter}
