@@ -140,6 +140,7 @@
 }
 
 .mainPc {
+  margin-top: -120px;
   .tokenTitle {
     font-size: 26px;
     font-weight: 700;
@@ -147,10 +148,12 @@
 
   .content {
     background: none;
+    margin-top: 0px;
   }
 
   .nameContent {
     background: none;
+    padding-top: 0;
   }
 
   .avatar {

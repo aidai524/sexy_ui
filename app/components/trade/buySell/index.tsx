@@ -592,7 +592,7 @@ export default function BuySell({
                       .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
                     : ""}{" "}
                   {
-                    from === "panel" ? <div>{token.tokenName}</div> : (
+                    from === "panel" ? <div>{token.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img
                           src={desToken.tokenUri}
@@ -614,7 +614,7 @@ export default function BuySell({
                       .div(10 ** SOL.tokenDecimals)
                       .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)}{" "}
                   {
-                    from === "panel" ? <div>{SOL.tokenName}</div> : (
+                    from === "panel" ? <div>{SOL.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
                       </div>
@@ -635,7 +635,7 @@ export default function BuySell({
                       .toFixed(SOL.tokenDecimals), SOL.tokenDecimals as number, true)
                     : 0}{" "}
                   {
-                    from === "panel" ? <div>{SOL.tokenName}</div> : (
+                    from === "panel" ? <div>{SOL.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img src={SOL.tokenUri} className={styles.receiveTokenImg} />
                       </div>
