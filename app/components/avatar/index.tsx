@@ -14,7 +14,9 @@ export default function Avatar({
   isOther,
   address,
   isFollower,
-  onFollowSuccess
+  onFollowSuccess,
+  isName = true,
+  avatarStyle
 }: any) {
 
   const [avatarShown, setAvatarShown] = useState(userInfo?.icon);
@@ -41,6 +43,7 @@ export default function Avatar({
             <motion.div
               className={styles.avatar}
               onClick={onEdit}
+              style={avatarStyle}
               variants={{
                 visible: {
                   borderColor: 'rgba(0, 0, 0, 1)',
@@ -79,23 +82,27 @@ export default function Avatar({
           )
         }
       </AnimatePresence>
-      <div className={styles.userName}>
-        <div>
-          {formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || formatAddress(address) || 'FlipN'}
-        </div>
-        <Level level={userInfo?.level} vipType={userInfo?.vipType} style={{ marginLeft: 20 }} />
-        {isOther && (
-          <div className={styles.isOther}>
-            <div className={styles.FollowBtnBox}>
-              <FollowBtn
-                address={address}
-                isFollower={isFollower}
-                onSuccess={onFollowSuccess}
-              />
+      {
+        isName && (
+          <div className={styles.userName}>
+            <div>
+              {formatLongText(userInfo?.name, 9, 4) || formatAddress(userInfo?.address) || formatAddress(address) || 'FlipN'}
             </div>
+            <Level level={userInfo?.level} vipType={userInfo?.vipType} style={{ marginLeft: 20 }} />
+            {isOther && (
+              <div className={styles.isOther}>
+                <div className={styles.FollowBtnBox}>
+                  <FollowBtn
+                    address={address}
+                    isFollower={isFollower}
+                    onSuccess={onFollowSuccess}
+                  />
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        )
+      }
     </>
   );
 }

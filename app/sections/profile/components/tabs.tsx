@@ -20,7 +20,8 @@ export default function Tabs({
   cursorClassName,
   tabContentClassName,
   cursorStyle,
-  style
+  style,
+  tabsRef
 }: any) {
   const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
@@ -73,6 +74,7 @@ export default function Tabs({
 
   return (
     <Tab
+      ref={tabsRef}
       nodes={baseTabs}
       onTabChange={(nodeName: string) => {
         homeTabStore.set({
