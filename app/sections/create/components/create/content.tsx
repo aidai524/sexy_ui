@@ -77,7 +77,6 @@ export default function Create({
   })
   const [launchChecked, setLaunchChecked] = useState(false);
 
-
   const { createToken, tokenInfo } = useTokenTrade({
     tokenName,
     tokenSymbol,

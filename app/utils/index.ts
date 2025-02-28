@@ -708,7 +708,7 @@ export const simplifyNum = (number: number, precision: number = 0) => {
 
 export function isValidURL(url: string) {
   const regex =
-    /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/[a-z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/i;
+    /^https?:\/\/([\w.-]+)\.([a-z]{2,6})(\/[\w.-]*)*\/?(\?.*)?$/i;
   return regex.test(url);
 }
 

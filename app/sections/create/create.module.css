@@ -198,9 +198,7 @@
 }
 
 .ContainerPc {
-  .groupTitle {
-    font-weight: 700;
-  }
+  
   .linkActionGroup {
     margin-top: 20px;
   }
@@ -220,6 +218,7 @@
 
   .uploadImgWrapper {
     position: relative;
+    padding-top: 0;
     .uploadIconPlus {
       position: absolute;
       right: 0;

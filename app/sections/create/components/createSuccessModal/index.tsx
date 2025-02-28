@@ -91,10 +91,6 @@ function SuccessModal({
 
   return (
     <div className={style.main + ' ' + (isMobile ? style.mainMobile : style.mainPc)} style={{ width: isMobile ? "90vw" : 432 }}>
-      {/* <div className={style.yaowan}>
-        <img className={style.yaowanImg} src="/img/share/yaowan.gif" alt="" />
-      </div> */}
-
       <div className={style.tokenInfo}>
         <div className={style.tokenTitle}>A Genesis Token is live!</div>
         <div className={style.tokenAmount}>
