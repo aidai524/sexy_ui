@@ -48,7 +48,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     color: #fff;
     gap: 10px;
@@ -56,7 +56,6 @@
     padding: 0 10px;
 
     .input {
-      flex: 1;
       height: 46px;
       background-color: inherit;
       border: none;
@@ -66,6 +65,7 @@
       text-align: center;
       font-size: 36px;
       font-weight: 600;
+      margin-bottom: 10px;
     }
 
     .input::placeholder {
@@ -176,6 +176,9 @@
 .ContainerPc {
   width: 570px;
   margin: 0 auto;
+  .inputArea {
+    height: 180px;
+  }
 }
 
 .walletBalance {

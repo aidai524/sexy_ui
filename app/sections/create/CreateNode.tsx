@@ -741,6 +741,7 @@ export default forwardRef(function CreateNode(
         step={step}
         onBack={onBack}
         onNext={async () => {
+          console.log('onNext', step)
           const isValid = await onPreview(step);
           if (!isValid) {
             onNext();
