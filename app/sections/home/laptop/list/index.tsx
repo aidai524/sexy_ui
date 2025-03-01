@@ -12,6 +12,7 @@ import { useTokenPanelStatus } from "@/app/store/use-token-panel";
 import { useDebounceFn } from "ahooks";
 import { useVideoPlayer } from "@/app/store/use-video-player";
 import { videoReg } from "@/app/components/upload";
+import RefreshIcon from "@/app/components/icons/refresh-icon";
 
 export default function List({ type, isCurrentTab }: any) {
   const {
@@ -21,6 +22,7 @@ export default function List({ type, isCurrentTab }: any) {
     hasNext,
     getList,
     onChangeIndex,
+    onRefresh,
     updateProject,
     queryAndUpdateDetail,
     getProjectById
@@ -230,6 +232,16 @@ export default function List({ type, isCurrentTab }: any) {
           </TipsButton>
         </div>
       )}
+      <div className={styles.RefreshIconWrapper}>
+        <TipsButton tips="Renew a batch">
+          <button
+            className={`${styles.RefreshIcon} button`}
+            onClick={onRefresh}
+          >
+            <RefreshIcon color="#fff" />
+          </button>
+        </TipsButton>
+      </div>
     </div>
   );
 }

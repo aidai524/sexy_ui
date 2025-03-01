@@ -1,6 +1,6 @@
 import Modal from "@/app/components/modal";
 import styles from "./index.module.css";
-import RefreshIcon from "./refresh-icon";
+import RefreshIcon from "../../../../components/icons/refresh-icon";
 import Copyed from "@/app/components/copyed";
 import clsx from "clsx";
 import { useUserAgent } from "@/app/context/user-agent";
