@@ -357,18 +357,23 @@ export default function BuySellLaunched({
                 </div>
               </div>
               <div></div>
-              <div
-                onClick={(ev) => {
-                  ev.stopPropagation();
-                  ev.nativeEvent.stopImmediatePropagation();
-                  setShowSlip(true);
-                }}
-                className={`${styles.slippage}`}
-                ref={slippageTextRef}
-              >
-                <img src="/img/trade/slip.svg" className={styles.slipIcon} />
-                <span className="button">Slippage</span>
-              </div>
+
+              {from === "panel" ? (
+                <></>
+              ) : (
+                <div
+                  onClick={(ev) => {
+                    ev.stopPropagation();
+                    ev.nativeEvent.stopImmediatePropagation();
+                    setShowSlip(true);
+                  }}
+                  className={`${styles.slippage}`}
+                  ref={slippageTextRef}
+                >
+                  <img src="/img/trade/slip.svg" className={styles.slipIcon} />
+                  <span className="button">Slippage</span>
+                </div>
+              )}
             </div>
 
             <div
@@ -432,10 +437,7 @@ export default function BuySellLaunched({
                       setSolPercent(0);
                       setValInput("");
                     }}
-                    className={`${from === "panel"
-                        ? styles.PanelPercentTag
-                        : styles.percentTag
-                      } button`}
+                    className={`${styles.percentTag} button`}
                   >
                     Reset
                   </div>
@@ -453,9 +455,7 @@ export default function BuySellLaunched({
                         }}
                         key={item}
                         className={[
-                          from === "panel"
-                            ? styles.PanelPercentTag
-                            : styles.percentTag,
+                          styles.percentTag,
                           item === solPercent ? styles.tagActive : "",
                           "button"
                         ].join(" ")}
@@ -577,7 +577,7 @@ export default function BuySellLaunched({
               </div>
             )}
 
-            <div style={{ marginTop: from === "panel" ? 0 : 18 }}>
+            <div style={{ marginTop: 18 }}>
               <MainBtn
                 isLoading={isLoading}
                 isDisabled={isError}
@@ -667,10 +667,10 @@ export default function BuySellLaunched({
                   }
                 }}
                 style={{
-                  color: "#000",
-                  background: activeIndex === 0 ? "#C9FF5D" : "#FFC9F1",
+                  color: activeIndex === 0 ? "#000" : "#fff",
+                  background: activeIndex === 0 ? "#C9FF5D" : "#FF559D",
                   height: from === "panel" ? 36 : 60,
-                  width: from === "panel" ? "120px" : "100%"
+                  width: "100%"
                 }}
               >
                 {activeIndex === 0 ? "Buy" : "Sell"}

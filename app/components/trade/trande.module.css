@@ -161,6 +161,7 @@
 
 .PanelContent {
   margin-top: 10px;
+  background-color: #FFFFFF14;
 
   .inputActionArea .actionArea {
     justify-content: flex-start;
@@ -365,6 +366,7 @@
 
 .receiveTitle {
   white-space: nowrap;
+  color: #9290B1;
 }
 
 .slippage {
@@ -387,6 +389,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 5px;
+  color: #9290B1; 
+  padding-right: 10px;
 }
 
 .receiveAmountWrapper {
@@ -417,7 +421,7 @@
 
 .pcSlipIcon {
   position: absolute;
-  right: 10px;
+  right: 25px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
