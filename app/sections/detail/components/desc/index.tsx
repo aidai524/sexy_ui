@@ -51,7 +51,6 @@ export default function Desc({
         return "-";
     }, [data]);
 
-
     const { top1 } = useTrendsStore();
 
     useEffect(() => {

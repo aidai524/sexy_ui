@@ -18,15 +18,15 @@ import {
   actionHateTrigger,
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
-import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { useMessage } from "@/app/context/messageContext";
-import { useDebounceFn } from "ahooks";
+import { useDebounceFn, useInterval } from "ahooks";
 import { useAuth } from "@/app/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TokenStatusModal } from "@/app/components/status2Alert";
 import Share from "@/app/components/share";
 import Desc from "./components/desc";
 import Empty from "@/app/components/empty";
+import PreUser from "@/app/components/thumbnail/preUser";
 
 export default function Detail({ token, tab, onBack, onSuccess }: any) {
   const [activeKey, setActiveKey] = useState(tab || "Info");
@@ -55,7 +55,6 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
     { wait: 500 }
   );
 
-  const mc = useMcWithPump(infoData);
 
   useEffect(() => {
     if (infoData) {
@@ -73,14 +72,18 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
     }
   }, [onBack, token]);
 
+  // useInterval(() => {
+  //   getDetailInfo()
+  // }, 3000)
+
   const tabs = useMemo(() => {
     const vals = [
       {
         name: "Details",
-        content: <Desc data={infoData} mc={mc} holdersId="detail-holders" />
+        content: <Desc data={infoData}  holdersId="detail-holders" />
       },
       {
-        name: "Comments",
+        name: "Discussion",
         content: (
           <CommnentList
             token={infoData}
@@ -94,12 +97,18 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
       }
     ];
 
+    if (infoData?.status === 0) {
+      vals.push({ name: "Flipped", content: <div style={{ backgroundColor: '#252328', padding: '10px 10px 20px' }}>
+        <PreUser  token={infoData} />
+      </div> });
+    }
+
     if (infoData?.status > 0) {
-      vals.push({ name: "Trades", content: <Txs mc={mc} data={infoData} /> });
+      vals.push({ name: "Trades", content: <Txs data={infoData} /> });
     }
 
     return vals;
-  }, [infoData, mc]);
+  }, [infoData]);
 
   if (isLoading) {
     return (
@@ -162,7 +171,6 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
             >
               <div className={styles.commentWrapper}>
                 <Info
-                  mc={mc}
                   data={infoData}
                   showHodler={false}
                   onUpdate={() => {

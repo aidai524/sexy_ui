@@ -4,7 +4,7 @@ import { BN } from "@coral-xyz/anchor";
 import Big from "big.js";
 import styles from "../trande.module.css";
 import MainBtn from "@/app/components/mainBtn";
-import { getFullNum, getPointByVolume, getTransaction } from "@/app/utils";
+import { getFullNum, getPointByVolume, getTransaction, simplifyNum } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import SlipPage from "../slippage";
 import TradeSuccessModal from "@/app/components/tradeSuccessModal";
@@ -352,7 +352,7 @@ export default function BuySellLaunched({
                 <div className={styles.balanceNum}>
                   {" "}
                   {tokenType === 0
-                    ? numberFormatter(tokenBalance, 2, true) + " " + tokenSymbol
+                    ? simplifyNum(Number(tokenBalance), 2) + " " + tokenSymbol
                     : numberFormatter(solBalance, 2, true) + " SOL"}
                 </div>
               </div>
@@ -446,8 +446,8 @@ export default function BuySellLaunched({
                       <div
                         onClick={() => {
                           if (item === "Max") {
-                            setSolPercent(Number(solBalance) - 0.03);
-                            setValInput(getFullNum(Number(solBalance) - 0.03));
+                            setSolPercent(new Big(solBalance).minus(0.03).toNumber());
+                            setValInput(getFullNum(new Big(solBalance).minus(0.03).toNumber()));
                           } else {
                             setSolPercent(item as number);
                             setValInput(getFullNum(item as number));
