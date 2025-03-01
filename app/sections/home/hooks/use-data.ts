@@ -21,6 +21,7 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
 
   const queryList = async () => {
     if (fetchingRef.current) return;
+
     try {
       fetchingRef.current = true;
 
@@ -69,14 +70,16 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
       setHasNext(_hasNext);
     } catch (err) {
     } finally {
+      setIsLoading(false);
       fetchingRef.current = false;
     }
   };
 
   const handleList = async (isNext?: boolean) => {
-    if (!isNext) setIsLoading(true);
+    if (!isNext) {
+      setIsLoading(true);
+    }
     await queryList();
-    setIsLoading(false);
   };
 
   const initList: any = () => {
@@ -100,10 +103,6 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
 
     if (_list.length - projectsStore.getIndex(launchType) > left_num) {
       setIsLoading(false);
-      return;
-    }
-    if (launchType === "forYou") {
-      handleList(true);
       return;
     }
     if (hasNext) {
@@ -137,6 +136,17 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
     }
   };
 
+  const onRefresh = () => {
+    projectsStore.clearList(launchType);
+    projectsStore.clearProjects();
+    if (projectsStore.address) {
+      projectsStore.setIndex(launchType, 0);
+    }
+
+    setIsLoading(true);
+    initList();
+  };
+
   const { run: debounceList } = useDebounceFn(
     () => {
       if (projectsStore.address !== (address || "")) {
@@ -156,14 +166,19 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
   );
 
   useEffect(() => {
-    if (!mountedRef.current) return;
+    console.log(169, mountedRef.current, isCurrentTab, launchType);
+    if (!mountedRef.current || !isCurrentTab) return;
     initList();
-  }, []);
+  }, [isCurrentTab]);
 
   useEffect(() => {
-    if (!isCurrentTab) return;
+    if (!isCurrentTab) {
+      setIsLoading(false);
+      mountedRef.current = true;
+      return;
+    }
     debounceList();
-  }, [accountRefresher, isCurrentTab]);
+  }, [accountRefresher]);
 
   return {
     getIndex: projectsStore.getIndex,
@@ -171,6 +186,7 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
     getList: projectsStore.getList,
     hasNext,
     refresher,
+    onRefresh,
     updateProject: projectsStore.updateProject,
     onChangeIndex,
     getProjectById: projectsStore.getProjectById,

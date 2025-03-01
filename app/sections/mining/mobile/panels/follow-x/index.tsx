@@ -10,8 +10,10 @@ import CircleLoading from "@/app/components/icons/loading";
 export default function FollowX() {
   const { userInfo, onQueryInfo } = useAuth();
   const config = useConfig((store: any) => store.config);
+  const redirectUri = `${window.location.origin}${window.location.pathname}`;
   const { loading } = useTwitterBind({
-    onSuccess: onQueryInfo
+    onSuccess: onQueryInfo,
+    redirectUri
   });
   return (
     <div
@@ -56,7 +58,6 @@ export default function FollowX() {
                   disabled={loading}
                   style={{ width: 104 }}
                   onClick={() => {
-                    const redirectUri = `${window.location.origin}${window.location.pathname}`;
                     const path = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${config.TwitterClientID}&redirect_uri=${redirectUri}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`;
                     window.open(path, "_blank");
                   }}

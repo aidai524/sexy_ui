@@ -211,16 +211,15 @@ export default function List({
               )}
             </div>
           )}
+          {isLoading && (
+            <div
+              className={styles.Wrapper}
+              style={{ height: contentHeight, width: innerWidth }}
+            >
+              <Loading />
+            </div>
+          )}
         </div>
-
-        {isLoading && (
-          <div
-            className={styles.Wrapper}
-            style={{ height: contentHeight, width: innerWidth }}
-          >
-            <Loading />
-          </div>
-        )}
       </div>
       {/* {type === "forYou" &&
         !!list?.length &&

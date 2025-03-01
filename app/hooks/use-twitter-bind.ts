@@ -5,9 +5,11 @@ import { httpAuthPost } from "../utils";
 import { success, fail } from "@/app/utils/toast";
 
 export default function useTwitterBind({
-  onSuccess
+  onSuccess,
+  redirectUri
 }: {
   onSuccess: VoidFunction;
+  redirectUri: string;
 }) {
   const [loading, setLoading] = useState(false);
   const { accountRefresher } = useAuth();
@@ -17,10 +19,10 @@ export default function useTwitterBind({
     if (loading) return;
     setLoading(true);
     try {
-      const result = await httpAuthPost("/bind/twitter", {
-        state: "state",
-        code
-      });
+      const result = await httpAuthPost(
+        `/bind/twitter?state=state&code=${code}&redirect_uri=${redirectUri}`,
+        {}
+      );
       if (result.code !== 0) throw new Error(result.msg);
       success("Bind successfully!");
       setLoading(false);
