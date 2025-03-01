@@ -65,6 +65,14 @@
   line-height: normal;
 }
 
+.CopyButton {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background: url("/img/icon-copy.svg") no-repeat center / contain;
+  margin-left: 5px;
+}
+
 .PanelSol {
   display: flex;
   gap: 3px;
