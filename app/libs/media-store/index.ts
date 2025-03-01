@@ -72,9 +72,10 @@ class MediaStore {
     if (this.fetching) {
       this.timer = setTimeout(() => {
         this.fetchFiles([]);
-      }, 3000);
+      }, 10000);
       return;
     }
+
     this.fetching = true;
     clearTimeout(this.timer);
     const loop = async () => {
@@ -101,7 +102,10 @@ class MediaStore {
         Range: "bytes=0-1048575"
       }
     });
-    if (!response.ok) throw new Error("Download failed" + response.statusText);
+    if (!response.ok) {
+      console.error("Download failed" + response.statusText);
+      return;
+    }
 
     const contentType = response.headers.get("content-type") || "video/mp4";
     const reader = response.body?.getReader();

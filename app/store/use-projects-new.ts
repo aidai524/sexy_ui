@@ -111,18 +111,20 @@ export const useProjects = create(
 
         const cachedVideos: any = [];
         const needUpdateProjects: any = [];
-        availableProjects.forEach((item: any) => {
+
+        availableProjects.forEach((itemId: any) => {
+          const item = get().projects[itemId];
           if (item.video && videoReg.test(item.video)) {
             cachedVideos.push({
               url: item.video,
               name: item.id
             });
           }
+
           if (Date.now() - item.fetched_time > 5 * 60 * 60 * 1000) {
             needUpdateProjects.push(item.id);
           }
         });
-
         mediaStore.fetchFiles(cachedVideos);
 
         set({ [type + "Index"]: index });
@@ -149,7 +151,8 @@ export const useProjects = create(
           if (repeatCount > 0) {
             set({
               [type + "List"]: [...list],
-              [type + "Index"]: index - repeatCount
+              [type + "Index"]:
+                index > list.length - 1 ? list.length - 1 : index
             });
           }
           set({ projects: currentProjects });
