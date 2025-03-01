@@ -101,7 +101,7 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
         name: "Flipped",
         content: (
           <div
-            style={{ backgroundColor: "#252328", padding: "10px 10px 20px" }}
+            style={{ backgroundColor: "#252328", padding: "10px 10px 20px", borderRadius: "15px 15px 0 0" }}
           >
             <PreUser token={infoData} />
           </div>

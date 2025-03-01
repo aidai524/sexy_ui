@@ -12,9 +12,7 @@ export default function Mobile({ newData }: any) {
     const vals = [
       {
         name: "Details",
-        content: (
-          <Desc data={newData} specialTime={"just now"} isCreated={true} />
-        )
+        content: <Desc data={newData} specialTime={"just now"} />
       },
       {
         name: "Comments",
