@@ -23,10 +23,11 @@ interface Props {
   step: number;
   onNext: () => void;
   onBack: () => void;
+  goBackTo?: () => void;
 }
 
 export default forwardRef(function PreviewNode(
-  { show, data, step, onNext, onBack }: Props,
+  { show, data, step, onNext, onBack, goBackTo }: Props,
   ref: any
 ) {
   const router = useRouter();
@@ -111,7 +112,7 @@ export default forwardRef(function PreviewNode(
         }}
         extendBtn={
           step === 4 && <div className={styles.skipBtn} onClick={() => {
-          }}>Skip111</div>
+          }}>Skip</div>
         }
         onNext={async () => {
           if (step === 3 && isMobile) {
@@ -229,6 +230,11 @@ export default forwardRef(function PreviewNode(
           data={data}
           getSubmitFn={(submitFn: any) => {
             submitFnRef.current = submitFn
+          }}
+          goBackTo={() => {
+            console.log('goBackTo')
+            goBackTo && goBackTo()
+            // setStep(2)
           }}
           onBeforeCreate={async () => {
             const val = await httpAuthPost(`/project/data?${query}`, {});

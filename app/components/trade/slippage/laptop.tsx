@@ -2,6 +2,8 @@ import styles from "./laptop.module.css";
 import { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { Switch } from "antd-mobile";
+import { useSetting } from "@/app/store/use-setting";
 
 const list = [0.1, 0.5, 1];
 export default function Laptop({
@@ -12,6 +14,7 @@ export default function Laptop({
   textRef
 }: any) {
   const [customVal, setCustomVal] = useState("");
+  const settingStore: any = useSetting();
 
   useEffect(() => {
     show && setCustomVal(list.includes(Number(slipData)) ? "" : slipData);
@@ -72,6 +75,29 @@ export default function Laptop({
             }}
           />
           <span>%</span>
+        </div>
+
+
+        <div className={styles.ProtectionItem}>
+            <div>Enable front-running protection:</div>
+            <div className={styles.ProtectionAction}>
+              <span>On</span>
+              <Switch
+                checked={settingStore.jitoable}
+                style={{
+                  "--checked-color": "#FBCA04",
+                  "--height": "20px",
+                  "--width": "36px"
+                }}
+                onChange={(val) => {
+                  settingStore.set({
+                    jitoable: val
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <div className={styles.ProtectionDesc}>
         </div>
       </motion.div>
     </AnimatePresence>,

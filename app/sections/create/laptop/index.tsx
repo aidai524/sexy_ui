@@ -38,8 +38,6 @@ export default function Laptop() {
     return queryStr;
   }, [dataAdd]);
 
-  console.log('step', step)
-
   return (
     <>
       <motion.div
@@ -81,6 +79,9 @@ export default function Laptop() {
                 data={dataAdd!}
                 onNext={() => {
                   setStep(step + 1);
+                }}
+                goBackTo={() => {
+                  setStep(2)
                 }}
                 onBack={() => {
                   console.log('onBack', step)

@@ -42,6 +42,7 @@ export default function Create({
   onBeforeCreate,
   width,
   getSubmitFn,
+  goBackTo,
   setShowSuccessModal
 }: any) {
   const { tokenName, tokenSymbol, tokenUri } = token;
@@ -293,6 +294,10 @@ export default function Create({
              disabled={isError}
              isLoading={isLoading}
              btnText={isError ? errorMsg : 'Get'}
+             goBackTo={(number) => {
+              console.log('number', number, goBackTo)
+              goBackTo && goBackTo()
+             }}
              onBack={() => {
                // onBack();
              }}
