@@ -1,6 +1,7 @@
 import { simplifyNum } from "@/app/utils";
 import styles from "./index.module.css";
 import { ProgressBar } from "antd-mobile";
+import ZeroFormat from "@/app/components/zeroFomat";
 export default function LaunchesStatus({ data }: any) {
   
   return (
@@ -37,7 +38,7 @@ export default function LaunchesStatus({ data }: any) {
             Number(data.marketCap24hUsd) < 0 && <div className={styles.priceDown}>-${simplifyNum(data.marketCap24hUsd, 2)}</div>
           }
         </div>
-        <div className={styles.priceUnit}>${simplifyNum(data.price, 2)}</div>
+        <div className={styles.priceUnit}>$<ZeroFormat value={data.price} /> </div>
       </div>
     </div>
   );
