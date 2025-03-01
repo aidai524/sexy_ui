@@ -107,18 +107,19 @@ const datafeed: (
         hasNextRef.current = true;
         pageRef.current = 0;
       }
+
       if (!hasNextRef.current) {
         onHistoryCallback([], { noData: true });
         return;
       }
       pageRef.current = pageRef.current + 1;
 
-      const { data, hasNextPage } = await fetchData(
+      const { data = [], hasNextPage } = await fetchData(
         address,
         getGranularityByResolution(resolution),
         pageRef.current
       );
-      lastPrice = data[data.length - 1][1];
+      if (data.length) lastPrice = data[data.length - 1][1];
       resolutionRef.current = resolution;
       hasNextRef.current = hasNextPage;
       resolutionRef.current = resolution;
