@@ -64,7 +64,7 @@ export default function FlipPanel({ from, token, onClose, onSuccess }: any) {
   }, [checkPrePayed, address, token]);
 
   const errorTips = useMemo(() => {
-    if (isPrePaid) return "Fliped!";
+    if (isPrePaid) return `You've fliped ${token.total_amount} SOL!`;
     if (Big(inputVal || 0).eq(0)) return "Enter an amount";
     return Big(inputVal || 0).gt(solBalance || 0) ? "Insufficient Balance" : "";
   }, [solBalance, inputVal, isPrePaid]);
