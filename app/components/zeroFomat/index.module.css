@@ -1,0 +1,11 @@
+.zeroFormat {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.zeroCount {
+  font-size: 0.7em;
+  position: relative;
+  bottom: 0;
+  margin-right: 1px;
+} 
