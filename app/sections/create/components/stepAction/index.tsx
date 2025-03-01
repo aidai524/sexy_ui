@@ -9,20 +9,24 @@ export default function StepAction({
     step,
     disabled = false,
     isLoading = false,
+    isSkipLoading = false,
     extendBtn,
     btnText = 'Continue',
     onBack,
     goBackTo,
     onNext,
+    onSkip,
 }: {
     step: number;
     disabled?: boolean;
+    isSkipLoading?: boolean;
     isLoading?: boolean;
     extendBtn?: ReactNode;
     btnText?: string;
     onBack: () => void;
     onNext: () => void;
     goBackTo?: (number: number) => void;
+    onSkip?: () => void;
 }) {
     const { isMobile } = useUserAgent();   
 
@@ -32,7 +36,7 @@ export default function StepAction({
                 goBackTo && goBackTo(2)
             }} className={styles.backBtn}>Back</div>
             <div className={styles.btnWapper4PcAction}>
-                <MainBtn loadingStyle='#fff' isDisabled={disabled} style={{ color: '#fff', marginRight: '10px', backgroundColor: 'transparent', border: '1px solid #FBCA04', fontWeight: 500, height: '40px', fontSize: '14px', width: isMobile ? '100%' : '160px' }} isLoading={isLoading} onClick={onNext}>Skip</MainBtn>
+                <MainBtn loadingStyle='#fff' isDisabled={disabled} style={{ color: '#fff', marginRight: '10px', backgroundColor: 'transparent', border: '1px solid #FBCA04', fontWeight: 500, height: '40px', fontSize: '14px', width: isMobile ? '100%' : '160px' }} isLoading={isSkipLoading} onClick={onSkip}>Skip</MainBtn>
                 <MainBtn isDisabled={disabled} style={{ color: '#000', fontWeight: 500, height: '40px', fontSize: '14px', width: isMobile ? '100%' : '160px' }} isLoading={isLoading} onClick={onNext}>Get</MainBtn>
             </div>
         </div>;

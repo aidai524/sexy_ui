@@ -61,6 +61,7 @@ export default function Create({
 
   const [tokenType, setTokenType] = useState<number>(1);
   const [modalShow, setModalShow] = useState(false)
+  const [isSkipLoading, setIsSkipLoading] = useState(false)
   const [currentToken, setCurrentToken] = useState<Token>(SOL);
   const [errorMsg, setErrorMsg] = useState("");
   const [isError, setIsError] = useState(false);
@@ -160,7 +161,11 @@ export default function Create({
         return;
       }
 
-      setIsLoading(true);
+      if (ignorePrepaid === 0) {
+        setIsSkipLoading(true)
+      } else {
+        setIsLoading(true);
+      }
 
       const sameNameRes = await validateSameName();
 
@@ -192,10 +197,12 @@ export default function Create({
       }
 
       setIsLoading(false);
+      setIsSkipLoading(false)
       // success('Transtion success')
     } catch (e: any) {
       console.log(e);
       setIsLoading(false);
+      setIsSkipLoading(false)
       if (e.message) {
         fail(e.message);
       } else {
@@ -291,8 +298,9 @@ export default function Create({
          {
            <StepAction
              step={4}
-             disabled={isError}
+             disabled={isError || isSkipLoading || isLoading}
              isLoading={isLoading}
+             isSkipLoading={isSkipLoading}
              btnText={isError ? errorMsg : 'Get'}
              goBackTo={(number) => {
               console.log('number', number, goBackTo)
@@ -306,6 +314,9 @@ export default function Create({
                  submit(0)
                }}>Skip</div>
              }
+             onSkip={() => {
+               submit(0)
+             }}
              onNext={async () => {
                submit(1)
              }}
