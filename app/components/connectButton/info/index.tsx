@@ -8,6 +8,7 @@ import Level from "../../level";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/context/auth";
 import useSolBalance from "@/app/hooks/use-sol-balance";
+import { success } from "@/app/utils/toast";
 
 export default function Info({ logout }: any) {
   const { wallet, publicKey } = useWallet();
@@ -74,6 +75,14 @@ export default function Info({ logout }: any) {
                   {publicKey?.toString().slice(0, 4)}....
                   {publicKey?.toString().slice(-4)}
                 </div>
+                <button
+                  type="button"
+                  className={styles.CopyButton}
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(publicKey?.toString?.() ?? "");
+                    success("Copied to clipboard");
+                  }}
+                />
               </div>
               <Level level={userInfo?.level} vipType={userInfo.vipType} />
             </div>
