@@ -55,7 +55,6 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
     { wait: 500 }
   );
 
-
   useEffect(() => {
     if (infoData) {
       run();
@@ -80,7 +79,7 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
     const vals = [
       {
         name: "Details",
-        content: <Desc data={infoData}  holdersId="detail-holders" />
+        content: <Desc data={infoData} holdersId="detail-holders" />
       },
       {
         name: "Discussion",
@@ -98,9 +97,16 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
     ];
 
     if (infoData?.status === 0) {
-      vals.push({ name: "Flipped", content: <div style={{ backgroundColor: '#252328', padding: '10px 10px 20px' }}>
-        <PreUser  token={infoData} />
-      </div> });
+      vals.push({
+        name: "Flipped",
+        content: (
+          <div
+            style={{ backgroundColor: "#252328", padding: "10px 10px 20px" }}
+          >
+            <PreUser token={infoData} />
+          </div>
+        )
+      });
     }
 
     if (infoData?.status > 0) {
