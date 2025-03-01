@@ -5,7 +5,6 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { formatAddress, formatDateEn, simplifyNum, timeAgo } from "@/app/utils";
-import useMc from "@/app/hooks/useMc";
 import Holder from "@/app/components/holder";
 import { ProgressBar } from "antd-mobile";
 import { useTrendsStore } from "@/app/store/useTrends";
@@ -22,7 +21,6 @@ export default function Desc({
 }: {
   data: Project;
   specialTime?: string;
-  mc: any;
   showHolders?: boolean;
   isCreated?: boolean;
   from?: string;
@@ -87,7 +85,9 @@ export default function Desc({
             </div>
             <div className={styles.statsValue}>
               {"$"}
-              {data.mc ? simplifyNum(Number(data.mc)) : "-"}
+              {data.marketCap24hUsd
+                ? simplifyNum(Number(data.marketCap24hUsd))
+                : "-"}
             </div>
           </div>
           <div className={styles.statsItem}>
