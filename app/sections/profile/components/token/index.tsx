@@ -222,7 +222,8 @@ export default function Token({
               borderRadius: 7,
             }}
             style={{
-              overflow: "hidden"
+              overflow: "hidden",
+              borderRadius: 7,
             }}
             videoStyle={{
               height: "100%",
