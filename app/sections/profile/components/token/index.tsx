@@ -183,8 +183,6 @@ export default function Token({
     setTokenAmount(Big(0));
   }, [pool, data, data?.tokenDecimals, prepaidRealAmount, showWithdraw]);
 
-  console.log(data);
-
   return (
     <div
       className={styles.main}
