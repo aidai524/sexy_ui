@@ -49,7 +49,10 @@ export default function CommentComp({
 
   const Content = (
     <>
-      <div className={styles.title} style={titleStyle}>
+      <div
+        className={styles.title}
+        style={{ ...titleStyle, paddingRight: from === "panel" ? 20 : 0 }}
+      >
         <div>
           Comments(
           {isPreview
@@ -78,7 +81,23 @@ export default function CommentComp({
         </div>
       </div>
 
-      {commentList.length > 0 && <div>{CommentList}</div>}
+      {commentList.length > 0 && (
+        <div
+          style={{
+            height: from === "panel" ? "calc(100% - 30px)" : "auto",
+            overflowY: from === "panel" ? "auto" : "auto",
+            paddingRight: from === "panel" ? 20 : 0
+          }}
+        >
+          {CommentList}{" "}
+          {from === "panel" && (
+            <SexInfiniteScroll
+              loadMore={loadMoreComment}
+              hasMore={commentHasMore}
+            />
+          )}
+        </div>
+      )}
 
       {commentList.length === 0 && !showEdit && !isCommentLoading && (
         <div
@@ -192,8 +211,12 @@ export default function CommentComp({
           </MainBtn>
         </div>
       </Modal>
-
-      <SexInfiniteScroll loadMore={loadMoreComment} hasMore={commentHasMore} />
+      {from !== "panel" && (
+        <SexInfiniteScroll
+          loadMore={loadMoreComment}
+          hasMore={commentHasMore}
+        />
+      )}
     </>
   );
 
@@ -202,7 +225,7 @@ export default function CommentComp({
       className={`${styles.main}`}
       style={{
         height: from === "panel" ? "100%" : "auto",
-        padding: from === "panel" ? "16px 30px" : "10px 0px 100px",
+        padding: from === "panel" ? "16px 10px 16px 30px" : "10px 0px 100px",
         backgroundColor: from === "panel" ? "#1B1B1B" : "transparent"
       }}
     >

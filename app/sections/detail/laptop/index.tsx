@@ -51,6 +51,7 @@ export default function Laptop(props: any) {
             token={detailStatusStore.token}
             isCurrent={true}
             onUpdate={(token: any) => {
+              console.log(54);
               detailStatusStore.setToken(JSON.parse(JSON.stringify(token)));
             }}
             opacity={1}

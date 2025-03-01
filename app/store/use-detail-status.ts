@@ -24,13 +24,12 @@ export const useDetailStatus = create(
       },
       setToken(token: any) {
         set({
-          token,
-          showTrade: false
+          token
         });
       }
     }),
     {
-      name: "_token_panels",
+      name: "_token_detail_status",
       version: 0.1,
       storage: createJSONStorage(() => sessionStorage)
     }

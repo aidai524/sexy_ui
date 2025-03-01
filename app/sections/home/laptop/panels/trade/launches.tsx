@@ -9,7 +9,6 @@ import Trade from "@/app/components/trade";
 import Details from "../details";
 import Comments from "../comments";
 import { numberFormatter } from "@/app/utils/common";
-import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 
 const TABS = [
   {
@@ -41,7 +40,6 @@ export default function LaunchesTradePanel({
   onClose,
   onSuccess
 }: any) {
-  const mc = useMcWithPump(token);
   return (
     <div className={styles.Container}>
       <Header
@@ -53,7 +51,7 @@ export default function LaunchesTradePanel({
       <div
         className={styles.Tabs}
         style={{
-          height: 416
+          height: 412
         }}
       >
         {tab === "chart" && (
@@ -68,8 +66,10 @@ export default function LaunchesTradePanel({
                 >
                   <div className={styles.MarketCap}>
                     $
-                    {Number(mc) > 0
-                      ? numberFormatter(mc, 2, true, { isShort: true })
+                    {Number(token.market_cap_24h_usd) > 0
+                      ? numberFormatter(token.market_cap_24h_usd, 2, true, {
+                          isShort: true
+                        })
                       : "-"}
                   </div>
                   <div className={styles.MarketCap24}>
