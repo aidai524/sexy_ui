@@ -22,9 +22,7 @@ export default function Desc({
 }: {
   data: Project;
   specialTime?: string;
-  mc: any;
   showHolders?: boolean;
-  isCreated?: boolean;
   from?: string;
   holdersId?: string;
 }) {
