@@ -72,10 +72,10 @@ export default function TradeSuccessModal({
           <span>{"You’ve got"}</span>
           <span className={style.sexFi}>
             {" "}
-            {numberFormatter(point, 3, true, {
+            {numberFormatter(point, 6, true, {
               isShort: true
             })}{" "}
-            $Fun
+            $FUN
           </span>
         </div>
       </div>

@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { numberFormatter } from "@/app/utils/common";
 // @ts-ignore
 import confetti from "canvas-confetti";
+import { useInterval } from "ahooks";
 
 interface Props {
   show: boolean;
@@ -78,16 +79,20 @@ function SuccessModal({
   const { isMobile } = useUserAgent();
   const router = useRouter();
 
-  useEffect(() => {
+  const launchConfetti = useCallback(() => {
     if (token) {
       confetti({
-        particleCount: 100,
+        particleCount: 500,
         spread: 100,
-        origin: { y: 0.8 },
+        origin: { y: 0.6, x: 0.5 },
         zIndex: 99999
       });
     }
   }, [token]);
+
+  useInterval(() => {
+    launchConfetti()
+  }, 1000, { immediate: true })  
 
   return (
     <div className={style.main + ' ' + (isMobile ? style.mainMobile : style.mainPc)} style={{ width: isMobile ? "90vw" : 432 }}>
