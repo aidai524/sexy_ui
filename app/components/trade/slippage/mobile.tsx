@@ -23,6 +23,9 @@ export default function Mobile({
   return (
     <Modal
       open={show}
+      style={{
+        zIndex: 99999
+      }}
       onClose={() => {
         onHide && onHide();
       }}

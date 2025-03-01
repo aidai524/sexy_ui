@@ -35,13 +35,13 @@ export default function PreUser({ token, from }: Props) {
       style={{ padding: from === "panel" ? "0px 10px" : 0 }}
     >
       
-      <UserItem item={token.creater} type={1} />
+      {/* <UserItem item={token.creater} type={1} /> */}
       {superLikeList?.map((item: any) => {
         return <UserItem key={"super-like-" + item.id} item={item} type={3} />;
       })}
-      {likeList.map((item: any) => {
+      {/* {likeList.map((item: any) => {
         return <UserItem key={"like-" + item.id} item={item} type={2} />;
-      })}
+      })} */}
     </div>
   );
 }
