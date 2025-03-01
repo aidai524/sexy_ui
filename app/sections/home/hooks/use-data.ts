@@ -166,7 +166,6 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
   );
 
   useEffect(() => {
-    console.log(169, mountedRef.current, isCurrentTab, launchType);
     if (!mountedRef.current || !isCurrentTab) return;
     initList();
   }, [isCurrentTab]);
