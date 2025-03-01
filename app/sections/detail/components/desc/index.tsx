@@ -301,7 +301,7 @@ export default function Desc({
                 )}
             </div>
 
-            {data.status! > 0 &&
+            {data.status! === 1 &&
                 ((from === "panel" && data.kingProgress) || from !== "panel") && (
                     <div
                         className={styles.singleProgress}
