@@ -28,7 +28,7 @@ const onLike = async (data: any) => {
             (data.token_name || data.tokenName) +
             "', You are expected to receive " +
             numberFormatter(points, 4, true) +
-            " points"
+            " $FUN"
         );
         return v.data || {};
       } else if (v.code === 100002 && data.status === 0) {
