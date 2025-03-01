@@ -26,8 +26,11 @@ export default function StepAction({
 
     if (!isMobile && step === 4) {
         return <div className={styles.btnWapper4Pc}>
-            <MainBtn loadingStyle='#fff' isDisabled={disabled} style={{ color: '#fff', backgroundColor: 'transparent', border: '1px solid #FBCA04', fontWeight: 500, height: '40px', fontSize: '14px', width: isMobile ? '100%' : '160px' }} isLoading={isLoading} onClick={onNext}>Skip</MainBtn>
-            <MainBtn isDisabled={disabled} style={{ color: '#000', fontWeight: 500, height: '40px', fontSize: '14px', width: isMobile ? '100%' : '160px' }} isLoading={isLoading} onClick={onNext}>Get</MainBtn>
+            <div onClick={onBack} className={styles.backBtn}>Back</div>
+            <div className={styles.btnWapper4PcAction}>
+                <MainBtn loadingStyle='#fff' isDisabled={disabled} style={{ color: '#fff', marginRight: '10px', backgroundColor: 'transparent', border: '1px solid #FBCA04', fontWeight: 500, height: '40px', fontSize: '14px', width: isMobile ? '100%' : '160px' }} isLoading={isLoading} onClick={onNext}>Skip</MainBtn>
+                <MainBtn isDisabled={disabled} style={{ color: '#000', fontWeight: 500, height: '40px', fontSize: '14px', width: isMobile ? '100%' : '160px' }} isLoading={isLoading} onClick={onNext}>Get</MainBtn>
+            </div>
         </div>;
     }
 

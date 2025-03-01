@@ -17,7 +17,7 @@ export const createLevelAndPoints = (params: any) => {
       icon: `/img/airdrop/user-level${userHasPoints ? '' : '-inactive'}.svg`,
       desc: (
         <>
-          Starts your FlipN journey from <span className={styles.CardContentPrimary}>Lv. {userData.level}</span>, it will boost <span className={styles.CardContentPrimary}>10%</span> of mining.
+          Starts your Fun journey from <span className={styles.CardContentPrimary}>Lv. {userData.level}</span>, it will boost <span className={styles.CardContentPrimary}>10%</span> of mining.
         </>
       ),
     },
@@ -72,7 +72,7 @@ export const createLevelAndPoints = (params: any) => {
       icon: '/img/airdrop/user-points.svg',
       desc: (
         <>
-          You got <span className={styles.CardContentPrimary}>{numberFormatter(userData.points, 0, true)}</span> points on FlipN based on your meme experience.
+          You got <span className={styles.CardContentPrimary}>{numberFormatter(userData.points, 0, true)}</span> points on Fun based on your meme experience.
         </>
       ),
     },

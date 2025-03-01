@@ -54,6 +54,7 @@ export default forwardRef(function CreateNode(
   const imgRef = useRef<any>(null);
   const [isImgUploaded, setIsImgUploaded] = useState(false);
   const [originIcon, setOriginIcon] = useState<string>('');
+  
 
   const [links, setLinks] = useState<any>({
     x: {
@@ -64,7 +65,7 @@ export default forwardRef(function CreateNode(
       show: isMobile,
       onChange: (val: string) => {
         setTwitter(val);
-        setLinks({ ...links, x: { ...links.x, value: val } });
+        setLinks({ ...linkRef.current, x: { ...linkRef.current.x, value: val } });
       },
       onBlur: () => {
         const xError = validateTwitter(x);
@@ -83,7 +84,8 @@ export default forwardRef(function CreateNode(
       show: false,
       onChange: (val: string) => {
         setWebsite(val);
-        setLinks({ ...links, website: { ...links.website, value: val } });
+        console.log(x, links)
+        setLinks({ ...linkRef.current, website: { ...linkRef.current.website, value: val } });
       },
       onBlur: () => {
         const websiteError = validateWebsite(website);
@@ -102,7 +104,7 @@ export default forwardRef(function CreateNode(
       show: false,
       onChange: (val: string) => {
         setTelegram(val);
-        setLinks({ ...links, tg: { ...links.tg, value: val } });
+        setLinks({ ...linkRef.current, tg: { ...linkRef.current.tg, value: val } });
       },
       onBlur: () => {
         const tgError = validateTelegram(tg);
@@ -121,7 +123,7 @@ export default forwardRef(function CreateNode(
       show: false,
       onChange: (val: string) => {
         setDiscord(val);
-        setLinks({ ...links, discord: { ...links.discord, value: val } });
+        setLinks({ ...linkRef.current, discord: { ...linkRef.current.discord, value: val } });
       },
       onBlur: () => {
         const discordError = validateDiscord(discord);
@@ -133,6 +135,8 @@ export default forwardRef(function CreateNode(
       }
     }
   })
+
+  const linkRef = useRef<any>(links);
 
   const validateSameName = useCallback(async () => {
     const tokenInUse = await httpGet(
@@ -227,6 +231,7 @@ export default forwardRef(function CreateNode(
   }, []);
 
   const validateTwitter = useCallback((x: string) => {
+    console.log(x, links)
     if (x && !isValidURL(x)) {
       return "Twitter is not a valid url";
     }
@@ -477,14 +482,17 @@ export default forwardRef(function CreateNode(
                 value={links[key].value}
                 onChange={(val) => {
                   links[key].onChange(val);
+                  linkRef.current = links
                 }}
                 onBlur={() => {
                   links[key].onBlur();
+                  linkRef.current = links
                 }}
                 onDelete={() => {
                   links[key].onChange('');
                   links[key].show = false;
                   setLinks({ ...links });
+                  linkRef.current = links
                 }}
                 type={links[key].type}
                 img={links[key].img}
@@ -733,6 +741,7 @@ export default forwardRef(function CreateNode(
         step={step}
         onBack={onBack}
         onNext={async () => {
+          console.log('onNext', step)
           const isValid = await onPreview(step);
           if (!isValid) {
             onNext();

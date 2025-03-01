@@ -407,7 +407,7 @@ export default function BuySellLaunched({
                 />
                 <div className={styles.inputToken}>
                   <div className={styles.tokenName}>
-                    {currentToken.tokenName}
+                    {currentToken.tokenSymbol}
                   </div>
                   <div className={styles.tokenImg}>
                     <img className={styles.tiImg} src={currentToken.tokenUri} />
@@ -479,16 +479,13 @@ export default function BuySellLaunched({
               ))}
 
             {activeIndex === 1 && (
-              <div className={styles.tokenPercent}>
+              <div className={styles.tokenPercent + ' ' + (from === "panel" ? styles.PanelPercent : styles.Percent)}>
                 <div
                   onClick={() => {
                     setTokenPercent(0);
                     setValInput("");
                   }}
-                  className={`${from === "panel"
-                      ? styles.PanelPercentTag
-                      : styles.percentTag
-                    } button`}
+                  className={`${styles.percentTag} button`}
                 >
                   Reset
                 </div>
@@ -530,7 +527,7 @@ export default function BuySellLaunched({
                   {buyIn && numberFormatter(buyIn, 6, true)}
 
                   {
-                    from === "panel" ? <div>{token.tokenName}</div> : (
+                    from === "panel" ? <div>{token.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img
                           src={desToken.tokenUri}
@@ -548,7 +545,7 @@ export default function BuySellLaunched({
                 <div className={styles.receiveAmount}>
                   {buyInSol && numberFormatter(buyInSol, 9, true)}
                   {
-                    from === "panel" ? <div>{SOL.tokenName}</div> : (
+                    from === "panel" ? <div>{SOL.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img
                           src={SOL.tokenUri}
@@ -567,7 +564,7 @@ export default function BuySellLaunched({
                 <div className={styles.receiveAmount}>
                   {sellOutSol && numberFormatter(sellOutSol, 9, true)}
                   {
-                    from === "panel" ? <div>{desToken.tokenName}</div> : (
+                    from === "panel" ? <div>{desToken.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img
                           src={desToken.tokenUri}

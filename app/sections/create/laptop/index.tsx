@@ -38,6 +38,8 @@ export default function Laptop() {
     return queryStr;
   }, [dataAdd]);
 
+  console.log('step', step)
+
   return (
     <>
       <motion.div
@@ -45,7 +47,7 @@ export default function Laptop() {
         animate={{ opacity: 1 }}
         className={styles.Wrapper}
       >
-        <Steps step={step} />
+        { step <= 3 && <Steps step={step} /> }
         <div className={styles.Container}>
           <motion.div
             initial={{ opacity: 0 }}
@@ -78,72 +80,16 @@ export default function Laptop() {
                 step={step}
                 data={dataAdd!}
                 onNext={() => {
-                  console.log('onNext', step)
                   setStep(step + 1);
                 }}
                 onBack={() => {
+                  console.log('onBack', step)
                   setStep(step - 1);
                 }} />
             </motion.div>
           )}
         </div>
-        {/* <Actions 
-          step={step}
-          onClick={(type: string) => {
-            if (type === "preview") {
-              createRef.current.onPreview();
-              return;
-            }
-            if (type === "edit") {
-              setStep(1);
-              return;
-            }
-            if (type === "create") {
-              setShowCreateModal(true);
-              return;
-            }
-          }}
-        /> */}
       </motion.div>
-      {/* {dataAdd && (
-        <CreateModal
-          show={showCreateModal}
-          token={{
-            tokenName: dataAdd.tokenName,
-            tokenSymbol: dataAdd.tokenSymbol,
-            tokenDecimals: 6,
-            tokenUri: dataAdd.tokenIcon || dataAdd.tokenImg
-          }}
-          data={dataAdd}
-          onHide={() => {
-            setShowCreateModal(false);
-          }}
-          onBeforeCreate={async () => {
-            const val = await httpAuthPost(`/project/data?${query}`, {});
-            return val.code === 0;
-          }}
-          onCreateTokenSuccess={async () => {
-            let times = 0,
-              val;
-            while (true && times < 50) {
-              val = await httpAuthPost(`/project?${query}`, {});
-              if (val.code === 100000) {
-                times++;
-                await sleep(5000);
-              } else {
-                break;
-              }
-            }
-
-            if (val.code === 0) {
-              return true;
-            } else {
-              fail("Create token fail");
-              return false;
-            }
-          }}
-        />
-      )} */}
     </>
   );
 }

@@ -28,7 +28,8 @@ export default function Token({
   onUpdate,
   onOpenPanel,
   onUpdateTradeTab,
-  mediaId
+  mediaId,
+  showFlip
 }: any) {
   const { innerHeight, innerWidth } = useUserAgent();
   const descContentRef = useRef<any>();
@@ -119,6 +120,7 @@ export default function Token({
           </div>
           {showTrade && (isCurrent || isNext) && (
             <TradePanel
+              showFlip={showFlip}
               onClose={() => {
                 onOpenPanel("showTrade", false);
               }}
@@ -155,8 +157,15 @@ export default function Token({
 
       {dataAvailable && token?.id && (
         <Actions
+          isPreview={isPreview}
+          disabled={isPreview}
           token={token}
+          isPreviewNoOpacity={isPreview}
           onClick={(type: any, params: any) => {
+            if (isPreview) {
+              return
+            }
+
             let tab = "details";
             if (type === "comments") {
               tab = "comments";
