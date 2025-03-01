@@ -2,9 +2,6 @@ import { simplifyNum } from "@/app/utils";
 import styles from "./index.module.css";
 import { ProgressBar } from "antd-mobile";
 export default function LaunchesStatus({ data }: any) {
-
-
-  console.log('data', data)
   
   return (
     <div className={styles.panel}>
