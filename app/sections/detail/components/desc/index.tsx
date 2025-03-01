@@ -17,12 +17,14 @@ export default function Desc({
   data,
   specialTime,
   showHolders = true,
+  isCreated = false,
   from,
   holdersId
 }: {
   data: Project;
   specialTime?: string;
   showHolders?: boolean;
+  isCreated?: boolean;
   from?: string;
   holdersId?: string;
 }) {
@@ -174,39 +176,23 @@ export default function Desc({
       <div
         style={{
           padding: from === "panel" ? "0px 15px 15px" : 15,
-          backgroundColor: from === "panel" ? "transparent" : "#ffffff14",
-          fontSize: 12
+          backgroundColor: from === "panel" ? "transparent" : "#ffffff14"
         }}
       >
         <div>
-          <div
-            className={styles.nameWrapper}
-            style={{
-              padding: from === "panel" ? "0px 0px 10px" : "5px 0px"
-            }}
-          >
+          <div className={styles.nameWrapper}>
             <div className={styles.ticker}>Name:</div>
             <span className={styles.des}>{data.tokenName}</span>
           </div>
 
           {data.DApp === "sexy" && (
-            <div
-              className={styles.nameWrapper}
-              style={{
-                padding: from === "panel" ? "10px 0px" : "5px 0px"
-              }}
-            >
+            <div className={styles.nameWrapper}>
               <div className={styles.ticker}>Ticker:</div>
               <span className={styles.des}>{data.ticker}</span>
             </div>
           )}
 
-          <div
-            className={styles.nameWrapper}
-            style={{
-              padding: from === "panel" ? "10px 0px" : "5px 0px"
-            }}
-          >
+          <div className={styles.nameWrapper}>
             <div className={styles.ticker}>Created by:</div>
             <div
               onClick={() => {
@@ -229,12 +215,7 @@ export default function Desc({
           </div>
 
           {data.creater && data.creater.education && (
-            <div
-              className={styles.nameWrapper}
-              style={{
-                padding: from === "panel" ? "10px 0px" : "5px 0px"
-              }}
-            >
+            <div className={styles.nameWrapper}>
               <div className={styles.ticker}>Education:</div>
               <div className={[styles.des].join(" ")}>
                 {data.creater && data.creater.education}
@@ -242,12 +223,7 @@ export default function Desc({
             </div>
           )}
 
-          <div
-            className={styles.nameWrapper}
-            style={{
-              padding: from === "panel" ? "10px 0px" : "5px 0px"
-            }}
-          >
+          <div className={styles.nameWrapper}>
             <div className={styles.ticker}>Create:</div>
             <div className={styles.des}>
               {specialTime
@@ -261,12 +237,7 @@ export default function Desc({
             </div>
           </div>
           {data.DApp === "pump" && (
-            <div
-              className={styles.nameWrapper}
-              style={{
-                padding: from === "panel" ? "10px 0px" : "5px 0px"
-              }}
-            >
+            <div className={styles.nameWrapper}>
               <div className={styles.ticker}>{"Import time"}:</div>
               <div className={styles.des}>
                 {specialTime
@@ -278,16 +249,22 @@ export default function Desc({
               </div>
             </div>
           )}
+
+          {!isCreated && data.status! > 0 && (
+            <div className={styles.nameWrapper}>
+              <div className={styles.ticker}>Market cap:</div>
+              <div className={styles.authorDesc} key={data.address}>
+                <div style={{ color: "#6fff00" }}>
+                  ${data.mc ? simplifyNum(Number(data.mc), 2) : "-"}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {!!data.about && (
           <>
-            <div
-              className={styles.nameWrapper}
-              style={{
-                padding: from === "panel" ? "10px 0px" : "5px 0px"
-              }}
-            >
+            <div className={styles.nameWrapper}>
               <div className={styles.ticker}>Description:</div>
             </div>
             <div className={styles.aboutUs}>
@@ -339,7 +316,7 @@ export default function Desc({
         )}
       </div>
 
-      {data.status! > 0 &&
+      {data.status! === 1 &&
         ((from === "panel" && data.kingProgress) || from !== "panel") && (
           <div
             className={styles.singleProgress}
