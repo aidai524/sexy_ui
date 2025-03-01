@@ -77,7 +77,7 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
     const vals = [
       {
         name: "Details",
-        content: <Desc data={infoData} mc={mc} holdersId="detail-holders" />
+        content: <Desc data={infoData} holdersId="detail-holders" />
       },
       {
         name: "Comments",

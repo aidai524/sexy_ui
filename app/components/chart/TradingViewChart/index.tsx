@@ -316,7 +316,7 @@ function TradingViewChart(
 }
 
 function getStoredInterval() {
-  const interval = tvStorage?.get("interval") || "1";
+  const interval = "1";
   return interval as ResolutionString;
 }
 
