@@ -46,32 +46,43 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
     >
       {!isMobile && (
         <div className={styles.TokenItemLaptopAvatar}>
-          {isVideoFile(_token.icon) ? (
-            <VideoPlayer
-              key={_token.icon}
-              id={String(_token.id)}
-              mediaId={`TokenItemLaptopAvatar-${_token.id}`}
-              src={_token.icon}
-              type={getVideoExt(_token.icon)}
-              className={styles.TokenItemLaptopAvatarBanner}
-              autoPlay={true}
-              token={_token as any}
-            />
-          ) : (
-            <div className={styles.TokenItemLaptopAvatarBannerWithPlayButton}>
-              <img
-                src={_token?.icon || "/img/token-placeholder.png"}
-                alt=""
-                className={styles.TokenItemLaptopAvatarBanner}
-                loading="lazy"
-              />
-              isVideoFile(_token.video) && (
-                <div className={styles.TokenItemLaptopAvatarBannerPlayButtonContainer}>
-                  <img src="/img/icon-play.svg" alt="" className={styles.TokenItemLaptopAvatarBannerPlayButton} />
+          {
+            isVideoFile(_token.video) ? (
+              _token.icon ? (
+                <div className={styles.TokenItemLaptopAvatarBannerWithPlayButton}>
+                  <img
+                    src={_token?.icon || "/img/token-placeholder.png"}
+                    alt=""
+                    className={styles.TokenItemLaptopAvatarBanner}
+                    loading="lazy"
+                  />
+                  <div className={styles.TokenItemLaptopAvatarBannerPlayButtonContainer}>
+                    <img src="/img/icon-play.svg" alt="" className={styles.TokenItemLaptopAvatarBannerPlayButton} />
+                  </div>
                 </div>
+              ) : (
+                <VideoPlayer
+                  key={_token.video}
+                  id={String(_token.id)}
+                  mediaId={`TokenItemLaptopAvatar-${_token.id}`}
+                  src={_token.video}
+                  type={getVideoExt(_token.video)}
+                  className={styles.TokenItemLaptopAvatarBanner}
+                  autoPlay={true}
+                  token={_token as any}
+                />
               )
-            </div>
-          )}
+            ) : (
+              <div className={styles.TokenItemLaptopAvatarBannerWithPlayButton}>
+                <img
+                  src={_token?.icon || "/img/token-placeholder.png"}
+                  alt=""
+                  className={styles.TokenItemLaptopAvatarBanner}
+                  loading="lazy"
+                />
+              </div>
+            )
+          }
           <div className={styles.TokenItemLaptopAvatarProfile}>
             <div className={styles.TokenItemLaptopAvatarProfileLeft}>
               <TokenIcon
@@ -114,8 +125,10 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
             <TokenIcon
               token={{
                 ..._token,
+                icon: isVideoFile(_token.video) ? (_token.icon || _token.video) : _token.video,
                 is_king: false
               }}
+              isPlayButton={true}
             />
           </div>
           <div className={styles.TokenItemRight}>

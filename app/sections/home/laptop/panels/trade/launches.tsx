@@ -52,7 +52,8 @@ export default function LaunchesTradePanel({
       <div
         className={styles.Tabs}
         style={{
-          height: 412
+          height: 422,
+          marginBottom: 0
         }}
       >
         {tab === "chart" && (
@@ -89,9 +90,12 @@ export default function LaunchesTradePanel({
                   })}
                 </div>
               </div>
-              <div className={styles.DataItem} style={{ width: "25%"}}>
+              <div className={styles.DataItem} style={{ width: "25%" }}>
                 <div className={styles.DataLabel}>Current Price</div>
-                <div className={styles.DataValue} style={{ display: "flex", alignItems: "center"  }}>
+                <div
+                  className={styles.DataValue}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
                   $<ZeroFormat value={token.price} />
                 </div>
               </div>
@@ -102,7 +106,7 @@ export default function LaunchesTradePanel({
                 padding: "10px",
                 marginRight: "10px",
                 borderRadius: "10px",
-                height: 339,
+                height: 349,
                 position: "relative"
               }}
             />
@@ -144,7 +148,10 @@ export default function LaunchesTradePanel({
       </div>
       <div
         style={{
-          marginTop: "-20px"
+          height: 237,
+          position: "absolute",
+          width: 574,
+          bottom: 0
         }}
       >
         <Trade from="panel" initType="buy" token={token} show={true} />

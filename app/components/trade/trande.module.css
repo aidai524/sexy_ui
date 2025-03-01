@@ -12,10 +12,9 @@
       margin-bottom: 20px;
       display: flex;
       align-items: center;
-      background-color: #3B3B3B;
+      background-color: #3b3b3b;
       border-radius: 10px;
       position: relative;
-      
 
       .tab {
         flex: 1;
@@ -31,14 +30,14 @@
         overflow: hidden;
 
         &.active:first-child {
-          background-color: #C9FF5D;
+          background-color: #c9ff5d;
           color: #000;
           /* background: url("/img/trade/buy.png") no-repeat 0 -10px; */
           /* background-size: 100% auto; */
         }
 
         &.active:last-child {
-          background-color: #FF559D;
+          background-color: #ff559d;
           color: #fff;
           /* background: url("/img/trade/sell.png") no-repeat 0 -10px; */
           /* background-size: 100% auto; */
@@ -46,7 +45,7 @@
       }
 
       .tab:first-child {
-        color: #C9FF5D;
+        color: #c9ff5d;
         border-radius: 10px;
         /* background: url("/img/trade/buy-grey.png") no-repeat 0 -10px;
         background-size: 100% auto; */
@@ -54,14 +53,14 @@
 
       .tab:last-child {
         border-radius: 10px;
-        color: #FF559D;
+        color: #ff559d;
         /* background: url("/img/trade/sell-grey.png") no-repeat 0 -10px;
         background-size: 100% auto; */
       }
     }
 
     .tradeTabs::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -10px;
       left: -10px;
@@ -78,7 +77,6 @@
   .tokenBalanceBox {
     margin-top: 46px;
   }
-
 
   .pcActionArea {
     .tokenBalanceBox {
@@ -103,7 +101,7 @@
         .tokenName {
           margin-top: 0;
           font-size: 12px;
-          color: #9290B1;
+          color: #9290b1;
         }
 
         .tokenPrice {
@@ -131,15 +129,14 @@
     }
   }
 
-
   .balance {
-    color: #9290B1;
+    color: #9290b1;
     font-size: 12px;
     display: flex;
     align-items: center;
     gap: 5px;
     height: 30px;
-    background-color: #3C3C3C80;
+    background-color: #3c3c3c80;
     padding: 0 10px;
     border-radius: 10px;
     width: 30%;
@@ -147,7 +144,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
 }
 
 .inputActionArea .actionArea {
@@ -161,7 +157,7 @@
 
 .PanelContent {
   margin-top: 10px;
-  background-color: #FFFFFF14;
+  background-color: #ffffff0d;
 
   .inputActionArea .actionArea {
     justify-content: flex-start;
@@ -232,7 +228,7 @@
 .inputActionArea .tokenPercent .percentTag {
   font-size: 12px;
   font-weight: 300;
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 6px;
   padding: 5px 10px;
   opacity: 0.5;
@@ -242,7 +238,7 @@
 }
 
 .inputActionArea .tokenPercent .percentTag.tagActive {
-  background-color: #3C3C3C80;
+  background-color: #3c3c3c80;
   opacity: 1;
 }
 
@@ -273,7 +269,7 @@
   justify-content: center;
   gap: 3px;
   cursor: pointer;
-  background-color: #3C3C3C80;
+  background-color: #3c3c3c80;
   border-radius: 26px;
 }
 
@@ -366,7 +362,7 @@
 
 .receiveTitle {
   white-space: nowrap;
-  color: #9290B1;
+  color: #9290b1;
 }
 
 .slippage {
@@ -374,14 +370,14 @@
   z-index: 20;
   display: flex;
   gap: 5px;
-  background-color: #3C3C3C80;
+  background-color: #3c3c3c80;
   border-radius: 10px;
   height: 30px;
   align-items: center;
   padding: 0 10px;
   cursor: pointer;
   font-size: 12px;
-  color: #9290B1;
+  color: #9290b1;
 }
 
 .receiveAmount {
@@ -389,7 +385,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 5px;
-  color: #9290B1; 
+  color: #9290b1;
   padding-right: 10px;
 }
 
@@ -408,7 +404,7 @@
 
 .tokenPrice {
   font-size: 10px;
-  color: #9290B1;
+  color: #9290b1;
   text-align: center;
   margin-top: 10px;
   flex: 1;

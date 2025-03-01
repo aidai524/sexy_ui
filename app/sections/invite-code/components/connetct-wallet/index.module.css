@@ -7,9 +7,15 @@
   align-items: center;
   padding-top: 56px;
 }
-.Banner {
+.BannerWrapper {
   width: 100%;
   height: 444px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.Banner {
+  width: 100%;
+  height: 100%;
   border-radius: 16px;
   object-fit: cover;
   object-position: center;

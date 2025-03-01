@@ -104,26 +104,27 @@ export const useProjects = create(
       },
       setIndex: async (type: Type, index: number) => {
         const list = get()[type + "List"];
-        const startI = index - 10 < 0 ? 0 : index - 10;
-        const endI =
-          index + 10 > list.length - 1 ? list.length - 1 : index + 10;
+        const startI = index - 5 < 0 ? 0 : index - 5;
+        const endI = index + 5 > list.length - 1 ? list.length - 1 : index + 5;
 
         const availableProjects = list.slice(startI, endI);
 
         const cachedVideos: any = [];
         const needUpdateProjects: any = [];
-        availableProjects.forEach((item: any) => {
+
+        availableProjects.forEach((itemId: any) => {
+          const item = get().projects[itemId];
           if (item.video && videoReg.test(item.video)) {
             cachedVideos.push({
               url: item.video,
               name: item.id
             });
           }
-          if (Date.now() - item.fetched_time > 10 * 60 * 60 * 1000) {
+
+          if (Date.now() - item.fetched_time > 5 * 60 * 60 * 1000) {
             needUpdateProjects.push(item.id);
           }
         });
-
         mediaStore.fetchFiles(cachedVideos);
 
         set({ [type + "Index"]: index });
@@ -150,7 +151,8 @@ export const useProjects = create(
           if (repeatCount > 0) {
             set({
               [type + "List"]: [...list],
-              [type + "Index"]: index - repeatCount
+              [type + "Index"]:
+                index > list.length - 1 ? list.length - 1 : index
             });
           }
           set({ projects: currentProjects });
