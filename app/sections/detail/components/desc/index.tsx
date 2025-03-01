@@ -145,7 +145,7 @@ export default function Desc({
                 </div>
               </div>
             </div>
-            {Number(data.volume24hUsd) > 0 && (
+            {Number(data.volume24hUsd) > 0 ? (
               <div className={styles.statsValue}>
                 <div className={styles.tradeChart}>
                   <div
@@ -168,7 +168,7 @@ export default function Desc({
                   ></div>
                 </div>
               </div>
-            )}
+            ) : <div className={styles.tradeChart} style={{ backgroundColor: "#3C3C3C80" }}></div>}
           </div>
         </div>
       )}

@@ -87,4 +87,7 @@
 .priceUnit {
   font-size: 12px;
   color: #9290b1;
+  display: flex;
+  align-items: center;
+  gap: 0;
 }

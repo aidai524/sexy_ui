@@ -97,9 +97,7 @@ export default function FlipPanel({ from, token, onClose, onSuccess }: any) {
           {[0.1, 0.5, 1].map((item) => (
             <div
               key={item}
-              className={`${styles.Tag} ${
-                item === Number(inputVal) && styles.Active
-              }`}
+              className={`${styles.Tag}`}
               onClick={() => {
                 setInputVal(item);
               }}
@@ -108,9 +106,7 @@ export default function FlipPanel({ from, token, onClose, onSuccess }: any) {
             </div>
           ))}
           <div
-            className={`${styles.Tag} ${
-              solBalance === inputVal && styles.Active
-            }`}
+            className={`${styles.Tag}`}
             onClick={() => {
               if (!isNaN(Number(solBalance))) {
                 setInputVal(solBalance);
