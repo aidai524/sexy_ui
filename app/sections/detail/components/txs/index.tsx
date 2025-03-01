@@ -44,7 +44,8 @@ function SexSwitch({ checked, onChange }: any) {
       style={{
         ...switchStyle,
         // @ts-ignore
-        "--adm-color-text-light-solid": checked ? "#fff" : "#808E9A"
+        "--adm-color-text-light-solid": checked ? "#fff" : "#808E9A",
+        "--checked-color": "#FBCA04"
       }}
     />
   );

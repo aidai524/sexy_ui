@@ -12,6 +12,7 @@ export default function StepAction({
     extendBtn,
     btnText = 'Continue',
     onBack,
+    goBackTo,
     onNext,
 }: {
     step: number;
@@ -21,12 +22,15 @@ export default function StepAction({
     btnText?: string;
     onBack: () => void;
     onNext: () => void;
+    goBackTo?: (number: number) => void;
 }) {
     const { isMobile } = useUserAgent();   
 
     if (!isMobile && step === 4) {
         return <div className={styles.btnWapper4Pc}>
-            <div onClick={onBack} className={styles.backBtn}>Back</div>
+            <div onClick={() => {
+                goBackTo && goBackTo(2)
+            }} className={styles.backBtn}>Back</div>
             <div className={styles.btnWapper4PcAction}>
                 <MainBtn loadingStyle='#fff' isDisabled={disabled} style={{ color: '#fff', marginRight: '10px', backgroundColor: 'transparent', border: '1px solid #FBCA04', fontWeight: 500, height: '40px', fontSize: '14px', width: isMobile ? '100%' : '160px' }} isLoading={isLoading} onClick={onNext}>Skip</MainBtn>
                 <MainBtn isDisabled={disabled} style={{ color: '#000', fontWeight: 500, height: '40px', fontSize: '14px', width: isMobile ? '100%' : '160px' }} isLoading={isLoading} onClick={onNext}>Get</MainBtn>
