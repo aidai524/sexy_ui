@@ -19,9 +19,9 @@ const onLike = async (data: any) => {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
       if (v.code === 0 && data.status === 0) {
         const points =
-          Number(v.data?.point) < 0.01
-            ? "0.01"
-            : new Big(v.data?.point || 0).toFixed(2, 0);
+          Number(v.data?.point) < 0.0001
+            ? "0.0001"
+            : new Big(v.data?.point || 0).toFixed(4, 0);
 
         success(
           "You liked '" +

@@ -34,7 +34,7 @@ export default function PreUser({ token, from }: Props) {
       className={styles.main}
       style={{ padding: from === "panel" ? "0px 10px" : 0 }}
     >
-      {from !== "panel" && <div className={styles.title}>Founders</div>}
+      
       <UserItem item={token.creater} type={1} />
       {superLikeList?.map((item: any) => {
         return <UserItem key={"super-like-" + item.id} item={item} type={3} />;

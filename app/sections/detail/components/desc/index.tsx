@@ -87,9 +87,7 @@ export default function Desc({
             </div>
             <div className={styles.statsValue}>
               {"$"}
-              {data.marketCap24hUsd
-                ? simplifyNum(Number(data.marketCap24hUsd))
-                : "-"}
+              {data.mc ? simplifyNum(Number(data.mc)) : "-"}
             </div>
           </div>
           <div className={styles.statsItem}>

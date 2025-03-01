@@ -127,7 +127,11 @@ export default function Txs({ from, data }: any) {
                 <div className={styles.filterText}>Filter by</div>
               </div>
             )}
-            <div className={styles.filterItem}>
+            <div className={styles.filterItem}
+              style={{
+                display: "flex",
+                justifyContent: from === "panel" ?  "flex-start" : "space-between"
+              }}>
               <div className={styles.filterText}>
                 Filter by size
                 <img
@@ -154,7 +158,7 @@ export default function Txs({ from, data }: any) {
                 display: "flex",
                 flexDirection: from === "panel" ? "row" : "column",
                 justifyContent: "flex-end",
-                gap: 30
+                gap: from === "panel" ? "30px" : "0"
               }}
             >
               <div
@@ -208,16 +212,14 @@ export default function Txs({ from, data }: any) {
 
       {data && (
         <div
-          className={`${styles.txContent} ${
-            from === "panel" ? styles.LaptopContent : ""
-          }`}
+          className={`${styles.txContent} ${from === "panel" ? styles.LaptopContent : ""
+            }`}
         >
           {data?.status === 1 && (
             <>
               <div
-                className={`${styles.txTtitles} ${
-                  from === "panel" ? styles.LaptopTitles : styles.MobileTitles
-                }`}
+                className={`${styles.txTtitles} ${from === "panel" ? styles.LaptopTitles : styles.MobileTitles
+                  }`}
               >
                 <div style={{ flex: 3 }} className={styles.titleItem}>
                   Account
@@ -295,8 +297,7 @@ export default function Txs({ from, data }: any) {
                         style={{ textAlign: "right" }}
                         onClick={() => {
                           window.open(
-                            `https://solscan.io/tx/${item.tx_hash}${
-                              isDevnet ? "?cluster=devnet" : ""
+                            `https://solscan.io/tx/${item.tx_hash}${isDevnet ? "?cluster=devnet" : ""
                             }`
                           );
                         }}
