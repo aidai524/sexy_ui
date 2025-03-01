@@ -9,7 +9,8 @@ import clsx from "clsx";
 export default function TokenIcon({
   token,
   onClick = () => {},
-  className
+  className,
+  isPlayButton
 }: any) {
   const progress = useMemo(() => {
     if (token.status === 3) return 0;
@@ -62,11 +63,20 @@ export default function TokenIcon({
           }}
         />
       ) : (
-        <img
-          src={token?.icon || "/img/token-placeholder.png"}
-          className={styles.Icon}
-          loading="lazy"
-        />
+        <div className={styles.IconImgContainer}>
+          <img
+            src={token?.icon || "/img/token-placeholder.png"}
+            className={styles.Icon}
+            loading="lazy"
+          />
+          {
+            isPlayButton && isVideoFile(token?.video) && (
+              <div className={styles.IconImgPlay}>
+                <img src="/img/icon-play.svg" alt="" className={styles.IconImgPlayButton} />
+              </div>
+            )
+          }
+        </div>
       )}
       {token.is_king && (
         <div className={styles.King}>

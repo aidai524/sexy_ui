@@ -16,6 +16,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import dayjs from "dayjs";
 import Media from "@/app/components/thumbnail/media";
 import { useUserAgent } from "@/app/context/user-agent";
+import { videoReg } from '@/app/components/upload';
 
 interface Props {
   data: Project;
@@ -182,6 +183,8 @@ export default function Token({
     setTokenAmount(Big(0));
   }, [pool, data, data?.tokenDecimals, prepaidRealAmount, showWithdraw]);
 
+  console.log(data);
+
   return (
     <div
       className={styles.main}
@@ -213,7 +216,8 @@ export default function Token({
           <Media
             data={{
               ...data,
-              tokenImg: data.tokenIcon || data.tokenImg,
+              // fix#REF-10095
+              tokenImg: videoReg.test(data.token_video || "") ? (data.token_icon || data.token_video) : data.token_video,
             }}
             imgHeight={84}
             autoPlay={false}
@@ -231,6 +235,13 @@ export default function Token({
               borderRadius: 7,
             }}
           />
+          {
+            (videoReg.test(data.token_video || "") && !!data.token_icon && !videoReg.test(data.token_icon || "")) && (
+              <div className={styles.tokenVideoWrapper}>
+                <img src="/img/icon-play.svg" alt="" className={styles.tokenVideoPlayIcon} />
+              </div>
+            )
+          }
           <LaunchTag type={data.status as number} />
         </div>
 
