@@ -8,7 +8,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 const limit = 10;
 const left_num = 5;
 
-export default function useData(launchType: Type) {
+export default function useData(launchType: Type, isCurrentTab: boolean) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
   const [refresher, setRefresher] = useState(0);
@@ -87,6 +87,17 @@ export default function useData(launchType: Type) {
       return;
     }
 
+    if (
+      isCurrentTab &&
+      projectsStore.getProjectById(_list[projectsStore.getIndex(launchType)])
+        ?.address
+    ) {
+      queryAndUpdateDetail(
+        projectsStore.getProjectById(_list[projectsStore.getIndex(launchType)])
+          .address
+      );
+    }
+
     if (_list.length - projectsStore.getIndex(launchType) > left_num) {
       setIsLoading(false);
       return;
@@ -101,7 +112,7 @@ export default function useData(launchType: Type) {
   };
 
   const queryAndUpdateDetail = useCallback(
-    async (address: number) => {
+    async (address: string) => {
       const res = await httpGet(`/project?address=${address}`);
       if (res.code !== 0 || !res.data || !res.data.length) return;
       projectsStore.updateProject(res.data[0]);
@@ -138,26 +149,21 @@ export default function useData(launchType: Type) {
       }
 
       initList();
+
       mountedRef.current = true;
     },
-    { wait: 1000 }
+    { wait: 1500 }
   );
 
   useEffect(() => {
-    window.addEventListener("unload", () => {
-      projectsStore.clearList(launchType);
-      projectsStore.clearProjects();
-      if (projectsStore.address) {
-        projectsStore.setIndex(launchType, 0);
-      }
-    });
     if (!mountedRef.current) return;
     initList();
   }, []);
 
   useEffect(() => {
+    if (!isCurrentTab) return;
     debounceList();
-  }, [accountRefresher]);
+  }, [accountRefresher, isCurrentTab]);
 
   return {
     getIndex: projectsStore.getIndex,

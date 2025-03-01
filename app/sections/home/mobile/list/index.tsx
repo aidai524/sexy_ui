@@ -27,7 +27,7 @@ export default function List({
     updateProject,
     getProjectById,
     queryAndUpdateDetail
-  } = useData(type);
+  } = useData(type, isCurrentTab);
 
   const index = getIndex(type);
   const list = getList(type);
