@@ -9,6 +9,7 @@ import Trade from "@/app/components/trade";
 import Details from "../details";
 import Comments from "../comments";
 import { numberFormatter } from "@/app/utils/common";
+import ZeroFormat from "@/app/components/zeroFomat";
 
 const TABS = [
   {
@@ -88,12 +89,10 @@ export default function LaunchesTradePanel({
                   })}
                 </div>
               </div>
-              <div className={styles.DataItem} style={{ width: "25%" }}>
+              <div className={styles.DataItem} style={{ width: "25%"}}>
                 <div className={styles.DataLabel}>Current Price</div>
-                <div className={styles.DataValue}>
-                  {numberFormatter(token.price, 6, true, {
-                    isShort: true
-                  })}
+                <div className={styles.DataValue} style={{ display: "flex", alignItems: "center"  }}>
+                  $<ZeroFormat value={token.price} />
                 </div>
               </div>
             </div>
