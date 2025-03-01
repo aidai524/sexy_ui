@@ -119,7 +119,7 @@ export const useProjects = create(
               name: item.id
             });
           }
-          if (Date.now() - item.fetched_time > 30 * 60 * 60 * 1000) {
+          if (Date.now() - item.fetched_time > 10 * 60 * 60 * 1000) {
             needUpdateProjects.push(item.id);
           }
         });
@@ -133,16 +133,26 @@ export const useProjects = create(
             "/project/ids?id_list=" + needUpdateProjects.join(",")
           );
           const currentProjects = get().projects;
-
+          let repeatCount = 0;
           res.data?.forEach((item: any) => {
-            if (!currentProjects[item.id]) return;
-
+            const currentItem = currentProjects[item.id];
+            if (!currentItem) return;
+            if (item.status !== currentItem) {
+              const i = list.find((slip: any) => slip === item.id);
+              repeatCount++;
+              list.splice(i, 1);
+            }
             currentProjects[item.id] = {
               ...mapDataToProject(item),
               fetched_time: Date.now()
             };
           });
-
+          if (repeatCount > 0) {
+            set({
+              [type + "List"]: [...list],
+              [type + "Index"]: index - repeatCount
+            });
+          }
           set({ projects: currentProjects });
         }
       },
