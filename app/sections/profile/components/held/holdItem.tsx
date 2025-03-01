@@ -40,7 +40,7 @@ export default function HoldItem(props: any) {
         <div className={styles.tokenMsg}>
             <Media
                 data={{
-                    tokenImg: icon || item.token_icon
+                    tokenImg: icon || item.token_icon || "/img/token-placeholder.png"
                 }}
                 imgHeight={46}
                 autoPlay={false}
@@ -55,6 +55,7 @@ export default function HoldItem(props: any) {
                     overflow: "hidden",
                     width: 46,
                     height: 46,
+                    borderRadius: 23,
                 }}
                 videoStyle={{
                     height: "100%",
