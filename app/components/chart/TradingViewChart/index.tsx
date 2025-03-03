@@ -94,7 +94,7 @@ function TradingViewChart(
     setLoading(true);
     const widgetOptions: ChartingLibraryWidgetOptions = {
       symbol,
-      theme: "light",
+      theme: "dark",
       datafeed,
       interval: getStoredInterval(),
       container: "TVChartContainer",
