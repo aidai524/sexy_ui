@@ -39,7 +39,7 @@ export default function Top1() {
         >
           [Crowned]
         </span>{" "}
-        <span>NIA</span>{" "}
+        <span>{top1?.token_symbol}</span>{" "}
         <span
           style={{
             color: "#C9FF5D"
