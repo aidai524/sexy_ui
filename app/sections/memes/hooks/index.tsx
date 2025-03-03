@@ -234,7 +234,7 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     try {
       const res = await httpGet(`/project/memes/list`, {
         limit: memesListPageLimit,
-        offset,
+        offset: offset * memesListPageLimit,
         order,
         sort,
         type,

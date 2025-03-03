@@ -8,7 +8,7 @@
   width: 100%;
   position: sticky;
   top: 0;
-  z-index: 11;
+  z-index: 12;
   cursor: grab;
   touch-action: pan-x;
   overflow-x: auto;
@@ -103,7 +103,7 @@
   align-items: center;
   position: sticky;
   top: 51px;
-  z-index: 11;
+  z-index: 12;
   background: #000;
   padding-bottom: 10px;
 }
