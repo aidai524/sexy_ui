@@ -1,5 +1,6 @@
 interface Window {
   opera: any;
+  connecting?: boolean;
   connect?: any;
   disconnect?: any;
   sexAddress?: string;
