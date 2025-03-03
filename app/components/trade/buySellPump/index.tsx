@@ -419,10 +419,7 @@ export default function BuySellPump({
                       setSolPercent(0);
                       setValInput("");
                     }}
-                    className={`${from === "panel"
-                      ? styles.PanelPercentTag
-                      : styles.percentTag
-                      } button`}
+                    className={`${styles.percentTag} button`}
                   >
                     Reset
                   </div>
@@ -440,9 +437,7 @@ export default function BuySellPump({
                         }}
                         key={item}
                         className={[
-                          from === "panel"
-                            ? styles.PanelPercentTag
-                            : styles.percentTag,
+                          styles.percentTag,
                           item === solPercent ? styles.tagActive : "",
                           "button"
                         ].join(" ")}
@@ -556,7 +551,7 @@ export default function BuySellPump({
               </div>
             )}
 
-            <div style={{ marginTop: from === "panel" ? 0 : 18 }}>
+            <div style={{ marginTop: 18 }}>
               <MainBtn
                 isLoading={isLoading}
                 isDisabled={isError}
@@ -643,7 +638,7 @@ export default function BuySellPump({
                   color: "#000",
                   background: activeIndex === 0 ? "#C9FF5D" : "#FFC9F1",
                   height: from === "panel" ? 36 : 60,
-                  width: from === "panel" ? "120px" : "100%"
+                  width: "100%"
                 }}
               >
                 {activeIndex === 0 ? "Buy" : "Sell"}
