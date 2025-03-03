@@ -9,6 +9,19 @@
 .ItemBox {
     padding: 16px !important;
     border-radius: 8px !important;
+    width: 94% !important;
+    height: 182px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    margin-bottom: 10px !important;
+}
+
+
+.ItemBoxPC {
+    padding: 16px !important;
+    border-radius: 8px !important;
     width: 360px !important;
     height: 182px !important;
     background: rgba(255, 255, 255, 0.08) !important;
