@@ -12,7 +12,8 @@ export default function Trade({ token, isCurrent, onClick }: any) {
               <div
                 className={styles.Mc}
                 style={{
-                  color: token.market_cap_24h_usd < 0 ? "#FF2681" : "#C9FF5D"
+                  color:
+                    Number(token.market_cap_24h_usd) < 0 ? "#FF2681" : "#C9FF5D"
                 }}
               >
                 ${Number(token.mc) > 0 ? simplifyNum(Number(token.mc), 2) : "-"}
