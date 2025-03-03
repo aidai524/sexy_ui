@@ -1,6 +1,6 @@
 import styles from './index.module.css';
 import TopTraderShareInfoCard from '@/app/sections/smart/components/TopTraderShare/share-info';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, useCallback, useEffect } from 'react';
 import { useAccount } from '@/app/hooks/useAccount';
 import { fail, success } from '@/app/utils/toast';
 import html2canvas from 'html2canvas';
@@ -13,7 +13,10 @@ import {
 } from "@/app/sections/trends/components/top-traders/icons";
 import { useUserAgent } from '@/app/context/user-agent';
 import CloseIcon from "@/app/components/icons/modal-close";
+import { postUpload, base64ToBlob } from '@/app/utils';
+import { getShortUrl, shareToX } from "@/app/utils/share";
 
+const domain = process.env.NEXT_PUBLIC_DOMAIN || "https://stage.flipn.fun";
 const TopTraderShare = (props: any) => {
   const { show, onClose, selectedItems, currentUserInfo, shareName } = props;
   const { isMobile } = useUserAgent();
@@ -25,6 +28,7 @@ const TopTraderShare = (props: any) => {
   const [downloadVisible, setDownloadVisible] = useState(false);
   const [downloadSrc, setDownloadSrc] = useState<any>();
   const [downloadFileName, setDownloadFileName] = useState<any>();
+  const [shareImgUrl, setShareImgUrl] = useState<any>();
 
   const shareLink = useMemo(() => {
     const _shareLink = new URL(window?.location?.origin + '/smartTopDetail');
@@ -76,6 +80,79 @@ const TopTraderShare = (props: any) => {
     setLoading(false);
   };
 
+
+
+  const getShareImg = async () => {
+    if (loading) return;
+    setLoading(true);
+    if (cardRef.current) {
+      const canvas = await html2canvas(cardRef.current, {
+        useCORS: true,
+        scale: 5,
+        backgroundColor: "#000000"
+      });
+      // const base64Url = canvas.toDataURL("image/webp");
+      // const newFileName = generateRandomString(10);
+      // Create a new canvas with 375x625 dimensions
+      const canvas2 = document.createElement("canvas");
+      canvas2.width = 1000;
+      canvas2.height = 500;
+
+      const ctx = canvas2.getContext("2d");
+      if (ctx) {
+        // Fill entire canvas with black background
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, canvas2.width, canvas2.height);
+
+        // Calculate scaling factor to fit within canvas2
+        const scale = Math.min(
+          canvas2.width / canvas.width,
+          canvas2.height / canvas.height
+        );
+
+        // Calculate dimensions after scaling
+        const scaledWidth = canvas.width * scale;
+        const scaledHeight = canvas.height * scale;
+
+        // Calculate position to center scaled image
+        const x = (canvas2.width - scaledWidth) / 2;
+        const y = (canvas2.height - scaledHeight) / 2;
+
+        // Draw scaled and centered image
+        ctx.drawImage(canvas, x, y, scaledWidth, scaledHeight);
+
+        const base64Url = canvas2.toDataURL("image/webp");
+        const bloBData = base64ToBlob(base64Url);
+        const url = await postUpload(bloBData[0], shareName!, bloBData[1]);
+        if (url) {
+          setShareImgUrl(url);
+        }
+      }
+
+      // setShareImgUrl(url);
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getShareImg();
+  }, []);
+
+
+  const handleCopyX = async () => {
+    if (shareImgUrl) {
+      const longUrl = `${domain}/api/smart?address=${encodeURIComponent(
+        shareName
+      )}&imgUrl=${encodeURIComponent(
+        shareImgUrl
+      )}&title=${encodeURIComponent(
+        shareName
+      )}&about=${encodeURIComponent(shareName)}&referral=${encodeURIComponent(shareName)}`;
+      const shortUrl = await getShortUrl(longUrl);
+      shareToX(shareName!, shortUrl);
+    }
+  }
+
   return (
     <div className={isMobile ? styles.CopyTradeShareContainer : styles.CopyTradeShareContainerPC}>
       {
@@ -111,9 +188,14 @@ const TopTraderShare = (props: any) => {
         <button
           type="button"
           className={styles.AirdropShareButtonPrimary}
-          onClick={handleCopy}
+          onClick={isMobile ? handleCopy : handleCopyX}
+          disabled={loading}
         >
-          <img src="/img/airdrop/icon-share.svg" alt="" className={styles.AirdropShareButtonIcon} />
+           {
+            loading && (
+              <Loading size={14} />
+            )
+          }
           <span>Share</span>
         </button>
       </div>
