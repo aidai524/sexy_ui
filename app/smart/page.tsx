@@ -8,7 +8,7 @@ import { SHOW_COPY_TRADE } from "@/app/utils/config";
 import { useRouter } from "next/navigation";
 
 
-export default function Create() {
+export default function Smart() {
   const { isMobile } = useUserAgent();
   const router = useRouter();
   if (!SHOW_COPY_TRADE) {

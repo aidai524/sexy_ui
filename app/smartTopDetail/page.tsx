@@ -4,7 +4,7 @@ import TopTraderDetailContent from '@/app/sections/smart/components/topTraderDet
 import { SHOW_COPY_TRADE } from '@/app/utils/config';
 import { useRouter } from 'next/navigation';
 
-export default function page() {
+export default function SmartTopDetail() {
   const router = useRouter();
   if (!SHOW_COPY_TRADE) {
     return router.push("/");
