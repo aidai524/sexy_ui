@@ -26,21 +26,27 @@ export default function ExpandPanel() {
           const isActive = item.key.includes(pathname);
           return (
             <div
-              className={`${styles.Item} ${isActive && styles.ItemActive}`}
+              className={`${item?.comingSoon && styles.ComingSoonWrapper} ${styles.Item} ${isActive && styles.ItemActive}`}
               key={item.path}
               onClick={() => {
                 if (!window.sexAddress && item.needLogin) {
                   window.connect();
                   return;
                 }
-
+                if (item?.comingSoon) {
+                  return;
+                }
                 router.push(item.path);
               }}
-            >
+            > 
+                {item?.comingSoon && (
+                  <img src="/img/smart/coming-soon.png" alt="coming-soon" className={styles.ComingSoon}/>
+                )}
               <span className={styles.ItemIcon}>
                 {item.label === "Smart" && canClaim > 0 && (
                   <div className={styles.copyDot}></div>
                 )}
+             
                 <item.icon
                   size={item.iconSize}
                   type={item.key.includes(pathname) ? "primary" : "disabled"}

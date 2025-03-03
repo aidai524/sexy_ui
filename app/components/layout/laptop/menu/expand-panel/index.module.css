@@ -31,6 +31,7 @@
   cursor: pointer;
   color: rgba(255, 255, 255, 0.5);
   transition: 0.3s;
+  position: relative;
 }
 
 .ItemActive {
@@ -113,4 +114,20 @@
   position: absolute;
   top: 0px;
   right: 20%;
+}
+
+
+.ComingSoon {
+  position: absolute;
+  top: 0px;
+  left: 15%;
+  z-index: 100;
+}
+
+
+.ComingSoonWrapper {
+  opacity: 0.5 !important;
+}
+.ComingSoonWrapper:hover {
+  background: transparent !important;
 }
