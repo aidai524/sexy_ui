@@ -4,6 +4,7 @@ import { useProjects, type Type } from "@/app/store/use-projects-new";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";
 import { useAccount } from "@/app/hooks/useAccount";
+import { useUserAgent } from "@/app/context/user-agent";
 
 const limit = 10;
 const left_num = 5;
@@ -18,6 +19,7 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
   const fetchingRef = useRef(false);
   const prePageRef = useRef<any>([]);
   const { address } = useAccount();
+  const { isMobile } = useUserAgent();
 
   const queryList = async () => {
     if (fetchingRef.current) return;
@@ -178,6 +180,15 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
     }
     debounceList();
   }, [accountRefresher]);
+
+  useEffect(() => {
+    if (isMobile)
+      window.addEventListener("unload", () => {
+        projectsStore.clearList(launchType);
+        projectsStore.clearProjects();
+        projectsStore.setIndex(launchType, 0);
+      });
+  }, []);
 
   return {
     getIndex: projectsStore.getIndex,

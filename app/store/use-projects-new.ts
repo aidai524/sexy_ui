@@ -135,13 +135,21 @@ export const useProjects = create(
           );
           const currentProjects = get().projects;
           let repeatCount = 0;
-          res.data?.forEach((item: any) => {
-            const currentItem = currentProjects[item.id];
-            if (!currentItem) return;
-            if (item.status !== currentItem) {
-              const i = list.find((slip: any) => slip === item.id);
-              repeatCount++;
-              list.splice(i, 1);
+
+          res.data?.forEach((item: any, i: number) => {
+            if (["genesis", "ticking", "listed"].includes(type)) {
+              const currentItem = currentProjects[item.id];
+              if (currentItem) {
+                if (i === 0) {
+                  currentItem.status = 3;
+                }
+
+                if (item.status !== currentItem.status) {
+                  const index = list.findIndex((slip: any) => slip === item.id);
+                  repeatCount++;
+                  list.splice(index, 1);
+                }
+              }
             }
             currentProjects[item.id] = {
               ...mapDataToProject(item),

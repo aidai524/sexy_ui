@@ -33,6 +33,7 @@ export default function SignatureModal({
             updateCurrentUserInfo();
             setAccountRefresher(accountRefresher + 1);
             setShowSignatureModal(false);
+            window.connecting = false;
           }}
         >
           Sign
