@@ -194,9 +194,9 @@ export function Upload({
           )}
           {fileType === "video" && (
             <div className={styles.videoBox} onClick={onUpload}>
-              <video className={styles.imgPreview} playsInline webkit-playsinline preload="metadata" style={{ pointerEvents: "none" }} >
+              <video className={styles.imgPreview} playsInline webkit-playsinline style={{ pointerEvents: "none" }} >
                 <source
-                  src={mergedFiles[0].url}
+                  src={mergedFiles[0].url + '#t=0.1'}
                   type={"video/" + getVideoExt(mergedFiles[0].url)}
                 />
                 Your browser does not support the video tag.
