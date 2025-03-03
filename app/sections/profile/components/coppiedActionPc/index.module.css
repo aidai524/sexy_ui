@@ -32,6 +32,7 @@
   margin-top: 12px;
   border-bottom: 1px solid #353339;
   padding-bottom: 20px;
+  font-weight: 400;
 }
 
 .public {
@@ -203,6 +204,7 @@
   font-size: 12px;
   font-weight: 400;
   color: #9290B1;
+  cursor: pointer;
 }
 
 .minCopyAmountTips {

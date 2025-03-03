@@ -9,6 +9,7 @@ import SimpleAvatar from "@/app/components/avatar/simple";
 import LimitProject from "../../component/limitProjects";
 import { useState } from "react";
 import clsx from "clsx";
+import { simplifyNum } from "@/app/utils";
 
 export default function TotalPanel({ info, userInfo }: any) {
   const homeTabStore: any = useHomeTab();
@@ -118,18 +119,21 @@ export default function TotalPanel({ info, userInfo }: any) {
             <div
               className={clsx(styles.StatisticsValue, "button")}
               onClick={() => {
+                if (!info?.referral_number) return;
                 setShowReferrals(true);
               }}
             >
               <span
                 style={{
                   fontSize: 14,
-                  borderBottom: info?.my_referrals ? "1px dashed #fff" : "none"
+                  borderBottom: info?.referral_number
+                    ? "1px dashed #fff"
+                    : "none"
                 }}
               >
-                {info?.my_referrals
-                  ? addThousandSeparator(info.my_referrals)
-                  : info?.my_referrals === 0
+                {info?.referral_number
+                  ? addThousandSeparator(info.referral_number)
+                  : info?.referral_number === 0
                   ? 0
                   : "-"}
               </span>
@@ -139,7 +143,8 @@ export default function TotalPanel({ info, userInfo }: any) {
                   fontWeight: 400
                 }}
               >
-                +1.55k <span style={{ color: "#FBCA04" }}>$FUN</span>
+                +{simplifyNum(info?.referral_point, 2)}k{" "}
+                <span style={{ color: "#FBCA04" }}>$FUN</span>
               </span>
             </div>
           </div>

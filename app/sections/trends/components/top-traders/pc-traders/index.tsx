@@ -11,7 +11,9 @@ import SexInfiniteScroll from "@/app/components/sexInfiniteScroll";
 import { useRouter } from 'next/navigation';
 import Big from 'big.js';
 import { CrownIcon } from '../icons';
-
+import Empty from '@/app/components/empty';
+import { CopyierIconWithBg } from '../icons';
+import SkeletonLoader from '../listSkeletonPc';
 interface Trader {
   avatar: string
   name: string
@@ -32,12 +34,13 @@ interface Trader {
   }
 }
 
-export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,isLoadingMore}: {list: any[], setOrderBy: any,orderBy: string,loadMore: any,hasMore: any,isLoadingMore: any}) {
+export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,isLoadingMore,smartMoniesLoading}: {list: any[], setOrderBy: any,orderBy: string,loadMore: any,hasMore: any,isLoadingMore: any,smartMoniesLoading: boolean}) {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [currentTrader, setCurrentTrader] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
   const router = useRouter()
   const handleSort = (field: 'roi' | 'pnl1D' | 'pnl7D' | 'pnl30D' | 'winRate1D' | 'winRate7D' | 'winRate30D') => {
+    if (smartMoniesLoading) return;
     setOrderBy(field)
   };
 
@@ -92,18 +95,28 @@ export default function TopTradersPC({list,setOrderBy,orderBy,loadMore,hasMore,i
       </div>
 
       <div className={styles.traderList}>
-        {list.map((trader, index) => (
-          <TraderItem 
-            key={index}
-            trader={trader}
-            onCopyTradeClick={handleCopyTradeClick}
-          />
-        ))}
-           <SexInfiniteScroll 
-          loadMore={loadMore} 
-          hasMore={hasMore}
-          isLoadingMore={isLoadingMore}
-        />
+        {list.length > 0 ? (
+          <>
+            {list.map((trader, index) => (
+              <TraderItem 
+                key={index}
+                trader={trader}
+                onCopyTradeClick={handleCopyTradeClick}
+              />
+            ))}
+            <SexInfiniteScroll 
+              loadMore={loadMore} 
+              hasMore={hasMore}
+              isLoadingMore={isLoadingMore}
+            />
+          </>
+        ) : (
+          smartMoniesLoading ? 
+          <SkeletonLoader /> : 
+           <div style={{ paddingTop: 116 }}>
+              <Empty text="No data" />
+          </div>
+        )}
       </div>
       {SHOW_COPY_TRADE && (
         <CoppiedModal
@@ -151,7 +164,9 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
         </div>
         <div className={styles.nameWrapper}>
           <div className={styles.name}>{formatAddress(trader.address) || formatAddress(user?.address)}</div>
-          <div className={styles.followers}>{user?.followers || 0} followers</div>
+          <div className={styles.followers}>
+            <CopyierIconWithBg /> {trader?.copiers?.length || 0}
+          </div>
         </div>
       </div>
       <div className={styles.pnl}>

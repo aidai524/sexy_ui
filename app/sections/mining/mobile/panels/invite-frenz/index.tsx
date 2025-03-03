@@ -45,7 +45,7 @@ export default function InviteFrenz({ rate }: any) {
           </div>
           <div className={styles.ItemDesc}>
             You will get {rate || "-"}%{" "}
-            <span className={styles.ThemeColor}>$FUN</span>of Airdrops from
+            <span className={styles.ThemeColor}>$FUN</span> of Airdrops from
           </div>
           <div className={styles.ItemBottom}>
             <div>10 invite code</div>

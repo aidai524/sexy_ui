@@ -1,6 +1,6 @@
 .main {
     width: 100vw;
-    height: 450px;
+    min-height: 450px;
     background: #252328;
     border: 1px solid #3B3B3B;
     border-radius: 12px;
@@ -82,6 +82,12 @@
     margin-right: 2px;
     font-size: 12px;
   }
+
+  .profitLessThanZero {
+    color: #FF2681;
+    margin-right: 2px;
+    font-size: 12px;
+  }
   
   .buy {
     color: #C9FF5D;
@@ -105,6 +111,7 @@
     justify-content: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    cursor: pointer;
   }
 
   .divider {

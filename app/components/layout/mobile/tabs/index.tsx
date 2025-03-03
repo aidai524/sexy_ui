@@ -1,28 +1,12 @@
 import styles from "./index.module.css";
 import tabs, { tabsPath } from "./config";
 import { useRouter, usePathname } from "next/navigation";
-import { useAccount } from "@/app/hooks/useAccount";
-import CopyTrade from "@/app/services/copyTrade";
-import { useEffect, useState } from "react";
+import useCanClaim from "@/app/hooks/useCanClaim";
 
 export default function Tabs() {
   const pathname = usePathname();
   const router = useRouter();
-  const { address: sexAddress } = useAccount();
-  const copyTradeService = new CopyTrade();
-  const [copyTradeUserInfo, setCopyTradeUserInfo] = useState<any>(null);
-  const canClaim =
-    Number(copyTradeUserInfo?.carryFee || "0") -
-    Number(copyTradeUserInfo?.claimed || "0");
-  useEffect(() => {
-    if (sexAddress) {
-      copyTradeService
-        .getCopyTradersUserInfo({ address: sexAddress, chain: "solana" })
-        .then((res) => {
-          setCopyTradeUserInfo(res.data);
-        });
-    }
-  }, [sexAddress]);
+  const canClaim = useCanClaim({pathname});
 
   if (pathname === "/create") {
     return null;
@@ -36,19 +20,24 @@ export default function Tabs() {
         const isActive = item.key.includes(pathname);
         return (
           <div
-            className={styles.Tab}
+            className={`${item?.comingSoon && styles.ComingSoonWrapper} ${styles.Tab}`}
             key={item.path}
             onClick={() => {
               if (!window.sexAddress && item.needLogin) {
                 window.connect();
                 return;
               }
-
+              if (item?.comingSoon) {
+                return;
+              }
               router.push(item.path);
             }}
           >
             {item.label === "Smart" && canClaim > 0 && (
               <div className={styles.copyDot}></div>
+            )}
+            {item?.comingSoon && (
+              <img src="/img/smart/coming-soon.png" alt="coming-soon" className={styles.ComingSoon}/>
             )}
             <item.icon
               size={item.iconSize}
