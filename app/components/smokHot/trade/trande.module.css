@@ -1,180 +1,184 @@
 .main {
-  .avatar {
-    padding: 0 20px;
-  }
+  /* Empty block */
+}
 
-  .panel {
-    border-radius: 10px;
-    padding: 12px 4px;
-    margin-left: 5px;
-    margin-right: 5px;
-  }
+.avatar {
+  padding: 0 20px 10px;
+  border-bottom: 1px solid #353339;
+}
 
-  .cationArea {
-    margin-top: 10px;
+.panel {
+  border-radius: 10px;
+  padding: 12px 4px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
 
-    .tradeTabs {
-      padding: 20px 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+.cationArea {
+  margin-top: 10px;
+}
 
-      .tab {
-        flex: 1;
-        background-color: rgba(95, 96, 106, 1);
-        color: #fff;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 38px;
-        border-radius: 8px;
+.tradeTabs {
+  padding: 20px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        &.active:first-child {
-          background-color: rgba(109, 181, 0, 1);
-        }
+.tab {
+  flex: 1;
+  background-color: rgba(95, 96, 106, 1);
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  border-radius: 8px;
+}
 
-        &.active:last-child {
-          background-color: rgba(255, 47, 116, 1);
-        }
-      }
-    }
-  }
+.tab.active:first-child {
+  background-color: rgba(109, 181, 0, 1);
+}
 
-  .inputArea {
-    .actionArea {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 12px;
-      font-weight: 300;
+.tab.active:last-child {
+  background-color: rgba(255, 47, 116, 1);
+}
 
-      .switchTokenName {
-        color: #fff;
-      }
-    }
+.actionArea {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 300;
+}
 
+.switchTokenName {
+  color: #fff;
+}
 
-    .inputWrapper {
-      color: #fff;
-      gap: 10px;
-      border: 1px solid rgba(146, 144, 177, 0.6);
-      border-radius: 8px;
-      padding: 0 10px 10px;
-      margin-top: 10px;
-      background-color: #9290B11A;
-    }
+.inputWrapper {
+  color: #fff;
+  margin-top: 10px;
+}
 
-    .inputArea {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #fff;
-      gap: 10px;
-      height: 46px;
+.inputArea {
+  /* display: flex;
+  align-items: center;
+  justify-content: space-between; */
+  color: #fff;
+  /* gap: 10px; */
+  /* height: 46px; */
+}
 
+.input {
+  flex: 1;
+  height: 46px;
+  width: 100%;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: Unbounded;
+  text-align: center;
+}
 
-      .input {
-        flex: 1;
-        height: 46px;
-        background-color: inherit;
-        border: none;
-        outline: none;
-        color: #fff;
-        font-size: 16px;
-        font-family: Unbounded;
-      }
+.inputToken {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  font-size: 12px;
+  background-color: #9290B11A;
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: #9290B1;
+}
 
-      .inputToken {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 5px;
-        font-size: 12px;
+.slippage {
+  color: #9290B1;
+}
 
-        .tokenImg {
-          width: 30px;
-          height: 30px;
-          border-radius: 30px;
-          overflow: hidden;
+.tokenImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  overflow: hidden;
+}
 
-          .tiImg {
-            width: 100%;
-            height: 100%;
-          }
-        }
-      }
-    }
+.tiImg {
+  width: 100%;
+  height: 100%;
+}
 
-    .solBalance {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 300;
-    }
-  }
+.solBalance {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+}
 
-  .tokenPercent {
-    display: flex;
-    gap: 8px;
-    color: #fff;
-    padding: 0 20px;
-  }
+.tokenPercent {
+  display: flex;
+  gap: 8px;
+  color: #fff;
+  padding: 0 20px;
+  justify-content: center;
+}
 
-  .percentTag {
-    padding: 4px 8px;
-    border-radius: 30px;
-    font-size: 12px;
-    white-space: nowrap;
-    cursor: pointer;
-    font-weight: 300;
-    transition: background-color 0.2s;
-    border: 1px solid #9290B166;
-  }
+.percentTag {
+  padding: 4px 8px;
+  font-size: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: rgba(255, 255, 255, 0.5);
+}
 
-  .percentTag.active {
-    background: rgba(255, 255, 255, 0.2);
-  }
+.percentTag.active {
+  background: #3C3C3C80;
+}
 
-  .receiveTokenAmount {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 300;
-  }
+.receiveTokenAmount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+}
 
-  .distributionArea {
-    margin-top: 30px;
+.distributionArea {
+  margin-top: 30px;
+}
 
-    .distributionTitle {
-      color: rgba(146, 144, 177, 1);
-      font-size: 14px;
-      font-weight: 600;
-      padding-left: 10px;
-    }
+.distributionTitle {
+  color: rgba(146, 144, 177, 1);
+  font-size: 14px;
+  font-weight: 600;
+  padding-left: 10px;
+}
 
-    .list {
-      background-color: rgba(18, 23, 25, 1);
-      color: #fff;
+.list {
+  background-color: rgba(18, 23, 25, 1);
+  color: #fff;
+}
 
-      .item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px;
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
 
-        .itemContent {
-          display: flex;
-          align-items: center;
-        }
-      }
-    }
-  }
+.itemContent {
+  display: flex;
+  align-items: center;
 }
 
 .cancel {
@@ -186,4 +190,19 @@
 
 .Bottom {
   padding: 0px 10px;
+}
+
+.sol {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.price {
+  font-size: 12px;
+  font-weight: 300;
+  color: #9290B1;
+  text-align: center;
+  margin-top: 10px;
 }
