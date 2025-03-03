@@ -49,10 +49,14 @@ export const AuthProvider: React.FC<{
 
   useEffect(() => {
     window.connect = () => {
+      if (["/invite-code"].includes(pathname)) {
+        setShowLoginModal(false);
+        return;
+      }
       setShowLoginModal(true);
     };
     window.disconnect = disconnect;
-  }, []);
+  }, [pathname]);
 
   const logout = useCallback(
     async (isRedirect?: boolean) => {
