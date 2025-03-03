@@ -19,7 +19,7 @@ const Countdown = (props: CountdownProps) => {
     // Update every second
     const timer = setInterval(() => {
       setRemainingTime((prev) => {
-        if (prev <= 0) {
+        if (prev < 1000) {
           clearInterval(timer);
           // Trigger callback when countdown reaches zero
           onFinish?.();
@@ -34,9 +34,9 @@ const Countdown = (props: CountdownProps) => {
   }, [onFinish]);
 
   // Convert milliseconds to hours, minutes and seconds
-  const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-  const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+  const hours = Math.max(0, Math.floor(remainingTime / (1000 * 60 * 60)));
+  const minutes = Math.max(0, Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60)));
+  const seconds = Math.max(0, Math.floor((remainingTime % (1000 * 60)) / 1000));
 
   // Format number to ensure two digits
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
