@@ -125,6 +125,7 @@ const TopTraderShare = (props: any) => {
         const bloBData = base64ToBlob(base64Url);
         const url = await postUpload(bloBData[0], shareName!, bloBData[1]);
         if (url) {
+          console.log(url,'url')
           setShareImgUrl(url);
         }
       }
@@ -147,7 +148,7 @@ const TopTraderShare = (props: any) => {
         shareImgUrl
       )}&title=${encodeURIComponent(
         'Top Trader Share'
-      )}&about=${encodeURIComponent('flip top trader')}&referral=${encodeURIComponent(shareName)}`;
+      )}&about=${encodeURIComponent('flip top trader')}`;
       const shortUrl = await getShortUrl(longUrl);
       shareToX('Check out this top trader on Flipn! 🚀', shortUrl);
     }

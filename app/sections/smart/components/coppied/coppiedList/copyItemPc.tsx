@@ -117,7 +117,7 @@ export default function CopyItem({itemInfo, handleCloseCopyTrade, isCloseCopyTra
                             new Big(itemInfo?.netWorth).minus(itemInfo?.balance).toNumber() : 0, 
                             color: '#C9FF5D', name: 'USED' 
                         },
-                        { value: itemInfo?.balance || 0, color: '#515B63', name: 'BALANCE' },
+                        { value: itemInfo?.investment || 0, color: '#515B63', name: 'BALANCE' },
                 ]} />
               </div>
         </div>
