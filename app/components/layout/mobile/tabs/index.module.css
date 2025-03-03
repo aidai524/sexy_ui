@@ -34,3 +34,12 @@
   top: 0px;
   right: 25%;
 }
+
+.ComingSoon {
+  position: absolute;
+  z-index: 100;
+}
+
+.ComingSoonWrapper {
+  opacity: 0.5 !important;
+}
