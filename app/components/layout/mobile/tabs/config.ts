@@ -3,7 +3,7 @@ import MemesIcon from "../../../icons/memes";
 import CreateIcon from "../../../icons/create-m";
 import SmartIcon from "../../../icons/smart";
 import EarnIcon from "../../../icons/earn";
-
+import { SHOW_COPY_TRADE } from "@/app/utils/config";
 const tabs = [
   {
     icon: HomeIcon,
@@ -32,7 +32,8 @@ const tabs = [
     label: "Smart",
     key: ["/smart"],
     path: "/smart",
-    iconSize: 26
+    iconSize: 26,
+    comingSoon: !SHOW_COPY_TRADE
   },
   {
     icon: EarnIcon,

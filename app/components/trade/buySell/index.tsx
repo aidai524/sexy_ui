@@ -90,6 +90,7 @@ export default function BuySell({
   const [sellOut, setSellOut] = useState("0");
   const [sellOutSol, setSellOutSol] = useState("0");
 
+  const [isMax, setIsMax] = useState(false);
   const { connection } = useConnection();
 
   const { userInfo }: any = useUser();
@@ -128,7 +129,7 @@ export default function BuySell({
 
   useEffect(() => {
     try {
-      if (debounceVal) {
+      if (debounceVal && Number(debounceVal) > 0) {
         setIsError(false);
         setIsLoading(true);
         if (activeIndex === 0) {
@@ -149,7 +150,9 @@ export default function BuySell({
               solAmount: buyInSol,
               type: 'buy'
             }).then((res: any) => {
-              const buyIn = new Big(res)
+              const { result, isMax } = res;
+              setIsMax(isMax);
+              const buyIn = new Big(result)
                 .mul(1 - slip / 100)
                 .toFixed(token.tokenDecimals);
               setBuyIn(buyIn);
@@ -177,7 +180,6 @@ export default function BuySell({
           } else if (tokenType === 0) {
             if (Number(debounceVal) <= 0) {
               setIsError(true);
-
               setErrorMsg("Invalid value");
               return;
             }
@@ -188,8 +190,12 @@ export default function BuySell({
                 .toFixed(0),
               type: 'buy'
             }).then((res: any) => {
+              const { result, isMax, maxBuy } = res;
+              setIsMax(isMax);
               setIsLoading(false);
-              buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
+
+              buyInSol = new Big(result).mul(1 + slip / 100).toFixed(0);
+
               if (
                 new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)
               ) {
@@ -200,11 +206,15 @@ export default function BuySell({
               }
 
               if (Number(buyInSol) > 0.000000001) {
-                setBuyIn(
+                if (isMax) {
+                  setBuyIn(maxBuy);
+                } else {
+                  setBuyIn(
                   new Big(debounceVal)
                     .mul(10 ** token.tokenDecimals!)
                     .toFixed(0)
-                );
+                  );
+                }
                 setBuyInSol(buyInSol);
               } else {
                 setBuyInSol("");
@@ -243,8 +253,10 @@ export default function BuySell({
                 .toFixed(0),
               type: 'sell'
             }).then((res: any) => {
+              const { result, isMax } = res;
+              setIsMax(isMax);
               setIsLoading(false);
-              sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
+              sellSolOut = new Big(result).mul(1 - slip / 100).toFixed(0);
 
               if (Number(debounceVal) > Number(tokenBalance)) {
                 setIsError(true);
@@ -675,7 +687,7 @@ export default function BuySell({
                         }
                       } else {
                         hash = await buyTokenWithFixedOutput(
-                          new Big(buyIn).toFixed(0),
+                          isMax ? new Big(buyIn).toFixed(0) : new Big(buyIn).toFixed(0),
                           buyInSol
                         );
                       }

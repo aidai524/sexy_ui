@@ -3,6 +3,7 @@ import MemesIcon from "../icons/memes";
 import SmartIcon from "../icons/smart";
 import EarnIcon from "../icons/earn";
 import Profile from "../icons/profile";
+import { SHOW_COPY_TRADE } from "@/app/utils/config";
 
 export default [
   {
@@ -24,7 +25,8 @@ export default [
     label: "Smart",
     key: ["/smart"],
     path: "/smart",
-    iconSize: 26
+    iconSize: 26,
+    comingSoon: !SHOW_COPY_TRADE
   },
   {
     icon: EarnIcon,
