@@ -59,6 +59,7 @@
 
 .AirdropEntryMobile {
   position: fixed;
+  z-index: 6;
   left: 4px;
   top: 80px;
   width: 65px;

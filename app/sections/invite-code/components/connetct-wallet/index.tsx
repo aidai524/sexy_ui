@@ -7,6 +7,8 @@ import { LoginBannerList } from "@/app/sections/invite-code/config";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDebounceFn } from "ahooks";
 import { random } from "lodash-es";
+import { useAccount } from '@/app/hooks/useAccount';
+import { useAuth } from '@/app/context/auth';
 
 const getNextIndex = () => {
   return Math.max(0, Math.min(random(0, LoginBannerList.length - 1), LoginBannerList.length - 1));
@@ -14,6 +16,9 @@ const getNextIndex = () => {
 
 const InviteCodeConnectWallet: React.FC<any> = (props) => {
   const { className, loading } = props;
+
+  const { address } = useAccount();
+  const { accountRefresher } = useAuth();
 
   const loopTimer = useRef<any>(null);
   const [banner, setBanner] = useState<any>();
@@ -68,7 +73,7 @@ const InviteCodeConnectWallet: React.FC<any> = (props) => {
         </AnimatePresence>
       </div>
       {
-        loading ? (
+        (loading || (!!address && !!accountRefresher)) ? (
           <button
             type="button"
             className={styles.Button}
