@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 export default function SmartDetail() {
   const router = useRouter();
   if (!SHOW_COPY_TRADE) {
-    return router.push("/");
+    router.push("/");
+    return null;
   }
   return (
     <SmartDetailContainer />

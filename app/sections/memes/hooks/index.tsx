@@ -200,8 +200,6 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
 
       const _hot_list = await formatHotList(res.data.list);
 
-      console.log('_hot_list', _hot_list);
-
       setHotList(_hot_list);
       setHotListLoading(false);
     } catch (err) {

@@ -12,7 +12,8 @@ export default function Smart() {
   const { isMobile } = useUserAgent();
   const router = useRouter();
   if (!SHOW_COPY_TRADE) {
-    return router.push("/");
+    router.push("/");
+    return null;
   }
   return (
     <div className={!isMobile ? styles.containerPC : styles.container}>
