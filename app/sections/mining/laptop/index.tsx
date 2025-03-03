@@ -39,7 +39,10 @@ export default function Laptop({
               <LikeToEarn info={info} userInfo={userInfo} />
               <FollowX />
               {info?.clime_created && (
-                <CreateToEarn airdropEndTime={configStore.AirdropEndTime} />
+                <CreateToEarn
+                  airdropEndTime={configStore.AirdropEndTime}
+                  info={info}
+                />
               )}
             </div>
           </Panel>

@@ -33,7 +33,10 @@ export default function Panels({ info, rate, userInfo }: any) {
         </Swiper.Item>
         {showCreateToEarn ? (
           <Swiper.Item>
-            <CreateToEarn airdropEndTime={configStore.AirdropEndTime} />
+            <CreateToEarn
+              airdropEndTime={configStore.AirdropEndTime}
+              info={info}
+            />
           </Swiper.Item>
         ) : (
           <></>

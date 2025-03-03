@@ -5,9 +5,11 @@
     scrollbar-width: none;
     -ms-overflow-style: none; 
     overflow-x: auto;
+    height: 100%;
+    overflow-y: auto;
   }
 
 .containerPC {
-    width: 1200px;
-    margin: 0 auto;
+    min-width: 1008px;
+    margin: 0 80px;
 }

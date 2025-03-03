@@ -27,6 +27,7 @@ export interface SmartMoneyAddress {
       claimed: string;
       carryFee: string;
       isTopTrader: boolean;
+      isClaiming: boolean;
       tradeInfo: {
           buys: number;
           pnl7D: string ;
@@ -37,6 +38,7 @@ export interface SmartMoneyAddress {
           tokenPosition: string;
           roi: string;
           winRate: string;
+          totalInvestment: string;
     }
 }
 
@@ -141,6 +143,28 @@ class CopyTrade {
         return error;
     }
  }  
+
+ async getCopyTradeDetail(params: {
+  id: string;
+  chain: string;
+  walletAddress: string;
+}) {
+  try {
+    const queryParams = new URLSearchParams({
+      id: params.id,
+      chain: params.chain,
+      walletAddress: params.walletAddress
+    }).toString();
+    const response = await fetch(`${this.baseURL}/copy_trade/id?${queryParams}`, {
+      method: 'GET',  
+      headers: this.headers
+    });
+    return this.handleResponse(response);
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}  
 
   // 
   async getCopyTradeList(params: {
@@ -267,7 +291,7 @@ class CopyTrade {
   // claim
   async claimProfit(params: {
     // address: string;
-    amount: number;
+    amount: string;
     chain: string;
     // id: string;
     receiver: string;

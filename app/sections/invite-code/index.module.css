@@ -8,4 +8,5 @@
 .inviteCodeContainerLaptop {
   composes: inviteCodeContainer;
   padding-top: 108px;
+  background-image: url("/img/invite-code/bg-laptop.png");
 }

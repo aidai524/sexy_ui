@@ -3,7 +3,7 @@
     height: 134px;
     background: #8F49FF;
     border-radius: 10px;
-    padding: 16px;
+    padding:8px 16px;
     min-width: 85vw;
     display: flex;
     justify-content: space-between;
@@ -32,23 +32,25 @@
 
 .copyTradeDescription {
     font-size: 12px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.5);
+    font-weight: 300;
+    color: rgba(255, 255, 255, 1);
+    margin: 6px 0;
 }
 
 .copyTradeButton {
     font-size: 12px;
     font-weight: 400;
     color: #fff;
-    background: #000;
+    background: rgba(0, 0, 0, 0.5);
     border-radius: 16px;
     width: 140px;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.5;
+    /* opacity: 0.5; */
     margin-top: auto;
     cursor: pointer;
     transition: all 0.3s ease;
+    flex-shrink: 0;
 }

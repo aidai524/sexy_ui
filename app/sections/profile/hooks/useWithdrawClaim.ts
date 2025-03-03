@@ -8,7 +8,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 
 interface WithdrawClaimParams {
   // address: string;
-  amount: number;
+  amount: string;
   chain: string;
   // receiver: string;
   // id: string;

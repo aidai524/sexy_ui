@@ -7,7 +7,7 @@ import InfoIcon from "../info-icon";
 
 import dayjs from "dayjs";
 
-export default function CreateToEarn({ airdropEndTime }: any) {
+export default function CreateToEarn({ airdropEndTime, info }: any) {
   const { userInfo } = useAuth();
   const router = useRouter();
 
@@ -42,7 +42,7 @@ export default function CreateToEarn({ airdropEndTime }: any) {
           <div />
           <div className={styles.ItemBottomButtons}>
             {userInfo?.address ? (
-              true ? (
+              !info?.is_created ? (
                 <button
                   type="button"
                   className={styles.Button}

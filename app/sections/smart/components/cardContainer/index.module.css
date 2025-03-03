@@ -6,6 +6,12 @@
     padding-top: 70px !important;
 }
 
+.loading {
+    height: 138px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 @media (max-width: 1025px) {
     .topTraderContainer {

@@ -7,7 +7,7 @@ import {
 import RightArrowWrap from "@/app/sections/smart/components/RightArrowWrap";
 import { useRouter } from "next/navigation";
 import { SmartMoneyAddress, CopyTraderAddress } from "@/app/services/copyTrade";
-import { numberFormatter } from "@/app/utils/common";
+import { numberFormatter, numberFormatterNew } from "@/app/utils/common";
 import { useUserAgent } from "@/app/context/user-agent";
 
 export default function CopyTradeCard(props: {
@@ -18,8 +18,20 @@ export default function CopyTradeCard(props: {
   const router = useRouter();
   const { smartMoniesInfo, copyTradersUserInfo, useLinear } = props;
   const { isMobile } = useUserAgent();
+  const formatPnl = (pnl: string) => {
+    if (pnl == '0') {
+      return '0';
+    }
+    if (pnl.startsWith('-')) {
+      return '-' + numberFormatterNew(Math.abs(Number(pnl)), 3, true);
+    }
+    return '+' + numberFormatterNew(pnl, 3, true);
+}
   return (
-    <div className={isMobile ? styles.container : useLinear ? styles.linearContainer : styles.containerPC}>
+    <div className={`
+      ${isMobile ? styles.container : useLinear ? styles.linearContainer : styles.containerPC}
+      ${!isMobile ? styles.fontWeight700 : ''}
+    `.trim()}>
       <div className={styles.title}>
         <span>Copied PRFM</span>
         <div
@@ -28,20 +40,16 @@ export default function CopyTradeCard(props: {
           }}
           style={{cursor: 'pointer'}}
         >
-          <RightArrowWrap />
+          <RightArrowWrap useLinear={useLinear} />
         </div>
       </div>
 
-      <div className={styles.copyDetails}>
+      <div className={isMobile ? styles.copyDetails : styles.copyDetailsPC}>
         <div className={styles.totalPnl}>
-          <span className={styles.detailTitle}>Total PNL</span>
+          <span className={styles.detailTitle}>Total PnL</span>
           <span className={styles.detailValueContainer}>
             <span className={styles.detailValue}>
-              {numberFormatter(
-                copyTradersUserInfo?.tradeInfo?.totalPNL || 0,
-                4,
-                true
-              ) || "0"}
+              {formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")}
             </span>
             <span className={styles.detailValueCurrency}>SOL</span>
           </span>
@@ -52,12 +60,12 @@ export default function CopyTradeCard(props: {
             <span className={styles.detailValueCurrent}>
               {numberFormatter(
                 copyTradersUserInfo?.tradeInfo?.currentPNL || 0,
-                4,
+                2,
                 true
               ) || "0"}
             </span>
             <span className={styles.detailValue}>
-              / {copyTradersUserInfo?.tradeInfo?.tokenPosition}
+              / {numberFormatter(copyTradersUserInfo?.tradeInfo?.tokenPosition || 0, 2, true)}
             </span>
             <span className={styles.detailValueCurrency}>SOL</span>
           </span>

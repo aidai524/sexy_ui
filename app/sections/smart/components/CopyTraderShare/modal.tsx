@@ -1,15 +1,21 @@
 import Modal from '@/app/components/modal';
 import Index from './index';
-
+import { useUserAgent } from '@/app/context/user-agent';
 const CopyTradeShareModal = (props: any) => {
   const { visible, onClose, copyTradersUserInfo } = props;
-
+  const { isMobile } = useUserAgent();
+  const modalConfig = isMobile ? {
+    animation: 'popup',
+    closeStyle: { display: "none" }
+  } : {
+    closeStyle:{ display: "none" },
+    maskClose:false
+  };
   return (
     <Modal
       open={visible}
       onClose={onClose}
-      animation="popup"
-      closeStyle={{ display: "none" }}
+      {...modalConfig}
     >
       <Index {...props} copyTradersUserInfo={copyTradersUserInfo} />
     </Modal>
