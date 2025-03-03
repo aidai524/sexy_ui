@@ -22,7 +22,7 @@ export default function Token({
   token,
   opacity,
   showTrade,
-  tradeTab = 'details',
+  tradeTab = "details",
   isPreview,
   dataAvailable,
   onUpdate,
@@ -130,6 +130,7 @@ export default function Token({
               token={token}
               tab={tradeTab}
               setTab={onUpdateTradeTab}
+              isCurrent={isCurrent}
             />
           )}
         </div>
@@ -163,7 +164,7 @@ export default function Token({
           isPreviewNoOpacity={isPreview}
           onClick={(type: any, params: any) => {
             if (isPreview) {
-              return
+              return;
             }
 
             let tab = "details";

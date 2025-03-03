@@ -50,9 +50,18 @@ export default function Laptop(props: any) {
           <Token
             token={detailStatusStore.token}
             isCurrent={true}
-            onUpdate={(token: any) => {
-              console.log(54);
-              detailStatusStore.setToken(JSON.parse(JSON.stringify(token)));
+            onUpdate={(token: any, action: string) => {
+              if (action && ["launched_like", "comments"].includes(action)) {
+                detailStatusStore.setToken(JSON.parse(JSON.stringify(token)));
+                return;
+              }
+              if (action === "flip") {
+                setTimeout(() => {
+                  getDetailInfo();
+                }, 4000);
+                return;
+              }
+              getDetailInfo();
             }}
             opacity={1}
             showTrade={detailStatusStore.showTrade}

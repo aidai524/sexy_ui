@@ -16,6 +16,9 @@ let lastPrice = 0;
 let pullingQueryPriceTimer: any = null;
 let kChartSubscriberList: Record<string, number> = {};
 let currentSymbolInfo: SymbolInfo | null = null;
+let savedHistoryCallback:
+  | ((bars: any[], meta: { noData: boolean }) => void)
+  | null = null;
 
 interface SymbolInfo extends LibrarySymbolInfo {
   full_name: string;
@@ -103,6 +106,8 @@ const datafeed: (
     onErrorCallback
   ) => {
     try {
+      savedHistoryCallback = onHistoryCallback;
+
       if (resolution !== resolutionRef.current) {
         hasNextRef.current = true;
         pageRef.current = 0;
@@ -169,9 +174,16 @@ const datafeed: (
         close: item[4],
         volume: item[5]
       };
+
+      if (!lastPrice && savedHistoryCallback) {
+        console.log(191);
+        savedHistoryCallback([bar], { noData: false });
+      }
+
       addPriceMarker({ price: item[1], lastPrice, time: item[6], tvWidgetRef });
       onRealtimeCallback(bar);
       lastPrice = item[1];
+
       pullingQueryPriceTimer = setTimeout(fetchPrice, 5000);
     };
     clearTimeout(pullingQueryPriceTimer);
