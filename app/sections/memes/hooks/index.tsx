@@ -35,6 +35,8 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     setMemesListLoading,
     setMemesListPageOffset,
     setMemesListPageNext,
+    memesListCountdown,
+    setMemesListCountdown,
   } = useMemesListStore();
   const {
     currentTab,
@@ -214,6 +216,9 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       const it = _list[i];
       it.kind = 'Meme';
       it.created2Now = timeAgo(it.DApp === "pump" ? it.time : it.created_at);
+      if (memesListCountdown[it.id] !== void 0) {
+        it.countdown = memesListCountdown[it.id];
+      }
     }
     return _list;
   };
@@ -316,7 +321,8 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     memesListPageNext,
     onMemesListNextPage,
     initMemesList,
-    memesContainerRef
+    memesContainerRef,
+    setMemesListCountdown
   };
 }
 
@@ -333,4 +339,5 @@ export interface Memes extends MemesState {
   onMemesListNextPage: () => void;
   initMemesList: () => void;
   memesContainerRef: React.MutableRefObject<any>;
+  setMemesListCountdown: (obj: Record<string, number>) => void;
 }
