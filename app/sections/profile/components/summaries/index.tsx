@@ -46,7 +46,7 @@ const Summaries = (props: any) => {
         </div>
         
         <div className={styles.Summary}>
-          <div className={styles.SummaryLabel}>7D PNL</div>
+          <div className={styles.SummaryLabel}>7D PnL</div>
           <div className={[styles.SummaryValue, styles.SummaryValueBuy].join(" ")}>
             <span style={{color: !data?.pnl7D?.startsWith('-') ? '#C9FF5D' : '#FF5D5D'}}>
               {data?.pnl7D != '0' ? numberFormatter(data?.pnl7D, 4, true) + ' SOL' : '-'}

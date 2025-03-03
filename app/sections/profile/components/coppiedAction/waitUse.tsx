@@ -27,7 +27,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
   const { address: walletAddress } = useAccount();
 
   const [copyAmount, setCopyAmount] = useState<string>("");
-  const [onceCopyAmount, setOnceCopyAmount] = useState<string>("0.01");
+  const [onceCopyAmount, setOnceCopyAmount] = useState<string>("0.1");
   const [copyTimes, setCopyTimes] = useState<string>("10");
   const [isManualCopyTimes, setIsManualCopyTimes] = useState<boolean>(false);
   const [minCopyAmountTips, setMinCopyAmountTips] = useState<boolean>(false);
@@ -61,7 +61,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
   const resetForm = () => {
     setMinCopyAmountTips(false);
     setErrMsg("");
-    setOnceCopyAmount("0.01");
+    setOnceCopyAmount("0.1");
     setCopyTimes("10");
     setCopyAmount("");
     setIsManualCopyTimes(false);
@@ -91,10 +91,10 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
       newCopyTimes = "10";
       newOnceCopyAmount = new Big(1).div(10).toString();
     } else {
-      const cpTimes = Math.floor(solBalanceBig.div(0.01).toNumber());
+      const cpTimes = Math.floor(solBalanceBig.div(0.1).toNumber());
       newCopyTimes = cpTimes <= 0 ? "1" : cpTimes.toString();
-      newCopyAmount = new Big(Math.floor(solBalanceBig.div(0.01).toNumber()))
-        .mul(0.01)
+      newCopyAmount = new Big(Math.floor(solBalanceBig.div(0.1).toNumber()))
+        .mul(0.1)
         .toString();
       newOnceCopyAmount =
         cpTimes <= 0
@@ -145,7 +145,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
   }, [copyAmount]);
 
   const validateOnceCopyAmount = useMemo(() => {
-    const minAmount = 0.01;
+    const minAmount = 0.1;
     const calculatedOnceCopyAmount = new Big(copyAmount || 0).div(
       new Big(copyTimes || 1)
     );
@@ -177,38 +177,46 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
 
   const handleCopyAmountChange = (e: any) => {
     const value = e.target.value;
+
     const sanitizedValue = value.replace(/[^\d.]/g, "");
+
+    //
     const parts = sanitizedValue.split(".");
     const cleanValue = parts[0] + (parts.length > 1 ? "." + parts[1] : "");
 
-    // 
+    //
+    if (cleanValue !== "" && cleanValue !== "0" && cleanValue !== "0.") {
+      const num = parseFloat(cleanValue);
+      if (num === 0) return;
+    }
+
     if (cleanValue === "" || /^\d*\.?\d*$/.test(cleanValue)) {
       setCopyAmount(cleanValue);
 
-      // 
-      if (!cleanValue || cleanValue === "." || cleanValue === "0") {
-        setCopyTimes("1");
-        setOnceCopyAmount("0");
-        setIsManualCopyTimes(false);
-        return;
-      }
-
-      // 
-      if (!isNaN(parseFloat(cleanValue)) && parseFloat(cleanValue) > 0) {
+      //
+      if (cleanValue && cleanValue !== "." && cleanValue !== "0") {
         const amount = new Big(cleanValue);
-        let calculatedTimes = Math.floor(amount.div(0.01).toNumber());
+        let calculatedTimes = Math.floor(amount.div(0.1).toNumber());
+
         calculatedTimes = Math.min(calculatedTimes, 10);
 
-        const perCopyAmount = amount.div(calculatedTimes || 1);
-        if (perCopyAmount.gte(0.01)) {
-          setCopyTimes(calculatedTimes.toString());
-          setOnceCopyAmount(perCopyAmount.toString());
+        if (amount.gt(0)) {
+          const perCopyAmount = amount.div(calculatedTimes);
+          if (perCopyAmount.gte(0.1)) {
+            setCopyTimes(calculatedTimes.toString());
+            setOnceCopyAmount(perCopyAmount.toString());
+          } else {
+            const minPossibleTimes = Math.floor(amount.div(0.1).toNumber());
+            setCopyTimes(
+              minPossibleTimes > 0 ? minPossibleTimes.toString() : "1"
+            );
+            setOnceCopyAmount(
+              amount.div(minPossibleTimes > 0 ? minPossibleTimes : 1).toString()
+            );
+          }
         } else {
-          const minPossibleTimes = Math.floor(amount.div(0.01).toNumber());
-          setCopyTimes(minPossibleTimes > 0 ? minPossibleTimes.toString() : "1");
-          setOnceCopyAmount(
-            amount.div(minPossibleTimes > 0 ? minPossibleTimes : 1).toString()
-          );
+          setCopyTimes("1");
+          setOnceCopyAmount("0");
         }
         setIsManualCopyTimes(false);
       }
@@ -311,7 +319,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
               &nbsp;@
               {formatLongText(copiedInfo?.name) ||
                 formatAddress(copiedInfo?.address || address) ||
-                "FUN"}
+                "FlipN"}
             </span>
           </div>
 
@@ -378,18 +386,18 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
                   if (newAmount && newAmount !== "0") {
                     const amount = new Big(newAmount);
                     let calculatedTimes = Math.floor(
-                      amount.div(0.01).toNumber()
+                      amount.div(0.1).toNumber()
                     );
                     calculatedTimes = Math.min(calculatedTimes, 10);
 
                     if (amount.gt(0)) {
                       const perCopyAmount = amount.div(calculatedTimes);
-                      if (perCopyAmount.gte(0.01)) {
+                      if (perCopyAmount.gte(0.1)) {
                         setCopyTimes(calculatedTimes.toString());
                         setOnceCopyAmount(perCopyAmount.toString());
                       } else {
                         const minPossibleTimes = Math.floor(
-                          amount.div(0.01).toNumber()
+                          amount.div(0.1).toNumber()
                         );
                         setCopyTimes(
                           minPossibleTimes > 0

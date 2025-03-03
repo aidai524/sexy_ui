@@ -13,7 +13,6 @@ export default function Create() {
     return null
   }
   return (
-    <>
     <div className={!isMobile ? styles.containerPC : styles.container}>
       {
         isMobile &&  <PageHeader
@@ -27,8 +26,8 @@ export default function Create() {
       }
       {/* card container */}
       <CardContainer />
-    </div>
     <TopTraders />
-    </>
+
+    </div>
   );
 }

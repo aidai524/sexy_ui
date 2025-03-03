@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import styles from "./index.module.css";
+import { numberFormatterNew } from "@/app/utils/common";
+
 
 interface StarGraphProps {
   centerNode: {
@@ -85,18 +87,19 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
           .id((d: any) => d.id)
           .distance((d: any) => d.distance)
       )
-      .force("charge", d3.forceManyBody().strength(-200))
-      .force("center", d3.forceCenter(width / 2, height * 0.35))
+      .force("charge", d3.forceManyBody().strength(-400))
+      .force("center", d3.forceCenter(width / 2, height / 2))
       .force(
         "collision",
-        d3.forceCollide().radius((d: any) => d.size / 2 + 20)
+        d3.forceCollide().radius((d: any) => d.size / 2 + 80)
       )
       .force("x", d3.forceX(width / 2).strength(0.1))
-      .force("y", d3.forceY(height * 0.35).strength(0.15))
+      .force("y", d3.forceY(height * 0.35).strength(0.12))
       .force("boundary", () => {
+        const padding = 60;
         for (let node of nodes) {
           if (!node.fixed) {
-            const r = node.size / 2;
+            const r = node.size / 2 + padding;
             node.x = Math.max(r, Math.min(width - r, node.x ?? 0));
             node.y = Math.max(r, Math.min(height - r - 40, node.y ?? 0));
           }
@@ -214,7 +217,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
       .append("text")
       .text((d: any) => {
         if (d.id !== centerNode.id && d.pnl !== undefined) {
-          return `+${d.pnl.toLocaleString()}%`;
+          return `+${numberFormatterNew(d.pnl,3,true)} SOL`;
         }
         return "";
       })
@@ -230,7 +233,7 @@ const StarGraph: React.FC<StarGraphProps> = React.memo(function StarGraphFn({
       link.attr("d", (d: any) => {
         const dx = d.target.x - d.source.x;
         const dy = d.target.y - d.source.y;
-        const dr = Math.sqrt(dx * dx + dy * dy) * 1.02;
+        const dr = Math.sqrt(dx * dx + dy * dy) * 2.5;
 
         const angle = Math.atan2(dy, dx);
 

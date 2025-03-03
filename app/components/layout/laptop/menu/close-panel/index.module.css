@@ -78,3 +78,13 @@
   align-items: center;
   margin: 0 auto 10px;
 }
+
+.copyDot {
+  width: 10px;
+  height: 10px;
+  background: #FF2681;
+  border-radius: 50%;
+  position: absolute;
+  top: 0px;
+  right: 15%;
+}
