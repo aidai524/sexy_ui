@@ -70,10 +70,10 @@ const PriceChart = (props: { className?: string; token?: { kLineData?: { time: n
     if (!chartRect) return null;
 
     let left = coordinate.x + chartRect.left;
-    let top = coordinate.y + chartRect.top;
+    let top = coordinate.y + chartRect.top - 40;
 
-    if (left + tooltipWidth > viewportWidth) {
-      left = left - tooltipWidth - 10;
+    if (left + tooltipWidth > viewportWidth - 58) {
+      left = Math.max(0, viewportWidth - tooltipWidth - 58);
     }
     if (top + tooltipHeight > viewportHeight) {
       top = top - tooltipHeight - 10;
