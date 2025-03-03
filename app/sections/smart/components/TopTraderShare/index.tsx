@@ -85,55 +85,50 @@ const TopTraderShare = (props: any) => {
   const getShareImg = async () => {
     if (loading) return;
     setLoading(true);
+    
     if (cardRef.current) {
-      const canvas = await html2canvas(cardRef.current, {
-        useCORS: true,
-        scale: 5,
-        backgroundColor: null
-      });
-      // const base64Url = canvas.toDataURL("image/webp");
-      // const newFileName = generateRandomString(10);
-      // Create a new canvas with 375x625 dimensions
-      const canvas2 = document.createElement("canvas");
-      canvas2.width = 1000;
-      canvas2.height = 500;
+      try {
+        const element = cardRef.current;
+        const originalWidth = 400;  
+        const originalHeight = 550; 
+        const targetWidth = 400;  
+        const scale = targetWidth / originalWidth;
+        
+        // 
+        const targetHeight = originalHeight * scale;
 
-      const ctx = canvas2.getContext("2d");
-      if (ctx) {
-        // Fill entire canvas with black background
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(0, 0, canvas2.width, canvas2.height);
+        const canvas = await html2canvas(element, { 
+          useCORS: true,
+          backgroundColor: '#000',
+          scale: scale,
+          logging: false,
+          width: targetWidth / scale,
+          height: targetHeight / scale,
+          imageTimeout: 0,
+          allowTaint: true,
+          x: (targetWidth / scale - originalWidth) / 2,
+          y: (targetHeight / scale - originalHeight) / 2,
+        });
 
-        // Calculate scaling factor to fit within canvas2
-        const scale = Math.min(
-          canvas2.width / canvas.width,
-          canvas2.height / canvas.height
-        );
+        const blob = await new Promise<Blob>((resolve) => {
+          canvas.toBlob((blob) => {
+            resolve(blob!);
+          }, 'image/webp', 0.8);
+        });
 
-        // Calculate dimensions after scaling
-        const scaledWidth = canvas.width * scale;
-        const scaledHeight = canvas.height * scale;
-
-        // Calculate position to center scaled image
-        const x = (canvas2.width - scaledWidth) / 2;
-        const y = (canvas2.height - scaledHeight) / 2;
-
-        // Draw scaled and centered image
-        ctx.drawImage(canvas, x, y, scaledWidth, scaledHeight);
-
-        const base64Url = canvas2.toDataURL("image/webp");
-        const bloBData = base64ToBlob(base64Url);
-        const url = await postUpload(bloBData[0], shareName!, bloBData[1]);
+        const url = await postUpload(blob, shareName!, 'image/webp');
         if (url) {
-          console.log(url,'url')
+          console.log('Upload successful:', url);
           setShareImgUrl(url);
         }
+      } catch (err: any) {
+        console.error('Share image generation/upload failed:', err);
+        fail(`Failed to generate/upload share image${err?.message ? ': ' + err?.message : ''}`);
       }
-
-      // setShareImgUrl(url);
     }
+    
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     getShareImg();

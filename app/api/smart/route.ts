@@ -6,6 +6,7 @@ import { NextRequest } from "next/server";
 export async function GET(request: Request | NextRequest) {
   const parsedUrl = new URL(request.url as string);
   const imgUrl = parsedUrl.searchParams.get("imgUrl");
+  const decodedImgUrl = decodeURIComponent(imgUrl || "");
   const title = parsedUrl.searchParams.get("title");
   const about = parsedUrl.searchParams.get("about");
   const address = parsedUrl.searchParams.get("address");
@@ -22,7 +23,7 @@ export async function GET(request: Request | NextRequest) {
             <meta name="twitter:card" content="summary_large_image"> <!-- Use 'summary_large_image' for large image cards -->
             <meta name="twitter:title" content="${title}">
             <meta name="twitter:description" content="${about}">
-            <meta name="twitter:image" content="${imgUrl}"> <!-- Image URL for sharing -->
+            <meta name="twitter:image" content="${decodedImgUrl}"> <!-- Image URL for sharing -->
             <meta http-equiv="refresh" content="0; url=${domain}/smartTopDetail?address=${address}">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta property="og:image:width" content="375">
