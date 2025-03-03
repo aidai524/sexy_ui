@@ -53,6 +53,31 @@ export default function CardContainer() {
   //   return null
   // }
 
+   // Add new polling effect
+   useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    
+    if (copyTradersUserInfo?.isClaiming && walletAddress) {
+      interval = setInterval(async() => {
+        const { data } = await CopyTradeService.getCopyTradersUserInfo({address: walletAddress, chain: 'solana'});
+        if (!data?.isClaiming) {
+          setCopyTradersUserInfo(data);
+          if (interval) {
+            clearInterval(interval);
+            interval = null;
+          }
+        }
+      }, 5000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [copyTradersUserInfo?.isClaiming, walletAddress]);
+
+
 
   if (isLoading) {
     return <MCopyCardSkeleton />;
