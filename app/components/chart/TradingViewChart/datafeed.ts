@@ -119,11 +119,12 @@ const datafeed: (
         getGranularityByResolution(resolution),
         pageRef.current
       );
-      if (data.length) lastPrice = data[data.length - 1][1];
+
+      if (data?.length) lastPrice = data[data.length - 1][1];
       resolutionRef.current = resolution;
       hasNextRef.current = hasNextPage;
       resolutionRef.current = resolution;
-      const bars = data.map((item: any) => ({
+      const bars = data?.map((item: any) => ({
         time: item[6],
         low: item[3],
         high: item[2],
@@ -131,7 +132,7 @@ const datafeed: (
         close: item[4],
         volume: item[5]
       }));
-      if (data.length === 0) {
+      if (!data || data?.length === 0) {
         onHistoryCallback([], { noData: true });
         return;
       }

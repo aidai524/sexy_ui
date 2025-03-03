@@ -12,9 +12,14 @@ export default function FollowX() {
   const config = useConfig((store: any) => store.config);
   const redirectUri = `${window.location.origin}${window.location.pathname}`;
   const { loading } = useTwitterBind({
-    onSuccess: onQueryInfo,
+    onSuccess: () => {
+      setTimeout(() => {
+        onQueryInfo();
+      }, 1000);
+    },
     redirectUri
   });
+
   return (
     <div
       className={styles.Item}
