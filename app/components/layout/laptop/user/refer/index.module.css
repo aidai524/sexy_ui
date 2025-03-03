@@ -44,6 +44,7 @@
 }
 .CardMobile {
   composes: Card;
+  width: calc(100dvw - 20px);
   left: 16px;
   bottom: 0;
 }
@@ -100,6 +101,8 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .Content {
   display: flex;
