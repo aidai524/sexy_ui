@@ -7,7 +7,8 @@ import { useRouter } from 'next/navigation';
 export default function SmartTopDetail() {
   const router = useRouter();
   if (!SHOW_COPY_TRADE) {
-    return router.push("/");
+     router.push("/");
+     return null;
   }
   return (
    <TopTraderDetailContent />
