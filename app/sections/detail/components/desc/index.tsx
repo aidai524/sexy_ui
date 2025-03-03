@@ -59,8 +59,11 @@ export default function Desc({
           "confirmed"
         );
 
-        // console.log('tokenAccounts', tokenAccounts);
-        setHolders(tokenAccounts.value.length);
+        console.log('tokenAccounts', tokenAccounts);
+
+        const size = tokenAccounts.value.filter((item) => Number(item.amount) > 0).length;
+
+        setHolders(size);
       }
     })();
   }, [connection, data]);

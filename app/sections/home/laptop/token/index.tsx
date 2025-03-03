@@ -22,7 +22,7 @@ export default function Token({
   token,
   opacity,
   showTrade,
-  tradeTab,
+  tradeTab = 'details',
   isPreview,
   dataAvailable,
   onUpdate,
