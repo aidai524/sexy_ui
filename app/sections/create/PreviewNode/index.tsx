@@ -198,7 +198,7 @@ export default forwardRef(function PreviewNode(
                 <MobileToken
                   isCurrent={true}
                   style={{
-                    height: innerHeight - 100,
+                    height: innerHeight - 160,
                     overflow: 'hidden',
                     width: '100%'
                   }}
