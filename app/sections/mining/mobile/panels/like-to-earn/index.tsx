@@ -38,7 +38,7 @@ export default function LikeToEarn({ info, userInfo }: any) {
           {info?.like_num || 100} likes per day
         </div>
         <div className={styles.ItemBottom}>
-          <div>{remainingNum || 100} left today</div>
+          <div>{isNaN(remainingNum) ? 100 : remainingNum} left today</div>
           <div className={styles.ItemBottomButtons}>
             {userInfo?.address ? (
               <button
