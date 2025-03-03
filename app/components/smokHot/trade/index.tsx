@@ -167,7 +167,7 @@ export default function Trade({
           }}
           className={`${styles.percentTag} button`}
         >
-          MAX
+          Max
         </div>
       </div>
       <div className={styles.Bottom} style={bottomStyle}>
