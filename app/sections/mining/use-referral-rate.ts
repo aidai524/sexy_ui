@@ -44,8 +44,10 @@ export default function useReferralRate() {
       if (!referralRecord.rate) {
         throw "Rate unavailable";
       }
+
       setRate(Big(referralRecord?.rate).div(1e2).toFixed(0));
     } catch (err) {
+      console.log("Get rate error", err);
       setRate("15");
     } finally {
       setIsLoading(false);
