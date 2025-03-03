@@ -67,9 +67,16 @@ export default function useDanmaku({ id }: any) {
       const _more = res.data?.has_next_page || false;
       offset.current = _more ? newList.length : 0;
       cachedList.current = newList;
+
       setList(newList);
+      clearTimeout(window.danmakuTimer);
+      window.danmakuTimer = setTimeout(
+        () => {
+          loadMore();
+        },
+        _more ? 3000 : 10000
+      );
     } catch (err) {
-    } finally {
       clearTimeout(window.danmakuTimer);
       window.danmakuTimer = setTimeout(() => {
         loadMore();

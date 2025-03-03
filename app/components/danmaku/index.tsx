@@ -4,22 +4,33 @@ import { ReadAvatar } from "@/app/sections/messages/avatar";
 import useDanmaku from "@/app/hooks/use-danmaku";
 import LikeIcon from "@/app/sections/home/mobile/actions/like/like-icon";
 import RocketIcon from "@/app/sections/home/mobile/actions/rocket-icon";
+import { useMemo, useRef } from "react";
 
 export default function DanmakuComp({ id }: any) {
   const { list, show } = useDanmaku({
     id
   });
+  const containerRef = useRef<any>();
+
+  const [animationY, duration] = useMemo(() => {
+    if (!list.length) return [0, 10];
+    const _y = containerRef.current?.clientHeight || list.length * 36;
+    const _d = _y / 360 < 2 ? 10 : (_y / 360) * 5;
+    return [_y, _d];
+  }, [list.length]);
+
   return (
     <div className={styles.Container}>
       {show && !!list.length && (
         <motion.div
           className={styles.List}
           initial={{ y: 144 }}
-          animate={{ y: "-100%" }}
+          animate={{ y: -animationY }}
           transition={{
-            duration: list.length * 1 + (list.length <= 10 ? 5 : -2),
+            duration,
             ease: "linear"
           }}
+          ref={containerRef}
         >
           {list.map((item: any, i: number) => (
             <div key={item.id + Math.random() + Date.now()}>
