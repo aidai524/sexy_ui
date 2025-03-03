@@ -1,4 +1,5 @@
 import styles from "../rank/index.module.css";
+import itemsStyles from "../rank/item.module.css";
 import SimpleAvatar from "@/app/components/avatar/simple";
 import Icon from "@/app/components/points-label/Reicon";
 import { useUserAgent } from "@/app/context/user-agent";
@@ -28,10 +29,14 @@ export default function Referrals({ show, onClose }: any) {
         style={{
           borderRadius: isMobile ? "20px 20px 0px 0px" : 20,
           width: "100vw",
-          maxWidth: 486
+          maxWidth: 486,
+          backgroundColor: "#252328",
+          padding: "20px 0px 20px"
         }}
       >
-        <Header isMobile={isMobile} text={`Referrals (${total})`} />
+        <div style={{ paddingLeft: 20 }}>
+          <Header isMobile={isMobile} text={`Referrals (${total})`} />
+        </div>
         <div
           className={styles.List}
           style={{
@@ -41,22 +46,22 @@ export default function Referrals({ show, onClose }: any) {
           {list.map((item: any, index: number) => (
             <div
               className={clsx(
-                styles.Item,
-                isMobile ? styles.MobileItem : styles.LaptopItem
+                itemsStyles.Item,
+                isMobile ? itemsStyles.MobileItem : itemsStyles.LaptopItem
               )}
               key={index}
             >
-              <div className={clsx(styles.ItemLeft)}>
+              <div className={clsx(itemsStyles.ItemLeft)}>
                 <SimpleAvatar src={item.account_data?.icon} />
                 <div style={{ width: 120 }}>
-                  <div className={styles.NameWrapper}>
-                    <button className={`${styles.ItemTitle}`}>
+                  <div className={itemsStyles.NameWrapper}>
+                    <button className={`${itemsStyles.ItemTitle}`}>
                       {formatAddress(item.referral_account, 4)}
                     </button>
                   </div>
                 </div>
               </div>
-              <div className={clsx(styles.ItemRight)}>
+              <div className={clsx(itemsStyles.ItemRight)}>
                 <span>
                   +
                   {numberFormatter(item.total, 3, true, {
