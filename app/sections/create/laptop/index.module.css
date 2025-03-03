@@ -5,8 +5,7 @@
 }
 
 .Container {
-  padding-top: 66px;
-  height: 100%;
+  padding: 66px 0 100px;
   overflow-y: auto;
 }
 
