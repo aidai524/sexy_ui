@@ -12,6 +12,7 @@ interface MemesState {
   memesTickingList: Meme[];
   memesListedList: Meme[];
   memesImportList: Meme[];
+  memesListCountdown: Record<string, number>;
   memesListPageLimit: number;
   memesListPageOffset: number;
   memesListPageNext: boolean;
@@ -23,6 +24,7 @@ interface MemesState {
   setMemesListPageLimit: (limit: number) => void;
   setMemesListPageOffset: (offset: number) => void;
   setMemesListPageNext: (next: boolean) => void;
+  setMemesListCountdown: (obj: Record<string, number>) => void;
 }
 
 export const useMemesListStore = create(persist<MemesState>((set) => ({
@@ -38,6 +40,7 @@ export const useMemesListStore = create(persist<MemesState>((set) => ({
   memesListPageLimit: 20,
   memesListPageOffset: 0,
   memesListPageNext: true,
+  memesListCountdown: {},
   setMemesGenesisList: (list: Meme[]) => set((state) => ({ ...state, memesGenesisList: list })),
   setMemesTickingList: (list: Meme[]) => set((state) => ({ ...state, memesTickingList: list })),
   setMemesListedList: (list: Meme[]) => set((state) => ({ ...state, memesListedList: list })),
@@ -46,11 +49,20 @@ export const useMemesListStore = create(persist<MemesState>((set) => ({
   setMemesListPageLimit: (limit) => set((state) => ({ ...state, memesListPageLimit: limit })),
   setMemesListPageOffset: (offset) => set((state) => ({ ...state, memesListPageOffset: offset })),
   setMemesListPageNext: (next) => set((state) => ({ ...state, memesListPageNext: next })),
+  setMemesListCountdown: (obj) => set((state) => {
+    const _memesListCountdown = { ...state.memesListCountdown, ...obj };
+    return {
+      ...state,
+      memesListCountdown: _memesListCountdown
+    };
+  }),
 }), {
   name: "_memes_list",
   version: 0.1,
-  storage: createJSONStorage(() => localStorage),
-  partialize: (state) => ({} as any)
+  storage: createJSONStorage(() => sessionStorage),
+  partialize: (state) => ({
+    memesListCountdown: state.memesListCountdown,
+  } as any)
 }));
 
 export interface Hot {
