@@ -140,10 +140,6 @@ export const useProjects = create(
             if (["genesis", "ticking", "listed"].includes(type)) {
               const currentItem = currentProjects[item.id];
               if (currentItem) {
-                if (i === 0) {
-                  currentItem.status = 3;
-                }
-
                 if (item.status !== currentItem.status) {
                   const index = list.findIndex((slip: any) => slip === item.id);
                   repeatCount++;
