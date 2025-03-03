@@ -88,14 +88,27 @@ const TopTraderShare = (props: any) => {
     
     if (cardRef.current) {
       try {
+        // Add a small delay to ensure styles are loaded
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        
         const element = cardRef.current;
+        // Force a reflow to ensure styles are applied
+        element.offsetHeight;
+        
         const originalWidth = 400;  
         const originalHeight = 550; 
         const targetWidth = 400;  
         const scale = targetWidth / originalWidth;
-        
-        // 
         const targetHeight = originalHeight * scale;
+
+        // Wait for images to load
+        const images = element.getElementsByTagName('img');
+        await Promise.all(
+          Array.from(images).map(
+            (img: any) => img.complete ? Promise.resolve() : new Promise(resolve => img.onload = resolve)
+          )
+        );
 
         const canvas = await html2canvas(element, { 
           useCORS: true,
@@ -108,6 +121,17 @@ const TopTraderShare = (props: any) => {
           allowTaint: true,
           x: (targetWidth / scale - originalWidth) / 2,
           y: (targetHeight / scale - originalHeight) / 2,
+          onclone: (clonedDoc) => {
+            const clonedElement = clonedDoc.querySelector(`[class*="${styles.CopyTradeShareCard}"]`);
+            if (clonedElement) {
+              const el = clonedElement as HTMLElement;
+              el.style.opacity = '1';
+              el.style.visibility = 'visible';
+              // Force styles to be applied in the cloned document
+              el.style.display = 'block';
+              el.style.position = 'relative';
+            }
+          }
         });
 
         const blob = await new Promise<Blob>((resolve) => {
