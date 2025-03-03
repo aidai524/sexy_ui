@@ -56,7 +56,7 @@ export default function Referrals({ show, onClose }: any) {
                 <div style={{ width: 120 }}>
                   <div className={itemsStyles.NameWrapper}>
                     <button className={`${itemsStyles.ItemTitle}`}>
-                      {formatAddress(item.referral_account, 4)}
+                      {formatAddress(item.account_id, 4)}
                     </button>
                   </div>
                 </div>

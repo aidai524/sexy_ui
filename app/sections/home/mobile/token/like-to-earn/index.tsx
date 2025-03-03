@@ -46,7 +46,7 @@ export default function LikeToEarn({ token }: any) {
         <div>
           <div className={styles.Like}>
             <Heart />
-            <div>{remainingNum || 100} left today</div>
+            <div>{isNaN(remainingNum) ? 100 : remainingNum} left today</div>
           </div>
           <div className={styles.Desc}>Like to Earn</div>
         </div>
@@ -83,7 +83,7 @@ export default function LikeToEarn({ token }: any) {
       >
         <div className={styles.Like}>
           <Heart />
-          <div>{remainingNum || 100} left today</div>
+          <div>{isNaN(remainingNum) ? 100 : remainingNum} left today</div>
         </div>
       </div>
     );
