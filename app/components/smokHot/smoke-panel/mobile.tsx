@@ -27,9 +27,9 @@ export default function SmokPanel({ show, token, onSuccess, onHide }: Props) {
       }}
     >
       <div className={styles.main}>
-        <div className={styles.smokeLogo}>
+        {/* <div className={styles.smokeLogo}>
           <img className={styles.smokeImg} src="/img/home/flipLogo.png" />
-        </div>
+        </div> */}
         <Trade
           modalShow={show}
           token={token}
