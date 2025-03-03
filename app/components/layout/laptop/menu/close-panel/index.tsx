@@ -3,10 +3,12 @@ import config, { Links } from "@/app/components/menu/config";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import CreateIcon from "../create-icon";
+import useCanClaim from "@/app/hooks/useCanClaim";
 
 export default function ExpandPanel() {
   const pathname = usePathname();
   const router = useRouter();
+  const canClaim = useCanClaim({pathname});
   return (
     <motion.div
       className={styles.Container}
@@ -34,6 +36,9 @@ export default function ExpandPanel() {
               }}
             >
               <span className={styles.ItemIcon}>
+              {item.label === "Smart" && canClaim > 0 && (
+                  <div className={styles.copyDot}></div>
+                )}
                 <item.icon
                   size={item.iconSize}
                   type={item.key.includes(pathname) ? "primary" : "disabled"}

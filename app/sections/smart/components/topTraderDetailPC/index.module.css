@@ -1,8 +1,8 @@
 .container {
     height: calc(100vh - 100px);
     overflow-x: hidden;
-    width: 1200px;
-    margin: 0 auto;
+    min-width: 1008px;
+    margin: 0 80px;
     display: grid;
     grid-template-columns:100px 1fr;
     margin-top: 60px;

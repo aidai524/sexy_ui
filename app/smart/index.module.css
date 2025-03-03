@@ -10,6 +10,6 @@
   }
 
 .containerPC {
-    width: 1200px;
-    margin: 0 auto;
+    min-width: 1008px;
+    margin: 0 80px;
 }

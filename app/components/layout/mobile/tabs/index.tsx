@@ -1,30 +1,12 @@
 import styles from "./index.module.css";
 import tabs, { tabsPath } from "./config";
 import { useRouter, usePathname } from "next/navigation";
-import { useAccount } from "@/app/hooks/useAccount";
-import CopyTrade from "@/app/services/copyTrade";
-import { useEffect, useState } from "react";
-import Big from "big.js";
+import useCanClaim from "@/app/hooks/useCanClaim";
 
 export default function Tabs() {
   const pathname = usePathname();
   const router = useRouter();
-  const { address: sexAddress } = useAccount();
-  const copyTradeService = new CopyTrade();
-  const [copyTradeUserInfo, setCopyTradeUserInfo] = useState<any>(null);
-  let canClaim =
-  new Big(copyTradeUserInfo?.carryFee || "0").minus(
-    new Big(copyTradeUserInfo?.claimed || "0")
-  ).toNumber();
-  useEffect(() => {
-    if (sexAddress) {
-      copyTradeService
-        .getCopyTradersUserInfo({ address: sexAddress, chain: "solana" })
-        .then((res) => {
-          setCopyTradeUserInfo(res.data);
-        });
-    }
-  }, [sexAddress]);
+  const canClaim = useCanClaim({pathname});
 
   if (pathname === "/create") {
     return null;

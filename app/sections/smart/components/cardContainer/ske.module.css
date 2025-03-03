@@ -11,7 +11,7 @@
 }
 
 .skeletonContainerPC {
-    width: 1200px !important;
+    min-width: 1008px !important;
     height: 134px !important;
     background: rgba(255, 255, 255, 0.08) !important;
     border-radius: 10px !important;
