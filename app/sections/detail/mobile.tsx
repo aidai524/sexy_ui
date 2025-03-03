@@ -71,9 +71,9 @@ export default function Detail({ token, tab, onBack, onSuccess }: any) {
     }
   }, [onBack, token]);
 
-  // useInterval(() => {
-  //   getDetailInfo()
-  // }, 3000)
+  useInterval(() => {
+    getDetailInfo({ isSkipLoading: true })
+  }, 3000)
 
   const tabs = useMemo(() => {
     const vals = [
