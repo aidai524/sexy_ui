@@ -115,6 +115,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
       return token.address!;
     }
+
+    if (token) {
+      return token.address!;
+    }
   }, [token, qrcodeCanvas]);
 
   useEffect(() => {
