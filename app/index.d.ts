@@ -15,4 +15,5 @@ interface Window {
   AddToHomeScreen: any;
   danmakuTimer: any;
   tradeDataTimer: any;
+  dataLayer: any;
 }
