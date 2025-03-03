@@ -232,9 +232,15 @@ const Carousel: React.FC<CarouselProps> = ({
                 </div>
                 <div className={styles.CarouselSummaries}>
                   {[3].includes(item.status) ? (
-                    <SummaryItem type="plane" value={item.like || 0} />
+                    <SummaryItem
+                      type="plane"
+                      value={(item.kind === "Hot" ? item.launched_like : item.like) || 0}
+                    />
                   ) : (
-                    <SummaryItem type="rocket" value={item.like || 0} />
+                    <SummaryItem
+                      type="rocket"
+                      value={(item.kind === "Hot" ? item.launched_like : item.like) || 0}
+                    />
                   )}
                   <SummaryItem type="user" value={item.holder} />
                 </div>
