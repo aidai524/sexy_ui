@@ -16,8 +16,6 @@ const TopTraderShareInfoCard = (props: any, ref: any) => {
   const { shareLink, selectedItems, currentUserInfo, shareName } = props;
 
   const { userInfo } = useUser();
-  console.log(userInfo, currentUserInfo, "userInfo");
-  console.log(selectedItems, "selectedItems");
   const { userData, userHasPoints } = useContext(AirdropContext);
 
   const refs = {};

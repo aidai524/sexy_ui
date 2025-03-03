@@ -89,7 +89,7 @@ const TopTraderShare = (props: any) => {
       const canvas = await html2canvas(cardRef.current, {
         useCORS: true,
         scale: 5,
-        backgroundColor: "#000000"
+        backgroundColor: null
       });
       // const base64Url = canvas.toDataURL("image/webp");
       // const newFileName = generateRandomString(10);
@@ -146,10 +146,10 @@ const TopTraderShare = (props: any) => {
       )}&imgUrl=${encodeURIComponent(
         shareImgUrl
       )}&title=${encodeURIComponent(
-        shareName
-      )}&about=${encodeURIComponent(shareName)}&referral=${encodeURIComponent(shareName)}`;
+        'Top Trader Share'
+      )}&about=${encodeURIComponent('flip top trader')}&referral=${encodeURIComponent(shareName)}`;
       const shortUrl = await getShortUrl(longUrl);
-      shareToX(shareName!, shortUrl);
+      shareToX('Check out this top trader on Flipn! 🚀', shortUrl);
     }
   }
 
