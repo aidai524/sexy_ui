@@ -140,7 +140,6 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
 
   const onRefresh = () => {
     projectsStore.clearList(launchType);
-    projectsStore.clearProjects();
     if (projectsStore.address) {
       projectsStore.setIndex(launchType, 0);
     }
@@ -185,7 +184,6 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
     if (isMobile)
       window.addEventListener("unload", () => {
         projectsStore.clearList(launchType);
-        projectsStore.clearProjects();
         projectsStore.setIndex(launchType, 0);
       });
   }, []);
