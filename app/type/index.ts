@@ -44,6 +44,7 @@ export interface Project {
     marketCap24hUsd?: number;
     volume24hUsd?: number;
     mc?: string;
+    solReserve?: string;
 }
 
 export interface Comment {

@@ -55,7 +55,7 @@ export default function VideoPlayer({
         const blob: any = await mediaStore.getFile(id);
         setMergedSrc(URL.createObjectURL(blob));
       } catch (err) {
-        setMergedSrc(src);
+        setMergedSrc(src + '#t=0.1');
       }
     };
     getSrc();

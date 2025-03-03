@@ -20,19 +20,24 @@ export default function Tabs() {
         const isActive = item.key.includes(pathname);
         return (
           <div
-            className={styles.Tab}
+            className={`${item?.comingSoon && styles.ComingSoonWrapper} ${styles.Tab}`}
             key={item.path}
             onClick={() => {
               if (!window.sexAddress && item.needLogin) {
                 window.connect();
                 return;
               }
-
+              if (item?.comingSoon) {
+                return;
+              }
               router.push(item.path);
             }}
           >
             {item.label === "Smart" && canClaim > 0 && (
               <div className={styles.copyDot}></div>
+            )}
+            {item?.comingSoon && (
+              <img src="/img/smart/coming-soon.png" alt="coming-soon" className={styles.ComingSoon}/>
             )}
             <item.icon
               size={item.iconSize}

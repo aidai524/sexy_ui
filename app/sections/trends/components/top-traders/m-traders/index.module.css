@@ -21,8 +21,8 @@
   
 
   .stickyTabContainer {
-    position: fixed;
-    top: 45px;
+    position: sticky;
+    top: -4px;
     left: 0;
     width: 100%;
     z-index: 100;
