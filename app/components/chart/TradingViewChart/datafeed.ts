@@ -162,9 +162,14 @@ const datafeed: (
     currentSymbolInfo = symbolInfo;
     const fetchPrice = async () => {
       clearTimeout(pullingQueryPriceTimer);
+
       if (!currentSymbolInfo?.name) return;
       const item = await fetchLastData(address, resolution);
-      if (!item) return;
+      if (!item?.[6]) {
+        pullingQueryPriceTimer = setTimeout(fetchPrice, 5000);
+        lastPrice = 0;
+        return;
+      }
 
       const bar = {
         time: item[6],
@@ -176,11 +181,11 @@ const datafeed: (
       };
 
       if (!lastPrice && savedHistoryCallback) {
-        console.log(191);
         savedHistoryCallback([bar], { noData: false });
       }
 
       addPriceMarker({ price: item[1], lastPrice, time: item[6], tvWidgetRef });
+
       onRealtimeCallback(bar);
       lastPrice = item[1];
 
