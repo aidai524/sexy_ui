@@ -80,7 +80,7 @@ export function useTokenTrade({
     return PublicKey.findProgramAddressSync(
       [
         Buffer.from("token_info"),
-        state[0].toBuffer(),
+        state[0]?.toBuffer(),
         Buffer.from(tokenName),
         Buffer.from(tokenSymbol)
       ],
@@ -94,7 +94,7 @@ export function useTokenTrade({
     return PublicKey.findProgramAddressSync(
       [
         Buffer.from("mint"),
-        state[0].toBuffer(),
+        state[0]?.toBuffer(),
         Buffer.from(tokenName),
         Buffer.from(tokenSymbol)
       ],
@@ -216,7 +216,7 @@ export function useTokenTrade({
     const referralRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("referral_record"),
-        state[0].toBuffer(),
+        state[0]?.toBuffer(),
         walletProvider.publicKey!.toBuffer()
       ],
       programId
@@ -242,7 +242,7 @@ export function useTokenTrade({
     const referralFeeRateRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("referral_fee_rate_record"),
-        state[0].toBuffer(),
+        state[0]?.toBuffer(),
         referral.toBuffer()
       ],
       programId
@@ -333,7 +333,7 @@ export function useTokenTrade({
     const prePaidRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("prepaid_record"),
-        pool[0].toBuffer(),
+        pool[0]?.toBuffer(),
         walletProvider.publicKey!.toBuffer()
       ],
       programId
@@ -585,7 +585,7 @@ export function useTokenTrade({
         [
           Buffer.from(METADATA_SEED),
           TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-          keys.tokenInfo.toBuffer()
+          keys.tokenInfo?.toBuffer()
         ],
         TOKEN_METADATA_PROGRAM_ID
       );
@@ -758,7 +758,7 @@ export function useTokenTrade({
       const paidRecord = PublicKey.findProgramAddressSync(
         [
           Buffer.from("prepaid_record"),
-          keys.pool.toBuffer(),
+          keys.pool?.toBuffer(),
           walletProvider.publicKey!.toBuffer()
         ],
         programId
@@ -870,7 +870,7 @@ export function useTokenTrade({
     const paidRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("prepaid_record"),
-        keys.pool.toBuffer(),
+        keys.pool?.toBuffer(),
         walletProvider.publicKey!.toBuffer()
       ],
       programId
@@ -930,7 +930,7 @@ export function useTokenTrade({
     const prePaidRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("prepaid_record"),
-        pool[0].toBuffer(),
+        pool[0]?.toBuffer(),
         walletProvider.publicKey!.toBuffer()
       ],
       programId
