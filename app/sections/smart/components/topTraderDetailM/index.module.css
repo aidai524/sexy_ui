@@ -145,6 +145,11 @@
     color: #C9FF5D;
     margin-right: 4px;
   }
+
+  .amountLessThanZero {
+    color: #FF2681;
+    margin-right: 4px;
+  }
   
   .unit {
     color: rgba(255, 255, 255, 0.6);
@@ -157,10 +162,11 @@
   }
   
   .copierDetail {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* align-items: center; */
+    gap: 20px;
+    /* justify-content: space-between; */
   }
   
   .copierAmount {
@@ -223,3 +229,26 @@
     justify-content: center;
   }
   
+  .notTopTraderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #fff;
+  }
+
+  .notTopTraderBackBtn {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    width:120px;
+    height: 30px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #FBCA04;
+    margin-top: 10px;
+  }

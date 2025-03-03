@@ -17,15 +17,17 @@ import {
 } from "@/app/sections/trends/components/top-traders/icons";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useCopyTimes } from "@/app/store/useCopyTimes";
+import { useCopyTradeRefresh } from "@/app/store/useCopyTradeRefresh";
 
 export default function CoppiedAction({ show, onClose, copiedInfo, address }: any) {
   const copyTimesStore: any = useCopyTimes();
+  const copyTradeRefreshStore: any = useCopyTradeRefresh();
   const { isLoading, handleCopyTrade } = useCopyTrade();
   const { userInfo: currentUserInfo } = useAuth();
   const { address: walletAddress } = useAccount();
 
   const [copyAmount, setCopyAmount] = useState<string>("");
-  const [onceCopyAmount, setOnceCopyAmount] = useState<string>("0.1");
+  const [onceCopyAmount, setOnceCopyAmount] = useState<string>("0.01");
   const [copyTimes, setCopyTimes] = useState<string>("10");
   const [isManualCopyTimes, setIsManualCopyTimes] = useState<boolean>(false);
   const [minCopyAmountTips, setMinCopyAmountTips] = useState<boolean>(false);
@@ -38,7 +40,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
 
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const { solBalance } = useSolBalance(Number(show) + (isLoading ? 1 : 0));
+  const { solBalance } = useSolBalance(Number(show) + (isLoading ? 1 : 0), 2);
   const { solPrice } = useSolPrice();
   const [isAdvancedModalOpen, setIsAdvancedModalOpen] =
     useState<boolean>(false);
@@ -49,7 +51,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
           { key: 0.1, value: 0.1, id: "level1" },
           { key: 0.5, value: 0.5, id: "level2" },
           { key: 1, value: 1, id: "level3" },
-          { key: +solBalance, value: "Max", id: "level4" }
+          { key: +solBalance, value: +solBalance, id: "level4" }
         ]
       : [
           { key: 0.1, value: 0.1, id: "level1" },
@@ -59,7 +61,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
   const resetForm = () => {
     setMinCopyAmountTips(false);
     setErrMsg("");
-    setOnceCopyAmount("0.1");
+    setOnceCopyAmount("0.01");
     setCopyTimes("10");
     setCopyAmount("");
     setIsManualCopyTimes(false);
@@ -89,10 +91,10 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
       newCopyTimes = "10";
       newOnceCopyAmount = new Big(1).div(10).toString();
     } else {
-      const cpTimes = Math.floor(solBalanceBig.div(0.1).toNumber());
+      const cpTimes = Math.floor(solBalanceBig.div(0.01).toNumber());
       newCopyTimes = cpTimes <= 0 ? "1" : cpTimes.toString();
-      newCopyAmount = new Big(Math.floor(solBalanceBig.div(0.1).toNumber()))
-        .mul(0.1)
+      newCopyAmount = new Big(Math.floor(solBalanceBig.div(0.01).toNumber()))
+        .mul(0.01)
         .toString();
       newOnceCopyAmount =
         cpTimes <= 0
@@ -143,7 +145,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
   }, [copyAmount]);
 
   const validateOnceCopyAmount = useMemo(() => {
-    const minAmount = 0.1;
+    const minAmount = 0.01;
     const calculatedOnceCopyAmount = new Big(copyAmount || 0).div(
       new Big(copyTimes || 1)
     );
@@ -175,46 +177,38 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
 
   const handleCopyAmountChange = (e: any) => {
     const value = e.target.value;
-
     const sanitizedValue = value.replace(/[^\d.]/g, "");
-
-    //
     const parts = sanitizedValue.split(".");
     const cleanValue = parts[0] + (parts.length > 1 ? "." + parts[1] : "");
 
-    //
-    if (cleanValue !== "" && cleanValue !== "0" && cleanValue !== "0.") {
-      const num = parseFloat(cleanValue);
-      if (num === 0) return;
-    }
-
+    // 
     if (cleanValue === "" || /^\d*\.?\d*$/.test(cleanValue)) {
       setCopyAmount(cleanValue);
 
-      //
-      if (cleanValue && cleanValue !== "." && cleanValue !== "0") {
-        const amount = new Big(cleanValue);
-        let calculatedTimes = Math.floor(amount.div(0.1).toNumber());
+      // 
+      if (!cleanValue || cleanValue === "." || cleanValue === "0") {
+        setCopyTimes("1");
+        setOnceCopyAmount("0");
+        setIsManualCopyTimes(false);
+        return;
+      }
 
+      // 
+      if (!isNaN(parseFloat(cleanValue)) && parseFloat(cleanValue) > 0) {
+        const amount = new Big(cleanValue);
+        let calculatedTimes = Math.floor(amount.div(0.01).toNumber());
         calculatedTimes = Math.min(calculatedTimes, 10);
 
-        if (amount.gt(0)) {
-          const perCopyAmount = amount.div(calculatedTimes);
-          if (perCopyAmount.gte(0.1)) {
-            setCopyTimes(calculatedTimes.toString());
-            setOnceCopyAmount(perCopyAmount.toString());
-          } else {
-            const minPossibleTimes = Math.floor(amount.div(0.1).toNumber());
-            setCopyTimes(
-              minPossibleTimes > 0 ? minPossibleTimes.toString() : "1"
-            );
-            setOnceCopyAmount(
-              amount.div(minPossibleTimes > 0 ? minPossibleTimes : 1).toString()
-            );
-          }
+        const perCopyAmount = amount.div(calculatedTimes || 1);
+        if (perCopyAmount.gte(0.01)) {
+          setCopyTimes(calculatedTimes.toString());
+          setOnceCopyAmount(perCopyAmount.toString());
         } else {
-          setCopyTimes("1");
-          setOnceCopyAmount("0");
+          const minPossibleTimes = Math.floor(amount.div(0.01).toNumber());
+          setCopyTimes(minPossibleTimes > 0 ? minPossibleTimes.toString() : "1");
+          setOnceCopyAmount(
+            amount.div(minPossibleTimes > 0 ? minPossibleTimes : 1).toString()
+          );
         }
         setIsManualCopyTimes(false);
       }
@@ -226,12 +220,19 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
     // First sanitize to numbers only
     const sanitizedValue = value.replace(/[^\d]/g, "");
     
-    // Don't allow "0" or empty values
-    if (!sanitizedValue || sanitizedValue === "0") {
+    // Allow empty value temporarily during editing
+    if (sanitizedValue === "") {
+      setCopyTimes("");
+      return;
+    }
+    
+    // Convert to number and apply constraints
+    const numValue = parseInt(sanitizedValue, 10);
+    if (numValue === 0) {
       setCopyTimes("1");
     } else {
       // Cap at 10
-      const finalValue = Math.min(parseInt(sanitizedValue, 10), 10).toString();
+      const finalValue = Math.min(numValue, 10).toString();
       setCopyTimes(finalValue);
     }
     
@@ -246,7 +247,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
     }
 
     let res;
-    if(isAutoCloseChecked){
+    if(isChecked){
       res = await handleCopyTrade({
         walletAddress: walletAddress || currentUserInfo?.address,
         copiedAddress: copiedInfo?.address || address,
@@ -278,12 +279,15 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
     if (res) {
       copyTimesStore.set({ copyTimes: copyTimes });
       onClose();
+      setTimeout(() => {
+        copyTradeRefreshStore.set({ lastCopyTradeTime: Date.now() });
+      }, 1000);
     }
   };
 
   const handleSwitchChange = (checked: boolean) => {
     setIsChecked(checked);
-    setIsAdvancedModalOpen(checked);
+    // setIsAdvancedModalOpen(checked);
   };
 
   return (
@@ -303,7 +307,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
           />
           <div className={styles.userName}>
             Copy Trade
-            <span style={{ color: "#C9FF5D" }}>
+            <span style={{ color: "#C9FF5D", fontWeight: 600 }}>
               &nbsp;@
               {formatLongText(copiedInfo?.name) ||
                 formatAddress(copiedInfo?.address || address) ||
@@ -319,7 +323,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
               <span>{solBalance} SOL</span>
             </div>
             <div className={styles.advancedAndSwitch}>
-              <div className={styles.advanced}>
+              <div className={styles.advanced} onClick={() => setIsAdvancedModalOpen(true)}>
                 <AdvancedIcon />
                 <span>Advanced</span>
               </div>
@@ -348,7 +352,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
                   fontSize: "36px",
                   border: "none",
                   textAlign: "center",
-                  color: minCopyAmountTips ? "#FF2681" : "#fff"
+                  color: errMsg ? "#FF2681" : "#fff"
                 }}
               />
             </div>
@@ -374,18 +378,18 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
                   if (newAmount && newAmount !== "0") {
                     const amount = new Big(newAmount);
                     let calculatedTimes = Math.floor(
-                      amount.div(0.1).toNumber()
+                      amount.div(0.01).toNumber()
                     );
                     calculatedTimes = Math.min(calculatedTimes, 10);
 
                     if (amount.gt(0)) {
                       const perCopyAmount = amount.div(calculatedTimes);
-                      if (perCopyAmount.gte(0.1)) {
+                      if (perCopyAmount.gte(0.01)) {
                         setCopyTimes(calculatedTimes.toString());
                         setOnceCopyAmount(perCopyAmount.toString());
                       } else {
                         const minPossibleTimes = Math.floor(
-                          amount.div(0.1).toNumber()
+                          amount.div(0.01).toNumber()
                         );
                         setCopyTimes(
                           minPossibleTimes > 0
@@ -415,7 +419,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
                     : styles.amountLevelNotActive
                 }
               >
-                {item.key}
+                {item.id === "level4" ? "Max" : item.value}
               </div>
             ))}
           </div>
@@ -447,7 +451,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
         show={isAdvancedModalOpen}
         onClose={() => {
           setIsAdvancedModalOpen(false);
-          handleSwitchChange(false);
+          // handleSwitchChange(false);
         }}
         copyTimes={copyTimes}
         setCopyTimes={handleCopyTimesChange}
@@ -536,7 +540,7 @@ export const AdvancedModal = ({
             <span
               onClick={() => {
                 onClose();
-                setIsChecked(false);
+                // setIsChecked(false);
               }}
             >
               <LeftBackIcon />

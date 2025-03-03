@@ -6,8 +6,12 @@ import styles from './index.module.css'
 import { useGetSmartMonies } from '../../hooks/useGetSmartMonies';
 import Empty from '@/app/components/empty';
 import { useAccount } from '@/app/hooks/useAccount';
-
+import { useCopyTradeRefresh } from '@/app/store/useCopyTradeRefresh';
+import { useTopTraderTab } from '@/app/store/useTopTraderTab';
 export default function TopTraders() {
+  const lastCopyTradeTime = useCopyTradeRefresh((state: any) => state.lastCopyTradeTime);
+  const topTraderTab = useTopTraderTab((state: any) => state.topTraderTab);
+  const setTab = useTopTraderTab((state: any) => state.set)
   const { isMobile } = useUserAgent()
   const pageSize = 10;
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -18,14 +22,14 @@ export default function TopTraders() {
     total: 0
   });
   const { address: walletAddress } = useAccount();
-  const [orderBy, setOrderBy] = useState<string>('pnl7D')
-  
+  const [orderBy, setOrderBy] = useState<string>(topTraderTab)
   const { smartMonies, smartMoniesLoading } = useGetSmartMonies({ 
     chain: 'solana', 
     page: pageIndex, 
     pageSize,
     orderBy,
-    walletAddress: walletAddress || ''
+    walletAddress: walletAddress || '',
+    lastCopyTradeTime
   });
 
   useEffect(() => {
@@ -40,6 +44,15 @@ export default function TopTraders() {
     }
   }, [smartMonies]);
 
+  const resetList = useCallback(() => {
+    setPageIndex(1);
+    setTradersList({
+      items: [],
+      total: 0
+    });
+    setHasMore(true);
+  }, []);
+
   const loadMore = useCallback(() => {
     if (!isLoadingMore && !smartMoniesLoading) {
       setIsLoadingMore(true);
@@ -49,32 +62,22 @@ export default function TopTraders() {
 
   const handleOrderByChange = (newOrderBy: string) => {
     setOrderBy(newOrderBy);
-    setPageIndex(1);
-    setTradersList({
-      items: [],
-      total: 0
-    });
-    setHasMore(true);
+    setTab({ topTraderTab: newOrderBy });
+    resetList();
   };
 
-  // if (smartMoniesLoading && tradersList.items.length === 0) {
-  //   return <div style={{ paddingTop: 116 }}>
-  //     <Empty text="Loading" showLoading={true} />
-  //   </div>
-  // }
 
-  if (tradersList.items.length === 0 && !smartMoniesLoading) {
-    return <div style={{ paddingTop: 116 }}>
-      <Empty text="No data" />
-    </div>
-  }
+  useEffect(() => {
+    resetList();
+  }, [lastCopyTradeTime]);
+
 
   return (
     <>
       <div className={styles.topTraders}>
         {isMobile ? 
           <TopTradersMobile list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} smartMoniesLoading={smartMoniesLoading}/> : 
-          <TopTradersPC list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} />
+          <TopTradersPC list={tradersList.items} setOrderBy={handleOrderByChange} orderBy={orderBy} loadMore={loadMore} hasMore={hasMore || smartMoniesLoading} isLoadingMore={isLoadingMore} smartMoniesLoading={smartMoniesLoading} />
         }
       </div>
     

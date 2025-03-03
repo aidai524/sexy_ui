@@ -38,7 +38,12 @@ export default function Laptop({
               <InviteFrenz rate={rate} />
               <LikeToEarn info={info} userInfo={userInfo} />
               <FollowX />
-              <CreateToEarn airdropEndTime={configStore.AirdropEndTime} />
+              {info?.clime_created && (
+                <CreateToEarn
+                  airdropEndTime={configStore.AirdropEndTime}
+                  info={info}
+                />
+              )}
             </div>
           </Panel>
         </div>

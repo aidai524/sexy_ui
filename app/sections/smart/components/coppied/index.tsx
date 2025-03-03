@@ -13,8 +13,13 @@ import CloseCopyTips from "./closeCopyTips";
 import styles from './coppied.module.css';
 import { useRouter,useSearchParams } from "next/navigation";
 import { useAccount } from "@/app/hooks/useAccount";
+import { useCloseCopy } from "@/app/store/useCloseCopy";
+import { success } from "@/app/utils/toast";
+import { CopyItemSkeleton } from "./coppiedList/ske";
+
 export default function Coppied({ isOther }: any) {
   const { address: walletAddress } = useAccount();
+  const { lastCloseCopyTime, set: setLastCloseCopyTime }:any = useCloseCopy();
   const searchParams = useSearchParams();
   const urlAddress = searchParams.get('address');
   const CopyTradeService = new CopyTrade();
@@ -33,31 +38,30 @@ export default function Coppied({ isOther }: any) {
   const [showCloseCopyTips, setShowCloseCopyTips] = useState<boolean>(false);
   const [copiedInfo, setCopiedInfo] = useState<any>(null);
   const pageSize = 10;
+  const [pollingIds, setPollingIds] = useState<Set<string>>(new Set());
 
 
   const loadMore = useCallback(async () => {
-    if (
-      !userInfo?.address && !urlAddress && !walletAddress
-    ) {
+    if (!userInfo?.address && !urlAddress && !walletAddress) {
       setHasMore(false);
       return;
     }
-
     setIsLoading(true);
     try {
       const res = await CopyTradeService.getCopyTradeList({
-        address:!urlAddress ? userInfo?.address || walletAddress : urlAddress,
+        address: !urlAddress ? userInfo?.address || walletAddress : urlAddress,
         chain: "solana",
         page: pageIndex,
         pageSize
       });
 
       setCopyTradeMap((prev: any) => ({
-        items: [...prev?.items, ...(res?.data?.items || [])],
+        items: pageIndex === 1 
+          ? res?.data?.items || []
+          : [...prev?.items, ...(res?.data?.items || [])],
         total: res?.data?.total || 0
       }));
 
-      // update page
       if (res.data.items.length < pageSize) {
         setHasMore(false);
       } else {
@@ -76,19 +80,97 @@ export default function Coppied({ isOther }: any) {
       return;
     }
     
-    // Reset states
+    // init
     setPageIndex(1);
     setCopyTradeMap({ items: [], total: 0 });
     setHasMore(true);
     
-    // Load initial data
-    loadMore();
+    // 
+    setTimeout(() => {
+      loadMore();
+    }, 0);
   }, [userInfo?.address, urlAddress, walletAddress]);
+
+
+  const pollCopyTradeStatus = useCallback(async (id: string) => {
+    if (!userInfo?.address) {
+      setPollingIds(new Set());
+      return;
+    }
+    
+    try {
+      const res = await CopyTradeService.getCopyTradeDetail({
+        id,
+        chain: "solana",
+        walletAddress: userInfo.address
+      });
+      
+      if (res?.data?.state !== 5) {
+        setPollingIds(prev => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
+        
+        setCopyTradeMap((prev: any) => {
+          const updatedItems = prev.items.map((item: any) => {
+            if (item.id !== id) return item;
+            if (res.data.state === 4) {
+              setTimeout(() => {
+                setCloseCopyTimeFunc();
+                success("Close copy trade success", {maskStyle: {zIndex: 1001}});
+              }, 0);
+              return null;
+            }
+            return { ...item, ...res.data };
+          }).filter(Boolean);
+          return {
+            ...prev,
+            items: updatedItems
+          };
+        });
+      }
+    } catch (error) {
+      console.error('Poll status error:', error);
+      setPollingIds(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
+  }, [CopyTradeService, userInfo]);
+
+  // Initialize polling IDs when items change
+  useEffect(() => {
+    const newPollingIds = new Set<string>();
+    copyTradeMap.items.forEach((item: any) => {
+      if (item.state === 5) {
+        newPollingIds.add(item.id);
+      }
+    });
+    setPollingIds(newPollingIds);
+  }, [copyTradeMap.items]);
+
+  // Handle polling separately
+  useEffect(() => {
+    if (pollingIds.size === 0) return;
+
+    const interval = setInterval(() => {
+      pollingIds.forEach(id => {
+        pollCopyTradeStatus(id);
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [pollingIds, pollCopyTradeStatus]);
+
+
 
   if (isLoading && pageIndex === 1) {
     return (
-      <div style={{ paddingTop: 116 }}>
-        <Empty text="Loading" showLoading={true} />
+      <div>
+        <h1 className={styles.title}>Copying ({copyTradeMap?.items?.length || 0})</h1>
+        <CopyItemSkeleton />
       </div>
     );
   }
@@ -109,6 +191,7 @@ export default function Coppied({ isOther }: any) {
         setCopyTradeMap({ items: [], total: 0 });
         setHasMore(true);
         loadMore(); 
+        setCloseCopyTimeFunc();
       }
     } else {
       const res = await handleCloseCopyTrade({id: item?.id, walletAddress: userInfo?.address || walletAddress, chain: "solana", state: 4});
@@ -117,6 +200,7 @@ export default function Coppied({ isOther }: any) {
         setCopyTradeMap({ items: [], total: 0 });
         setHasMore(true);
         loadMore(); 
+        setCloseCopyTimeFunc();
       }
     }
   };
@@ -128,6 +212,7 @@ export default function Coppied({ isOther }: any) {
         setCopyTradeMap({ items: [], total: 0 });
         setHasMore(true);
         loadMore();
+        setCloseCopyTimeFunc();
      }
   }
 
@@ -138,6 +223,10 @@ export default function Coppied({ isOther }: any) {
     } else {
       handleClose(item);
     }
+  }
+
+  const setCloseCopyTimeFunc = () => {
+    setLastCloseCopyTime({lastCloseCopyTime: new Date().getTime()});
   }
 
 

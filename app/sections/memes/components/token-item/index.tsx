@@ -246,13 +246,13 @@ export const TokenItemSummaries = (props: any) => {
             <SummaryItem
               className={styles.TokenItemSummary}
               type="rocket"
-              value={token.like || 0}
+              value={token.launched_like || 0}
             />
           ) : (
             <SummaryItem
               className={styles.TokenItemSummary}
               type="plane"
-              value={token.like || 0}
+              value={token.launched_like || 0}
             />
           )}
           <SummaryItem

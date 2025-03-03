@@ -25,9 +25,18 @@ import Big from 'big.js';
 import { fecthUserInfo } from '@/app/utils/getUserInfo';
 import TopTraderDetailShareConfirm from '@/app/sections/smart/components/topTraderDetailShareConfirm';
 import { useAccount } from '@/app/hooks/useAccount';
+import { useCopyTradeRefresh } from '@/app/store/useCopyTradeRefresh';
+import Loading from "@/app/loading";
+interface SatelliteNode {
+  id: string;
+  name: string;
+  image: string;
+  pnl: number;
+}
 
 export default function TopTraderDetailM() {
     const { address: walletAddress } = useAccount();
+    const lastCopyTradeTime = useCopyTradeRefresh((state: any) => state.lastCopyTradeTime);
     const { userInfo } = useUser();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -41,6 +50,8 @@ export default function TopTraderDetailM() {
     const [refreshNum, setRefreshNum] = useState(0);
     const [copierImages, setCopierImages] = useState<string[]>([]);
     const [showShareModal, setShowShareModal] = useState(false);
+    const [satelliteNodes, setSatelliteNodes] = useState<SatelliteNode[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     
     const getUserInfoWithCache = useMemo(() => {
       const cache = new Map<string, any>();
@@ -83,34 +94,43 @@ export default function TopTraderDetailM() {
   };
   const getCopyTradersUserInfo = async () => {
     if (address) {
-      const { data } = await CopyTradeService.getCopyTradersUserInfo({
-        address,
-        chain: "solana"
+      try {
+        const { data } = await CopyTradeService.getCopyTradersUserInfo({
+          address,
+          chain: "solana"
       });
       setCopyTradersUserInfo(data);
       console.log(data, "copyTradersUserInfo");
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
   useEffect(() => {
+    setIsLoading(true);
     getSmartMoniesInfo();
     getCopyTradersUserInfo();
-  }, [address]);
+  }, [address, lastCopyTradeTime]);
 
   const formatPnl = (pnl: string) => {
     if (pnl == "0") {
       return "0";
     }
     if (pnl.startsWith("-")) {
-      return "-" + numberFormatter(Math.abs(Number(pnl)), 4, true);
+      return "-" + numberFormatter(Math.abs(Number(pnl)), 2, true);
     }
-    return "+" + numberFormatter(pnl, 4, true);
+    return "+" + numberFormatter(pnl, 2, true);
   };
 
   const formatWinRate = (winRate: string) => {
     if (winRate == "0") {
       return "0%";
     }
-    return new Big(winRate).times(100).toFixed(2) + "%";
+    return new Big(winRate).times(100).toFixed(1) + "%";
+  };
+
+  const isGtZero = (str: string) => {
+    return Number(str) >= 0;
   };
 
   const getUserInfo: any = async (address: string) => {
@@ -121,26 +141,51 @@ export default function TopTraderDetailM() {
 
   const centerNode = useMemo(() => ({
     id: currentUserInfo?.address || "",
-    name: currentUserInfo?.name || "",
+    name: currentUserInfo?.name || formatAddress(currentUserInfo?.address || ""),
     image: currentUserInfo?.icon || defaultAvatar
   }), [currentUserInfo?.address, currentUserInfo?.name, currentUserInfo?.icon]);
 
-  const satellites = useMemo(() => {
-    return smartMoniesInfo?.topCopiers?.map((item: any) => {
-      const userInfo = getUserInfo(item.address);
-      return {
-        id: item.address,
-        name: userInfo?.name,
-        image: userInfo?.icon,
-        pnl: item.pnl
-      };
-    }) || [];
-  }, [smartMoniesInfo?.topCopiers]);
+  useEffect(() => {
+    const loadSatellites = async () => {
+      if (!smartMoniesInfo?.topCopiers?.length) return;
+      
+      const nodes = await Promise.all(
+        smartMoniesInfo.topCopiers.map(async (item: any) => {
+          const userInfo = await getUserInfoWithCache(item.address);
+          return {
+            id: item.address,
+            name: userInfo?.name || formatAddress(item.address || ""),
+            image: userInfo?.icon || defaultAvatar,
+            pnl: item.pnl
+          };
+        })
+      );
+      
+      setSatelliteNodes(nodes);
+    };
+
+    loadSatellites();
+  }, [smartMoniesInfo?.topCopiers, getUserInfoWithCache]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  // to do release
+  // if(copyTradersUserInfo && !copyTradersUserInfo.isTopTrader) {
+  //   return (
+  //     <div className={styles.notTopTraderContainer}>
+  //       <span>You are not a top trader!</span>
+  //       <div className={styles.notTopTraderBack} onClick={() => router.push('/')}>
+  //         <div className={styles.notTopTraderBackBtn}>Go Back</div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className={styles.container}>
-      {/*  */}
-      <div className={styles.back}>
+      <div className={styles.container}>
+        {/*  */}
+        <div className={styles.back}>
         <div onClick={() => router.back()}>
           <LeftBackIcon />
         </div>
@@ -164,7 +209,7 @@ export default function TopTraderDetailM() {
         </div>
       </div>
       {/* charts */}
-      <StarGraph centerNode={centerNode} satellites={satellites} />
+      <StarGraph centerNode={centerNode} satellites={satelliteNodes} />
       {/* performance */}
       <div className={styles.performance}>
         <div className={styles.header}>
@@ -173,9 +218,9 @@ export default function TopTraderDetailM() {
         </div>
         <div className={styles.grid}>
           <div className={styles.gridItem}>
-            <div className={styles.label}>1D PNL</div>
+            <div className={styles.label}>1D PnL</div>
             <div className={styles.value}>
-              <span className={styles.amount}>
+              <span className={isGtZero(smartMoniesInfo?.pnl1D || "0") ? styles.amount : styles.amountLessThanZero}>
                 {formatPnl(smartMoniesInfo?.pnl1D || "0")}
               </span>
               <span className={styles.unit}>SOL</span>
@@ -188,9 +233,9 @@ export default function TopTraderDetailM() {
             </div>
           </div>
           <div className={styles.gridItem}>
-            <div className={styles.label}>7D PNL</div>
+            <div className={styles.label}>7D PnL</div>
             <div className={styles.value}>
-              <span className={styles.amount}>
+              <span className={isGtZero(smartMoniesInfo?.pnl7D || "0") ? styles.amount : styles.amountLessThanZero}>
                 {formatPnl(smartMoniesInfo?.pnl7D || "0")}
               </span>
               <span className={styles.unit}>SOL</span>
@@ -203,9 +248,9 @@ export default function TopTraderDetailM() {
             </div>
           </div>
           <div className={styles.gridItem}>
-            <div className={styles.label}>30D PNL</div>
+            <div className={styles.label}>30D PnL</div>
             <div className={styles.value}>
-              <span className={styles.amount}>
+              <span className={isGtZero(smartMoniesInfo?.pnl30D || "0") ? styles.amount : styles.amountLessThanZero}>
                 {formatPnl(smartMoniesInfo?.pnl30D || "0")}
               </span>
               <span className={styles.unit}>SOL</span>
@@ -249,7 +294,7 @@ export default function TopTraderDetailM() {
           <CopierTextIcon />
         </div>
         <div className={styles.copierDetail}>
-          <div className={styles.copierAmount}>
+          {/* <div className={styles.copierAmount}>
             <CopyierIconWithBg />
             <span style={{ color: "#fff" }}>
               {smartMoniesInfo?.copiers?.length || 0}
@@ -270,7 +315,20 @@ export default function TopTraderDetailM() {
                 src={imageUrl || defaultAvatar}
               />
             ))}
-          </div>
+          </div> */}
+           <div className={styles.gridItem}>
+              <div className={styles.label}>Copy Traders</div>
+              <div className={styles.amount}>
+                <strong>{smartMoniesInfo?.copiers?.length || 0}</strong>
+              </div>
+            </div>
+            <div className={styles.gridItem}>
+              <div className={styles.label}>Copiers PnL</div>
+              <div className={styles.amount}>
+                <strong>{formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || "0")}</strong>
+                <span className={styles.unit}>&nbsp;SOL</span>
+              </div>
+            </div>
 
           {SHOW_COPY_TRADE && (
             <CoppiedModal
@@ -308,7 +366,7 @@ export default function TopTraderDetailM() {
         </div>
       )}
 
-      <TopTraderDetailShareConfirm currentUserInfo={currentUserInfo} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo} show={showShareModal} onClose={() => setShowShareModal(false)} />
+      <TopTraderDetailShareConfirm shareName={address} currentUserInfo={currentUserInfo} smartMoniesInfo={smartMoniesInfo} copyTradersUserInfo={copyTradersUserInfo} show={showShareModal} onClose={() => setShowShareModal(false)} />
     </div>
   );
 }

@@ -18,9 +18,11 @@ import {
 import { useAccount } from "@/app/hooks/useAccount";
 import { useCopyTimes } from "@/app/store/useCopyTimes";
 import CloseIcon from "@/app/components/icons/modal-close";
+import { useCopyTradeRefresh } from "@/app/store/useCopyTradeRefresh";
 
 export default function CoppiedAction({ show, onClose, copiedInfo, address }: any) {
   const copyTimesStore: any = useCopyTimes();
+  const copyTradeRefreshStore: any = useCopyTradeRefresh();
   const { isLoading, handleCopyTrade } = useCopyTrade();
   const { userInfo: currentUserInfo } = useAuth();
   const { address: walletAddress } = useAccount();
@@ -39,7 +41,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
 
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const { solBalance } = useSolBalance(Number(show) + (isLoading ? 1 : 0));
+  const { solBalance } = useSolBalance(Number(show) + (isLoading ? 1 : 0),2);
   const { solPrice } = useSolPrice();
   const [isAdvancedModalOpen, setIsAdvancedModalOpen] =
     useState<boolean>(false);
@@ -227,12 +229,19 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
     // First sanitize to numbers only
     const sanitizedValue = value.replace(/[^\d]/g, "");
     
-    // Don't allow "0" or empty values
-    if (!sanitizedValue || sanitizedValue === "0") {
+    // Allow empty value temporarily during editing
+    if (sanitizedValue === "") {
+      setCopyTimes("");
+      return;
+    }
+    
+    // Convert to number and apply constraints
+    const numValue = parseInt(sanitizedValue, 10);
+    if (numValue === 0) {
       setCopyTimes("1");
     } else {
       // Cap at 10
-      const finalValue = Math.min(parseInt(sanitizedValue, 10), 10).toString();
+      const finalValue = Math.min(numValue, 10).toString();
       setCopyTimes(finalValue);
     }
     
@@ -247,7 +256,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
     }
 
     let res;
-    if(isAutoCloseChecked){
+    if(isChecked){
       res = await handleCopyTrade({
         walletAddress: walletAddress || currentUserInfo?.address,
         copiedAddress: copiedInfo?.address || address,
@@ -279,12 +288,15 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
     if (res) {
       copyTimesStore.set({ copyTimes: copyTimes });
       onClose();
+      setTimeout(() => {
+        copyTradeRefreshStore.set({ lastCopyTradeTime: Date.now() });
+      }, 1000);
     }
   };
 
   const handleSwitchChange = (checked: boolean) => {
     setIsChecked(checked);
-    setIsAdvancedModalOpen(checked);
+    // setIsAdvancedModalOpen(checked);
   };
 
   return (
@@ -313,7 +325,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
          </div>
           <div className={styles.userName}>
             Copy Trade
-            <span style={{ color: "#C9FF5D" }}>
+            <span style={{ color: "#C9FF5D", fontWeight: 600 }}>
               &nbsp;@
               {formatLongText(copiedInfo?.name) ||
                 formatAddress(copiedInfo?.address) || 
@@ -330,7 +342,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
               <span>{solBalance} SOL</span>
             </div>
             <div className={styles.advancedAndSwitch}>
-              <div className={styles.advanced}>
+              <div className={styles.advanced} onClick={() => setIsAdvancedModalOpen(true)}>
                 <AdvancedIcon />
                 <span>Advanced</span>
               </div>
@@ -359,7 +371,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
                   fontSize: "36px",
                   border: "none",
                   textAlign: "center",
-                  color: minCopyAmountTips ? "#FF2681" : "#fff"
+                  color: errMsg ? "#FF2681" : "#fff"
                 }}
               />
             </div>
@@ -458,7 +470,7 @@ export default function CoppiedAction({ show, onClose, copiedInfo, address }: an
         show={isAdvancedModalOpen}
         onClose={() => {
           setIsAdvancedModalOpen(false);
-          handleSwitchChange(false);
+          // handleSwitchChange(false);
         }}
         copyTimes={copyTimes}
         setCopyTimes={handleCopyTimesChange}
@@ -553,7 +565,7 @@ export const AdvancedModal = ({
             <span
               onClick={() => {
                 onClose();
-                setIsChecked(false);
+                // setIsChecked(false);
               }}
             >
               <LeftBackIcon />

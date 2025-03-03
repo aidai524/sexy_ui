@@ -33,8 +33,12 @@ const PriceChart = (props: { className?: string; token?: { kLineData?: { time: n
 
     // Cleanup
     return () => {
-      document.body.removeChild(container);
-      document.removeEventListener('click', handleClickOutside);
+      try {
+        document.body.removeChild(container);
+        document.removeEventListener('click', handleClickOutside);
+      } catch (err) {
+        console.log(err);
+      }
     };
   }, []);
 
@@ -43,13 +47,17 @@ const PriceChart = (props: { className?: string; token?: { kLineData?: { time: n
   }, []);
 
   const data = token?.kLineData || [];
-  const lastDataPoint = data[data.length - 1];
+
+  if (!data?.length) return null;
+
+  const lastDataPointIndex = Math.max(0, data.length - 1);
+  const lastDataPoint = data[lastDataPointIndex];
   const minClose = Math.min(...data.map((d: any) => d.price));
   const maxClose = Math.max(...data.map((d: any) => d.price));
   const chartHeight = 49;
   const padding = 6;
 
-  const rawCy = (chartHeight - padding * 2) * (1 - (lastDataPoint.price - minClose) / (maxClose - minClose)) + padding;
+  const rawCy = (chartHeight - padding * 2) * (1 - (lastDataPoint?.price - minClose) / (maxClose - minClose)) + padding;
   const cy = Math.max(padding, Math.min(chartHeight - padding, rawCy));
 
   // Custom tooltip with portal
@@ -70,10 +78,10 @@ const PriceChart = (props: { className?: string; token?: { kLineData?: { time: n
     if (!chartRect) return null;
 
     let left = coordinate.x + chartRect.left;
-    let top = coordinate.y + chartRect.top;
+    let top = coordinate.y + chartRect.top - 40;
 
-    if (left + tooltipWidth > viewportWidth) {
-      left = left - tooltipWidth - 10;
+    if (left + tooltipWidth > viewportWidth - 58) {
+      left = Math.max(0, viewportWidth - tooltipWidth - 58);
     }
     if (top + tooltipHeight > viewportHeight) {
       top = top - tooltipHeight - 10;

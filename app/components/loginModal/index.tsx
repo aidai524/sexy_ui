@@ -70,7 +70,7 @@ function LoginBox({ onHide }: any) {
                 color: '#fff'
               }}
               isPrivy
-            >Earn</WalletModalButton>
+            >connected</WalletModalButton>
           )
         } to the wallet before they can be used and can participate in our activities
         </div>

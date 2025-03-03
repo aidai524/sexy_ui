@@ -18,10 +18,10 @@ export default function CopyList({ copyTradeList, handleCloseCopyTrade, isCloseC
   return (
     <div className={isMobile ? styles.ListContainer : styles.ListContainerPc}>
       {copyTradeList?.map((item: any, index: number) => (
-        // isMobile ? 
-        // <CopyItem urlAddress={urlAddress} key={index} itemInfo={item} handleCloseCopyTrade={handleCloseCopyTrade} isCloseCopyTradeLoading={isCloseCopyTradeLoading} /> : 
-        // <CopyItemPc urlAddress={urlAddress} key={index} itemInfo={item} handleCloseCopyTrade={handleCloseCopyTrade} isCloseCopyTradeLoading={isCloseCopyTradeLoading} handleCloseAndSell={handleCloseAndSell} handleClose={handleClose} />
-          <CopyItem urlAddress={urlAddress} key={index} itemInfo={item} handleCloseCopyTrade={handleCloseCopyTrade} isCloseCopyTradeLoading={isCloseCopyTradeLoading} />
+        isMobile ? 
+        <CopyItem urlAddress={urlAddress} key={index} itemInfo={item} handleCloseCopyTrade={handleCloseCopyTrade} isCloseCopyTradeLoading={isCloseCopyTradeLoading} /> : 
+        <CopyItemPc urlAddress={urlAddress} key={index} itemInfo={item} handleCloseCopyTrade={handleCloseCopyTrade} isCloseCopyTradeLoading={isCloseCopyTradeLoading} handleCloseAndSell={handleCloseAndSell} handleClose={handleClose} />
+          // <CopyItem urlAddress={urlAddress} key={index} itemInfo={item} handleCloseCopyTrade={handleCloseCopyTrade} isCloseCopyTradeLoading={isCloseCopyTradeLoading} />
       ))}
     </div>
   )

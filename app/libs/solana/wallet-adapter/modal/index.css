@@ -194,7 +194,7 @@
 @media (max-width: 480px) {
   .wallet-adapter-modal-container {
     margin: 1rem;
-    min-height: calc(100vh - 2rem); /* 100vh - 2 * margin */
+    min-height: calc(100dvh - 2rem); /* 100vh - 2 * margin */
   }
 }
 

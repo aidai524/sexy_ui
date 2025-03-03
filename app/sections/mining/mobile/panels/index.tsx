@@ -9,12 +9,10 @@ import { useMemo } from "react";
 
 export default function Panels({ info, rate, userInfo }: any) {
   const configStore: any = useConfig();
+
   const showCreateToEarn = useMemo(() => {
-    return (
-      configStore.AirdropStartTime <= Date.now() &&
-      configStore.AirdropEndTime >= Date.now()
-    );
-  }, [configStore]);
+    return info?.clime_created;
+  }, [info]);
   return (
     <div className={styles.Container}>
       <Swiper
@@ -35,7 +33,10 @@ export default function Panels({ info, rate, userInfo }: any) {
         </Swiper.Item>
         {showCreateToEarn ? (
           <Swiper.Item>
-            <CreateToEarn airdropEndTime={configStore.AirdropEndTime} />
+            <CreateToEarn
+              airdropEndTime={configStore.AirdropEndTime}
+              info={info}
+            />
           </Swiper.Item>
         ) : (
           <></>

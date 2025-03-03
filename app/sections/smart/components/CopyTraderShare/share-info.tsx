@@ -1,13 +1,15 @@
 import styles from './index.module.css';
 import { useUser } from '@/app/store/useUser';
 import { formatLongText } from '@/app/utils/common';
+import { formatAddress } from '@/app/utils';
 import QRCodeCom, { QRCodeImage } from '@/app/components/qrcode';
 import React, { useContext, useImperativeHandle } from 'react';
 import { AirdropContext } from '@/app/components/airdrop/context';
-import { numberFormatter } from '@/app/utils/common';
-
+import { numberFormatter, numberFormatterNew } from '@/app/utils/common';
+import Big from 'big.js';
+import { defaultAvatar } from '@/app/utils/config';
 const AirdropShareInfoCard = (props: any, ref: any) => {
-  const { shareLink, copyTradersUserInfo } = props;
+  const { shareLink, copyTradersUserInfo, accountAddress } = props;
 
   const { userInfo } = useUser();
   console.log(userInfo, 'userInfo');
@@ -24,22 +26,29 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
       return '0';
     }
     if (pnl.startsWith('-')) {
-      return '-' + numberFormatter(Math.abs(Number(pnl)), 4, true);
+      return '-' + numberFormatterNew(Math.abs(Number(pnl)), 3, true);
     }
-    return '+' + numberFormatter(pnl, 4, true);
+    return '+' + numberFormatterNew(pnl, 3, true);
 }
 
+
+const formatWinRate = (winRate: string) => {
+  if (winRate == '0') {
+    return '0%';
+  }
+  return new Big(winRate).times(100).toFixed(1) + '%';
+}
   return (
     <div className={styles.CopyTradeShareInfoCardContainer}>
       <div className={styles.CopyTradeShareInfoCard}>
         <div className={styles.CopyTradeShareInfoCardContent}>
           <div className={styles.CopyTradeShareInfoCardTitle}>Copied PRFM</div>
           <div className={styles.avatarAndName}>
-            <img src={userInfo?.icon} alt="" className={styles.CopyTradeShareInfoCardAvatar}/>
-            <div className={styles.CopyTradeShareInfoCardName}>{formatLongText(userInfo?.name)}</div>
+            <img src={userInfo?.icon || defaultAvatar} alt="" className={styles.CopyTradeShareInfoCardAvatar}/>
+            <div className={styles.CopyTradeShareInfoCardName}>{formatAddress(userInfo?.name || accountAddress)}</div>
           </div>
           <div className={styles.publicStyle}>
-            <span className={styles.publicStyleTitle}>Total PNL</span>
+            <span className={styles.publicStyleTitle}>Total PnL</span>
             <span>
               <span className={styles.publicStylePNL}>{formatPnl(copyTradersUserInfo?.tradeInfo?.totalPNL || '0')}</span>
                <span className={styles.publicStyleValueCurrency}>SOL</span>
@@ -49,11 +58,11 @@ const AirdropShareInfoCard = (props: any, ref: any) => {
           <div className={styles.ROIandWinRate}>
                 <div className={styles.publicStyle}>
                   <span className={styles.publicStyleTitle}>ROI</span>
-                  <span className={styles.publicStyleValue}>{copyTradersUserInfo?.tradeInfo?.roi}%</span>
+                  <span className={styles.publicStyleValue}>{formatWinRate(copyTradersUserInfo?.tradeInfo?.roi || '0')}</span>
                 </div>
                 <div className={styles.publicStyle}>
                   <span className={styles.publicStyleTitle}>Win Rate</span>
-                  <span className={styles.publicStyleValue}>{copyTradersUserInfo?.tradeInfo?.winRate}%</span>
+                  <span className={styles.publicStyleValue}>{formatWinRate(copyTradersUserInfo?.tradeInfo?.winRate || '0')}</span>
                 </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ import useNotice from "../../../hooks/use-notice";
 import { useSetting } from "@/app/store/use-setting";
 import Refer from "@/app/components/layout/laptop/user/refer";
 import Header from "./header";
+import { SHOW_COPY_TRADE } from "@/app/utils/config";
 
 const CreatePage = dynamic(() => import("@/app/sections/create/laptop"));
 const MemesPage = dynamic(() => import("@/app/sections/memes"));
@@ -42,7 +43,7 @@ export default function Laptop({ children }: any) {
         {pathname === "/" && <Main />}{" "}
         {pathname === "/reward" && <RewardPage />}
         {pathname === "/create" && <CreatePage />}
-        {pathname === "/smart" && <SmartPage />}
+        {pathname === "/smart" && SHOW_COPY_TRADE && <SmartPage />}
         {pathname === "/memes" && <MemesPage />}
         {pathname === "/profile/user" && (
           <ProfileCom
@@ -55,8 +56,8 @@ export default function Laptop({ children }: any) {
         )}
         {pathname === "/detail" && <DetailPage />}
         {pathname === "/messages" && <MessagePage />}
-        {pathname === "/smartTopDetail" && <SmartTopDetailPage />}
-        {pathname === "/smartDetail" && <SmartDetailPage />}
+        {pathname === "/smartTopDetail" && SHOW_COPY_TRADE && <SmartTopDetailPage />}
+        {pathname === "/smartDetail" && SHOW_COPY_TRADE && <SmartDetailPage />}
         {pathname === "/invite-code" && <InviteCodeView />}
       </div>
       <Refer userInfo={userInfo} />
