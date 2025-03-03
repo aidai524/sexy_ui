@@ -18,8 +18,8 @@ export const AirdropContextProvider: React.FC<any> = ({ children }) => {
     useDebounceFn(
       () => {
         setAirdropDataLoading(false);
-        if (pathname === "/invite-code") return;
-        router.replace("/invite-code");
+        // if (pathname === "/invite-code") return;
+        // router.replace("/invite-code");
       },
       { wait: 2000 }
     );
@@ -33,7 +33,7 @@ export const AirdropContextProvider: React.FC<any> = ({ children }) => {
     }
     setAirdropUserData(res.data);
     if (!res.data?.allow_login) {
-      router.replace("/invite-code");
+      // router.replace("/invite-code");
     }
     setAirdropDataLoading(false);
   };
