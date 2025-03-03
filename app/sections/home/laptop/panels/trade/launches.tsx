@@ -39,7 +39,8 @@ export default function LaunchesTradePanel({
   tab,
   setTab,
   onClose,
-  onSuccess
+  onSuccess,
+  isCurrent
 }: any) {
   return (
     <div className={styles.Container}>
@@ -49,113 +50,126 @@ export default function LaunchesTradePanel({
         onClose={onClose}
         tabs={TABS}
       />
-      <div
-        className={styles.Tabs}
-        style={{
-          height: 422,
-          marginBottom: 0
-        }}
-      >
-        {tab === "chart" && (
-          <PanelWrapper>
-            <div className={styles.DataWrapper}>
-              <div className={styles.DataItem} style={{ width: "50%" }}>
-                <div
-                  className={styles.MarketCapWrapper}
-                  style={{
-                    color: token.market_cap_change < 0 ? "#FF2681" : "#C9FF5D"
-                  }}
-                >
-                  <div className={styles.MarketCap}>
-                    $
-                    {Number(token.mc) > 0
-                      ? numberFormatter(token.mc, 2, true, {
+      {isCurrent && (
+        <>
+          <div
+            className={styles.Tabs}
+            style={{
+              height: 422,
+              marginBottom: 0
+            }}
+          >
+            {tab === "chart" && (
+              <PanelWrapper>
+                <div className={styles.DataWrapper}>
+                  <div className={styles.DataItem} style={{ width: "50%" }}>
+                    <div
+                      className={styles.MarketCapWrapper}
+                      style={{
+                        color:
+                          token.market_cap_change < 0 ? "#FF2681" : "#C9FF5D"
+                      }}
+                    >
+                      <div className={styles.MarketCap}>
+                        $
+                        {Number(token.mc) > 0
+                          ? numberFormatter(token.mc, 2, true, {
+                              isShort: true
+                            })
+                          : "-"}
+                      </div>
+                      <div className={styles.MarketCap24}>
+                        {Number(token.marketCap24hUsd) > 0 ? "+" : "-"}$
+                        {numberFormatter(token.marketCap24hUsd, 2, true, {
                           isShort: true
-                        })
-                      : "-"}
+                        })}
+                      </div>
+                    </div>
                   </div>
-                  <div className={styles.MarketCap24}>
-                    {Number(token.marketCap24hUsd) > 0 ? "+" : "-"}$
-                    {numberFormatter(token.marketCap24hUsd, 2, true, {
-                      isShort: true
-                    })}
+                  <div className={styles.DataItem} style={{ width: "25%" }}>
+                    <div className={styles.DataLabel}>24h Volume</div>
+                    <div className={styles.DataValue}>
+                      {numberFormatter(token.volume_24h_usd, 2, true, {
+                        isShort: true
+                      })}
+                    </div>
+                  </div>
+                  <div className={styles.DataItem} style={{ width: "25%" }}>
+                    <div className={styles.DataLabel}>Current Price</div>
+                    <div
+                      className={styles.DataValue}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      $<ZeroFormat value={token.price} />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={styles.DataItem} style={{ width: "25%" }}>
-                <div className={styles.DataLabel}>24h Volume</div>
-                <div className={styles.DataValue}>
-                  {numberFormatter(token.volume_24h_usd, 2, true, {
-                    isShort: true
-                  })}
-                </div>
-              </div>
-              <div className={styles.DataItem} style={{ width: "25%" }}>
-                <div className={styles.DataLabel}>Current Price</div>
-                <div
-                  className={styles.DataValue}
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  $<ZeroFormat value={token.price} />
-                </div>
-              </div>
-            </div>
-            <Chart
-              token={token}
-              style={{
-                padding: "10px",
-                marginRight: "10px",
-                borderRadius: "10px",
-                height: 349,
-                position: "relative"
-              }}
-            />
-          </PanelWrapper>
-        )}
-        {tab === "holders" && (
-          <PanelWrapper>
-            {token.status === 0 ? (
-              <PreUser token={token} from="panel" />
-            ) : (
-              <Holder
-                showAvatar={false}
-                hideBg={true}
-                address={token.address}
-                from="panel"
+                <Chart
+                  token={token}
+                  style={{
+                    padding: "10px",
+                    marginRight: "10px",
+                    borderRadius: "10px",
+                    height: 349,
+                    position: "relative"
+                  }}
+                />
+              </PanelWrapper>
+            )}
+            {tab === "holders" && (
+              <PanelWrapper>
+                {token.status === 0 ? (
+                  <PreUser token={token} from="panel" />
+                ) : (
+                  <Holder
+                    showAvatar={false}
+                    hideBg={true}
+                    address={token.address}
+                    from="panel"
+                  />
+                )}
+              </PanelWrapper>
+            )}
+            {tab === "transactions" && (
+              <PanelWrapper>
+                <Txs data={token} from="panel" />
+              </PanelWrapper>
+            )}
+            {tab === "details" && (
+              <PanelWrapper>
+                <Details token={token} from="detail" />
+              </PanelWrapper>
+            )}
+            {tab === "comments" && (
+              <Comments
+                token={token}
+                onSuccess={() => {
+                  token.comment = token.comment + 1;
+                  onSuccess(token, "comments");
+                }}
               />
             )}
-          </PanelWrapper>
-        )}
-        {tab === "transactions" && (
-          <PanelWrapper>
-            <Txs data={token} from="panel" />
-          </PanelWrapper>
-        )}
-        {tab === "details" && (
-          <PanelWrapper>
-            <Details token={token} from="detail" />
-          </PanelWrapper>
-        )}
-        {tab === "comments" && (
-          <Comments
-            token={token}
-            onSuccess={() => {
-              token.comment = token.comment + 1;
-              onSuccess(token, "comments");
+          </div>
+          <div
+            style={{
+              height: 237,
+              position: "absolute",
+              width: 574,
+              bottom: 0
             }}
-          />
-        )}
-      </div>
-      <div
-        style={{
-          height: 237,
-          position: "absolute",
-          width: 574,
-          bottom: 0
-        }}
-      >
-        <Trade from="panel" initType="buy" token={token} show={true} />
-      </div>
+          >
+            <Trade
+              from="panel"
+              initType="buy"
+              token={token}
+              show={true}
+              onSuccess={() => {
+                onSuccess(token, "trade");
+              }}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
