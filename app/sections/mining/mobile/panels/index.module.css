@@ -11,12 +11,18 @@
 
 .Item {
   border-radius: 16px;
-  width: 292px;
+  width: calc(100% - 12px);
   height: 128px;
   position: relative;
   overflow: hidden;
   padding: 10px 14px;
   flex-shrink: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .Item {
+    width: 292px;
+  }
 }
 
 .ItemBg {
