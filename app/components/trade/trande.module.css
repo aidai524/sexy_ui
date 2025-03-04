@@ -422,3 +422,10 @@
   cursor: pointer;
   z-index: 10;
 }
+
+.topLimit {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #fbca04;
+}
