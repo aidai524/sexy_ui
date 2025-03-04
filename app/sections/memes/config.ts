@@ -43,7 +43,7 @@ export const TABS: Tab[] = [
       { value: 'almost', label: 'Almost', order: Order.Desc },
       { value: 'volume', label: 'Volume', order: Order.Desc },
       { value: 'mcap', label: 'MCap', order: Order.Desc },
-      { value: 'holders', label: 'Holders', order: Order.Desc },
+      // { value: 'holders', label: 'Holders', order: Order.Desc },
       { value: 'latest', label: 'Latest', order: Order.Desc },
     ],
   },
@@ -53,7 +53,7 @@ export const TABS: Tab[] = [
     filters: [
       { value: 'volume', label: 'Volume', order: Order.Desc },
       { value: 'mcap', label: 'MCap', order: Order.Desc },
-      { value: 'holders', label: 'Holders', order: Order.Desc },
+      // { value: 'holders', label: 'Holders', order: Order.Desc },
       { value: 'latest', label: 'Latest', order: Order.Desc },
     ],
   },

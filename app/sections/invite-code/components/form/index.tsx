@@ -48,7 +48,7 @@ const InviteCodeForm: React.FC<any> = (props) => {
         return;
       }
       success((
-        <ToastMsg title="Success" msg="Let’s get started!" />
+        <ToastMsg title="Success" msg="Let’s get started!" isSuccess />
       ));
       setCodeValid(true);
     } catch (err: any) {
@@ -138,10 +138,10 @@ const InviteCodeForm: React.FC<any> = (props) => {
 export default InviteCodeForm;
 
 const ToastMsg = (props: any) => {
-  const { title, msg } = props;
+  const { title, msg, isSuccess } = props;
 
   return (
-    <div className={styles.InviteCodeFormToast}>
+    <div className={isSuccess ? styles.InviteCodeFormToastSuccess : styles.InviteCodeFormToast}>
       <div className={styles.InviteCodeFormToastTitle}>
         {title}
       </div>

@@ -11,6 +11,7 @@ import PriceChart from "@/app/sections/memes/components/chart";
 import { getVideoExt } from "@/app/components/upload";
 import VideoPlayer from "@/app/components/video";
 import { useRouter } from 'next/navigation';
+import { useUserAgent } from '@/app/context/user-agent';
 
 interface CarouselProps {
   className?: string;
@@ -82,6 +83,7 @@ const Carousel: React.FC<CarouselProps> = ({
   duration = 10000
 }) => {
   const router = useRouter();
+  const { isMobile } = useUserAgent();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -247,7 +249,9 @@ const Carousel: React.FC<CarouselProps> = ({
                 <div
                   className={clsx(
                     styles.CarouselMarketCap,
-                    !isProgress && styles.CarouselMarketCapWithChart
+                    !isProgress ?
+                      styles.CarouselMarketCapWithChart :
+                      (isMobile ? styles.CarouselMarketCapWithProgress : styles.CarouselMarketCapWithProgressLaptop)
                   )}
                 >
                   <div className={styles.CarouselMarketCapTop}>
@@ -260,20 +264,21 @@ const Carousel: React.FC<CarouselProps> = ({
                         })}
                       </div>
                       <div className={styles.CarouselMarketCapChange}>
+                        {
+                          Big(item?.market_cap_24h_usd || 0).gte(0)
+                            ? "+"
+                            : "-"
+                        }
                         {numberFormatter(
                           item?.market_cap_24h_usd,
                           2,
                           true,
                           {
-                            prefix: Big(
-                              item?.market_cap_percentage || 0
-                            ).gte(0)
-                              ? "+"
-                              : "-",
                             isShort: true,
                             isShortUppercase: false
                           }
                         )}
+                        <span className={styles.CarouselMarketCapChangeUnit}>(24h)</span>
                       </div>
                     </div>
                     {isProgress ? (
