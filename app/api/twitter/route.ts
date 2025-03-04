@@ -3,6 +3,8 @@ import fetch from "node-fetch";
 import { URL } from "url";
 import { NextRequest } from "next/server";
 
+export const runtime = "edge";
+
 export async function GET(request: Request | NextRequest) {
   const parsedUrl = new URL(request.url as string);
   const imgUrl = parsedUrl.searchParams.get("imgUrl");
