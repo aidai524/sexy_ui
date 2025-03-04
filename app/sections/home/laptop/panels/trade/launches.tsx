@@ -67,7 +67,9 @@ export default function LaunchesTradePanel({
                       className={styles.MarketCapWrapper}
                       style={{
                         color:
-                          token.market_cap_change < 0 ? "#FF2681" : "#C9FF5D"
+                          Number(token.market_cap_24h_usd) < 0
+                            ? "#FF2681"
+                            : "#C9FF5D"
                       }}
                     >
                       <div className={styles.MarketCap}>
