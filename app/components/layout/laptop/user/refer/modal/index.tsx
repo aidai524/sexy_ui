@@ -152,7 +152,7 @@ const ReferModalContent = (props: any) => {
   const getUserData = async () => {
     if (!address) return;
     const userInfo = await fecthUserInfo(address);
-    userStore.set({ userInfo });
+    userStore.setUserInfo(userInfo);
   };
 
   useEffect(() => {

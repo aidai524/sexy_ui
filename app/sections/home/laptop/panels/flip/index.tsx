@@ -13,7 +13,7 @@ import CircleLoading from "@/app/components/icons/loading";
 
 export default function FlipPanel({ from, token, onClose, onSuccess }: any) {
   const { flipMax, set }: any = useSetting();
-  const [inputVal, setInputVal] = useState(flipMax.toString() || "0");
+  const [inputVal, setInputVal] = useState("0");
   const { solBalance } = useBalance({
     mint: token.address as string,
     tokenDecimals: token.tokenDecimals as number,
@@ -99,7 +99,7 @@ export default function FlipPanel({ from, token, onClose, onSuccess }: any) {
               key={item}
               className={`${styles.Tag}`}
               onClick={() => {
-                setInputVal(item);
+                setInputVal(item.toString());
               }}
             >
               {item}

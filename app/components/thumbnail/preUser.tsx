@@ -6,6 +6,7 @@ import { defaultAvatar } from "@/app/utils/config";
 import Level from "../level/simple";
 import Big from "big.js";
 import { useRouter } from "next/navigation";
+import Empty from "../empty";
 
 interface Props {
   token: Project;
@@ -22,7 +23,10 @@ export default function PreUser({ token, from }: Props) {
         "/project/like/accounts?project_id=" + token.id + "&limit=100"
       ).then((v) => {
         if (v.code === 0) {
-          setSuperLikeList(v.data.super_like_account_list);
+          if (v.data.super_like_account_list) {
+            setSuperLikeList(v.data.super_like_account_list.sort((a: any, b: any) => Number(b.buy_amount) - Number(a.buy_amount)));
+          }
+
           setLikeList(v.data.like_account_list);
         }
       });
@@ -42,6 +46,8 @@ export default function PreUser({ token, from }: Props) {
       {/* {likeList.map((item: any) => {
         return <UserItem key={"like-" + item.id} item={item} type={2} />;
       })} */}
+
+      {superLikeList.length === 0 && <Empty text="No data" />}
     </div>
   );
 }
