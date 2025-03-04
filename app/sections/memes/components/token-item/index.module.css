@@ -222,6 +222,10 @@
   line-height: normal;
   transform: rotate(30deg);
 }
+.TokenItemLaptopAvatarCrownKingIcon {
+  width: 118px;
+  height: 74px;
+}
 .TokenItemLaptopAvatarCrownIcon {
   width: 30px;
   height: 34px;
@@ -262,6 +266,5 @@
     align-items: center;
     justify-content: flex-start;
     gap: 40px;
-    overflow: hidden;
   }
 }
