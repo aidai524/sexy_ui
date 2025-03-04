@@ -53,7 +53,9 @@ export default function Tips({ isCustomWidth }: any) {
                 <div>{TYPES[item.trade_type].text}</div>
               </div>
               <div className={styles.Token}>
-                <div style={{ flexShrink: 0 }}>{item.sol_amount} SOL </div>
+                <div style={{ flexShrink: 0 }}>
+                  {numberFormatter(item.sol_amount, 2, true)} SOL{" "}
+                </div>
                 <img src={item.token_icon} className={styles.TokenIcon} />
                 <div
                   className={styles.TokenName}
