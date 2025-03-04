@@ -9,7 +9,7 @@ import SimpleAvatar from "@/app/components/avatar/simple";
 import LimitProject from "../../component/limitProjects";
 import { useState } from "react";
 import clsx from "clsx";
-import { simplifyNum } from "@/app/utils";
+import { simplifyNum, formatAddress } from "@/app/utils";
 
 export default function TotalPanel({ info, userInfo }: any) {
   const homeTabStore: any = useHomeTab();
@@ -44,7 +44,13 @@ export default function TotalPanel({ info, userInfo }: any) {
       <div className={styles.Container}>
         <div className={styles.Header}>
           <SimpleAvatar icon={userInfo?.icon} size={40} />
-          <div className={styles.Name}>{userInfo?.name}</div>
+          <div className={styles.Name}>
+            {userInfo?.name
+              ? userInfo.name
+              : userInfo?.address
+              ? formatAddress(userInfo.address, 4)
+              : ""}
+          </div>
         </div>
         <div className={styles.Panels}>
           <div className={styles.Panel}>
