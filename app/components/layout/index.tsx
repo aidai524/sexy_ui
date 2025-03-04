@@ -15,6 +15,13 @@ import { useWhitelist } from "@/app/components/airdrop/hooks/use-whitelist";
 import { AIRDROP_STAGE } from "@/app/config/airdrop";
 import { AirdropContextProvider } from '@/app/context/airdrop';
 
+const UnWrappedPath = [
+  AIRDROP_STAGE.PREVIEW.path,
+  "/invite-code",
+  "/policy/privacy",
+  "/policy/terms"
+];
+
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
   const configStore: any = useConfig();
@@ -64,7 +71,7 @@ export default function Layout(props: any) {
           <AirdropContextProvider>
             {isMobile ? (
               <Mobile {...props} />
-            ) : [AIRDROP_STAGE.PREVIEW.path, '/invite-code'].includes(pathname) ? (
+            ) : UnWrappedPath.includes(pathname) ? (
               props.children
             ) : (
               <Laptop {...props} />
