@@ -81,7 +81,7 @@ export default function TokenIcon({
           )}
         </div>
       )}
-      {token.is_king && (
+      {(token.is_king && token.ranking <= 3) && (
         <div className={styles.King}>
           👑
           <Image
@@ -93,7 +93,7 @@ export default function TokenIcon({
           />
         </div>
       )}
-      {!token.is_king && token.last_king_time && (
+      {(token.is_king && token.ranking > 3) && (
         <LastKing className={styles.LastKing} id={token.id} />
       )}
     </div>

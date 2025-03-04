@@ -120,21 +120,23 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
               transform: "rotate(30deg)"
             }}
           >
-            {_token?.is_king
-              ? (
-                <img
-                  src="/img/memes/icon-crown-laptop.svg"
-                  alt=""
-                  className={styles.TokenItemLaptopAvatarCrownKingIcon}
-                />
-              )
-              : !!_token?.last_king_time && (
+            {(_token?.is_king && _token.kind === "Hot")
+              && (
+                _token.ranking > 3 ? (
                   <img
                     src="/img/memes/icon-crown.svg"
                     alt=""
                     className={styles.TokenItemLaptopAvatarCrownIcon}
                   />
-                )}
+                ) : (
+                  <img
+                    src="/img/memes/icon-crown-laptop.svg"
+                    alt=""
+                    className={styles.TokenItemLaptopAvatarCrownKingIcon}
+                  />
+                )
+              )
+            }
           </div>
         </div>
       )}
