@@ -3,6 +3,7 @@ interface Window {
   connecting?: boolean;
   connect?: any;
   disconnect?: any;
+  sign?: any;
   sexAddress?: string;
   walletProvider?: any;
   isInitingAuthorization?: boolean;
