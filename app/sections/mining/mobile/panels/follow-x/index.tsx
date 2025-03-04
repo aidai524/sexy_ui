@@ -13,8 +13,8 @@ export default function FollowX() {
   const redirectUri = `${window.location.origin}${window.location.pathname}`;
   const { loading } = useTwitterBind({
     onSuccess: () => {
-      userStore.set({
-        userInfo: { ...userStore.userInfo, twitter_user_id: Date.now() }
+      userStore.setUserInfo({
+        twitter_user_id: Date.now(),
       });
     },
     redirectUri
