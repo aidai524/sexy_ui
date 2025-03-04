@@ -42,7 +42,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
     <div
       className={clsx(styles.TokenItemContainer, className)}
       onClick={() => {
-        router.push(`/detail?address=${token?.address}`);
+        router.push(`/detail?address=${token?.address}&from=memes`);
       }}
     >
       {!isMobile && (
