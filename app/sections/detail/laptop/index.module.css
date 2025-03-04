@@ -12,17 +12,7 @@
   position: relative;
 }
 
-.TitleWrapper {
+.BackButton {
   position: absolute;
-  left: 30px;
-  top: 20px;
-  color: #fff;
-  font-family: Unbounded;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  left: -86px;
 }

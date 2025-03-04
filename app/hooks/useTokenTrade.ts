@@ -80,7 +80,7 @@ export function useTokenTrade({
     return PublicKey.findProgramAddressSync(
       [
         Buffer.from("token_info"),
-        state[0].toBuffer(),
+        state[0]?.toBuffer(),
         Buffer.from(tokenName),
         Buffer.from(tokenSymbol)
       ],
@@ -94,7 +94,7 @@ export function useTokenTrade({
     return PublicKey.findProgramAddressSync(
       [
         Buffer.from("mint"),
-        state[0].toBuffer(),
+        state[0]?.toBuffer(),
         Buffer.from(tokenName),
         Buffer.from(tokenSymbol)
       ],
@@ -216,7 +216,7 @@ export function useTokenTrade({
     const referralRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("referral_record"),
-        state[0].toBuffer(),
+        state[0]?.toBuffer(),
         walletProvider.publicKey!.toBuffer()
       ],
       programId
@@ -242,7 +242,7 @@ export function useTokenTrade({
     const referralFeeRateRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("referral_fee_rate_record"),
-        state[0].toBuffer(),
+        state[0]?.toBuffer(),
         referral.toBuffer()
       ],
       programId
@@ -333,7 +333,7 @@ export function useTokenTrade({
     const prePaidRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("prepaid_record"),
-        pool[0].toBuffer(),
+        pool[0]?.toBuffer(),
         walletProvider.publicKey!.toBuffer()
       ],
       programId
@@ -389,6 +389,8 @@ export function useTokenTrade({
     async (outputAmount: string | number, maxWsolAmount: string | number) => {
       const keysAndIns = await getKeys();
 
+      console.log('outputAmount:', outputAmount, 'maxWsolAmount:', maxWsolAmount)
+
       if (!keysAndIns) {
         return;
       }
@@ -426,6 +428,14 @@ export function useTokenTrade({
       });
 
       transaction.add(instruction1).add(instruction2).add(buyInstruction);
+
+      const closeUseSolIns = createCloseAccountInstruction(
+        keys.userWsolAccount,
+        walletProvider.publicKey!,
+        walletProvider.publicKey!
+      );
+
+      transaction.add(closeUseSolIns);
 
       const hash = await walletProvider.signAndSendTransaction(transaction);
 
@@ -475,6 +485,14 @@ export function useTokenTrade({
       });
 
       transaction.add(instruction1).add(instruction2).add(buyInstruction);
+
+      const closeUseSolIns = createCloseAccountInstruction(
+        keys.userWsolAccount,
+        walletProvider.publicKey!,
+        walletProvider.publicKey!
+      );
+
+      transaction.add(closeUseSolIns);
 
       const hash = await walletProvider.signAndSendTransaction(transaction);
 
@@ -585,7 +603,7 @@ export function useTokenTrade({
         [
           Buffer.from(METADATA_SEED),
           TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-          keys.tokenInfo.toBuffer()
+          keys.tokenInfo?.toBuffer()
         ],
         TOKEN_METADATA_PROGRAM_ID
       );
@@ -728,6 +746,14 @@ export function useTokenTrade({
         }
       }
 
+      const closeUseSolIns = createCloseAccountInstruction(
+        userSolAccount.address,
+        walletProvider.publicKey!,
+        walletProvider.publicKey!
+      );
+
+      transaction.add(closeUseSolIns);
+
       const v3 = await walletProvider.signAndSendTransaction(
         transaction,
         confirmationStrategy
@@ -758,7 +784,7 @@ export function useTokenTrade({
       const paidRecord = PublicKey.findProgramAddressSync(
         [
           Buffer.from("prepaid_record"),
-          keys.pool.toBuffer(),
+          keys.pool?.toBuffer(),
           walletProvider.publicKey!.toBuffer()
         ],
         programId
@@ -870,7 +896,7 @@ export function useTokenTrade({
     const paidRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("prepaid_record"),
-        keys.pool.toBuffer(),
+        keys.pool?.toBuffer(),
         walletProvider.publicKey!.toBuffer()
       ],
       programId
@@ -930,7 +956,7 @@ export function useTokenTrade({
     const prePaidRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("prepaid_record"),
-        pool[0].toBuffer(),
+        pool[0]?.toBuffer(),
         walletProvider.publicKey!.toBuffer()
       ],
       programId
@@ -963,7 +989,7 @@ export function useTokenTrade({
   }, [pool]);
 
   const getRate = useCallback(
-    async (amountParam: { solAmount?: string; tokenAmount?: string }) => {
+    async (amountParam: { solAmount?: string; tokenAmount?: string, type: string }) => {
       if (pool) {
         const program = new Program<any>(idl, programId, {
           connection: connection
@@ -1089,34 +1115,76 @@ export function useTokenTrade({
 async function _getRate(
   program: Program,
   pool: PublicKey,
-  { solAmount, tokenAmount }: { solAmount?: string; tokenAmount?: string }
+  { solAmount, tokenAmount, type }: { solAmount?: string; tokenAmount?: string, type: string }
 ) {
   const poolData: any = await program.account.pool.fetch(pool);
 
   const poolToken = new Big(poolData!.virtualTokenAmount.toNumber());
   const solToken = new Big(poolData!.virtualWsolAmount.toNumber());
 
+  const maxBuy = poolToken.minus(295_840_542_120_770)
+
   // buy
-  if (solAmount) {
+  if (solAmount && type === 'buy') {
     const _solAmount = new Big(solAmount).mul(1 - 0.01);
     const result = poolToken
       .mul(_solAmount)
       .div(solToken.plus(_solAmount))
-      .toString();
-    return result;
+      .toFixed(0, 0);
+
+    if (maxBuy.lt(result)) {
+      return {
+        result: maxBuy.toString(),
+        isMax: true
+      };
+    }
+
+    return {
+      result,
+      maxBuy: maxBuy.toFixed(0, 0),
+      isMax: false
+    };
+  }
+
+  if (tokenAmount && type === 'buy') {
+    let avalibleTokenAmount = tokenAmount
+    let isMax = false
+    if (maxBuy.lt(tokenAmount)) {
+      avalibleTokenAmount = maxBuy.toString()
+      isMax = true
+    }
+
+    const _tokenAmount = new Big(avalibleTokenAmount);
+    const result = solToken
+      .mul(_tokenAmount)
+      .div(poolToken.minus(_tokenAmount))
+      .div(1 - 0.05)
+      .toFixed(0, 0);
+
+    return {
+      result,
+      maxBuy: maxBuy.toFixed(0, 0),
+      isMax
+    };
   }
 
   // sell
-  if (tokenAmount) {
+  if (tokenAmount && type === 'sell') {
     const _tokenAmount = new Big(tokenAmount).mul(1 - 0.015);
     const result = solToken
       .mul(_tokenAmount)
       .div(poolToken.plus(_tokenAmount))
-      .toString();
-    return result;
+      .toFixed(0, 0);
+    return {
+      result,
+      isMax: false
+    };
   }
 
   // buy 1% sell 1.5%
 
-  return 0;
+  return {
+    result: '0',
+    isMax: false
+  };
 }

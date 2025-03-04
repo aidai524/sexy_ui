@@ -49,10 +49,14 @@ export const AuthProvider: React.FC<{
 
   useEffect(() => {
     window.connect = () => {
+      if (["/invite-code"].includes(pathname)) {
+        setShowLoginModal(false);
+        return;
+      }
       setShowLoginModal(true);
     };
     window.disconnect = disconnect;
-  }, []);
+  }, [pathname]);
 
   const logout = useCallback(
     async (isRedirect?: boolean) => {
@@ -98,7 +102,12 @@ export const AuthProvider: React.FC<{
         accountRefresher,
         onQueryInfo,
         logout,
-        updateCurrentUserInfo
+        updateCurrentUserInfo,
+        updateUserLikeNum(num: number) {
+          userStore.set({
+            userInfo: { ...userStore.userInfo, using_like_num: num }
+          });
+        }
       }}
     >
       {children}

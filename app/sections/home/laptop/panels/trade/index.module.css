@@ -1,21 +1,69 @@
 .Container {
-  padding-right: 14px;
-  width: 542px;
-  padding-left: 14px;
+  width: 574px;
+  background-color: #1b1b1b;
 }
 
 .Tabs {
-  height: 400px;
   margin-bottom: 20px;
 }
 
 .PanelWrapper {
-  padding: 10px 0px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px 14px;
+  background-color: #1b1b1b;
+  height: 100%;
 }
 
 .PanelContent {
-  height: 380px;
+  height: calc(100% - 20px);
   overflow-y: auto;
+}
+
+.DataWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.MarketCapWrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.MarketCap {
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  font-family: Unbounded;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.MarketCap24 {
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  transform: translateY(-4px);
+}
+
+.DataLabel {
+  color: #9290b1;
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.DataValue {
+  color: #fff;
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  font-family: Unbounded;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 18px */
 }

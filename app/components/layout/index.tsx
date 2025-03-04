@@ -1,6 +1,6 @@
 import { useUserAgent } from "@/app/context/user-agent";
 import Mobile from "./mobile/Layout";
-import Laptop from "./laptop";
+import Laptop from "./laptop/index";
 import { useConfig } from "@/app/store/useConfig";
 import { httpGet } from "@/app/utils";
 import { useEffect } from "react";
@@ -13,12 +13,14 @@ import AirdropEntry from "@/app/components/airdrop/entry";
 import { usePathname } from "next/navigation";
 import { useWhitelist } from "@/app/components/airdrop/hooks/use-whitelist";
 import { AIRDROP_STAGE } from "@/app/config/airdrop";
+import { AirdropContextProvider } from '@/app/context/airdrop';
 
 export default function Layout(props: any) {
   const { isMobile } = useUserAgent();
   const configStore: any = useConfig();
   const { prepaidDelayTime, setPrepaidDelayTime } = usePrepaidDelayTimeStore();
   const pathname = usePathname();
+
   // useWhitelist();
 
   const { getConfig } = useTokenTrade({
@@ -59,16 +61,18 @@ export default function Layout(props: any) {
     <AuthProvider>
       <MessageProvider>
         <MessageContextProvider>
-          {isMobile ? (
-            <Mobile {...props} />
-          ) : [AIRDROP_STAGE.PREVIEW.path].includes(pathname) ? (
-            props.children
-          ) : (
-            <Laptop {...props} />
-          )}
-          {configStore.config.showAirdropEntry && (
-            <AirdropEntry isMobile={isMobile} />
-          )}
+          <AirdropContextProvider>
+            {isMobile ? (
+              <Mobile {...props} />
+            ) : [AIRDROP_STAGE.PREVIEW.path, '/invite-code'].includes(pathname) ? (
+              props.children
+            ) : (
+              <Laptop {...props} />
+            )}
+            {configStore.config.showAirdropEntry && (
+              <AirdropEntry isMobile={isMobile} />
+            )}
+          </AirdropContextProvider>
         </MessageContextProvider>
       </MessageProvider>
     </AuthProvider>

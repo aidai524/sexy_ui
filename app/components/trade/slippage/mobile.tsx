@@ -1,6 +1,8 @@
-import { Popup } from "antd-mobile";
 import styles from "./index.module.css";
-import MainBtn from "@/app/components/mainBtn";
+import Modal from "../../modal";
+import { Switch } from "antd-mobile";
+import { useSetting } from "@/app/store/use-setting";
+import { useUserAgent } from "@/app/context/user-agent";
 
 interface Props {
   show: boolean;
@@ -17,45 +19,45 @@ export default function Mobile({
   onSlipDataChange,
   onHide
 }: Props) {
-  // const [inputData, setInputData] = useState(slipData)
+  const { isMobile } = useUserAgent();
 
+  const settingStore: any = useSetting();
   return (
-    <Popup
-      visible={show}
-      onMaskClick={() => {
-        onHide && onHide();
+    <Modal
+      open={show}
+      style={{
+        zIndex: 99999,
+        width: isMobile ? "100%" : "auto",
       }}
       onClose={() => {
         onHide && onHide();
       }}
-      bodyStyle={{
-        borderTopLeftRadius: "8px",
-        borderTopRightRadius: "8px",
-        paddingTop: 10,
-        paddingBottom: 10
-      }}
+      animation={isMobile ? "popup" : "modal"}
+      forceNoCloseIcon={isMobile}
     >
-      <div className={styles.main}>
+      <div className={styles.main + " " + (isMobile ? styles.mobile : styles.pc)}>
         <div
           className={styles.title}
           onClick={() => {
-            onHide?.();
+            isMobile && onHide?.();
           }}
         >
-          <svg
-            width="9"
-            height="15"
-            viewBox="0 0 9 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8 14L2 7.5L8 1"
-              stroke="white"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
+          {
+            isMobile && <svg
+              width="9"
+              height="15"
+              viewBox="0 0 9 15"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8 14L2 7.5L8 1"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          }
           <div className={styles.tip}>Slippage tolerance</div>
         </div>
         <div className={styles.list}>
@@ -89,15 +91,32 @@ export default function Mobile({
           />
           <div className={styles.percent}>%</div>
         </div>
+        <div className={styles.ProtectionWrapper}>
+          <div className={styles.ProtectionItem}>
+            <div style={{ width: 180 }}>Enable front-running protection:</div>
+            <div className={styles.ProtectionAction}>
+              <span>On</span>
+              <Switch
+                checked={settingStore.jitoable}
+                style={{
+                  "--checked-color": "#FBCA04",
+                  "--height": "20px",
+                  "--width": "36px"
+                }}
+                onChange={(val) => {
+                  settingStore.set({
+                    jitoable: val
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <div className={styles.ProtectionDesc}>
+            Front-running protection decreases the chances of bots from front-running your buys. You can use high slippage with front-running protection turned on. We recommend setting a tip amount of at least 0.01 SOL with front-running protection enabled.
 
-        <MainBtn
-          onClick={() => {
-            onHide && onHide();
-          }}
-        >
-          Okay
-        </MainBtn>
+          </div>
+        </div>
       </div>
-    </Popup>
+    </Modal>
   );
 }

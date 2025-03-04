@@ -97,9 +97,9 @@ div.tabBar {
 }
 
 .header {
-  display: flex;
+  /* display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: space-between; */
   padding: 10px 16px 10px 20px;
 }
 
@@ -112,14 +112,15 @@ div.tabBar {
 .backWrapper {
   display: flex;
   gap: 10px;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.commentWrapper {
+/* .commentWrapper {
   background-color: #252328;
   border-radius: 15px 15px 0 0;
-}
+} */
 
 .commentListWrapper {
-  background-color: #121719;
+  background-color: #252328;
 }

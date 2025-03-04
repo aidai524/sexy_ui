@@ -5,7 +5,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-bottom: 84px;
 }
 
 .List {
@@ -31,6 +30,7 @@
   cursor: pointer;
   color: rgba(255, 255, 255, 0.5);
   transition: 0.3s;
+  position: relative;
 }
 
 .ItemActive {
@@ -67,4 +67,40 @@
 
 .LinkIcon {
   transform: scale(0.66);
+}
+
+.Create {
+  width: 38px;
+  height: 36px;
+  border-radius: 10px;
+  background: #c9ff5d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+}
+
+.copyDot {
+  width: 10px;
+  height: 10px;
+  background: #FF2681;
+  border-radius: 50%;
+  position: absolute;
+  top: 0px;
+  right: 15%;
+}
+
+
+.ComingSoon {
+  position: absolute;
+  top: 0px;
+  z-index: 100;
+  left: -100%;
+}
+
+.ComingSoonWrapper {
+  opacity: 0.5 !important;
+}
+.ComingSoonWrapper:hover {
+  background: transparent !important;
 }

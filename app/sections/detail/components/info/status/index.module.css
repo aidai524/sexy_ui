@@ -1,0 +1,93 @@
+.panelEmpty {
+  padding: 15px 15px;
+}
+
+.progressTitleWrapper {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: #ffffff;
+  font-size: 12px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.progressTitle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.progressTime {
+  color: #fff;
+  font-size: 10px;
+  background: #3c3c3c80;
+  border-radius: 32px;
+  padding: 5px 10px;
+}
+
+.progressAmount {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.progressTitleText {
+  color: #9290b1;
+}
+
+.progressTitleValue {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.panel {
+  background-color: #252328;
+  margin: 3px;
+  border-radius: 10px;
+  padding: 15px 15px;
+}
+
+.priceContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.priceNums {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 5px;
+  color: #c9ff5d;
+}
+
+.priceAmount {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.priceUp {
+  font-size: 12px;
+  font-weight: 400;
+  color: #c9ff5d;
+}
+
+.priceDown {
+  font-size: 12px;
+  font-weight: 400;
+  color: #ff2681;
+}
+
+.priceUnit {
+  font-size: 12px;
+  color: #9290b1;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}

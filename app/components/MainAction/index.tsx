@@ -66,7 +66,7 @@ export default function MainAction({
         id={ids?.smoke}
       />
 
-      <div
+      {/* <div
         onClick={() => {
           if (!address) {
             window.connect();
@@ -77,7 +77,7 @@ export default function MainAction({
         }}
       >
         <Share />
-      </div>
+      </div> */}
     </div>
   );
 }

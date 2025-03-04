@@ -3,6 +3,9 @@ import type { Project } from "../type";
 import { fail } from "./toast";
 import { clearAll } from "./listStore";
 import { Connection } from "@solana/web3.js";
+// import Cropper from "cropperjs";
+// @ts-ignore
+import Croppie from "croppie";
 import Big from "big.js";
 import { deleteCookie } from "./common";
 import { imgReg, videoReg } from "../components/upload";
@@ -14,11 +17,12 @@ const TOKEN_ERROR_CODE = -401;
 
 const AUTH_KEY = "sex-ui-auth";
 
-export function http(
+export async function http(
   path: string,
   method: string,
   params?: any,
-  headers?: any
+  headers?: any,
+  isRepeat?: boolean
 ) {
   if (!path) return;
   let _path = path,
@@ -44,49 +48,50 @@ export function http(
     ? {
         headers: headers
       }
-    : getAuthorizationByLocal()
-    ? {
+    : {
         headers: {
           authorization: getAuthorizationByLocal()
         }
-      }
-    : {};
+      };
 
-  return fetch(`${BASE_URL}${_path}`, {
+  const response = await fetch(`${BASE_URL}${_path}`, {
     method: method,
     ...postBody,
     ..._header
-  }).then((res) => res.json());
+  });
+  const data = await response.json();
+  if (typeof data?.code === "undefined") return data;
+
+  if (data.code === TOKEN_ERROR_CODE) {
+    if (!window.connecting) {
+      window.connect();
+      window.localStorage.removeItem(AUTH_KEY);
+    }
+    if (isRepeat) {
+      return await http(path, method, params, headers, false);
+    }
+    return data;
+  }
+  if (data.code !== 0) {
+    return data;
+  } else {
+    return data;
+  }
 }
 
 export async function httpGet(
   path: string,
   params: any = {},
   isRepeat: boolean = true
-) {
-  const val = await http(path, "GET", params);
-
-  if (typeof val?.code !== "undefined") {
-    if (val.code === TOKEN_ERROR_CODE) {
-      window.localStorage.removeItem(AUTH_KEY);
-      if (isRepeat) {
-        return await httpGet(path, params, false);
-      }
-      return val;
-    } else if (val.code !== 0) {
-      // fail(val.message)
-      return val;
-    } else {
-      return val;
-    }
-  }
+): Promise<any> {
+  return await http(path, "GET", params, null, isRepeat);
 }
 
 export async function httpAuthGet(
   path: string,
   params: any = {},
   isRepeat: boolean = true
-) {
+): Promise<any> {
   const authorization = await getAuthorization();
   if (!authorization) {
     return {
@@ -94,25 +99,15 @@ export async function httpAuthGet(
       data: null
     };
   }
-  const header = {
-    authorization
-  };
-  const val = await http(path, "GET", params, header);
-
-  if (typeof val.code !== "undefined") {
-    if (val.code === TOKEN_ERROR_CODE) {
-      window.localStorage.removeItem(AUTH_KEY);
-      if (isRepeat) {
-        return await httpAuthGet(path, params, false);
-      }
-      return val;
-    } else if (val.code !== 0) {
-      // fail(val.message)
-      return val;
-    } else {
-      return val;
-    }
-  }
+  return await http(
+    path,
+    "GET",
+    params,
+    {
+      authorization
+    },
+    isRepeat
+  );
 }
 
 export async function httpAuthPost(
@@ -123,29 +118,18 @@ export async function httpAuthPost(
 ) {
   const authorization = await getAuthorization();
 
-  const header = isJson
-    ? {
-        authorization,
-        "Content-Type": "application/json"
-      }
-    : { authorization };
-  const val = await http(path, "POST", params, header);
-
-  if (typeof val.code !== "undefined") {
-    if (val.code === TOKEN_ERROR_CODE) {
-      window.localStorage.removeItem(AUTH_KEY);
-      if (isRepeat) {
-        return await httpAuthPost(path, params, false);
-      }
-
-      return val;
-    } else if (val.code !== 0) {
-      // fail(val.message)
-      return val;
-    } else {
-      return val;
-    }
-  }
+  return await http(
+    path,
+    "POST",
+    params,
+    isJson
+      ? {
+          authorization,
+          "Content-Type": "application/json"
+        }
+      : { authorization },
+    isRepeat
+  );
 }
 
 export async function httpAuthDelete(
@@ -155,26 +139,15 @@ export async function httpAuthDelete(
 ) {
   const authorization = await getAuthorization();
 
-  const header = {
-    authorization
-  };
-  const val = await http(path, "DELETE", params, header);
-
-  if (typeof val.code !== "undefined") {
-    if (val.code === TOKEN_ERROR_CODE) {
-      window.localStorage.removeItem(AUTH_KEY);
-      if (isRepeat) {
-        return await httpAuthDelete(path, params, false);
-      }
-
-      return val;
-    } else if (val.code !== 0) {
-      // fail(val.message)
-      return val;
-    } else {
-      return val;
-    }
-  }
+  return await http(
+    path,
+    "DELETE",
+    params,
+    {
+      authorization
+    },
+    isRepeat
+  );
 }
 
 export async function httpAuthPut(
@@ -183,27 +156,16 @@ export async function httpAuthPut(
   isRepeat: boolean = true
 ) {
   const authorization = await getAuthorization();
-  const header = {
-    authorization
-  };
 
-  const val = await http(path, "PUT", params, header);
-
-  if (typeof val.code !== "undefined") {
-    if (val.code === TOKEN_ERROR_CODE) {
-      window.localStorage.removeItem(AUTH_KEY);
-      if (isRepeat) {
-        return await httpAuthPut(path, params);
-      }
-
-      return val;
-    } else if (val.code !== 0) {
-      fail(val.message);
-      return null;
-    } else {
-      return val;
-    }
-  }
+  return await http(
+    path,
+    "PUT",
+    params,
+    {
+      authorization
+    },
+    isRepeat
+  );
 }
 
 export async function bufferToBase64(buffer: Uint8Array) {
@@ -444,11 +406,12 @@ export async function upload(
   file: File,
   isImage: boolean = true,
   percent = 1.5,
-  scala = 2
+  scala = 2,
+  cropper = false
 ) {
   let _file: any = file;
 
-  if (isImage) {
+  if (isImage && !cropper) {
     const url = await new Promise<string | void>((resolve) => {
       const reader = new FileReader();
       reader.onload = () => {
@@ -520,13 +483,13 @@ export async function upload(
         canvasHeight
       );
     } else {
-      const scale = Math.min(800 / img.width, 800 / img.height)
-      const newWidth = img.width * scale
-      const newHeight = img.height * scale
-      canvas.width = newWidth
-      canvas.height = newHeight
+      const scale = Math.min(800 / img.width, 800 / img.height);
+      const newWidth = img.width * scale;
+      const newHeight = img.height * scale;
+      canvas.width = newWidth;
+      canvas.height = newHeight;
 
-      ctx.drawImage(img, 0, 0, newWidth, newHeight)
+      ctx.drawImage(img, 0, 0, newWidth, newHeight);
     }
 
     const base64Url = canvas.toDataURL("image/webp");
@@ -534,11 +497,11 @@ export async function upload(
     _file = bloBData[0];
   }
 
-  const newFileName =
-    generateRandomString(5) +
-    (fileName?.length > 10 ? fileName.slice(-10) : fileName);
+  const newFileName = generateRandomString(5);
+  const fileExt = fileName?.split(".").pop() || "";
+  const finalFileName = `${newFileName}${fileExt ? "." + fileExt : ""}`;
 
-  return postUpload(_file, newFileName, file.type);
+  return postUpload(_file, finalFileName, file.type);
 }
 
 const s3_dir = process.env.NEXT_PUBLIC_S3_DIR || "flipn/stg/";
@@ -629,8 +592,6 @@ export function formatDateEn(time: number, format: string = "MMM D, YYYY") {
   return date.format(format);
 }
 
-
-
 export function getDeviceType() {
   if (typeof window === "undefined")
     return { pc: true, ios: false, android: false, mobile: false };
@@ -705,8 +666,7 @@ export const simplifyNum = (number: number, precision: number = 0) => {
 };
 
 export function isValidURL(url: string) {
-  const regex =
-    /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/[a-z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/i;
+  const regex = /^https?:\/\/([\w.-]+)\.([a-z]{2,6})(\/[\w.-]*)*\/?(\?.*)?$/i;
   return regex.test(url);
 }
 

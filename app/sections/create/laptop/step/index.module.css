@@ -1,0 +1,65 @@
+.Steps {
+  display: flex;
+  align-items: center;
+  font-family: Unbounded;
+  justify-content: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  color: #fff;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+.StepCircle {
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background-color: #fbca04;
+  margin-right: 6px;
+}
+
+.Buttons {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.Button {
+  width: 157px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.SolidButton {
+  border: 2px solid #fbca04;
+  color: #fff;
+  background-color: #000000;
+}
+
+.PrimaryButton {
+  border-radius: 30px;
+  background: #fbca04;
+  color: #000000;
+}
+
+.GetShare {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.Optional {
+  font-size: 12px;
+  font-weight: 400;
+  color: #9290b1;
+  font-weight: bold;
+}

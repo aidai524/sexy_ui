@@ -4,42 +4,31 @@ import Loading from "@/app/sections/home/mobile/loading";
 import ArrowIcon from "./arrow-icon";
 import TipsButton from "../tips-button";
 import styles from "./index.module.css";
-import dynamic from "next/dynamic";
-import { AnimatePresence } from "framer-motion";
-import useData from "@/app/sections/home/hooks/use-data-mobile";
+import useData from "@/app/sections/home/hooks/use-data";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { useTokenPanelStatus } from "@/app/store/use-token-panel";
-import Big from "big.js";
 import { useDebounceFn } from "ahooks";
-import useDanmaku from "@/app/hooks/use-danmaku";
-
-const DetailPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/detail")
-);
-
-const CommentsPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/comments")
-);
-
-const FlipPanel = dynamic(
-  () => import("@/app/sections/home/laptop/panels/flip")
-);
+import { useVideoPlayer } from "@/app/store/use-video-player";
+import { videoReg } from "@/app/components/upload";
+import RefreshIcon from "@/app/components/icons/refresh-icon";
 
 export default function List({ type, isCurrentTab }: any) {
   const {
     getIndex,
     isLoading,
-    list,
     refresher,
     hasNext,
+    getList,
     onChangeIndex,
+    onRefresh,
     updateProject,
     queryAndUpdateDetail,
     getProjectById
-  } = useData(type);
+  } = useData(type, isCurrentTab);
   const index = getIndex(type);
+  const list = getList(type);
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
   const tokenPanelStatusStore: any = useTokenPanelStatus();
@@ -47,6 +36,7 @@ export default function List({ type, isCurrentTab }: any) {
   const listRef = useRef<any>();
   const containerRef = useRef<any>();
   const startY = useRef<number>(0);
+  const videoPlayerStore: any = useVideoPlayer();
 
   useEffect(() => {
     if (list.length && index > list.length) {
@@ -71,13 +61,8 @@ export default function List({ type, isCurrentTab }: any) {
   const currentToken = useMemo(() => {
     const id = list[index];
     if (!id) return null;
-    return getProjectById(type, id);
+    return getProjectById(id);
   }, [index, list, refresher]);
-
-  const { list: danmakus, show: danmakuShow } = useDanmaku({
-    id: currentToken?.id,
-    isCurrentTab
-  });
 
   const { run } = useDebounceFn(
     (ev: any) => {
@@ -112,6 +97,21 @@ export default function List({ type, isCurrentTab }: any) {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isCurrentTab) return;
+    if (!currentToken) {
+      videoPlayerStore.setPlay(false);
+      return;
+    }
+    const isVideo = videoReg.test(currentToken.tokenImg || "");
+
+    if (videoPlayerStore.autoPlay && isVideo) {
+      videoPlayerStore.setPlay(true, String(currentToken.id) + "_" + type);
+    } else {
+      videoPlayerStore.setPlay(false);
+    }
+  }, [isCurrentTab, currentToken]);
+
   return (
     <div
       id={`${type}-list`}
@@ -138,8 +138,8 @@ export default function List({ type, isCurrentTab }: any) {
         {list?.map((item: number, i: number) => {
           let token = null;
 
-          if (Math.abs(i - index) < 5 && item) {
-            token = getProjectById(type, item);
+          if (Math.abs(i - index) < 20 && item) {
+            token = getProjectById(item);
           }
 
           return (
@@ -147,21 +147,24 @@ export default function List({ type, isCurrentTab }: any) {
               key={token?.address || item}
               token={token}
               isCurrent={index === i && isCurrentTab}
-              isNext={i - 1 === index && type === "launching"}
-              danmakus={danmakus}
-              danmakuShow={danmakuShow}
+              isNext={i - 1 === index && isCurrentTab}
+              mediaId={String(token?.id) + "_" + type}
               onUpdate={(token: any, action?: string) => {
-                updateProject(type, token);
-                if (action && ["like", "share"].includes(action)) return;
+                if (action && ["launched_like", "comments"].includes(action)) {
+                  updateProject(token);
+                  return;
+                }
                 if (action === "flip") {
                   setTimeout(() => {
-                    queryAndUpdateDetail(type, token.address);
+                    queryAndUpdateDetail(token.address);
                   }, 4000);
                   return;
                 }
-                queryAndUpdateDetail(type, token.address);
+                queryAndUpdateDetail(token.address);
               }}
-              opacity={index > i ? 0 : 1}
+              opacity={
+                index > i ? 0 : i - 1 === index && isCurrentTab ? 0.3 : 1
+              }
               showTrade={tokenPanelStatusStore.showTrade}
               tradeTab={tokenPanelStatusStore.tab}
               onUpdateTradeTab={tokenPanelStatusStore.setTab}
@@ -171,6 +174,7 @@ export default function List({ type, isCurrentTab }: any) {
                   !tokenPanelStatusStore[panleType]
                 );
               }}
+              dataAvailable={Math.abs(i - index) < 5 && isCurrentTab}
             />
           );
         })}
@@ -181,16 +185,18 @@ export default function List({ type, isCurrentTab }: any) {
             style={{ height: innerHeight, width: innerWidth }}
           >
             <Empty height={300} text="No more projects" />
-            <button
-              className={styles.Button}
-              onClick={() => {
-                homeTabStore.set({
-                  homeTabIndex: type === "preLaunch" ? 1 : 0
-                });
-              }}
-            >
-              {type === "preLaunch" ? "View Launches" : "View Pre-Launch"}
-            </button>
+            {type !== "forYou" && (
+              <button
+                className={styles.Button}
+                onClick={() => {
+                  homeTabStore.set({
+                    homeTabIndex: 0
+                  });
+                }}
+              >
+                View For You
+              </button>
+            )}
           </div>
         )}
 
@@ -226,55 +232,16 @@ export default function List({ type, isCurrentTab }: any) {
           </TipsButton>
         </div>
       )}
-      {currentToken && (
-        <AnimatePresence mode="wait">
-          {tokenPanelStatusStore.showDetail && (
-            <DetailPanel
-              token={currentToken}
-              onClose={() => {
-                tokenPanelStatusStore.setShow("showDetail", false);
-              }}
-            />
-          )}
-          {tokenPanelStatusStore.showComments && (
-            <CommentsPanel
-              token={currentToken}
-              onClose={() => {
-                tokenPanelStatusStore.setShow("showComments", false);
-              }}
-              onSuccess={() => {
-                currentToken.comment = currentToken.comment + 1;
-                updateProject(type, currentToken);
-                queryAndUpdateDetail(type, currentToken.address);
-              }}
-            />
-          )}
-          {tokenPanelStatusStore.showFlip && type === "preLaunch" && (
-            <FlipPanel
-              token={currentToken}
-              onClose={() => {
-                tokenPanelStatusStore.setShow("showFlip", false);
-              }}
-              onSuccess={(amount: string) => {
-                currentToken.isSuperLike = true;
-                currentToken.prePaid = currentToken.prePaid + 1;
-                currentToken.total_amount =
-                  Number(currentToken.total_amount) + Number(amount);
-                currentToken.prePaidAmount = Big(
-                  currentToken.prePaidAmount || 0
-                )
-                  .add(Number(amount) * 1e9)
-                  .toString();
-                updateProject(type, currentToken);
-                tokenPanelStatusStore.setShow("showFlip", false);
-                setTimeout(() => {
-                  queryAndUpdateDetail(type, currentToken.address);
-                }, 2000);
-              }}
-            />
-          )}
-        </AnimatePresence>
-      )}
+      <div className={styles.RefreshIconWrapper}>
+        <TipsButton tips="Renew a batch">
+          <button
+            className={`${styles.RefreshIcon} button`}
+            onClick={onRefresh}
+          >
+            <RefreshIcon color="#fff" />
+          </button>
+        </TipsButton>
+      </div>
     </div>
   );
 }

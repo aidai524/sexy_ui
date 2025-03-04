@@ -1,0 +1,35 @@
+.MemesTitleContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0 0 0 19px;
+  height: 47px;
+  z-index: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .MemesTitleContainer {
+    background: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.00) 81%);
+  }
+}
+
+.MemesTitleIcon {
+  color: #FFF;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.MemesTitle {
+  width: 94px;
+  height: 12px;
+  transform: translateY(2px);
+}

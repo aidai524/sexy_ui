@@ -61,7 +61,7 @@ export default function Laptop({
                         {formatLongText(userInfo?.name, 9, 4) ||
                           formatAddress(userInfo?.address) ||
                           formatAddress(address) ||
-                          "FlipN"}
+                          "FUN"}
                       </div>
                       <Level level={userInfo?.level} style={{ marginLeft: 24 }} />
                       {!isOther && (
@@ -105,7 +105,7 @@ export default function Laptop({
               </div>
             
             </div>
-            {SHOW_COPY_TRADE && (
+            {/* {SHOW_COPY_TRADE && (
                     <Summaries
                       address={address}
                       isFollower={isFollower}
@@ -114,7 +114,7 @@ export default function Laptop({
                       userInfo={userInfo}
                       isOther={isOther}
                     />
-                  )}
+                  )} */}
             <Tabs
               address={address}
               showHot={showHot}

@@ -35,14 +35,6 @@ export const useCloseCopyTrade = () => {
     }: CopyTradeParams) => {
       try {
         setIsLoading(true);
-        // let isSuccess = true;
-        // if (isWithdraw) {
-        //   isSuccess = await handleWithdrawTokens({walletAddress, id})
-        // }
-        // if (!isSuccess) {
-        //   fail("Withdraw tokens failed", {maskStyle: {zIndex: 1001}});
-        //   return false;
-        // }
         const res = await CopyTradeService.closeCopyTrade({
           walletAddress,
           chain: "solana",
@@ -73,7 +65,6 @@ export const useCloseCopyTrade = () => {
               type: 2,
             });
   
-            success("Close copy trade success", {maskStyle: {zIndex: 1001}});
             return true;
           } catch (signError: any) {
             fail(`Transaction signing failed: ${signError.message}`, {maskStyle: {zIndex: 1001}});
@@ -88,27 +79,6 @@ export const useCloseCopyTrade = () => {
         return false;
       } finally {
         setIsLoading(false);
-      }
-    };
-    
-
-    const handleWithdrawTokens = async ({
-      walletAddress,
-      id,
-    }: any) => {
-      try {
-        
-        const res = await CopyTradeService.withdrawTokens({
-            walletAddress,
-            chain: "solana",
-            tokens:[],
-            id,
-            withdrawAll: true
-          });
-        
-        return res.code == 200;
-      } catch (e: any) {
-        return false;
       }
     };
 

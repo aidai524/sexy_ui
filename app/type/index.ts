@@ -10,7 +10,9 @@ export interface Project {
     tg?: string;
     discord?: string;
     tokenImg: string;
+    token_icon?: string;
     tokenIcon?: string;
+    token_video?: string;
     tokenDecimals?: number;
     isLike?: boolean;
     isUnLike?: boolean;
@@ -34,6 +36,15 @@ export interface Project {
     kingProgress?: number;
     isKing?: boolean;
     lastKingTime?: number;
+    timeLeft?: number;
+    price?: string;
+    tx?: number;
+    sells24hUsd?: number;
+    buys24hUsd?: number;    
+    marketCap24hUsd?: number;
+    volume24hUsd?: number;
+    mc?: string;
+    solReserve?: string;
 }
 
 export interface Comment {

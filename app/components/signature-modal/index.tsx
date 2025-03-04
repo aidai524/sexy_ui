@@ -23,7 +23,7 @@ export default function SignatureModal({
         </div>
 
         <div className={styles.Desc}>
-          FlipN needs to verify your identity, please sign in the wallet, this
+          FUN needs to verify your identity, please sign in the wallet, this
           action will not affect the asset
         </div>
         <button
@@ -33,6 +33,7 @@ export default function SignatureModal({
             updateCurrentUserInfo();
             setAccountRefresher(accountRefresher + 1);
             setShowSignatureModal(false);
+            window.connecting = false;
           }}
         >
           Sign

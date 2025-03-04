@@ -1,21 +1,21 @@
 import CreateNode from "../CreateNode";
-import PreviewNode from "./preview";
-import Actions from "./actions";
-import CreateModal from "@/app/sections/create/components/create";
+// import PreviewNode from "./preview";
 import { motion } from "framer-motion";
 import { useState, useRef, useMemo } from "react";
 import { fail } from "@/app/utils/toast";
 import { httpAuthPost, sleep } from "@/app/utils";
 import type { Project } from "@/app/type";
 import styles from "./index.module.css";
-
-
+import Steps from "./step";
+import PreviewNode from "../PreviewNode";
+import { useUserAgent } from "@/app/context/user-agent";
 
 export default function Laptop() {
-  const [step, setStep] = useState("edit");
+  const [step, setStep] = useState(1);
   const [dataAdd, setDataAdd] = useState<Project>();
   const createRef = useRef<any>();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const { isMobile } = useUserAgent();
 
   const query = useMemo(() => {
     const query: any = {
@@ -30,11 +30,11 @@ export default function Laptop() {
       website: dataAdd?.website,
       x: dataAdd?.x
     };
-  
+
     const queryStr = Object.keys(query)
       .map((key) => `${key}=${encodeURIComponent(query[key])}`)
       .join("&");
-  
+
     return queryStr;
   }, [dataAdd]);
 
@@ -45,7 +45,7 @@ export default function Laptop() {
         animate={{ opacity: 1 }}
         className={styles.Wrapper}
       >
-        <div className={styles.TitleWrapper}>Create token</div>
+        { step <= 3 && <Steps step={step} /> }
         <div className={styles.Container}>
           <motion.div
             initial={{ opacity: 0 }}
@@ -53,79 +53,44 @@ export default function Laptop() {
             className={styles.EditWrapper}
           >
             <CreateNode
-              ref={createRef}
-              show={step === "edit"}
-              onAddDataFill={(value: any) => {
-                setDataAdd(value);
-                setStep("preview");
-                window.scrollTo(0, 0);
-              }}
-            />
+                ref={createRef}
+                step={step}
+                // @ts-ignore
+                show={step === 1}
+                onNext={() => {
+                  setStep(step + 1);
+                }}
+                onBack={() => {
+                  setStep(step - 1);
+                }}
+                onAddDataFill={(value: any) => {
+                  setDataAdd(value);
+                  setStep(2);
+                  window.scrollTo(0, 0);
+                }}
+              />
+            
           </motion.div>
-          {step === "preview" && (
+          { step >= 2 && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <PreviewNode token={dataAdd} />
+              <PreviewNode
+                show={true}
+                step={step}
+                data={dataAdd!}
+                onNext={() => {
+                  setStep(step + 1);
+                }}
+                goBackTo={() => {
+                  setStep(2)
+                }}
+                onBack={() => {
+                  console.log('onBack', step)
+                  setStep(step - 1);
+                }} />
             </motion.div>
           )}
         </div>
-        <Actions
-          step={step}
-          onClick={(type: string) => {
-            if (type === "preview") {
-              createRef.current.onPreview();
-              return;
-            }
-            if (type === "edit") {
-              setStep("edit");
-              return;
-            }
-            if (type === "create") {
-              setShowCreateModal(true);
-              return;
-            }
-          }}
-        />
       </motion.div>
-      {dataAdd && (
-        <CreateModal
-          show={showCreateModal}
-          token={{
-            tokenName: dataAdd.tokenName,
-            tokenSymbol: dataAdd.tokenSymbol,
-            tokenDecimals: 6,
-            tokenUri: dataAdd.tokenIcon || dataAdd.tokenImg
-          }}
-          data={dataAdd}
-          onHide={() => {
-            setShowCreateModal(false);
-          }}
-          onBeforeCreate={async () => {
-            const val = await httpAuthPost(`/project/data?${query}`, {});
-            return val.code === 0;
-          }}
-          onCreateTokenSuccess={async () => {
-
-            let times = 0,
-              val;
-            while (true && times < 50) {
-              val = await httpAuthPost(`/project?${query}`, {});
-              if (val.code === 100000) {
-                times++;
-                await sleep(5000);
-              } else {
-                break;
-              }
-            }
-
-            if (val.code === 0) {
-              return true;
-            } else {
-              fail("Create token fail");
-              return false;
-            }
-          }}
-        />
-      )}
     </>
   );
 }

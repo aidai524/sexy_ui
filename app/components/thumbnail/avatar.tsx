@@ -6,7 +6,8 @@ import styles from "./avatar.module.css";
 export function Avatar({
   data,
   showBackIcon = false,
-  showLaunchType = true
+  showLaunchType = true,
+  showTicker = true
 }: any) {
   const route = useRouter();
 
@@ -16,7 +17,7 @@ export function Avatar({
 
   return (
     <div className={styles.titles}>
-      <AvatarBox data={data} showLaunchType={showLaunchType} />
+      <AvatarBox data={data} showTicker={showTicker} showLaunchType={showLaunchType} />
       {showBackIcon && (
         <div
           onClick={() => {
@@ -75,11 +76,12 @@ export function AvatarBack({
   data,
   showBackIcon = true,
   showLaunchType,
+  showTokenName = true,
   onBack
 }: any) {
   return (
     <div className={styles.detailTitle}>
-      <Avatar data={data} showLaunchType={showLaunchType} />
+      <Avatar data={data} showLaunchType={showLaunchType} showTokenName={showTokenName} />
       {showBackIcon && <TopArrow onBack={onBack} />}
     </div>
   );

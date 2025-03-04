@@ -6,14 +6,20 @@ import Menu from "./menu";
 import { useAuth } from "@/app/context/auth";
 import useNotice from "../../../hooks/use-notice";
 import { useSetting } from "@/app/store/use-setting";
-import Refer from '@/app/components/layout/laptop/user/refer';
+import Refer from "@/app/components/layout/laptop/user/refer";
+import Header from "./header";
+import { SHOW_COPY_TRADE } from "@/app/utils/config";
 
 const CreatePage = dynamic(() => import("@/app/sections/create/laptop"));
-const TrendsPage = dynamic(() => import("@/app/sections/trends"));
+const MemesPage = dynamic(() => import("@/app/sections/memes"));
 const RewardPage = dynamic(() => import("@/app/sections/mining"));
 const ProfileCom = dynamic(() => import("@/app/sections/profile"));
 const DetailPage = dynamic(() => import("@/app/sections/detail"));
 const MessagePage = dynamic(() => import("@/app/sections/messages/laptop"));
+const SmartPage = dynamic(() => import("@/app/smart/page"));
+const SmartTopDetailPage = dynamic(() => import("@/app/smartTopDetail/page"));
+const SmartDetailPage = dynamic(() => import("@/app/smartDetail/page"));
+const InviteCodeView = dynamic(() => import("@/app/sections/invite-code"));
 
 export default function Laptop({ children }: any) {
   const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
@@ -25,6 +31,9 @@ export default function Laptop({ children }: any) {
     <div className={styles.Container}>
       <RightActions logout={logout} userInfo={userInfo} />
       <Menu />
+      {["/create", "/smart", "/memes", "/detail"].includes(pathname) && (
+        <Header />
+      )}
       <div
         className={styles.Content}
         style={{
@@ -34,7 +43,8 @@ export default function Laptop({ children }: any) {
         {pathname === "/" && <Main />}{" "}
         {pathname === "/reward" && <RewardPage />}
         {pathname === "/create" && <CreatePage />}
-        {pathname === "/trends" && <TrendsPage />}
+        {pathname === "/smart" && SHOW_COPY_TRADE && <SmartPage />}
+        {pathname === "/memes" && <MemesPage />}
         {pathname === "/profile/user" && (
           <ProfileCom
             isOther={true}
@@ -46,6 +56,9 @@ export default function Laptop({ children }: any) {
         )}
         {pathname === "/detail" && <DetailPage />}
         {pathname === "/messages" && <MessagePage />}
+        {pathname === "/smartTopDetail" && SHOW_COPY_TRADE && <SmartTopDetailPage />}
+        {pathname === "/smartDetail" && SHOW_COPY_TRADE && <SmartDetailPage />}
+        {pathname === "/invite-code" && <InviteCodeView />}
       </div>
       <Refer userInfo={userInfo} />
     </div>

@@ -9,10 +9,17 @@
 }
 .ContainerMobile {
   composes: Container;
+  left: 0;
+  bottom: 72px;
 }
 .Entry {
   position: relative;
   z-index: 12;
+  transform: translateX(50px);
+}
+.EntryExpand {
+  composes: Entry;
+  transform: translateX(140px);
 }
 .EntryMobile {
   width: 100%;
@@ -27,12 +34,18 @@
   border: 1px solid #000;
   position: absolute;
   z-index: 11;
-  left: 16px;
+  left: 66px;
   bottom: 12px;
   border-radius: 20px;
 }
+.CardExpand {
+  composes: Card;
+  left: 156px;
+}
 .CardMobile {
   composes: Card;
+  width: calc(100dvw - 20px);
+  left: 16px;
   bottom: 0;
 }
 .CardInner {
@@ -88,6 +101,8 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .Content {
   display: flex;

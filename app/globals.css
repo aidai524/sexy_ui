@@ -116,10 +116,12 @@ a {
 
 .adm-modal .adm-center-popup-wrap {
   max-width: 96vw;
+
   .adm-center-popup-body {
     background-color: #18131c;
     border-radius: 20px;
     padding: 0;
+
     .adm-modal-content {
       padding: 0;
       max-height: 85vh;
@@ -129,7 +131,8 @@ a {
 }
 
 .adm-popup .adm-popup-body {
-  background-color: #121719;
+  background-color: #252328;
+  border: 1px solid #3B3B3B;
 }
 
 .adm-toast-mask div.adm-toast-main {
@@ -155,22 +158,26 @@ a {
 .adm-toast-mask .adm-toast-main-icon div.adm-toast-icon {
   margin-bottom: 0;
 }
+
 body::-webkit-scrollbar,
 div::-webkit-scrollbar {
   width: 6px;
   height: 6px;
   /**/
 }
+
 body::-webkit-scrollbar-track,
 div::-webkit-scrollbar-track {
   background: transparent;
   border-radius: 6px;
 }
+
 body::-webkit-scrollbar-thumb,
 div::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 6px;
 }
+
 body::-webkit-scrollbar-thumb:hover,
 div::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
@@ -181,27 +188,35 @@ button {
   background: transparent;
   border: none;
 }
-input {
+
+input,
+textarea {
   background-color: transparent;
   border: none;
   outline: none;
   font-family: "Unbounded";
 }
-input::placeholder {
+
+input::placeholder,
+textarea::placeholder {
   color: #7e8a93;
 }
+
 /* reset end */
 
 .button {
   transition: 0.3s;
   cursor: pointer;
 }
+
 .button:hover {
   opacity: 0.8;
 }
+
 .button:active {
   opacity: 0.6;
 }
+
 .button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -221,12 +236,15 @@ a.adm-picker-header-button {
   background: rgba(18, 23, 25, 1);
   color: #fff;
 }
+
 .adm-picker-view-column {
   background: rgba(18, 23, 25, 1);
 }
+
 div.adm-picker-view-mask-top {
   background: rgba(18, 23, 25, 1);
 }
+
 div.adm-picker-view-mask-bottom {
   background: rgba(18, 23, 25, 1);
 }
@@ -270,4 +288,89 @@ div.adm-tab-bar-wrap {
 
 .final-like-modal .adm-center-popup-wrap {
   top: calc(100% - 120px) !important;
+}
+
+.cropper-flip-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0);
+  z-index: 9999;
+  font-family: Unbounded;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cropper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  font-family: Unbounded;
+}
+
+.croppie-container {
+  /* height: auto !important; */
+}
+
+.cr-slider::-webkit-slider-runnable-track {
+  background: rgba(146, 144, 177, 0.6) !important;
+  border-radius: 5px;
+}
+
+/* for smart share confirm */
+
+.global-checkbox-container .adm-checkbox div.adm-checkbox-icon {
+  border-radius: 6px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #3b3b3b;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.global-checkbox-container
+  .adm-checkbox.adm-checkbox-checked
+  div.adm-checkbox-icon {
+  border-color: rgba(146, 144, 177, 0.6);
+  color: #fbca04;
+}
+
+.croppie-container .cr-viewport,
+.croppie-container .cr-resizer {
+  border: none !important;
+}
+
+/* 
+.global-checkbox-container .adm-checkbox.adm-checkbox-checked div.adm-checkbox-icon {
+  background-color: transparent;
+} */
+
+.adm-switch-handle {
+  border: 1px solid #000;
+}
+
+.adm-switch[aria-checked="false"] .adm-switch-checkbox {
+  background-color: transparent !important;
+}
+
+.adm-switch[aria-checked="false"] .adm-switch-checkbox:before {
+  left: 0px;
+  top: 0px;
+  background-color: #3b3b3b;
+  border: 1px solid #000000;
+  width: 100%;
+  height: 100%;
+}
+
+.adm-switch[aria-checked="false"] .adm-switch-handle {
+  background-color: #00000066;
 }

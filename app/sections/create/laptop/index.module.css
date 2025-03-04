@@ -1,11 +1,11 @@
 .Wrapper {
   position: relative;
   height: 100vh;
+  padding-top: 80px;
 }
 
 .Container {
-  padding-top: 66px;
-  height: 100%;
+  padding: 66px 0 100px;
   overflow-y: auto;
 }
 
@@ -25,4 +25,11 @@
   width: 700px;
   margin: 0 auto;
   padding-bottom: 60px;
+}
+
+.btnWapper4Pc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }

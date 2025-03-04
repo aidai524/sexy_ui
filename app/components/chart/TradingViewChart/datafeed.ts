@@ -16,6 +16,9 @@ let lastPrice = 0;
 let pullingQueryPriceTimer: any = null;
 let kChartSubscriberList: Record<string, number> = {};
 let currentSymbolInfo: SymbolInfo | null = null;
+let savedHistoryCallback:
+  | ((bars: any[], meta: { noData: boolean }) => void)
+  | null = null;
 
 interface SymbolInfo extends LibrarySymbolInfo {
   full_name: string;
@@ -103,26 +106,30 @@ const datafeed: (
     onErrorCallback
   ) => {
     try {
+      savedHistoryCallback = onHistoryCallback;
+
       if (resolution !== resolutionRef.current) {
         hasNextRef.current = true;
         pageRef.current = 0;
       }
+
       if (!hasNextRef.current) {
         onHistoryCallback([], { noData: true });
         return;
       }
       pageRef.current = pageRef.current + 1;
 
-      const { data, hasNextPage } = await fetchData(
+      const { data = [], hasNextPage } = await fetchData(
         address,
         getGranularityByResolution(resolution),
         pageRef.current
       );
-      lastPrice = data[data.length - 1][1];
+
+      if (data?.length) lastPrice = data[data.length - 1][1];
       resolutionRef.current = resolution;
       hasNextRef.current = hasNextPage;
       resolutionRef.current = resolution;
-      const bars = data.map((item: any) => ({
+      const bars = data?.map((item: any) => ({
         time: item[6],
         low: item[3],
         high: item[2],
@@ -130,7 +137,7 @@ const datafeed: (
         close: item[4],
         volume: item[5]
       }));
-      if (data.length === 0) {
+      if (!data || data?.length === 0) {
         onHistoryCallback([], { noData: true });
         return;
       }
@@ -155,9 +162,14 @@ const datafeed: (
     currentSymbolInfo = symbolInfo;
     const fetchPrice = async () => {
       clearTimeout(pullingQueryPriceTimer);
+
       if (!currentSymbolInfo?.name) return;
       const item = await fetchLastData(address, resolution);
-      if (!item) return;
+      if (!item?.[6]) {
+        pullingQueryPriceTimer = setTimeout(fetchPrice, 5000);
+        lastPrice = 0;
+        return;
+      }
 
       const bar = {
         time: item[6],
@@ -167,9 +179,16 @@ const datafeed: (
         close: item[4],
         volume: item[5]
       };
+
+      if (!lastPrice && savedHistoryCallback) {
+        savedHistoryCallback([bar], { noData: false });
+      }
+
       addPriceMarker({ price: item[1], lastPrice, time: item[6], tvWidgetRef });
+
       onRealtimeCallback(bar);
       lastPrice = item[1];
+
       pullingQueryPriceTimer = setTimeout(fetchPrice, 5000);
     };
     clearTimeout(pullingQueryPriceTimer);

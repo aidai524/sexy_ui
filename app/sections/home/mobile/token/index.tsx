@@ -11,21 +11,21 @@ import SmokePanel from "@/app/components/smokHot/smoke-panel";
 import Danmaku from "@/app/components/danmaku";
 import TradeModal from "@/app/components/trade-modal";
 import CommentsModal from "../comments";
-import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
-import useHolders from "../hooks/use-holders";
+import LikeToEarn from "./like-to-earn";
+import { useState, useRef } from "react";
 import { useUserAgent } from "@/app/context/user-agent";
 import { useHome } from "../context";
-import Big from "big.js";
 
 export default function Token({
   isCurrent,
+  onUpdate,
+  isPreview = false,
+  isPreviewNoOpacity = false,
   token,
-  danmakus,
-  danmakuShow,
-  onUpdate
+  dataAvailable,
+  style = {},
+  mediaId
 }: any) {
-  const [imgHeight, setImgHeight] = useState("80%");
   const { innerHeight } = useUserAgent();
   const descContentRef = useRef<any>();
   const [showFlipModal, setShowFlipModal] = useState(false);
@@ -33,19 +33,15 @@ export default function Token({
   const [showCommentsModal, setShowCommentsModal] = useState(false);
   const { goDetail } = useHome();
 
-  const { total: totalHolders } = useHolders(token);
-
-  useEffect(() => {
-    if (descContentRef.current) {
-      setImgHeight(`${innerHeight - descContentRef.current.clientHeight}px`);
-    }
-  }, []);
-
   return (
     <>
-      <div className={styles.Container} style={{ height: innerHeight }}>
-        <div className={styles.TopBg} />
-        <div className={styles.BottomBg} />
+      <div
+        className={styles.Container}
+        style={{
+          height: isPreview ? innerHeight - 60 : innerHeight - 72,
+          ...style
+        }}
+      >
         {token?.icon && (
           <div
             className={styles.Bg}
@@ -54,38 +50,28 @@ export default function Token({
         )}
         {token?.id && (
           <div className={styles.Content}>
-            <Media imgHeight={imgHeight} data={token} />
-            <div className={styles.Labels}>
-              {token.isSuperLike && (
-                <motion.img
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={styles.FlippedLabel}
-                  src="/img/home/flipped.png"
-                />
-              )}
-              {token.isLike && (
-                <motion.img
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={styles.LikedLabel}
-                  src="/img/home/liked.png"
-                />
-              )}
-            </div>
+            <div className={styles.BottomBg} />
+            {token.status === 0 && !isPreview && <LikeToEarn token={token} />}
+            <Media
+              imgHeight="100%"
+              data={token}
+              mediaId={mediaId || token.id}
+              videoProgressStyle={
+                isCurrent ? { position: "fixed", left: 16, bottom: 72 } : null
+              }
+            />
             <div className={styles.Bottom}>
-              {isCurrent && (
-                <Danmaku token={token} show={danmakuShow} list={danmakus} />
-              )}
+              {isCurrent && <Danmaku id={token.id} />}
 
               {token.status === 0 ? (
                 !token.isSuperLike ? (
                   <Flip
                     token={token}
                     onSuccess={(params: any) => {
-                      onUpdate({ ...token, ...params }, "flip");
+                      onUpdate?.({ ...token, ...params }, "flip");
                     }}
                     onClick={() => {
+                      if (isPreview) return;
                       if (!window.sexAddress) {
                         window.connect();
                         return;
@@ -98,103 +84,112 @@ export default function Token({
                   <Flipped token={token} />
                 )
               ) : (
-                <Trade
-                  token={token}
-                  totalHolders={totalHolders}
-                  onClick={() => {
-                    if (!window.sexAddress) {
-                      window.connect();
-                      return;
-                    }
-                    setShowTradeModal(true);
-                  }}
-                />
+                dataAvailable && (
+                  <Trade
+                    token={token}
+                    isCurrent={isCurrent}
+                    onClick={() => {
+                      if (isPreview) return;
+                      if (!window.sexAddress) {
+                        window.connect();
+                        return;
+                      }
+
+                      setShowTradeModal(true);
+                    }}
+                  />
+                )
               )}
               <div className={styles.Desc} ref={descContentRef}>
                 <Desc token={token} />
               </div>
             </div>
-            <Actions
-              token={token}
-              onClick={(type: any) => {
-                if (type === "comments") {
-                  setShowCommentsModal(true);
-                  return;
-                }
-                if (type === "detail") {
-                  goDetail(token);
-                  return;
-                }
-                if (!window.sexAddress) {
-                  window.connect();
-                  return;
-                }
-                if (type === "flip") {
-                  setShowFlipModal(true);
-                }
-                if (type === "trade") {
-                  setShowTradeModal(true);
-                }
-              }}
-              totalHolders={totalHolders}
-              onSuccess={(type: string) => {
-                if (type === "like") {
-                  token.isLike = true;
-                  token.like = token.like + 1;
-                }
-                if (type === "share") {
-                  // token.share_num = token.share_num + 1;
-                }
-                onUpdate(token, type);
-              }}
-              isCurrent={isCurrent}
-            />
+            {dataAvailable && (
+              <Actions
+                token={token}
+                onClick={(type: any, params: any) => {
+                  if (isPreview) return;
+                  if (type === "comments") {
+                    setShowCommentsModal(true);
+                    return;
+                  }
+
+                  if (type === "detail") {
+                    goDetail(token, params);
+                    return;
+                  }
+
+
+                  if (!window.sexAddress) {
+                    window.connect();
+                    return;
+                  }
+                  if (type === "flip") {
+                    setShowFlipModal(true);
+                  }
+                  if (type === "trade") {
+                    setShowTradeModal(true);
+                  }
+                }}
+                onSuccess={(type: string) => {
+                  if (type === "launched_like") {
+                    token.is_launched_like = true;
+                    token.launched_like = token.launched_like + 1;
+                  }
+                  onUpdate?.(token, type);
+                }}
+                isCurrent={isCurrent}
+                isPreview={isPreview}
+                isPreviewNoOpacity={isPreviewNoOpacity}
+                disabled={isPreview}
+              />
+            )}
           </div>
         )}
       </div>
-      {showFlipModal && (
-        <SmokePanel
-          token={token}
-          show={showFlipModal}
-          onSuccess={(amount: string) => {
-            token.isSuperLike = true;
-            token.prePaid = token.prePaid + 1;
-            token.total_amount = Number(token.total_amount) + Number(amount);
-            token.prePaidAmount = Big(token.prePaidAmount || 0)
-              .add(Number(amount) * 1e9)
-              .toString();
-            token.isLike = true;
-            token.like = token.like + 1;
-            onUpdate(token, "flip");
-            setShowFlipModal(false);
-          }}
-          onHide={() => {
-            setShowFlipModal(false);
-          }}
-        />
-      )}
-      {showTradeModal && (
-        <TradeModal
-          show={showTradeModal}
-          onClose={() => {
-            setShowTradeModal(false);
-          }}
-          data={token}
-        />
-      )}
-      {showCommentsModal && (
-        <CommentsModal
-          show={showCommentsModal}
-          onClose={() => {
-            setShowCommentsModal(false);
-          }}
-          id={token.id}
-          onSuccess={() => {
-            token.comment = token.comment + 1;
-            onUpdate(token);
-          }}
-          total={token.comment}
-        />
+      {!isPreview && token && (
+        <>
+          {showFlipModal && (
+            <SmokePanel
+              token={token}
+              show={showFlipModal}
+              onSuccess={(amount: string) => {
+                onUpdate?.(token, "flip");
+                setShowFlipModal(false);
+              }}
+              onHide={() => {
+                setShowFlipModal(false);
+              }}
+            />
+          )}
+          {showTradeModal && (
+            <TradeModal
+              show={showTradeModal}
+              onClose={() => {
+                setShowTradeModal(false);
+              }}
+              onSuccess={() => {
+                onUpdate?.(token, "trade");
+                setShowTradeModal(false);
+              }}
+              data={token}
+            />
+          )}
+          {showCommentsModal && (
+            <CommentsModal
+              show={showCommentsModal}
+              onClose={() => {
+                setShowCommentsModal(false);
+              }}
+              id={token.id}
+              onSuccess={() => {
+                token.comment = token.comment + 1;
+                onUpdate?.(token);
+              }}
+              total={token.comment}
+            />
+          )}
+        </>
       )}
     </>
   );

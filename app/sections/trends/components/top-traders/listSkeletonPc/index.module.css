@@ -1,0 +1,64 @@
+.avatarSkeleton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.nameSkeleton {
+  width: 120px;
+  height: 16px;
+}
+
+.subNameSkeleton {
+  width: 60px;
+  height: 12px;
+}
+
+.pnlValueSkeleton {
+  width: 80px;
+  height: 16px;
+}
+
+.pnlSubValueSkeleton {
+  width: 40px;
+  height: 12px;
+}
+
+.copingButtonSkeleton {
+  width: 80px;
+  height: 32px;
+  border-radius: 30px;
+}
+
+.traderList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+}
+
+.traderItem {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 80px;
+  padding: 16px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.traderInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nameWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pnl {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

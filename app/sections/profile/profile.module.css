@@ -63,3 +63,19 @@
   height: 30px;
   background: url("/img/profile/icon-setting.svg") no-repeat center / contain;
 }
+.ShareButton {
+  composes: SettingButton;
+  background: url("/img/profile/icon-share.svg") no-repeat center / contain;
+}
+.ProfileBackButton {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  background: rgba(13, 16, 18, 0.80);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transform: translateX(-5px);
+}

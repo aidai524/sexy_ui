@@ -10,7 +10,9 @@ export function mapDataToProject(currentToken: any): Project {
     about: currentToken.about_us,
     website: currentToken.website,
     tokenIcon: currentToken.icon || currentToken.video,
+    token_icon: currentToken.icon,
     tokenImg: currentToken.video || currentToken.icon,
+    token_video: currentToken.video,
     tokenDecimals: currentToken.token_decimals,
     isLike: currentToken.is_like,
     isUnLike: currentToken.is_un_like,
@@ -36,6 +38,15 @@ export function mapDataToProject(currentToken: any): Project {
     kingProgress: currentToken.king_progress,
     isKing: currentToken.is_king,
     lastKingTime: currentToken.last_king_time,
+    timeLeft: currentToken.time + 3 * 60 * 60 * 1000,
+    price: currentToken.price,
+    tx: currentToken.tx,
+    sells24hUsd: currentToken.sells_24h_usd,
+    buys24hUsd: currentToken.buys_24h_usd,
+    marketCap24hUsd: currentToken.market_cap_24h_usd,
+    volume24hUsd: currentToken.volume_24h_usd,
+    mc: currentToken.market_cap,
+    solReserve: currentToken.sol_reserve,
     ...currentToken
   };
 }

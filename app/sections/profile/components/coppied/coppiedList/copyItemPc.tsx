@@ -103,7 +103,7 @@ export default function CopyItemPc({itemInfo, handleCloseCopyTrade, isCloseCopyT
 
        {/* trade earn */}
        <div className={styles.publicBox}>
-            <p style={{paddingTop: '18px'}}>Copied ROI (PNL) </p>
+            <p style={{paddingTop: '18px'}}>Copied ROI (PnL) </p>
            <div>
            <div className={styles.PNLValuePercent}>{Big(itemInfo?.roi).times(100).toString() || 0}%</div>
            <div className={styles.PNLValueUSD}>

@@ -24,6 +24,7 @@ export default function useUserMining() {
 
   return {
     info,
-    loading
+    loading,
+    onQuery
   };
 }

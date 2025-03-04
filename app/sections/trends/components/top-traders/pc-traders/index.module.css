@@ -1,5 +1,5 @@
 .container {
-    width: 1200px;
+    min-width: 1008px;
     border-radius: 12px;
     margin: 0 auto;
   }
@@ -18,13 +18,15 @@
     align-items: center;
     gap: 4px;
     cursor: pointer;
+    font-size: 12px;
+    font-weight: 400;
   }
   
   .traderList {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 350px);
     overflow-y: auto;
   }
   
@@ -65,13 +67,14 @@
 
   .name {
     color: #FFFFFF;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 14px;
   }
   
   .followers {
     color: #9290B1;
     font-size: 12px;
+    font-weight: 400;
   }
   
   .roi,
@@ -80,21 +83,24 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    font-weight: 400;
   }
   .winRate {
     color: #9290B1;
     font-size: 12px;
+    font-weight: 400;
   }
   
   .profit {
     color: #9290B1;
     font-size: 12px;
+    font-weight: 400;
   }
   
   .copyButton {
     background: transparent;
     color: #FFFFFF;
-    border: 1px solid #D6A409;
+    border: 1px solid #FBCA04;
     border-radius: 30px;
     padding: 10px 22px;
     cursor: pointer;
@@ -107,7 +113,7 @@
   }
 
   .copyButton:hover {
-    background: #D6A409;
+    background: #FBCA04;
     color: #000000;
     border: 2px solid transparent;
   }
@@ -159,4 +165,25 @@
 
 .filterItemContent {
   color: #FBCA04;
+}
+
+
+
+.crownContainer {
+  display: flex;
+  align-items:flex-start;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #C9FF5D;
+  margin-top: 40px;
+}
+.crownTextContainer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+}
+.crownText {
+  font-weight: 700;
 }

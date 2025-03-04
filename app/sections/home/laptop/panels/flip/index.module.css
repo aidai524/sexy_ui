@@ -1,29 +1,93 @@
 .Container {
-  width: 375px;
-  border-radius: 30px;
-  background-color: #252328;
-  border: 1px solid #3b3b3b;
-  flex-shrink: 0;
-  position: absolute;
-  right: 100px;
-  z-index: 30;
+  background-color: #ffffff0d;
+  height: 167px;
+  padding: 16px 28px 28px;
 }
 
-.BottomContainer {
-  border-radius: 30px 30px 0px 0px;
-  right: 0px;
-}
-
-.Header {
-  height: 62px;
+.InputWrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 12px;
-  border-bottom: 1px solid #3b3b3b;
 }
 
-.Content {
-  height: calc(100% - 62px);
-  overflow-y: auto;
+.BalanceWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 108px;
+  height: 30px;
+  border-radius: 10px;
+  background: rgb(60, 60, 60);
+  backdrop-filter: blur(5px);
+  color: #9290b1;
+  text-align: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.InputBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #9290b1;
+  font-size: 12px;
+}
+
+.Input {
+  text-align: right;
+  color: #fff;
+  font-size: 26px;
+  font-weight: 500;
+  width: 340px;
+}
+
+.DescWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+}
+
+.Tags {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.Tag {
+  width: 30px;
+  height: 24px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  line-height: 24px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.Active {
+  border-radius: 6px;
+  background: rgb(60, 60, 60);
+  color: #fff;
+}
+
+.Value {
+  color: #9290b1;
+  font-size: 10px;
+}
+
+.Button {
+  cursor: pointer;
+  width: 100%;
+  height: 40px;
+  border-radius: 30px;
+  background: #fbca04;
+  color: #000;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 20px;
 }

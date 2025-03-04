@@ -20,7 +20,8 @@ export default function Tabs({
   cursorClassName,
   tabContentClassName,
   cursorStyle,
-  style
+  style,
+  tabsRef
 }: any) {
   const homeTabStore: any = useHomeTab();
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
@@ -60,20 +61,21 @@ export default function Tabs({
     }
   ];
 
-  const tabs =
-    isOther || !SHOW_COPY_TRADE
-      ? baseTabs
-      : [
-          {
-            name: "Copied",
-            content: <Coppied from={from} address={address} isOther={isOther} />
-          },
-          ...baseTabs
-        ];
+  // const tabs =
+  //   isOther || !SHOW_COPY_TRADE
+  //     ? baseTabs
+  //     : [
+  //         {
+  //           name: "Copied",
+  //           content: <Coppied from={from} address={address} isOther={isOther} />
+  //         },
+  //         ...baseTabs
+  //       ];
 
   return (
     <Tab
-      nodes={tabs}
+      ref={tabsRef}
+      nodes={baseTabs}
       onTabChange={(nodeName: string) => {
         homeTabStore.set({
           profileTabName: nodeName

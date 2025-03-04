@@ -1,0 +1,41 @@
+.InviteCodeConnectWalletContainer {
+  width: 250px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  padding-top: 56px;
+}
+.BannerWrapper {
+  width: 100%;
+  height: 444px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.Banner {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  object-position: center;
+}
+.Button {
+  width: 100%;
+  height: 50px;
+  border-radius: 25px;
+  flex-shrink: 0;
+  border: 2px solid #000;
+  background: #866906;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  color: #000;
+  text-align: center;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}

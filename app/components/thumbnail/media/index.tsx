@@ -1,4 +1,3 @@
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import styles from "./index.module.css";
 import { getVideoExt, videoReg, imgReg } from "../../upload";
 import VideoPlayer from "../../video";
@@ -6,38 +5,39 @@ import VideoPlayer from "../../video";
 export default function Media({
   imgHeight,
   data,
+  mediaId,
   imgStyle,
   videoStyle,
   style,
-  autoPlay
+  videoProgressStyle
 }: any) {
   return (
-    <div className={styles.imgList}>
-      <div
-        className={styles.ImgWrapper}
-        style={{
-          height: imgHeight,
-          ...style
-        }}
-      >
-        {videoReg.test(data.tokenImg || "") ? (
-          <VideoPlayer
-            key={data.tokenImg}
-            src={data.tokenImg}
-            type={getVideoExt(data.tokenImg)}
-            className={styles.Video}
-            style={videoStyle}
-            autoPlay={autoPlay}
-            token={data}
-          />
-        ) : (
-          <img
-            className={styles.tokenImg}
-            src={data.tokenImg || "/img/token-placeholder.png"}
-            style={imgStyle}
-          />
-        )}
-      </div>
+    <div
+      className={styles.Wrapper}
+      style={{
+        height: imgHeight,
+        ...style
+      }}
+    >
+      {videoReg.test(data.tokenImg || "") ? (
+        <VideoPlayer
+          key={data.tokenImg}
+          id={data.id}
+          mediaId={mediaId}
+          src={data.tokenImg}
+          type={getVideoExt(data.tokenImg)}
+          className={styles.Media}
+          style={videoStyle}
+          token={data}
+          videoProgressStyle={videoProgressStyle}
+        />
+      ) : (
+        <img
+          className={styles.Media}
+          src={data.tokenImg || "/img/token-placeholder.png"}
+          style={imgStyle}
+        />
+      )}
     </div>
   );
 }

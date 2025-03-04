@@ -13,8 +13,10 @@ export default function useHolders(token: any) {
           new PublicKey(token.address),
           "confirmed"
         );
-        const total = tokenAccounts.value.length;
-        setTotal(total);
+
+        const size = tokenAccounts.value.filter((item) => Number(item.amount) > 0).length;
+
+        setTotal(size);
       } else {
         const response = await getHoldersByToken(token.address, 1, 10);
         setTotal(response.total);

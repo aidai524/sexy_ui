@@ -18,21 +18,24 @@ import {
   actionHateTrigger,
   actionLikeTrigger
 } from "@/app/components/timesLike/ActionTrigger";
-import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import { useMessage } from "@/app/context/messageContext";
-import { useDebounceFn } from "ahooks";
-import { useProjects } from "@/app/store/use-projects";
+import { useDebounceFn, useInterval } from "ahooks";
+import { useAuth } from "@/app/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TokenStatusModal } from "@/app/components/status2Alert";
+import Share from "@/app/components/share";
+import Desc from "./components/desc";
+import Empty from "@/app/components/empty";
+import PreUser from "@/app/components/thumbnail/preUser";
 
-export default function Detail({ token, onBack, onSuccess }: any) {
-  const [activeKey, setActiveKey] = useState("Info");
+export default function Detail({ token, tab, onBack, onSuccess }: any) {
+  const [activeKey, setActiveKey] = useState(tab || "Info");
   const {
     infoData: queryedInfoData,
     isLoading,
     getDetailInfo
   } = useTokenDetail({ token });
-  const projectsStore = useProjects();
+  const { updateUserLikeNum } = useAuth();
   const { isMobile, innerHeight, innerWidth } = useUserAgent();
   const router = useRouter();
   const search = useSearchParams();
@@ -52,8 +55,6 @@ export default function Detail({ token, onBack, onSuccess }: any) {
     { wait: 500 }
   );
 
-  const mc = useMcWithPump(infoData);
-
   useEffect(() => {
     if (infoData) {
       run();
@@ -70,10 +71,63 @@ export default function Detail({ token, onBack, onSuccess }: any) {
     }
   }, [onBack, token]);
 
+  useInterval(() => {
+    getDetailInfo({ isSkipLoading: true })
+  }, 3000)
+
+  const tabs = useMemo(() => {
+    const vals = [
+      {
+        name: "Details",
+        content: <Desc data={infoData} holdersId="detail-holders" />
+      },
+      {
+        name: "Discussion",
+        content: (
+          <CommnentList
+            token={infoData}
+            onSuccess={() => {
+              onSuccess?.({
+                comment: token.comment + 1
+              });
+            }}
+          />
+        )
+      }
+    ];
+
+    if (infoData?.status === 0) {
+      vals.push({
+        name: "Flipped",
+        content: (
+          <div
+            style={{ backgroundColor: "#252328", padding: "10px 10px 20px", borderRadius: "15px 15px 0 0" }}
+          >
+            <PreUser token={infoData} />
+          </div>
+        )
+      });
+    }
+
+    if (infoData?.status > 0) {
+      vals.push({ name: "Trades", content: <Txs data={infoData} /> });
+    }
+
+    return vals;
+  }, [infoData]);
+
   if (isLoading) {
     return (
       <div className={styles.loadingBox}>
         <CircleLoading size={60} />
+      </div>
+    );
+  }
+
+  if (!infoData) {
+    return (
+      <div className={styles.loadingBox}>
+        <Empty />
       </div>
     );
   }
@@ -89,26 +143,26 @@ export default function Detail({ token, onBack, onSuccess }: any) {
           <div className={styles.Content}>
             <div className={styles.header} ref={headerRef}>
               <div className={styles.backWrapper}>
-                <div style={{ marginTop: 8 }}>
-                  <Back
-                    onBack={() => {
-                      if (onBack) {
-                        onBack();
-                        return;
-                      }
-                      if (
-                        ["profile", "trends", "messages"].includes(
-                          search.get("from") || ""
-                        )
-                      ) {
-                        router.back();
-                        return;
-                      }
-                      router.push("/");
-                    }}
-                  />
-                </div>
-                <AvatarDetail token={infoData} mc={mc} />
+                <Back
+                  onBack={() => {
+                    if (onBack) {
+                      onBack();
+                      return;
+                    }
+                    if (
+                      ["profile", "trends", "messages"].includes(
+                        search.get("from") || ""
+                      )
+                    ) {
+                      router.back();
+                      return;
+                    }
+                    router.push("/");
+                  }}
+                />
+                <AvatarDetail token={infoData} />
+
+                <Share token={infoData} />
               </div>
             </div>
 
@@ -116,74 +170,33 @@ export default function Detail({ token, onBack, onSuccess }: any) {
               style={{
                 height: innerHeight - headerHeight,
                 overflow: "auto",
-                paddingBottom: 100
+                paddingBottom: 100,
+                WebkitOverflowScrolling: "touch"
               }}
+              id="detail-content"
             >
-              {infoData?.status === 0 && (
-                <div className={styles.commentWrapper}>
-                  <Info
-                    mc={mc}
-                    data={infoData}
-                    showHodler={false}
-                    onUpdate={() => {
-                      getDetailInfo();
-                    }}
-                  />
-                  <CommnentList
-                    style={{
-                      backgroundColor: "#121719",
-                      borderRadius: "10px",
-                      margin: "3px"
-                    }}
-                    token={infoData}
-                    onSuccess={() => {
-                      getDetailInfo({ isSkipLoading: true });
-                    }}
-                  />
-                </div>
-              )}
+              <div className={styles.commentWrapper}>
+                <Info
+                  data={infoData}
+                  showHodler={false}
+                  onUpdate={() => {
+                    getDetailInfo();
+                  }}
+                />
+              </div>
 
               {infoData?.status !== 0 && (
                 <Chart token={infoData} style={{ position: "relative" }} />
               )}
 
-              {infoData?.status !== 0 && (
-                <Tab
-                  activeNode={activeKey}
-                  onTabChange={(nodeName) => {
-                    setActiveKey(nodeName);
-                  }}
-                  nodes={[
-                    {
-                      name: "Info",
-                      content: (
-                        <Info
-                          mc={mc}
-                          data={infoData}
-                          onUpdate={() => {
-                            getDetailInfo();
-                          }}
-                        />
-                      )
-                    },
-                    {
-                      name: "Comments",
-                      content: (
-                        <CommnentList
-                          token={infoData}
-                          onSuccess={() => {
-                            getDetailInfo();
-                          }}
-                        />
-                      )
-                    },
-                    {
-                      name: "Trade",
-                      content: <Txs mc={mc} data={infoData} />
-                    }
-                  ]}
-                />
-              )}
+              <Tab
+                activeNode={activeKey}
+                onTabChange={(nodeName) => {
+                  setActiveKey(nodeName);
+                }}
+                nodes={tabs}
+                id="detail-tabs"
+              />
             </div>
 
             <div className={styles.action}>
@@ -192,10 +205,15 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                   token={infoData}
                   canFlip={false}
                   onLike={async () => {
-                    const res = await actionLikeTrigger(infoData, showShare);
+                    const res = await actionLikeTrigger({
+                      data: infoData,
+                      onShare: showShare,
+                      onSuccess: updateUserLikeNum
+                    });
                     if (res) {
                       onSuccess?.({
                         isLike: true,
+                        is_like: true,
                         like: token.like + 1
                       });
                       getDetailInfo();
@@ -206,11 +224,11 @@ export default function Detail({ token, onBack, onSuccess }: any) {
                     getDetailInfo();
                   }}
                   onSuperLike={(amount: any) => {
-                    // onSuccess?.({
-                    //   isSuperLike: true,
-                    //   prePaid: token.prePaid + 1,
-                    //   total_amount: amount
-                    // });
+                    onSuccess?.({
+                      isSuperLike: true,
+                      prePaid: token.prePaid + 1,
+                      total_amount: amount
+                    });
                     getDetailInfo();
                   }}
                   onBoost={() => {

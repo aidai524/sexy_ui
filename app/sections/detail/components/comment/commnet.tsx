@@ -3,7 +3,7 @@ import useCommentList from "@/app/hooks/use-comment-list";
 import type { Project } from "@/app/type";
 import styles from "./index.module.css";
 
-export default function CommnentList({ token, style = {}, onSuccess }: any) {
+export default function CommnentList({ token, style = {}, onSuccess, isPreview }: any) {
   const comments = useCommentList({ id: token?.id });
   return (
     <div className={styles.main} style={style}>
@@ -13,6 +13,7 @@ export default function CommnentList({ token, style = {}, onSuccess }: any) {
         {...comments}
         token={token}
         onSuccess={onSuccess}
+        isPreview={isPreview}
       />
     </div>
   );

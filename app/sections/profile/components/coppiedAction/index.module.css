@@ -1,6 +1,6 @@
 .main {
   width: 100vw;
-  min-height: 401px;
+  min-height: 464px;
   background-color: #252328;
   border-radius: 16px 16px 0 0;
   padding: 23px 20px;
@@ -20,9 +20,12 @@
 }
 .userName {
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   color: #fff;
   margin-top: 24px;
+  border-bottom: 1px solid #353339;
+  padding-bottom: 20px;
+  font-weight: 400;
 }
 
 .public {
@@ -41,12 +44,10 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
-  border: 1px solid rgba(146, 144, 177, 0.6);
-  background-color: rgba(146, 144, 177, 0.1);
-  border-radius: 8px;
   padding: 12px 10px;
-  margin-top: 12px;
+  margin-top: 50px;
   margin-bottom: 10px;
 }
 
@@ -58,7 +59,7 @@
 }
 
 .amountInputBox input {
-  width: 95%;
+  width: 100%;
   background: transparent;
   border: none;
   outline: none;
@@ -66,13 +67,45 @@
 }
 
 .amountIcon {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-size: 16px;
+  color: #fff;
 }
 
 .amountLevel {
-  composes: public;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  gap: 20px;
+  margin-top: 30px;
+}
+
+
+.amountLevelActive {
+  background-color: rgba(60, 60, 60, 0.5);
+  color: #fff;
+  border-radius: 10px;
+  width: 40px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.amountLevelNotActive {
+  background-color: transparent;
+  width: 40px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: #9290B1;
 }
 
 .amountLevelSeparator {
@@ -81,7 +114,8 @@
 }
 
 .amountDetail {
-  composes: public;
+  /* composes: public; */
+  font-size: 10px;
 }
 
 .min {
@@ -119,4 +153,247 @@
   width: 20px;
   height: 20px;
   border-radius: 20px;
+}
+
+
+.balanceAndAdvanced {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.balance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background-color: rgba(60, 60, 60, 0.5);
+  border-radius: 10px;
+  height: 30px;
+  min-width: 108px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #9290B1;
+}
+
+.advancedAndSwitch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.advanced {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background-color: rgba(60, 60, 60, 0.5);
+  border-radius: 10px;
+  height: 30px;
+  min-width: 108px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #9290B1;
+}
+
+.minCopyAmountTips {
+  font-size: 12px;
+  font-weight: 400;
+  color: #FF2681;
+  margin-top: 16px;
+  text-align: center;
+  width: 100%;
+  height: 20px;
+}
+
+
+
+.switch :global(.adm-switch-handle) {
+  background-color: #3B3B3B !important;
+}
+
+.switch :global(.adm-switch-checkbox) {
+  background-color: #000 !important;
+}
+
+.switch :global(.adm-switch-checkbox::before) {
+  background-color: #000 !important;
+}
+
+.switchChecked :global(.adm-switch-handle) {
+  background-color: #fff !important;
+}
+
+.switchChecked :global(.adm-switch-checkbox) {
+  background-color: #FBCA04 !important;
+}
+
+.switchChecked :global(.adm-switch-checkbox::before) {
+  background-color: #FBCA04 !important;
+}
+
+
+
+/* advanced modal */
+
+.advancedModal {
+  width: 100vw;
+  min-height: 332px;
+  background-color: #252328;
+  border-radius: 16px 16px 0 0;
+  padding: 23px 20px;
+  position: relative;
+  border: 1px solid #3b3b3b;
+}
+
+.advancedModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.advancedModalHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  justify-content: center;
+}
+
+.advancedModalHeaderTitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.inputCopies {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #353339;
+  padding-bottom: 30px;
+}
+
+.inputCopiesTitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+}
+
+.inputCopiesInput {
+  width: 75px;
+  height: 34px;
+  background: rgba(37, 35, 40, 1);
+  border: 1px solid rgba(146, 144, 177, 0.4);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  display: flex;
+  padding: 0 10px;
+  outline: none;
+  text-align: center;
+}
+
+.profitAndLoss {
+  display: flex;
+  flex-direction: column;
+  gap: 33px;
+}
+
+.profit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.profitTitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #C9FF5D;
+}
+
+
+.loss {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.lossTitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #FF2681;
+}
+.profitValue {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  width: 120px;
+  background: transparent;
+  outline: none;
+  color: #fff;
+  border: 1px solid rgba(146, 144, 177, 0.4);
+  border-radius: 10px;
+  padding: 0 10px;
+  height: 34px;
+}
+
+.lossValue {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  width: 120px;
+  background: transparent;
+  outline: none;
+  color: #fff;
+  border: 1px solid rgba(146, 144, 177, 0.4);
+  border-radius: 10px;
+  height: 34px;
+}
+
+
+.profitInput {
+  width: 80px;
+  background: transparent;
+  outline: none;
+  color: #C9FF5D;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.lossInput {
+  width: 80px;
+  background: transparent;
+  outline: none;
+  color: #FF2681;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.lossValuePrefix {
+  font-size: 14px;
+  font-weight: 400;
+  color: #FF2681;
+  position: relative;
+  left: 4px;
+  top: 0;
+}
+
+
+.profitAndLossChecked {
+  opacity: 0.5;
+}
+
+.profitAndLossNotChecked {
+  opacity: 1;
 }

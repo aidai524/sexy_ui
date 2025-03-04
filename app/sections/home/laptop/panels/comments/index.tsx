@@ -1,31 +1,22 @@
-import Content from "../../../mobile/comments/content";
-import styles from "./index.module.css";
-import { motion } from "framer-motion";
-import { useUserAgent } from "@/app/context/user-agent";
+import CommentComp from "@/app/components/comment";
+import useCommentList from "@/app/hooks/use-comment-list";
 
-export default function CommentsPanel({ token, onClose, onSuccess }: any) {
-  const { innerHeight } = useUserAgent();
+export default function CommentsPanel({ token, onSuccess }: any) {
+  const comments = useCommentList({ id: token?.id });
   return (
-    <motion.div
-      initial={{ x: 375, y: "-50%" }}
-      exit={{ x: 375, y: "-50%" }}
-      animate={{ x: 0, y: "-50%" }}
-      transition={{
-        ease: "linear",
-        duration: 0.3
+    <CommentComp
+      from="panel"
+      id={token?.id}
+      token={token}
+      {...comments}
+      onSuccess={onSuccess}
+      isPreview={false}
+      theme="light"
+      usePanel={false}
+      titleStyle={{
+        fontSize: 12,
+        color: "#FFFFFF99"
       }}
-      className={styles.Container}
-      style={{
-        height: innerHeight
-      }}
-    >
-      <Content
-        from="panel"
-        id={token.id}
-        onClose={onClose}
-        total={token.comment}
-        onSuccess={onSuccess}
-      />
-    </motion.div>
+    />
   );
 }

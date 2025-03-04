@@ -4,18 +4,18 @@ import styles from './style.module.css'
 const defaultColor = '#808095'
 
 
-export default function Copyed({ value }: { value: string }) {
+export default function Copyed({ value, children }: { value: string, children?: React.ReactNode }) {
     const [color, setColor] = useState(defaultColor)
     const [tipShow, setTipShow] = useState(false)
     const [tip, setTip] = useState('Copy')
 
     return <div className={styles.copy} onMouseEnter={() => {
-        setColor('#fff')
-        setTipShow(true)
-        setTip('Copy')
+        // setColor('#fff')
+        // setTipShow(true)
+        // setTip('Copy')
     }} onMouseLeave={() => {
-        setColor(defaultColor)
-        setTipShow(false)
+        // setColor(defaultColor)
+        // setTipShow(false)
     }} onClick={async () => {
         try {
             await navigator.clipboard.writeText(value)
@@ -24,8 +24,14 @@ export default function Copyed({ value }: { value: string }) {
             setColor('rgba(255, 122, 0, 1)')
         } catch (e) {
 
+        } finally {
+            setTimeout(() => {
+                setTipShow(false)
+            }, 1000)
         }
     }}>
+
+        {children}
         <svg
             width="16"
             height="16"

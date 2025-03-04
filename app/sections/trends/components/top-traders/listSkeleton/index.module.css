@@ -1,0 +1,73 @@
+.container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 0 !important;
+  }
+  
+  .skeletonCard {
+    display: grid !important;
+    grid-template-columns: 1fr 38px !important;
+    gap: 6px !important;
+    height: 69px !important;
+  }
+  
+  .mainContent {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+  }
+  
+  .leftContent {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  
+  .avatar {
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .textArea {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+  
+  .nameBlock {
+    width: 80px !important;
+    height: 14px !important;
+  }
+  
+  .followersBlock {
+    width: 40px !important;
+    height: 12px !important;
+  }
+  
+  .metrics {
+    display: flex !important;
+    align-items: flex-end !important;
+  }
+  
+  .metricsBlock {
+    width: 60px !important;
+    height: 12px !important;
+  }
+  
+  .copyButton {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
+  }
+  
+  .copyButtonBlock {
+    width: 16px !important;
+    height: 15px !important;
+  }

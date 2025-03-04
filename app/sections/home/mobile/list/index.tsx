@@ -1,46 +1,50 @@
 import Token from "../token";
 import Empty from "@/app/components/empty";
 import Loading from "../loading";
-import TourGuid from "../tour-guid";
-import useData from "@/app/sections/home/hooks/use-data-mobile";
+import useData from "@/app/sections/home/hooks/use-data";
 import { useEffect, useState, useRef, useMemo } from "react";
 import styles from "./index.module.css";
 import { useUserAgent } from "@/app/context/user-agent";
-import { useGuidingTour } from "@/app/store/use-guiding-tour";
 import { useHomeTab } from "@/app/store/useHomeTab";
-import useDanmaku from "@/app/hooks/use-danmaku";
+import { useVideoPlayer } from "@/app/store/use-video-player";
+import { videoReg } from "@/app/components/upload";
 
 let startY = 0;
 let startX = 0;
 let started = false;
-export default function List({ type, isCurrentTab, onChangeTab }: any) {
+export default function List({
+  type,
+  tabIndex,
+  isCurrentTab,
+  onChangeTab
+}: any) {
   const {
     getIndex,
     isLoading,
-    list,
+    getList,
     hasNext,
     onChangeIndex,
     updateProject,
     getProjectById,
     queryAndUpdateDetail
-  } = useData(type);
+  } = useData(type, isCurrentTab);
+
   const index = getIndex(type);
+  const list = getList(type);
   const [y, setY] = useState(0);
   const homeTabStore: any = useHomeTab();
   const { innerHeight, innerWidth } = useUserAgent();
-  const guidingTourStore = useGuidingTour();
+  const videoPlayerStore: any = useVideoPlayer();
+
+  const contentHeight = innerHeight - 72;
+  // const guidingTourStore = useGuidingTour();
   const listRef = useRef<any>();
 
   const currentToken = useMemo(() => {
     const id = list[index];
     if (!id) return null;
-    return getProjectById(type, id);
+    return getProjectById(id);
   }, [index, list]);
-
-  const { list: danmakus, show: danmakuShow } = useDanmaku({
-    id: currentToken?.id,
-    isCurrentTab
-  });
 
   useEffect(() => {
     const prevent = function (e: any) {
@@ -57,12 +61,12 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
       onChangeIndex(0);
       setY(0);
     } else {
-      setY(-index * innerHeight);
+      setY(-index * contentHeight);
     }
   }, [index, list]);
 
   useEffect(() => {
-    if (hasNext || type === "preLaunch") return;
+    if (hasNext || type !== "forYou") return;
     if (!listRef.current) return;
     listRef.current.style.transition = "none";
     onChangeIndex(0);
@@ -72,17 +76,34 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
     }, 60);
   }, [hasNext, type]);
 
+  useEffect(() => {
+    if (!isCurrentTab) return;
+    if (!currentToken) {
+      videoPlayerStore.setPlay(false);
+      return;
+    }
+    setTimeout(() => {
+      const isVideo = videoReg.test(currentToken.tokenImg || "");
+
+      if (videoPlayerStore.autoPlay && isVideo) {
+        videoPlayerStore.setPlay(true, String(currentToken.id) + "_" + type);
+      } else {
+        videoPlayerStore.setPlay(false);
+      }
+    }, 500);
+  }, [isCurrentTab, currentToken]);
+
   return (
     <>
       <div
         className={styles.Container}
         style={{
-          height: innerHeight,
+          height: contentHeight,
           width: innerWidth,
-          left: type === "preLaunch" ? 0 : innerWidth
+          left: tabIndex * innerWidth
         }}
       >
-        {/* <div
+        <div
           style={{
             position: "absolute",
             left: 0,
@@ -92,12 +113,12 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           }}
         >
           <div>
-            {type} Index: {index}
+            {type} Id: {currentToken?.id}
           </div>
           <div>
             {type} Len: {list.length}
           </div>
-        </div> */}
+        </div>
         <div
           className={styles.List}
           ref={listRef}
@@ -105,7 +126,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
             transform: `translateY(${y}px)`
           }}
           onTouchStart={(ev: any) => {
-            if (!guidingTourStore.hasShownTour) return;
+            // if (!guidingTourStore.hasShownTour) return;
             startY = ev.touches[0].clientY;
             startX = ev.touches[0].clientX;
             started = true;
@@ -117,7 +138,7 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
             let diffY = ev.touches[0].clientY - startY;
             let diffX = ev.touches[0].clientX - startX;
             if (Math.abs(diffX) > 100) {
-              onChangeTab(diffX < 0 ? 1 : 0);
+              onChangeTab(tabIndex + (diffX < 0 ? 1 : -1));
               return;
             }
             if (!list.length) return;
@@ -129,7 +150,8 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
                 if (currentIndex > 0) currentIndex--;
               }
 
-              diffY = -innerHeight * currentIndex;
+              diffY = -contentHeight * currentIndex;
+
               onChangeIndex(currentIndex);
               setY(diffY);
               started = false;
@@ -142,63 +164,66 @@ export default function List({ type, isCurrentTab, onChangeTab }: any) {
           {list?.map((item: number, i: number) => {
             let token = null;
 
-            if (Math.abs(i - index) < 5 && item) {
-              token = getProjectById(type, item);
+            if (Math.abs(i - index) <= 10 && item) {
+              token = getProjectById(item);
             }
 
             return (
               <Token
-                key={token?.address || item}
+                key={item}
                 token={token}
+                mediaId={String(token?.id) + "_" + type}
                 isCurrent={index === i && isCurrentTab}
-                danmakus={danmakus}
-                danmakuShow={danmakuShow}
                 onUpdate={(token: any, action?: string) => {
-                  updateProject(type, token);
-                  if (action && ["share"].includes(action)) return;
-                  if (action === "flip") {
+                  if (action && ["launched_like"].includes(action)) {
+                    updateProject(token);
+                    return;
+                  }
+                  if (action && ["flip", "trade"].includes(action)) {
                     setTimeout(() => {
-                      queryAndUpdateDetail(type, token.address);
+                      queryAndUpdateDetail(token.address);
                     }, 4000);
                     return;
                   }
-                  queryAndUpdateDetail(type, token.address);
+                  queryAndUpdateDetail(token.address);
                 }}
+                dataAvailable={Math.abs(i - index) < 5 && isCurrentTab}
               />
             );
           })}
           {!isLoading && (
             <div
               className={styles.EmptyWrapper}
-              style={{ height: innerHeight }}
+              style={{ height: contentHeight }}
             >
               <Empty height={300} text="No more projects" />
-              <button
-                className={styles.Button}
-                onClick={() => {
-                  homeTabStore.set({
-                    homeTabIndex: type === "preLaunch" ? 1 : 0
-                  });
-                }}
-              >
-                {type === "preLaunch" ? "View Launches" : "View Pre-Launch"}
-              </button>
+              {type !== "forYou" && (
+                <button
+                  className={styles.Button}
+                  onClick={() => {
+                    homeTabStore.set({
+                      homeTabIndex: 0
+                    });
+                  }}
+                >
+                  View For You
+                </button>
+              )}
+            </div>
+          )}
+          {isLoading && (
+            <div
+              className={styles.Wrapper}
+              style={{ height: contentHeight, width: innerWidth }}
+            >
+              <Loading />
             </div>
           )}
         </div>
-
-        {isLoading && (
-          <div
-            className={styles.Wrapper}
-            style={{ height: innerHeight, width: innerWidth }}
-          >
-            <Loading />
-          </div>
-        )}
       </div>
-      {type === "preLaunch" &&
+      {/* {type === "forYou" &&
         !!list?.length &&
-        !guidingTourStore.hasShownTour && <TourGuid />}
+        !guidingTourStore.hasShownTour && <TourGuid />} */}
     </>
   );
 }

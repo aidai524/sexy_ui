@@ -1,5 +1,6 @@
 interface Window {
   opera: any;
+  connecting?: boolean;
   connect?: any;
   disconnect?: any;
   sexAddress?: string;
@@ -12,4 +13,7 @@ interface Window {
   };
   AddToHomeScreenInstance: any;
   AddToHomeScreen: any;
+  danmakuTimer: any;
+  tradeDataTimer: any;
+  dataLayer: any;
 }

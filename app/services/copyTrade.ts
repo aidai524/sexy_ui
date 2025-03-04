@@ -4,22 +4,56 @@ export interface SmartMoneyAddress {
     buys7D: number;
     chain: string;
     copied: boolean;
+    copiers: any[];
     lastTradeAt: number;
     pnl7D: string;
     sells7D: number;
     trades7D: number;
-    winRate7D: string | number;
+    winRate7D: string;
+    pnl1D: string;
+    pnl30D: string;
+    winRate30D: string;
+    winRate1D: string;
+    newCopiers: any[];
+    topCopiers: {
+      address: string;
+      pnl: string;
+    }[];
   }
 
   export interface CopyTraderAddress {
       copied: number;
       copyTrades: number;
+      claimed: string;
+      carryFee: string;
+      isTopTrader: boolean;
+      isClaiming: boolean;
       tradeInfo: {
           buys: number;
           pnl7D: string ;
           sells: number;
           winRate7D: number;
+          totalPNL: string;
+          currentPNL: string;
+          tokenPosition: string;
+          roi: string;
+          winRate: string;
+          totalInvestment: string;
     }
+}
+
+export interface CopyTradeSettings {
+  buyAmount: number;
+  slippage: number;
+  errorToleranceRatio: number;
+  tps?: {
+    reachRadio: number | string;
+    sellRadio: number | string;
+  }[];
+  sls?: {
+    reachRadio: number | string;
+    sellRadio: number | string;
+  }[];
 }
  
 class CopyTrade {
@@ -70,11 +104,7 @@ class CopyTrade {
     chain: string;
     from: string;
     investment: number;
-    setting: {
-      buyAmount: number;
-      slippage: number;
-      errorToleranceRatio: number;
-    }
+    setting: CopyTradeSettings;
   }) {
     try {
       const response = await fetch(`${this.baseURL}/copy_trade/create`, {
@@ -113,6 +143,28 @@ class CopyTrade {
         return error;
     }
  }  
+
+ async getCopyTradeDetail(params: {
+  id: string;
+  chain: string;
+  walletAddress: string;
+}) {
+  try {
+    const queryParams = new URLSearchParams({
+      id: params.id,
+      chain: params.chain,
+      walletAddress: params.walletAddress
+    }).toString();
+    const response = await fetch(`${this.baseURL}/copy_trade/id?${queryParams}`, {
+      method: 'GET',  
+      headers: this.headers
+    });
+    return this.handleResponse(response);
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}  
 
   // 
   async getCopyTradeList(params: {
@@ -167,6 +219,9 @@ class CopyTrade {
     sellAll: boolean;
     tokens: string[];
     id: string;
+    sig: string;
+    timestamp: number;
+    closeCopyTrade: boolean;
   }) {
     try {
       const response = await fetch(`${this.baseURL}/copy_trade/swap_tokens`, {
@@ -214,10 +269,39 @@ class CopyTrade {
     chain: string;
     tokens: string[];
     id: string;
-    withdrawAll: boolean
+    sig: string;
+    timestamp: number;
+    withdrawAll: boolean;
+    closeCopyTrade: boolean;
   }) {
     try {
       const response = await fetch(`${this.baseURL}/copy_trade/withdraw_tokens`, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify(params)
+      });
+      return this.handleResponse(response);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
+
+
+  // claim
+  async claimProfit(params: {
+    // address: string;
+    amount: string;
+    chain: string;
+    // id: string;
+    receiver: string;
+    sig: string;
+    timestamp: number;
+    type: number;
+    walletAddress: string;
+  }) {
+    try {
+      const response = await fetch(`${this.baseURL}/copy_trade/withdraw`, {
         method: 'POST',
         headers: this.headers,
         body: JSON.stringify(params)

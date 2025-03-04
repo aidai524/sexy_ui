@@ -29,10 +29,9 @@ import Modal from "../modal";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import useMcWithPump from "@/app/hooks/use-mc-with-pump";
 import Big from "big.js";
-import Media from "../thumbnail/media";
 import { useUser } from "@/app/store/useUser";
 import { useUserAgent } from "@/app/context/user-agent";
-import { on } from "events";
+import { Loading, SpinLoading } from "antd-mobile";
 
 interface Props {
   token: Project | undefined;
@@ -114,6 +113,10 @@ function Card({ token, show, onClose }: Props, ref: any) {
         const url = await postUpload(bloBData[0], token.address!, bloBData[1]);
       }
 
+      return token.address!;
+    }
+
+    if (token) {
       return token.address!;
     }
   }, [token, qrcodeCanvas]);
@@ -202,6 +205,9 @@ function Card({ token, show, onClose }: Props, ref: any) {
         border: 0,
         ...style
       }}
+      style={{
+        backgroundColor: '#000'
+      }}
       closeStyle={{
         top: -10
       }}
@@ -211,7 +217,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
         <div
           ref={containerRef}
           className={styles.cardContainer}
-          onClick={() => {}}
+          onClick={() => { }}
         >
           <img src="/img/share/logo.png" className={styles.logo} />
           <div className={styles.header}>
@@ -289,7 +295,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
 
             <div className={styles.tokenImage}>
               {checkFileType(token.tokenImg) === "video" ||
-              /.gif$/.test(token.tokenImg) ? (
+                /.gif$/.test(token.tokenImg) ? (
                 <>
                   <img
                     src={(
@@ -411,6 +417,7 @@ function Card({ token, show, onClose }: Props, ref: any) {
               }
             }}
           >
+            { !canvasRef.current && <SpinLoading style={{ "--size": "18px" }} /> }
             Save image
           </button>
           <button
@@ -429,18 +436,21 @@ function Card({ token, show, onClose }: Props, ref: any) {
               }
             }}
           >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10.0101 14.7104C9.99621 14.8066 10.0055 14.9047 10.0373 14.9969C10.0692 15.0891 10.1226 15.1729 10.1935 15.2417L10.1991 15.2461C10.2609 15.3086 10.3351 15.3584 10.4173 15.3924C10.4994 15.4265 10.5879 15.4441 10.6772 15.4443C10.8853 15.4443 11.0631 15.3463 11.1857 15.2036L17.8074 8.20618C17.8734 8.14237 17.9247 8.06565 17.9576 7.98115C17.9906 7.89665 18.0046 7.8063 17.9986 7.71616C18.0047 7.626 17.9907 7.53564 17.9578 7.45113C17.9248 7.36661 17.8735 7.2899 17.8074 7.22614L11.1486 0.189487C11.0211 0.0680545 10.8494 0 10.6705 0C10.4916 0 10.3199 0.0680545 10.1924 0.189487C10.1218 0.258539 10.0687 0.342407 10.0371 0.43457C10.0055 0.526734 9.99624 0.624711 10.0101 0.720888V4.51036C4.48195 4.51036 3.8411e-07 8.82905 3.8411e-07 14.1583C-0.000380367 15.4806 0.28231 16.7887 0.830245 18C1.62 13.9819 5.60018 10.9296 9.99887 10.9296L10.0101 14.7104Z"
-                fill="black"
-              />
-            </svg>
+            {
+              (shareUrl && canvasRef.current && !isSharing) ? <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.0101 14.7104C9.99621 14.8066 10.0055 14.9047 10.0373 14.9969C10.0692 15.0891 10.1226 15.1729 10.1935 15.2417L10.1991 15.2461C10.2609 15.3086 10.3351 15.3584 10.4173 15.3924C10.4994 15.4265 10.5879 15.4441 10.6772 15.4443C10.8853 15.4443 11.0631 15.3463 11.1857 15.2036L17.8074 8.20618C17.8734 8.14237 17.9247 8.06565 17.9576 7.98115C17.9906 7.89665 18.0046 7.8063 17.9986 7.71616C18.0047 7.626 17.9907 7.53564 17.9578 7.45113C17.9248 7.36661 17.8735 7.2899 17.8074 7.22614L11.1486 0.189487C11.0211 0.0680545 10.8494 0 10.6705 0C10.4916 0 10.3199 0.0680545 10.1924 0.189487C10.1218 0.258539 10.0687 0.342407 10.0371 0.43457C10.0055 0.526734 9.99624 0.624711 10.0101 0.720888V4.51036C4.48195 4.51036 3.8411e-07 8.82905 3.8411e-07 14.1583C-0.000380367 15.4806 0.28231 16.7887 0.830245 18C1.62 13.9819 5.60018 10.9296 9.99887 10.9296L10.0101 14.7104Z"
+                  fill="black"
+                />
+              </svg> : <SpinLoading style={{ "--size": "18px" }} />
+            }
+
             Share
           </button>
         </div>

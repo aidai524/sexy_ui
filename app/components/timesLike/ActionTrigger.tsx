@@ -6,6 +6,7 @@ import type { Project } from "@/app/type";
 import { httpAuthPost } from "@/app/utils";
 import { fail, success } from "@/app/utils/toast";
 import Big from "big.js";
+import { numberFormatter } from "@/app/utils/common";
 
 export const FIRST_LIKE_TIMES = 10;
 export const SECOND_LIKE_TIMES = 30;
@@ -16,31 +17,32 @@ const onLike = async (data: any) => {
   try {
     if (data) {
       const v = await httpAuthPost("/project/like?id=" + data!.id, {});
-      if (v.code === 0) {
+      if (v.code === 0 && data.status === 0) {
         const points =
-          Number(v.data?.point) < 0.01
-            ? "0.01"
-            : new Big(v.data?.point || 0).toFixed(2, 0);
+          Number(v.data?.point) < 0.0001
+            ? "0.0001"
+            : new Big(v.data?.point || 0).toFixed(4, 0);
 
         success(
           "You liked '" +
             (data.token_name || data.tokenName) +
             "', You are expected to receive " +
-            points +
-            " points"
+            numberFormatter(points, 4, true) +
+            " $FUN"
         );
         return v.data || {};
-      } else if (v.code === 100002) {
+      } else if (v.code === 100002 && data.status === 0) {
         fail("You've run out of like times. You can come back tomorrow");
-        return -1;
       }
+      return {
+        likeNum: v.code === 0 ? 0 : -1
+      };
     }
-  } catch (e) {}
-
-  return {
-    likeNum: 0,
-    projectLikeNum: 0
-  };
+  } catch (e) {
+    return {
+      likeNum: -1
+    };
+  }
 };
 
 const onHate = async (data: Project) => {
@@ -51,8 +53,13 @@ const onHate = async (data: Project) => {
   } catch {}
 };
 
-export async function actionLikeTrigger(data: Project, onShare: (data: Project) => void) {
-  const { likeNum, projectLikeNum } = await onLike(data);
+export async function actionLikeTrigger({ data, onShare, onSuccess }: any) {
+  const { likeNum, likeNumToday, projectLikeNum } = await onLike(data);
+
+  if (data.status !== 0) return likeNum === LIKE_ERROR ? false : true;
+
+  if (likeNum !== LIKE_ERROR) onSuccess?.(likeNumToday);
+
   if (projectLikeNum === 100) {
     const timeLikeHandler = Modal.show({
       content: (
@@ -70,14 +77,14 @@ export async function actionLikeTrigger(data: Project, onShare: (data: Project) 
       className: "final-like-modal no-bg"
     });
   }
-  if (likeNum === FIRST_LIKE_TIMES) {
+  if (likeNum === FIRST_LIKE_TIMES && !window.location.pathname.includes('detail')) {
     if (data) {
       const timeLikeHandler = Modal.show({
         content: (
-            <FirstTimeLike
-              data={data}
-              onShare={onShare}
-              onClose={() => {
+          <FirstTimeLike
+            data={data}
+            onShare={onShare}
+            onClose={() => {
               timeLikeHandler.close();
             }}
           />
@@ -86,8 +93,7 @@ export async function actionLikeTrigger(data: Project, onShare: (data: Project) 
           backdropFilter: "none"
         },
         closeOnMaskClick: true,
-        className: "no-bg",
-        
+        className: "no-bg"
       });
     }
   }
@@ -109,7 +115,6 @@ export async function actionLikeTrigger(data: Project, onShare: (data: Project) 
       });
     }
   }
-
   return likeNum === LIKE_ERROR ? false : true;
 }
 

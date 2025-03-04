@@ -1,0 +1,133 @@
+.container {
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-width: 1008px;
+    margin: 0 80px;
+    display: grid;
+    grid-template-columns:100px 1fr;
+    margin-top: 60px;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 10px;
+    border-radius: 20px;
+    border: 1px solid #323232;
+    background-color: #1B1B1B;
+}
+
+.contentLeft {
+    border-right: 1px solid #323232;
+    background: #000;
+    border-radius: 20px;
+    padding:0px 18px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.contentRight {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.back {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    padding: 0 20px;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-top: 30px;
+    padding:0 18px;
+}
+
+.shareIcon {
+    margin-left: auto;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.userName {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.smartDetailContent {
+    padding: 16px;
+}
+
+.statsContainer {
+    /* background-color: #000; */
+    border-radius: 12px;
+    color: #fff;
+}
+
+
+.smartDetailContentTitle {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 21px;
+}
+
+.statsRow {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    /* justify-content: space-between; */
+    margin-bottom: 24px;
+}
+
+.statsRow:last-child {
+    margin-bottom: 0;
+}
+
+.statItem {
+    flex: 1;
+    gap: 6px;
+}
+
+.statLabel {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    margin-bottom: 4px;
+    font-weight: 300;
+}
+
+.statValue {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.statValueBig {
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.highlight {
+    color: #CAFF33; 
+}
+
+.shortlight {
+    color: #FF2681;
+}
+
+.detailValueCurrency {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.5);
+    margin-left: 4px;
+}

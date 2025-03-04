@@ -68,7 +68,10 @@ export default function Panel({ show }: any) {
                       : "#252328"
                   }}
                 >
-                  {item.icon}
+                  <item.icon
+                    size={item.iconSize}
+                    type={item.key.includes(pathname) ? "primary" : "disabled"}
+                  />
                   <span className={styles.ItemText}>{item.label}</span>
                 </button>
               ))}

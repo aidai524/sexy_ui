@@ -9,11 +9,14 @@ import { fail, success } from "@/app/utils/toast";
 import dayjs from "@/app/utils/dayjs";
 import { useAccount } from "@/app/hooks/useAccount";
 import { usePrepaidDelayTimeStore } from "@/app/store/usePrepaidDelayTime";
-import { useUserAgent } from "@/app/context/user-agent";
 import { actionLikeTrigger } from "@/app/components/timesLike/ActionTrigger";
 import { useMessage } from "@/app/context/messageContext";
 import useBalance from "@/app/hooks/useBalance";
 import { useSetting } from "@/app/store/use-setting";
+import { useAuth } from "@/app/context/auth";
+import { fontWeight } from "html2canvas/dist/types/css/property-descriptors/font-weight";
+import { numberFormatter } from "@/app/utils/common";
+import { useConfig } from "@/app/store/useConfig";
 
 interface Props {
   token: Project;
@@ -38,10 +41,15 @@ export default function Trade({
   bottomStyle
 }: Props) {
   const { flipMax, set }: any = useSetting();
-  const [inputVal, setInputVal] = useState(flipMax.toString() || max.toString());
+  const [inputVal, setInputVal] = useState(
+    flipMax.toString() || max.toString()
+  );
+  const { updateUserLikeNum } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isPrePayd, setIsPrePayd] = useState(false);
   const { address } = useAccount();
+  const { config }: any = useConfig();
+
   const { prepaidDelayTime } = usePrepaidDelayTimeStore();
   const { showShare } = useMessage();
   const { solBalance } = useBalance({
@@ -88,7 +96,7 @@ export default function Trade({
   return (
     <div className={styles.main} style={mainStyle}>
       <div className={styles.avatar}>
-        <Avatar data={token} showLaunchType={true} />
+        <Avatar data={token} showLaunchType={false} showTicker={false} />
       </div>
 
       <div
@@ -98,7 +106,10 @@ export default function Trade({
         <div className={styles.inputArea}>
           <div className={styles.actionArea}>
             <div className={styles.switchToken}>
-              <span className={styles.switchTitle}>Pre Buy</span>
+              <div className={styles.inputToken}>
+                <img src="/img/trade/balance.svg" />
+                <div className={styles.tokenName}>{numberFormatter(solBalance, 2, true)} SOL</div>
+              </div>
             </div>
             <div className={styles.slippage}>Maximum {max} SOL</div>
           </div>
@@ -121,16 +132,8 @@ export default function Trade({
                 }}
                 className={styles.input}
               />
-              <div className={styles.inputToken}>
-                <div className={styles.tokenName}>SOL</div>
-                <div className={styles.tokenImg}>
-                  <img className={styles.tiImg} src="/img/home/solana.png" />
-                </div>
-              </div>
-            </div>
-            <div className={styles.solBalance}>
-              <div className={styles.solBalanceTitle}>Balance:</div>
-              <div className={styles.solBalanceAmount}>{solBalance}</div>
+              <div className={styles.sol}>SOL</div>
+              <div className={styles.price}>${numberFormatter(Number(config.SolPrice) * Number(inputVal), 2, true)}</div>
             </div>
           </div>
         </div>
@@ -152,13 +155,20 @@ export default function Trade({
               setInputVal(amount.toString());
               set({ flipMax: amount });
             }}
-            className={`${styles.percentTag} ${
-              inputVal === amount.toString() ? styles.active : ""
-            } button`}
+            className={`${styles.percentTag} ${inputVal === amount.toString() ? styles.active : ""
+              } button`}
           >
-            {amount} SOL
+            {amount}
           </div>
         ))}
+        <div
+          onClick={() => {
+            setInputVal("1");
+          }}
+          className={`${styles.percentTag} button`}
+        >
+          Max
+        </div>
       </div>
       <div className={styles.Bottom} style={bottomStyle}>
         <div style={{ marginTop: 30 }} className={styles.receiveTokenAmount}>
@@ -170,9 +180,9 @@ export default function Trade({
             <div className={styles.receiveTitle}>
               You will auto-buy in at the average price when this meme
               launching.{" "}
-              {delayTime
+              {/* {delayTime
                 ? `You can refund after ${delayTime}.`
-                : "You can refund anytime before launching."}
+                : "You can refund anytime before launching."} */}
             </div>
           )}
         </div>
@@ -195,18 +205,26 @@ export default function Trade({
                   setIsLoading(false);
                   if (res) {
                     success("Flip success");
-                    await actionLikeTrigger(token, showShare);
+                    // await actionLikeTrigger({
+                    //   data: token,
+                    //   onShare: showShare,
+                    //   onSuccess: updateUserLikeNum
+                    // });
                     onSuccess?.(inputVal);
                   }
                 }
               } catch (e: any) {
                 console.log(e);
-                fail(e.toString());
+                if (e.message) {
+                  fail(e.message);
+                } else {
+                  fail("Transtion fail");
+                }
               } finally {
                 setIsLoading(false);
               }
             }}
-            style={{ backgroundColor: "#FBCA04", color: "#000" }}
+            style={{ backgroundColor: "#FBCA04", color: "#000", height: 50, fontWeight: 500 }}
           >
             Flip
           </MainBtn>

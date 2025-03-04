@@ -10,8 +10,8 @@ import Trade from "@/app/sections/home/mobile/trade";
 import Danmaku from "@/app/components/danmaku";
 import ScaleButton from "./scale-button";
 import TradePanel from "../panels/trade";
-import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import LikeToEarn from "../../mobile/token/like-to-earn";
+import { useRef } from "react";
 import useHolders from "@/app/sections/home/mobile/hooks/use-holders";
 import { useUserAgent } from "@/app/context/user-agent";
 import TipsButton from "@/app/sections/home/laptop/tips-button";
@@ -22,24 +22,19 @@ export default function Token({
   token,
   opacity,
   showTrade,
-  tradeTab,
-  danmakus,
-  danmakuShow,
+  tradeTab = "details",
+  isPreview,
+  dataAvailable,
   onUpdate,
   onOpenPanel,
-  onUpdateTradeTab
+  onUpdateTradeTab,
+  mediaId,
+  showFlip
 }: any) {
-  const [imgHeight, setImgHeight] = useState("80%");
   const { innerHeight, innerWidth } = useUserAgent();
   const descContentRef = useRef<any>();
 
   const { total: totalHolders } = useHolders(token);
-
-  useEffect(() => {
-    if (descContentRef.current) {
-      setImgHeight(`${innerHeight - descContentRef.current.clientHeight}px`);
-    }
-  }, []);
 
   return (
     <div
@@ -47,7 +42,7 @@ export default function Token({
       style={{
         opacity,
         height: innerHeight,
-        width: showTrade && isNext ? 968 : innerWidth
+        width: showTrade && (isCurrent || isNext) ? 1000 : innerWidth
       }}
     >
       {token?.id && (
@@ -55,37 +50,30 @@ export default function Token({
           <div
             className={styles.Token}
             style={{
-              width: showTrade && isNext ? 968 : innerWidth,
+              width: innerWidth,
               height: innerHeight
             }}
           >
-            <Media imgHeight={imgHeight} data={token} />
-            <div
-              className={styles.Labels}
-              style={{
-                right: showTrade ? 70 : 0
-              }}
-            >
-              {token.isSuperLike && (
-                <motion.img
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={styles.FlippedLabel}
-                  src="/img/home/flipped.png"
-                />
-              )}
-
-              {token.isLike && (
-                <motion.img
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={styles.LikedLabel}
-                  src="/img/home/liked.png"
-                />
-              )}
-            </div>
+            <div className={styles.BottomBg} />
+            {token?.icon && (
+              <div
+                className={styles.Bg}
+                style={{ backgroundImage: `url(${token.icon})` }}
+              />
+            )}
+            {token?.status === 0 && !isPreview && <LikeToEarn token={token} />}
+            <Media
+              imgHeight="100%"
+              data={token}
+              mediaId={mediaId || token.id}
+              videoProgressStyle={
+                isCurrent
+                  ? { position: "absoulte", left: 16, bottom: 72 }
+                  : null
+              }
+            />
             <div className={styles.Bottom}>
-              {isCurrent && <Danmaku show={danmakuShow} list={danmakus} />}
+              {isCurrent && <Danmaku id={token.id} />}
 
               {token.status === 0 ? (
                 !token.isSuperLike ? (
@@ -95,6 +83,7 @@ export default function Token({
                       onUpdate({ ...token, ...params }, "flip");
                     }}
                     onClick={() => {
+                      if (isPreview) return;
                       if (!window.sexAddress) {
                         window.connect();
                         return;
@@ -107,90 +96,102 @@ export default function Token({
                   <Flipped token={token} />
                 )
               ) : (
-                <Trade
-                  token={token}
-                  totalHolders={totalHolders}
-                  onClick={() => {
-                    if (!window.sexAddress) {
-                      window.connect();
-                      return;
-                    }
-                    onUpdateTradeTab("chart");
+                dataAvailable && (
+                  <Trade
+                    token={token}
+                    isCurrent={isCurrent}
+                    onClick={() => {
+                      if (isPreview) return;
+                      if (!window.sexAddress) {
+                        window.connect();
+                        return;
+                      }
+                      onUpdateTradeTab("chart");
 
-                    if (!showTrade) onOpenPanel("showTrade", true);
-                  }}
-                />
+                      if (!showTrade) onOpenPanel("showTrade", true);
+                    }}
+                  />
+                )
               )}
               <div className={styles.Desc} ref={descContentRef}>
                 <Desc token={token} />
               </div>
             </div>
           </div>
-          {token.status !== 0 && isCurrent && showTrade && (
+          {showTrade && (isCurrent || isNext) && (
             <TradePanel
+              showFlip={showFlip}
               onClose={() => {
                 onOpenPanel("showTrade", false);
+              }}
+              onSuccess={(_token: any, type: string) => {
+                onUpdate?.(_token, type);
               }}
               token={token}
               tab={tradeTab}
               setTab={onUpdateTradeTab}
+              isCurrent={isCurrent}
             />
           )}
-          {token.status !== 0 && !showTrade && isCurrent && (
-            <TipsButton
-              tips="Expand"
-              triggerStyle={{
-                marginBottom: 20,
-                position: "absolute",
-                top: 0,
-                right: -50,
-                zIndex: 35
-              }}
-            >
-              <ScaleButton
-                onClick={() => {
-                  onOpenPanel("showTrade", !showTrade);
-                }}
-              />
-            </TipsButton>
-          )}
-          <Actions
-            token={token}
-            onClick={(type: any) => {
-              if (type === "comments") {
-                onOpenPanel("showComments");
-                return;
-              }
-              if (type === "detail") {
-                onOpenPanel("showDetail");
-                return;
-              }
-              if (!window.sexAddress) {
-                window.connect();
-                return;
-              }
-              if (type === "flip") {
-                onOpenPanel("showFlip");
-              }
-              if (type === "trade") {
-                onUpdateTradeTab("holders");
-                if (!showTrade) onOpenPanel("showTrade");
-              }
-            }}
-            totalHolders={totalHolders}
-            onSuccess={(type: string) => {
-              if (type === "like") {
-                token.isLike = true;
-                token.like = token.like + 1;
-              }
-              if (type === "share") {
-                // token.share_num = token.share_num + 1;
-              }
-              onUpdate(token, type);
-            }}
-            isCurrent={isCurrent}
-          />
         </div>
+      )}
+
+      {!showTrade && isCurrent && (
+        <TipsButton
+          tips="Expand"
+          triggerStyle={{
+            marginBottom: 20,
+            position: "absolute",
+            top: 0,
+            right: -50,
+            zIndex: 35
+          }}
+        >
+          <ScaleButton
+            onClick={() => {
+              onUpdateTradeTab(token.status === 0 ? "details" : "chart");
+              onOpenPanel("showTrade", !showTrade);
+            }}
+          />
+        </TipsButton>
+      )}
+
+      {dataAvailable && token?.id && (
+        <Actions
+          isPreview={isPreview}
+          disabled={isPreview}
+          token={token}
+          isPreviewNoOpacity={isPreview}
+          onClick={(type: any, params: any) => {
+            if (isPreview) {
+              return;
+            }
+
+            let tab = "details";
+            if (type === "comments") {
+              tab = "comments";
+            }
+
+            if (type === "detail") {
+              if (params === "Info") tab = "holders";
+              if (params === "Trades") tab = "transactions";
+            }
+            if (type === "flip") {
+              tab = "holders";
+            }
+            onUpdateTradeTab(tab);
+            if (!showTrade) onOpenPanel("showTrade");
+          }}
+          totalHolders={totalHolders}
+          onSuccess={(type: string) => {
+            if (type === "launched_like") {
+              token.is_launched_like = true;
+              token.launched_like = token.launched_like + 1;
+            }
+            onUpdate(token, type);
+          }}
+          isCurrent={isCurrent}
+        />
       )}
     </div>
   );

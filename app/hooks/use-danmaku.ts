@@ -2,18 +2,18 @@ import { useState, useEffect, useRef } from "react";
 import { httpGet } from "@/app/utils";
 import { useDebounceFn } from "ahooks";
 import { numberFormatter } from "@/app/utils/common";
+import { useUserAgent } from "@/app/context/user-agent";
 
-export default function useDanmaku({ id, isCurrentTab }: any) {
+export default function useDanmaku({ id }: any) {
   const [list, setList] = useState<any[]>([]);
   const [show, setShow] = useState(false);
   const offset = useRef(0);
-  const timer = useRef<any>();
+  const { isWindowVisible } = useUserAgent();
 
   const cachedList = useRef<any>([]);
 
   const loadMore = async () => {
     if (!id) return;
-    clearTimeout(timer.current);
 
     try {
       const res = await httpGet("/project/dan_mu/list", {
@@ -67,10 +67,18 @@ export default function useDanmaku({ id, isCurrentTab }: any) {
       const _more = res.data?.has_next_page || false;
       offset.current = _more ? newList.length : 0;
       cachedList.current = newList;
+
       setList(newList);
+      clearTimeout(window.danmakuTimer);
+      window.danmakuTimer = setTimeout(
+        () => {
+          loadMore();
+        },
+        _more ? 3000 : 10000
+      );
     } catch (err) {
-    } finally {
-      timer.current = setTimeout(() => {
+      clearTimeout(window.danmakuTimer);
+      window.danmakuTimer = setTimeout(() => {
         loadMore();
       }, 10000);
     }
@@ -82,28 +90,28 @@ export default function useDanmaku({ id, isCurrentTab }: any) {
         return;
       }
       offset.current = 0;
+      clearTimeout(window.danmakuTimer);
       loadMore();
     },
     { wait: 1000 }
   );
 
   useEffect(() => {
-    clearTimeout(timer.current);
-    if (!isCurrentTab) {
+    if (!isWindowVisible) {
+      clearTimeout(window.danmakuTimer);
       return;
     }
     setList([]);
     loadData();
-  }, [id, isCurrentTab]);
+  }, [id, isWindowVisible]);
 
   useEffect(() => {
     return () => {
-      clearTimeout(timer.current);
+      clearTimeout(window.danmakuTimer);
     };
   }, []);
 
   return {
-    loadMore,
     list,
     show
   };

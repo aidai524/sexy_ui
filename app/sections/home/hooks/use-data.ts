@@ -1,228 +1,211 @@
-import { httpGet, httpAuthPost } from "@/app/utils";
+import { httpGet } from "@/app/utils";
 import { useEffect, useState, useRef, useCallback } from "react";
-import type { Project } from "@/app/type";
-import { getAll, setAll } from "@/app/utils/listStore";
-import { mapDataToProject } from "@/app/utils/mapTo";
+import { useProjects, type Type } from "@/app/store/use-projects-new";
 import { useAuth } from "@/app/context/auth";
 import { useDebounceFn } from "ahooks";
+import { useAccount } from "@/app/hooks/useAccount";
+import { useUserAgent } from "@/app/context/user-agent";
 
 const limit = 10;
 const left_num = 5;
 
-export default function useData(launchType: string) {
-  const [infoData, setInfoData] = useState<Project>();
-  const [infoData2, setInfoData2] = useState<Project>();
-  const [renderIndex, setRenderIndex] = useState(0);
-  const [isLoading, setisLoading] = useState(true);
+export default function useData(launchType: Type, isCurrentTab: boolean) {
+  const [isLoading, setIsLoading] = useState(true);
   const [hasNext, setHasNext] = useState<boolean>(true);
-  const listRef = useRef<Project[]>();
-  const renderIndexRef = useRef<number>(0);
-  const { userInfo, accountRefresher } = useAuth();
+  const [refresher, setRefresher] = useState(0);
+  const { accountRefresher } = useAuth();
+  const projectsStore = useProjects();
   const mountedRef = useRef(false);
+  const fetchingRef = useRef(false);
+  const prePageRef = useRef<any>([]);
+  const { address } = useAccount();
+  const { isMobile } = useUserAgent();
 
-  const onQueryList = async (isInit: boolean) => {
-    await httpGet(`/project/list?limit=${limit}&launchType=${launchType}`)
-      .then((res) => {
-        if (res.data?.has_next_page) {
-          setHasNext(true);
-        } else {
-          setHasNext(false);
-        }
+  const queryList = async () => {
+    if (fetchingRef.current) return;
 
-        if (res.code !== 0 || !res.data?.list) {
-          setisLoading(false);
-          return;
-        }
-        // res.data.list = []
-        let _list: any = [];
-        if (isInit) {
-          _list = res.data?.list;
-          _list.forEach((item: any) => {
-            item.fetched_time = Date.now();
-          });
-          renderTwoSimple(res.data?.list);
-        } else {
-          const newVals: any = {};
-          if (listRef.current) {
-            listRef.current.forEach((item: any) => {
-              newVals[item.id] = item;
-            });
-          }
+    try {
+      fetchingRef.current = true;
 
-          if (res.data.list) {
-            res.data.list.forEach((item: any) => {
-              if (!newVals[item.id]) {
-                newVals[item.id] = item;
-              }
-              item.fetched_time = Date.now();
-            });
-          }
-          _list = Object.values(newVals);
-        }
-        _list.sort((a: any, b: any) => a.fetched_time - b.fetched_time);
-        listRef.current = _list;
-        setAll(listRef.current, launchType, userInfo.address);
+      if (address && prePageRef.current.length) {
+        const res = await httpGet(
+          "/project/ids?id_list=" + prePageRef.current.join(",")
+        );
+        projectsStore.setProjects(res.data, address);
+        projectsStore.setList(launchType, prePageRef.current, true);
+        setHasNext(true);
+        prePageRef.current = [];
+        return;
+      }
 
-        if (isInit) {
-          setTimeout(() => {
-            setisLoading(false);
-          }, 10);
-        }
-      })
-      .catch(() => {
-        setisLoading(false);
-      });
+      const cachedList = projectsStore.getList(launchType);
+      const res = await httpGet(
+        `/project/list?limit=${limit}&launchType=${
+          launchType === "other" ? "video" : launchType
+        }&deleteCache=${Object.keys(cachedList).length === 0}${
+          address && prePageRef.current.length
+            ? "&addIDList=" + prePageRef.current.join(",")
+            : ""
+        }`
+      );
+
+      if (res.code !== 0 || !res.data?.list) {
+        setHasNext(false);
+        return [];
+      }
+      const ids = res.data?.list.map((item: any) => item.id) || [];
+
+      projectsStore.setProjects(res.data?.list, address);
+
+      projectsStore.setList(
+        launchType,
+        ids,
+        launchType === "forYou" && !hasNext
+      );
+      if (!address) {
+        prePageRef.current = ids;
+      } else {
+        prePageRef.current = [];
+      }
+
+      const _hasNext = res.data?.list && res.data?.list.length >= limit;
+      setHasNext(_hasNext);
+    } catch (err) {
+    } finally {
+      setIsLoading(false);
+      fetchingRef.current = false;
+    }
   };
 
-  const renderTwoSimple = (list: Project[]) => {
-    if (!list) {
+  const handleList = async (isNext?: boolean) => {
+    if (!isNext) {
+      setIsLoading(true);
+    }
+    await queryList();
+  };
+
+  const initList: any = () => {
+    let _list = projectsStore.getList(launchType) || [];
+
+    if (_list.length === 0) {
+      handleList(false);
       return;
     }
 
-    if (list.length > 0) {
-      const currentToken = list[0];
-      setInfoData2(mapDataToProject(currentToken));
+    if (
+      isCurrentTab &&
+      projectsStore.getProjectById(_list[projectsStore.getIndex(launchType)])
+        ?.address
+    ) {
+      queryAndUpdateDetail(
+        projectsStore.getProjectById(_list[projectsStore.getIndex(launchType)])
+          .address
+      );
     }
 
-    if (list.length > 1) {
-      const currentToken = list[1];
-      setInfoData(mapDataToProject(currentToken));
-    } else {
-      setInfoData(undefined);
-    }
-  };
-
-  const renderTwoItems = (list: Project[]) => {
-    if (!list) {
+    if (_list.length - projectsStore.getIndex(launchType) > left_num) {
+      setIsLoading(false);
       return;
     }
-
-    setTimeout(() => {
-      if (list.length > 0) {
-        if (list.length > 1) {
-          renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
-          setRenderIndex(renderIndexRef.current);
-          const currentToken = list[1];
-          if (renderIndexRef.current === 1) {
-            setInfoData2(mapDataToProject(currentToken));
-          } else {
-            setInfoData(mapDataToProject(currentToken));
-          }
-        }
-
-        if (list.length === 1) {
-          // renderIndexRef.current = renderIndexRef.current === 0 ? 1 : 0;
-          // setRenderIndex(renderIndexRef.current);
-          const currentToken = list[0];
-          if (renderIndexRef.current === 0) {
-            setInfoData2(mapDataToProject(currentToken));
-            setInfoData(undefined);
-          } else {
-            setInfoData2(undefined);
-            setInfoData(mapDataToProject(currentToken));
-          }
-        }
-      } else {
-        setInfoData(undefined);
-        setInfoData2(undefined);
-      }
-    }, 0);
-  };
-
-  const getnext = () => {
-    if (!listRef.current) return;
-    if (listRef.current.length) {
-      listRef.current.shift();
-      renderTwoItems(listRef.current);
-      setAll(listRef.current, launchType, userInfo.address);
-    }
-
-    if (listRef.current.length <= left_num) {
-      if (hasNext) {
-        onQueryList(false);
-      }
+    if (hasNext) {
+      handleList(true);
     }
   };
 
-  const updateCurrentToken = async (newTokenInfo: Project) => {
-    if (renderIndexRef.current === 0) {
-      setInfoData2(newTokenInfo);
-    } else {
-      setInfoData(newTokenInfo);
+  const queryAndUpdateDetail = useCallback(
+    async (address: string) => {
+      const res = await httpGet(`/project?address=${address}`);
+      if (res.code !== 0 || !res.data || !res.data.length) return;
+      projectsStore.updateProject(res.data[0]);
+      setRefresher(refresher + 1);
+    },
+    [projectsStore, refresher]
+  );
+
+  const onChangeIndex = (currentIndex: number) => {
+    projectsStore.setIndex(launchType, currentIndex);
+    const list = projectsStore.getList(launchType);
+
+    if (list.length - projectsStore.getIndex(launchType) > left_num) {
+      return;
+    }
+    if (launchType === "forYou") {
+      handleList(true);
+      return;
+    }
+    if (hasNext) {
+      handleList(true);
     }
   };
 
-  const initList = async () => {
-    let list = getAll(launchType, userInfo?.address || "");
-
-    if (list && list.length > 0) {
-      if (launchType === "preLaunch") {
-        list = list.filter((item: any) => {
-          if (
-            item.status !== 0 ||
-            item.is_like ||
-            item.is_pre_paid ||
-            item.is_un_like
-          ) {
-            return false;
-          }
-          return true;
-        });
-        list = list || [];
-      }
+  const onRefresh = () => {
+    projectsStore.clearList(launchType);
+    if (projectsStore.address) {
+      projectsStore.setIndex(launchType, 0);
     }
 
-    if (list && list.length > 0) {
-      listRef.current = list;
-      if (list.length === 1) {
-        onQueryList(false).then(() => {
-          if (listRef.current) {
-            renderTwoSimple(listRef.current);
-          }
-        });
-      } else if (list.length <= left_num) {
-        listRef.current = list;
-        renderTwoSimple(list);
-        onQueryList(false);
-      } else {
-        renderTwoSimple(list);
-      }
-      setisLoading(false);
-    } else {
-      onQueryList(true);
-      setInfoData(undefined);
-      setInfoData2(undefined);
-    }
+    setIsLoading(true);
+    initList();
   };
 
   const { run: debounceList } = useDebounceFn(
     () => {
+      if (projectsStore.address !== (address || "")) {
+        projectsStore.clearList(launchType);
+        projectsStore.clearProjects();
+        if (projectsStore.address) {
+          projectsStore.setIndex(launchType, 0);
+        }
+        setIsLoading(true);
+      }
+
       initList();
+
       mountedRef.current = true;
     },
-    { wait: 1000 }
+    { wait: 1500 }
   );
 
   useEffect(() => {
-    if (!mountedRef.current) return;
-    setInfoData2(undefined);
+    if (!mountedRef.current || !isCurrentTab) return;
+    if (projectsStore.address !== (address || "")) {
+      projectsStore.clearList(launchType);
+      if (projectsStore.address) {
+        projectsStore.setIndex(launchType, 0);
+      }
+      setIsLoading(true);
+    }
     initList();
-  }, [launchType]);
+  }, [isCurrentTab]);
 
   useEffect(() => {
-    setInfoData2(undefined);
+    if (!isCurrentTab) {
+      setIsLoading(false);
+      mountedRef.current = true;
+      return;
+    }
     debounceList();
   }, [accountRefresher]);
 
+  useEffect(() => {
+    if (isMobile) {
+      window.addEventListener("unload", () => {
+        projectsStore.clearList(launchType);
+        projectsStore.setIndex(launchType, 0);
+      });
+    }
+  }, []);
+
   return {
-    infoData,
-    infoData2,
-    renderIndex,
-    hasNext,
+    getIndex: projectsStore.getIndex,
     isLoading,
-    list: listRef,
-    renderIndexRef: renderIndexRef,
-    getnext,
-    updateCurrentToken
+    getList: projectsStore.getList,
+    hasNext,
+    refresher,
+    onRefresh,
+    updateProject: projectsStore.updateProject,
+    onChangeIndex,
+    getProjectById: projectsStore.getProjectById,
+    queryAndUpdateDetail
   };
 }

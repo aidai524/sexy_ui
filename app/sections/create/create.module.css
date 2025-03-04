@@ -1,39 +1,42 @@
 .title {
   position: relative;
-  padding: 10px 0;
-  background-color: var(--part-bg);
+
+  .titleIcon {
+    position: absolute;
+    right: 10px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+  .backIcon {
+    position: absolute;
+    left: 10px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
 
   .titleText {
     color: #fff;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     text-align: center;
+    height: 50px;
+    line-height: 50px;
   }
 }
 
-.editProgress {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: 500;
-  gap: 5px;
-  .editStep {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    opacity: 0.5;
-    gap: 5px;
-  }
-  .editStep.editActive {
-    opacity: 1;
-  }
-  .line {
-    width: 35vw;
-    border-top: 1px dashed #000;
-  }
+.uploadImgWrapper {
+  position: relative;
+  align-self: stretch;
+  padding-top: 20px;
+}
+
+.uploadAction {
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
 
 .group {
@@ -94,12 +97,14 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-top: 10px;
+  margin: 10px 0;
   padding-left: 15px;
 }
 
 .uploadTip {
   color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 .Website {
@@ -128,7 +133,20 @@
 .groupTitle {
   font-size: 16px;
   color: #fff;
-  padding-left: 18px;
+  padding: 0 18px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.requireSize {
+  font-size: 10px;
+}
+
+.uploadTitle {
+  font-size: 14px;
+  color: #fff;
 }
 
 .TitlePc {
@@ -140,9 +158,6 @@
   color: var(--error-color);
 }
 
-.btnWapper {
-  margin: 0 20px;
-}
 
 .avatar :global(.adm-image-img) {
   border-radius: 10000px;
@@ -151,4 +166,70 @@
 .Flex {
   display: flex;
   flex-wrap: wrap;
+}
+
+.linkActionGroup {
+  display: flex;  
+  align-items: center;
+  gap: 20px;
+  padding-left: 20px;
+}
+
+.linkActionItem {
+  width: 30px;
+  cursor: pointer;
+}
+.linkTitle {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;  
+}
+
+.linkOptional {
+  font-size: 12px;
+  font-weight: 700;
+  color: #9290B1;
+}
+
+.Container {
+  .groupTitle {
+    padding-left: 18px;
+  }
+}
+
+.ContainerPc {
+  
+  .linkActionGroup {
+    margin-top: 20px;
+  }
+}
+
+.removeIcon {
+  display: none;
+}
+
+.ContainerPc {
+  .removeIcon {
+    display: block;
+    margin-left: auto;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .uploadImgWrapper {
+    position: relative;
+    padding-top: 0;
+    .uploadIconPlus {
+      position: absolute;
+      right: 0;
+      bottom: 0;  
+      left: 0;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;  
+      background-color: rgba(33, 37, 46, .6);
+      border-radius: 10px;
+    }
+  }
 }

@@ -4,17 +4,11 @@ import { createJSONStorage, persist } from "zustand/middleware";
 export const useDetailStatus = create(
   persist(
     (set, get: any) => ({
-      showDetail: false,
-      showComments: false,
-      showFlip: false,
       showTrade: false,
       tab: "chart",
       token: null,
       setShow: (key: string, show: boolean) => {
         const params: Record<string, boolean> = {
-          showDetail: false,
-          showComments: false,
-          showFlip: false,
           showTrade: false
         };
         params[key] = show;
@@ -23,29 +17,19 @@ export const useDetailStatus = create(
       hasShow() {
         const params = get();
 
-        return (
-          params.showDetail ||
-          params.showComments ||
-          (params.showFlip && params.token?.status === 0) ||
-          (params.showTrade && params.token?.status !== 0)
-        );
+        return params.showTrade;
       },
       setTab(tab: string) {
         set({ tab });
       },
       setToken(token: any) {
-        const params: any = {};
-        if (token?.status !== 0) {
-          params.showFlip = false;
-        }
-        if (token?.status === 0) {
-          params.showTrade = false;
-        }
-        set({ token, ...params });
+        set({
+          token
+        });
       }
     }),
     {
-      name: "_token_panels",
+      name: "_token_detail_status",
       version: 0.1,
       storage: createJSONStorage(() => sessionStorage)
     }

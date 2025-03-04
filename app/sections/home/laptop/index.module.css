@@ -1,22 +1,10 @@
 .Container {
   position: relative;
-  padding-top: 70px;
-}
-
-.TabsWrapper {
-  position: absolute;
-  left: 50%;
-  top: 10px;
-  transform: translateX(-50%);
-}
-
-.TrendBanner {
-  display: flex;
-  justify-content: center;
+  padding-top: 60px;
 }
 
 .Content {
-  height: calc(100vh - 126px);
+  height: calc(100vh - 60px);
   display: flex;
   align-items: center;
   overflow: hidden;

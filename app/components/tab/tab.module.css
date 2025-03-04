@@ -2,7 +2,7 @@
     .tabHeaders {
         display: flex;
         font-size: 20px;
-        height: 66px;
+        height: 46px;
         /* background-color: #29242B; */
         font-size: 14px;
         /* border-radius: 30px 30px 0 0; */
@@ -13,25 +13,28 @@
         z-index: 25; */
         margin: 0 auto;
         .tab {
-            flex: 1;
+            /* flex: 1; */
+            padding: 0 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: rgba(255, 255, 255, 1);
             position: relative;
-            font-weight: 600;
+            font-weight: 400;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
             &.active {
-                color: var(--part-bg);
+                color: rgba(255, 255, 255, 1);
             }
         }
         .tab.active::after {
             content: ' ';
             display: block;
             position: absolute;
-            width: 50px;
-            height: 3px;
-            background-color: var(--part-bg);
+            width: 30px;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 1);
             left: 50%;
             transform: translateX(-50%);
             border-radius: 1000px;

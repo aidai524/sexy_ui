@@ -31,6 +31,7 @@
   cursor: pointer;
   color: rgba(255, 255, 255, 0.5);
   transition: 0.3s;
+  position: relative;
 }
 
 .ItemActive {
@@ -59,7 +60,7 @@
 
 .Links {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 20px;
 }
@@ -82,4 +83,51 @@
 .BarIcon {
   position: absolute;
   right: -10px;
+}
+
+.Create {
+  width: 116px;
+  height: 36px;
+  border-radius: 48px;
+  background: #c9ff5d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #000;
+  font-family: Unbounded;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+  margin-bottom: 25px;
+}
+
+
+
+.copyDot {
+  width: 10px;
+  height: 10px;
+  background: #FF2681;
+  border-radius: 50%;
+  position: absolute;
+  top: 0px;
+  right: 20%;
+}
+
+
+.ComingSoon {
+  position: absolute;
+  top: 0px;
+  left: 15%;
+  z-index: 100;
+}
+
+
+.ComingSoonWrapper {
+  opacity: 0.5 !important;
+}
+.ComingSoonWrapper:hover {
+  background: transparent !important;
 }

@@ -16,6 +16,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import dayjs from "dayjs";
 import Media from "@/app/components/thumbnail/media";
 import { useUserAgent } from "@/app/context/user-agent";
+import { videoReg } from '@/app/components/upload';
 
 interface Props {
   data: Project;
@@ -206,25 +207,39 @@ export default function Token({
           backgroundColor:
             from === "page" ? "rgba(255, 255, 255, 0.05)" : "transparent",
           padding: from === "page" ? "4px 12px 15px" : 0,
-          borderRadius: from === "page" ? 12 : 0
+          borderRadius: from === "page" ? 10 : 0
         }}
       >
         <div className={`${styles.tokenImgContent}`}>
           <Media
-            data={data}
+            data={{
+              ...data,
+              // fix#REF-10095
+              tokenImg: videoReg.test(data.token_video || "") ? (data.token_icon || data.token_video) : data.token_video,
+            }}
             imgHeight={84}
             autoPlay={false}
             imgStyle={{
-              width: 84
+              width: 84,
+              borderRadius: 7,
             }}
             style={{
-              overflow: "hidden"
+              overflow: "hidden",
+              borderRadius: 7,
             }}
             videoStyle={{
               height: "100%",
-              background: "#000"
+              background: "#000",
+              borderRadius: 7,
             }}
           />
+          {
+            (videoReg.test(data.token_video || "") && !!data.token_icon && !videoReg.test(data.token_icon || "")) && (
+              <div className={styles.tokenVideoWrapper}>
+                <img src="/img/icon-play.svg" alt="" className={styles.tokenVideoPlayIcon} />
+              </div>
+            )
+          }
           <LaunchTag type={data.status as number} />
         </div>
 
@@ -257,7 +272,7 @@ export default function Token({
           </div>
           {data?.status === 0 ? (
             <>
-              <div className={styles.trikerContent}>
+              {/*<div className={styles.trikerContent}>
                 <div className={styles.Likes}>
                   <div>
                     Likes: <span style={{ color: "white" }}>{data?.like}</span>
@@ -270,7 +285,7 @@ export default function Token({
                     height={11}
                   />
                 </div>
-              </div>
+              </div>*/}
               <div className={styles.trikerContent}>
                 <div className={styles.tickerName}>
                   Flipped:{" "}
@@ -327,19 +342,19 @@ export default function Token({
 function LaunchTag({ type }: { type: number }) {
   if (type === 0) {
     return (
-      <div className={styles.launchTag + " " + styles.launch1}>Pre-Launch</div>
+      <div className={styles.launchTag + " " + styles.launch1}>Genesis</div>
     );
   }
 
   if (type === 1) {
     return (
-      <div className={styles.launchTag + " " + styles.launch2}>Launching</div>
+      <div className={styles.launchTag + " " + styles.launch2}>Ticking</div>
     );
   }
 
   if (type === 3) {
     return (
-      <div className={styles.launchTag + " " + styles.launch3}>Launched</div>
+      <div className={styles.launchTag + " " + styles.launch3}>Listed</div>
     );
   }
 }

@@ -20,10 +20,11 @@
   gap: 5px;
   font-size: 12px;
   color: #9290b1;
+  font-weight: 300;
 }
 
 .txContent {
-  background-color: #121719;
+  background-color: #252328;
   border-radius: 10px;
   padding: 5px 15px;
 }
@@ -56,7 +57,6 @@
   text-overflow: ellipsis;
 }
 
-
 .item {
   display: flex;
   align-items: center;
@@ -64,19 +64,17 @@
   font-weight: 300;
 }
 
-.account {
+.Account {
   display: flex;
   align-items: center;
   gap: 10px;
   flex: 3;
 }
 
-.MobileAccount {
-  color: rgba(169, 167, 208, 1);
-}
-
 .LaptopAccount {
-  color: #aeace1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .avatar {

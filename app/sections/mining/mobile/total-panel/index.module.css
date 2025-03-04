@@ -1,34 +1,37 @@
 .Container {
-  border-radius: 8px;
-  backdrop-filter: blur(5px);
+  padding: 32px 16px 0px;
 }
 
-.FunPanel {
-  position: relative;
-  width: 343px;
-  height: 80px;
-  margin: 0 auto;
-  padding: 2px;
-}
-
-.FunPanelContent {
-  position: relative;
-  z-index: 5;
+.Header {
   display: flex;
   align-items: center;
-  padding-left: 14px;
-  height: 100%;
+  gap: 14px;
 }
 
-.FunPanelBg {
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  top: 0;
+.Name {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.Panels {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.Panel {
+  position: relative;
+  width: calc(100% - 5px);
+  height: 78px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(50, 50, 50, 0.5);
+  background: rgba(27, 27, 27, 0.5);
 }
 
 .FunLike {
-  font-family: Unbounded;
   font-size: 26px;
   font-style: normal;
   font-weight: 700;
@@ -56,25 +59,36 @@
   line-height: normal;
 }
 
+.PanelBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-family: Unbounded;
+  font-size: 12px;
+  font-weight: 500;
+  height: 20px;
+}
+
 .Statistics {
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .StatisticsItem {
-  width: 33.333333%;
-}
-
-.StatisticsItemPc {
-  width: 33.333333%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 50%;
   position: relative;
+  margin-top: 20px;
 }
 
-.StatisticsItemPc:not(:last-child):after {
+.StatisticsItem:nth-child(2n),
+.StatisticsItemPc:not(:nth-child(3n + 1)) {
+  padding-left: 20px;
+}
+
+.StatisticsItem:nth-child(2n):after,
+.StatisticsItemPc:not(:nth-child(3n + 1)):after {
   content: "";
   display: block;
   width: 1px;
@@ -82,8 +96,16 @@
   opacity: 0.5;
   background: #fff;
   position: absolute;
-  right: 0px;
+  left: 0px;
   top: 0px;
+}
+
+.StatisticsItemPc {
+  width: 33.333333%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-top: 20px;
 }
 
 .StatisticsLabel {

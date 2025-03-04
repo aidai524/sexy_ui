@@ -1,0 +1,56 @@
+export default function TxIcon() {
+  const id = String(Math.random() + Date.now());
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="29"
+      height="26"
+      viewBox="0 0 29 26"
+      fill="none"
+    >
+      <g filter={`url(#${id})`}>
+        <path
+          d="M4.00075 10.4631C4.00075 11.3064 4.71599 11.9963 5.59017 11.9963H23.4098C24.0456 11.9963 24.6416 11.6322 24.88 11.0572C25.1185 10.4823 24.9993 9.83072 24.5423 9.38994L19.4164 4.44557C18.8005 3.85148 17.7872 3.85148 17.1713 4.44557C16.5554 5.03966 16.5554 6.01703 17.1713 6.61113L19.5952 8.94916H5.61004C4.71599 8.93 4.00075 9.61991 4.00075 10.4631ZM24.9993 15.5417C24.9993 14.6984 24.284 14.0085 23.4098 14.0085H5.59017C4.9544 14.0085 4.35837 14.3726 4.11995 14.9476C3.88154 15.5225 4.00075 16.1741 4.45771 16.6149L9.5836 21.5592C9.90149 21.8658 10.2988 22 10.7161 22C11.1333 22 11.5307 21.8467 11.8485 21.5592C12.4644 20.9651 12.4644 19.9878 11.8485 19.3937L9.42466 17.0556H23.4098C24.284 17.0748 24.9993 16.3849 24.9993 15.5417Z"
+          fill="white"
+        />
+      </g>
+      <defs>
+        <filter
+          id={id}
+          x="0"
+          y="0"
+          width="29"
+          height="26"
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="2" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_8274_6725"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_8274_6725"
+            result="shape"
+          />
+        </filter>
+      </defs>
+    </svg>
+  );
+}
