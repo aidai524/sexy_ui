@@ -644,6 +644,7 @@ export function formatSortAddress(address: string | undefined) {
 export const simplifyNum = (number: number, precision: number = 0) => {
   if (typeof Number(number) !== "number") return 0;
   if (isNaN(Number(number))) return 0;
+  if (Number(number) === 0) return 0;
 
   if (number === 0) {
     return "0";
