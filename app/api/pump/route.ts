@@ -1,5 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import fetch from "node-fetch";
 import { URL } from "url";
 import { NextRequest } from "next/server";
 // const { spawn } = require('child_process');
