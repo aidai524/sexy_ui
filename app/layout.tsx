@@ -8,6 +8,7 @@ import { UserAgentProvider } from "@/app/context/user-agent";
 import { Suspense } from "react";
 import TGProvider from "./context/TGProvider";
 import PrivyWalletProvider from "@/app/context/privy";
+import Script from "next/script";
 
 export default function RootLayout({
   children
@@ -42,6 +43,22 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <title>Fun</title>
         {/* <script async src="/libs/add_to_homescreen/index.js" /> */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-4TLCL3TJDR"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-4TLCL3TJDR');
+            `
+          }}
+        />
       </head>
       <body>
         <TGProvider>

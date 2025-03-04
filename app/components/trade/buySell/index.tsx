@@ -90,6 +90,7 @@ export default function BuySell({
   const [sellOut, setSellOut] = useState("0");
   const [sellOutSol, setSellOutSol] = useState("0");
 
+  const [isMax, setIsMax] = useState(false);
   const { connection } = useConnection();
 
   const { userInfo }: any = useUser();
@@ -128,7 +129,7 @@ export default function BuySell({
 
   useEffect(() => {
     try {
-      if (debounceVal) {
+      if (debounceVal && Number(debounceVal) > 0) {
         setIsError(false);
         setIsLoading(true);
         if (activeIndex === 0) {
@@ -149,7 +150,9 @@ export default function BuySell({
               solAmount: buyInSol,
               type: 'buy'
             }).then((res: any) => {
-              const buyIn = new Big(res)
+              const { result, isMax } = res;
+              setIsMax(isMax);
+              const buyIn = new Big(result)
                 .mul(1 - slip / 100)
                 .toFixed(token.tokenDecimals);
               setBuyIn(buyIn);
@@ -177,7 +180,6 @@ export default function BuySell({
           } else if (tokenType === 0) {
             if (Number(debounceVal) <= 0) {
               setIsError(true);
-
               setErrorMsg("Invalid value");
               return;
             }
@@ -188,8 +190,12 @@ export default function BuySell({
                 .toFixed(0),
               type: 'buy'
             }).then((res: any) => {
+              const { result, isMax, maxBuy } = res;
+              setIsMax(isMax);
               setIsLoading(false);
-              buyInSol = new Big(res).mul(1 + slip / 100).toFixed(0);
+
+              buyInSol = new Big(result).mul(1 + slip / 100).toFixed(0);
+
               if (
                 new Big(buyInSol).div(10 ** SOL.tokenDecimals).gt(solBalance)
               ) {
@@ -200,11 +206,15 @@ export default function BuySell({
               }
 
               if (Number(buyInSol) > 0.000000001) {
-                setBuyIn(
-                  new Big(debounceVal)
-                    .mul(10 ** token.tokenDecimals!)
-                    .toFixed(0)
-                );
+                if (isMax) {
+                  setBuyIn(maxBuy);
+                } else {
+                  setBuyIn(
+                    new Big(debounceVal)
+                      .mul(10 ** token.tokenDecimals!)
+                      .toFixed(0)
+                  );
+                }
                 setBuyInSol(buyInSol);
               } else {
                 setBuyInSol("");
@@ -243,8 +253,10 @@ export default function BuySell({
                 .toFixed(0),
               type: 'sell'
             }).then((res: any) => {
+              const { result, isMax } = res;
+              setIsMax(isMax);
               setIsLoading(false);
-              sellSolOut = new Big(res).mul(1 - slip / 100).toFixed(0);
+              sellSolOut = new Big(result).mul(1 - slip / 100).toFixed(0);
 
               if (Number(debounceVal) > Number(tokenBalance)) {
                 setIsError(true);
@@ -582,12 +594,25 @@ export default function BuySell({
               <div className={styles.receiveTokenAmount}>
                 <div className={styles.receiveTitle}>Received</div>
                 <div className={styles.receiveAmount}>
-                  {buyIn
-                    ? numberFormatter(new Big(buyIn)
-                      .div(1 - slip / 100)
+                  {
+                    isMax && (
+                      <div className={styles.topLimit}>
+                        <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7.42045 8.83752L7.11364 4.77147L7.05682 3H8.94318L8.88636 4.77147L8.57955 8.83752H7.42045ZM8 12C7.71212 12 7.47348 11.9009 7.28409 11.7028C7.0947 11.5046 7 11.255 7 10.9538C7 10.6446 7.0947 10.391 7.28409 10.1929C7.47348 9.99472 7.71212 9.89564 8 9.89564C8.28788 9.89564 8.52652 9.99472 8.71591 10.1929C8.9053 10.391 9 10.6446 9 10.9538C9 11.255 8.9053 11.5046 8.71591 11.7028C8.52652 11.9009 8.28788 12 8 12Z" fill="#FBCA04" />
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M14.9816 11.8125L8.77573 1.3125C8.43096 0.729167 7.56904 0.729167 7.22427 1.3125L1.01842 11.8125C0.673647 12.3958 1.10461 13.125 1.79415 13.125H14.2059C14.8954 13.125 15.3264 12.3958 14.9816 11.8125ZM9.55146 0.875C8.86192 -0.291667 7.13808 -0.291667 6.44854 0.875L0.242685 11.375C-0.446854 12.5417 0.41507 14 1.79415 14H14.2059C15.5849 14 16.4469 12.5417 15.7573 11.375L9.55146 0.875Z" fill="#FBCA04" />
+                    </svg>
+                        <div>Top Limit</div>
+                      </div>
+                    )
+                  }
+                  <div className={isMax ? styles.topLimit : ""}>
+                    {buyIn
+                      ? numberFormatter(new Big(buyIn)
+                        .div(1 - slip / 100)
                       .div(10 ** token.tokenDecimals!)
                       .toFixed(token.tokenDecimals), token.tokenDecimals as number, true)
                     : ""}{" "}
+                  </div>
                   {
                     from === "panel" ? <div>{token.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
@@ -675,7 +700,7 @@ export default function BuySell({
                         }
                       } else {
                         hash = await buyTokenWithFixedOutput(
-                          new Big(buyIn).toFixed(0),
+                          isMax ? new Big(buyIn).toFixed(0) : new Big(buyIn).toFixed(0),
                           buyInSol
                         );
                       }

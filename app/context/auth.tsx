@@ -30,6 +30,7 @@ export const AuthProvider: React.FC<{
     true,
     0
   );
+  const isTerms = ["/privacy-policy", "/terms-and-conditions"].includes(pathname);
 
   const { run: updateAccount } = useDebounceFn(
     async () => {
@@ -49,10 +50,14 @@ export const AuthProvider: React.FC<{
 
   useEffect(() => {
     window.connect = () => {
+      if (["/invite-code"].includes(pathname)) {
+        setShowLoginModal(false);
+        return;
+      }
       setShowLoginModal(true);
     };
     window.disconnect = disconnect;
-  }, []);
+  }, [pathname]);
 
   const logout = useCallback(
     async (isRedirect?: boolean) => {
@@ -72,7 +77,7 @@ export const AuthProvider: React.FC<{
   const updateCurrentUserInfo = useCallback(async () => {
     if (!address) return;
     const userInfo = await fecthUserInfo(address);
-    userStore.set({ userInfo });
+    userStore.setUserInfo(userInfo);
   }, [address]);
 
   useEffect(() => {
@@ -100,8 +105,8 @@ export const AuthProvider: React.FC<{
         logout,
         updateCurrentUserInfo,
         updateUserLikeNum(num: number) {
-          userStore.set({
-            userInfo: { ...userStore.userInfo, using_like_num: num }
+          userStore.setUserInfo({
+            using_like_num: num
           });
         }
       }}
@@ -115,7 +120,7 @@ export const AuthProvider: React.FC<{
       />
       <SignatureModal
         {...{
-          showSignatureModal,
+          showSignatureModal: showSignatureModal && !isTerms,
           updateCurrentUserInfo,
           setAccountRefresher,
           setShowSignatureModal,

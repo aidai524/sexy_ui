@@ -54,7 +54,7 @@ export default function Tips({ isCustomWidth }: any) {
               </div>
               <div className={styles.Token}>
                 <div style={{ flexShrink: 0 }}>
-                  {numberFormatter(item.sol_amount / 1e9, 2, true)} SOL{" "}
+                  {numberFormatter(item.sol_amount, 2, true)} SOL{" "}
                 </div>
                 <img src={item.token_icon} className={styles.TokenIcon} />
                 <div

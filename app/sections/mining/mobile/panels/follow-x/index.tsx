@@ -1,6 +1,6 @@
 import styles from "../index.module.css";
 import { WalletModalButton } from "@/app/libs/solana/wallet-adapter/modal";
-import { useAuth } from "@/app/context/auth";
+import { useUser } from "@/app/store/useUser";
 import { useConfig } from "@/app/store/useConfig";
 import XButton from "./x-button";
 import CheckedIcon from "../checked-icon";
@@ -8,14 +8,14 @@ import useTwitterBind from "@/app/hooks/use-twitter-bind";
 import CircleLoading from "@/app/components/icons/loading";
 
 export default function FollowX() {
-  const { userInfo, onQueryInfo } = useAuth();
+  const userStore: any = useUser();
   const config = useConfig((store: any) => store.config);
   const redirectUri = `${window.location.origin}${window.location.pathname}`;
   const { loading } = useTwitterBind({
     onSuccess: () => {
-      setTimeout(() => {
-        onQueryInfo();
-      }, 1000);
+      userStore.setUserInfo({
+        twitter_user_id: Date.now(),
+      });
     },
     redirectUri
   });
@@ -45,7 +45,7 @@ export default function FollowX() {
         </div>
         <div className={styles.ItemDesc}></div>
         <div className={styles.ItemBottom}>
-          {userInfo?.address ? (
+          {userStore?.userInfo?.address ? (
             <XButton
               onClick={() => {
                 window.open("https://x.com/flipndotfun", "_blank");
@@ -55,8 +55,8 @@ export default function FollowX() {
             <div />
           )}
           <div className={styles.ItemBottomButtons}>
-            {userInfo?.address ? (
-              !userInfo?.twitter_user_id ? (
+            {userStore?.userInfo?.address ? (
+              !userStore?.userInfo?.twitter_user_id ? (
                 <button
                   type="button"
                   className={styles.Button}

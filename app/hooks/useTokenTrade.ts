@@ -389,6 +389,8 @@ export function useTokenTrade({
     async (outputAmount: string | number, maxWsolAmount: string | number) => {
       const keysAndIns = await getKeys();
 
+      console.log('outputAmount:', outputAmount, 'maxWsolAmount:', maxWsolAmount)
+
       if (!keysAndIns) {
         return;
       }
@@ -426,6 +428,14 @@ export function useTokenTrade({
       });
 
       transaction.add(instruction1).add(instruction2).add(buyInstruction);
+
+      const closeUseSolIns = createCloseAccountInstruction(
+        keys.userWsolAccount,
+        walletProvider.publicKey!,
+        walletProvider.publicKey!
+      );
+
+      transaction.add(closeUseSolIns);
 
       const hash = await walletProvider.signAndSendTransaction(transaction);
 
@@ -475,6 +485,14 @@ export function useTokenTrade({
       });
 
       transaction.add(instruction1).add(instruction2).add(buyInstruction);
+
+      const closeUseSolIns = createCloseAccountInstruction(
+        keys.userWsolAccount,
+        walletProvider.publicKey!,
+        walletProvider.publicKey!
+      );
+
+      transaction.add(closeUseSolIns);
 
       const hash = await walletProvider.signAndSendTransaction(transaction);
 
@@ -727,6 +745,14 @@ export function useTokenTrade({
           transaction.add(prepaidInstructions as any);
         }
       }
+
+      const closeUseSolIns = createCloseAccountInstruction(
+        userSolAccount.address,
+        walletProvider.publicKey!,
+        walletProvider.publicKey!
+      );
+
+      transaction.add(closeUseSolIns);
 
       const v3 = await walletProvider.signAndSendTransaction(
         transaction,
@@ -1096,24 +1122,50 @@ async function _getRate(
   const poolToken = new Big(poolData!.virtualTokenAmount.toNumber());
   const solToken = new Big(poolData!.virtualWsolAmount.toNumber());
 
+  const maxBuy = poolToken.minus(295_840_542_120_770)
+
   // buy
   if (solAmount && type === 'buy') {
     const _solAmount = new Big(solAmount).mul(1 - 0.01);
     const result = poolToken
       .mul(_solAmount)
       .div(solToken.plus(_solAmount))
-      .toString();
-    return result;
+      .toFixed(0, 0);
+
+    if (maxBuy.lt(result)) {
+      return {
+        result: maxBuy.toString(),
+        isMax: true
+      };
+    }
+
+    return {
+      result,
+      maxBuy: maxBuy.toFixed(0, 0),
+      isMax: false
+    };
   }
 
   if (tokenAmount && type === 'buy') {
-    const _tokenAmount = new Big(tokenAmount);
+    let avalibleTokenAmount = tokenAmount
+    let isMax = false
+    if (maxBuy.lt(tokenAmount)) {
+      avalibleTokenAmount = maxBuy.toString()
+      isMax = true
+    }
+
+    const _tokenAmount = new Big(avalibleTokenAmount);
     const result = solToken
       .mul(_tokenAmount)
       .div(poolToken.minus(_tokenAmount))
-      .div(1 - 0.01)
-      .toString();
-    return result;
+      .div(1 - 0.05)
+      .toFixed(0, 0);
+
+    return {
+      result,
+      maxBuy: maxBuy.toFixed(0, 0),
+      isMax
+    };
   }
 
   // sell
@@ -1122,11 +1174,17 @@ async function _getRate(
     const result = solToken
       .mul(_tokenAmount)
       .div(poolToken.plus(_tokenAmount))
-      .toString();
-    return result;
+      .toFixed(0, 0);
+    return {
+      result,
+      isMax: false
+    };
   }
 
   // buy 1% sell 1.5%
 
-  return 0;
+  return {
+    result: '0',
+    isMax: false
+  };
 }

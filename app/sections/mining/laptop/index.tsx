@@ -9,7 +9,6 @@ import FollowX from "../mobile/panels/follow-x";
 import CreateToEarn from "../mobile/panels/create-to-earn";
 import Rank from "../component/rank";
 import { useConfig } from "@/app/store/useConfig";
-import { useState } from "react";
 
 export default function Laptop({
   info,

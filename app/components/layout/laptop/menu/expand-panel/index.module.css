@@ -119,9 +119,10 @@
 
 .ComingSoon {
   position: absolute;
-  top: 0px;
-  left: 15%;
+  top: 6px;
+  left: 40px;
   z-index: 100;
+  width: 50px;
 }
 
 

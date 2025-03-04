@@ -13,9 +13,10 @@ import { Skeleton } from "antd-mobile";
 import { useUserAgent } from "@/app/context/user-agent";
 import VideoPlayer from "@/app/components/video";
 import { getVideoExt } from "@/app/components/upload";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from 'react';
 import Big from "big.js";
 import { useRouter } from 'next/navigation';
+import { MemesContext } from '@/app/sections/memes/context';
 
 const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
   const { className, token } = props;
@@ -246,13 +247,13 @@ export const TokenItemSummaries = (props: any) => {
             <SummaryItem
               className={styles.TokenItemSummary}
               type="rocket"
-              value={token.like || 0}
+              value={token.launched_like || 0}
             />
           ) : (
             <SummaryItem
               className={styles.TokenItemSummary}
               type="plane"
-              value={token.like || 0}
+              value={token.launched_like || 0}
             />
           )}
           <SummaryItem
@@ -282,6 +283,7 @@ export const TokenItemSummaries = (props: any) => {
 
 export const TokenItemMarketCap = (props: any) => {
   const { token } = props;
+  const { setMemesListCountdown } = useContext(MemesContext);
 
   const [countdownFinished, setCountdownFinished] = useState(false);
 
@@ -292,6 +294,9 @@ export const TokenItemMarketCap = (props: any) => {
           token={token}
           onFinish={() => {
             setCountdownFinished(true);
+            setMemesListCountdown?.({
+              [token.id]: 0
+            });
           }}
         />
       ) : (

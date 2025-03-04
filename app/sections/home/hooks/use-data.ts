@@ -140,7 +140,6 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
 
   const onRefresh = () => {
     projectsStore.clearList(launchType);
-    projectsStore.clearProjects();
     if (projectsStore.address) {
       projectsStore.setIndex(launchType, 0);
     }
@@ -169,6 +168,13 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
 
   useEffect(() => {
     if (!mountedRef.current || !isCurrentTab) return;
+    if (projectsStore.address !== (address || "")) {
+      projectsStore.clearList(launchType);
+      if (projectsStore.address) {
+        projectsStore.setIndex(launchType, 0);
+      }
+      setIsLoading(true);
+    }
     initList();
   }, [isCurrentTab]);
 
@@ -182,12 +188,12 @@ export default function useData(launchType: Type, isCurrentTab: boolean) {
   }, [accountRefresher]);
 
   useEffect(() => {
-    if (isMobile)
+    if (isMobile) {
       window.addEventListener("unload", () => {
         projectsStore.clearList(launchType);
-        projectsStore.clearProjects();
         projectsStore.setIndex(launchType, 0);
       });
+    }
   }, []);
 
   return {

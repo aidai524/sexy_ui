@@ -21,8 +21,8 @@
 }
 
 .inputWrapper {
-  height: 302px;
-  padding: 20px;
+  height: 322px;
+  padding: 20px 20px 40px;
   background-color: #202325;
   position: relative;
   .inputClear {

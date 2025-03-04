@@ -88,7 +88,35 @@ export const useProjects = create(
       updateProject: (item: any) => {
         const currentProjects = get().projects;
 
-        if (!currentProjects[item.id]) return;
+        const currentItem = currentProjects[item.id];
+        if (!currentItem) return;
+
+        let params: any = {};
+
+        if (item.status !== currentItem.status) {
+          let list = [];
+          let type: LaunchType = LaunchType.genesis;
+          if (currentItem.status === 0) {
+            list = get().genesisList;
+            type = LaunchType.genesis;
+          }
+          if (currentItem.status === 1) {
+            list = get().tickingList;
+            type = LaunchType.ticking;
+          }
+          if (list.length) {
+            const index = list.findIndex((slip: any) => slip === item.id);
+            list.splice(index, 1);
+            params[type + "List"] = list;
+            const currentIndex = get()[type + "Index"];
+            params[type + "Index"] =
+              index > currentIndex
+                ? index
+                : currentIndex - 1 < 0
+                ? 0
+                : currentIndex - 1;
+          }
+        }
 
         currentProjects[item.id] = {
           ...mapDataToProject(item),
@@ -135,15 +163,17 @@ export const useProjects = create(
           );
           const currentProjects = get().projects;
           let repeatCount = 0;
+          let minus = 0;
 
           res.data?.forEach((item: any, i: number) => {
-            if (["genesis", "ticking", "listed"].includes(type)) {
+            if (["genesis", "ticking"].includes(type)) {
               const currentItem = currentProjects[item.id];
               if (currentItem) {
                 if (item.status !== currentItem.status) {
-                  const index = list.findIndex((slip: any) => slip === item.id);
+                  const i = list.findIndex((slip: any) => slip === item.id);
                   repeatCount++;
-                  list.splice(index, 1);
+                  if (i < index) minus++;
+                  list.splice(i, 1);
                 }
               }
             }
@@ -155,8 +185,7 @@ export const useProjects = create(
           if (repeatCount > 0) {
             set({
               [type + "List"]: [...list],
-              [type + "Index"]:
-                index > list.length - 1 ? list.length - 1 : index
+              [type + "Index"]: index - minus < 0 ? 0 : index - minus
             });
           }
           set({ projects: currentProjects });
