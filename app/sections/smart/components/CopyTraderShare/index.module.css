@@ -62,7 +62,7 @@
   transition: all 0.3s ease-in-out;
 }
 .AirdropShareButton:disabled {
-  opacity: 0.3;
+  /* opacity: 0.3; */
   cursor: not-allowed;
 }
 .AirdropShareButtonDark {
