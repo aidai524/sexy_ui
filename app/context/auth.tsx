@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<{
   const updateCurrentUserInfo = useCallback(async () => {
     if (!address) return;
     const userInfo = await fecthUserInfo(address);
-    userStore.set({ userInfo });
+    userStore.setUserInfo(userInfo);
   }, [address]);
 
   useEffect(() => {
@@ -105,8 +105,8 @@ export const AuthProvider: React.FC<{
         logout,
         updateCurrentUserInfo,
         updateUserLikeNum(num: number) {
-          userStore.set({
-            userInfo: { ...userStore.userInfo, using_like_num: num }
+          userStore.setUserInfo({
+            using_like_num: num
           });
         }
       }}

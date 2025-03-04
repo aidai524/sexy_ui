@@ -50,7 +50,7 @@ export default memo(function Home(props: any) {
     accountRefresher
   );
 
-  const { userInfo: ownUserInfo, set: setUserInfo }: any = useUser();
+  const { userInfo: ownUserInfo, setUserInfo }: any = useUser();
 
   const comProps = {
     userInfo,
