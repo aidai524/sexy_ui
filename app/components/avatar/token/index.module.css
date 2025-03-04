@@ -71,3 +71,10 @@
   top: 4px;
   transform: rotate(-45deg);
 }
+
+.LastKing {
+  position: absolute;
+  right: -8px;
+  top: -7px;
+  transform: rotate(16deg);
+}
