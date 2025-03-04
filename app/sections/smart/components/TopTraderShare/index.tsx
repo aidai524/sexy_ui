@@ -105,8 +105,8 @@ const TopTraderShare = (props: any) => {
           logging: false,
           imageTimeout: 0,
           allowTaint: true,
-          width: 450,
-          height: 600,
+          width: element.offsetWidth,
+          height: element.offsetHeight,
           onclone: (clonedDoc) => {
             const clonedElement = clonedDoc.querySelector(`[class*="${styles.CopyTradeShareCard}"]`);
             if (clonedElement) {
@@ -115,8 +115,8 @@ const TopTraderShare = (props: any) => {
               el.style.visibility = 'visible';
               el.style.display = 'block';
               el.style.position = 'relative';
-              el.style.width = '450px';
-              el.style.height = '600px';
+              el.style.width = `${element.offsetWidth}px`;
+              el.style.height = `${element.offsetHeight}px`;
             }
           }
         });
@@ -152,6 +152,7 @@ const TopTraderShare = (props: any) => {
 
 
   const handleCopyX = async () => {
+    await setLoading(true);
     if (shareImgUrl) {
       const longUrl = `${domain}/api/smart?address=${encodeURIComponent(
         shareName
@@ -163,6 +164,8 @@ const TopTraderShare = (props: any) => {
       const shortUrl = await getShortUrl(longUrl);
       shareToX('Check out this top trader on Flipn! 🚀', shortUrl);
     }
+    await setLoading(false);
+    onClose?.();
   }
 
 
@@ -202,7 +205,7 @@ const TopTraderShare = (props: any) => {
       <div ref={cardRef} className={styles.CopyTradeShareCard}>
         <TopTraderShareInfoCard shareName={shareName} shareLink={shareLink} selectedItems={selectedItems} currentUserInfo={currentUserInfo} />
       </div>
-      <div className={isMobile ? styles.CopyTradeShareFooter : styles.CopyTradeShareFooterPC}>
+      <div className={isMobile ? styles.CopyTradeShareFooter : styles.CopyTradeShareFooterPC }>
         <button
           type="button"
           className={styles.AirdropShareButtonDark}

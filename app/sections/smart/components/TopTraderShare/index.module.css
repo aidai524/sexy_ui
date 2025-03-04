@@ -75,6 +75,19 @@
   /* opacity: 0.3; */
   cursor: not-allowed;
 }
+
+.AirdropShareButton:disabled::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
 .AirdropShareButtonDark {
   composes: AirdropShareButton;
   border-radius: 30px;
@@ -206,6 +219,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 24px;
+  padding-top: 20px;
 }
 
 .CopyTradeShareInfoCardTitle {

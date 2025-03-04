@@ -164,6 +164,7 @@ const CopyTradeShare = (props: any) => {
 
 
   const handleCopyX = async () => {
+    await setLoading(true);
     if (shareImgUrl) {
       const longUrl = `${domain}/api/copy?address=${encodeURIComponent(
         reqAddress || address || ''
@@ -175,6 +176,8 @@ const CopyTradeShare = (props: any) => {
       const shortUrl = await getShortUrl(longUrl);
       shareToX('Check out this copy trader on Flipn! 🚀', shortUrl);
     }
+    await setLoading(false);
+    onClose?.();
   }
 
 
