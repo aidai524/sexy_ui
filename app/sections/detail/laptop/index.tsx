@@ -15,9 +15,17 @@ export default function Laptop(props: any) {
   const { innerWidth } = useUserAgent();
   const search = useSearchParams();
 
+  const searchFrom = search.get("from") || "";
+
   useEffect(() => {
     detailStatusStore.setToken(infoData);
   }, [infoData]);
+
+  useEffect(() => {
+    if (searchFrom === "memes") {
+      detailStatusStore.setShow("showTrade", true);
+    }
+  }, [searchFrom]);
 
   return (
     <motion.div
@@ -37,7 +45,7 @@ export default function Laptop(props: any) {
           }}
         >
           <div className={styles.BackButton}>
-            {["profile", "trends", "messages"].includes(
+            {["profile", "memes", "messages"].includes(
               search.get("from") || ""
             ) && (
               <BackIcon

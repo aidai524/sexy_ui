@@ -171,7 +171,7 @@ const Carousel: React.FC<CarouselProps> = ({
                 <div
                   className={styles.CarouselAvatar}
                   onClick={() => {
-                    router.push(`/detail?address=${item?.address}`);
+                    router.push(`/detail?address=${item?.address}&from=memes`);
                   }}
                 >
                   {!item?.Icon ? (
