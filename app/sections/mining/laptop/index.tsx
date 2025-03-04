@@ -9,6 +9,7 @@ import FollowX from "../mobile/panels/follow-x";
 import CreateToEarn from "../mobile/panels/create-to-earn";
 import Rank from "../component/rank";
 import { useConfig } from "@/app/store/useConfig";
+import { useMemo } from "react";
 
 export default function Laptop({
   info,
@@ -19,6 +20,14 @@ export default function Laptop({
   onQuery
 }: any) {
   const configStore: any = useConfig();
+
+  const showCreateToEarn = useMemo(() => {
+    return (
+      info?.clime_created &&
+      Date.now() >= configStore.AirdropStartTime &&
+      Date.now() <= configStore.AirdropEndTime
+    );
+  }, [info]);
 
   return (
     <>
@@ -37,7 +46,7 @@ export default function Laptop({
               <InviteFrenz rate={rate} />
               <LikeToEarn info={info} userInfo={userInfo} />
               <FollowX />
-              {info?.clime_created && (
+              {showCreateToEarn && (
                 <CreateToEarn
                   airdropEndTime={configStore.AirdropEndTime}
                   info={info}

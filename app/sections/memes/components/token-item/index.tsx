@@ -106,9 +106,28 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
               </div>
             </div>
           </div>
-          <div className={styles.TokenItemLaptopAvatarCrown}>
+          <div
+            className={styles.TokenItemLaptopAvatarCrown}
+            style={_token?.is_king ? {
+              right: "unset",
+              top: "-20px",
+              left: "-28px",
+              zIndex: 2,
+              transform: "rotate(0deg)"
+            } : {
+              right: "-10px",
+              top: "-15px",
+              transform: "rotate(30deg)"
+            }}
+          >
             {_token?.is_king
-              ? "👑"
+              ? (
+                <img
+                  src="/img/memes/icon-crown-laptop.svg"
+                  alt=""
+                  className={styles.TokenItemLaptopAvatarCrownKingIcon}
+                />
+              )
               : !!_token?.last_king_time && (
                   <img
                     src="/img/memes/icon-crown.svg"
