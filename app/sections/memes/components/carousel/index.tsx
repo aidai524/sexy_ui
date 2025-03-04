@@ -283,7 +283,7 @@ const Carousel: React.FC<CarouselProps> = ({
                     </div>
                     {isProgress ? (
                       <div className={styles.CarouselProgressValue}>
-                        {item?.progress}%
+                        {item?.bonding_progress}%
                       </div>
                     ) : (
                       <PriceChart
@@ -299,7 +299,7 @@ const Carousel: React.FC<CarouselProps> = ({
                         initial={{ x: "-100%" }}
                         animate={{
                           x: `-${Big(100)
-                            .minus(item?.progress || 0)
+                            .minus(item?.bonding_progress || 0)
                             .toFixed(2)}%`
                         }}
                         transition={{ duration: 0.6, ease: "linear" }}

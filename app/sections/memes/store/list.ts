@@ -96,6 +96,7 @@ export interface Hot {
   status: number;
   video: string;
   DApp: string;
+  bonding_progress: string;
 
   // front-end attributes
   kind: 'Hot',

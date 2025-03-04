@@ -158,7 +158,7 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       it.kind = 'Hot';
       it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
 
-      if ([0, 1].includes(it.status)) {
+      if ([0].includes(it.status)) {
         const { poolAmount, solAmount } = await getPoolToken(it);
         let _progress = Big(1095840542120770).minus(poolAmount).div(Big(1095840542120770).minus(295840542120770)).times(100);
         if (Big(_progress).lt(0)) {

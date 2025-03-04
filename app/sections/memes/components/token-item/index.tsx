@@ -34,7 +34,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
       : {
           ...token,
           icon: token.Icon || token.video,
-          bondingProgress: token.progress
+          bondingProgress: token.bonding_progress
         };
   }, [token]);
 
