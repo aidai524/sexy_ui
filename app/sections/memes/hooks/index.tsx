@@ -35,6 +35,8 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     setMemesListLoading,
     setMemesListPageOffset,
     setMemesListPageNext,
+    memesListCountdown,
+    setMemesListCountdown,
   } = useMemesListStore();
   const {
     currentTab,
@@ -156,7 +158,7 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       it.kind = 'Hot';
       it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
 
-      if ([0].includes(it.status)) {
+      if ([0, 1].includes(it.status)) {
         const { poolAmount, solAmount } = await getPoolToken(it);
         let _progress = Big(1095840542120770).minus(poolAmount).div(Big(1095840542120770).minus(295840542120770)).times(100);
         if (Big(_progress).lt(0)) {
@@ -214,6 +216,9 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       const it = _list[i];
       it.kind = 'Meme';
       it.created2Now = timeAgo(it.DApp === "pump" ? it.time : it.created_at);
+      if (memesListCountdown[it.id] !== void 0) {
+        it.countdown = memesListCountdown[it.id];
+      }
     }
     return _list;
   };
@@ -229,7 +234,7 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     try {
       const res = await httpGet(`/project/memes/list`, {
         limit: memesListPageLimit,
-        offset,
+        offset: offset * memesListPageLimit,
         order,
         sort,
         type,
@@ -316,7 +321,8 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     memesListPageNext,
     onMemesListNextPage,
     initMemesList,
-    memesContainerRef
+    memesContainerRef,
+    setMemesListCountdown
   };
 }
 
@@ -333,4 +339,5 @@ export interface Memes extends MemesState {
   onMemesListNextPage: () => void;
   initMemesList: () => void;
   memesContainerRef: React.MutableRefObject<any>;
+  setMemesListCountdown: (obj: Record<string, number>) => void;
 }
