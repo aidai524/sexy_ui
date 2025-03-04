@@ -117,6 +117,7 @@ export default function SmartDetailPC() {
               copyTradersUserInfo={copyTradersUserInfo || null}
               visible={shareVisible}
               onClose={() => setShareVisible(false)}
+              reqAddress={reqAddress}
             />
     </div>
   );

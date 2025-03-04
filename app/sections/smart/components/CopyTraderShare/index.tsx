@@ -1,6 +1,6 @@
 import styles from './index.module.css';
 import CopyTradeShareInfoCard from '@/app/sections/smart/components/CopyTraderShare/share-info';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import { useAccount } from '@/app/hooks/useAccount';
 import { fail, success } from '@/app/utils/toast';
 import html2canvas from 'html2canvas';
@@ -10,9 +10,13 @@ import Loading from '@/app/components/icons/loading';
 import Modal from '@/app/components/modal';
 import { useUserAgent } from '@/app/context/user-agent';
 import CloseIcon from "@/app/components/icons/modal-close";
+import { postUpload, base64ToBlob } from '@/app/utils';
+import { getShortUrl, shareToX } from "@/app/utils/share";
+
+const domain = process.env.NEXT_PUBLIC_DOMAIN || "https://stage.flipn.fun";
 
 const CopyTradeShare = (props: any) => {
-  const { onClose, copyTradersUserInfo } = props;
+  const { onClose, copyTradersUserInfo, reqAddress } = props;
   const { isMobile } = useUserAgent();
   const { address } = useAccount();
 
@@ -22,13 +26,15 @@ const CopyTradeShare = (props: any) => {
   const [downloadVisible, setDownloadVisible] = useState(false);
   const [downloadSrc, setDownloadSrc] = useState<any>();
   const [downloadFileName, setDownloadFileName] = useState<any>();
+  const [shareImgUrl, setShareImgUrl] = useState<any>();
+  const [isNoHead, setIsNoHead] = useState(false);
 
   const shareLink = useMemo(() => {
     const _shareLink = new URL(window?.location?.origin + '/smartDetail');
-    _shareLink.searchParams.set("address", address ?? "");
+    _shareLink.searchParams.set("address",(reqAddress || address) ?? "");
     _shareLink.searchParams.set("referrer", 'copy-trader-share');
     return _shareLink.toString();
-  }, [address]);
+  }, [address, reqAddress]);
 
   const handleCopy = () => {
     navigator.clipboard
@@ -73,6 +79,120 @@ const CopyTradeShare = (props: any) => {
     setLoading(false);
   };
 
+
+
+  const getShareImg = async () => {
+    if (loading) return;
+    setLoading(true);
+    
+    if (cardRef.current) {
+      try {
+        // Add a small delay to ensure styles are loaded
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        
+        const element = cardRef.current;
+        // Force a reflow to ensure styles are applied
+        element.offsetHeight;
+        
+        const originalWidth = 400;  
+        const originalHeight = 550; 
+        const targetWidth = 450;  
+        const scale = targetWidth / originalWidth;
+        const targetHeight = originalHeight * scale;
+
+        // Wait for images to load
+        const images = element.getElementsByTagName('img');
+        await Promise.all(
+          Array.from(images).map(
+            (img: any) => img.complete ? Promise.resolve() : new Promise(resolve => img.onload = resolve)
+          )
+        );
+
+        const canvas = await html2canvas(element, { 
+          useCORS: true,
+          backgroundColor: '#000',
+          scale: scale,
+          logging: false,
+          width: targetWidth,
+          height: targetHeight,
+          imageTimeout: 0,
+          allowTaint: true,
+          x: (targetWidth / scale - originalWidth) / 2,
+          y: (targetHeight / scale - originalHeight) / 2,
+          onclone: (clonedDoc) => {
+            const clonedElement = clonedDoc.querySelector(`[class*="${styles.CopyTradeShareCard}"]`);
+            if (clonedElement) {
+              const el = clonedElement as HTMLElement;
+              el.style.opacity = '1';
+              el.style.visibility = 'visible';
+              // Force styles to be applied in the cloned document
+              el.style.display = 'block';
+              el.style.position = 'relative';
+            }
+          }
+        });
+
+        const blob = await new Promise<Blob>((resolve) => {
+          canvas.toBlob((blob) => {
+            resolve(blob!);
+          }, 'image/webp', 0.8);
+        });
+
+        const url = await postUpload(blob, address!, 'image/webp');
+        if (url) {
+          console.log('Upload successful:', url);
+          setShareImgUrl(url);
+        }
+      } catch (err: any) {
+        console.error('Share image generation/upload failed:', err);
+        fail(`Failed to generate/upload share image${err?.message ? ': ' + err?.message : ''}`);
+      }
+    }
+    
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (!isNoHead) {
+      getShareImg();
+    }
+  }, [isNoHead]);
+
+
+  const handleCopyX = async () => {
+    if (shareImgUrl) {
+      const longUrl = `${domain}/api/copy?address=${encodeURIComponent(
+        reqAddress || address || ''
+      )}&imgUrl=${encodeURIComponent(
+        shareImgUrl
+      )}&title=${encodeURIComponent(
+        'Copy Trader Share'
+      )}&about=${encodeURIComponent('Copy Trader Share')}`;
+      const shortUrl = await getShortUrl(longUrl);
+      shareToX('Check out this copy trader on Flipn! 🚀', shortUrl);
+    }
+  }
+
+
+  useEffect(() => {
+    if (
+      navigator.userAgent.toLowerCase().indexOf("phantom") > -1 ||
+      navigator.userAgent.toLowerCase().indexOf("solflare") > -1
+    ) {
+      setIsNoHead(true);
+    }
+  }, []);
+
+
+  const showError = useCallback(() => {
+    fail("This feature is unavailable in the wallet's browser. ", {
+      maskStyle: {
+        zIndex: 9999
+      }
+    });
+  }, []);
+
   return (
     <div className={isMobile? styles.CopyTradeShareContainer: styles.CopyTradeShareContainerPc}>
       {
@@ -83,7 +203,7 @@ const CopyTradeShare = (props: any) => {
         )
       }
       <div ref={cardRef} className={styles.CopyTradeShareCard}>
-        <CopyTradeShareInfoCard shareLink={shareLink} copyTradersUserInfo={copyTradersUserInfo} accountAddress={address}/>
+        <CopyTradeShareInfoCard shareLink={shareLink} copyTradersUserInfo={copyTradersUserInfo} accountAddress={reqAddress || address}/>
       </div>
       <div className={styles.CopyTradeShareFooter}>
         <button
@@ -102,9 +222,14 @@ const CopyTradeShare = (props: any) => {
         <button
           type="button"
           className={styles.AirdropShareButtonPrimary}
-          onClick={handleCopy}
+          onClick={isNoHead ? handleCopy : handleCopyX}
+          disabled={loading}
         >
-          <img src="/img/airdrop/icon-share.svg" alt="" className={styles.AirdropShareButtonIcon} />
+          {
+            loading && (
+              <Loading size={14} />
+            )
+          }
           <span>Share</span>
         </button>
       </div>

@@ -2,7 +2,7 @@ import Modal from '@/app/components/modal';
 import Index from './index';
 import { useUserAgent } from '@/app/context/user-agent';
 const CopyTradeShareModal = (props: any) => {
-  const { visible, onClose, copyTradersUserInfo } = props;
+  const { visible, onClose, copyTradersUserInfo, reqAddress } = props;
   const { isMobile } = useUserAgent();
   const modalConfig = isMobile ? {
     animation: 'popup',
@@ -17,7 +17,7 @@ const CopyTradeShareModal = (props: any) => {
       onClose={onClose}
       {...modalConfig}
     >
-      <Index {...props} copyTradersUserInfo={copyTradersUserInfo} />
+      <Index {...props} copyTradersUserInfo={copyTradersUserInfo} reqAddress={reqAddress} />
     </Modal>
   );
 };

@@ -26,7 +26,7 @@ export async function GET(request: Request | NextRequest) {
             <meta name="twitter:title" content="${decodedTitle}">
             <meta name="twitter:description" content="${decodedAbout}">
             <meta name="twitter:image" content="${decodedImgUrl}"> <!-- Image URL for sharing -->
-            <meta http-equiv="refresh" content="0; url=${domain}/smartTopDetail?address=${address}">
+            <meta http-equiv="refresh" content="0; url=${domain}/smartDetail?address=${address}&referrer=copy-trader-share">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta property="og:image:width" content="375">
             <meta property="og:image:height" content="625">
