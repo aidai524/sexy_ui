@@ -79,7 +79,7 @@ const TraderItem = ({
           <div className={styles.avatar}>
             <Image
               src={user?.icon || defaultAvatar}
-              alt={trader.name || "top trader avatar"}
+              alt={trader.name + "  top trader avatar"}
               width={40}
               height={40}
             />

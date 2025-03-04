@@ -151,7 +151,7 @@ const TraderItem = ({ trader, onCopyTradeClick }: { trader: any, onCopyTradeClic
     }}>
       <div className={styles.traderInfo}>
         <div className={styles.avatar}>
-          <Image src={user?.icon || defaultAvatar} alt={trader.name} width={40} height={40} />
+          <Image src={user?.icon || defaultAvatar} alt={trader.name + " top trader avatar"} width={40} height={40} />
           {
               trader?.copied ?
               <div className={styles.coping}>
