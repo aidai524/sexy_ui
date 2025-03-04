@@ -18,8 +18,8 @@ import { AirdropContextProvider } from '@/app/context/airdrop';
 const UnWrappedPath = [
   AIRDROP_STAGE.PREVIEW.path,
   "/invite-code",
-  "/policy/privacy",
-  "/policy/terms"
+  "/privacy-policy",
+  "/terms-and-conditions"
 ];
 
 export default function Layout(props: any) {
