@@ -64,7 +64,7 @@ export async function http(
 
   if (data.code === TOKEN_ERROR_CODE) {
     if (!window.connecting) {
-      window.connect();
+      window.sign();
       window.localStorage.removeItem(AUTH_KEY);
     }
     if (isRepeat) {
