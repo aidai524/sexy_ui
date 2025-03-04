@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/app/context/auth";
 
 export default function useUserMining() {
-  const { accountRefresher } = useAuth();
+  const { accountRefresher, userInfo } = useAuth();
   const [info, setInfo] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
@@ -11,7 +11,14 @@ export default function useUserMining() {
     try {
       setLoading(true);
       const response = await httpAuthGet("/account/mining");
-      setInfo(response.data);
+      const pointsResponse = await httpAuthGet(
+        `/airdrop/account/level_points?account=${userInfo.address}`
+      );
+
+      setInfo({
+        ...response.data,
+        clime_created: Number(pointsResponse.data.points) > 0
+      });
     } catch (err) {
     } finally {
       setLoading(false);

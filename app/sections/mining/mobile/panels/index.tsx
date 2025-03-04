@@ -11,7 +11,11 @@ export default function Panels({ info, rate, userInfo }: any) {
   const configStore: any = useConfig();
 
   const showCreateToEarn = useMemo(() => {
-    return info?.clime_created;
+    return (
+      info?.clime_created &&
+      Date.now() >= configStore.AirdropStartTime &&
+      Date.now() <= configStore.AirdropEndTime
+    );
   }, [info]);
   return (
     <div className={styles.Container}>
