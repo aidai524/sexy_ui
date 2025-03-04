@@ -29,6 +29,7 @@ export default function SmartDetailPC() {
   const { lastCloseCopyTime, set: setLastCloseCopyTime }:any = useCloseCopy();
   const { address: walletAddress } = useAccount();
   const { totalPnl:currentTotalPnl }:any = useTotalPnl();
+  console.log(currentTotalPnl, "currentTotalPnl");
   const currentAddress = userInfo?.address || walletAddress;
   const { isMobile } = useUserAgent();
   const router = useRouter();
