@@ -228,6 +228,11 @@
   width: 333px;
   margin-left: auto;
 }
+@media screen and (min-width: 768px) and ( max-width: 1010px){
+  .CarouselMarketCapWithProgressLaptop {
+    margin-left: unset;
+  }
+}
 .CarouselMarketCapTop {
   width: 100%;
   display: flex;
