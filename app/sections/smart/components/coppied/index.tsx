@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Empty from "@/app/components/empty";
 import CopyList from "./coppiedList";
 import CopyTrade from "@/app/services/copyTrade";
@@ -16,10 +16,12 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useCloseCopy } from "@/app/store/useCloseCopy";
 import { success } from "@/app/utils/toast";
 import { CopyItemSkeleton } from "./coppiedList/ske";
-
+import Big from "big.js";
+import { useTotalPnl } from "@/app/store/use-total-pnl";
 export default function Coppied({ isOther }: any) {
   const { address: walletAddress } = useAccount();
   const { lastCloseCopyTime, set: setLastCloseCopyTime }:any = useCloseCopy();
+  const { set: setTotalPnl }:any = useTotalPnl();
   const searchParams = useSearchParams();
   const urlAddress = searchParams.get('address');
   const CopyTradeService = new CopyTrade();
@@ -163,6 +165,25 @@ export default function Coppied({ isOther }: any) {
 
     return () => clearInterval(interval);
   }, [pollingIds, pollCopyTradeStatus]);
+
+
+
+
+  const gasFee = 0.01;
+  const rentFee = 0.00089088;
+  const itemPnl = useCallback((itemInfo: any) => {
+    return new Big(itemInfo?.roi).times(itemInfo.investment + rentFee + gasFee).toString();
+  }, []);
+
+  const totalPnl = useMemo(() => {
+    return copyTradeMap?.items?.reduce((acc: Big, item: any) => {
+      return acc.plus(itemPnl(item));
+    }, new Big(0));
+  }, [copyTradeMap?.items, itemPnl]);
+  
+  useEffect(() => {
+    setTotalPnl({ totalPnl: totalPnl.toString() });
+  }, [totalPnl, setTotalPnl]);
 
 
 

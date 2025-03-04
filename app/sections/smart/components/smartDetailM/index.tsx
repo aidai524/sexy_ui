@@ -22,10 +22,12 @@ import { useAccount } from "@/app/hooks/useAccount";
 import Big from 'big.js';
 import Loading from "@/app/loading";
 import { useCloseCopy } from "@/app/store/useCloseCopy";
+import { useTotalPnl } from "@/app/store/use-total-pnl";
 
 export default function SmartDetailM() {
   const { userInfo } = useUser();
   const { lastCloseCopyTime, set: setLastCloseCopyTime }:any = useCloseCopy();
+  const { totalPnl:currentTotalPnl }:any = useTotalPnl();
   const { address: walletAddress } = useAccount();
   const currentAddress = userInfo?.address || walletAddress;
   const { isMobile } = useUserAgent();
@@ -117,7 +119,7 @@ export default function SmartDetailM() {
       </div>
       <div style={{height: '50px'}}></div>
       {/*  */}
-      <SmartDetailContent copyTradersUserInfo={copyTradersUserInfo || null} />
+      <SmartDetailContent copyTradersUserInfo={copyTradersUserInfo || null} currentTotalPnl={currentTotalPnl} />
       {/* copy list */}
       <Coppied isOther={false} />
       <CopyTradeShare
@@ -152,9 +154,11 @@ const formatWinRate = (winRate: string) => {
 };
 
 export const SmartDetailContent = ({
-  copyTradersUserInfo
+  copyTradersUserInfo,
+  currentTotalPnl
 }: {
   copyTradersUserInfo: CopyTraderAddress | null;
+  currentTotalPnl: any;
 }) => {
   return (
     <div className={styles.smartDetailContent}>
@@ -208,8 +212,8 @@ export const SmartDetailContent = ({
           <div className={styles.statItem}>
             <div className={styles.statLabel}>Current PnL</div>
             <div className={styles.statValue}>
-              <span className={isGtZero(copyTradersUserInfo?.tradeInfo?.currentPNL || "0") ? styles.highlight : styles.shortlight}>
-                {formatPnl(copyTradersUserInfo?.tradeInfo?.currentPNL || "0")}
+              <span className={isGtZero(currentTotalPnl || "0") ? styles.highlight : styles.shortlight}>
+                {formatPnl(currentTotalPnl || "0")}
               </span>
               <span className={styles.detailValueCurrency}>SOL</span>
             </div>
