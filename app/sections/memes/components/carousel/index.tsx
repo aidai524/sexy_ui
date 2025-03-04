@@ -162,9 +162,8 @@ const Carousel: React.FC<CarouselProps> = ({
             <motion.div
               key={index}
               className={styles.slide}
-              initial={{ opacity: 0 }}
+              initial={index === currentIndex ? { opacity: 1 } : { opacity: 0 }}
               animate={index === currentIndex ? { opacity: 1 } : { opacity: 0 }}
-              exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
               <MediaItem item={item} onLoad={handleMediaLoad} />

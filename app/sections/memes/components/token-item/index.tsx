@@ -308,7 +308,7 @@ export const TokenItemMarketCap = (props: any) => {
 
   return (
     <>
-      {Big(token.countdown || 0).gt(0) && !countdownFinished ? (
+      {Big(token.countdown || 0).gt(0) ? (
         <Countdown
           token={token}
           onFinish={() => {

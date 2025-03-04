@@ -13,7 +13,7 @@ interface CountdownProps {
 
 const Countdown = (props: CountdownProps) => {
   const { className, token, onFinish } = props;
-  const [remainingTime, setRemainingTime] = useState(token.countdown);
+  const [remainingTime, setRemainingTime] = useState(token.countdown * 1000);
 
   useEffect(() => {
     // Update every second
