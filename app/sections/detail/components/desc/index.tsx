@@ -58,11 +58,7 @@ export default function Desc({
           new PublicKey(data.address as string),
           "confirmed"
         );
-
-        console.log('tokenAccounts', tokenAccounts);
-
         const size = tokenAccounts.value.filter((item) => Number(item.amount) > 0).length;
-
         setHolders(size);
       }
     })();

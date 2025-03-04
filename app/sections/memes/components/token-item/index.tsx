@@ -34,7 +34,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
       : {
           ...token,
           icon: token.Icon || token.video,
-          bondingProgress: token.progress
+          bondingProgress: token.bonding_progress
         };
   }, [token]);
 
@@ -42,7 +42,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
     <div
       className={clsx(styles.TokenItemContainer, className)}
       onClick={() => {
-        router.push(`/detail?address=${token?.address}`);
+        router.push(`/detail?address=${token?.address}&from=memes`);
       }}
     >
       {!isMobile && (
@@ -108,7 +108,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
           </div>
           <div
             className={styles.TokenItemLaptopAvatarCrown}
-            style={_token?.is_king ? {
+            style={(_token?.is_king && _token.kind === "Hot") ? ( _token.ranking <= 3 ? {
               right: "unset",
               top: "-20px",
               left: "-28px",
@@ -118,23 +118,25 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
               right: "-10px",
               top: "-15px",
               transform: "rotate(30deg)"
-            }}
+            }) : {}}
           >
-            {_token?.is_king
-              ? (
-                <img
-                  src="/img/memes/icon-crown-laptop.svg"
-                  alt=""
-                  className={styles.TokenItemLaptopAvatarCrownKingIcon}
-                />
-              )
-              : !!_token?.last_king_time && (
+            {(_token?.is_king && _token.kind === "Hot")
+              && (
+                _token.ranking > 3 ? (
                   <img
                     src="/img/memes/icon-crown.svg"
                     alt=""
                     className={styles.TokenItemLaptopAvatarCrownIcon}
                   />
-                )}
+                ) : (
+                  <img
+                    src="/img/memes/icon-crown-laptop.svg"
+                    alt=""
+                    className={styles.TokenItemLaptopAvatarCrownKingIcon}
+                  />
+                )
+              )
+            }
           </div>
         </div>
       )}
@@ -308,7 +310,7 @@ export const TokenItemMarketCap = (props: any) => {
 
   return (
     <>
-      {Big(token.countdown || 0).gt(0) && !countdownFinished ? (
+      {Big(token.countdown || 0).gt(0) ? (
         <Countdown
           token={token}
           onFinish={() => {

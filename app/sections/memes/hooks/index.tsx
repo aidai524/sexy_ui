@@ -158,7 +158,7 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
       it.kind = 'Hot';
       it.created2Now = timeAgo(new Date(it.project_created).getTime(), new Date().getTime());
 
-      if ([0, 1].includes(it.status)) {
+      if ([0].includes(it.status)) {
         const { poolAmount, solAmount } = await getPoolToken(it);
         let _progress = Big(1095840542120770).minus(poolAmount).div(Big(1095840542120770).minus(295840542120770)).times(100);
         if (Big(_progress).lt(0)) {
@@ -210,13 +210,13 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
     }
   };
 
-  const formatMemesList = async (_list: Meme[] = []) => {
+  const formatMemesList = async (_list: Meme[] = [], tabType: any) => {
     _list = Array.isArray(_list) ? _list : [];
     for (let i = 0; i < _list.length; i++) {
       const it = _list[i];
       it.kind = 'Meme';
       it.created2Now = timeAgo(it.DApp === "pump" ? it.time : it.created_at);
-      if (memesListCountdown[it.id] !== void 0) {
+      if (memesListCountdown[it.id] !== void 0 && tabType === 'import') {
         it.countdown = memesListCountdown[it.id];
       }
     }
@@ -240,7 +240,7 @@ export function useMemes(props?: { isLoadData?: boolean; }): Memes {
         type,
       });
 
-      const _memes_list = await formatMemesList(res.data.list);
+      const _memes_list = await formatMemesList(res.data.list, type);
 
       const _setMemesList = (val: any) => {
         switch (type) {

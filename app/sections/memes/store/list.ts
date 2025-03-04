@@ -58,7 +58,7 @@ export const useMemesListStore = create(persist<MemesState>((set) => ({
   }),
 }), {
   name: "_memes_list",
-  version: 0.1,
+  version: 0.2,
   storage: createJSONStorage(() => sessionStorage),
   partialize: (state) => ({
     memesListCountdown: state.memesListCountdown,
@@ -96,6 +96,7 @@ export interface Hot {
   status: number;
   video: string;
   DApp: string;
+  bonding_progress: string;
 
   // front-end attributes
   kind: 'Hot',

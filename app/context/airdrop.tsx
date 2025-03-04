@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useDebounceFn } from "ahooks";
 import { useReferralStore } from '@/app/store/useReferral';
 import { useUser } from '@/app/store/useUser';
+import Cookies from 'js-cookie';
 
 const AirdropContext = React.createContext<Partial<IAirdropContext>>({});
 
@@ -39,6 +40,8 @@ export const AirdropContextProvider: React.FC<any> = ({ children }) => {
     }
     setAirdropUserData(res.data);
     setReferral(res.data.referral_account);
+    console.log("referral saved: %o", res.data.referral_account);
+    Cookies.set("referral", res.data.referral_account, { path: "/" });
     setReferer(res.data.allow_login);
     if (!res.data?.allow_login && !isTerms && !["/invite-code", "/"].includes(pathname)) {
       router.replace("/invite-code");

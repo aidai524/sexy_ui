@@ -5,6 +5,7 @@ import { getVideoExt } from "@/app/components/upload";
 import VideoPlayer from "@/app/components/video";
 import { isVideoFile } from "@/app/utils/common";
 import clsx from "clsx";
+import LastKing from "./last-king";
 
 export default function TokenIcon({
   token,
@@ -59,7 +60,7 @@ export default function TokenIcon({
           token={token}
           mediaId={token.id}
           style={{
-            borderRadius: 20,
+            borderRadius: 20
           }}
         />
       ) : (
@@ -69,27 +70,35 @@ export default function TokenIcon({
             className={styles.Icon}
             loading="lazy"
           />
-          {
-            isPlayButton && isVideoFile(token?.video) && (
-              <div className={styles.IconImgPlay}>
-                <img src="/img/icon-play.svg" alt="" className={styles.IconImgPlayButton} />
-              </div>
-            )
-          }
+          {isPlayButton && isVideoFile(token?.video) && (
+            <div className={styles.IconImgPlay}>
+              <img
+                src="/img/icon-play.svg"
+                alt=""
+                className={styles.IconImgPlayButton}
+              />
+            </div>
+          )}
         </div>
       )}
-      {token.is_king && (
-        <div className={styles.King}>
-          👑
-          <Image
-            className={styles.KingAnimation}
-            src="/img/animation-king.gif"
-            width={20}
-            height={20}
-            alt="King Animation"
-          />
-        </div>
-      )}
+      {
+        token.is_king && (
+          token.ranking === 1 ? (
+            <div className={styles.King}>
+              👑
+              <Image
+                className={styles.KingAnimation}
+                src="/img/animation-king.gif"
+                width={20}
+                height={20}
+                alt="King Animation"
+              />
+            </div>
+          ) : (
+            <LastKing className={styles.LastKing} id={token.id} />
+          )
+        )
+      }
     </div>
   );
 }
