@@ -143,7 +143,7 @@ export default function TotalPanel({ info, userInfo }: any) {
                   fontWeight: 400
                 }}
               >
-                +{simplifyNum(info?.referral_point, 2)}k{" "}
+                +{simplifyNum(info?.referral_point, 2)}{" "}
                 <span style={{ color: "#FBCA04" }}>$FUN</span>
               </span>
             </div>
