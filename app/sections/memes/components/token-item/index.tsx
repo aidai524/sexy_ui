@@ -34,7 +34,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
       : {
           ...token,
           icon: token.Icon || token.video,
-          bondingProgress: token.progress
+          bondingProgress: token.bonding_progress
         };
   }, [token]);
 
@@ -308,7 +308,7 @@ export const TokenItemMarketCap = (props: any) => {
 
   return (
     <>
-      {Big(token.countdown || 0).gt(0) && !countdownFinished ? (
+      {Big(token.countdown || 0).gt(0) ? (
         <Countdown
           token={token}
           onFinish={() => {

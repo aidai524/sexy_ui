@@ -162,9 +162,8 @@ const Carousel: React.FC<CarouselProps> = ({
             <motion.div
               key={index}
               className={styles.slide}
-              initial={{ opacity: 0 }}
+              initial={index === currentIndex ? { opacity: 1 } : { opacity: 0 }}
               animate={index === currentIndex ? { opacity: 1 } : { opacity: 0 }}
-              exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
               <MediaItem item={item} onLoad={handleMediaLoad} />
@@ -283,7 +282,7 @@ const Carousel: React.FC<CarouselProps> = ({
                     </div>
                     {isProgress ? (
                       <div className={styles.CarouselProgressValue}>
-                        {item?.progress}%
+                        {item?.bonding_progress}%
                       </div>
                     ) : (
                       <PriceChart
@@ -299,7 +298,7 @@ const Carousel: React.FC<CarouselProps> = ({
                         initial={{ x: "-100%" }}
                         animate={{
                           x: `-${Big(100)
-                            .minus(item?.progress || 0)
+                            .minus(item?.bonding_progress || 0)
                             .toFixed(2)}%`
                         }}
                         transition={{ duration: 0.6, ease: "linear" }}
