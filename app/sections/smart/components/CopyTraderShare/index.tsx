@@ -95,9 +95,9 @@ const CopyTradeShare = (props: any) => {
         // Force a reflow to ensure styles are applied
         element.offsetHeight;
         
-        const originalWidth = 400;  
+        const originalWidth = 420;  
         const originalHeight = 550; 
-        const targetWidth = 450;  
+        const targetWidth = 420;  
         const scale = targetWidth / originalWidth;
         const targetHeight = originalHeight * scale;
 
@@ -118,8 +118,6 @@ const CopyTradeShare = (props: any) => {
           height: targetHeight,
           imageTimeout: 0,
           allowTaint: true,
-          x: (targetWidth / scale - originalWidth) / 2,
-          y: (targetHeight / scale - originalHeight) / 2,
           onclone: (clonedDoc) => {
             const clonedElement = clonedDoc.querySelector(`[class*="${styles.CopyTradeShareCard}"]`);
             if (clonedElement) {
@@ -129,6 +127,8 @@ const CopyTradeShare = (props: any) => {
               // Force styles to be applied in the cloned document
               el.style.display = 'block';
               el.style.position = 'relative';
+              el.style.width = '420px';
+              el.style.height = '550px';
             }
           }
         });
@@ -136,13 +136,13 @@ const CopyTradeShare = (props: any) => {
         const blob = await new Promise<Blob>((resolve) => {
           canvas.toBlob((blob) => {
             resolve(blob!);
-          }, 'image/webp', 0.8);
+          }, 'image/jpeg', 0.8);
         });
         const timestamp = dayjs().format('YYYYMMDDHHmmss');
         const randomString = generateRandomString(8);
-        const filename = `copy_trader_${timestamp}_${randomString}.webp`;
+        const filename = `copy_trader_${timestamp}_${randomString}.jpg`;
 
-        const url = await postUpload(blob, filename, 'image/webp');
+        const url = await postUpload(blob, filename, 'image/jpeg');
         if (url) {
           console.log('Upload successful:', url);
           setShareImgUrl(url);

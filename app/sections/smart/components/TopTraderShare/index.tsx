@@ -96,41 +96,27 @@ const TopTraderShare = (props: any) => {
         const element = cardRef.current;
         // Force a reflow to ensure styles are applied
         element.offsetHeight;
-        
-        const originalWidth = 400;  
-        const originalHeight = 550; 
-        const targetWidth = 450;  
-        const scale = targetWidth / originalWidth;
-        const targetHeight = originalHeight * scale;
 
-        // Wait for images to load
-        const images = element.getElementsByTagName('img');
-        await Promise.all(
-          Array.from(images).map(
-            (img: any) => img.complete ? Promise.resolve() : new Promise(resolve => img.onload = resolve)
-          )
-        );
-
+        // Remove fixed dimensions and let the content determine the size
         const canvas = await html2canvas(element, { 
           useCORS: true,
           backgroundColor: '#000',
-          scale: scale,
+          scale: 1,
           logging: false,
-          width: targetWidth,
-          height: targetHeight,
           imageTimeout: 0,
           allowTaint: true,
-          x: (targetWidth / scale - originalWidth) / 2,
-          y: (targetHeight / scale - originalHeight) / 2,
+          width: 450,
+          height: 600,
           onclone: (clonedDoc) => {
             const clonedElement = clonedDoc.querySelector(`[class*="${styles.CopyTradeShareCard}"]`);
             if (clonedElement) {
               const el = clonedElement as HTMLElement;
               el.style.opacity = '1';
               el.style.visibility = 'visible';
-              // Force styles to be applied in the cloned document
               el.style.display = 'block';
               el.style.position = 'relative';
+              el.style.width = '450px';
+              el.style.height = '600px';
             }
           }
         });
@@ -138,13 +124,13 @@ const TopTraderShare = (props: any) => {
         const blob = await new Promise<Blob>((resolve) => {
           canvas.toBlob((blob) => {
             resolve(blob!);
-          }, 'image/webp', 0.8);
+          }, 'image/jpeg', 0.8);
         });
         const timestamp = dayjs().format('YYYYMMDDHHmmss');
         const randomString = generateRandomString(8);
-        const filename = `top_trader_${timestamp}_${randomString}.webp`;
+        const filename = `top_trader_${timestamp}_${randomString}.jpg`;
 
-        const url = await postUpload(blob, filename, 'image/webp');
+        const url = await postUpload(blob, filename, 'image/jpeg');
         if (url) {
           console.log('Upload successful:', url);
           setShareImgUrl(url);
