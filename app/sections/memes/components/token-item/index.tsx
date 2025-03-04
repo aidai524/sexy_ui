@@ -108,7 +108,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
           </div>
           <div
             className={styles.TokenItemLaptopAvatarCrown}
-            style={_token?.is_king ? {
+            style={(_token?.is_king && _token.kind === "Hot") ? ( _token.ranking <= 3 ? {
               right: "unset",
               top: "-20px",
               left: "-28px",
@@ -118,7 +118,7 @@ const TokenItem = (props: { className?: string; token: Hot | Meme }) => {
               right: "-10px",
               top: "-15px",
               transform: "rotate(30deg)"
-            }}
+            }) : {}}
           >
             {(_token?.is_king && _token.kind === "Hot")
               && (
