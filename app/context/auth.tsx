@@ -30,6 +30,7 @@ export const AuthProvider: React.FC<{
     true,
     0
   );
+  const isTerms = ["/privacy-policy", "/terms-and-conditions"].includes(pathname);
 
   const { run: updateAccount } = useDebounceFn(
     async () => {
@@ -119,7 +120,7 @@ export const AuthProvider: React.FC<{
       />
       <SignatureModal
         {...{
-          showSignatureModal,
+          showSignatureModal: showSignatureModal && !isTerms,
           updateCurrentUserInfo,
           setAccountRefresher,
           setShowSignatureModal,

@@ -20,12 +20,18 @@ const SmartPage = dynamic(() => import("@/app/smart/page"));
 const SmartTopDetailPage = dynamic(() => import("@/app/smartTopDetail/page"));
 const SmartDetailPage = dynamic(() => import("@/app/smartDetail/page"));
 const InviteCodeView = dynamic(() => import("@/app/sections/invite-code"));
+const Landing = dynamic(() => import("@/app/landing/page"));
+
 
 export default function Laptop({ children }: any) {
   const { userInfo, address, updateCurrentUserInfo, logout, pathname } =
     useAuth();
   const settingStore: any = useSetting();
   useNotice();
+
+  if (pathname === "/landing") {
+    return <Landing />;
+  }
 
   return (
     <div className={styles.Container}>
