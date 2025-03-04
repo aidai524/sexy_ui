@@ -147,7 +147,7 @@ const Carousel: React.FC<CarouselProps> = ({
 
   const isProgress = useMemo(() => {
     if (!currentItem) return false;
-    if ([0].includes(currentItem.status)) return true;
+    if ([0, 1].includes(currentItem.status)) return true;
     return false;
   }, [currentItem]);
 
@@ -261,7 +261,7 @@ const Carousel: React.FC<CarouselProps> = ({
                       </div>
                       <div className={styles.CarouselMarketCapChange}>
                         {numberFormatter(
-                          item?.market_cap_percentage,
+                          item?.market_cap_24h_usd,
                           2,
                           true,
                           {
@@ -274,7 +274,6 @@ const Carousel: React.FC<CarouselProps> = ({
                             isShortUppercase: false
                           }
                         )}
-                        %
                       </div>
                     </div>
                     {isProgress ? (
