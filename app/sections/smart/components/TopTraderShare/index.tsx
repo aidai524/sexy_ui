@@ -29,6 +29,7 @@ const TopTraderShare = (props: any) => {
   const [downloadSrc, setDownloadSrc] = useState<any>();
   const [downloadFileName, setDownloadFileName] = useState<any>();
   const [shareImgUrl, setShareImgUrl] = useState<any>();
+  const [isNoHead, setIsNoHead] = useState(false);
 
   const shareLink = useMemo(() => {
     const _shareLink = new URL(window?.location?.origin + '/smartTopDetail');
@@ -98,7 +99,7 @@ const TopTraderShare = (props: any) => {
         
         const originalWidth = 400;  
         const originalHeight = 550; 
-        const targetWidth = 400;  
+        const targetWidth = 450;  
         const scale = targetWidth / originalWidth;
         const targetHeight = originalHeight * scale;
 
@@ -115,8 +116,8 @@ const TopTraderShare = (props: any) => {
           backgroundColor: '#000',
           scale: scale,
           logging: false,
-          width: targetWidth / scale,
-          height: targetHeight / scale,
+          width: targetWidth,
+          height: targetHeight,
           imageTimeout: 0,
           allowTaint: true,
           x: (targetWidth / scale - originalWidth) / 2,
@@ -155,8 +156,10 @@ const TopTraderShare = (props: any) => {
   };
 
   useEffect(() => {
-    getShareImg();
-  }, []);
+    if (!isNoHead) {
+      getShareImg();
+    }
+  }, [isNoHead]);
 
 
   const handleCopyX = async () => {
@@ -172,6 +175,25 @@ const TopTraderShare = (props: any) => {
       shareToX('Check out this top trader on Flipn! 🚀', shortUrl);
     }
   }
+
+
+  useEffect(() => {
+    if (
+      navigator.userAgent.toLowerCase().indexOf("phantom") > -1 ||
+      navigator.userAgent.toLowerCase().indexOf("solflare") > -1
+    ) {
+      setIsNoHead(true);
+    }
+  }, []);
+
+
+  const showError = useCallback(() => {
+    fail("This feature is unavailable in the wallet's browser. ", {
+      maskStyle: {
+        zIndex: 9999
+      }
+    });
+  }, []);
 
   return (
     <div className={isMobile ? styles.CopyTradeShareContainer : styles.CopyTradeShareContainerPC}>
@@ -208,7 +230,7 @@ const TopTraderShare = (props: any) => {
         <button
           type="button"
           className={styles.AirdropShareButtonPrimary}
-          onClick={isMobile ? handleCopy : handleCopyX}
+          onClick={isNoHead ? handleCopy : handleCopyX}
           disabled={loading}
         >
            {
