@@ -356,7 +356,7 @@ export default function BuySellLaunched({
                     : numberFormatter(solBalance, 2, true) + " SOL"}
                 </div>
               </div>
-              <div></div>
+              
 
               {from === "panel" ? (
                 <></>
@@ -421,7 +421,7 @@ export default function BuySellLaunched({
 
                 <div className={styles.tokenPrice}>
                   ${numberFormatter(
-                    currentToken.tokenName === "SOL" ? Number(config.SolPrice) * Number(valInput) : Number(token.price) * Number(valInput),
+                    currentToken.tokenName === "SOL" ? Number(config.SolPrice) * Number(valInput) : Number(token.price) * Number(config.SolPrice) * Number(valInput),
                     2,
                     true
                   )}
@@ -564,10 +564,10 @@ export default function BuySellLaunched({
                 <div className={styles.receiveAmount}>
                   {sellOutSol && numberFormatter(sellOutSol, 9, true)}
                   {
-                    from === "panel" ? <div>{desToken.tokenSymbol}</div> : (
+                    from === "panel" ? <div>{SOL.tokenSymbol}</div> : (
                       <div className={styles.receiveTokenImgBox}>
                         <img
-                          src={desToken.tokenUri}
+                          src={SOL.tokenUri}
                           className={styles.receiveTokenImg}
                         />
                       </div>
