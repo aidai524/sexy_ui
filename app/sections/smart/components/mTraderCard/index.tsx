@@ -9,6 +9,7 @@ import { useAccount } from '@/app/hooks/useAccount';
 import { useUserAgent } from "@/app/context/user-agent";
 import { useWithdrawClaim } from '@/app/sections/profile/hooks/useWithdrawClaim';
 import Big from 'big.js';
+import { numberFormatterNew } from '@/app/utils/common'
 export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress | null, copyTradersUserInfo: CopyTraderAddress | null, setRefreshing: (refreshing: number) => void, refreshing: number}) {
   const router = useRouter();
   const { handleWithdrawClaim } = useWithdrawClaim();
@@ -21,9 +22,9 @@ export default function TopTraderCard(props: {smartMoniesInfo: SmartMoneyAddress
 
   useEffect(() => {
     setCanClaim(
-      new Big(copyTradersUserInfo?.carryFee || "0").minus(
+      numberFormatterNew(new Big(copyTradersUserInfo?.carryFee || "0").minus(
         new Big(copyTradersUserInfo?.claimed || "0")
-      ).toNumber()
+      ).toNumber(), 3, true)
     );
   }, [copyTradersUserInfo]);
 
