@@ -110,7 +110,11 @@ export const useProjects = create(
             params[type + "List"] = list;
             const currentIndex = get()[type + "Index"];
             params[type + "Index"] =
-              index > currentIndex ? index : currentIndex - 1;
+              index > currentIndex
+                ? index
+                : currentIndex - 1 < 0
+                ? 0
+                : currentIndex - 1;
           }
         }
 
@@ -181,7 +185,7 @@ export const useProjects = create(
           if (repeatCount > 0) {
             set({
               [type + "List"]: [...list],
-              [type + "Index"]: index - minus
+              [type + "Index"]: index - minus < 0 ? 0 : index - minus
             });
           }
           set({ projects: currentProjects });

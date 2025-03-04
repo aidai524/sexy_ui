@@ -6,7 +6,8 @@ import { useUserAgent } from "@/app/context/user-agent";
 
 export default function useDanmaku({ id }: any) {
   const [list, setList] = useState<any[]>([]);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
+  const [hasNext, setHasNext] = useState(true);
   const offset = useRef(0);
   const { isWindowVisible } = useUserAgent();
 
@@ -65,17 +66,21 @@ export default function useDanmaku({ id }: any) {
       }
 
       const _more = res.data?.has_next_page || false;
-      offset.current = _more ? newList.length : 0;
+
       cachedList.current = newList;
 
       setList(newList);
       clearTimeout(window.danmakuTimer);
-      window.danmakuTimer = setTimeout(
-        () => {
-          loadMore();
-        },
-        _more ? 3000 : 10000
-      );
+      setHasNext(_more);
+      if (_more) {
+        offset.current = newList.length;
+        window.danmakuTimer = setTimeout(
+          () => {
+            loadMore();
+          },
+          _more ? 3000 : 10000
+        );
+      }
     } catch (err) {
       clearTimeout(window.danmakuTimer);
       window.danmakuTimer = setTimeout(() => {
@@ -113,6 +118,7 @@ export default function useDanmaku({ id }: any) {
 
   return {
     list,
-    show
+    show,
+    hasNext
   };
 }
