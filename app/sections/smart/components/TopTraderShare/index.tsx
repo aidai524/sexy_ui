@@ -140,8 +140,11 @@ const TopTraderShare = (props: any) => {
             resolve(blob!);
           }, 'image/webp', 0.8);
         });
+        const timestamp = dayjs().format('YYYYMMDDHHmmss');
+        const randomString = generateRandomString(8);
+        const filename = `top_trader_${timestamp}_${randomString}.webp`;
 
-        const url = await postUpload(blob, shareName!, 'image/webp');
+        const url = await postUpload(blob, filename, 'image/webp');
         if (url) {
           console.log('Upload successful:', url);
           setShareImgUrl(url);
