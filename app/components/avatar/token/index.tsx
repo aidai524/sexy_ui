@@ -81,21 +81,24 @@ export default function TokenIcon({
           )}
         </div>
       )}
-      {(token.is_king && token.ranking <= 3) && (
-        <div className={styles.King}>
-          👑
-          <Image
-            className={styles.KingAnimation}
-            src="/img/animation-king.gif"
-            width={20}
-            height={20}
-            alt="King Animation"
-          />
-        </div>
-      )}
-      {(token.is_king && token.ranking > 3) && (
-        <LastKing className={styles.LastKing} id={token.id} />
-      )}
+      {
+        token.is_king && (
+          token.ranking === 1 ? (
+            <div className={styles.King}>
+              👑
+              <Image
+                className={styles.KingAnimation}
+                src="/img/animation-king.gif"
+                width={20}
+                height={20}
+                alt="King Animation"
+              />
+            </div>
+          ) : (
+            <LastKing className={styles.LastKing} id={token.id} />
+          )
+        )
+      }
     </div>
   );
 }
