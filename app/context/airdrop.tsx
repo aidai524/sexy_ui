@@ -4,12 +4,14 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useAuth } from "@/app/context/auth";
 import { usePathname, useRouter } from "next/navigation";
 import { useDebounceFn } from "ahooks";
+import { useReferralStore } from '@/app/store/useReferral';
 
 const AirdropContext = React.createContext<Partial<IAirdropContext>>({});
 
 export const AirdropContextProvider: React.FC<any> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { setReferral } = useReferralStore();
 
   const [airdropUserData, setAirdropUserData] = useState<any>();
   const [airdropDataLoading, setAirdropDataLoading] = useState(true);
@@ -32,6 +34,7 @@ export const AirdropContextProvider: React.FC<any> = ({ children }) => {
       return;
     }
     setAirdropUserData(res.data);
+    setReferral(res.data.referral_account);
     if (!res.data?.allow_login) {
       router.replace("/invite-code");
     }
