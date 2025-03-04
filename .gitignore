@@ -49,3 +49,6 @@ next-env.d.ts
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+yarn.lock
+pnpm-lock.yaml
