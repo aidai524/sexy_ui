@@ -127,8 +127,7 @@
 
 
 .ComingSoonWrapper {
+  composes: Item;
   opacity: 0.5 !important;
-}
-.ComingSoonWrapper:hover {
-  background: transparent !important;
+  pointer-events: none !important;
 }

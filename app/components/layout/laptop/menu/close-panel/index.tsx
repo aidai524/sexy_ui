@@ -24,7 +24,7 @@ export default function ExpandPanel() {
           const isActive = item.key.includes(pathname);
           return (
             <div
-              className={`${item?.comingSoon && styles.ComingSoonWrapper} ${styles.Item} ${isActive && styles.ItemActive}`}
+              className={`${item?.comingSoon ? styles.ComingSoonWrapper : styles.Item} ${isActive && styles.ItemActive}`}
               key={item.path}
               onClick={() => {
                 if (!window.sexAddress && item.needLogin) {
