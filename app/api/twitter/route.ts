@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import { URL } from "url";
 import { NextRequest } from "next/server";
 
