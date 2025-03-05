@@ -3,11 +3,15 @@ import List from "./list";
 import { useHomeTab } from "@/app/store/useHomeTab";
 import { LaunchType } from "@/app/store/use-projects-new";
 import styles from "./index.module.css";
+import { useUser } from '@/app/store/useUser';
+import InviteCodeView from '@/app/sections/invite-code';
+import React from 'react';
 
 export default function Laptop() {
   const homeTabStore: any = useHomeTab();
+  const { userInfo } = useUser();
 
-  return (
+  return !!userInfo?.allow_login ? (
     <div className={styles.Container}>
       <Header />
 
@@ -21,6 +25,20 @@ export default function Laptop() {
           />
         ))}
       </div>
+    </div>
+  ) : (
+    <div
+      style={{
+        position: "fixed",
+        zIndex: 800,
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        background: "#0d0d0d"
+      }}
+    >
+      <InviteCodeView />
     </div>
   );
 }

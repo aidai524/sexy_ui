@@ -15,4 +15,18 @@
 .BackButton {
   position: absolute;
   left: -86px;
+  z-index: 1;
+}
+
+@media screen and (max-width: 1375px) {
+  .BackButton {
+    left: -47px;
+  }
+}
+
+@media screen and (max-width: 1296px) {
+  .BackButton {
+    left: 0;
+    top: -50px;
+  }
 }

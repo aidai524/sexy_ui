@@ -5,6 +5,8 @@ import ZeroFormat from "@/app/components/zeroFomat";
 import Big from "big.js";
 import { numberFormatter } from "@/app/utils/common";
 export default function LaunchesStatus({ data }: any) {
+  console.log(data);
+
   return (
     <div className={styles.panel}>
       {data.status === 1 && (
@@ -34,17 +36,17 @@ export default function LaunchesStatus({ data }: any) {
         style={{ marginTop: data.status === 1 ? 15 : 0 }}
       >
         <div className={styles.priceNums}>
-          <div className={styles.priceAmount}>
+          <div className={styles.priceAmount} style={{ color: Number(data.marketCap24hUsd) >= 0 ? "#c9ff5d" : "#ff2681" }}>
             ${data.mc && simplifyNum(Number(data.mc), 2)}
           </div>
-          {Number(data.marketCap24hUsd) > 0 && (
+          {Number(data.marketCap24hUsd) >= 0 && (
             <div className={styles.priceUp}>
-              +${simplifyNum(data.marketCap24hUsd, 2)}
+              +${simplifyNum(Math.abs(Number(data.marketCap24hUsd)), 2)}
             </div>
           )}
           {Number(data.marketCap24hUsd) < 0 && (
             <div className={styles.priceDown}>
-              -${simplifyNum(data.marketCap24hUsd, 2)}
+              -${simplifyNum(Math.abs(Number(data.marketCap24hUsd)), 2)}
             </div>
           )}
         </div>

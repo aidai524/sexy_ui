@@ -47,7 +47,7 @@ export default function PreUser({ token, from }: Props) {
         return <UserItem key={"like-" + item.id} item={item} type={2} />;
       })} */}
 
-      {superLikeList.length === 0 && <Empty text="No data" />}
+      {superLikeList.length === 0 && <div style={{ padding: "30px 0 0" }}><Empty text="No data" /></div>}
     </div>
   );
 }

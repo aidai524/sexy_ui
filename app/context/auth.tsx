@@ -30,7 +30,9 @@ export const AuthProvider: React.FC<{
     true,
     0
   );
-  const isTerms = ["/privacy-policy", "/terms-and-conditions"].includes(pathname);
+  const isTerms = ["/privacy-policy", "/terms-and-conditions"].includes(
+    pathname
+  );
 
   const { run: updateAccount } = useDebounceFn(
     async () => {
@@ -55,6 +57,13 @@ export const AuthProvider: React.FC<{
         return;
       }
       setShowLoginModal(true);
+    };
+    window.sign = () => {
+      if (address) {
+        setShowSignatureModal(true);
+      } else {
+        setShowLoginModal(true);
+      }
     };
     window.disconnect = disconnect;
   }, [pathname]);
