@@ -1,6 +1,8 @@
 import { URL } from "url";
 import { NextRequest } from "next/server";
 
+export const runtime = "edge";
+
 const prefix = "https://frontend-api.pump.fun/coins/";
 
 export async function GET(request: Request | NextRequest) {
